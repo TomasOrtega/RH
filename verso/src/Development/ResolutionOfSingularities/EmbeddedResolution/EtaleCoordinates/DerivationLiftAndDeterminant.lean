@@ -15,10 +15,8 @@ namespace FunctorialResolution.EmbeddedResolution
 
 section
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+Multiplication by r is injective on R because r is a non-zero-divisor. After tensoring with the flat algebra A this remains injective and becomes multiplication by the image of r. Hence that image is a non-zero-divisor.
 -/
 private theorem algebraMap_mem_nonZeroDivisors_of_flat {R A : Type u} [CommRing R]
     [CommRing A] [Algebra R A] [Module.Flat R A] {r : R} (hr : r ∈ nonZeroDivisors R) :
@@ -32,10 +30,8 @@ private theorem algebraMap_mem_nonZeroDivisors_of_flat {R A : Type u} [CommRing 
   rw [mem_nonZeroDivisors_iff]
   exact ⟨key, fun x hx => key x (by rw [mul_comm]; exact hx)⟩
 
-/- English proof (translation)
-Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+A polynomial variable is a nonzero element of the polynomial domain over k, hence a non-zero-divisor. The chart ring map is étale and therefore flat. Its image of the variable is the chart coordinate and remains a non-zero-divisor.
 -/
 private theorem coord_mem_nonZeroDivisors_of_isAffineOpen {X : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} {U : X.Opens} {m : ℕ} (hU : IsAffineOpen U)
@@ -65,12 +61,8 @@ section
 
 variable {R : Type*} [CommRing R]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+Equality of the principal ideals gives elements c and d with a equal to cb and b equal to da. Substituting the first equality into the second gives that dc times b equals b. Since b is a non-zero-divisor, cancellation gives dc equal to 1. In a commutative ring this makes c a unit with inverse d, so a is the asserted unit multiple of b.
 -/
 theorem exists_unit_mul_of_span_eq {a b : R} (hb : b ∈ nonZeroDivisors R)
     (h : Ideal.span ({a} : Set R) = Ideal.span ({b} : Set R)) :
@@ -96,8 +88,8 @@ section
 
 variable {k R S : Type*} [CommRing k] [CommRing R] [CommRing S] [Algebra k R] [Algebra k S]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+An element of the principal ideal is a multiple of h. In the product rule for its derivative, the term involving the derivative of h vanishes. The remaining term is again divisible by h, so the derivative stays in the ideal.
 -/
 theorem derivation_mapsTo_span_self {B : Type*} [CommRing B] [Algebra k B]
     (D : Derivation k B B) (h : B) (hD : D h = 0) :
@@ -107,10 +99,8 @@ theorem derivation_mapsTo_span_self {B : Type*} [CommRing B] [Algebra k B]
   rw [Derivation.leibniz, hD, smul_zero, zero_add, smul_eq_mul]
   exact Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self h)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+If r maps to zero, it belongs to the kernel, which is the principal ideal of h. The derivation preserves that ideal because it kills h. Thus the derivative of r also belongs to the kernel and maps to zero.
 -/
 theorem algHom_map_derivation_eq_zero (π : R →ₐ[k] S) (h : R)
     (hker : RingHom.ker π.toRingHom = Ideal.span ({h} : Set R))
@@ -130,8 +120,8 @@ def liftDerivationOfKerEqSpan (π : R →ₐ[k] S) (hπ : Function.Surjective π
     (D : Derivation k R R) (hD : D h = 0) : Derivation k S S :=
   D.liftOfSurjective hπ (algHom_map_derivation_eq_zero π h hker D hD)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The previous kernel calculation makes the derivative of a representative well defined under the quotient map. Specifically, two preimages of the same element differ by an element of the kernel, whose derivative still lies in the kernel. The descended derivation therefore takes the class of r to the class of its derivative, as stated.
 -/
 theorem liftDerivationOfKerEqSpan_apply (π : R →ₐ[k] S) (hπ : Function.Surjective π)
     (h : R) (hker : RingHom.ker π.toRingHom = Ideal.span ({h} : Set R))
@@ -145,10 +135,8 @@ section
 
 variable {R : Type*} [CommRing R] {ι : Type*} [Fintype ι] [DecidableEq ι] {n : ℕ}
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
-
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Expand the determinant along its first row. The off-diagonal entries of this row are zero. Its diagonal entry is 1 and its cofactor sign is positive. The remaining determinant is the minor obtained by deleting the first row and first column.
 -/
 private theorem det_eq_det_submatrix_succ (M : Matrix (Fin (n + 1)) (Fin (n + 1)) R)
     (h : ∀ b : Fin (n + 1), M 0 b = if b = 0 then (1 : R) else 0) :
@@ -161,12 +149,8 @@ private theorem det_eq_det_submatrix_succ (M : Matrix (Fin (n + 1)) (Fin (n + 1)
   · intro hb
     exact absurd (Finset.mem_univ (0 : Fin (n + 1))) hb
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
+/- English proof (authored)
+Reindex the rows and columns by the same bijection so that the specified row becomes the first row. Simultaneous reindexing preserves the determinant. The first row now has a 1 in the first column and zeros elsewhere. Expanding there gives the determinant after deleting that row and column, which is the stated submatrix in the original indices.
 -/
 theorem det_eq_det_submatrix_of_row_eq_single (e : ι ≃ Fin (n + 1)) (M : Matrix ι ι R)
     (h : ∀ b : ι, M (e.symm 0) b = if b = e.symm 0 then (1 : R) else 0) :
@@ -186,8 +170,8 @@ theorem det_eq_det_submatrix_of_row_eq_single (e : ι ≃ Fin (n + 1)) (M : Matr
   rw [h2, Matrix.submatrix_submatrix]
   rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Transpose the matrix so the specified column becomes a row. The row result applies, and the resulting submatrix is the transpose of the desired minor. The determinant is invariant under transpose both for the original matrix and for the minor, giving the equality.
 -/
 theorem det_eq_det_submatrix_of_col_eq_single (e : ι ≃ Fin (n + 1)) (M : Matrix ι ι R)
     (h : ∀ a : ι, M a (e.symm 0) = if a = e.symm 0 then (1 : R) else 0) :
@@ -205,8 +189,8 @@ section
 
 variable {X : Scheme.{u}} {k : Type u} [Field k]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The chart coordinate is a non-zero-divisor on the affine open. The equality of principal ideals therefore satisfies the unit-multiple criterion with the chart coordinate as b. It expresses g as a unit times that coordinate.
 -/
 theorem exists_unit_mul_coord_of_span_eq (p : X ⟶ Spec (CommRingCat.of k)) {U : X.Opens}
     (hU : IsAffineOpen U) {n : ℕ} (c : EtaleChart p U n) (j : Fin n) (g : Γ(X, U))

@@ -13,10 +13,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
-
-Simplify using the standard rewrite rules. Substitute using the available equality. Supply the required witnesses or components.
+/- English proof (authored)
+The filter can return j only from an original entry. It retains that entry exactly when its predicate is false. Thus the original entry is j and it fails the predicate.
 -/
 private theorem eq_some_and_not_of_bind_ite_eq_some {n : ℕ} (P : Fin n → Prop) [DecidablePred P]
     {o : Option (Fin n)} {j : Fin n}
@@ -30,8 +28,8 @@ private theorem eq_some_and_not_of_bind_ite_eq_some {n : ℕ} (P : Fin n → Pro
       subst h
       exact ⟨rfl, hb⟩
 
-/- English proof (translation)
-Substitute using the available equality. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The original entry is j. If the predicate were false at j, the filter would retain it. Since the result is empty, the predicate holds.
 -/
 private theorem of_bind_ite_eq_none {n : ℕ} (P : Fin n → Prop) [DecidablePred P]
     {o : Option (Fin n)} {j : Fin n} (hg : o = some j)
@@ -40,8 +38,8 @@ private theorem of_bind_ite_eq_none {n : ℕ} (P : Fin n → Prop) [DecidablePre
   by_contra hb
   simp [hb] at h
 
-/- English proof (translation)
-Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+An ideal sheaf is determined by its ideals on affine opens. The unit ideal sheaf assigns the whole section ring on each affine open, which agrees everywhere with the given sheaf.
 -/
 private theorem eq_top_of_forall_ideal_eq_top {X : Scheme.{u}} (I : X.IdealSheafData)
     (h : ∀ W : X.affineOpens, I.ideal W = ⊤) : I = ⊤ := by
@@ -51,8 +49,8 @@ private theorem eq_top_of_forall_ideal_eq_top {X : Scheme.{u}} (I : X.IdealSheaf
     rw [h W, htop]
   exact Scheme.IdealSheafData.ext hfun
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
+/- English proof (authored)
+On the affine open U, the support of the ideal sheaf is the common zero locus of its section ideal. A section vanishes at x precisely when the basic open it defines misses x. Applying this to every section in the ideal gives the equivalence.
 -/
 private theorem mem_support_iff_forall_notMem_basicOpen {X : Scheme.{u}} (I : X.IdealSheafData)
     {x : ↥X} {U : X.Opens} (hU : IsAffineOpen U) (hx : x ∈ U) :
@@ -63,12 +61,8 @@ private theorem mem_support_iff_forall_notMem_basicOpen {X : Scheme.{u}} (I : X.
   rw [h0, Scheme.mem_zeroLocus_iff]
   exact Iff.rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The affine identification takes x to its corresponding prime and takes the basic open of f to the basic open of the same ring element on the spectrum. A prime lies in this basic open precisely when it does not contain f.
 -/
 private theorem mem_basicOpen_iff_notMem_primeIdealOf {X : Scheme.{u}} {U : X.Opens}
     (hU : IsAffineOpen U) (f : Γ(X, U)) (x : ↥U) :
@@ -98,10 +92,8 @@ private theorem mem_basicOpen_iff_notMem_primeIdealOf {X : Scheme.{u}} {U : X.Op
     rw [h2] at h3
     exact h3
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
+/- English proof (authored)
+Every section in the ideal on U is a multiple of g. The basic open of a multiple is contained in the basic open of g. Since x lies in none of these opens, it belongs to the common zero locus of the ideal, hence to its support.
 -/
 private theorem mem_support_of_ideal_eq_span_singleton {X : Scheme.{u}} (I : X.IdealSheafData) {x : ↥X}
     {U : X.Opens} (hU : IsAffineOpen U) (hx : x ∈ U) (g : Γ(X, U))
@@ -115,8 +107,8 @@ private theorem mem_support_of_ideal_eq_span_singleton {X : Scheme.{u}} (I : X.I
     exact inf_le_left
   exact fun hc => hg (hle hc)
 
-/- English proof (translation)
-Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
+/- English proof (authored)
+The generator g is a section in the ideal. Since x is in the support, this section vanishes there, so x lies outside its basic open. Under the affine identification that means the prime at x contains g.
 -/
 private theorem mem_primeIdealOf_of_mem_support_of_ideal_eq_span_singleton {X : Scheme.{u}} (I : X.IdealSheafData) {x : ↥X}
     {U : X.Opens} (hU : IsAffineOpen U) (hx : x ∈ U) (g : Γ(X, U))
@@ -127,20 +119,16 @@ private theorem mem_primeIdealOf_of_mem_support_of_ideal_eq_span_singleton {X : 
   by_contra hc
   exact h ((mem_basicOpen_iff_notMem_primeIdealOf hU g ⟨x, hx⟩).mpr hc)
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+The image of the closed immersion defined by Z is the support of Z. In particular the image of z lies in that support.
 -/
 private theorem subschemeι_base_mem_support_of_subscheme {W : Scheme.{u}} (Z : W.IdealSheafData)
     (z : ↥Z.subscheme) : Z.subschemeι.base z ∈ Z.support := by
   have h : Z.subschemeι.base z ∈ Set.range Z.subschemeι.base := ⟨z, rfl⟩
   rwa [Scheme.IdealSheafData.range_subschemeι] at h
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+On any affine open of the open subscheme V, the restricted ideal is generated by the image of f. The section f is invertible on its basic open, and its restriction to V and then to the chosen affine open remains invertible. The extended principal ideal is therefore the whole section ring. These affine ideals determine the unit ideal sheaf.
 -/
 private theorem restrictIdeal_eq_top_of_le_basicOpen {X : Scheme.{u}} {U : X.Opens}
     (hU : IsAffineOpen U) (I : X.IdealSheafData) (f : Γ(X, U))
@@ -169,22 +157,16 @@ private theorem restrictIdeal_eq_top_of_le_basicOpen {X : Scheme.{u}} {U : X.Ope
 private def complOrderEmbInv (m : ℕ) (S : Finset (Fin m)) (t : Fin m) : Option (Fin (m - S.card)) :=
   if h : t ∈ S then none else some (Classical.choose (exists_complOrderEmb_eq m S h))
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The partial inverse is undefined on indices in S. For any other index it returns that index's chosen position in the increasing enumeration of the complement.
 -/
 private theorem complInv_def (m : ℕ) (S : Finset (Fin m)) (t : Fin m) :
     complOrderEmbInv m S t =
       if h : t ∈ S then none else some (Classical.choose (exists_complOrderEmb_eq m S h)) :=
   rfl
 
-/- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+If the partial inverse returns j, the original index is outside S and j is by construction a preimage under the complement enumeration. Conversely, if the enumeration sends j to t, then t is outside S. Its chosen preimage must be j by injectivity of the enumeration, so the partial inverse returns j.
 -/
 private theorem complInv_eq_some_iff (m : ℕ) (S : Finset (Fin m)) {t : Fin m}
     {j : Fin (m - S.card)} : complOrderEmbInv m S t = some j ↔ complOrderEmb m S j = t := by
@@ -208,8 +190,8 @@ private theorem complInv_eq_some_iff (m : ℕ) (S : Finset (Fin m)) {t : Fin m}
       (complOrderEmb m S).injective (by rw [hspec, h])
     rw [heq]
 
-/- English proof (translation)
-Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+An empty original entry could not produce j. For an original entry t, the partial inverse returns j exactly when the complement enumeration sends j to t. Hence the original entry is the index at position j in that enumeration.
 -/
 private theorem eq_some_complOrderEmb_of_bind_complInv_eq_some (m : ℕ) (S : Finset (Fin m)) (o : Option (Fin m))
     (j : Fin (m - S.card)) (h : o.bind (complOrderEmbInv m S) = some j) :
@@ -220,10 +202,8 @@ private theorem eq_some_complOrderEmb_of_bind_complInv_eq_some (m : ℕ) (S : Fi
     have h' : complOrderEmbInv m S t = some j := h
     rw [(complInv_eq_some_iff m S).mp h']
 
-/- English proof (translation)
-Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. It suffices to derive a contradiction. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+If the original assignment contained an index, the hypothesis would put that index in the complement. The partial inverse is defined at every complementary index, so the result would contain an entry. Thus the original assignment was empty.
 -/
 private theorem eq_none_of_bind_complInv_eq_none (m : ℕ) (S : Finset (Fin m)) (o : Option (Fin m))
     (hnot : ∀ t, o = some t → t ∉ S) (h : o.bind (complOrderEmbInv m S) = none) : o = none := by
@@ -240,18 +220,16 @@ section
 variable {Y Y' : Scheme.{u}} {k : Type u} [Field k] {p : Y ⟶ Spec (CommRingCat.of k)}
   {V : Y.Opens} {n : ℕ}
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+After the original chart and its affine-space projection, the map from V to the spectrum of k is its inclusion followed by p. Precompose this identity with the restriction of f. The square of open restrictions identifies its composite with the inclusion of the inverse-image open followed by f and p.
 -/
 theorem morphismRestrict_comp_map_comp_affineSpaceFinToSpec (c : EtaleChart p V n) (f : Y' ⟶ Y)
     [IsOpenImmersion f] :
     (morphismRestrict f V ≫ c.map) ≫ affineSpaceFinToSpec k n = (f ⁻¹ᵁ V).ι ≫ (f ≫ p) := by
   rw [Category.assoc, c.comp_struct, ← Category.assoc, morphismRestrict_ι, Category.assoc]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Restricting the open immersion f to the inverse image of V gives an open immersion into V. It is étale, and the original chart is étale. Their composite is therefore étale.
 -/
 theorem etale_morphismRestrict_comp_map (c : EtaleChart p V n) (f : Y' ⟶ Y) [IsOpenImmersion f] :
     Etale (morphismRestrict f V ≫ c.map) := by
@@ -269,16 +247,16 @@ def EtaleChart.pullbackOpenImmersion (c : EtaleChart p V n) (f : Y' ⟶ Y) [IsOp
   ⟨morphismRestrict f V ≫ c.map, morphismRestrict_comp_map_comp_affineSpaceFinToSpec c f,
     etale_morphismRestrict_comp_map c f⟩
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The pulled-back chart uses the map from the inverse-image open to V followed by the original chart map. This is its defining underlying map.
 -/
 theorem EtaleChart.pullbackOpenImmersion_map (c : EtaleChart p V n) (f : Y' ⟶ Y)
     [IsOpenImmersion f] :
     (c.pullbackOpenImmersion f).map = morphismRestrict f V ≫ c.map :=
   rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The coordinate ideal of the pulled-back chart is the pullback of the original chart ideal along the restricted map to V, because both are defined from the same coordinate subspace ideal. By hypothesis the original chart ideal equals the restriction of D. Pullback of that restriction agrees with restriction of the pulled-back ideal because the square of open restrictions commutes.
 -/
 private theorem restrictIdeal_comap_eq_coordIdeal_pullbackOpenImmersion (c : EtaleChart p V n)
     (f : Y' ⟶ Y) [IsOpenImmersion f] (D : Y.IdealSheafData) (S : Finset (Fin n))
@@ -293,8 +271,8 @@ private theorem restrictIdeal_comap_eq_coordIdeal_pullbackOpenImmersion (c : Eta
 
 end
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Restricting the pullback to the inverse-image open is the same as pulling back the restriction to V. That restriction is the unit ideal by hypothesis, and its pullback is the unit ideal.
 -/
 theorem restrictIdeal_comap_preimage_eq_top {Y Y' : Scheme.{u}} (f : Y' ⟶ Y) (V : Y.Opens)
     (D : Y.IdealSheafData) (h : restrictIdeal D V = ⊤) :
@@ -305,10 +283,8 @@ theorem restrictIdeal_comap_preimage_eq_top {Y Y' : Scheme.{u}} (f : Y' ⟶ Y) (
       ← morphismRestrict_ι, Scheme.IdealSheafData.comap_comp]
   rw [h1, h, Scheme.IdealSheafData.comap_top]
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Every open neighbourhood of a point of A meets A. Irreducibility says that such a neighbourhood and O have a common point in A, since O also meets A. Hence A lies in the closure of its intersection with O. The inverse image of the closed set C under the continuous map g is closed and contains that intersection, so it contains A. This gives the claimed inclusion of images.
 -/
 theorem image_subset_of_image_inter_subset {α : Type*} {β : Type*} [TopologicalSpace α]
     [TopologicalSpace β] {A O : Set α} {g : α → β} {C : Set β} (hA : IsIrreducible A)
@@ -328,26 +304,12 @@ section
 
 variable {X : Scheme.{u}} {k : Type u} [Field k] {p : X ⟶ Spec (CommRingCat.of k)}
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
+/- English proof (authored)
+Let t be the product of the chart coordinates outside the prime at y. Since the complement of the prime is multiplicatively closed, t stays outside it, and its affine basic open still contains y. Restrict the chart to this open. Every coordinate appearing in t is invertible there because each is a factor of the product being inverted.
 
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
+Delete from the assignment every coordinate outside the prime. An originally unassigned ideal is still the unit ideal after restriction. An ideal whose coordinate was deleted is now the unit ideal because that generator became invertible. For retained coordinates the coordinate-ideal description persists under restriction. The assignment remains injective because the retained values are a subset of the old ones.
 
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+Finally, any retained coordinate belongs to the original prime and hence vanishes at y. The corresponding ideal has y in its support. On the smaller affine open it is again generated by the restricted coordinate, so the support criterion puts this generator in the prime at y there.
 -/
 theorem exists_etaleChart_coord_mem_primeIdealOf (F : List X.IdealSheafData) (y : ↥X) (U : X.Opens)
     (hU : IsAffineOpen U) (hyU : y ∈ U) {n : ℕ} (c : EtaleChart p U n) (γ : ℕ → Option (Fin n))
@@ -437,24 +399,10 @@ section
 
 variable {W : Scheme.{u}} {k : Type u} [Field k]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
+/- English proof (authored)
+Take a common strict normal crossing chart for the centre Z and the divisors at the image of y, and shrink to an affine neighbourhood. Let S be the coordinates cutting out the centre. Suppose a divisor is assigned a coordinate in S. Its ideal is then contained in the ideal of Z on this neighbourhood, so every point of Z there lies in the divisor support. In particular this holds for the image of the part of the irreducible component of T through y lying over the neighbourhood. That part is nonempty and open in the component. Its image lying in the closed support forces the whole component's image into that support by irreducibility and continuity. This contradicts the component hypothesis. Every assigned divisor coordinate is therefore outside S.
 
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+Restrict the chart to the closed subscheme by keeping the complementary coordinates. Pull this chart back along the open inclusion of T, then shrink to an affine neighbourhood of y. For the divisor list, translate each assigned complementary coordinate to its position in the new chart and leave each unassigned entry empty. The singleton ideal formula identifies assigned divisors with the new coordinate ideals, and the unit ideal remains the unit ideal under pullback and restriction. Distinctness of assigned coordinates follows from distinctness in the original chart and the bijection with the complement.
 -/
 theorem exists_etaleChart_on_open_of_hasStrictNormalCrossingsWith (q : W ⟶ Spec (CommRingCat.of k))
     (E : List W.IdealSheafData) (Z : W.IdealSheafData) (hZ : HasStrictNormalCrossingsWith q Z E)
@@ -547,16 +495,8 @@ theorem exists_etaleChart_on_open_of_hasStrictNormalCrossingsWith (q : W ⟶ Spe
     exact hainj i hi i' hi' (complOrderEmb m S j) (eq_some_complOrderEmb_of_bind_complInv_eq_some m S (a i) j hja)
       (eq_some_complOrderEmb_of_bind_complInv_eq_some m S (a i') j hjb)
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Supply the required witnesses or components.
-
-Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+First construct the chart on T using the component condition. Regard the divisors as the list of ideals pulled back to T, preserving their positions. Apply the chart normalization at y to this list. It supplies an affine chart with the same two alternatives for each ideal and with every assigned coordinate in the prime at y. Expressing each entry again as the pullback of the corresponding original divisor gives the stated witnesses.
 -/
 theorem exists_etaleChart_coord_mem_primeIdealOf_on_clopen (q : W ⟶ Spec (CommRingCat.of k)) [Smooth q]
     (E : List W.IdealSheafData) (_hE : InStrictNormalCrossingPosition q E) (Z : W.IdealSheafData)

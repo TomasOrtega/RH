@@ -9,12 +9,8 @@ namespace EtaleCoordinates
 
 section
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+Start with the given finite index set and remove an index whenever the remaining vectors together with C still span. Each removal reduces the cardinality by one, so the process terminates. The resulting set still spans together with C, and removing any remaining index destroys that property.
 -/
 private theorem exists_minimal_spanning_finset {K V : Type*} [Field K] [AddCommGroup V]
     [Module K V] {ι : Type*} [DecidableEq ι] (C : Set V) (bb : ι → V) :
@@ -39,10 +35,8 @@ private theorem exists_minimal_spanning_finset {K V : Type*} [Field K] [AddCommG
       · push Not at hs
         exact ⟨J, hJ, hs⟩
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Every generator of the original span belongs to the smaller span. A generator from C remains there directly. A vector from the index set with index different from the erased one also remains, and the hypothesis puts the erased vector itself in the smaller span. Since the original span was the whole space, the smaller span is the whole space.
 -/
 private theorem span_union_image_erase_eq_top {K V : Type*} [Field K] [AddCommGroup V] [Module K V]
     {ι : Type*} [DecidableEq ι] {C : Set V} {bb : ι → V} {J : Finset ι} {j0 : ι}
@@ -59,26 +53,10 @@ private theorem span_union_image_erase_eq_top {K V : Type*} [Field K] [AddCommGr
     · exact Submodule.subset_span (Set.mem_union_right _
         ⟨j, Finset.mem_coe.mpr (Finset.mem_erase.mpr ⟨hjj, Finset.mem_coe.mp hj⟩), rfl⟩)
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Chain the equalities or inequalities of the calculation.
+/- English proof (authored)
+Start with the given independent family together with all the vectors of the original basis. Choose a minimal subset of original basis indices that still spans when added to the given family. The combined family spans by construction.
 
-Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
-
-Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
-
-Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Normalize the expressions using the abelian group laws.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
-
-Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+For independence, consider a linear relation in that family. If any coefficient on a retained original basis vector is nonzero, solve for that vector by dividing by its coefficient. It then belongs to the span of the other vectors, so it could be removed without changing the span, contradicting minimality. All coefficients on retained original basis vectors are therefore zero. The remaining coefficients vanish by independence of the given family. Thus the combined family is a basis with the stated two blocks.
 -/
 theorem exists_basis_sum_of_linearIndependent {K V : Type*} [Field K] [AddCommGroup V]
     [Module K V] {ι : Type*} [Fintype ι] [DecidableEq ι] (b : Module.Basis ι K V) (h : ℕ)
@@ -178,8 +156,8 @@ variable (k : Type*) [CommRing k] (ι : Type*) (S : Type*) [CommRing S] (S' : Ty
   [Algebra (MvPolynomial ι k) S] [Algebra (MvPolynomial ι k) S'] [Algebra S S']
   [IsScalarTower (MvPolynomial ι k) S S']
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+A coordinate is the image of its polynomial variable. The compatibility of the structure maps says that taking this image in S and then mapping to S′ gives the direct image of the same variable in S′.
 -/
 theorem algebraMap_coord (i : ι) :
     algebraMap S S' (coord k ι S i) = coord k ι S' i := by
@@ -197,12 +175,8 @@ variable (k : Type*) [CommRing k] (ι : Type*) [Fintype ι] [DecidableEq ι]
   [IsScalarTower k S S'] [IsScalarTower (MvPolynomial ι k) S S']
   [Algebra.FormallyEtale (MvPolynomial ι k) S] [Algebra.FormallyEtale (MvPolynomial ι k) S']
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Expand the differential in the basis given by differentials of the coordinates. The induced map on differentials sends each basis vector to the corresponding coordinate differential in S′ by naturality. It also sends each scalar coefficient to its image in S′. The resulting expansion in the target basis has the required i-th coefficient.
 -/
 private theorem repr_map_basisKaehler
     (k : Type*) [CommRing k] (ι : Type*) [Fintype ι] [DecidableEq ι]
@@ -232,10 +206,8 @@ private theorem repr_map_basisKaehler
   rw [key]
   simp only [Module.Basis.repr_sum_self]
 
-/- English proof (translation)
-Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+In the basis of coordinate differentials, the determinant is the determinant of the matrix of their coefficients. By naturality, the differential of each image element is the image of its original differential. The coefficient formula shows that the target matrix is obtained by applying the algebra map entrywise to the original matrix. A ring map preserves determinants, which proves the identity.
 -/
 theorem algebraMap_det_basisKaehler (v : ι → S) :
     algebraMap S S' ((basisKaehler k ι S).det fun i : ι => KaehlerDifferential.D k S (v i)) =
@@ -257,10 +229,8 @@ end
 
 section
 
-/- English proof (translation)
-Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Replace each chosen element by the corresponding coordinate using the given equalities. The determinant hypothesis then says that the differentials of the coordinates have unit determinant in the chosen basis. Since T is formally smooth over k, the Jacobian criterion gives formal étaleness over the coordinate polynomial ring.
 -/
 theorem formallyEtale_of_isUnit_det_of_eq_coord (k : Type*) [CommRing k] (ι : Type*) [Fintype ι]
     [DecidableEq ι] (T : Type*) [CommRing T] [Algebra k T] [Algebra (MvPolynomial ι k) T]
@@ -279,10 +249,8 @@ theorem formallyEtale_of_isUnit_det_of_eq_coord (k : Type*) [CommRing k] (ι : T
     exact hdet
   exact JacobianCriterion.formallyEtale_of_isUnit_det k ι T e h
 
-/- English proof (translation)
-Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The evaluation map preserves constants, so its induced polynomial algebra is compatible with the given k-algebra. Under evaluation, the i-th polynomial variable maps to the selected element at i. The determinant hypothesis is therefore exactly the unit determinant condition for the coordinate differentials. Apply the preceding formal Jacobian criterion.
 -/
 theorem formallyEtale_aeval_of_isUnit_det {k : Type*} [CommRing k] {ι : Type*} [Fintype ι]
     [DecidableEq ι] {T : Type*} [CommRing T] [Algebra k T] [Algebra.FormallySmooth k T]
@@ -307,12 +275,8 @@ end
 
 section
 
-/- English proof (translation)
-Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Each modified element is a multiple of the corresponding original element, giving one inclusion of ideals. Multiplying by the inverse unit expresses the original element as a multiple of the modified one, giving the reverse inclusion.
 -/
 theorem span_range_eq_span_range_of_eq_mul_isUnit {A : Type*} [CommRing A] {n : ℕ}
     (y z c : Fin n → A) (hc : ∀ i, IsUnit (c i)) (hz : ∀ i, z i = y i * c i) :
@@ -330,16 +294,10 @@ theorem span_range_eq_span_range_of_eq_mul_isUnit {A : Type*} [CommRing A] {n : 
     rw [SetLike.mem_coe, hy]
     exact Ideal.mul_mem_right _ _ (Ideal.subset_span ⟨i, rfl⟩)
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
+/- English proof (authored)
+Write each generator y as a fraction with numerator in S and denominator outside q. In A the numerator is the product of y and the image of its denominator, which is a unit. Hence the numerator lies in q, since its image lies in the maximal ideal. These unit multiples still generate the same maximal ideal.
 
-Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+In the module of differentials after tensoring with the residue field, the product rule says that the differential of each numerator is the differential of its original generator scaled by the residue of the denominator. The other term vanishes because the generator belongs to the maximal ideal. Each scaling factor is nonzero because the denominator is a unit. Rescaling by these factors preserves linear independence.
 -/
 theorem exists_generators_maximalIdeal_of_linearIndependent_D (k : Type*) [CommRing k] (S : Type*) [CommRing S] [Algebra k S]
     (q : Ideal S) [q.IsPrime] (A : Type*) [CommRing A] [Algebra S A] [Algebra k A]

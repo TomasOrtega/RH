@@ -9,8 +9,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The fibre product of Y with the closed subscheme defined by Z over X is closed in Y with ideal the pullback of Z. The closed subscheme defined by that pulled-back ideal therefore factors through the fibre product over Y. Composing this factorization with the projection to the original closed subscheme gives the required map. The pullback square gives the equality of composites into X.
 -/
 theorem exists_comp_subschemeι_eq_subschemeι_comp {X Y : Scheme.{u}} (g : Y ⟶ X) (Z : X.IdealSheafData) :
     ∃ q : (Z.comap g).subscheme ⟶ Z.subscheme,
@@ -29,15 +29,15 @@ def subschemeMapOfComap {X Y : Scheme.{u}} (g : Y ⟶ X) (Z : X.IdealSheafData) 
   (exists_comp_subschemeι_eq_subschemeι_comp g Z).choose
 
 @[reassoc]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The chosen map from the pulled-back closed subscheme is the witness in the preceding factorization. It satisfies the commuting-square identity by that construction.
 -/
 theorem subschemeMapOfComap_comp {X Y : Scheme.{u}} (g : Y ⟶ X) (Z : X.IdealSheafData) :
     subschemeMapOfComap g Z ≫ Z.subschemeι = (Z.comap g).subschemeι ≫ g :=
   (exists_comp_subschemeι_eq_subschemeι_comp g Z).choose_spec
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Under the given isomorphism to the fibre product, the second projection gives a map with the same composite into X as q. The inclusion of the original closed subscheme is a monomorphism, so q equals this transported projection. The projection is the base change of the flat map g. Its composite with the isomorphism is flat.
 -/
 private theorem flat_of_comp_subschemeι_eq_of_iso_pullback {X Y : Scheme.{u}} (g : Y ⟶ X) [AlgebraicGeometry.Flat g]
     (Z : X.IdealSheafData)
@@ -52,8 +52,8 @@ private theorem flat_of_comp_subschemeι_eq_of_iso_pullback {X Y : Scheme.{u}} (
   rw [hq']
   infer_instance
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+The closed subscheme of the pulled-back ideal is canonically isomorphic to the fibre product over X. Its map to the original closed subscheme satisfies the required factorization identity. Thus it is the transported fibre-product projection, which is flat by base change.
 -/
 theorem flat_subschemeMapOfComap {X Y : Scheme.{u}} (g : Y ⟶ X)
     [AlgebraicGeometry.Flat g] (Z : X.IdealSheafData) :
@@ -67,8 +67,8 @@ instance instFlatComapSubschemeMap {X Y : Scheme.{u}} (g : Y ⟶ X)
     AlgebraicGeometry.Flat (subschemeMapOfComap g Z) :=
   flat_subschemeMapOfComap g Z
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
+/- English proof (authored)
+Apply the commuting-square identity for the scheme morphisms to the underlying point y. Functoriality of the underlying point map gives the stated equality.
 -/
 theorem subschemeMapOfComap_base {X Y : Scheme.{u}} (g : Y ⟶ X) (Z : X.IdealSheafData)
     (y : (Z.comap g).subscheme) :
@@ -79,8 +79,8 @@ theorem subschemeMapOfComap_base {X Y : Scheme.{u}} (g : Y ⟶ X) (Z : X.IdealSh
       = ((Z.comap g).subschemeι ≫ g).base y := by rw [h]
   simpa using h2
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The map of the pulled-back closed subscheme to the original one is flat. The going-down property of a flat morphism lifts the given generization of the image of y to a generization of y, giving the required point.
 -/
 theorem generalizing_subschemeMapOfComap {X Y : Scheme.{u}} (g : Y ⟶ X)
     [AlgebraicGeometry.Flat g] (Z : X.IdealSheafData)
@@ -89,8 +89,8 @@ theorem generalizing_subschemeMapOfComap {X Y : Scheme.{u}} (g : Y ⟶ X)
     ∃ y' : (Z.comap g).subscheme, y' ⤳ y ∧ (subschemeMapOfComap g Z).base y' = x := by
   exact AlgebraicGeometry.Flat.generalizingMap (subschemeMapOfComap g Z) hx
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+Since y specializes to z, the point z lies in the closure of the singleton containing y. This closure is connected and contains y, so both points lie in the connected component of y. That component is the same as the connected component of x because y belongs to it.
 -/
 theorem mem_connectedComponent_of_specializes {α : Type*} [TopologicalSpace α] {x y z : α}
     (hy : y ∈ connectedComponent x) (h : y ⤳ z) : z ∈ connectedComponent x := by
@@ -102,10 +102,8 @@ theorem mem_connectedComponent_of_specializes {α : Type*} [TopologicalSpace α]
   have hz : z ∈ connectedComponent y := hsub hzy
   rwa [← connectedComponent_eq hy] at hz
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+View V as an affine scheme. Its global ideals for the restricted sheaves are obtained from the original section ideals over V by the canonical section-ring isomorphism. The restricted sheaves agree, so these global ideals agree. Transport them back along the inverse ring isomorphism to identify the original section ideals.
 -/
 private theorem ideal_eq_of_comap_opensι_eq {X : Scheme.{u}} (I J : X.IdealSheafData)
     (V : X.Opens) (hV : IsAffineOpen V) (hIJ : I.comap V.ι = J.comap V.ι) :
@@ -133,10 +131,8 @@ private theorem ideal_eq_of_comap_opensι_eq {X : Scheme.{u}} (I J : X.IdealShea
       DFunLike.congr_fun hid y⟩
   exact Ideal.comap_injective_of_surjective _ hsurj h3
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Identify the affine open W with the spectrum of its section ring. If the chosen sections generated a proper ideal, some maximal ideal would contain them all. Its point would lie outside every one of their basic opens, contradicting the cover. Hence their span is the unit ideal.
 -/
 private theorem span_eq_top_of_basicOpen_cover {X : Scheme.{u}} (W : X.affineOpens)
     (S : Set Γ(X, (W : X.Opens)))
@@ -149,14 +145,8 @@ private theorem span_eq_top_of_basicOpen_cover {X : Scheme.{u}} (W : X.affineOpe
   obtain ⟨f, hfS, hxf⟩ := hcov x hx
   exact TopologicalSpace.Opens.mem_iSup.mpr ⟨⟨f, hfS⟩, hxf⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Restriction to the basic open of f localizes the section ring by inverting f. The image of s belongs to the extension of A's ideal, which equals the extension of B's ideal by the hypothesis on the basic open. Membership in the localized ideal gives a power of f whose product with s belongs to B's ideal, by clearing denominators.
 -/
 private theorem exists_pow_mul_mem_of_ideal_basicOpen_eq {X : Scheme.{u}}
     (A B : X.IdealSheafData) (W : X.affineOpens)
@@ -188,10 +178,8 @@ private theorem exists_pow_mul_mem_of_ideal_basicOpen_eq {X : Scheme.{u}}
   rw [hrw, hc]
   exact Ideal.mul_mem_left _ _ y.2
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
-
-Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+Fix s in the section ideal of A. For each section f in the covering family, a power of f times s belongs to the section ideal of B by the localization criterion. Hence the ideal of elements multiplying s into B contains a power of each f. A prime containing that ideal would then contain every covering section. Since those sections generate the unit ideal, no such prime exists. The multiplying ideal is the whole ring, so s belongs to B.
 -/
 private theorem ideal_le_of_basicOpen_cover {X : Scheme.{u}} (A B : X.IdealSheafData)
     (W : X.affineOpens)
@@ -209,12 +197,8 @@ private theorem ideal_le_of_basicOpen_cover {X : Scheme.{u}} (A B : X.IdealSheaf
   obtain ⟨n, hn⟩ := exists_pow_mul_mem_of_ideal_basicOpen_eq A B W f hf s hs
   exact ⟨n, by rwa [smul_eq_mul]⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
-
-Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+Fix an affine open W. At each point of W, intersect its neighbourhood of equality with W and choose a basic open of W about the point contained in that intersection. The restrictions of the ideal sheaves still agree there, so their section ideals on this basic open agree. These opens cover W. The basic-open comparison gives an inclusion of the section ideals on W in each direction, and hence equality. Equality on every affine open identifies the sheaves.
 -/
 theorem idealSheafData_eq_of_forall_restrictIdeal_eq {X : Scheme.{u}} (I J : X.IdealSheafData)
     (h : ∀ x : X, ∃ U : X.Opens, x ∈ U ∧ restrictIdeal I U = restrictIdeal J U) : I = J := by
@@ -236,12 +220,8 @@ theorem idealSheafData_eq_of_forall_restrictIdeal_eq {X : Scheme.{u}} (I J : X.I
   obtain ⟨f, hxf, hf⟩ := hloc W x hx
   exact ⟨f, hxf, hf.symm⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The continuous map on closed subschemes sends the connected component of y into the connected component of its image. The latter lies over A by the assumption that the image belongs to W. The commuting square shows that every point of the component of y therefore lies over the inverse image of A. By the definition of W′ this puts y in W′.
 -/
 theorem mem_of_subschemeMapOfComap_apply_mem {X Y : Scheme.{u}} (g : Y ⟶ X) (Z : X.IdealSheafData)
     (A : Set X) (W : Z.subscheme.Opens) (W' : (Z.comap g).subscheme.Opens)
@@ -270,16 +250,10 @@ theorem mem_of_subschemeMapOfComap_apply_mem {X Y : Scheme.{u}} (g : Y ⟶ X) (Z
     exact h2
   exact hmem
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
+/- English proof (authored)
+Take the generic point of the irreducible connected component of the image of y in the original closed subscheme. It is a generization of that image. Flatness lifts it to a generization y′ of y, which belongs to the same connected component as y. The definition of W′ now puts the image of y′ in A after composing to X. By the commuting square this is the image in X of the chosen generic point.
 
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-A detailed English derivation is pending.
+Every point of the original component is a specialization of that generic point. The map to X preserves specialization, and A is closed, so the image of the whole component lies in A. This is the condition for the image of y to belong to W.
 -/
 theorem subschemeMapOfComap_apply_mem_of_mem {X Y : Scheme.{u}} (g : Y ⟶ X)
     [AlgebraicGeometry.Flat g] (Z : X.IdealSheafData)
@@ -322,8 +296,8 @@ theorem subschemeMapOfComap_apply_mem_of_mem {X Y : Scheme.{u}} (g : Y ⟶ X)
     exact hx3.mem_closed hA h4
   exact hmem
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The inclusion of the inverse-image open followed by g equals the restricted map followed by the inclusion of U. Pullback of I along this common composite can therefore be computed by either restriction order, giving the identity.
 -/
 private theorem restrictIdeal_comap_preimage_eq_comap_restrict {X Y : Scheme.{u}} (g : Y ⟶ X)
     (I : X.IdealSheafData) (U : X.Opens) :
@@ -331,16 +305,10 @@ private theorem restrictIdeal_comap_preimage_eq_comap_restrict {X Y : Scheme.{u}
   rw [restrictIdeal_eq_comap_ι, restrictIdeal_eq_comap_ι, ← Scheme.IdealSheafData.comap_comp,
     ← Scheme.IdealSheafData.comap_comp, morphismRestrict_ι]
 
-/- English proof (translation)
-Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
+/- English proof (authored)
+Check the two ideal sheaves on a neighbourhood of each point y of Y. If the image of y belongs to the image of W, choose an open U around it whose inverse image in the original closed subscheme lies in W. The inverse image of U in the pulled-back closed subscheme lies in W′ by the forward component implication. On these neighbourhoods the kernels of the two open pieces agree with the kernels of the respective full closed subschemes. Those kernels agree by pullback and restriction.
 
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+If the image of y is outside the image of W, choose an open U around it disjoint from that image, using that W is closed in the closed subscheme. No point of W′ lies over U, since the reverse component implication would put its image in W. Both open-piece kernels thus restrict to the unit ideal on the corresponding neighbourhoods. In both cases the local kernels agree. Local equality gives the desired equality of ideal sheaves.
 -/
 theorem openSubschemeKer_comap {X Y : Scheme.{u}} (g : Y ⟶ X) [AlgebraicGeometry.Flat g]
     (Z : X.IdealSheafData) (A : Set X) (hA : IsClosed A)

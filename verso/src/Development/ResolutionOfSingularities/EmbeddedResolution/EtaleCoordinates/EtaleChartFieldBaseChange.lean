@@ -27,8 +27,8 @@ variable {k K : Type u} [Field k] [Field K] {φ : CommRingCat.of k ⟶ CommRingC
   {X Y : Scheme.{u}} {p : X ⟶ Spec (CommRingCat.of k)} {q : Y ⟶ Spec (CommRingCat.of K)}
   {f : Y ⟶ X}
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The pullback square identifies q with the base change of p along the map of field spectra. Smoothness of p is therefore inherited by q.
 -/
 theorem smooth_of_isPullback_field [AlgebraicGeometry.Smooth p]
     (hsq : IsPullback q f (Spec.map φ) p) :
@@ -41,8 +41,8 @@ def baseChangeCoords (g : Y ⟶ X) {U : X.Opens} {m : ℕ} (c : EtaleChart p U m
     ULift.{u} (Fin m) → Γ(↑(g ⁻¹ᵁ U), ⊤) :=
   fun i => (g ⁻¹ᵁ U).topIso.inv.hom ((g.appLE U (g ⁻¹ᵁ U) le_rfl).hom (c.coord i.down))
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The coordinate vector is defined by pulling the original section back to the inverse-image open, then interpreting it as a global section of that open subscheme. Evaluation at i gives the stated pullback.
 -/
 theorem baseChangeCoords_apply (g : Y ⟶ X) {U : X.Opens} {m : ℕ} (c : EtaleChart p U m)
     (i : ULift.{u} (Fin m)) :
@@ -50,16 +50,16 @@ theorem baseChangeCoords_apply (g : Y ⟶ X) {U : X.Opens} {m : ℕ} (c : EtaleC
       (g ⁻¹ᵁ U).topIso.inv.hom ((g.appLE U (g ⁻¹ᵁ U) le_rfl).hom (c.coord i.down)) :=
   rfl
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. A detailed English derivation is pending.
+/- English proof (authored)
+The only endomorphism of an open in the category of opens is the identity. The presheaf sends that arrow to the identity map on sections.
 -/
 private theorem presheafMap_eq_id {Z : Scheme.{u}} {A : (Z.Opens)ᵒᵖ} (g : A ⟶ A) :
     Z.presheaf.map g = 𝟙 _ := by
   obtain rfl : g = 𝟙 A := Subsingleton.elim g (𝟙 A)
   exact Z.presheaf.map_id A
 
-/- English proof (translation)
-Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
+/- English proof (authored)
+A pullback from all of W to all of Z needs no further restriction, since the inverse image of the whole target is the whole source. The extra restriction in the section map is along the identity open inclusion, so the two global section maps agree.
 -/
 private theorem appLE_top_eq_appTop {Z W : Scheme.{u}} (g : Z ⟶ W)
     (e : (⊤ : Z.Opens) ≤ g ⁻¹ᵁ ⊤) : g.appLE ⊤ ⊤ e = g.appTop := by
@@ -67,16 +67,16 @@ private theorem appLE_top_eq_appTop {Z W : Scheme.{u}} (g : Z ⟶ W)
   calc g.appLE ⊤ ⊤ e = g.app ⊤ ≫ Z.presheaf.map (homOfLE e).op := rfl
     _ = g.appTop := by rw [h1]; exact Category.comp_id _
 
-/- English proof (translation)
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The section map of the open inclusion regards a section over A as a global section on the open subscheme A. This is the inverse of the canonical identification of global sections with sections over A.
 -/
 private theorem ι_appLE_eq_topIso_inv {Z : Scheme.{u}} (A : Z.Opens)
     (e : (⊤ : A.toScheme.Opens) ≤ A.ι ⁻¹ᵁ A) : A.ι.appLE A ⊤ e = A.topIso.inv := by
   simp
   exact AlgebraicGeometry.Scheme.presheaf_map_eq_of_parallel _ _ _
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+With the given inclusions of opens, a section over A pulls back first to B and then to C. Functoriality of pullback and restriction identifies this with pullback along the composite directly to C.
 -/
 private theorem appLE_comp_appLE {X₁ X₂ X₃ : Scheme.{u}} (a : X₁ ⟶ X₂) (b : X₂ ⟶ X₃)
     {A : X₃.Opens} {B : X₂.Opens} {C : X₁.Opens} (e₁ : B ≤ b ⁻¹ᵁ A) (e₂ : C ≤ a ⁻¹ᵁ B)
@@ -84,12 +84,8 @@ private theorem appLE_comp_appLE {X₁ X₂ X₃ : Scheme.{u}} (a : X₁ ⟶ X�
     b.appLE A B e₁ ≫ a.appLE B C e₂ = (a ≫ b).appLE A C e₃ := by
   rw [Scheme.Hom.appLE_comp_appLE]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Treat a section on A as a global section on its open subscheme and pull it back along r. This computes the pullback along the composite of r with the inclusion of A. The commuting-square hypothesis identifies that composite with g restricted to the open subscheme B. The latter pulls the section from A to B and then interprets it as a global section. The two results agree.
 -/
 private theorem appTop_topIso_inv_of_comp_eq {Z W : Scheme.{u}} (g : Z ⟶ W) {A : W.Opens}
     {B : Z.Opens} (e : B ≤ g ⁻¹ᵁ A) (r : B.toScheme ⟶ A.toScheme) (hr : r ≫ A.ι = B.ι ≫ g)
@@ -114,16 +110,10 @@ private theorem appTop_topIso_inv_of_comp_eq {Z W : Scheme.{u}} (g : Z ⟶ W) {A
   simp only [CommRingCat.hom_comp, RingHom.comp_apply] at h2
   exact h2
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
+/- English proof (authored)
+The inverse-image open of U in Y is the base change of U from k to K, by composing the pullback squares for the open restriction and for the field extension. Affine space over K is likewise the base change of affine space over k.
 
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+The map defined by the pulled-back coordinates commutes with the chart over k. The two routes to affine space over k have the same composite to the spectrum of k by the structure-map squares. They have the same coordinate pullbacks because base change of affine space preserves the coordinates, and the defining vector on the inverse-image open consists of the pullbacks of the original chart sections. Equality on the base and coordinates proves commutativity. The outer square over the fields and the right affine-space square are pullbacks, so the chart square is a pullback as well. The resulting map over K is étale by base change of the original chart.
 -/
 theorem etale_homOfVector_baseChangeCoords (hsq : IsPullback q f (Spec.map φ) p)
     {U : X.Opens} {m : ℕ} (c : EtaleChart p U m) :
@@ -183,8 +173,8 @@ def EtaleChart.baseChange {U : X.Opens} {m : ℕ} (c : EtaleChart p U m)
   EtaleChart.ofCoords q (f ⁻¹ᵁ U) (baseChangeCoords f c)
     (etale_homOfVector_baseChangeCoords hsq c)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The base-changed chart is constructed from the vector of pulled-back coordinates over the structure map to the spectrum of K. Its underlying morphism is the affine-space map of that vector.
 -/
 theorem EtaleChart.baseChange_map {U : X.Opens} {m : ℕ} (c : EtaleChart p U m)
     (hsq : IsPullback q f (Spec.map φ) p) :
@@ -193,8 +183,8 @@ theorem EtaleChart.baseChange_map {U : X.Opens} {m : ℕ} (c : EtaleChart p U m)
   EtaleChart.ofCoords_map q (f ⁻¹ᵁ U) (baseChangeCoords f c)
     (etale_homOfVector_baseChangeCoords hsq c)
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The pullback of the j-th affine coordinate along the new chart is the j-th entry of its defining vector. This entry is the pullback of the old section regarded globally on the open subscheme. Converting back to a section over the inverse-image open cancels that identification, giving the displayed section.
 -/
 @[simp] theorem EtaleChart.baseChange_coord {U : X.Opens} {m : ℕ} (c : EtaleChart p U m)
     (hsq : IsPullback q f (Spec.map φ) p) (j : Fin m) :
@@ -205,8 +195,8 @@ Establish an intermediate fact. Rewrite the conclusion using the stated equaliti
     baseChangeCoords_apply f c (ULift.up j : ULift.{u} (Fin m))]
   exact CommRingCat.hom_inv_apply ..
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Both maps pull a section back to the full inverse image of A and then restrict to C. In the second route the restriction is performed first to B and then to C. Functoriality makes this the same restriction.
 -/
 private theorem appLE_of_le_eq_appLE_comp_presheaf_map {Z W : Scheme.{u}} (g : Z ⟶ W) (A : W.Opens)
     (B C : Z.Opens) (e : B ≤ g ⁻¹ᵁ A) (hCB : C ≤ B) (hCA : C ≤ g ⁻¹ᵁ A) :
@@ -218,10 +208,8 @@ private theorem appLE_of_le_eq_appLE_comp_presheaf_map {Z W : Scheme.{u}} (g : Z
     AlgebraicGeometry.Scheme.presheaf_map_eq_of_parallel _ _ _
   rw [hL, hR, Category.assoc, ← Functor.map_comp, hmap]
 
-/- English proof (translation)
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The inverse image of U contains y. Choose an affine neighbourhood V of y inside it and restrict the base-changed chart to V. Each new coordinate is obtained by pulling the old coordinate back to the inverse image of U and restricting to V. This is exactly the direct section pullback from U to V.
 -/
 theorem exists_etaleChart_of_isPullback (hsq : IsPullback q f (Spec.map φ) p)
     {U : X.Opens} {m : ℕ} (c : EtaleChart p U m) (y : ↥Y) (hy : f.base y ∈ U) :
@@ -244,10 +232,8 @@ theorem exists_etaleChart_of_isPullback (hsq : IsPullback q f (Spec.map φ) p)
     EtaleChart.baseChange_coord c hsq j]
   exact h2.symm
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+On the affine scheme V, the restricted sheaf has global ideal given by extending the original section ideal along the canonical section-ring isomorphism. The given ideal is the whole ring, whose extension is the whole ring. The global ideal determines the restricted sheaf, so it is the unit ideal sheaf.
 -/
 private theorem restrictIdeal_eq_top_of_ideal_eq_top {Z : Scheme.{u}} {V : Z.Opens}
     (hV : IsAffineOpen V) (D : Z.IdealSheafData) (hD : D.ideal ⟨V, hV⟩ = ⊤) :
@@ -262,12 +248,8 @@ private theorem restrictIdeal_eq_top_of_ideal_eq_top {Z : Scheme.{u}} {V : Z.Ope
       ⟨⊤, isAffineOpen_top V.toScheme⟩ e1, hD, Ideal.map_top]
   simp
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The global ideal of the restricted sheaf comes from the original section ideal on V under the canonical ring isomorphism. Since this global ideal is the whole ring, extending back along the inverse isomorphism shows that the original section ideal is also the whole ring.
 -/
 private theorem ideal_eq_top_of_isAffineOpen_of_restrictIdeal_eq_top {Z : Scheme.{u}} {V : Z.Opens}
     (hV : IsAffineOpen V) (D : Z.IdealSheafData) (hD : restrictIdeal D V = ⊤) :
@@ -292,16 +274,10 @@ private theorem ideal_eq_top_of_isAffineOpen_of_restrictIdeal_eq_top {Z : Scheme
   rw [h1, Ideal.map_top] at h2
   exact h2.symm
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
+/- English proof (authored)
+Take a strict normal crossing chart at the image of y, shrink its domain to an affine neighbourhood, and then choose an affine chart around y by base change. Use the original coordinate assignment because the new chart retains the same coordinate indices. Pulling back each list entry preserves its position, so the old assignment is still injective on the assigned indices.
 
-Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+An unassigned entry restricts to the unit ideal in the original affine chart. Its extended section ideal in the new chart is the unit ideal. An assigned entry has section ideal generated by its coordinate. Its extension is generated by the pullback of that section, which is the coordinate with the same index in the new chart. The affine descriptions determine the restricted ideal sheaves, proving the local conditions.
 -/
 theorem inStrictNormalCrossingPositionAt_comap_of_isPullback (hsq : IsPullback q f (Spec.map φ) p)
     (E : List X.IdealSheafData) (y : ↥Y) (hy : InStrictNormalCrossingPositionAt p E (f.base y)) :
@@ -341,16 +317,8 @@ theorem inStrictNormalCrossingPositionAt_comap_of_isPullback (hsq : IsPullback q
     rw [Set.image_image]
     exact Set.image_congr fun j _ => (hcoord j).symm
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Choose a position of D in the original divisor list. At each y take a strict normal crossing chart at its image, shrink to an affine neighbourhood, and take an affine base-changed chart at y. If the position is unassigned, the section ideal of D is the unit ideal, which remains the unit ideal upon extension. If it is assigned a coordinate, extension sends its generator to the corresponding coordinate in the new chart. This gives the two alternatives of the local coordinate criterion, hence a smooth divisor.
 -/
 theorem isSmoothDivisor_comap_of_isPullback_field [AlgebraicGeometry.Smooth p]
     (hsq : IsPullback q f (Spec.map φ) p) (E : List X.IdealSheafData) (hE : InStrictNormalCrossingPosition p E)
@@ -393,10 +361,8 @@ theorem isSmoothDivisor_comap_of_isPullback_field [AlgebraicGeometry.Smooth p]
       rw [hcomap, h3, Ideal.map_span, Set.image_image]
       exact congrArg Ideal.span (Set.image_congr fun j _ => (hcoord j).symm)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
-
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Each entry of the new list is the pullback of an original divisor, so it is smooth by the preceding divisor result. At every point the original local chart condition transfers to the corresponding base-changed chart. Together these are the global strict normal crossing position conditions.
 -/
 theorem inStrictNormalCrossingPosition_comap_of_isPullback [AlgebraicGeometry.Smooth p]
     (hsq : IsPullback q f (Spec.map φ) p) (E : List X.IdealSheafData) (hE : InStrictNormalCrossingPosition p E) :
@@ -415,16 +381,16 @@ end
 
 section
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The two projections from the fibre product satisfy the pullback square by its defining universal property. Interchange the displayed roles of the two projections to obtain the stated square.
 -/
 theorem isPullback_pullback_specMap {k K : Type u} [Field k] [Field K] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) (φ : CommRingCat.of k ⟶ CommRingCat.of K) :
     IsPullback (pullback.snd p (Spec.map φ)) (pullback.fst p (Spec.map φ)) (Spec.map φ) p :=
   (IsPullback.of_hasPullback p (Spec.map φ)).flip
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The second projection is the base change of the smooth map p along the map of field spectra, so it is smooth.
 -/
 theorem smooth_pullbackSnd_specMap {k K : Type u} [Field k] [Field K] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -432,8 +398,8 @@ theorem smooth_pullbackSnd_specMap {k K : Type u} [Field k] [Field K] {X : Schem
     AlgebraicGeometry.Smooth (pullback.snd p (Spec.map φ)) :=
   smooth_of_isPullback_field (isPullback_pullback_specMap p φ)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Use the defining pullback square for the fibre product over the field extension. The chart construction for a pullback gives the affine neighbourhood of y and the pulled-back coordinates with the same indices.
 -/
 theorem exists_etaleChart_pullback_specMap {k K : Type u} [Field k] [Field K] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) (φ : CommRingCat.of k ⟶ CommRingCat.of K)
@@ -446,8 +412,8 @@ theorem exists_etaleChart_pullback_specMap {k K : Type u} [Field k] [Field K] {X
           c'.coord j = ((pullback.fst p (Spec.map φ)).appLE U V hV).hom (c.coord j) :=
   exists_etaleChart_of_isPullback (isPullback_pullback_specMap p φ) c y hy
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Use the strict normal crossing base-change theorem with the defining pullback square. The pulled-back ideals are taken along the first projection, and their structure map is the second projection.
 -/
 theorem inStrictNormalCrossingPosition_comap_pullback_specMap {k K : Type u} [Field k] [Field K] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]

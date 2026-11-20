@@ -20,8 +20,8 @@ variable (k : Type*) [CommRing k] (ι : Type*) (S : Type*) [CommRing S]
 variable [Algebra k S] [Algebra (MvPolynomial ι k) S] [IsScalarTower k (MvPolynomial ι k) S]
 
 omit [Algebra k S] [IsScalarTower k (MvPolynomial ι k) S] in
-/- English proof (translation)
-Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The differentials of the polynomial variables form a basis over the polynomial ring. Extending scalars to S gives a basis whose vectors are the tensors of 1 with those differentials. They are therefore linearly independent.
 -/
 private theorem linearIndependent_one_tmul_D_X :
     LinearIndependent S fun i : ι =>
@@ -36,8 +36,8 @@ private theorem linearIndependent_one_tmul_D_X :
   exact (Algebra.TensorProduct.basis S
     (KaehlerDifferential.mvPolynomialBasis k ι)).linearIndependent
 
-/- English proof (translation)
-Proceed by induction. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the polynomial. Constants have zero differential, and the differential of a sum is the sum of the differentials. When multiplying a polynomial by one variable, the product rule makes the differential a combination of the differential of the polynomial and the differential of that variable. This keeps it in the span of the variable differentials at every step.
 -/
 private theorem D_mem_span_range_D_X (K : Type*) [CommRing K] (σ : Type*)
     (f : MvPolynomial σ K) :
@@ -58,8 +58,8 @@ private theorem D_mem_span_range_D_X (K : Type*) [CommRing K] (σ : Type*)
       (Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩))
       (Submodule.smul_mem _ _ hp)
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
+/- English proof (authored)
+The differentials of all polynomials generate the module of Kähler differentials. Each lies in the span of the variable differentials by the preceding result. Hence that smaller family also generates the whole module.
 -/
 private theorem span_range_D_X_eq_top (K : Type*) [CommRing K] (σ : Type*) :
     Submodule.span (MvPolynomial σ K)
@@ -70,8 +70,8 @@ private theorem span_range_D_X_eq_top (K : Type*) [CommRing K] (σ : Type*) :
   rintro _ ⟨f, rfl⟩
   exact D_mem_span_range_D_X K σ f
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+In the tensor product, the scalar action on the left factor multiplies that factor. Acting by a on the tensor with left factor 1 therefore replaces 1 by a.
 -/
 private theorem smul_one_tmul
     (R : Type*) [CommRing R] (A : Type*) [CommRing A] [Algebra R A]
@@ -83,14 +83,8 @@ private theorem smul_one_tmul
   rw [h2] at h1
   exact h1.symm
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Write any element of M as a finite linear combination of the given generators. Bilinearity expresses a pure tensor with that element as a sum of tensors with those generators, moving the coefficients from the base ring to the left factor by the balancing relation. Each such tensor is an A-multiple of the tensor with left factor 1. Since pure tensors generate the tensor product additively, the indicated tensors span over A.
 -/
 private theorem top_le_span_range_one_tmul
     (R : Type*) [CommRing R] (A : Type*) [CommRing A] [Algebra R A]
@@ -127,8 +121,8 @@ private theorem top_le_span_range_one_tmul
     exact Submodule.add_mem _ hu hv
 
 omit [Algebra k S] [IsScalarTower k (MvPolynomial ι k) S] in
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The variable differentials generate the module over the polynomial ring. Apply the scalar-extension spanning result to this generating family.
 -/
 private theorem top_le_span_one_tmul_D_X :
     ⊤ ≤ Submodule.span S (Set.range fun i : ι =>
@@ -143,8 +137,8 @@ noncomputable def tensorKaehlerBasis :
   Module.Basis.mk (linearIndependent_one_tmul_D_X k ι S) (top_le_span_one_tmul_D_X k ι S)
 
 @[simp]
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The i-th vector of the scalar-extended basis is the tensor of 1 with the i-th variable differential. The map on differentials sends that vector to the differential of the image of the variable in S, which is the i-th coordinate.
 -/
 theorem tensorKaehlerBasis_mapBaseChange (i : ι) :
     KaehlerDifferential.mapBaseChange k (MvPolynomial ι k) S (tensorKaehlerBasis k ι S i) =
@@ -156,14 +150,8 @@ theorem tensorKaehlerBasis_mapBaseChange (i : ι) :
   have h2 : coord k ι S i = algebraMap (MvPolynomial ι k) S (MvPolynomial.X i) := rfl
   rw [h, KaehlerDifferential.mapBaseChange_tmul, one_smul, KaehlerDifferential.map_D, h2]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
-
-Treat this case separately. Treat this case separately. A detailed English derivation is pending.
+/- English proof (authored)
+The transitivity sequence for differentials has the scalar-extension map followed by the projection to the relative differentials over the polynomial ring. Exactness makes this composite zero. Surjectivity of the first map therefore makes the projection zero, so the relative differential of every element of S vanishes. These differentials generate the relative module. It is thus zero, which is the formal unramifiedness criterion.
 -/
 theorem formallyUnramified_of_mapBaseChange_surjective
     (h : Function.Surjective (KaehlerDifferential.mapBaseChange k (MvPolynomial ι k) S)) :
@@ -190,12 +178,8 @@ theorem formallyUnramified_of_mapBaseChange_surjective
     | smul c a _ ha => rw [ha, smul_zero]
   exact Algebra.FormallyUnramified.mk ⟨fun a b => by rw [key a, key b]⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
-
-Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+On each vector of the scalar-extended polynomial differential basis, the map gives the corresponding coordinate differential. By hypothesis these are the vectors of a basis of the target module. A linear map taking one basis to the other at every index is an isomorphism.
 -/
 theorem mapBaseChange_bijective_of_basis
     (b : Module.Basis ι S (KaehlerDifferential k S))
@@ -223,12 +207,8 @@ theorem mapBaseChange_bijective_of_basis
     obtain ⟨x, hxe⟩ := ((tensorKaehlerBasis k ι S).equiv b (Equiv.refl ι)).surjective y
     exact ⟨x, (hx x).trans hxe⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
-
-Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+Write P for the polynomial ring. The basis calculation makes the scalar-extension map on differentials an isomorphism. Its surjectivity gives formal unramifiedness over P. For formal smoothness, use the exact sequence for first cotangent homology of k → P → S. The connecting map from the first relative cotangent homology of S over P to the scalar-extended differentials has zero image, because its composite with the injective scalar-extension map is zero. Exactness therefore expresses every class in that relative homology as an image from the first cotangent homology over k. The latter vanishes by formal smoothness over k. Thus the relative homology vanishes, giving formal smoothness over P. Together the two properties give formal étaleness.
 -/
 theorem formallyEtale_of_basis [Algebra.FormallySmooth k S]
     (b : Module.Basis ι S (KaehlerDifferential k S))
@@ -261,8 +241,8 @@ variable (S : Type*) [CommRing S]
 variable [Algebra k S] [Algebra (MvPolynomial ι k) S] [IsScalarTower k (MvPolynomial ι k) S]
 
 omit [IsScalarTower k (MvPolynomial ι k) S] in
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+A square coefficient matrix over a commutative ring with unit determinant is invertible. The coordinate differentials whose coefficients form that matrix are therefore a basis, in particular a linearly independent family.
 -/
 private theorem linearIndependent_D_coord_of_isUnit_det (b : Module.Basis ι S (KaehlerDifferential k S))
     (h : IsUnit (b.det fun i : ι => KaehlerDifferential.D k S (coord k ι S i))) :
@@ -270,8 +250,8 @@ private theorem linearIndependent_D_coord_of_isUnit_det (b : Module.Basis ι S (
   (b.is_basis_iff_det.mpr h).1
 
 omit [IsScalarTower k (MvPolynomial ι k) S] in
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+A unit determinant makes the coefficient matrix of the coordinate differentials invertible. Its columns then generate all coefficient vectors in the fixed basis, so the coordinate differentials span the whole module.
 -/
 private theorem top_le_span_D_coord_of_isUnit_det (b : Module.Basis ι S (KaehlerDifferential k S))
     (h : IsUnit (b.det fun i : ι => KaehlerDifferential.D k S (coord k ι S i))) :
@@ -289,16 +269,16 @@ noncomputable def coordBasis (b : Module.Basis ι S (KaehlerDifferential k S))
 
 omit [IsScalarTower k (MvPolynomial ι k) S] in
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The basis is constructed from the independent spanning family of coordinate differentials. Its vector at i is by construction the differential of the i-th coordinate.
 -/
 theorem coordBasis_apply (b : Module.Basis ι S (KaehlerDifferential k S))
     (h : IsUnit (b.det fun i : ι => KaehlerDifferential.D k S (coord k ι S i))) (i : ι) :
     coordBasis k ι S b h i = KaehlerDifferential.D k S (coord k ι S i) :=
   Module.Basis.mk_apply (linearIndependent_D_coord_of_isUnit_det k ι S b h) (top_le_span_D_coord_of_isUnit_det k ι S b h) i
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The unit determinant constructs a basis of coordinate differentials by the preceding results. The basis criterion for the formally smooth algebra S now gives formal étaleness over the coordinate polynomial ring.
 -/
 theorem formallyEtale_of_isUnit_det [Algebra.FormallySmooth k S]
     (b : Module.Basis ι S (KaehlerDifferential k S))
@@ -314,10 +294,8 @@ variable (k : Type*) [CommRing k] (ι : Type*) (S : Type*) [CommRing S] [Algebra
 variable (S' : Type*) [CommRing S'] [Algebra k S'] [Algebra S S'] [IsScalarTower k S S']
 variable [Algebra.FormallyEtale S S']
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+For a formally étale map from S to S′, the differentials over k after extension of scalars identify with the differentials of S′ over k. Transport the scalar extension of the given basis under this isomorphism. Its vectors are the images of the original vectors, so they are linearly independent.
 -/
 private theorem linearIndependent_kaehlerMap_basis
     (b : Module.Basis ι S (KaehlerDifferential k S)) :
@@ -330,12 +308,8 @@ private theorem linearIndependent_kaehlerMap_basis
   rw [hfun]
   exact ((Algebra.TensorProduct.basis S' b).map hbc.equiv).linearIndependent
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
+/- English proof (authored)
+The relative differentials of S′ over S vanish by formal unramifiedness. Exactness of the transitivity sequence then makes the scalar-extension map onto the differentials of S′ over k surjective. The tensors of 1 with the original basis vectors span its source, and their images are the stated family. That family therefore spans the target.
 -/
 private theorem top_le_span_kaehlerMap_basis (b : Module.Basis ι S (KaehlerDifferential k S)) :
     ⊤ ≤ Submodule.span S'
@@ -370,16 +344,16 @@ noncomputable def inducedBasis (b : Module.Basis ι S (KaehlerDifferential k S))
   Module.Basis.mk (linearIndependent_kaehlerMap_basis k ι S S' b) (top_le_span_kaehlerMap_basis k ι S S' b)
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The induced basis is built from the independent spanning family of images of the original basis vectors. Its i-th vector is the image of the i-th original basis vector.
 -/
 theorem inducedBasis_apply (b : Module.Basis ι S (KaehlerDifferential k S)) (i : ι) :
     inducedBasis k ι S S' b i = KaehlerDifferential.map k k S S' (b i) :=
   Module.Basis.mk_apply (linearIndependent_kaehlerMap_basis k ι S S' b)
     (top_le_span_kaehlerMap_basis k ι S S' b) i
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The induced basis vector is the image of the original one. By hypothesis the original vector is the differential of the chosen element. Naturality sends that differential to the differential of the element's image in S′.
 -/
 theorem inducedBasis_apply_D (b : Module.Basis ι S (KaehlerDifferential k S)) (x : ι → S)
     (hx : ∀ i : ι, b i = KaehlerDifferential.D k S (x i)) (i : ι) :

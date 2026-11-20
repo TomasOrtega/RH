@@ -17,14 +17,14 @@ namespace FunctorialResolution.EmbeddedResolution
 def castAddImage (c d : ℕ) : Finset (Fin (c + d)) :=
   (Finset.univ : Finset (Fin c)).image (Fin.castAdd d)
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The coordinate set is defined as the image of all c indices under the inclusion of the first block into the full list of c+d indices.
 -/
 theorem castAddImage_eq_image_castAdd (c d : ℕ) :
     castAddImage c d = (Finset.univ : Finset (Fin c)).image (Fin.castAdd d) := rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Inclusion into the first block is injective because it keeps the original index. Its image therefore has the same size as the original set of c indices.
 -/
 theorem card_castAddImage (c d : ℕ) : (castAddImage c d).card = c := by
   have hinj : Function.Injective (Fin.castAdd d : Fin c → Fin (c + d)) := by
@@ -35,18 +35,16 @@ theorem card_castAddImage (c d : ℕ) : (castAddImage c d).card = c := by
   rw [castAddImage_eq_image_castAdd, Finset.card_image_of_injective _ hinj, Finset.card_univ,
     Fintype.card_fin]
 
-/- English proof (translation)
-Supply the required witnesses or components.
+/- English proof (authored)
+The point y viewed in U belongs to V by hypothesis and maps to y under the inclusion. It is the required witness for membership in the image open.
 -/
 private theorem mem_image_ι_of_mem {X' : Scheme.{u}} (U : X'.Opens)
     (V : U.toScheme.Opens) (y : X') (hy : y ∈ U) (h : (⟨y, hy⟩ : ↥U) ∈ V) :
     y ∈ U.ι ''ᵁ V :=
   ⟨⟨y, hy⟩, h, rfl⟩
 
-/- English proof (translation)
-By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
-
-Supply the required witnesses or components.
+/- English proof (authored)
+The image of a point of the open subscheme V under the two inclusions is its image in X′ as a point of U. Conversely, a point in the image of V has a preimage in U lying in V, which gives a point of the open subscheme V. Thus the two sets of image points coincide.
 -/
 private theorem range_ι_comp_ι_eq_image {X' : Scheme.{u}} (U : X'.Opens) (V : U.toScheme.Opens) :
     Set.range ((V.ι ≫ U.ι).base) = (↑(U.ι ''ᵁ V) : Set ↥X') := by
@@ -63,26 +61,24 @@ private def etaleChartTop (k : Type u) [Field k] (c : ℕ) :
   comp_struct := rfl
   isEtale := inferInstance
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The chart on the whole affine space uses the inclusion of the full open as its underlying map.
 -/
 private theorem etaleChartTop_map (k : Type u) [Field k] (c : ℕ) :
     (etaleChartTop k c).map = (⊤ : (affineSpaceFin k c).Opens).ι := rfl
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Restricting the coordinate subspace ideal to the full open is its pullback along the inclusion of that open. The chart ideal on the full affine chart is defined by pullback of the same ideal along exactly this inclusion.
 -/
 private theorem restrictIdeal_top_coordSubspaceIdeal_univ (k : Type u) [Field k] (c : ℕ) :
     restrictIdeal (coordSubspaceIdeal k c (Finset.univ : Finset (Fin c)))
       (⊤ : (affineSpaceFin k c).Opens) = (etaleChartTop k c).coordIdeal Finset.univ := by
   rw [restrictIdeal_eq_comap_ι, EtaleChart.coordIdeal_eq_comap_coordSubspaceIdeal, etaleChartTop_map]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
+/- English proof (authored)
+The nested open and its image open in X′ have the same image as open immersions, so there is a canonical isomorphism between them over X′. Transport the given chart to the image open using this isomorphism. Its structure map agrees with the ambient structure map because the inclusions agree, and its chart map is étale because transport by an isomorphism preserves étaleness.
 
-Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+The restriction of D to the image open identifies with the restriction of its ideal on U to V. Under the isomorphism this is the given coordinate ideal. Functoriality of pullback makes the transported ideal the coordinate ideal of the transported chart.
 -/
 theorem exists_etaleChart_image_of_restrictIdeal_eq {X' : Scheme.{u}} {k : Type u} [Field k]
     (p : X' ⟶ Spec (CommRingCat.of k)) (U : X'.Opens) (V : U.toScheme.Opens) (n : ℕ)
@@ -113,12 +109,10 @@ theorem exists_etaleChart_image_of_restrictIdeal_eq {X' : Scheme.{u}} {k : Type 
     _ = (coordSubspaceIdeal k n S).comap (φ.hom ≫ ch.map) := by
         rw [Scheme.IdealSheafData.comap_comp]
 
-/- English proof (translation)
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Use the full affine chart on the target of q. Since q is smooth, the chart construction for smooth pullback gives an affine neighbourhood of the image point in U and an étale chart there. Its first c coordinates are exactly the pullbacks of the target coordinates, and its remaining d coordinates come from the smooth map.
 
-Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-A detailed English derivation is pending.
+On the target the ideal of the origin is generated by all c coordinates. On the new affine open its pullback is therefore generated by the first c chart coordinates. By the hypothesis this is the section ideal of the restricted kernel. Ideals on the affine open are determined by their section ideals, so the restricted kernel is the indicated chart ideal. The structure map of the chart agrees with the required map to the field by the compatibility hypothesis on q.
 -/
 theorem exists_etaleChart_of_restrictIdeal_ker_eq_comap
     {X X' : Scheme.{u}} {k : Type u} [Field k] (p : X' ⟶ Spec (CommRingCat.of k))
@@ -157,10 +151,8 @@ theorem exists_etaleChart_of_restrictIdeal_ker_eq_comap
   refine ⟨V, hVaff, hyV, d, ⟨ch.map, hcs, ch.isEtale⟩, ?_⟩
   exact restrictIdeal_eq_coordIdeal_of_ideal_eq_span hVaff _ _ (castAddImage c d) hspanV
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Supply the required witnesses or components.
+/- English proof (authored)
+At each point, start with the given smooth map to affine space and its description of the kernel as the pullback of the origin ideal. The preceding construction gives an étale chart in the open neighbourhood, with the kernel cut out by its first c coordinates. Transport this chart to the image open in the ambient scheme. That open contains the point's image, and the defining coordinate set has size c. These witnesses give the required coordinate codimension.
 -/
 theorem hasEtaleCoordCodim_of_locally_smooth_over_affineSpace {X X' : Scheme.{u}} {k : Type u} [Field k]
     (p : X' ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] (τ : X ⟶ X') (c : ℕ)

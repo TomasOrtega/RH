@@ -4,8 +4,8 @@ open CategoryTheory
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The stalk at x in the affine open is the localization of its section ring at the prime of x. Localization preserves reducedness, so the reducedness of the section ring gives the result.
 -/
 private theorem isReduced_stalk_of_isAffineOpen {Z : AlgebraicGeometry.Scheme} {V : Z.Opens}
     (hV : AlgebraicGeometry.IsAffineOpen V)
@@ -15,10 +15,8 @@ private theorem isReduced_stalk_of_isAffineOpen {Z : AlgebraicGeometry.Scheme} {
   exact isReduced_localizationPreserves (hV.primeIdealOf x).asIdeal.primeCompl
     ↥(Z.presheaf.stalk x.1) hred
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+On the affine open U the kernel ideal of f is the kernel of pullback on sections. Quotienting by this kernel gives a ring that injects into the section ring on the inverse image in W. That section ring is reduced because W is reduced, and any subring of a reduced ring is reduced. The section ring of the kernel subscheme on its inverse image of U is isomorphic to this quotient.
 -/
 private theorem isReduced_presheaf_obj_subscheme_ker {W X : AlgebraicGeometry.Scheme} (f : W ⟶ X)
     [AlgebraicGeometry.IsReduced W] [AlgebraicGeometry.QuasiCompact f] (U : X.affineOpens) :
@@ -41,8 +39,8 @@ private theorem isReduced_presheaf_obj_subscheme_ker {W X : AlgebraicGeometry.Sc
     (AlgebraicGeometry.Scheme.IdealSheafData.subschemeObjIso
       (AlgebraicGeometry.Scheme.Hom.ker f) U).commRingCatIsoToRingEquiv.injective
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Choose an affine open U around the image of y in X. Its inverse image in the kernel subscheme is affine because the inclusion is a closed immersion. The ring of sections on that inverse image is reduced by the quotient argument. Localize it at the prime of y to obtain the reduced stalk.
 -/
 private theorem isReduced_stalk_subscheme_ker {W X : AlgebraicGeometry.Scheme} (f : W ⟶ X)
     [AlgebraicGeometry.IsReduced W] [AlgebraicGeometry.QuasiCompact f]
@@ -60,8 +58,8 @@ private theorem isReduced_stalk_subscheme_ker {W X : AlgebraicGeometry.Scheme} (
   have hred := isReduced_presheaf_obj_subscheme_ker f ⟨U, hU⟩
   exact isReduced_stalk_of_isAffineOpen hVaff hred ⟨y, hyV⟩
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Apply the stalk computation at each point of the kernel subscheme. Every stalk is reduced, which is the local criterion for the whole scheme to be reduced.
 -/
 theorem isReduced_subscheme_ker {W X : AlgebraicGeometry.Scheme}
     (f : W ⟶ X) [AlgebraicGeometry.IsReduced W] [AlgebraicGeometry.QuasiCompact f] :

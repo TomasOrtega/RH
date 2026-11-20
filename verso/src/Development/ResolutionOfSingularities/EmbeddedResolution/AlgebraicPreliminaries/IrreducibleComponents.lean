@@ -4,8 +4,8 @@ namespace FunctorialResolution.EmbeddedResolution
 
 open Set TopologicalSpace
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+A Noetherian space has only finitely many irreducible components, and each is closed. The selected collection is a finite subcollection, so its union is closed.
 -/
 theorem isClosed_sUnion_of_subset_irreducibleComponents {X : Type*} [TopologicalSpace X]
     [NoetherianSpace X] {𝒜 : Set (Set X)} (h𝒜 : ∀ C ∈ 𝒜, C ∈ irreducibleComponents X) :
@@ -16,12 +16,8 @@ theorem isClosed_sUnion_of_subset_irreducibleComponents {X : Type*} [Topological
   exact (hfin.subset hsub).isClosed_biUnion
     (fun C hC => isClosed_of_mem_irreducibleComponents _ (h𝒜 C hC))
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Every point belongs to an irreducible component. If it lies outside the selected union, any component containing it lies outside the selected collection. Conversely, a point in an unselected component cannot lie in a selected component, since two components meeting at a point agree by hypothesis. The complement is therefore the union of the unselected components. It is closed by finiteness, so the selected union is open.
 -/
 theorem isOpen_sUnion_of_subset_irreducibleComponents {X : Type*} [TopologicalSpace X]
     [NoetherianSpace X]
@@ -47,16 +43,8 @@ theorem isOpen_sUnion_of_subset_irreducibleComponents {X : Type*} [TopologicalSp
   rw [← isClosed_compl_iff, key]
   exact isClosed_sUnion_of_subset_irreducibleComponents (fun C hC => hC.1)
 
-/- English proof (translation)
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Let ξ₁ and ξ₂ be the generic points of the two components. Both specialize to x and hence lie in the image of the spectrum of the stalk at x. This spectrum is irreducible because the stalk is a domain. The closure of its image in X is irreducible and contains both generic points, so it contains both of their closures. By maximality of irreducible components each component equals this same irreducible closed subset.
 -/
 theorem irreducibleComponents_eq_of_stalk_isDomain (X : AlgebraicGeometry.Scheme)
     (hX : ∀ x : X, IsDomain (X.presheaf.stalk x)) {C₁ C₂ : Set X}

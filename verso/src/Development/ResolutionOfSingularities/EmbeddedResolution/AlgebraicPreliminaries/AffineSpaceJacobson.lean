@@ -6,8 +6,8 @@ open AlgebraicGeometry
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Affine space with finitely many coordinates over k is isomorphic to the spectrum of the polynomial ring in those coordinates. The polynomial ring is a finite-type algebra over a field and therefore is a Jacobson ring. Its spectrum is a Jacobson space, and the homeomorphism induced by the scheme isomorphism transfers this property to affine space.
 -/
 theorem jacobsonSpace_affineSpace (k : Type u) [Field k] (n : Type u) [Finite n] :
     JacobsonSpace (AffineSpace n (Spec (CommRingCat.of k))) :=

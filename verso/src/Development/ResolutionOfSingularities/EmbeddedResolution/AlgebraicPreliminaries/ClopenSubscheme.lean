@@ -6,8 +6,8 @@ universe u
 
 namespace AlgebraicGeometry.Scheme.Opens
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The inclusion of an open subscheme is an open immersion and hence a preimmersion. Its image is the given open, which is closed by hypothesis. A preimmersion with closed image is a closed immersion.
 -/
 theorem isClosedImmersion_ι_of_isClosed {X : Scheme.{u}} (U : X.Opens)
     (hU : IsClosed (U : Set X)) : IsClosedImmersion U.ι :=
@@ -17,22 +17,8 @@ end AlgebraicGeometry.Scheme.Opens
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+The open immersion of C is also a closed immersion because its image is the closed set Z. Its defining ideal has support Z, so the vanishing ideal of Z is its radical. Inclusion into that radical factors the vanishing-ideal closed subscheme through C. The factor is a preimmersion and is surjective on points because both immersions into X have image Z and the inclusion of C is injective. Thus the factor is a closed immersion with full support. The scheme C is reduced as an open subscheme of the reduced scheme X. Its only ideal sheaf with full support is zero, since such an ideal is contained in the nilradical. The factor is therefore an isomorphism and its construction gives the stated equality over X.
 -/
 private theorem exists_iso_subscheme_vanishingIdeal_of_coe_eq {X : Scheme} [IsReduced X]
     (C : X.Opens) (Z : Closeds X) (hZ : (Z : Set X) = (C : Set X)) :
@@ -90,8 +76,8 @@ private theorem exists_iso_subscheme_vanishingIdeal_of_coe_eq {X : Scheme} [IsRe
   have : IsIso φ := IsClosedImmersion.isIso_iff_ker_eq_bot.mpr hker
   exact ⟨asIso φ, hφ⟩
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Regard the underlying set of C as a closed subset using the given closedness. This closed subset has exactly the same points as C, so apply the comparison of the vanishing-ideal subscheme with the corresponding open subscheme.
 -/
 theorem exists_iso_subscheme_vanishingIdeal_of_isClosed
     {X : Scheme} [IsReduced X] (C : X.Opens) (hC : IsClosed (C : Set X)) :
@@ -106,8 +92,8 @@ def complOpensOfIsClosed {X : Scheme} (C : X.Opens) (hC : IsClosed (C : Set X)) 
   ⟨(C : Set X)ᶜ, hC.isOpen_compl⟩
 
 @[simp]
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The complement of the underlying set of C is open by closedness. The indicated open is constructed from this complement, so its underlying set is that complement.
 -/
 theorem coe_complOpensOfIsClosed {X : Scheme} (C : X.Opens) (hC : IsClosed (C : Set X)) :
     ((complOpensOfIsClosed C hC : X.Opens) : Set X) = (C : Set X)ᶜ := rfl

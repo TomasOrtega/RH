@@ -4,8 +4,8 @@ namespace FunctorialResolution.EmbeddedResolution
 
 open CategoryTheory AlgebraicGeometry
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+A section killed by pullback along f remains zero after further pullback along g. Thus the kernel ideal of f is contained in the kernel ideal of the composite. Larger ideals have smaller vanishing supports, giving the claimed containment.
 -/
 theorem support_ker_comp_subset_support_ker {T S Y : Scheme}
     (g : T ⟶ S) (f : S ⟶ Y) :

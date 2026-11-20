@@ -11,12 +11,8 @@ variable [IsScalarTower R S N] [IsScalarTower S S' N] [IsScalarTower R S' N]
 
 namespace Derivation
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Supply the required witnesses or components.
+/- English proof (authored)
+Multiplication by y on N agrees with the action of its image in S′, which is a unit. Acting by the inverse unit gives the inverse additive map. It is S-linear because scalars from S commute with those from S′, so this is an inverse in the endomorphism ring over S.
 -/
 private theorem isUnit_algebraMap_moduleEnd (M : Submonoid S) [IsLocalization M S'] (y : M) :
     IsUnit ((algebraMap S (Module.End S N)) (y : S)) := by
@@ -38,10 +34,8 @@ private theorem isUnit_algebraMap_moduleEnd (M : Submonoid S) [IsLocalization M 
       map_smul' := fun s n => hcomm s ((u⁻¹ : S'ˣ) : S') n },
     LinearMap.ext fun n => h1 n, LinearMap.ext fun n => h2 n⟩, rfl⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Factor D through the universal derivation to obtain an S-linear map from the differential module to N. Every element inverted in S′ acts invertibly on N. Thus the linear map extends across the localization of the differential module, which is the differential module of S′ over R. The extension is S′-linear, since the action of each inverted scalar is forced by its inverse. Compose with the universal derivation on S′. Naturality of the universal differential and the extension property show that the result agrees with D on the images of S.
 -/
 private theorem exists_liftToLocalization (D : Derivation R S N) (M : Submonoid S)
     [IsLocalization M S'] :
@@ -69,16 +63,16 @@ noncomputable def liftToLocalization (D : Derivation R S N) (M : Submonoid S)
   (exists_liftToLocalization (S' := S') D M).choose
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The chosen derivation is selected from the extensions of D to the localization. Every extension in this construction takes the image of s to D(s), so the chosen one does as well.
 -/
 theorem liftToLocalization_algebraMap (D : Derivation R S N) (M : Submonoid S)
     [IsLocalization M S'] (s : S) :
     (D.liftToLocalization (S' := S') M) (algebraMap S S' s) = D s :=
   (exists_liftToLocalization (S' := S') D M).choose_spec s
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+Compose D with the localization map on its values, so it becomes a derivation on S with values in S′. Extend this derivation to S′ using the localization property. It then sends an element coming from s to the localization of D(s).
 -/
 private theorem exists_mapToLocalization (D : Derivation R S S) (M : Submonoid S)
     [IsLocalization M S'] :
@@ -93,16 +87,16 @@ noncomputable def mapToLocalization (D : Derivation R S S) (M : Submonoid S)
   (exists_mapToLocalization (S' := S') D M).choose
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The chosen derivation on S′ extends the original derivation with its values mapped to S′. Its evaluation on the image of s is therefore the image of D(s).
 -/
 theorem mapToLocalization_algebraMap (D : Derivation R S S) (M : Submonoid S)
     [IsLocalization M S'] (s : S) :
     (D.mapToLocalization (S' := S') M) (algebraMap S S' s) = algebraMap S S' (D s) :=
   (exists_mapToLocalization (S' := S') D M).choose_spec s
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The derivation D corresponds to a linear map from the differential module over S to S′. Because the module is finitely presented, a common denominator from the multiplicative set clears this linear map. Indeed one can clear denominators on a finite generating set and then multiply by another element of the multiplicative set to kill the images of the finitely many relations. Thus the cleared map comes from a linear map to S. Compose that map with the universal derivation to obtain D₀. Evaluating the cleared equality on each differential gives the asserted formula.
 -/
 theorem exists_derivation_mul_eq (M : Submonoid S) [IsLocalization M S']
     [Module.FinitePresentation S (KaehlerDifferential R S)] (D : Derivation R S S') :
@@ -117,8 +111,8 @@ theorem exists_derivation_mul_eq (M : Submonoid S) [IsLocalization M S']
   rw [Derivation.liftKaehlerDifferential_comp_D, Algebra.smul_def] at h1
   exact h1.symm
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+Precompose D with the ring map from S to S′, viewing its values in S′. This is a derivation over R on S. Apply the common denominator result for derivations from S to S′ and evaluate the resulting equality on s.
 -/
 theorem exists_derivation_mul_eq_of_isLocalization (M : Submonoid S) [IsLocalization M S']
     [Module.FinitePresentation S (KaehlerDifferential R S)] (D : Derivation R S' S') :

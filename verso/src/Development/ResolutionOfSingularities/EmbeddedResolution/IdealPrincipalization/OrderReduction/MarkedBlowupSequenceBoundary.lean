@@ -17,18 +17,16 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The support of the pulled-back ideal equals the inverse image of the original support. Equality gives the claimed inclusion.
 -/
 private theorem support_comap_subset_preimage {X X₁ : Scheme.{u}} (π : X₁ ⟶ X)
     (D : X.IdealSheafData) :
     ((D.comap π).support : Set ↥X₁) ⊆ ⇑π ⁻¹' (D.support : Set ↥X) := by
   simp
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The total transform ideal is contained in the strict-transform ideal. Hence at any point where the latter has a proper stalk, the total transform also has a proper stalk. The support of the total transform is the inverse image of the original support, giving the inclusion.
 -/
 theorem support_strictTransform_subset_preimage {X X₁ : Scheme.{u}} (π : X₁ ⟶ X)
     (Z D : X.IdealSheafData) :
@@ -50,16 +48,16 @@ section
 variable {k : Type u} [Field k] {X : Scheme.{u}} {p : X ⟶ Spec (CommRingCat.of k)}
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Restricting the chart to the smaller open means precomposing its original map with the inclusion of that open.
 -/
 theorem EtaleChart.map_restrict {U : X.Opens} {n : ℕ} (c : EtaleChart p U n)
     {V : X.Opens} (hVU : V ≤ U) :
     (c.restrict hVU).map = X.homOfLE hVU ≫ c.map :=
   c.restrict_map hVU
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The coordinate ideal is pulled back from the associated coordinate subspace of affine space. Pullback along the restricted chart factors as pullback through the original chart and then along the open inclusion, giving the restricted ideal.
 -/
 theorem EtaleChart.coordIdeal_restrict {U : X.Opens} {n : ℕ} (c : EtaleChart p U n)
     {V : X.Opens} (hVU : V ≤ U) (S : Finset (Fin n)) :
@@ -67,12 +65,8 @@ theorem EtaleChart.coordIdeal_restrict {U : X.Opens} {n : ℕ} (c : EtaleChart p
   rw [EtaleChart.coordIdeal_eq_comap_coordSubspaceIdeal, EtaleChart.coordIdeal_eq_comap_coordSubspaceIdeal, c.restrict_map hVU]
   simp only [Scheme.IdealSheafData.comap_comp]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the first list. For an empty first list the lookup is directly in the second list. For a nonempty first list, remove the first entry and decrement the lookup index. The resulting index is the length of the first tail plus the original offset, so the inductive equality applies.
 -/
 private theorem getElemOpt_append_length_add.{v} {α : Type v} (L₂ : List α) :
     ∀ (L₁ : List α) (i : ℕ), (L₁ ++ L₂)[L₁.length + i]? = L₂[i]? := by
@@ -86,8 +80,8 @@ private theorem getElemOpt_append_length_add.{v} {α : Type v} (L₂ : List α) 
       rw [List.cons_append, hlen, List.getElem?_cons_succ]
       exact ih i
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The two indices are in range, so each optional lookup returns its corresponding entry. Equality of the optional lookups therefore gives equality of those entries.
 -/
 private theorem getElem_append_length_add.{v} {α : Type v} (L₁ L₂ : List α) (i : ℕ)
     (hi : i < L₂.length) (hi' : L₁.length + i < (L₁ ++ L₂).length) :
@@ -96,16 +90,8 @@ private theorem getElem_append_length_add.{v} {α : Type v} (L₁ L₂ : List α
   rw [List.getElem?_eq_getElem hi', List.getElem?_eq_getElem hi] at h1
   exact Option.some.inj h1
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+At a point of the subscheme, choose a coordinate chart for the full boundary. Give each entry of the suffix the coordinate assignment of its index shifted by the length of the prefix. The entry at that shifted position is the same ideal, so the unit and coordinate descriptions persist. Injectivity for assigned coordinates passes to this sublist, and the chart still describes the subscheme.
 -/
 theorem HasStrictNormalCrossingsWith.of_append {Z : X.IdealSheafData} {L₁ L₂ : List X.IdealSheafData}
     (h : HasStrictNormalCrossingsWith p Z (L₁ ++ L₂)) : HasStrictNormalCrossingsWith p Z L₂ := by
@@ -131,28 +117,8 @@ theorem HasStrictNormalCrossingsWith.of_append {Z : X.IdealSheafData} {L₁ L₂
     have h2 := hsome _ hi' t hti
     rwa [getElem_append_length_add L₁ L₂ i hi hi'] at h2
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
-
-Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
-
-Split into cases according to the possible forms of the given data. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
-
-Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At a point of the subscheme choose a chart for the old list. Since the new component's support is disjoint from the subscheme, restrict the chart to the open complement of that support. The new component has unit ideal on the smaller chart, so assign it no coordinate. The other entries keep their former assignments after shifting their positions by one. Their unit and coordinate descriptions persist under open restriction, as does the description of the subscheme. Injectivity of the assigned coordinates follows from the original chart.
 -/
 private theorem hasStrictNormalCrossingsWith_cons_of_disjoint_support {Z : X.IdealSheafData}
     {M : List X.IdealSheafData} (h : HasStrictNormalCrossingsWith p Z M) {D : X.IdealSheafData}
@@ -221,10 +187,8 @@ private theorem hasStrictNormalCrossingsWith_cons_of_disjoint_support {Z : X.Ide
       rw [restrictIdeal_eq_comap_homOfLE_restrictIdeal _ hVU, key, EtaleChart.coordIdeal_restrict]
   · rw [restrictIdeal_eq_comap_homOfLE_restrictIdeal _ hVU, hZU, EtaleChart.coordIdeal_restrict]
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the list being prepended. The empty list gives the original condition. The induction hypothesis treats the tail, and disjointness of the head component lets the single-component addition theorem prepend it.
 -/
 theorem HasStrictNormalCrossingsWith.append_of_support_disjoint {Z : X.IdealSheafData} {N : List X.IdealSheafData}
     (h : HasStrictNormalCrossingsWith p Z N) {L : List X.IdealSheafData}
@@ -248,12 +212,8 @@ namespace MarkedBlowupSequenceData
 variable {k : Type u} [Field k] {X : Scheme.{u}} {p : X ⟶ Spec (CommRingCat.of k)}
   {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+At stage zero the boundary consists of the original entries pulled back along the initial isomorphism, so its length is the original length. Each step takes the strict transform of each old entry and appends one exceptional ideal. Thus each step adds one entry, proving the formula by induction.
 -/
 theorem boundary_length (u : MarkedBlowupSequenceData p I m E) (t : ℕ) (ht : t ≤ u.length) :
     (u.boundary t).length = E.length + t := by
@@ -269,16 +229,16 @@ theorem boundary_length (u : MarkedBlowupSequenceData p I m E) (t : ℕ) (ht : t
       simp only [List.length_cons, List.length_nil]
       omega
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
+/- English proof (authored)
+The length at the stage is the original boundary length plus the stage index. An index within the original list is therefore within the stage boundary.
 -/
 theorem index_lt_boundary_length (u : MarkedBlowupSequenceData p I m E) {t : ℕ} (ht : t ≤ u.length)
     {i : ℕ} (hi : i < E.length) : i < (u.boundary t).length := by
   rw [u.boundary_length t ht]
   omega
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At the successor stage the boundary is the list of strict transforms followed by the exceptional ideal. The number dropped is at most the length of the list of strict transforms, which is the length of the old list. Thus the exceptional ideal remains at the end, and dropping entries commutes with the entrywise transform.
 -/
 theorem boundary_succ_drop (u : MarkedBlowupSequenceData p I m E) {t : ℕ} (ht : t < u.length)
     (n : ℕ) (hn : n ≤ (u.boundary t).length) :
@@ -290,16 +250,8 @@ theorem boundary_succ_drop (u : MarkedBlowupSequenceData p I m E) {t : ℕ} (ht 
     exact hn
   rw [u.boundary_succ t ht, List.drop_append_of_le_length hlen, ← List.map_drop]
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the second alternative. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Take a point whose image belongs to the support of an old boundary entry. If the image lies in the center, the point belongs to the exceptional support, which is an entry of the new boundary. Otherwise the point lies in the inverse image of that old support away from the center. This inverse image is contained in its closure, the support of the strict transform by the local Noetherian formula. The strict transform is also an entry of the new boundary.
 -/
 theorem preimage_iUnion_support_boundary_subset (u : MarkedBlowupSequenceData p I m E)
     (hN : ∀ i ≤ u.length, IsLocallyNoetherian (u.obj i)) {t : ℕ} (ht : t < u.length) :
@@ -331,8 +283,8 @@ theorem preimage_iUnion_support_boundary_subset (u : MarkedBlowupSequenceData p 
       exact subset_closure (Set.mem_preimage.mpr (Set.mem_sdiff_of_mem hxD hc))
     exact Set.mem_iUnion₂.mpr ⟨_, hmem, h2⟩
 
-/- English proof (translation)
-Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The exceptional ideal is the pulled-back center and is locally generated by a nonzerodivisor. Its power is therefore cancellable from the two products, giving equality of the factors.
 -/
 private theorem eq_of_exceptionalIdeal_pow_mul_eq_mul {Y Y' : Scheme.{u}} {π : Y' ⟶ Y}
     {Z : Y.IdealSheafData} (h : Blowup.IsBlowupAlongIdealSheaf π Z) (n : ℕ) {A B : Y'.IdealSheafData}
@@ -340,8 +292,8 @@ private theorem eq_of_exceptionalIdeal_pow_mul_eq_mul {Y Y' : Scheme.{u}} {π : 
   rw [Blowup.exceptionalIdeal_eq_comap] at e
   exact eq_of_isLocallyGeneratedByNonZeroDivisor_pow_mul_eq_mul h.1 n e
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately.
+/- English proof (authored)
+Both projections begin with the same initial isomorphism. At each successor they precompose the preceding projection with the same blowup map. Induction gives equality at every stage.
 -/
 private theorem projectionToBase_eq_projectionToBase_toBlowupSequenceData (u : MarkedBlowupSequenceData p I m E) (i : ℕ) :
     u.proj i = u.toBlowupSequenceData.projectionToBase i := by
@@ -349,10 +301,8 @@ private theorem projectionToBase_eq_projectionToBase_toBlowupSequenceData (u : M
   | zero => rw [u.proj_zero, BlowupSequenceData.projectionToBase_zero]
   | succ j ih => rw [u.proj_succ j, BlowupSequenceData.projectionToBase_succ, ih]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+At stage zero both descriptions pull back the same original boundary along the same isomorphism. At a successor they take the same strict transforms and append the same exceptional ideal. The inductive equality of the preceding lists gives the equality at the next stage.
 -/
 private theorem toBlowupSequenceData_boundary_eq_boundary (u : MarkedBlowupSequenceData p I m E) :
     ∀ i, i ≤ u.length → u.toBlowupSequenceData.boundaryFrom E i = u.boundary i := by
@@ -366,14 +316,8 @@ private theorem toBlowupSequenceData_boundary_eq_boundary (u : MarkedBlowupSeque
       have hjlt : j < u.length := hj
       rw [BlowupSequenceData.boundary_succ, ih (le_of_lt hjlt), u.boundary_succ j hjlt]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Both ideals at stage zero are the same pullback of the original ideal. At a successor use the inductive equality and the marked ideal formula to see that the next marked ideal is a quotient of the total transform by the exceptional power. The controlled-transform formula has the same quotient property. Since the exceptional power is cancellable, the two ideals agree.
 -/
 private theorem toBlowupSequenceData_controlledTransform_eq_ideal (u : MarkedBlowupSequenceData p I m E) :
     ∀ i, i ≤ u.length → u.toBlowupSequenceData.controlledTransform I m i = u.ideal i := by
@@ -397,12 +341,8 @@ private theorem toBlowupSequenceData_controlledTransform_eq_ideal (u : MarkedBlo
       rw [key, hIH]
       exact (u.ideal_succ j hjlt).symm
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
+/- English proof (authored)
+The next marked ideal witnesses divisibility by the exceptional power at each step. The controlled-transform identity transfers the required order bound along the center. The comparisons for the projections and boundary lists transfer smoothness of the center and its strict normal crossing condition. Thus all marking conditions hold for the underlying data.
 -/
 theorem isMarked (u : MarkedBlowupSequenceData p I m E) : u.toBlowupSequenceData.IsMarked p I m E := by
   refine ⟨?_, ?_, ?_, ?_⟩
@@ -420,12 +360,8 @@ theorem isMarked (u : MarkedBlowupSequenceData p I m E) : u.toBlowupSequenceData
     have h := u.center_snc i hi
     rwa [projectionToBase_eq_projectionToBase_toBlowupSequenceData u i, ← toBlowupSequenceData_boundary_eq_boundary u i (le_of_lt hi)] at h
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the list before the appended tail. The empty case has no index in range. At the head the lookup returns the mapped first entry, while an index in the remaining list reduces to the same lookup on the tail at the preceding index. The induction hypothesis gives the mapped optional result.
 -/
 private theorem getElemOpt_map_append.{v, w} {α : Type v} {β : Type w} (f : α → β) (T : List β) :
     ∀ (L : List α) (i : ℕ), i < L.length → (List.map f L ++ T)[i]? = Option.map f (L[i]?) := by
@@ -445,8 +381,8 @@ private theorem getElemOpt_map_append.{v, w} {α : Type v} {β : Type w} (f : α
           simp only [List.map_cons, List.cons_append, List.getElem?_cons_succ]
           exact ih j hj
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
+/- English proof (authored)
+Both optional lookups are defined at the given indices. The optional lookup identity for the mapped prefix and appended tail therefore identifies the entry with the image of the original entry.
 -/
 private theorem getElem_map_append.{v, w} {α : Type v} {β : Type w} (f : α → β)
     (L : List α) (T : List β) (i : ℕ) (hi : i < L.length)
@@ -456,16 +392,8 @@ private theorem getElem_map_append.{v, w} {α : Type v} {β : Type w} (f : α �
   rw [List.getElem?_eq_getElem hi', List.getElem?_eq_getElem hi] at h
   simpa using h
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
-
-Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Induct forward from the stage at which disjointness is given. The original component keeps its index because each step transforms the existing entries and appends the exceptional ideal. Thus the entry at that index is the strict transform of the previous one. If a point lay in both the new order locus and its support, the order-locus hypothesis and the support inclusion for strict transforms would put its image in both previous sets. This contradicts the inductive disjointness.
 -/
 theorem orderAtLeastLocus_disjoint_boundary_of_le (u : MarkedBlowupSequenceData p I m E)
     (hdesc : ∀ t < u.length,

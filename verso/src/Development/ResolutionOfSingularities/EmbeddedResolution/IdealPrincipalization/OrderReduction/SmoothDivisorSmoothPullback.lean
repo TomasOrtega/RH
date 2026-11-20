@@ -28,8 +28,8 @@ def IsSmoothDivisorStableUnderSmoothPullback : Prop :=
     [AlgebraicGeometry.LocallyOfFiniteType (g ≫ p)]
     (D : P.IdealSheafData), IsSmoothDivisor p D → IsSmoothDivisor (g ≫ p) (D.comap g)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Restriction is pullback along the open inclusion. Thus each side is pullback along one of the two composites in the commuting square, and those composites agree.
 -/
 private theorem restrictIdeal_comap_eq_comap_restrictIdeal {P Y : Scheme.{u}} (g : Y ⟶ P)
     (I : P.IdealSheafData) {U : P.Opens} {V : Y.Opens} {f : V.toScheme ⟶ U.toScheme}
@@ -38,8 +38,8 @@ private theorem restrictIdeal_comap_eq_comap_restrictIdeal {P Y : Scheme.{u}} (g
   rw [restrictIdeal_eq_comap_ι, restrictIdeal_eq_comap_ι, ← Scheme.IdealSheafData.comap_comp,
     ← Scheme.IdealSheafData.comap_comp, hf]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The source open lies in the inverse image of the target open, so the morphism restricts to a map between them. The restriction identity expresses both ideals as pullbacks along that map. Pullback preserves the given inclusion.
 -/
 private theorem restrictIdeal_comap_le_of_restrictIdeal_le {P Y : Scheme.{u}} (g : Y ⟶ P)
     {I J : P.IdealSheafData} {U : P.Opens}
@@ -51,10 +51,8 @@ private theorem restrictIdeal_comap_le_of_restrictIdeal_le {P Y : Scheme.{u}} (g
     restrictIdeal_comap_eq_comap_restrictIdeal g J hf]
   exact Scheme.IdealSheafData.comap_mono _ hle
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
-
-Supply the required witnesses or components. Supply the required witnesses or components.
+/- English proof (authored)
+At each point choose the neighborhood supplied by maximal contact. In the coordinate case the hypersurface is already a single coordinate divisor in an étale chart. In the unit case take an étale chart inside the neighborhood, where further restriction still gives the unit ideal. These local forms give a smooth divisor.
 -/
 theorem IsMaxContactHypersurface.isSmoothDivisor {k : Type u} [Field k] [CharZero k]
     {P : Scheme.{u}} {p : P ⟶ Spec (CommRingCat.of k)} [AlgebraicGeometry.Smooth p]
@@ -69,18 +67,8 @@ theorem IsMaxContactHypersurface.isSmoothDivisor {k : Type u} [Field k] [CharZer
     exact ⟨U', hxU', m, c', Or.inl (restrictIdeal_eq_top_of_le H hU'U htop)⟩
   · exact ⟨U, hxU, n, c, Or.inr ⟨j, hHU⟩⟩
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+At a point of the pulled-back hypersurface support take a chart as in the hypothesis. The image point lies in the original hypersurface support, so the original maximal-contact neighborhood gives inclusion of its hypersurface ideal in the maximal-contact ideal there. Shrink the upstairs chart to an affine open contained in the inverse image of that neighborhood. Its hypersurface ideal remains the coordinate ideal, and the pulled-back inclusion puts it inside the upstairs maximal-contact ideal by smooth compatibility. At a point off the pulled-back support, choose an affine neighborhood disjoint from it. The hypersurface ideal is unit there. The upstairs order locus is pulled back from the downstairs order locus, which lies within the downstairs hypersurface support, so this neighborhood also misses the upstairs order locus.
 -/
 theorem IsMaxContactHypersurface.comap_of_forall_etaleChart_coordIdeal {k : Type u} [Field k] [CharZero k]
     {P Y : Scheme.{u}} {p : P ⟶ Spec (CommRingCat.of k)} [AlgebraicGeometry.Smooth p]
@@ -132,8 +120,8 @@ theorem IsMaxContactHypersurface.comap_of_forall_etaleChart_coordIdeal {k : Type
       intro z hzV
       exact hVW hzV
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+The assumed stability makes the pulled-back hypersurface a smooth divisor. At every point of its support, the coordinate theorem for smooth divisors gives an étale chart where its ideal is a single coordinate ideal. These charts meet the hypothesis of the maximal-contact pullback argument.
 -/
 theorem IsMaxContactHypersurface.comap_of_isSmoothDivisorStableUnderSmoothPullback {k : Type u} [Field k]
     [CharZero k] {P Y : Scheme.{u}} {p : P ⟶ Spec (CommRingCat.of k)}
@@ -151,8 +139,8 @@ theorem IsMaxContactHypersurface.comap_of_isSmoothDivisorStableUnderSmoothPullba
       (hdiv k P Y p g H hH) y hy
   exact ⟨V, m, c, j, hyV, heq⟩
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+A maximal-contact hypersurface is a smooth divisor by its local coordinate description. Apply smooth-pullback stability of smooth divisors and the maximal-contact comparison to this hypersurface, at the given positive mark.
 -/
 theorem maxContactHypersurfaceSmoothPullback_of_isSmoothDivisorStableUnderSmoothPullback
     (hdiv : IsSmoothDivisorStableUnderSmoothPullback.{u}) : BoundarySeparationBaseChange.MaxContactHypersurfaceSmoothPullback.{u} := by

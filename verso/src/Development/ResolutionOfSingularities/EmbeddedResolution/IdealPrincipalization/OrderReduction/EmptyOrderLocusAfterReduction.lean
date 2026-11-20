@@ -61,10 +61,8 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace BoundarySeparationByMaxContact
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The maximal-contact ideal is the derivative ideal at index one less than the mark. The derivative order-locus formula identifies the old marked locus with the order-at-least-one locus of this derivative ideal, since the mark is positive. The latter locus is exactly its support.
 -/
 private theorem orderAtLeastLocus_eq_support_maxContactIdeal (k : Type u) [Field k] [CharZero k]
     {P : Scheme.{u}} (p : P ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -77,14 +75,14 @@ private theorem orderAtLeastLocus_eq_support_maxContactIdeal (k : Type u) [Field
   rw [← hd]
   exact mem_orderAtLeastLocus_one_iff _ x
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+Restriction of the ideal to an open is defined as pullback along the open inclusion.
 -/
 private theorem restrictIdeal_eq_comap {X : Scheme.{u}} (D : X.IdealSheafData) (V : X.Opens) :
     restrictIdeal D V = D.comap V.ι := rfl
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The iterated strict transform computed from the marked sequence is the one computed from its underlying blowup data. Their supports agree, so the given membership transfers.
 -/
 private theorem mem_support_toBlowupSequenceData_iteratedStrictTransform {k : Type u} [Field k]
     {X : Scheme.{u}} {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ}
@@ -95,12 +93,8 @@ private theorem mem_support_toBlowupSequenceData_iteratedStrictTransform {k : Ty
   rw [← iteratedStrictTransform_eq_toBlowupSequenceData s H i]
   exact hx
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At a point of the marked order locus, choose a neighborhood from the maximal-contact condition. The disjoint alternative is impossible because the point belongs to the locus. In the coordinate alternative the restricted hypersurface ideal is contained in the restricted maximal-contact ideal. The point lies in the support of the latter by the derivative order-locus formula and the support formula for pullback. Inclusion of ideals reverses support inclusion, so the point lies in the support of the restricted hypersurface ideal. Its image therefore lies in the original hypersurface support.
 -/
 private theorem orderAtLeastLocus_subset_support_of_isMaxContactHypersurface (k : Type u) [Field k]
     [CharZero k] {P : Scheme.{u}} (p : P ⟶ Spec (CommRingCat.of k))
@@ -129,20 +123,16 @@ private theorem orderAtLeastLocus_subset_support_of_isMaxContactHypersurface (k 
     rw [hbase] at h3
     exact h3
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Under the isomorphism the order locus of the pulled-back ideal is the inverse image of the given locus. Since the given locus is empty, so is its inverse image.
 -/
 private theorem orderAtLeastLocus_comap_iso_eq_empty {X Y : Scheme.{u}} (e : X ≅ Y)
     (J : Y.IdealSheafData) (n : ℕ) (hJ : orderAtLeastLocus J n = ∅) :
     orderAtLeastLocus (J.comap e.hom) n = ∅ := by
   rw [orderAtLeastLocus_comap_iso e J n, hJ, Set.preimage_empty]
 
-/- English proof (translation)
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
-
-By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The pulled-back locus is the inverse image of the original locus. Any point of the original locus would have a preimage under the isomorphism, and that preimage would belong to the pulled-back locus. Its emptiness therefore implies emptiness downstairs.
 -/
 private theorem orderAtLeastLocus_eq_empty_of_comap_iso {X Y : Scheme.{u}} (e : X ≅ Y)
     (J : Y.IdealSheafData) (n : ℕ) (hJ : orderAtLeastLocus (J.comap e.hom) n = ∅) :
@@ -162,12 +152,8 @@ private theorem orderAtLeastLocus_eq_empty_of_comap_iso {X Y : Scheme.{u}} (e : 
   rw [hJ] at hmem
   exact hmem
 
-/- English proof (translation)
-Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The length of the appended sequence is the sum of the two lengths. If the continuation has length zero, its endpoint is the endpoint of the first sequence. The final ideal is the first endpoint ideal pulled back along the stage identification, and its locus is empty by the zero-length hypothesis. If the continuation has positive length, the final index lies after the join, so the final ideal is the continuation endpoint ideal pulled back along the stage identification. Its locus is empty by the other hypothesis. In either case pullback along the stage isomorphism preserves emptiness.
 -/
 private theorem orderAtLeastLocus_append_eq_empty {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
@@ -195,22 +181,8 @@ private theorem orderAtLeastLocus_append_eq_empty {k : Type u} [Field k] {X : Sc
       exact orderAtLeastLocus_comap_iso_eq_empty (eqToIso hobj) _ _ (ht _ (by omega))
   exact key _ (MarkedBlowupSequenceData.append_length s t hinv)
 
-/- English proof (translation)
-Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
-
-Extract witnesses or component facts from the available result. Substitute using the available equality. Prove the second alternative. Prove the first alternative. Establish an intermediate fact.
-
-By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The derived triple has order bounded by its mark and is balanced by tuning. Its first boundary entry is the chosen hypersurface, so apply the first-boundary reduction to it. Tuning preserves maximal contact, and strict transforms of a maximal-contact hypersurface remain of maximal contact along the marked sequence. The final marked order locus is thus contained in the support of the final strict transform of the hypersurface. The boundary component tracked by the reduction starts with that same hypersurface and is transformed strictly at each step, except that it may undergo a total transform at the first step. The iterated support comparison puts the hypersurface's strict transform inside this boundary component's support. The boundary reduction makes that final support disjoint from the marked order locus. Since the locus is contained in the support and disjoint from it, it is empty.
 -/
 private theorem orderAtLeastLocus_derivedTriple_ideal_length_eq_empty (hstar : MaxContactCoverProperties.{u}) (P : ℕ → Prop)
     (A : ℕ → PrincipalizationAssignment.{u}) (B : PrincipalizationAssignment.{u})
@@ -335,14 +307,8 @@ private theorem orderAtLeastLocus_derivedTriple_ideal_length_eq_empty (hstar : M
   rw [hBoundaryEq] at hmem
   exact hmem
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
-
-Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Express the cover sequence as boundary separation followed by a marked continuation along the transformed maximal-contact hypersurface. The cover triple is admissible, and maximal contact survives through boundary separation. The continuation on the derived triple therefore has empty final locus at the derived mark. The continuation comparison identifies that locus with the final locus of the marked continuation at the cover mark. If the continuation has length zero, the same comparison at stage zero shows that the locus at the end of boundary separation is empty, using the initial isomorphism of the continuation. The append formula for empty loci now gives the conclusion at the tuned mark of the cover.
 -/
 theorem orderAtLeastLocus_coverMarkedBlowupData_eq_empty (hstar : MaxContactCoverProperties.{u}) (hinv : ComapIsoInvariance.{u})
     (P : ℕ → Prop) (hmono : ∀ a b : ℕ, a ≤ b → P b → P a) (A : ℕ → PrincipalizationAssignment.{u})
@@ -419,12 +385,8 @@ theorem orderAtLeastLocus_coverMarkedBlowupData_eq_empty (hstar : MaxContactCove
       (MaxContactCoverData.coverTriple T h.valid).boundary.length]
     exact hlow 0 hz.symm
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+A nonunit ideal has a point in its support. Choose a preimage of that point by surjectivity. The support formula puts this preimage in the support of the pulled-back ideal, so that ideal is also nonunit.
 -/
 private theorem comap_ne_top_of_surjective_base {X Y : Scheme.{u}} (f : Y ⟶ X)
     (hf : ∀ x : ↥X, ∃ y : ↥Y, f.base y = x) (J : X.IdealSheafData) (hJ : J ≠ ⊤) :
@@ -446,8 +408,8 @@ private theorem comap_ne_top_of_surjective_base {X Y : Scheme.{u}} (f : Y ⟶ X)
   rw [h0] at h2
   exact (Set.mem_empty_iff_false y).1 h2
 
-/- English proof (translation)
-Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The identification of equal schemes induces the identity after identifying their underlying points. The given point itself supplies the preimage.
 -/
 private theorem exists_base_eqToHom_eq {X Y : Scheme.{u}} (h : X = Y) (x : ↥Y) :
     ∃ y : ↥X, (CategoryTheory.eqToHom h).base y = x := by
@@ -455,27 +417,23 @@ private theorem exists_base_eqToHom_eq {X Y : Scheme.{u}} (h : X = Y) (x : ↥Y)
   refine ⟨x, ?_⟩
   simp
 
-/- English proof (translation)
-Supply the required witnesses or components.
+/- English proof (authored)
+Take the image of the given point under the forward isomorphism. The inverse returns the given point.
 -/
 private theorem exists_base_iso_inv_eq {X Y : Scheme.{u}} (e : X ≅ Y) (x : ↥X) :
     ∃ y : ↥Y, e.inv.base y = x :=
   ⟨e.hom.base x, congrArg (fun f : X ⟶ X => f.base x) e.hom_inv_id⟩
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+A list beginning with the specified entry has length one more than the length of its tail, so its length is positive.
 -/
 private theorem length_pos_of_eq_cons {α : Type*} {L : List α} {a : α} {M : List α}
     (h : L = a :: M) : 0 < L.length := by
   subst h
   exact Nat.succ_pos _
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
-
-Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Before the join, the appended center is the original center of the first sequence transported along a stage identification. At the join it is the first continuation center pulled back along the initial isomorphism and a stage identification. Past the join it is the continuation center at the shifted index transported along a stage identification. The total length bound puts each center within its original sequence. All the transporting maps are surjective, so their pullbacks preserve nonunit ideals.
 -/
 private theorem center_append_ne_top {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
@@ -499,12 +457,8 @@ private theorem center_append_ne_top {k : Type u} [Field k] {X : Scheme.{u}}
   · rw [MarkedBlowupSequenceData.appendToBlowupSequenceData_center_of_length_lt s t hgt]
     exact comap_ne_top_of_surjective_base _ (exists_base_eqToHom_eq _) _ (ht _ (by omega))
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Use the decomposition of the cover sequence into boundary separation and a continuation. The centers in the separation sequence are nonunit by the separation invariant. For the continuation, the derived triple is admissible, balanced, and order bounded, and its boundary has the transformed hypersurface as its first entry. The first-boundary reduction has nonempty centers by its specification, so their ideals are nonunit. Apply preservation of nonunit centers under appending the two sequences.
 -/
 theorem center_coverMarkedBlowupData_ne_top (hstar : MaxContactCoverProperties.{u}) (hinv : ComapIsoInvariance.{u}) (P : ℕ → Prop)
     (hmono : ∀ a b : ℕ, a ≤ b → P b → P a) (A : ℕ → PrincipalizationAssignment.{u})

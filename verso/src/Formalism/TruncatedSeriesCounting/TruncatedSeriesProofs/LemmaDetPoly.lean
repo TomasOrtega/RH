@@ -32,10 +32,8 @@ def polyS (S : Subring R) : Subring R[X] where
     show (-p).coeff k ∈ S
     rw [Polynomial.coeff_neg]; exact S.neg_mem (hp k)
 
-/- English proof (translation)
-Introduce `k`. Use `show (C c).coeff k ∈ S`. Rewrite using `[Polynomial.coeff_C]`. Use `split_ifs`. Conclude with `hc`.
-
-Conclude with `S.zero_mem`.
+/- English proof (authored)
+The constant polynomial C(c) has coefficient c in degree zero and zero in all higher degrees. Both values lie in S.
 -/
 lemma C_mem_polyS {S : Subring R} {c : R} (hc : c ∈ S) : C c ∈ polyS S := by
   intro k
@@ -45,10 +43,8 @@ lemma C_mem_polyS {S : Subring R} {c : R} (hc : c ∈ S) : C c ∈ polyS S := by
   · exact hc
   · exact S.zero_mem
 
-/- English proof (translation)
-Introduce `k`. Use `show (X : R[X]).coeff k ∈ S`. Rewrite using `[Polynomial.coeff_X]`. Use `split_ifs`. Conclude with `S.one_mem`.
-
-Conclude with `S.zero_mem`.
+/- English proof (authored)
+The coefficient of X in degree one is 1, and all its other coefficients are zero. The subring S contains both values.
 -/
 lemma X_mem_polyS {S : Subring R} : (X : R[X]) ∈ polyS S := by
   intro k
@@ -58,8 +54,8 @@ lemma X_mem_polyS {S : Subring R} : (X : R[X]) ∈ polyS S := by
   · exact S.one_mem
   · exact S.zero_mem
 
-/- English proof (translation)
-Rewrite using `[Polynomial.comp_eq_sum_left, Polynomial.sum]`. Conclude with `Subring.sum_mem _ (fun e _ => (polyS S).mul_mem (C_mem_polyS (hp e)) ((polyS S).pow_mem hq e))`.
+/- English proof (authored)
+Expand p(q) as the finite sum of C(pₑ)qᵉ over the degrees in p. Each constant C(pₑ) belongs to the coefficient subring, and every power of q does too. Closure under products and finite sums gives the result.
 -/
 lemma comp_mem_polyS {S : Subring R} {p q : R[X]} (hp : p ∈ polyS S) (hq : q ∈ polyS S) :
     p.comp q ∈ polyS S := by
@@ -75,8 +71,8 @@ def F (ρ : G →* Matrix n n R) (l : List (R × ℕ × G)) : R[X] :=
 def newL (L0 L : R × ℕ × G) (k : ℕ) : R × ℕ × G :=
   (L0.1 ^ k * L.1, k * L0.2.1 + L.2.1, L0.2.2 ^ k * L.2.2)
 
-/- English proof (translation)
-Simplify using `only [term, newL, map_mul, map_pow, _root_.smul_pow, smul_mul_smul_comm]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+Write L₀ = (c₀,d₀,g₀) and L = (c,d,g). The new triple has scalar c₀ᵏc, degree kd₀+d, and monoid element g₀ᵏg. Multiplicativity of the representation and of the constant-polynomial map gives the matrix factor ρ(g₀)ᵏρ(g), with entries mapped into R[X]. Multiplying the scalar monomials gives C(c₀ᵏc)X^(kd₀+d). This is the product of the kth power of the term for L₀ with the term for L, in that order.
 -/
 lemma term_newL (ρ : G →* Matrix n n R) (L0 L : R × ℕ × G) (k : ℕ) :
     term ρ (newL L0 L k) = term ρ L0 ^ k * term ρ L := by
@@ -84,15 +80,15 @@ lemma term_newL (ρ : G →* Matrix n n R) (L0 L : R × ℕ × G) (k : ℕ) :
   congr 1
   ring
 
-/- English proof (translation)
-Unfold `F`. Rewrite using `[(h.map _).sum_eq]`.
+/- English proof (authored)
+Permuting the triples permutes the list of their matrix terms. Its sum is unchanged by commutativity of matrix addition, so taking the determinant of the identity minus that sum gives the same polynomial.
 -/
 lemma F_perm (ρ : G →* Matrix n n R) {l l' : List (R × ℕ × G)} (h : l.Perm l') : F ρ l = F ρ l' := by
   unfold F
   rw [(h.map _).sum_eq]
 
-/- English proof (translation)
-Unfold `Matrix.charpolyRev term`. Rewrite using `[← Polynomial.coe_compRingHom_apply, RingHom.map_det]`. Use `congr 1`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : i = j <;> simp [h] <;> ring`.
+/- English proof (authored)
+The reversed characteristic polynomial of ρ(g) is the determinant of I−Xρ(g), with the matrix entries regarded as constants. Substitute C(c)Xᵈ for X in this determinant for L = (c,d,g). Substitution fixes scalar entries and commutes with determinants. The resulting matrix is I minus the term attached to L.
 -/
 lemma charpoly_comp (ρ : G →* Matrix n n R) (L : R × ℕ × G) :
     Matrix.det (1 - term ρ L) = (Matrix.charpolyRev (ρ L.2.2)).comp (C L.1 * X ^ L.2.1) := by
@@ -108,23 +104,23 @@ variable (N : ℕ)
 
 abbrev piN : R[X] →+* R[X] ⧸ Ideal.span {(X : R[X]) ^ (N + 1)} := Ideal.Quotient.mk _
 
-/- English proof (translation)
-Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]`. Conclude with `Dvd.dvd.mul_left (pow_dvd_pow X hd) _`.
+/- English proof (authored)
+Since d ≥ N+1, the monomial C(c)Xᵈ is divisible by X^(N+1). It therefore vanishes in the quotient by that principal ideal.
 -/
 lemma piN_eq_zero {c : R} {d : ℕ} (hd : N + 1 ≤ d) : piN N (C c * X ^ d) = 0 := by
   rw [Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]
   exact Dvd.dvd.mul_left (pow_dvd_pow X hd) _
 
-/- English proof (translation)
-Use extensionality with `i j`. Simplify using `[RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.smul_apply, ha]`.
+/- English proof (authored)
+The entry in position (i,j) of the mapped matrix is the product of the images of a and Mᵢⱼ. The first factor is zero, so every entry vanishes.
 -/
 lemma mapMatrix_smul_zero {a : R[X]} (ha : piN N a = 0) (M : Matrix n n R[X]) :
     (piN N).mapMatrix (a • M) = 0 := by
   ext i j
   simp [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.smul_apply, ha]
 
-/- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => simp`. Consider the case `succ N ih`. Rewrite using `[List.range_succ, List.map_append, List.sum_append, List.map_singleton, List.sum_singleton, ← add_assoc, mul_add, ih, sub_mul, one_mul, ← pow_succ']`. Normalize the expressions using the abelian group laws.
+/- English proof (authored)
+For N = 0 both sides equal 1−x. At the next step the finite sum acquires x^(N+1). Left multiplication by 1−x adds x^(N+1)−x^(N+2) to the previous value 1−x^(N+1). This gives the required value at N+1. The calculation uses only powers of the same element and works in a noncommutative ring.
 -/
 lemma geom_list {A : Type*} [Ring A] (x : A) (N : ℕ) :
     (1 - x) * (1 + ((List.range N).map (fun k => x ^ (k + 1))).sum) = 1 - x ^ (N + 1) := by
@@ -135,10 +131,8 @@ lemma geom_list {A : Type*} [Ring A] (x : A) (N : ℕ) :
       ← add_assoc, mul_add, ih, sub_mul, one_mul, ← pow_succ']
     abel
 
-/- English proof (translation)
-Establish `h1 : (ys.map (fun y => ((List.range N).map (fun k => x ^ (k + 1) * y)).sum)).sum = ((List.range N).map (fun k => x ^ (k + 1))).sum * ys.sum`. Simplify using `only [List.sum_map_mul_right]`. Rewrite using `[List.sum_map_mul_left, List.map_id']`. Rewrite using `[h1]`. Establish `hg` using `geom_list x N`.
-
-Rewrite `hg` using `[hx, sub_zero]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hg]`. Use `noncomm_ring`.
+/- English proof (authored)
+Let P = 1+x+⋯+xᴺ and Y be the sum of the list ys. For each power of x, distribute left multiplication over the sum Y. The total sum inside the second factor is then PY. The finite geometric identity and x^(N+1) = 0 give (1−x)P = 1. Hence (1−x)(1−PY) = (1−x)−Y = 1−(x+Y). The products keep x and its powers on the left throughout.
 -/
 lemma alg_identity {A : Type*} [Ring A] (x : A) (N : ℕ) (hx : x ^ (N + 1) = 0) (ys : List A) :
     (1 - x) * (1 - (ys.sum + (ys.map (fun y => ((List.range N).map (fun k => x ^ (k + 1) * y)).sum)).sum)) =
@@ -157,8 +151,8 @@ lemma alg_identity {A : Type*} [Ring A] (x : A) (N : ℕ) (hx : x ^ (N + 1) = 0)
         rw [hg]
         noncomm_ring
 
-/- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons a l ih => simp [List.flatMap_cons, ih]`.
+/- English proof (authored)
+Induct on the outer list. The empty list gives zero. For a head a followed by a tail, the flattened list is h(a) appended to the flattened tail. Its sum after applying f splits accordingly, and the induction hypothesis identifies the second sum.
 -/
 lemma sum_flat {α A : Type*} [AddCommMonoid A] (f : α → A) (h : α → List α) (l : List α) :
     ((l.flatMap h).map f).sum = (l.map (fun a => ((h a).map f).sum)).sum := by
@@ -169,16 +163,10 @@ lemma sum_flat {α A : Type*} [AddCommMonoid A] (f : α → A) (h : α → List 
 def elim (L0 : R × ℕ × G) (rest : List (R × ℕ × G)) : List (R × ℕ × G) :=
   rest ++ rest.flatMap (fun L => (List.range N).map (fun k => newL L0 L (k + 1)))
 
-/- English proof (translation)
-Simplify using `only [F, RingHom.map_det, ← Matrix.det_mul]`. Use `congr 1`. Use `set φ := (piN (R := R) N).mapMatrix (m := n)`. Establish `hx : (φ (term ρ L0)) ^ (N + 1) = 0`. Rewrite using `[← map_pow, term, _root_.smul_pow, mul_pow, ← pow_mul, ← map_pow]`.
+/- English proof (authored)
+Work in the coefficient ring modulo X^(N+1). Let x be the matrix term of L₀ there. The positive X-degree of L₀ makes x^(N+1) zero. For each term y from the rest of the list, the new triples represent the products xy through xᴺy by term_newL. Thus the eliminated list sums to (1+x+⋯+xᴺ)Y, where Y is the original sum of the rest.
 
-Conclude with `mapMatrix_smul_zero N (piN_eq_zero N (by nlinarith)) _`. Establish `hnew : ∀ L k, φ (term ρ (newL L0 L (k + 1))) = φ (term ρ L0) ^ (k + 1) * φ (term ρ L)`. Introduce `L k`. Rewrite using `[term_newL, map_mul, map_pow]`. Simplify using `only [map_sub, map_one, map_add, map_list_sum, List.map_cons, List.sum_cons, elim, List.map_append, List.sum_append, sum_flat, List.map_map]`.
-
-Rewrite using `[← alg_identity (φ (term ρ L0)) N hx]`. Use `congr 3`. Simplify using `only [List.map_map]`. Use `congr 1`. Apply `List.map_congr_left` to reduce the goal to its premises.
-
-Introduce `L _`. Simplify using `only [Function.comp_apply]`. Rewrite using `[map_list_sum, List.map_map]`. Use `congr 1`. Apply `List.map_congr_left` to reduce the goal to its premises.
-
-Introduce `k _`. Conclude with `(hnew L k).symm`.
+Apply the algebraic identity to factor I−(x+Y) as (I−x) times the identity minus the new sum. The quotient map commutes with determinants, and the determinant of a matrix product is the product of determinants over the commutative coefficient ring. This gives the asserted factorization in the quotient.
 -/
 lemma key (ρ : G →* Matrix n n R) (L0 : R × ℕ × G) (h0 : 1 ≤ L0.2.1) (rest : List (R × ℕ × G)) :
     piN N (F ρ (L0 :: rest)) = piN N (Matrix.det (1 - term ρ L0)) * piN N (F ρ (elim N L0 rest)) := by
@@ -211,10 +199,8 @@ variable {S : Subring R}
 abbrev SQ (S : Subring R) : Subring (R[X] ⧸ Ideal.span {(X : R[X]) ^ (N + 1)}) :=
   (polyS S).map (piN N)
 
-/- English proof (translation)
-Unfold `F`. Rewrite using `[RingHom.map_det, map_sub, map_one, map_list_sum, List.map_map]`. Establish `h0 : (l.map ((piN N).mapMatrix ∘ term ρ)).sum = 0`. Apply `List.sum_eq_zero` to reduce the goal to its premises. Introduce `M hM`.
-
-Take `⟨L, hL, rfl⟩` from `List.mem_map.mp hM`. Conclude with `mapMatrix_smul_zero N (piN_eq_zero N (hl L hL)) _`. Rewrite using `[h0, sub_zero, Matrix.det_one]`.
+/- English proof (authored)
+In the quotient modulo X^(N+1), every scalar monomial in the list is zero because its degree is at least N+1. Thus the sum of matrix terms vanishes. The image of F is the determinant of the identity, which is 1.
 -/
 lemma base (ρ : G →* Matrix n n R) (l : List (R × ℕ × G)) (hl : ∀ L ∈ l, N + 1 ≤ L.2.1) :
     piN N (F ρ l) = 1 := by
@@ -227,8 +213,8 @@ lemma base (ρ : G →* Matrix n n R) (l : List (R × ℕ × G)) (hl : ∀ L ∈
     exact mapMatrix_smul_zero N (piN_eq_zero N (hl L hL)) _
   rw [h0, sub_zero, Matrix.det_one]
 
-/- English proof (translation)
-Rewrite using `[charpoly_comp]`. Conclude with `⟨_, comp_mem_polyS (fun k => hS _ k) ((polyS S).mul_mem (C_mem_polyS hc) ((polyS S).pow_mem X_mem_polyS _)), rfl⟩`.
+/- English proof (authored)
+By the substitution formula, the single-letter determinant is the reversed characteristic polynomial of ρ(g) evaluated at C(c)Xᵈ. The characteristic coefficients lie in S by hypothesis, and the substituted monomial has its coefficients in S because c belongs to S. Composition preserves this coefficient condition. Passing to the quotient gives membership in the image subring.
 -/
 lemma letter_mem (ρ : G →* Matrix n n R) (hS : ∀ g k, (Matrix.charpolyRev (ρ g)).coeff k ∈ S)
     (L : R × ℕ × G) (hc : L.1 ∈ S) : piN N (Matrix.det (1 - term ρ L)) ∈ SQ N S := by
@@ -238,26 +224,10 @@ lemma letter_mem (ρ : G →* Matrix n n R) (hS : ∀ g k, (Matrix.charpolyRev (
 
 def Valid (S : Subring R) (D : ℕ) (l : List (R × ℕ × G)) : Prop := ∀ L ∈ l, L.1 ∈ S ∧ D ≤ L.2.1
 
-/- English proof (translation)
-Introduce `c`. Proceed by induction on `c with`. Consider the case `zero`. Introduce `l hl hc`. Apply `ih` to reduce the goal to its premises.
+/- English proof (authored)
+Induct on the number of letters of degree exactly D. With no such letters, all degrees are at least D+1 and the given higher-degree result applies. Otherwise move one degree-D letter to the front and factor it out using key. Its single-letter factor belongs to the image subring by letter_mem.
 
-Introduce `L hL`. Use `⟨(hl L hL).1, ?_⟩` and prove the remaining obligations. Establish `h1` using `(hl L hL).2`. Establish `h2 : ¬ (L.2.1 = D)`. Use `List.countP_eq_zero.1 hc L hL` as an intermediate fact.
-
-Simplify using `using this`. Use linear arithmetic over natural numbers and integers. Consider the case `succ c ihc`. Introduce `l hl hc`. Choose the witnesses or unpack the hypotheses as in `⟨L0, hL0, hd0⟩ : ∃ L0 ∈ l, L0.2.1 = D := by`.
-
-Establish `: 0 < l.countP (fun L => L.2.1 = D)` using `by omega`. Take `⟨a, ha, hpa⟩` from `List.countP_pos_iff.1 this`. Conclude with `⟨a, ha, by simpa using hpa⟩`. Establish `hperm` using `List.perm_cons_erase hL0`. Rewrite using `[F_perm ρ hperm, key N ρ L0 (by omega) _]`.
-
-Use `(SQ N S).mul_mem (letter_mem N ρ hS L0 (hl L0 hL0).1) ?_` and prove the remaining obligations. Apply `ihc` to reduce the goal to its premises. Introduce `L hL`. Simplify using `only [elim, List.mem_append, List.mem_flatMap, List.mem_map, List.mem_range] at hL`. Break down `hL with hL | ⟨L', hL', k, hk, rfl⟩` into its components or cases.
-
-Conclude with `hl L (List.mem_of_mem_erase hL)`. Establish `h'` using `hl L' (List.mem_of_mem_erase hL')`. Use `⟨S.mul_mem (S.pow_mem (hl L0 hL0).1 _) h'.1, ?_⟩` and prove the remaining obligations. Simplify using `only [newL]`. Use `h'.2` as an intermediate fact.
-
-Use linear arithmetic over natural numbers and integers. Establish `hc'` using `hperm.countP_eq (fun L => L.2.1 = D)`. Rewrite `hc'` using `[List.countP_cons_of_pos (by simpa using hd0)]`. Rewrite using `[elim, List.countP_append]`. Establish `hz : (List.flatMap (fun L => (List.range N).map (fun k => newL L0 L (k + 1))) (l.erase L0)).countP (fun L => L.2.1 = D) = 0`.
-
-Rewrite using `[List.countP_eq_zero]`. Introduce `L hL`. Simplify using `only [List.mem_flatMap, List.mem_map, List.mem_range] at hL`. Take `⟨L', hL', k, hk, rfl⟩` from `hL`. Establish `h'` using `hl L' (List.mem_of_mem_erase hL')`.
-
-Establish `hm : L0.2.1 ≤ (k + 1) * L0.2.1` using `Nat.le_mul_of_pos_left L0.2.1 (by omega)`. Use `h'.2` as an intermediate fact. Introduce `hc2`. Establish `hc3` using `of_decide_eq_true hc2`. Simplify using `only [newL] at hc3`.
-
-Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
+In the remaining list, the old letters retain their coefficients and degrees. Each new letter multiplies an old coefficient by a positive power of the removed one, so the coefficient remains in S. Its degree is the old degree plus a positive multiple of D and is strictly larger than D. Thus the number of degree-D letters drops by exactly one, and the induction hypothesis puts the remaining determinant in the image subring. Multiply the two factors there.
 -/
 lemma stepD (ρ : G →* Matrix n n R) (hS : ∀ g k, (Matrix.charpolyRev (ρ g)).coeff k ∈ S)
     (D : ℕ) (hD : 1 ≤ D) (ih : ∀ l, Valid S (D + 1) l → piN N (F ρ l) ∈ SQ N S) :
@@ -312,10 +282,8 @@ lemma stepD (ρ : G →* Matrix n n R) (hS : ∀ g k, (Matrix.charpolyRev (ρ g)
         omega
       omega
 
-/- English proof (translation)
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `D hD hj l hl`. Rewrite using `[base N ρ l (fun L hL => by have := (hl L hL).2; omega)]`.
-
-Conclude with `(SQ N S).one_mem`. Consider the case `succ j ih`. Introduce `D hD hj l hl`. Conclude with `stepD N ρ hS D hD (fun l' hl' => ih (D + 1) (by omega) (by omega) l' hl') _ l hl rfl`.
+/- English proof (authored)
+Induct on the amount j by which the lower degree bound can be raised before it reaches N+1. If j = 0, all terms vanish in the truncation and base gives 1. For the successor step, increasing the minimum degree from D to D+1 makes the induction hypothesis available. The degree-elimination lemma stepD transfers that result back to lists of minimum degree D.
 -/
 lemma allD (ρ : G →* Matrix n n R) (hS : ∀ g k, (Matrix.charpolyRev (ρ g)).coeff k ∈ S) :
     ∀ j D, 1 ≤ D → N + 1 ≤ D + j → ∀ l : List (R × ℕ × G), Valid S D l → piN N (F ρ l) ∈ SQ N S := by
@@ -331,12 +299,8 @@ lemma allD (ρ : G →* Matrix n n R) (hS : ∀ g k, (Matrix.charpolyRev (ρ g))
 
 end Trunc
 
-/- English proof (translation)
-Establish `h` using `allD k ρ hS (k + 1) 1 le_rfl (by omega) l hl`. Take `⟨q, hq, hqe⟩` from `Subring.mem_map.1 h`. Establish `hmem : F ρ l - q ∈ Ideal.span {(X : R[X]) ^ (k + 1)}`. Rewrite using `[← Ideal.Quotient.eq]`. Conclude with `hqe.symm`.
-
-Take `⟨h', hh'⟩` from `Ideal.mem_span_singleton'.1 hmem`. Establish `e : (F ρ l - q).coeff k = 0`. Rewrite using `[← hh', Polynomial.coeff_mul_X_pow', if_neg (by omega)]`. Rewrite `e` using `[Polynomial.coeff_sub, sub_eq_zero]`. Rewrite using `[e]`.
-
-Conclude with `hq k`.
+/- English proof (authored)
+Truncate at degree k. The degree-elimination result with initial degree bound 1 puts the class of F in the image of the polynomials over S. Choose a polynomial q over S representing that class. The difference F−q is divisible by X^(k+1), so its coefficient in degree k is zero. Thus the degree-k coefficient of F is the corresponding coefficient of q and belongs to S.
 -/
 theorem core {S : Subring R} (ρ : G →* Matrix n n R)
     (hS : ∀ g k, (Matrix.charpolyRev (ρ g)).coeff k ∈ S)
@@ -376,8 +340,8 @@ def MainNotions (T : Subalgebra O (Xs → O)) : Subring (Xs → K) where
     rintro f ⟨t, ht, hf⟩
     exact ⟨-t, T.neg_mem ht, fun x => by simp [hf]⟩
 
-/- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+/- English proof (authored)
+The carrier of MainNotions is defined by FromT. The two membership statements are therefore the same proposition.
 -/
 lemma mem_mainNotions_iff_fromT {T : Subalgebra O (Xs → O)} {f : Xs → K} : f ∈ MainNotions T ↔ FromT T f := Iff.rfl
 
@@ -429,8 +393,8 @@ def S1 (T : Subalgebra O (Xs → O)) (m : ℕ) : Subring (Xs → MvPolynomial (F
     show (fun x => ((-f) x).coeff α) ∈ MainNotions T
     rw [e]; exact (MainNotions T).neg_mem (hf α)
 
-/- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+/- English proof (authored)
+The carrier of S1 requires each multivariate coefficient function to lie in MainNotions. Unfolding that carrier replaces each such membership by the assertion that the coefficient function comes from T, which is the right-hand side.
 -/
 lemma S1_mem_OmF {T : Subalgebra O (Xs → O)} {m : ℕ} {f : Xs → MvPolynomial (Fin m) K} :
     f ∈ S1 T m ↔ ∀ α, FromT T (fun x => (f x).coeff α) := Iff.rfl
@@ -451,8 +415,8 @@ def rho (r : G →* (Xs → Matrix n n K)) (m : ℕ) : G →* Matrix n n (Xs →
     refine Matrix.ext fun i j => funext fun x => ?_
     simp [Matrix.mul_apply, Finset.sum_apply]
 
-/- English proof (translation)
-Unfold `Matrix.charpolyRev`. Rewrite using `[← Polynomial.coe_mapRingHom, RingHom.map_det]`. Use `congr 1`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : i = j <;> simp [h]`.
+/- English proof (authored)
+Apply the coefficient ring homomorphism to the determinant that defines the reversed characteristic polynomial. It commutes with determinants, fixes the polynomial variable, and maps the constant matrix entries through f. Entry by entry the result is the defining matrix for the reversed characteristic polynomial of M with entries mapped through f.
 -/
 lemma charpolyRev_map {A B : Type*} [CommRing A] [CommRing B] (f : A →+* B) (M : Matrix n n A) :
     (Matrix.charpolyRev M).map f = Matrix.charpolyRev (M.map f) := by
@@ -462,8 +426,8 @@ lemma charpolyRev_map {A B : Type*} [CommRing A] [CommRing B] (f : A →+* B) (M
   refine Matrix.ext fun i j => ?_
   by_cases h : i = j <;> simp [h]
 
-/- English proof (translation)
-Break down `subsingleton_or_nontrivial A with hA | hA` into its components or cases. Conclude with `Subsingleton.elim _ _`. Rewrite using `[← Matrix.reverse_charpoly, Polynomial.coeff_reverse, Matrix.charpoly_natDegree_eq_dim, Polynomial.revAt_le le_rfl, Nat.sub_self, Matrix.det_eq_sign_charpoly_coeff]`.
+/- English proof (authored)
+In a subsingleton ring the two values agree. Otherwise let d be the matrix dimension. The characteristic polynomial has degree d, so reversing it makes its constant coefficient the degree-d coefficient of the reversed polynomial. The constant coefficient of the characteristic polynomial is (−1)ᵈ det M. Multiplication by (−1)ᵈ gives the asserted formula because its square is 1.
 -/
 lemma det_eq_coeff {A : Type*} [CommRing A] (M : Matrix n n A) :
     M.det = (-1) ^ Fintype.card n * (Matrix.charpolyRev M).coeff (Fintype.card n) := by
@@ -472,10 +436,8 @@ lemma det_eq_coeff {A : Type*} [CommRing A] (M : Matrix n n A) :
   rw [← Matrix.reverse_charpoly, Polynomial.coeff_reverse, Matrix.charpoly_natDegree_eq_dim,
     Polynomial.revAt_le le_rfl, Nat.sub_self, Matrix.det_eq_sign_charpoly_coeff]
 
-/- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons L l ih`. Rewrite using `[List.map_cons, List.sum_cons, List.map_cons, List.sum_cons, ih (fun L' h => hl L' (List.mem_cons_of_mem _ h))]`. Establish `h1` using `hl L List.mem_cons_self`.
-
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `[term, h1]`. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+Every letter has degree one. For L = (c,1,g) its term is X times the constant-coefficient matrix obtained from cρ(g). Summing these identities factors out X, and the constant-coefficient map commutes with the matrix sum. This also holds for the empty list, whose sums vanish.
 -/
 lemma F_eq {R : Type*} [CommRing R] (ρ : G →* Matrix n n R) (l : List (R × ℕ × G))
     (hl : ∀ L ∈ l, L.2.1 = 1) :
@@ -498,32 +460,12 @@ namespace Formalism.TruncatedSeriesCounting.TruncatedSeriesCountingIdentities
 
 open DetPolyCore DetPolyApp
 
-/- English proof (translation)
-Introduce `O K Xs G _ _ _ _ n _ _ T r hchar m a ha s`. Use `choose sg c hc hae using ha`. Set `coefL : (Σ _ : Fin m, G) → Xs → MvPolynomial (Fin m) K` to `fun p x => MvPolynomial.X p.1 * MvPolynomial.C (algebraMap O K (c p.1 p.2 x))`. Establish `hcoef : ∀ p, coefL p ∈ S1 (K` using `K) T m := by`. Introduce `p α`.
+/- English proof (authored)
+For each matrix aᵢ choose its finite representation as a sum of group matrices with coefficient functions from T. Multiply each coefficient function by the multivariate variable Xᵢ. The resulting polynomial-valued function belongs to S1 because its only possibly nonzero coefficient is the original function. Lift the group matrices to matrices of constant multivariate polynomials, retaining their dependence on the test point. Evaluation at a point commutes with the reversed characteristic polynomial, so its only possibly nonzero multivariate coefficient comes from the original characteristic coefficient function. The input hypothesis puts that function in T.
 
-Use `show FromT T (fun x => (MvPolynomial.X p.1 * MvPolynomial.C (algebraMap O K (c p.1 p.2 x))).coeff α)`. Simplify using `only [MvPolynomial.coeff_X_mul', MvPolynomial.coeff_C]`. Distinguish the cases in `h1 : p.1 ∈ α.support`. Distinguish the cases in `h2 : (0 : Fin m →₀ ℕ) = α - Finsupp.single p.1 1`. Simplify using `only [h1, h2, if_true]`.
+Use these weighted group matrices as the letters of the determinant argument, all with degree one in the auxiliary polynomial variable. The core result puts the coefficient in degree d, the matrix dimension, into S1. Since the letters all have degree one, their determinant polynomial is the reversed characteristic polynomial of the summed weighted matrix. The sign formula converts that coefficient to the determinant, still in S1.
 
-Conclude with `⟨c p.1 p.2, hc p.1 p.2, fun x => rfl⟩`. Simplify using `only [h1, h2, if_true, if_false]`. Conclude with `mem_mainNotions_iff_fromT.1 (MainNotions (K := K) T).zero_mem`. Simplify using `only [h1, if_false]`. Conclude with `mem_mainNotions_iff_fromT.1 (MainNotions (K := K) T).zero_mem`.
-
-Establish `hS : ∀ g k, (Matrix.charpolyRev (rho r m g)).coeff k ∈ S1 (K` using `K) T m := by`. Introduce `g k α`. Establish `e : ∀ x, (Matrix.charpolyRev (rho r m g)).coeff k x = MvPolynomial.C ((Matrix.charpolyRev (r g x)).coeff k)`. Introduce `x`. Establish `h1 : (Matrix.charpolyRev (rho r m g)).coeff k x = ((Matrix.charpolyRev (rho r m g)).map (Pi.evalRingHom (fun _ : Xs => MvPolynomial (Fin m) K) x)).coeff k`.
-
-Rewrite using `[Polynomial.coeff_map]`. Both sides reduce to the same expression. Rewrite using `[h1, charpolyRev_map, show (rho r m g).map (Pi.evalRingHom (fun _ : Xs => MvPolynomial (Fin m) K) x) = (r g x).map MvPolynomial.C from Matrix.ext fun i j => rfl, ← charpolyRev_map, Polynomial.coeff_map]`. Use `show FromT T (fun x => ((Matrix.charpolyRev (rho r m g)).coeff k x).coeff α)`. Simplify using `only [e, MvPolynomial.coeff_C]`.
-
-Distinguish the cases in `h : (0 : Fin m →₀ ℕ) = α`. Simplify using `only [h, if_true]`. Conclude with `hchar g k`. Simplify using `only [h, if_false]`. Conclude with `mem_mainNotions_iff_fromT.1 (MainNotions (K := K) T).zero_mem`.
-
-Use `set l : List ((Xs → MvPolynomial (Fin m) K) × ℕ × G) := ((Finset.univ : Finset (Fin m)).sigma sg).toList.map (fun p => (coefL p, 1, p.2)) with hl_def`. Establish `hl : ∀ L ∈ l, L.1 ∈ S1 (K` using `K) T m ∧ 1 ≤ L.2.1 := by`. Introduce `L hL`. Rewrite `hL` using `[hl_def]`. Take `⟨p, _, rfl⟩` from `List.mem_map.1 hL`.
-
-Conclude with `⟨hcoef p, le_rfl⟩`. Establish `hl1 : ∀ L ∈ l, L.2.1 = 1`. Introduce `L hL`. Rewrite `hL` using `[hl_def]`. Take `⟨p, _, rfl⟩` from `List.mem_map.1 hL`.
-
-Both sides reduce to the same expression. Use `set Mt := (l.map (fun L => L.1 • rho r m L.2.2)).sum with hMt`. Establish `hcore` using `core (rho r m) hS l hl (Fintype.card n)`. Establish `hF : F (rho r m) l = Matrix.charpolyRev Mt`. Unfold `F Matrix.charpolyRev`.
-
-Rewrite using `[F_eq _ l hl1]`. Rewrite `hcore` using `[hF]`. Establish `hdet : Mt.det ∈ S1 (K` using `K) T m := by`. Rewrite using `[det_eq_coeff]`. Conclude with `(S1 (K := K) T m).mul_mem ((S1 (K := K) T m).pow_mem ((S1 (K := K) T m).neg_mem (S1 (K := K) T m).one_mem) _) hcore`.
-
-Establish `hx : ∀ x, Mt.det x = Matrix.det (∑ i, (MvPolynomial.X i : MvPolynomial (Fin m) K) • (a i x).map MvPolynomial.C)`. Introduce `x`. Rewrite using `[show Mt.det x = Pi.evalRingHom (fun _ : Xs => MvPolynomial (Fin m) K) x Mt.det from rfl, RingHom.map_det]`. Use `congr 1`. Rewrite using `[hMt, hl_def, map_list_sum, List.map_map, List.map_map, Finset.sum_map_toList, Finset.sum_sigma]`.
-
-Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[hae i]`. Use `Matrix.ext fun i' j' => ?_` and prove the remaining obligations. Simplify using `[coefL, rho, Matrix.sum_apply, Finset.sum_apply, Finset.mul_sum, mul_assoc]`. Use `Finset.sum_congr rfl (fun g _ => ?_)` and prove the remaining obligations.
-
-Rewrite using `[Algebra.smul_def, map_mul]`. Take `⟨t, ht, htx⟩` from `hdet s`. Conclude with `⟨t, ht, fun x => by rw [htx x]; exact congrArg (MvPolynomial.coeff s) (hx x)⟩`.
+At each test point, expand the finite sum and use the chosen representations of the aᵢ. The weighted matrix evaluates to the sum of Xᵢaᵢ with entries mapped to constant multivariate polynomials. Evaluation commutes with the determinant. Taking the requested multivariate coefficient now gives a function from T by the defining condition of S1.
 -/
 theorem det_poly_statement : LemmaDetPoly := by
   intro O K Xs G _ _ _ _ n _ _ T r hchar m a ha s

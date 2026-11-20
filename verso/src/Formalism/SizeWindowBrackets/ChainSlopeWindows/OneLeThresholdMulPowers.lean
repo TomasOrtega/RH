@@ -79,26 +79,8 @@ structure Facts (P : Par) (e K z u E X S sb v w8 : ℝ) : Prop where
   hu : u = P.x ^ (P.ε / 3)
   hz : z = P.x ^ P.ε
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
-
-Clear the denominators using the available nonvanishing facts. Replace the relevant objects with their definitions. Clear the denominators using the available nonvanishing facts. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Choose z = x to the power ε, u = x to the power ε/3, and E = x to the power e. Take X = exp(u), S = exp(x to the power ε/4), and the half-size exp(z/2). The large-x inequalities express the polynomial factor as E⁴x⁴ and bound it by X after multiplying by the given constant. They also give x ≥ 100, since the threshold and z are at least one. Taking logs of the bound by X shows that both log(x) and e log(x) are at most u ≤ z. Splitting exp(z) into two equal factors gives the square of the half-size, while dividing it by X gives v. Substitution in the original size formulas gives the auxiliary sizes and their logarithms. The floor bounds follow by comparing each floor to its nonnegative argument. The remaining inequalities are the original windows, with x² ≤ n following from the two bounds on the power of two.
 -/
 theorem facts {P : Par} {e K : ℝ} (hW : Windows P e K) (hL : LargeX P.x P.ε e K) :
     ∃ z u E X S sb v w8 : ℝ, Facts P e K z u E X S sb v w8 := by
@@ -182,8 +164,8 @@ theorem facts {P : Par} {e K : ℝ} (hW : Windows P e K) (hL : LargeX P.x P.ε e
     hu := rfl
     hz := rfl }
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+Multiply the original inequality by m ≥ 0. The resulting upper bound mcb is nonnegative. Multiplying that upper bound by T ≥ 1 can only increase it, yielding the stated expression.
 -/
 lemma scale1' {m T q c b : ℝ} (hm : 0 ≤ m) (hT : 1 ≤ T) (hcb : 0 ≤ c * b) (h : q ≤ c * b) :
     m * q ≤ c * (T * m * b) := by
@@ -191,8 +173,8 @@ lemma scale1' {m T q c b : ℝ} (hm : 0 ≤ m) (hT : 1 ≤ T) (hcb : 0 ≤ c * b
   have h2 : 0 ≤ (T - 1) * (m * (c * b)) := mul_nonneg (by linarith) (mul_nonneg hm hcb)
   linarith
 
-/- English proof (translation)
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+Since mT is nonnegative, multiply q ≤ cb by mT and rearrange the factors.
 -/
 lemma scale2 {m T q c b : ℝ} (hm : 0 ≤ m) (hT : 1 ≤ T) (h : q ≤ c * b) :
     m * T * q ≤ c * (T * m * b) := by
@@ -200,8 +182,8 @@ lemma scale2 {m T q c b : ℝ} (hm : 0 ≤ m) (hT : 1 ≤ T) (h : q ≤ c * b) :
     mul_le_mul_of_nonneg_left h (mul_nonneg hm (by linarith))
   linarith
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+Since 4 is the square of 2, its logarithm is twice log(2). The bound log(2) < 7/10 gives twice this logarithm below 3/2.
 -/
 lemma log_four_le_three_halves : Real.log 4 ≤ 3 / 2 := by
   have h : Real.log 4 = 2 * Real.log 2 := by
@@ -209,20 +191,20 @@ lemma log_four_le_three_halves : Real.log 4 ≤ 3 / 2 := by
   have := Real.log_two_lt_d9
   linarith
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Since 4 ≥ 1, monotonicity gives log(4) ≥ log(1) = 0.
 -/
 lemma log_four_nonneg : 0 ≤ Real.log 4 := Real.log_nonneg (by norm_num)
 
-/- English proof (translation)
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+The inequality log(t) ≤ t − 1 for positive t gives log(2) ≤ 1.
 -/
 lemma log_two_le_one_alt : Real.log 2 ≤ 1 := by
   have := Real.log_two_lt_d9
   linarith
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Since 2 ≥ 1, its logarithm is nonnegative.
 -/
 lemma log_two_nonneg : 0 ≤ Real.log 2 := Real.log_nonneg (by norm_num)
 
@@ -231,104 +213,104 @@ namespace Facts
 variable {P : Par} {e K z u E X S sb v w8 : ℝ} (F : Facts P e K z u E X S sb v w8)
 include F
 
-/- English proof (translation)
-Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+The large-x estimate gives x ≥ 100, which is positive.
 -/
 lemma xpos : 0 < P.x := by linarith [F.hx]
-/- English proof (translation)
-Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+The large-x estimate gives x ≥ 100 ≥ 1.
 -/
 lemma x1 : 1 ≤ P.x := by linarith [F.hx]
-/- English proof (translation)
-Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+The threshold parameter K is at least one, hence positive.
 -/
 lemma Kpos : 0 < K := by linarith [F.hK]
-/- English proof (translation)
-Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+The size z is at least one, so it is positive.
 -/
 lemma zpos : 0 < z := by linarith [F.z1]
-/- English proof (translation)
-Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+The polynomial size E is at least one, so it is positive.
 -/
 lemma Epos : 0 < E := by linarith [F.E1]
-/- English proof (translation)
-Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+The exponential scale S is at least one, hence positive.
 -/
 lemma Spos : 0 < S := by linarith [F.S1]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Both bases E and x are at least one, so their fourth powers are at least one. The product is at least one.
 -/
 lemma M1 : 1 ≤ E ^ 4 * P.x ^ 4 :=
   one_le_mul_of_one_le_of_one_le (one_le_pow₀ F.E1) (one_le_pow₀ F.x1)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Each of K and the product E⁴x⁴ is at least one. Their product is therefore at least one.
 -/
 lemma one_le_threshold_mul_powers : 1 ≤ K * (E ^ 4 * P.x ^ 4) := one_le_mul_of_one_le_of_one_le F.hK F.M1
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+The large-x inequality bounds one hundred times K E⁴x⁴ above by X. The product K E⁴x⁴ is at least one, so X is at least one.
 -/
 lemma X1 : 1 ≤ X := by
   have := F.one_le_threshold_mul_powers
   have := F.hXB
   linarith
 
-/- English proof (translation)
-Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+The lower bound X ≥ 1 makes X positive.
 -/
 lemma Xpos : 0 < X := by linarith [F.X1]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Each factor X and S is at least one, so their product is at least one.
 -/
 lemma one_le_x_mul_s : 1 ≤ X * S := one_le_mul_of_one_le_of_one_le F.X1 F.S1
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+The half-size bounds one hundred times K E⁴x⁴XS from above. Both K E⁴x⁴ and XS are at least one, so the half-size is at least one.
 -/
 lemma sb1 : 1 ≤ sb := by
   have h1 : 1 ≤ K * (E ^ 4 * P.x ^ 4) * (X * S) := one_le_mul_of_one_le_of_one_le F.one_le_threshold_mul_powers F.one_le_x_mul_s
   have := F.hsb
   linarith
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Check the signs of the components of the expression.
+/- English proof (authored)
+The base size is the square of the half-size. The half-size is at least one, so its square is positive.
 -/
 lemma bpos : 0 < P.b := by
   rw [F.hb]
   have := F.sb1
   positivity
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The base size is positive, hence nonnegative.
 -/
 lemma b0 : 0 ≤ P.b := F.bpos.le
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The base size is the square of the half-size, which is at least one. Multiplying the half-size by itself therefore gives a value at least as large as the half-size.
 -/
 lemma sb_le_b : sb ≤ P.b := by
   rw [F.hb]
   have := F.sb1
   exact le_mul_of_one_le_left (by linarith) this
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The threshold product is at most the half-size by the large-x inequality. The half-size is at most the full base size.
 -/
 lemma hbXS : 100 * K * (E ^ 4 * P.x ^ 4) * (X * S) ≤ P.b := F.hsb.trans F.sb_le_b
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Multiply the bound by the nonnegative half-size. The resulting upper bound is its square, which equals the full base size.
 -/
 lemma hbsb : 100 * K * (E ^ 4 * P.x ^ 4) * (X * S) * sb ≤ P.b := by
   rw [F.hb]
   have := F.sb1
   exact mul_le_mul_of_nonneg_right F.hsb (by linarith)
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+For z ≥ 1 and i ≤ 4, the i-th power is at most the fourth power. Multiply by the nonnegative threshold factor and use the large-x bound.
 -/
 lemma zpow_le {i : ℕ} (hi : i ≤ 4) : 100 * K * z ^ i ≤ P.x := by
   refine le_trans ?_ F.hz4
@@ -336,10 +318,8 @@ lemma zpow_le {i : ℕ} (hi : i ≤ 4) : 100 * K * z ^ i ≤ P.x := by
   have := pow_le_pow_right₀ F.z1 hi
   gcongr
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+Apply the threshold inequality at exponent one. Since K ≥ 1, dropping K only decreases the nonnegative product, yielding 100z ≤ x.
 -/
 lemma hundred_z_le_x : 100 * z ≤ P.x := by
   have h := F.zpow_le (i := 1) (by norm_num)
@@ -350,28 +330,28 @@ lemma hundred_z_le_x : 100 * z ≤ P.x := by
     gcongr
   linarith
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The reciprocal of the positive number x is positive.
 -/
 lemma rpos : 0 < P.x⁻¹ := inv_pos.2 F.xpos
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The positive number x is nonzero, so multiplying it by its reciprocal gives one.
 -/
 lemma xr : P.x * P.x⁻¹ = 1 := mul_inv_cancel₀ F.xpos.ne'
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Inversion commutes with taking a square, so the reciprocal of x² is the square of the reciprocal of x.
 -/
 lemma r2 : (P.x ^ 2)⁻¹ = P.x⁻¹ ^ 2 := (inv_pow _ _).symm
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+Multiply the threshold inequality by the nonnegative reciprocal of x. The right side becomes one.
 -/
 lemma Kzr {i : ℕ} (hi : i ≤ 4) : 100 * K * z ^ i * P.x⁻¹ ≤ 1 := by
   have h := mul_le_mul_of_nonneg_right (F.zpow_le hi) F.rpos.le
   rwa [F.xr] at h
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
+/- English proof (authored)
+The constant, K, the natural power of z and the reciprocal of x are all nonnegative. Their product is nonnegative.
 -/
 lemma Kzr0 (i : ℕ) : 0 ≤ 100 * K * z ^ i * P.x⁻¹ := by
   have := F.Kpos
@@ -379,84 +359,84 @@ lemma Kzr0 (i : ℕ) : 0 ≤ 100 * K * z ^ i * P.x⁻¹ := by
   have := F.rpos
   positivity
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
+/- English proof (authored)
+Both the natural power of z and the reciprocal of x are nonnegative. Multiplying them by one hundred preserves nonnegativity.
 -/
 lemma zr0 (i : ℕ) : 0 ≤ 100 * z ^ i * P.x⁻¹ := by
   have := F.zpos
   have := F.rpos
   positivity
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+First increase A to B in the quotient, since y ≥ x² > 0. The numerator B is nonnegative, so decreasing the denominator from y to x² can only increase the quotient. The new reciprocal is the square of 1/x.
 -/
 lemma div_le_div_sq_of_le {A B y : ℝ} (hAB : A ≤ B) (hB : 0 ≤ B) (hy : P.x ^ 2 ≤ y) : A / y ≤ B * P.x⁻¹ ^ 2 := by
   have hx2 : 0 < P.x ^ 2 := pow_pos F.xpos 2
   rw [← F.r2, ← div_eq_mul_inv]
   exact div_le_div₀ hB hAB hx2 hy
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The positive square x² is at most n, so n is positive.
 -/
 lemma npos : 0 < P.n := lt_of_lt_of_le (pow_pos F.xpos 2) F.nx
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Since x ≥ 1, its square is at least one. The inequality x² ≤ n gives n ≥ 1.
 -/
 lemma n1 : 1 ≤ P.n := le_trans (one_le_pow₀ F.x1) F.nx
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The main size is the product of x and the positive base size, so it is positive.
 -/
 lemma apos : 0 < P.a := by rw [F.ha]; exact mul_pos F.xpos F.bpos
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Both log(x) and z are nonnegative. Their sum is therefore nonnegative.
 -/
 lemma la0 : 0 ≤ P.lx + z := add_nonneg F.lx0 F.zpos.le
-/- English proof (translation)
-Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+The bound log(x) ≤ z makes the sum log(x) + z at most 2z.
 -/
 lemma la2z : P.lx + z ≤ 2 * z := by linarith [F.lxz]
-/- English proof (translation)
-Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+The sum is at most 2z, and 100z is at most x. Because z is nonnegative, 2z ≤ 100z gives the claim.
 -/
 lemma lax : P.lx + z ≤ P.x := by linarith [F.lxz, F.hundred_z_le_x, F.zpos]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
+/- English proof (authored)
+By definition E is x to the power e. Taking the logarithm at positive x gives e log(x).
 -/
 lemma logE : Real.log E = e * P.lx := by
   rw [F.hE, Real.log_rpow F.xpos]; rfl
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Monotonicity bounds log(y) by log(E). The latter equals e log(x) and is at most z by the logarithmic size estimate.
 -/
 lemma log_le_alt {y : ℝ} (hy0 : 0 < y) (hy : y ≤ E) : Real.log y ≤ z :=
   (Real.log_le_log hy0 hy).trans (by rw [F.logE]; exact F.elx)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The base size equals vX. Since v is nonnegative and X ≥ 1, this is at least v.
 -/
 lemma v_le_b : v ≤ P.b := by
   rw [← F.hvX]; exact le_mul_of_one_le_right F.v0 F.X1
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Substitute z = x to the power ε into the slope allowance. The factor x to the power 4ε is z⁴, and division by x is multiplication by its reciprocal.
 -/
 lemma hsg : sg P K = 100 * K * z ^ 4 * P.x⁻¹ := by
   unfold sg
   rw [F.hz, div_eq_mul_inv, mul_comm 4 P.ε, Real.rpow_mul F.xpos.le, Real.rpow_ofNat]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+In the reciprocal expression for the slope allowance all factors are nonnegative.
 -/
 lemma sg0 : 0 ≤ sg P K := by rw [F.hsg]; exact F.Kzr0 4
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The reciprocal threshold bound at exponent four says exactly that the slope allowance is at most one.
 -/
 lemma sg1 : sg P K ≤ 1 := by rw [F.hsg]; exact F.Kzr (le_refl _)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Because z ≥ 1 and i ≤ 4, the i-th power of z is at most z⁴. Multiplying by the nonnegative common factors gives the bound by the slope allowance.
 -/
 lemma Kzr_sg {i : ℕ} (hi : i ≤ 4) : 100 * K * z ^ i * P.x⁻¹ ≤ sg P K := by
   rw [F.hsg]
@@ -465,10 +445,8 @@ lemma Kzr_sg {i : ℕ} (hi : i ≤ 4) : 100 * K * z ^ i * P.x⁻¹ ≤ sg P K :=
   have := F.rpos
   gcongr
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+Insert the factor K ≥ 1 into the nonnegative product to increase its value. The threshold bound with K then gives the stated comparison.
 -/
 lemma zr_sg {i : ℕ} (hi : i ≤ 4) : 100 * z ^ i * P.x⁻¹ ≤ sg P K := by
   refine le_trans ?_ (F.Kzr_sg hi)
@@ -478,16 +456,16 @@ lemma zr_sg {i : ℕ} (hi : i ≤ 4) : 100 * z ^ i * P.x⁻¹ ≤ sg P K := by
   have h : 100 * 1 * z ^ i * P.x⁻¹ ≤ 100 * K * z ^ i * P.x⁻¹ := by gcongr
   linarith
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The factor 100Kz⁴ is at least one. Thus multiplying the nonnegative reciprocal of x by that factor gives at least the reciprocal itself.
 -/
 lemma r_sg : P.x⁻¹ ≤ sg P K := by
   rw [F.hsg]
   have h1 : 1 ≤ K * z ^ 4 := one_le_mul_of_one_le_of_one_le F.hK (one_le_pow₀ F.z1)
   exact le_mul_of_one_le_left F.rpos.le (by linarith)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+Since 0 ≤ c ≤ 1 and w is nonnegative, cw ≤ w ≤ the slope allowance. Multiply by the nonnegative base size.
 -/
 lemma close_sg {c w : ℝ} (_hc0 : 0 ≤ c) (hc : c ≤ 1) (hw0 : 0 ≤ w) (hw : w ≤ sg P K) :
     P.b * c * w ≤ sg P K * P.b := by
@@ -495,22 +473,22 @@ lemma close_sg {c w : ℝ} (_hc0 : 0 ≤ c) (hc : c ≤ 1) (hw0 : 0 ≤ w) (hw :
   have h2 := mul_le_mul_of_nonneg_left h1 F.b0
   linarith
 
-/- English proof (translation)
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+Multiply the reciprocal bound by the nonnegative base size and rearrange the factors.
 -/
 lemma br_sg : P.b * P.x⁻¹ ≤ sg P K * P.b := by
   have := mul_le_mul_of_nonneg_left F.r_sg F.b0
   linarith
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Both bases are at least one. Each natural power is nondecreasing in its exponent, and both are nonnegative, so multiply the two comparisons.
 -/
 lemma monoG {i j i' j' : ℕ} (hi : i ≤ i') (hj : j ≤ j') : E ^ i * P.x ^ j ≤ E ^ i' * P.x ^ j' :=
   mul_le_mul (pow_le_pow_right₀ F.E1 hi) (pow_le_pow_right₀ F.x1 hj)
     (pow_nonneg F.xpos.le _) (pow_nonneg F.Epos.le _)
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Monotonicity in both exponents gives the bound by E⁴x³. Since x is nonzero, this equals E⁴x⁴ times the reciprocal of x.
 -/
 lemma mono3 {i j : ℕ} (hi : i ≤ 4) (hj : j ≤ 3) : E ^ i * P.x ^ j ≤ E ^ 4 * P.x ^ 4 * P.x⁻¹ := by
   have h : E ^ 4 * P.x ^ 4 * P.x⁻¹ = E ^ 4 * P.x ^ 3 := by
@@ -518,10 +496,8 @@ lemma mono3 {i j : ℕ} (hi : i ≤ 4) (hj : j ≤ 3) : E ^ i * P.x ^ j ≤ E ^ 
   rw [h]
   exact F.monoG hi hj
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Chain the equalities or inequalities of the calculation.
+/- English proof (authored)
+Use the coefficient bound by one hundred and the power comparison to bound the expression by the threshold product times 1/x. The threshold product is at most b. Apply the estimate bounding b/x by b times the slope allowance.
 -/
 lemma polyXS' {i j : ℕ} (hi : i ≤ 4) (hj : j ≤ 3) {c : ℝ} (hc : c ≤ 100) :
     c * K * (E ^ i * P.x ^ j) * (X * S) ≤ sg P K * P.b := by
@@ -534,8 +510,8 @@ lemma polyXS' {i j : ℕ} (hi : i ≤ 4) (hj : j ≤ 3) {c : ℝ} (hc : c ≤ 10
     _ = (100 * K * (E ^ 4 * P.x ^ 4) * (X * S)) * P.x⁻¹ := by ring
     _ ≤ P.b * P.x⁻¹ := mul_le_mul_of_nonneg_right F.hbXS F.rpos.le
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Since S ≥ 1 and the coefficient and remaining factors are nonnegative, adding the factor S can only increase the expression. The bound for the product XS now applies.
 -/
 lemma polyX' {i j : ℕ} (hi : i ≤ 4) (hj : j ≤ 3) {c : ℝ} (hc0 : 0 ≤ c) (hc : c ≤ 100) :
     c * K * (E ^ i * P.x ^ j) * X ≤ sg P K * P.b := by
@@ -545,10 +521,8 @@ lemma polyX' {i j : ℕ} (hi : i ≤ 4) (hj : j ≤ 3) {c : ℝ} (hc0 : 0 ≤ c)
   have h5 : X ≤ X * S := le_mul_of_one_le_right F.Xpos.le F.S1
   gcongr
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Use the coefficient and power bounds to obtain one hundred times K E⁴x⁴ times v/x. The polynomial threshold factor is at most X, so the product is at most Xv/x = b/x. Apply the reciprocal slope bound.
 -/
 lemma polyv' {i j : ℕ} (hi : i ≤ 4) (hj : j ≤ 3) {c : ℝ} (hc : c ≤ 100) :
     c * K * (E ^ i * P.x ^ j) * v ≤ sg P K * P.b := by
@@ -567,16 +541,8 @@ lemma polyv' {i j : ℕ} (hi : i ≤ 4) (hj : j ≤ 3) {c : ℝ} (hc : c ≤ 100
 
 end Facts
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
-
-Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
-
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Use the formula for the largest window and write its logarithmic factor as log(x) + z. Bound the counts n and N by E, the logarithmic factor by x, and the constant by K. Expanding gives a term 4K E⁴x²X and a term 8K E²x³X. Monotonicity in the two exponents bounds their sum by 12K E⁴x³X, which the polynomial estimate bounds by the slope allowance times b. Scale by the nonnegative count m and use T ≥ 1.
 -/
 theorem size_floors_bound : SizeFloors := by
   intro P e K m T hW hL hm hT
@@ -598,18 +564,8 @@ theorem size_floors_bound : SizeFloors := by
     _ = 12 * K * (E ^ 4 * P.x ^ 3) * X := by ring
     _ ≤ sg P K * P.b := F.polyX' (le_refl _) (le_refl _) (by norm_num) (by norm_num)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
-
-Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+The identity for the main size gives log(2a) = log(2) + log(x) + z, which is nonnegative and at most x. The sum of the three size parameters is at most 3ES because the two smaller scales are at most S and the remaining count is at most E. Substitute the formula for the largest window and bound n by E and the constant by K. The coefficient is then at most 6K E²x²XS, controlled by the polynomial estimate. Multiply by mT.
 -/
 theorem size_cp_bucket_bound : SizeCp := by
   intro P e K m T hW hL hm hT
@@ -637,16 +593,8 @@ theorem size_cp_bucket_bound : SizeCp := by
   have := scale2 hm hT key
   linarith
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+Expand the first prime coefficient using the auxiliary size xv. Bound the two prime or group factors by E, the constant by K, log(x) by x and twice log(4) by three. The result is at most 3K E²x²v. The polynomial estimate with factor v bounds this by the slope allowance times b. Scale by mT.
 -/
 theorem size_prime_low_bound : SizePrLow := by
   intro P e K m T hW hL hm hT
@@ -667,10 +615,8 @@ theorem size_prime_low_bound : SizePrLow := by
   have := scale2 hm hT key
   linarith
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
-
-Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+Expand the second prime coefficient and substitute the auxiliary size and thin width, together with the reciprocal form of the small parameter. Use vX = b and the positivity of x and n to cancel the denominators. Distributing multiplication by X gives the five stated terms.
 -/
 lemma xprime_q_two_expand {P : Par} {e K z u E X S sb v w8 : ℝ} (F : Facts P e K z u E X S sb v w8) :
     P.Xp * P.Q₂ = P.C * P.b + P.C * X * (P.η + P.Sc) + P.C * (P.b / P.n) * P.lx * w8
@@ -682,38 +628,8 @@ lemma xprime_q_two_expand {P : Par} {e K z u E X S sb v w8 : ℝ} (F : Facts P e
   field_simp
   ring
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
-
-Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Expand the second prime coefficient times its window. The leading term is Cb. For the second term use the two bounds by S and the polynomial estimate with factor XS. For the third use n ≥ x² and both logarithmic factors bounded by z. The threshold estimate then bounds four times this term by the slope allowance times b. For the fourth use t ≤ E and z² ≤ x and apply the polynomial estimate with factor X. For the fifth use the half-size bound on the residual term and its stronger product bound by b, leaving a factor 1/x. In each case four times the term is at most the same allowance. Adding the four bounds gives Cb plus the allowance times b. Multiply by twice log(4), bounding that coefficient on the allowance by three, then scale by mT.
 -/
 theorem size_prime_high_bound : SizePrHigh := by
   intro P e K m T hW hL hm hT
@@ -787,26 +703,8 @@ theorem size_prime_high_bound : SizePrHigh := by
     linarith
   exact scale2 hm hT key
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+The denominators k and the order threshold are at least x². Bound the corresponding numerators by z² and one. The log-window factor is at most 3z. For the remaining quotient, the prime threshold minus one is at least x⁴ and its logarithm is at most z. Thus this quotient is at most 4z/x². The entire bracket is at most (3z³ + 7z)/x² ≤ 10z³/x². Using a = xb and log(x) ≤ z, the coefficient is at most 20Kz⁴b/x. The threshold allowance bounds this, and scaling by mT yields the claim.
 -/
 theorem size_or_bucket_bound : SizeOr := by
   intro P e K m T hW hL hm hT
@@ -861,16 +759,8 @@ theorem size_or_bucket_bound : SizeOr := by
   have := scale2 hm hT key
   linarith
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+Use β ≤ K/x² and the logarithmic window bound by 3z. Since a = xb, the normalized coefficient is at most 96Kzb/x. This is at most the reciprocal threshold bound at exponent one times b, and hence at most the slope allowance times b. Multiply by mT.
 -/
 theorem size_bad_orbits_bound : SizeBad := by
   intro P e K m T hW hL hm hT
@@ -894,24 +784,8 @@ theorem size_bad_orbits_bound : SizeBad := by
   have := scale2 hm hT key
   linarith
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Replace the chosen expression with an arbitrary variable.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+The logarithm of the larger of Y and the largest window is at most 3z. For Y this follows from Y ≤ 2X. For the window, expand the logarithm of xnX and bound its three terms by z. The logarithm of the power of two is at most z, so the total logarithm is nonnegative and at most 4z. The order count is at most z, its constant at most K, and the denominator is at least x². Substituting a = xb bounds the coefficient by 64Kz³b/x, which the threshold estimate controls. Scale by mT.
 -/
 theorem size_orders_bucket_bound : SizeOrders := by
   intro P e K m T hW hL hm hT
@@ -957,16 +831,8 @@ theorem size_orders_bucket_bound : SizeOrders := by
   have := scale2 hm hT key
   linarith
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+The band count is at most z, the reciprocal prime threshold and band width are each at most 1/x², and the logarithm of twice the window is at most 2z. With a = xb the coefficient is at most 40z²b/x. The reciprocal threshold bound at exponent two controls this by the slope allowance times b. Scale by mT.
 -/
 theorem size_band_bound : SizeBand := by
   intro P e K m T hW hL hm hT
@@ -996,20 +862,8 @@ theorem size_band_bound : SizeBand := by
   have := scale2 hm hT key
   linarith
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+The formula for the largest window gives log(2X″) ≤ 4z after expanding the four logarithms. Both a times the squared cutoff and the thin width times the cutoff are at most b/x, using the cutoff bound by 1/x, a = xb, and the thin width bound by b. Thus the coefficient is at most 16zb/x, controlled by the slope allowance. Multiply by mT.
 -/
 theorem size_high_bucket_bound : SizeHigh := by
   intro P e K m T hW hL hm hT
@@ -1049,18 +903,8 @@ theorem size_high_bucket_bound : SizeHigh := by
   have := scale2 hm hT key
   linarith
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+The function log(t)/t is decreasing for t ≥ exp(1). The discriminant parameter is at least x², and x² is above that threshold. Thus its logarithmic quotient is at most log(x²)/x² ≤ 2z/x². Multiplying by twice a = 2xb gives at most 4zb/x. Apply the slope allowance estimate and multiply by mT.
 -/
 theorem size_discriminant_bound : SizeD := by
   intro P e K m T hW hL hm hT
@@ -1093,20 +937,8 @@ theorem size_discriminant_bound : SizeD := by
   have := scale2 hm hT key
   linarith
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The reciprocal threshold is z, and the small parameter is at most 1/x². Its two contributions are therefore bounded by 2z/x² in total. The log-window factor is at most 4z. Using a = xb bounds the resulting coefficient by 32z²b/x, which the slope allowance controls. Multiply by mT.
 -/
 theorem size_second_io_bound : SizeSecondIo := by
   intro P e K m T hW hL hm hT
@@ -1140,20 +972,16 @@ theorem size_second_io_bound : SizeSecondIo := by
   have := scale2 hm hT key
   linarith
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+Choose the auxiliary sizes furnished by the window estimates. The reciprocal formula shows that the slope allowance is nonnegative, and the threshold bound at exponent four makes it at most one.
 -/
 theorem sigma_le_one : SgLeOne := by
   intro P e K hW hL
   obtain ⟨z, u, E, X, S, sb, v, w8, F⟩ := facts hW hL
   exact ⟨F.sg0, F.sg1⟩
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+Expand the total into its floor, prime, order, band, orbit, discriminant and index contributions. Apply the individual size bounds. Adding their coefficients gives twice log(4) times C plus thirteen times the slope allowance, multiplying the common size unit.
 -/
 theorem size_sharp_bound : WindowSizeBoundSharp := by
   intro P e K m T hW hL hm hT
@@ -1171,8 +999,8 @@ theorem size_sharp_bound : WindowSizeBoundSharp := by
   unfold tDet
   linarith
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression.
+/- English proof (authored)
+The size unit is the product of T, m and the positive exponential base size. The other two factors are nonnegative.
 -/
 lemma unitU_nonneg {P : Par} {m T : ℝ} (hm : 0 ≤ m) (hT : 1 ≤ T) : 0 ≤ unitU P m T := by
   have hb : 0 < P.b := Real.exp_pos _
@@ -1180,10 +1008,8 @@ lemma unitU_nonneg {P : Par} {m T : ℝ} (hm : 0 ≤ m) (hT : 1 ≤ T) : 0 ≤ u
   unfold unitU
   positivity
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+Use the sharper total estimate. Since C is nonnegative and twice log(4) is at most three, the first part of the coefficient is at most 3C. Since the slope allowance is at most one, its contribution is at most thirteen. The size unit is nonnegative, so replacing the coefficient preserves the bound.
 -/
 theorem size_total_bound : WindowSizeBound := by
   intro P e K m T hW hL hm hT
@@ -1195,8 +1021,8 @@ theorem size_total_bound : WindowSizeBound := by
     linarith [F.sg1]
   exact h.trans (mul_le_mul_of_nonneg_right h1 hU)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+The second-index estimate is at most the slope allowance times the common unit. The slope allowance is at most one and the unit is nonnegative, giving the claim.
 -/
 lemma secondIo_le_unit {P : Par} {e K m T : ℝ} (hW : Windows P e K) (hL : LargeX P.x P.ε e K)
     (hm : 0 ≤ m) (hT : 1 ≤ T) : tSecondIo P m T ≤ unitU P m T := by
@@ -1205,28 +1031,8 @@ lemma secondIo_le_unit {P : Par} {e K m T : ℝ} (hW : Windows P e K) (hL : Larg
   have := mul_le_mul_of_nonneg_right h1 (unitU_nonneg (P := P) hm hT)
   linarith
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Establish an intermediate fact. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Replace the relevant objects with their definitions.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+The formulas for the base and auxiliary sizes give positive denominators and the identity relating the largest window to the main size and thin width. The bounds x ≥ 100, n ≥ x², the exponential scales at least one, and the stated prime and discriminant lower bounds give the remaining lower size limits. The cutoff is nonnegative and at most 1/x ≤ 1/100. The definitions of the two prime coefficients express them as sums and products of nonnegative terms, using the reciprocal form of the small parameter. The log and scale signs are inherited from the window facts, which also give the final formula for the largest window.
 -/
 theorem side_condition_of_windows : SideConditionsOfWindows := by
   intro P e K hW hL
@@ -1277,26 +1083,8 @@ theorem side_condition_of_windows : SideConditionsOfWindows := by
   · linarith [F.kx]
   · linarith [F.x_sq_le_threshold]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
-
-Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
+/- English proof (authored)
+Since 1 − 4ε is positive, eventually x to that power dominates 100K. Multiplying by x to the power 4ε gives the first threshold. For the polynomial bound, replace 100K by the positive larger constant 100(|K| + 1). For sufficiently large x, its logarithm and the power term (4e + 4)log(x) are each at most half of x to the power ε/3, by the growth of that power and its dominance over log(x). Exponentiating gives the second threshold. Eventually x to the power 2ε/3 is at least six, so x to the power ε is at least six times x to the power ε/3. The latter also bounds x to the power ε/4. Thus multiplying the second threshold by the combined exponential factor still gives at most exp(x to the power ε divided by two). Take a common threshold for these conditions and x ≥ 1.
 -/
 theorem large_x_eventually : LargeXEv := by
   intro ε e K hε hε4
@@ -1360,10 +1148,8 @@ theorem large_x_eventually : LargeXEv := by
     _ = Real.exp (x ^ (ε / 3) + (x ^ (ε / 3) + x ^ (ε / 4))) := (Real.exp_add _ _).symm
     _ ≤ Real.exp (x ^ ε / 2) := Real.exp_le_exp.2 (by linarith)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Apply the weighted choice argument to the common upper envelope for the loss and the common upper envelope for each index term. It yields one positive-weight choice satisfying both estimates for the envelopes. Every unit's loss lies below the first envelope, and multiplying its pointwise index comparisons by the nonnegative prime logarithms and summing bounds its total by the second envelope. Hence the same choice works for every unit.
 -/
 theorem loss_choice_uniform : LossChoiceU := by
   intro Ω U _ π Loss s Sig io D Y θ s₀ mTa h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 h11
@@ -1377,10 +1163,8 @@ theorem loss_choice_uniform : LossChoiceU := by
   · exact Finset.sum_le_sum (fun p hp =>
       mul_le_mul_of_nonneg_left (h11 υ p hp o) (Real.log_natCast_nonneg p))
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
-
-Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Check the signs of the components of the expression. A detailed English derivation is pending.
+/- English proof (authored)
+Every prime in the second class belongs to the candidate set and exceeds the signature threshold. The class sum is thus over a subset of the qualifying candidates. All weighted prime terms are nonnegative, so enlarging the set only increases the sum. Express the enlarged sum with the threshold indicator.
 -/
 theorem second_term_le : SecondLe := by
   intro Ps s cl Sg θ m T a hm hT ha hcl
@@ -1396,18 +1180,8 @@ theorem second_term_le : SecondLe := by
         positivity
     _ = _ := Finset.sum_congr rfl (fun p _ => by ring)
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses.
-
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Use the first-kind estimate with root endpoints given by the powers of X′ with exponents 1/(i + 1). Each such endpoint lies between one and X′. The order-class alternatives are already in the required form. For a prime in a power band, the band exponent estimate bounds its exponent by the floor of log(X′), and taking roots gives both interval conditions for index one less than the exponent. These are the remaining hypotheses of the first-kind estimate.
 -/
 theorem first_kind_bound : FirstKind := by
   obtain ⟨C, hC⟩ := first_kind_bucket_bound
@@ -1442,18 +1216,8 @@ theorem first_kind_bound : FirstKind := by
       · have : i - 1 + 1 = i := Nat.sub_add_cancel b2
         simp only [this]; exact c2
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+For each served prime, omitted top indices lie among its marked bad indices, and any prime with an omission belongs to the bad-prime set. Multiply the resulting count comparison by the nonnegative prime weights and extend the sum to that whole set. Apply the assumed weighted bad-count estimate and then the prime logarithmic sum bound up to the window. This yields the stated bad-orbit term.
 -/
 lemma bad_le {τ : Type} (P : Par) (Ps sB : Finset ℕ) (cl : ℕ → PClass) (TT : Finset τ)
     (TTp : ℕ → Finset τ) (BAD : ℕ → τ → Prop) (m : ℝ) (hm : 0 ≤ m) (ha : 0 ≤ P.a) (hβ : 0 ≤ P.β)
@@ -1503,26 +1267,8 @@ lemma bad_le {τ : Type} (P : Par) (Ps sB : Finset ℕ) (cl : ℕ → PClass) (T
   unfold tBad
   linarith
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
-
-Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Evaluate the numerical expressions.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
-
-Prove the first alternative. Prove the second alternative. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact.
-
-Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+Use the size windows to verify the first-kind estimate's conditions on the exponent, order cutoff, band width and prime and window sizes. The first-class hypotheses place each prime in one of the two permitted sets. The integer order cutoff is the floor of its real bound, so it still bounds the relevant integer orders. Apply the first-kind estimate. Its band count is the floor of the logarithm of the window, which equals the defined band count. Increase the order constant to the prescribed one and scale both terms by the nonnegative factor 4mTa.
 -/
 lemma first_le {C₁ : ℝ}
     (hC₁ : ∀ (e J : ℕ) (Y X' ρ p₀ : ℝ) (s : Finset ℕ), 1 ≤ e → 1 ≤ J → 1 ≤ Y →
@@ -1590,20 +1336,8 @@ lemma first_le {C₁ : ℝ}
   unfold tOrders tBand
   linarith
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
-
-Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+Choose the larger of zero and the first-kind constant. For each unit and each candidate choice, the general loss estimate and the first-kind, bad-orbit and second-class bounds put the excess below the deterministic size sum plus the common signature-dependent contribution. The index hypotheses give the corresponding common index envelope. Apply the uniform choice theorem to select one positive-weight candidate for all units. The total size bound controls the deterministic loss together with its signature allowance, and the second-index size bound controls the index term. These yield the two final uniform inequalities.
 -/
 theorem joint_size_bound_alt : WindowLossesBound := by
   obtain ⟨C₁, hC₁⟩ := first_kind_bound
@@ -1649,10 +1383,8 @@ theorem joint_size_bound_alt : WindowLossesBound := by
     unfold tSecondIo at h2
     linarith
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Use the nonnegative order constant from the joint size estimate. The eventual large-x theorem supplies a threshold for the stated ε, e and K. With the data's ε identified with that value, every window above the threshold satisfies the large-x conditions, so the joint estimate applies.
 -/
 theorem joint_bound_eventually : WindowLossesEventual := by
   obtain ⟨Cord, h0, h⟩ := joint_size_bound_alt
@@ -1664,14 +1396,8 @@ theorem joint_bound_eventually : WindowLossesEventual := by
   exact h P e K hPC hW (by rw [hPε]; exact hx₀ _ hx)
 
 open Formalism.RankGapBounds.WeightedMeanData Formalism.LFunctionChainParameters.WeightedSlopeBounds in
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Substitute the identifications of x, ε, b and the counts into the global loss budget. It is the common size unit times the loss constant and a real power at least one. The constant is at least 3C + 13, and this coefficient is at least one. Thus the global budget dominates both the excess allowance and the index allowance. Transfer the two local inequalities through the stated data identifications.
 -/
 theorem losses_of_setting : LeadingTermLossesOfWindow := by
   intro P ι κ τ U U0 Ω Ps s J TT io D o sel W Top _ m f Dd Cc hC hx hε hC0 dx dε db dT dm dA dG dI hc he

@@ -17,10 +17,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Every image of the composite is an image under the second map. Conversely, a point in the domain of the second map has a preimage under the isomorphism, so its image also belongs to the range of the composite.
 -/
 private theorem range_iso_hom_comp {X Y Z : Scheme.{u}} (e : X ≅ Y) (g : Y ⟶ Z) :
     Set.range (e.hom ≫ g).base = Set.range g.base := by
@@ -32,22 +30,22 @@ private theorem range_iso_hom_comp {X Y Z : Scheme.{u}} (e : X ≅ Y) (g : Y ⟶
     show g.base (e.hom.base (e.inv.base y)) = g.base y
     rw [Scheme.inv_hom_apply]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The two pullbacks compose to pullback along the inverse followed by the isomorphism. That composite is the identity, which fixes the ideal.
 -/
 private theorem comap_hom_comap_inv {X Y : Scheme.{u}} (e : X ≅ Y) (I : Y.IdealSheafData) :
     (I.comap e.hom).comap e.inv = I := by
   rw [← Scheme.IdealSheafData.comap_comp, e.inv_hom_id, Scheme.IdealSheafData.comap_id]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Inclusion of ideals reverses inclusion of supports. The support of the larger ideal is therefore contained in that of the smaller one.
 -/
 private theorem mem_support_of_le {X : Scheme.{u}} {I J : X.IdealSheafData} (h : I ≤ J) (x : ↥X)
     (hx : x ∈ J.support) : x ∈ I.support :=
   Scheme.IdealSheafData.support_antitone h hx
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+The closed-subscheme inclusion has image equal to the ideal's support. Membership in that support thus supplies a point of the closed subscheme mapping to the given point.
 -/
 private theorem exists_subschemeι_base_eq {X : Scheme.{u}} (I : X.IdealSheafData) (x : ↥X)
     (hx : x ∈ I.support) : ∃ z, I.subschemeι.base z = x := by
@@ -57,8 +55,8 @@ private theorem exists_subschemeι_base_eq {X : Scheme.{u}} (I : X.IdealSheafDat
   obtain ⟨z, hz⟩ := hmem
   exact ⟨z, hz⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The range of the first projection from a scheme pullback is the inverse image of the range of the other input map. The given membership puts the point in that range, providing a preimage.
 -/
 private theorem exists_pullbackFst_base_eq {X Y S : Scheme.{u}} (f : X ⟶ S) (g : Y ⟶ S) (x : ↥X)
     (hx : f.base x ∈ Set.range g.base) : ∃ z, (Limits.pullback.fst f g).base z = x := by
@@ -66,10 +64,8 @@ private theorem exists_pullbackFst_base_eq {X Y S : Scheme.{u}} (f : X ⟶ S) (g
   rw [Set.ext_iff] at h
   exact (h x).mpr hx
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+Identify the given square with the canonical scheme pullback. The range of the first projection is unchanged by precomposing with this isomorphism. The hypothesis supplies a preimage under the canonical projection and therefore under the given projection.
 -/
 private theorem exists_preimage_of_isPullback {X' X S : Scheme.{u}} {g : X' ⟶ X} {s : S ⟶ X}
     {Q : Scheme.{u}} {p : Q ⟶ S} {q : Q ⟶ X'} (h : IsPullback p q s g) (x : ↥S)
@@ -138,8 +134,8 @@ variable {f g : V ⟶ P} {C : SequenceOfBlowups V} {B₁ B₂ : SequenceOfBlowup
   {σ₂ : ∀ i : ℕ, i ≤ L → (C.schemeAt i ⟶ B₂.schemeAt i)}
   {a : ∀ i : ℕ, (C.schemeAt i).IdealSheafData}
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The left stage comparison and the projections form a pullback square over the left base map. The coverage condition puts the chosen center point's projection in that base map's range. The point therefore has a preimage in the common sequence's stage.
 -/
 theorem BlowupSeqComparison.exists_preimage_of_mem_center_support_left (hd : BlowupSeqComparison f g C B₁ B₂ L σ₁ σ₂ a)
     (i : ℕ) (hi : i < L) (x : ↥(B₁.schemeAt i)) (hx : x ∈ (B₁.center i).support) :
@@ -148,8 +144,8 @@ theorem BlowupSeqComparison.exists_preimage_of_mem_center_support_left (hd : Blo
     isPullback_projectionToBase_of_isPullback_blowupMorphism f C B₁ L σ₁ hd.zero₁ hd.pullback₁ i hi.le
   exact exists_preimage_of_isPullback hsq x (hd.cover₁ i hi x hx)
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The right stage comparison is the projection of a pullback square over the right base map. By the right coverage condition the center point projects to the range of that map. The pullback projection then provides a preimage in the common stage.
 -/
 theorem BlowupSeqComparison.exists_preimage_of_mem_center_support_right (hd : BlowupSeqComparison f g C B₁ B₂ L σ₁ σ₂ a)
     (i : ℕ) (hi : i < L) (x : ↥(B₂.schemeAt i)) (hx : x ∈ (B₂.center i).support) :
@@ -158,10 +154,8 @@ theorem BlowupSeqComparison.exists_preimage_of_mem_center_support_right (hd : Bl
     isPullback_projectionToBase_of_isPullback_blowupMorphism g C B₂ L σ₂ hd.zero₂ hd.pullback₂ i hi.le
   exact exists_preimage_of_isPullback hsq x (hd.cover₂ i hi x hx)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Compose both sides with the left initial isomorphism. The stage-zero comparison identities express the composites as the common initial identification followed by the left and right base maps respectively. They agree on the closed subscheme by the initial ideal hypothesis. Cancel the left initial isomorphism.
 -/
 theorem subschemeι_comp_zero_eq_comp_isoObjZero_inv (hd : BlowupSeqComparison f g C B₁ B₂ L σ₁ σ₂ a) :
     ∀ hi : (0 : ℕ) ≤ L,
@@ -180,28 +174,16 @@ def blowupSeqLevelIsoZero (hd : BlowupSeqComparison f g C B₁ B₂ L σ₁ σ�
   iso := B₁.isoZero ≪≫ B₂.isoZero.symm
   compat := subschemeι_comp_zero_eq_comp_isoObjZero_inv hd
 
-/- English proof (translation)
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The initial stage isomorphism is the left initial identification followed by the inverse right identification. Following it by the right identification cancels the inverse and leaves the left identification.
 -/
 theorem blowupSeqLevelIsoZero_iso_hom_comp_isoObjZero (hd : BlowupSeqComparison f g C B₁ B₂ L σ₁ σ₂ a) :
     (blowupSeqLevelIsoZero hd).iso.hom ≫ B₂.isoZero.hom = B₁.isoZero.hom := by
   show (B₁.isoZero ≪≫ B₂.isoZero.symm).hom ≫ B₂.isoZero.hom = B₁.isoZero.hom
   simp
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
+/- English proof (authored)
+On the common center support the two stage comparisons agree after applying the inverse stage isomorphism. Indeed, the auxiliary ideal is contained in the center ideal, so each point of the center support comes from its closed subscheme, where agreement is assumed. Now lift a point of the left center support to the common stage using coverage. Its lift lies on the common center because centers pull back, and its right image lies on the right center. Agreement of the two comparisons sends the original left point into the right support under the stage isomorphism. The symmetric lifting argument gives the reverse inclusion after transport. Each center is determined by its support in the stated sense, so these inclusions give opposite ideal inclusions after transport by the inverse isomorphisms. Hence the two center ideals agree.
 -/
 theorem BlowupSeqLevelIso.center_comap_iso_hom_eq (hd : BlowupSeqComparison f g C B₁ B₂ L σ₁ σ₂ a)
     {i : ℕ} (hi : i < L) (st : BlowupSeqLevelIso C B₁ B₂ L σ₁ σ₂ a i) :
@@ -258,8 +240,8 @@ theorem BlowupSeqLevelIso.center_comap_iso_hom_eq (hd : BlowupSeqComparison f g 
       Scheme.IdealSheafData.comap_id] at hmono
   exact le_antisymm hle1 hle3
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Transport the right blowup along the inverse stage isomorphism to the left stage. The center comparison says its transported center is the left center. Both successors are therefore blowups of the same ideal on the left stage. The universal property gives an isomorphism over that stage.
 -/
 theorem BlowupSeqLevelIso.exists_iso_succ_comp_blowupMorphism (hd : BlowupSeqComparison f g C B₁ B₂ L σ₁ σ₂ a)
     {i : ℕ} (hi : i < L) (st : BlowupSeqLevelIso C B₁ B₂ L σ₁ σ₂ a i) :
@@ -271,8 +253,8 @@ theorem BlowupSeqLevelIso.exists_iso_succ_comp_blowupMorphism (hd : BlowupSeqCom
   rw [Iso.symm_hom, Iso.symm_inv, BlowupSeqLevelIso.center_comap_iso_hom_eq hd hi st] at h2
   exact (hd.isBlowup_B₁ i hi).exists_iso h2
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Postcompose the given identity with the forward stage isomorphism. It cancels the inverse on one side, producing the desired square.
 -/
 theorem BlowupSeqLevelIso.hom_comp_blowupMorphism_eq_comp_iso_hom {i : ℕ} (st : BlowupSeqLevelIso C B₁ B₂ L σ₁ σ₂ a i)
     (e : B₁.schemeAt (i + 1) ≅ B₂.schemeAt (i + 1))
@@ -286,24 +268,16 @@ def BlowupSeqLevelIso.isoSucc (hd : BlowupSeqComparison f g C B₁ B₂ L σ₁ 
     B₁.schemeAt (i + 1) ≅ B₂.schemeAt (i + 1) :=
   (BlowupSeqLevelIso.exists_iso_succ_comp_blowupMorphism hd hi st).choose
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The chosen successor isomorphism is a witness from the blowup uniqueness result. Its compatibility with the two blowup maps is part of that witness.
 -/
 theorem BlowupSeqLevelIso.isoSucc_hom_comp_blowupMorphism (hd : BlowupSeqComparison f g C B₁ B₂ L σ₁ σ₂ a)
     {i : ℕ} (hi : i < L) (st : BlowupSeqLevelIso C B₁ B₂ L σ₁ σ₂ a i) :
     (BlowupSeqLevelIso.isoSucc hd hi st).hom ≫ B₂.transitionMapSucc i ≫ st.iso.inv = B₁.transitionMapSucc i :=
   (BlowupSeqLevelIso.exists_iso_succ_comp_blowupMorphism hd hi st).choose_spec
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Use the current stage isomorphism to view both comparison maps into the left stage. Their center pullbacks are equal because both give the common center. They agree on the closed subscheme of the current auxiliary ideal by the stage hypothesis. The successor comparison maps, with the right one transported by the inverse successor isomorphism, lift these maps through the left blowup by commutativity of the comparison squares. The auxiliary ideal at the next stage is obtained by removing one exceptional factor from the total transform. The controlled-transform comparison for blowup lifts therefore gives agreement on its closed subscheme.
 -/
 theorem BlowupSeqLevelIso.subschemeι_comp_eq_comp_isoSucc_inv (hd : BlowupSeqComparison f g C B₁ B₂ L σ₁ σ₂ a)
     {i : ℕ} (hi : i < L) (st : BlowupSeqLevelIso C B₁ B₂ L σ₁ σ₂ a i) :
@@ -359,12 +333,8 @@ private def blowupSeqLevelIsoOfLE (hd : BlowupSeqComparison f g C B₁ B₂ L σ
   | (i + 1), h =>
       BlowupSeqLevelIso.succ hd (Nat.lt_of_succ_le h) (blowupSeqLevelIsoOfLE hd i (Nat.le_of_succ_le h))
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The strict pullback relations give a common length and two stagewise comparisons with the same source. Together with coverage, determination of the centers by support, and the auxiliary ideal identities, they give the comparison data for constructing stage isomorphisms. At the initial stage use the two initial identifications. At each successor the current isomorphism identifies the centers, so the universal property identifies the two blowups. The lift comparison preserves agreement on the auxiliary subscheme at that successor, enabling the induction. The resulting stage isomorphisms commute with the initial and transition maps and identify all center ideals, which is the required sequence isomorphism.
 -/
 theorem SequenceOfBlowups.isomorphic_of_isStrictPullback_same_source (B B' : SequenceOfBlowups P)
     {φ ψ : V ⟶ P} {D : SequenceOfBlowups V}

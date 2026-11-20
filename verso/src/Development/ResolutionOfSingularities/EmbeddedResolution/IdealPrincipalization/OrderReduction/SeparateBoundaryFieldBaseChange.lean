@@ -52,8 +52,8 @@ def IsBaseChangeInherited (P : ℕ → Prop) : Prop :=
       (∀ hft : AlgebraicGeometry.LocallyOfFiniteType (R.baseChange L f).structMap,
         (R.baseChange L f).IsBalanced hft)
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Field extension pulls back each entry of the boundary list once and in the same order. Entrywise pullback preserves the length.
 -/
 theorem MarkedIdealWithBoundary.length_boundary_baseChange (S : MarkedIdealWithBoundary.{u}) (L : Type u) [Field L]
     (f : S.base →+* L) :
@@ -67,8 +67,8 @@ theorem MarkedIdealWithBoundary.length_boundary_baseChange (S : MarkedIdealWithB
 
 namespace BoundaryLoopFieldBaseChange
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
+/- English proof (authored)
+Dropping zero entries and prepending the empty list gives the final boundary. Its length is the original length plus the number of blowups. The index is already within the original length, so it is in range.
 -/
 private theorem lt_length_nil_append_boundary (S : MarkedIdealWithBoundary.{u})
     (s : MarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary) (j : ℕ)
@@ -82,8 +82,8 @@ private theorem lt_length_nil_append_boundary (S : MarkedIdealWithBoundary.{u})
   rw [h2]
   omega
 
-/- English proof (translation)
-Supply the required witnesses or components.
+/- English proof (authored)
+Both sequences consist only of their initial stages. Define their comparison by the upstairs initial isomorphism, the given base map, and the inverse downstairs initial isomorphism. It commutes with the initial identifications. The lengths agree, and there are no blowup or center conditions.
 -/
 private theorem nonempty_strictPullback_of_length_eq_zero {X' X : Scheme.{u}} (g : X' ⟶ X)
     (t : SequenceOfBlowups X') (s : SequenceOfBlowups X) (ht : t.length = 0) (hs : s.length = 0) :
@@ -96,8 +96,8 @@ private theorem nonempty_strictPullback_of_length_eq_zero {X' X : Scheme.{u}} (g
      length_eq := by rw [ht, hs]
      center_eq := fun i hi => absurd hi (by omega) }⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+The underlying sequences have equal lengths by the strict pullback hypothesis. These lengths are the lengths of the corresponding marked sequences.
 -/
 private theorem length_eq_of_strictPullbackBlowupSeq
     {k k' : Type u} [Field k] [Field k'] {X X' : Scheme.{u}}
@@ -120,8 +120,8 @@ private def strictPullbackMapAt
     (i : ℕ) (hi : i ≤ t.length) : t.obj i ⟶ s.obj i :=
   D.comp i (t.le_toSequenceOfBlowups_length hi)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The initial compatibility of the strict pullback identifies the stage-zero comparison followed by the downstairs initial isomorphism with the upstairs initial isomorphism followed by the base map.
 -/
 private theorem strictPullbackMapAt_zero_comp_isoObjZero_hom
     {k k' : Type u} [Field k] [Field k'] {X X' : Scheme.{u}}
@@ -134,8 +134,8 @@ private theorem strictPullbackMapAt_zero_comp_isoObjZero_hom
     strictPullbackMapAt s t D 0 h0 ≫ s.isoZero.hom = t.isoZero.hom ≫ g :=
   D.comp_zero
 
-/- English proof (translation)
-Substitute using the available equality. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Identify the equal indices, so the two iterated transforms are the same ideal on the same stage. The stage identification is the identity and its pullback fixes the ideal.
 -/
 private theorem iteratedStrictTransform_comap_eqToHom {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
@@ -145,18 +145,8 @@ private theorem iteratedStrictTransform_comap_eqToHom {k : Type u} [Field k] {X 
   subst hab
   simp
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+At stage zero both ideals are pullbacks of the original hypersurface, and initial compatibility equates the two composites. At a successor the comparison square is a pullback, the comparison at the prior stage is flat, and the centers agree by pullback. The local Noetherian hypotheses allow the flat base-change formula for strict transforms. Use the inductive identification of the prior ideals in that formula to compare the next transforms.
 -/
 private theorem iteratedStrictTransform_comap
     {k k' : Type u} [Field k] [Field k'] {X X' : Scheme.{u}}
@@ -216,8 +206,8 @@ private theorem iteratedStrictTransform_comap
       (MaxContactReduction.iteratedStrictTransform s H i) (s.isBlowup i (by omega))
     rw [MaxContactReduction.iteratedStrictTransform_succ, MaxContactReduction.iteratedStrictTransform_succ, key, ih hle, hc]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Apply the stage comparison at the final upstairs index. The strict pullback gives equality of lengths, and the final map is the comparison at this index followed by the identification with the final downstairs stage. Pullback along that identification changes only the index used to describe the downstairs strict transform.
 -/
 private theorem strictTransformAtLength_comap
     {k k' : Type u} [Field k] [Field k'] {X X' : Scheme.{u}}
@@ -242,10 +232,8 @@ private theorem strictTransformAtLength_comap
       (congrArg s.obj (length_eq_of_strictPullbackBlowupSeq s t D))]
   exact h1
 
-/- English proof (translation)
-Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
+/- English proof (authored)
+The stage dimension bounds put the two derived triples within their reference dimensions. The dimension predicate descends to them. The downstairs derived triple is order bounded and balanced by tuning, and inheritance under field extension supplies admissibility, dimension, order, and balance for its field extension. The original admissible sequences give locally Noetherian stage schemes. With the supplemental boundaries related by pullback, the boundary and separation hypotheses now allow the field-extension theorem for appending the reductions.
 -/
 private theorem nonempty_strictPullbackBlowupSeq_appendLowerDimReduction
     (hderiv : DerivIdealSheafIterateCommBaseChange.{u}) (hstar : MaxContactCoverProperties.{u}) (hinv : ComapIsoInvariance.{u})
@@ -314,12 +302,8 @@ private theorem nonempty_strictPullbackBlowupSeq_appendLowerDimReduction
     (BoundarySeparationBaseChange.isLocallyNoetherian_schemeAt hstar (S.baseChange L f) hV' t) hdim hP hVc hj hsep
     hdim2 hP2 hVc' hj' hsep' hVb hPb hOb hDb
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the number of entries processed. The initial sequences both have length zero and hence form a strict pullback. At a successor identify both sequences as the preceding ones with one lower-dimensional reduction appended. Their final structural maps are locally of finite type and the corresponding derived triples are admissible. The boundary index is valid on both sides because the original boundary lengths agree and the final boundaries contain at least that many entries. There are no dropped entries to separate. Apply field-extension compatibility for the append operation to the strict pullback from the induction hypothesis.
 -/
 private theorem nonempty_strictPullbackBlowupSeq_separateBoundary
     (hderiv : DerivIdealSheafIterateCommBaseChange.{u}) (hstar : MaxContactCoverProperties.{u}) (hinv : ComapIsoInvariance.{u})
@@ -367,14 +351,8 @@ private theorem nonempty_strictPullbackBlowupSeq_separateBoundary
         (by rw [MarkedIdealWithBoundary.length_boundary_baseChange]; omega))
       (BoundarySeparationBaseChange.orderAtLeastLocus_inter_support_eq_empty_of_mem_take_zero S _) (BoundarySeparationBaseChange.orderAtLeastLocus_inter_support_eq_empty_of_mem_take_zero (S.baseChange L f) _)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
+/- English proof (authored)
+The final strict transforms of the two hypersurfaces agree by flat pullback of strict transforms, so the supplemental singleton upstairs is the pullback of the one downstairs. Maximal contact and the initial strict normal crossing conditions give strict normal crossing position for the transformed hypersurfaces together with the remaining boundary at the final stages. This makes both derived triples admissible. The hypersurface is the first entry in each derived boundary, so the reduction at index zero is defined. The given separation of the dropped boundary entries now allows field-extension compatibility for the appended reductions.
 -/
 private theorem isStrictPullbackBlowupSeq_appendLowerDimReduction_baseChange
     (hderiv : DerivIdealSheafIterateCommBaseChange.{u}) (hstar : MaxContactCoverProperties.{u}) (hinv : ComapIsoInvariance.{u})
@@ -467,10 +445,8 @@ private theorem isStrictPullbackBlowupSeq_appendLowerDimReduction_baseChange
     hbcx.symm S.boundary.length 0 hVcS hVcT (by simp) (by simp [LowerDimReductionPullback.comapBoundaryBaseChange]) hsep hsep'
   exact D2.isStrictPullback
 
-/- English proof (translation)
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Boundary length is preserved by field extension, so on both sides separate the same number of original boundary entries. Compatibility of boundary separation gives a strict pullback relation between the resulting sequences, and the separation invariant gives disjointness for the boundary entries to be dropped. Reduction along the hypersurface appends the lower-dimensional reduction with the final transformed hypersurface as the supplemental boundary. The compatibility theorem for this append identifies the full sequences as a strict pullback.
 -/
 theorem isStrictPullbackBlowupSeq_reduceAlongHypersurface_baseChange
     (hderiv : DerivIdealSheafIterateCommBaseChange.{u}) (hstar : MaxContactCoverProperties.{u}) (hinv : ComapIsoInvariance.{u})

@@ -55,10 +55,8 @@ def SeparateBoundaryInvariant (S : MarkedIdealWithBoundary.{u}) (H : S.scheme.Id
   BoundarySeparated S s n ∧ (∀ i < s.length, s.center i ≠ ⊤) ∧
     InStrictNormalCrossingPosition (s.proj 0 ≫ S.structMap) [MaxContactReduction.iteratedStrictTransform s H 0]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+At a point of the support the ideal has order at least one. The unit ideal has order zero everywhere, so the ideal cannot be the unit ideal.
 -/
 private theorem ne_top_of_support_nonempty {X : Scheme.{u}} {J : X.IdealSheafData}
     (h : ((J.support : Set ↥X)).Nonempty) : J ≠ ⊤ := by
@@ -70,10 +68,8 @@ private theorem ne_top_of_support_nonempty {X : Scheme.{u}} {J : X.IdealSheafDat
   rw [orderAt_top] at h1
   exact absurd h1 (by simp)
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+A nonunit ideal has nonempty support. Take a point of the support and send it through the inverse isomorphism. Its image belongs to the inverse image of the support, which is the support of the pulled-back ideal. Thus the pulled-back ideal is nonunit.
 -/
 private theorem comap_hom_ne_top_of_ne_top {X Y : Scheme.{u}} (e : X ≅ Y) (J : Y.IdealSheafData)
     (hJ : J ≠ ⊤) : J.comap e.hom ≠ ⊤ := by
@@ -90,22 +86,22 @@ private theorem comap_hom_ne_top_of_ne_top {X Y : Scheme.{u}} (e : X ≅ Y) (J :
     AlgebraicGeometry.Scheme.IdealSheafData.mem_support_comap.2 h3
   exact ne_top_of_support_nonempty ⟨e.inv.base y, h4⟩
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+An equality of schemes gives an isomorphism. Pullback along its forward identification preserves nonunit ideals by the support argument.
 -/
 private theorem comap_eqToHom_ne_top {X Y : Scheme.{u}} (h : X = Y)
     (J : Y.IdealSheafData) (hJ : J ≠ ⊤) : J.comap (eqToHom h) ≠ ⊤ :=
   comap_hom_ne_top_of_ne_top (eqToIso h) J hJ
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Apply preservation of nonunit ideals to the inverse isomorphism, viewed as the forward map of the reversed isomorphism.
 -/
 private theorem comap_iso_inv_ne_top {X Y : Scheme.{u}} (e : X ≅ Y)
     (J : X.IdealSheafData) (hJ : J ≠ ⊤) : J.comap e.inv ≠ ⊤ :=
   comap_hom_ne_top_of_ne_top e.symm J hJ
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+The equalities identify the marked ideal and the boundary ideal. Their order locus and support are therefore the sets in the assumed empty intersection.
 -/
 private theorem orderAtLeastLocus_inter_support_eq_empty_of_eq {X : Scheme.{u}} {I I' D D' : X.IdealSheafData}
     {m : ℕ} (hI : I = I') (hD : D = D')
@@ -115,10 +111,8 @@ private theorem orderAtLeastLocus_inter_support_eq_empty_of_eq {X : Scheme.{u}} 
   subst hD
   exact h
 
-/- English proof (translation)
-By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Under an isomorphism, the pulled-back order locus and support are the inverse images of the original sets. Their intersection is the inverse image of the empty original intersection.
 -/
 private theorem orderAtLeastLocus_comap_iso_inter_support_eq_empty {X Y : Scheme.{u}} (hinv : ComapIsoInvariance.{u})
     (e : X ≅ Y) (I D : Y.IdealSheafData) (m : ℕ)
@@ -135,8 +129,8 @@ private theorem orderAtLeastLocus_comap_iso_inter_support_eq_empty {X Y : Scheme
   rw [h] at hmem
   exact hmem
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The identification of equal schemes is an isomorphism. Pulling both ideals back along it preserves the empty intersection of the order locus and support.
 -/
 private theorem orderAtLeastLocus_comap_eqToHom_inter_support_eq_empty {X Y : Scheme.{u}} (hinv : ComapIsoInvariance.{u})
     (h : X = Y) (I D : Y.IdealSheafData) (m : ℕ)
@@ -144,12 +138,8 @@ private theorem orderAtLeastLocus_comap_eqToHom_inter_support_eq_empty {X Y : Sc
     orderAtLeastLocus (I.comap (eqToHom h)) m ∩ ((D.comap (eqToHom h)).support : Set ↥X) = ∅ :=
   orderAtLeastLocus_comap_iso_inter_support_eq_empty hinv (eqToIso h) I D m hsep
 
-/- English proof (translation)
-By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+If a point lay in the original intersection, its inverse image under the isomorphism would belong to the pulled-back order locus and support. This contradicts emptiness upstairs.
 -/
 private theorem orderAtLeastLocus_inter_support_eq_empty_of_comap_iso {X Y : Scheme.{u}} (hinv : ComapIsoInvariance.{u})
     (e : X ≅ Y) (I D : Y.IdealSheafData) (m : ℕ)
@@ -174,22 +164,16 @@ private theorem orderAtLeastLocus_inter_support_eq_empty_of_comap_iso {X Y : Sch
   rw [h] at hmem
   exact hmem
 
-/- English proof (translation)
-Substitute using the available equality. Both sides reduce to the same expression.
+/- English proof (authored)
+Equal lists have the same entry at a fixed index. The bounds witness that both lookups are defined.
 -/
 private theorem getElem_eq_of_list_eq {α : Type*} {L L' : List α} (h : L = L') (n : ℕ)
     (hn : n < L.length) (hn' : n < L'.length) : L[n]'hn = L'[n]'hn' := by
   subst h
   rfl
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the list. An empty list has no valid index. For a nonempty list the first mapped entry is the image of its head. A later lookup moves to the tail at the preceding index, where the induction hypothesis applies.
 -/
 private theorem getElem_map_of_lt {α β : Type*} (f : α → β) :
     ∀ (L : List α) (n : ℕ) (hn : n < L.length) (hn' : n < (L.map f).length),
@@ -212,14 +196,8 @@ private theorem getElem_map_of_lt {α β : Type*} (f : α → β) :
             omega
           exact ih r h1 h2
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the list being mapped. An index within its length always lies in the mapped prefix. The head returns the image of the original head, and a later index reduces to the tail with the same appended suffix. The inductive lookup then gives the mapped entry.
 -/
 private theorem getElem_map_append_of_lt {α β : Type*} (f : α → β) :
     ∀ (L : List α) (R : List β) (n : ℕ) (hn : n < L.length)
@@ -242,10 +220,8 @@ private theorem getElem_map_append_of_lt {α β : Type*} (f : α → β) :
             omega
           exact ih R r h1 h2
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The stage boundary is the list of iterated strict transforms of the original boundary followed by the exceptional entries. The specified index lies in the original list, so the corresponding entry is the strict transform of that original component.
 -/
 private theorem boundary_getElem_eq_iteratedStrictTransform {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
@@ -262,10 +238,8 @@ private theorem boundary_getElem_eq_iteratedStrictTransform {k : Type u} [Field 
   exact getElem_map_append_of_lt (u.iteratedStrictTransform i) E
     (u.boundaryFrom ([] : List X.IdealSheafData) i) n hn h2
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The appended sequence is marked. Each center lies in the current order locus, and multiplication by the exceptional power recovers the total transform from the next ideal. Apply the marked order-locus comparison for a blowup to these two properties.
 -/
 private theorem orderAtLeastLocus_append_succ_subset_preimage (hstar : MaxContactCoverProperties.{u}) {k : Type u} [Field k]
     {X : Scheme.{u}}
@@ -291,36 +265,10 @@ private theorem orderAtLeastLocus_append_succ_subset_preimage (hstar : MaxContac
   exact hstar.coSupport_le_preimage ((s.append t hinv).map r) ((s.append t hinv).center r) hb
     ((s.append t hinv).ideal r) ((s.append t hinv).ideal (r + 1)) m heq hsupp
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
+/- English proof (authored)
+The support of the strict transform of the distinguished component is contained in the support of the tracked continuation divisor. Both start from the same ideal, and at each stage the tracked divisor is transformed strictly or totally. The support comparison thus makes the final strict transform disjoint from the order locus because the tracked divisor is disjoint. With a positive-length continuation this disjointness transports to the final append stage, where the distinguished entry is exactly that strict transform. With a zero-length continuation the initial isomorphism transports the disjointness back to the join. The previously separated entries are also disjoint at the join, and all these disjointness conditions persist because order loci and strict-transform supports at a step lie over the preceding ones.
 
-Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
-
-Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
+The centers of the append are centers of the first sequence or of the continuation transported by stage isomorphisms. Their ideals remain nonunit. The initial hypersurface meets the required strict normal crossing condition after pullback along the initial isomorphism of the append.
 -/
 private theorem separateBoundaryInvariant_append (hstar : MaxContactCoverProperties.{u}) (hinv : ComapIsoInvariance.{u})
     (S : MarkedIdealWithBoundary.{u}) (H : S.scheme.IdealSheafData) (hH : InStrictNormalCrossingPosition S.structMap [H])
@@ -487,28 +435,8 @@ private theorem separateBoundaryInvariant_append (hstar : MaxContactCoverPropert
       have hlt : r - s.length < t.length := by omega
       exact comap_eqToHom_ne_top _ _ (hcent (r - s.length) hlt)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
-
-Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Substitute using the available equality. Prove the second alternative. Prove the first alternative.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
-
-Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+At the final stage the original boundary still has the required index, and stage admissibility gives local finite type and strict normal crossings. With no supplemental or dropped entries, these conditions make the derived triple admissible. Its dimension fits the reference bound, and tuning gives order boundedness and balance. The append formula expresses the reduction as the original sequence followed by the marked continuation of the boundary reduction. The shape of that reduction tracks the distinguished divisor by strict transforms, with a possible initial total transform, and makes it disjoint from the final order locus at the tuned mark. The continuation comparison transfers this disjointness to the original mark. The centers are nonunit by the boundary reduction specification. Apply the append invariant to obtain the next separation step.
 -/
 theorem separateBoundaryInvariant_appendLowerDimReduction (hstar : MaxContactCoverProperties.{u}) (hinv : ComapIsoInvariance.{u})
     (P : ℕ → Prop)
@@ -628,12 +556,8 @@ abbrev reduceAlongHypersurfaceTriple (T : MarkedIdealWithBoundary.{u}) (hv : T.I
     [MaxContactReduction.strictTransformAtLength (separateAllBoundary T hv hinv A) (MaxContactCoverData.coverMaxContactIdeal T hv)]
     (MaxContactCoverData.coverTriple T hv).boundary.length
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At zero the cover separation sequence is empty, so no boundary or center conditions need checking. The initial hypersurface has strict normal crossing position by the cover property transported along the initial isomorphism. At a successor, the recursive definition appends one lower-dimensional reduction. The cover triple is admissible, order bounded, and within the reference dimension. The append invariant therefore propagates separation through the new boundary index and preserves the other properties.
 -/
 theorem separateBoundaryInvariant_separateBoundarySeq (hstar : MaxContactCoverProperties.{u}) (hinv : ComapIsoInvariance.{u})
     (P : ℕ → Prop)
@@ -679,12 +603,8 @@ theorem separateBoundaryInvariant_separateBoundarySeq (hstar : MaxContactCoverPr
         (MaxContactCoverData.coverMaxContactIdeal T h.valid) (inStrictNormalCrossingPosition_coverMaxContactIdeal hstar P T h)
         (separateBoundarySeq T h.valid hinv A n) n hn hfacts
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
-
-Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the list. The empty list and an initial segment of length zero have no members. In the successor case the head is covered by index zero. Entries in the tail are covered by applying the induction hypothesis with each tail index shifted by one in the full list.
 -/
 private theorem forall_mem_take_of_forall_lt {α : Type*} (Q : α → Prop) :
     ∀ (L : List α) (n : ℕ),
@@ -705,16 +625,8 @@ private theorem forall_mem_take_of_forall_lt {α : Type*} (Q : α → Prop) :
           · exact ih m
               (fun i him hi => hQ (i + 1) (Nat.succ_lt_succ him) (Nat.succ_lt_succ hi)) a ha''
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The cover triple is admissible and its ideal is order bounded. On the final boundary-separation stage the structural map is locally of finite type. The transformed maximal-contact hypersurface is in strict normal crossing position with the exceptional portion of the final boundary, so the derived triple with this supplemental hypersurface is admissible. Its dimension is at most the cover dimension and hence at most the reference dimension, giving the dimension predicate. The hypersurface gives a first boundary entry. The separation invariant gives disjointness for every original boundary entry that is dropped. Apply the append theorem at the first entry to get the marked continuation and its order-locus comparison. The cover sequence is defined by exactly this append operation after separating the whole boundary.
 -/
 theorem exists_cover_eq_separateAllBoundary_append (hstar : MaxContactCoverProperties.{u}) (hinv : ComapIsoInvariance.{u}) (P : ℕ → Prop)
     (hmono : ∀ a b : ℕ, a ≤ b → P b → P a) (A : ℕ → PrincipalizationAssignment.{u})

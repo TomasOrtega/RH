@@ -51,8 +51,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately.
+/- English proof (authored)
+For the empty list, the product is the unit ideal and pullback fixes it. For a nonempty list, pullback preserves the product of the first entry with the product of the tail. Apply the inductive equality to the tail.
 -/
 private theorem list_prod_map_comap {X Y : Scheme.{u}} (q : X ⟶ Y) (Ls : List Y.IdealSheafData) :
     (Ls.map (fun A => A.comap q)).prod = Ls.prod.comap q := by
@@ -60,8 +60,8 @@ private theorem list_prod_map_comap {X Y : Scheme.{u}} (q : X ⟶ Y) (Ls : List 
   | nil => simp
   | cons a L ih => simp [AlgebraicGeometry.Scheme.IdealSheafData.comap_mul, ih]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
+/- English proof (authored)
+At each entry the two successive pullbacks equal pullback along the composite. Entrywise application gives equality of the lists.
 -/
 private theorem list_map_comap_comp {X Y Z : Scheme.{u}} (g : X ⟶ Y) (h : Y ⟶ Z)
     (l : List Z.IdealSheafData) :
@@ -70,8 +70,8 @@ private theorem list_map_comap_comp {X Y Z : Scheme.{u}} (g : X ⟶ Y) (h : Y �
   refine List.map_congr_left fun A _ => ?_
   simp
 
-/- English proof (translation)
-Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
+/- English proof (authored)
+Identify the equal indices. The stage identification becomes the identity, and the given pullback square is unchanged.
 -/
 private theorem isPullback_projectionToBase_of_index_eq {X Y Z : Scheme.{u}} (b : SequenceOfBlowups X) {i j : ℕ}
     (h : i = j) {σ : Z ⟶ b.schemeAt i} {v : Z ⟶ Y} {g : Y ⟶ X}
@@ -80,8 +80,8 @@ private theorem isPullback_projectionToBase_of_index_eq {X Y Z : Scheme.{u}} (b 
   subst h
   simpa using hp
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Use the given entrywise pullback descriptions of the upstairs lists. Pullback preserves positions and length, so dropping entries commutes with it. Pullback also distributes over concatenation, giving the equality.
 -/
 private theorem append_drop_eq_map_comap {X Y : Scheme.{u}} (g : Y ⟶ X)
     (Es Bs : List X.IdealSheafData) (Et Bt : List Y.IdealSheafData) (keep : ℕ)
@@ -91,8 +91,8 @@ private theorem append_drop_eq_map_comap {X Y : Scheme.{u}} (g : Y ⟶ X)
   subst hB
   rw [List.map_append, List.map_drop]
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
+/- English proof (authored)
+The two triples already use the same field, scheme, and structural morphism. The equalities of the ideal, mark, and boundary identify their remaining data.
 -/
 private theorem markedIdealWithBoundary_mk_eq_of_eq {k : Type u} [Field k] {X : Scheme.{u}}
     (q : X ⟶ Spec (CommRingCat.of k)) {I I' : X.IdealSheafData} {m m' : ℕ}
@@ -103,8 +103,8 @@ private theorem markedIdealWithBoundary_mk_eq_of_eq {k : Type u} [Field k] {X : 
   subst hE
   rfl
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Substitute the equality of the base maps in the strict pullback relation.
 -/
 private theorem isStrictPullback_of_morphism_eq {X' X : Scheme.{u}} {g g' : X' ⟶ X} (h : g = g')
     {t : SequenceOfBlowups X'} {s : SequenceOfBlowups X} (hd : IsStrictPullbackBlowupSeq g t s) :
@@ -112,40 +112,40 @@ private theorem isStrictPullback_of_morphism_eq {X' X : Scheme.{u}} {g g' : X' �
   subst h
   exact hd
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+The two triples have equal data, so the given admissibility certificate applies to the first triple as well.
 -/
 private theorem isAdmissible_of_eq {T T' : MarkedIdealWithBoundary.{u}} (h : T = T') (hv : T'.IsAdmissible) :
     T.IsAdmissible := by
   subst h
   exact hv
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Identifying the triples identifies their underlying schemes and successor dimensions. Apply the given predicate proof to this common dimension.
 -/
 private theorem pred_dim_of_eq (P : ℕ → Prop) {T T' : MarkedIdealWithBoundary.{u}} (h : T = T')
     (hp : P T'.krullDimSucc) : P T.krullDimSucc := by
   subst h
   exact hp
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Equal triples have the same ideal and mark, so the second triple's order bound is also a bound for the first.
 -/
 private theorem isOrderBoundedByMult_of_eq {T T' : MarkedIdealWithBoundary.{u}} (h : T = T')
     (ho : T'.IsOrderBoundedByMult) : T.IsOrderBoundedByMult := by
   subst h
   exact ho
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Equal triples have equal boundary lists. Their lengths are equal, and the strict index bound transfers.
 -/
 private theorem lt_boundary_length_of_eq {T T' : MarkedIdealWithBoundary.{u}} (h : T = T') {j : ℕ}
     (hj : j < T'.boundary.length) : j < T.boundary.length := by
   subst h
   exact hj
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Identify the triples and their structural maps. The two local finite-type certificates are proofs of the same property, so the balance condition transfers.
 -/
 private theorem isBalanced_of_eq {T T' : MarkedIdealWithBoundary.{u}} (h : T = T')
     (hft : AlgebraicGeometry.LocallyOfFiniteType T.structMap)
@@ -154,8 +154,8 @@ private theorem isBalanced_of_eq {T T' : MarkedIdealWithBoundary.{u}} (h : T = T
   subst h
   exact hd
 
-/- English proof (translation)
-Substitute using the available equality. Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
+/- English proof (authored)
+Identify the triples so that the comparison maps have the same source. Their given equality then identifies the maps, and the assignment yields the same source sequence. The existing strict pullback relation gives the result.
 -/
 private theorem isStrictPullback_of_markedIdealWithBoundary_eq (A : PrincipalizationAssignment.{u})
     {T T' : MarkedIdealWithBoundary.{u}} (h : T = T')
@@ -173,8 +173,8 @@ private def castStrictPullbackBlowupSeq {X' X : Scheme.{u}} {g : X' ⟶ X}
   subst hs
   exact D
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Replace each set of marked data by its equal counterpart. The underlying sequences are then unchanged, and the given strict pullback relation applies.
 -/
 private theorem isStrictPullback_of_markedBlowupSequenceData_eq {k k' : Type u} [Field k] [Field k']
     {X X' : Scheme.{u}}
@@ -199,8 +199,8 @@ def DerivIdealSheafIterateCommBaseChange : Prop :=
       ∀ (r : ℕ) (I : X.IdealSheafData),
         derivIdealSheafIterate L pY r (I.comap q) = (derivIdealSheafIterate k pX r I).comap q
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Express both tuned ideals as sums of weighted products of powers of derivative ideals. Pullback preserves sums, products, and powers. The assumed derivative-ideal compatibility identifies every individual factor after the field extension. Thus, for each exponent choice the two summands agree, and the sums agree.
 -/
 theorem balancedTunedSheaf_comap_of_isPullback (hderiv : DerivIdealSheafIterateCommBaseChange.{u})
     (k L : Type u) [Field k] [Field L] [CharZero k] [CharZero L] (f : k →+* L)
@@ -219,8 +219,8 @@ theorem balancedTunedSheaf_comap_of_isPullback (hderiv : DerivIdealSheafIterateC
 
 namespace MarkedBlowupSequenceData
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+For the underlying blowup data, append the strict pullback of continuations over the final comparison to the strict pullback of the initial sequences. The marked appends have precisely these underlying sequences, giving the assertion.
 -/
 theorem isStrictPullbackBlowupSeq_append_of_field {k k' : Type u} [Field k] [Field k']
     {X X' : Scheme.{u}} {p : X ⟶ Spec (CommRingCat.of k)} {p' : X' ⟶ Spec (CommRingCat.of k')}
@@ -248,8 +248,8 @@ variable (S : MarkedIdealWithBoundary.{u}) (L : Type u) [Field L] (f : S.base �
   (t : MarkedBlowupSequenceData (S.baseChange L f).structMap (S.baseChange L f).ideal
       (S.baseChange L f).mult (S.baseChange L f).boundary)
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The strict pullback gives equality of the underlying sequence lengths. These lengths are the lengths of the marked data, so the desired equality follows.
 -/
 theorem length_eq_of_strictPullbackBlowupSeq
     (D : StrictPullbackBlowupSeq (pullback.fst S.structMap (specMapOfFieldHom S.base L f))
@@ -265,8 +265,8 @@ noncomputable def baseChangeMapAtLength
     t.obj t.length ⟶ s.obj s.length :=
   D.lastMap
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The field-extension map at the length of the sequences is defined to be the final comparison map of the strict pullback.
 -/
 theorem baseChangeMapAtLength_eq_lastMap
     (D : StrictPullbackBlowupSeq (pullback.fst S.structMap (specMapOfFieldHom S.base L f))
@@ -279,36 +279,10 @@ theorem baseChangeMapAtLength_eq_lastMap
     (Ls : List (s.obj s.length).IdealSheafData) : List (t.obj t.length).IdealSheafData :=
   Ls.map (fun A => A.comap (baseChangeMapAtLength S L f s t D))
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
+/- English proof (authored)
+The append theorem expresses both lower-dimensional reductions as the initial sequences followed by marked continuations. To compare the continuations, paste the pullback square at the final stages with the original field-extension square. This identifies the final upstairs scheme with the field extension of the final downstairs scheme, compatibly with both projections. The marked ideal and boundary pull back along the final comparison by their strict pullback formulas. Tuning commutes with the field extension, and truncating and extending the boundary commute with entrywise pullback. The two derived triples are therefore identified by the canonical isomorphism after field extension.
 
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
-
-A detailed English derivation is pending.
+Boundary divisor reduction commutes with the field extension for the downstairs derived triple, since the inherited hypotheses apply and the boundary index remains in range. It also commutes with the canonical isomorphism by smooth surjective functoriality for the two identified triples. Composing these strict pullback relations gives one for the assigned continuations over the final comparison. Transport it to the underlying data of the marked continuations and append it to the strict pullback of the initial sequences. The append formulas identify the result with the required reductions.
 -/
 theorem nonempty_strictPullbackSeq_appendLowerDimReduction_baseChange
     (D : StrictPullbackBlowupSeq (pullback.fst S.structMap (specMapOfFieldHom S.base L f))

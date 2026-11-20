@@ -21,8 +21,8 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace DivisorReduction
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The pullback square identifies the map between the closed subschemes as the base change of the given smooth ambient map. Smoothness is stable under base change.
 -/
 theorem smooth_of_isPullback (X Y S S' : Scheme.{u}) (σ : S ⟶ X) (σ' : S' ⟶ Y) (φ : Y ⟶ X)
     (ψ : S' ⟶ S) (hpb : IsPullback σ' ψ φ σ) (hφ : AlgebraicGeometry.Smooth φ) :
@@ -30,8 +30,8 @@ theorem smooth_of_isPullback (X Y S S' : Scheme.{u}) (σ : S ⟶ X) (σ' : S' �
   MorphismProperty.IsStableUnderBaseChange.of_isPullback
     (P := @AlgebraicGeometry.Smooth) hpb hφ
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Admissibility gives characteristic zero and a smooth original structure morphism. The order of an ideal is preserved at points under smooth pullback in this setting. The locus where the pulled-back order reaches the specified threshold is therefore the inverse image of the original locus.
 -/
 theorem orderAtLeastLocus_comap_of_smooth (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (Y : Scheme.{u})
     (q : Y ⟶ Spec (CommRingCat.of T.base)) (h : Y ⟶ T.scheme) [AlgebraicGeometry.Smooth h]
@@ -41,15 +41,15 @@ theorem orderAtLeastLocus_comap_of_smooth (T : MarkedIdealWithBoundary.{u}) (hV 
   have : AlgebraicGeometry.Smooth T.structMap := hV.smooth
   exact FunctorialResolution.EmbeddedResolution.orderAtLeastLocus_comap T.base T.structMap h T.ideal m
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+Boundary replacement replaces the list while keeping the other data. Applying it a second time leaves the second list as the boundary, exactly as direct replacement by that list does.
 -/
 private theorem withBoundary_withBoundary (T : MarkedIdealWithBoundary.{u})
     (E F : List T.scheme.IdealSheafData) :
     (T.withBoundary E).withBoundary F = T.withBoundary F := rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Reverse the equality of nontrivial boundary lists. The admissibility transport theorem now allows the original boundary to replace the new one. This replacement recovers the original input.
 -/
 private theorem isAdmissible_of_withBoundary_isAdmissible (S : MarkedIdealWithBoundary.{u})
     (E : List S.scheme.IdealSheafData) (hBE : MarkedIdealWithBoundary.SameNontrivialBoundary S.boundary E)
@@ -59,8 +59,8 @@ private theorem isAdmissible_of_withBoundary_isAdmissible (S : MarkedIdealWithBo
   rw [withBoundary_withBoundary, MarkedIdealWithBoundary.withBoundary_self] at h1
   exact h1
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Apply the boundary restoration result to the pulled-back input. The two lists have the same nontrivial entries, so admissibility of the replacement gives admissibility of the unreplaced pullback.
 -/
 theorem isAdmissible_pullbackAlong_of_withBoundary_isAdmissible :
     ∀ (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (q : Y ⟶ Spec (CommRingCat.of T.base))
@@ -70,10 +70,8 @@ theorem isAdmissible_pullbackAlong_of_withBoundary_isAdmissible :
   intro T Y q h E' hBE hV
   exact isAdmissible_of_withBoundary_isAdmissible (T.pullbackAlong Y q h) E' hBE hV
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The ordinary pulled-back boundary has the same length as the original boundary, so the selected position exists there. Restore this boundary to recover admissibility of the ordinary pulled-back input by the given transport. Equality of the prefixes makes the selected divisor and hence the selected ideal unchanged by replacement. Apply the selected-component pullback formula for the ordinary smooth pullback.
 -/
 theorem containedComponentsIdeal_pullbackAlong_of_isAdmissible_pullbackAlong
     {hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}} {hno : BlowupPreservesNoetherian.{u}}
@@ -100,8 +98,8 @@ theorem containedComponentsIdeal_pullbackAlong_of_isAdmissible_pullbackAlong
   rw [containedComponentsIdeal_withBoundary T j Y q h E' hjE hj' htake]
   exact hfacts.preIdeal_pullbackAlong T hV Y q h hq hVal j hj hj'
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Admissibility of the ordinary pullback follows by restoring its original boundary from the admissible replacement. Supply this admissibility transport to the theorem that compares the selected ideal under smooth pullback with boundary replacement.
 -/
 theorem containedComponentsIdeal_pullbackAlong_of_smooth {hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}}
     {hno : BlowupPreservesNoetherian.{u}} (hfacts : DivisorReductionTerminationProperties hres hno) :

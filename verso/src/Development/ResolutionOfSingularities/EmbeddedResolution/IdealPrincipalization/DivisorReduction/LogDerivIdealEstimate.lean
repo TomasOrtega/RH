@@ -56,16 +56,14 @@ private noncomputable def iSupIdealSheaf {Y : Scheme.{u}} {ι : Sort v} (J : ι 
     simp only [Ideal.map_iSup]
     exact iSup_congr fun i => (J i).map_ideal_basicOpen U f
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The pointwise construction assigns to each affine open the supremum of the given ideals on that open. This is the asserted evaluation.
 -/
 private theorem pointwiseSup_ideal {Y : Scheme.{u}} {ι : Sort v} (J : ι → Y.IdealSheafData)
     (U : Y.affineOpens) : (iSupIdealSheaf J).ideal U = ⨆ i, (J i).ideal U := rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The ideal sheaf with the pointwise supremum on affine opens is an upper bound for the original sheaves because every component ideal lies in that supremum. The sheaf supremum is therefore contained in that upper bound. Evaluating on the chosen open gives the inclusion.
 -/
 private theorem ideal_iSup_le_iSup_ideal {Y : Scheme.{u}} {ι : Sort v} (J : ι → Y.IdealSheafData)
     (U : Y.affineOpens) : (⨆ i, J i).ideal U ≤ ⨆ i, (J i).ideal U := by
@@ -76,8 +74,8 @@ private theorem ideal_iSup_le_iSup_ideal {Y : Scheme.{u}} {ι : Sort v} (J : ι 
   have h2 := Scheme.IdealSheafData.le_def.mp h U
   rwa [pointwiseSup_ideal J U] at h2
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+On an affine open the product of ideal sheaves evaluates to the product of the evaluated ideals. The original inclusion gives containment of the corresponding second ideals, and multiplication by a fixed first ideal preserves it. This proves the sheaf inclusion.
 -/
 private theorem idealSheafData_mul_le_mul_left {Y : Scheme.{u}} (F : Y.IdealSheafData)
     {A B : Y.IdealSheafData} (h : A ≤ B) : F * A ≤ F * B := by
@@ -87,8 +85,8 @@ private theorem idealSheafData_mul_le_mul_left {Y : Scheme.{u}} (F : Y.IdealShea
   rw [e1, e2]
   exact Ideal.mul_mono le_rfl (Scheme.IdealSheafData.le_def.mp h U)
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+Evaluate on an affine open and bound the evaluated sheaf supremum by the supremum of evaluations. The logarithmic derivative operation preserves inclusion, so the logarithmic derivative of that supremum bounds the result. The affine logarithmic derivative estimate puts it inside the supremum of the logarithmic derivatives of the component ideals. Each of these is contained in the affine evaluation of the claimed sheaf supremum.
 -/
 theorem logDerivIdealSheaf_iSup_le (k : Type u) [CommRing k] [IsNoetherianRing k]
     {Y : Scheme.{u}} (p : Y ⟶ Spec (CommRingCat.of k))
@@ -103,10 +101,8 @@ theorem logDerivIdealSheaf_iSup_le (k : Type u) [CommRing k] [IsNoetherianRing k
   exact iSup_le fun i =>
     Scheme.IdealSheafData.le_def.mp (le_iSup (fun i' => logDerivIdealSheaf k p P (J i')) i) U
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+For zero iterations both sides are the original supremum. For one more iteration, apply one logarithmic derivative to the preceding inclusion, using monotonicity. The single-step supremum bound then puts the result inside the supremum of the logarithmic derivatives of the preceding iterates, which are exactly the next iterates.
 -/
 theorem logDerivIdealSheafIterate_iSup_le (k : Type u) [CommRing k] [IsNoetherianRing k]
     {Y : Scheme.{u}} (p : Y ⟶ Spec (CommRingCat.of k))
@@ -125,8 +121,8 @@ theorem logDerivIdealSheafIterate_iSup_le (k : Type u) [CommRing k] [IsNoetheria
       refine h1.trans (iSup_le fun i => le_iSup_of_le i ?_)
       exact le_of_eq (logDerivIdealSheafIterate_succ k p P r (J i)).symm
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+Apply the iterated logarithmic derivative bound to the outer supremum over natural indices. Apply it again to the inner supremum over the indices allowed by the bound. Each resulting term occurs in the asserted bounded supremum.
 -/
 theorem logDerivIdealSheafIterate_biSup_le (k : Type u) [CommRing k] [IsNoetherianRing k]
     {Y : Scheme.{u}} (p : Y ⟶ Spec (CommRingCat.of k))
@@ -140,8 +136,8 @@ theorem logDerivIdealSheafIterate_biSup_le (k : Type u) [CommRing k] [IsNoetheri
   refine le_trans (logDerivIdealSheafIterate_iSup_le k p P r (fun _ : l ≤ n => J l)) ?_
   exact iSup_le fun h => le_iSup_of_le l (le_iSup_of_le h le_rfl)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The center and boundary conditions make the next scheme smooth over the field and the exceptional ideal invertible. The center power condition for the zeroth term gives a center power bound for each successive ordinary derivative. Form their controlled transforms with marks decreasing by derivative order. The zeroth transform equals the given zeroth successor ideal by cancellation of its exceptional power. For each derivative order up to n, pull back the hypothesized logarithmic bound and distribute pullback through its finite sum. The logarithmic blowup estimate for the term indexed by j gives the successor logarithmic term times an exceptional power. This power has exponent m minus the derivative order, independent of j. Cancel that common power to bound the ordinary derivative's controlled transform by the sum of successor logarithmic terms. The estimate for derivatives of the zeroth controlled transform bounds them by logarithmic derivatives of these transformed ordinary derivatives. Applying the new bounds, distributing the iterated logarithmic derivative through each finite sum, and adding the derivative orders yields the asserted bounded sum.
 -/
 theorem derivIdealSheafIterate_le_biSup_logDerivIdealSheafIterate_of_blowup
     (k : Type u) [Field k] [CharZero k] {X X₁ : Scheme.{u}}

@@ -20,8 +20,8 @@ open CategoryTheory AlgebraicGeometry
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+The equality of nontrivial boundary lists is symmetric. Apply the assumed admissibility transport to the replaced input with the original boundary as the new list. Replacing that boundary restores the original input, so it is admissible.
 -/
 theorem isAdmissible_of_withBoundary_isAdmissible
     (hvbr : ∀ (S : MarkedIdealWithBoundary.{u}) (F : List S.scheme.IdealSheafData), S.IsAdmissible →
@@ -34,8 +34,8 @@ theorem isAdmissible_of_withBoundary_isAdmissible
   have he : (T.withBoundary E').withBoundary T.boundary = T := MarkedIdealWithBoundary.withBoundary_self T
   rwa [he] at h
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The selected ideal is determined by the ideal and mark of the input and the boundary entry at the selected index. The first two are fixed by boundary replacement, and the two selected entries agree by hypothesis. Substitution gives the same selected ideal.
 -/
 private theorem containedComponentsIdeal_withBoundary_of_get_eq (S : MarkedIdealWithBoundary.{u})
     (E' : List S.scheme.IdealSheafData) (j : ℕ) (hjE : j < E'.length)
@@ -46,18 +46,16 @@ private theorem containedComponentsIdeal_withBoundary_of_get_eq (S : MarkedIdeal
     DivisorReduction.containedComponentsIdeal_eq_componentsInOrderLocusIdeal S j hj]
   exact congrArg (fun D => DivisorReduction.componentsInOrderLocusIdeal S.ideal S.mult D) hget
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
+/- English proof (authored)
+In the absence of the preliminary blowup the lower ideal is the original ideal pulled back along the identity, so it equals the original ideal.
 -/
 private theorem lowerIdealWithoutBlowup_eq_ideal (S : MarkedIdealWithBoundary.{u}) :
     DivisorReduction.lowerIdealWithoutBlowup S = S.ideal := by
   unfold DivisorReduction.lowerIdealWithoutBlowup
   simp [Scheme.IdealSheafData.comap_id]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Restore the original base-changed boundary to deduce admissibility of the unreplaced base-changed input, since the nontrivial entries agree. Equality of the prefixes gives equality of the selected entries at j. The selected center is therefore the same with either boundary. Without the replacement, the field base-change formula identifies this center with the pullback of the original selected center.
 -/
 theorem containedComponentsIdeal_withBoundary_baseChange
     {hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}} {hno : BlowupPreservesNoetherian.{u}}
@@ -85,8 +83,8 @@ theorem containedComponentsIdeal_withBoundary_baseChange
   rw [containedComponentsIdeal_withBoundary_of_get_eq (T.baseChange K f) E' j hjE hj' hget]
   exact hfacts.preIdeal_baseChange T hV K f hVb j hj hj'
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Before a preliminary blowup the lower ideal in either input is its given ideal. Changing the boundary does not change that ideal, and the ideal of the field-base-changed input is the pullback along its projection. This is the required equality.
 -/
 theorem lowerIdealWithoutBlowup_withBoundary_baseChange :
     ∀ (T : MarkedIdealWithBoundary.{u}) (K : Type u) [Field K] [CharZero K] (f : T.base →+* K)

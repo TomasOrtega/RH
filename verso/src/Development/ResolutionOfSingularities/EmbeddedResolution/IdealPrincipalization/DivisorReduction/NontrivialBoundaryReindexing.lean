@@ -18,12 +18,8 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace DivisorReduction
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
-
-Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Filtering after mapping gives the same result whether or not the original list was filtered first. Indeed, by induction on the list, any entry rejected at the first stage also gets rejected after the map, and every retained entry is treated identically in either order. Thus equal original filtered lists give equal filtered mapped lists.
 -/
 private theorem filter_map_eq_of_filter_eq {α : Type*} (p : α → Bool) (g : α → α)
     (hpg : ∀ a, p a = false → p (g a) = false) {A B : List α}
@@ -42,10 +38,8 @@ private theorem filter_map_eq_of_filter_eq {α : Type*} (p : α → Bool) (g : �
         simp [ha', hga, ih]
   rw [key A, key B, hAB]
 
-/- English proof (translation)
-Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Substitute using the available equality. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The nontrivial boundary is obtained by discarding unit entries. Since the map sends unit to unit, discarding such entries before mapping gives the same filtered result as discarding after mapping. Apply the filter comparison to the two equal initial nontrivial lists.
 -/
 private theorem sameNontrivialBoundary_map {X : Scheme.{u}} (g : X.IdealSheafData → X.IdealSheafData)
     (hg : g ⊤ = ⊤) {A B : List X.IdealSheafData} (h : MarkedIdealWithBoundary.SameNontrivialBoundary A B) :
@@ -58,14 +52,8 @@ private theorem sameNontrivialBoundary_map {X : Scheme.{u}} (g : X.IdealSheafDat
   subst ha'
   simp [hg]
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+On either list, removing the selected index after mapping removes the corresponding original entry. The first original length minus one places then consist exactly of the mapped remaining entries, before the appended exceptional ideal. The mapping is identity pullback followed by strict transform, which sends the unit ideal to itself. Agreement of the original shortened nontrivial lists therefore persists after this mapping.
 -/
 private theorem sameNontrivialBoundary_take_eraseIdx_strictTransform {X : Scheme.{u}} (Z : X.IdealSheafData)
     (A B : List X.IdealSheafData) (a b : ℕ) (ha : a < A.length) (hb : b < B.length)
@@ -110,8 +98,8 @@ private theorem sameNontrivialBoundary_take_eraseIdx_strictTransform {X : Scheme
   exact sameNontrivialBoundary_map (fun D : X.IdealSheafData => Blowup.strictTransform (𝟙 X) Z (D.comap (𝟙 X)))
     hgtop h
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
+/- English proof (authored)
+Equal selected divisor ideals give equal selected center ideals. The input ideal and marking are fixed by boundary replacement. The residual-by-power construction for the lower ideal uses only these data, so the two lower ideals coincide.
 -/
 theorem lowerIdealAfterBlowup_withBoundary_eq_of_get_eq (T : MarkedIdealWithBoundary.{u}) (L₁ L₂ : List T.scheme.IdealSheafData)
     (j₁ : ℕ) (hj₁ : j₁ < L₁.length) (j₂ : ℕ) (hj₂ : j₂ < L₂.length)
@@ -121,8 +109,8 @@ theorem lowerIdealAfterBlowup_withBoundary_eq_of_get_eq (T : MarkedIdealWithBoun
   rw [containedComponentsIdeal_withBoundary_congr T L₁ L₂ j₁ hj₁ j₂ hj₂ heq]
   rfl
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The chosen divisor ideals agree, so the two constructions use the same selected center. Apply the list comparison for strict transform along the identity with this center to the two boundaries after removing their respective selected entries. The given agreement of the nontrivial shortened lists supplies its hypothesis.
 -/
 theorem sameNontrivialBoundary_lowerBoundaryAfterBlowup_of_get_eq (T : MarkedIdealWithBoundary.{u}) (L₁ L₂ : List T.scheme.IdealSheafData)
     (j₁ : ℕ) (hj₁ : j₁ < L₁.length) (j₂ : ℕ) (hj₂ : j₂ < L₂.length)
@@ -136,8 +124,8 @@ theorem sameNontrivialBoundary_lowerBoundaryAfterBlowup_of_get_eq (T : MarkedIde
   exact sameNontrivialBoundary_take_eraseIdx_strictTransform
     (containedComponentsIdeal (T.withBoundary L₂) j₂ hj₂) L₂ L₁ j₂ j₁ hj₂ hj₁ hBE
 
-/- English proof (translation)
-Supply the required witnesses or components.
+/- English proof (authored)
+The identity of a scheme is smooth and surjective. Equal chosen divisor entries give the same lower ideal, and matching remaining nontrivial boundaries give matching lower boundaries after the update. Together these are the conditions for boundary reindexing invariance.
 -/
 theorem boundaryReindexingInvariance : BoundaryReindexingInvariance.{u} :=
   ⟨smooth_id, surjective_id, lowerIdealAfterBlowup_withBoundary_eq_of_get_eq, sameNontrivialBoundary_lowerBoundaryAfterBlowup_of_get_eq⟩

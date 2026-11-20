@@ -22,8 +22,8 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace DivisorReduction
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Removing the selected entry from each list leaves exactly its old length minus one entries, so both truncations keep their entire shortened lists. Entrywise pullback commutes with deleting an index. The lists had the same nontrivial entries and equal prefixes through the deleted entry, so deleting that entry preserves agreement of their nontrivial parts.
 -/
 private theorem sameNontrivialBoundary_take_eraseIdx_comap {X Y : Scheme.{u}} (p : Y ⟶ X)
     (B : List X.IdealSheafData) (E' : List Y.IdealSheafData) (j : ℕ)
@@ -39,10 +39,8 @@ private theorem sameNontrivialBoundary_take_eraseIdx_comap {X Y : Scheme.{u}} (p
   rw [hE, hB, ← List.eraseIdx_map]
   exact hBE.symm.eraseIdx j htake
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
-
-Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+If the connected component of a point is not contained in P, the same is true for every point of that component. The component is open and is an open neighborhood in the complement of the indicated set. The complement is therefore open.
 -/
 private theorem isClosed_setOf_connectedComponent_subset {X : Type u} [TopologicalSpace X]
     (hop : ∀ x : X, IsOpen (connectedComponent x)) (P : Set X) :
@@ -57,8 +55,8 @@ private theorem isClosed_setOf_connectedComponent_subset {X : Type u} [Topologic
   rw [connectedComponent_eq hy]
   exact hsub
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Without a preliminary blowup the lower boundary is the original list. The field extension pulls back this list entry by entry. The deletion formula for lists with matching nontrivial parts and matching prefixes applies at the specified index, giving the asserted comparison.
 -/
 theorem lowerBoundaryWithoutBlowup_baseChange_sameNontrivialBoundary (T : MarkedIdealWithBoundary.{u}) (j : ℕ)
     (hj : j < T.boundary.length) (K : Type u) [Field K] [CharZero K] (f : T.base →+* K)
@@ -74,14 +72,8 @@ theorem lowerBoundaryWithoutBlowup_baseChange_sameNontrivialBoundary (T : Marked
   rw [lowerBoundaryWithoutBlowup_eq ((T.baseChange K f).withBoundary E'), lowerBoundaryWithoutBlowup_eq T]
   exact sameNontrivialBoundary_take_eraseIdx_comap (fieldBaseChangeProjection T K f) T.boundary E' j hBE htake hj hjE
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The selected locus is a union of connected components of the Noetherian boundary divisor, and its complement is also a union of open components. Hence the selected locus is closed. Its image in the ambient scheme is closed because the divisor inclusion is a closed immersion. The support of the kernel of the composite inclusion is the closure of that image, so is the image itself. Taking its inverse image under the injective divisor inclusion recovers exactly the selected locus.
 -/
 theorem preimageSupportEqComponentsInOrderLocus_of_isAdmissible (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (j : ℕ)
     (hj : j < T.boundary.length) : PreimageSupportEqComponentsInOrderLocus T j hj := by

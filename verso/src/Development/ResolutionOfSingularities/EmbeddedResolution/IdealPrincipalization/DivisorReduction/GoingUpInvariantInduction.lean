@@ -42,8 +42,8 @@ namespace DivisorReduction
 
 namespace GoingUpInvariantOnOpen
 
-/- English proof (translation)
-Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The first list after mapping has the original length. The specified index therefore lies in this first part of the concatenation, where the entry is the image of the original entry under the map.
 -/
 private theorem getElem_of_eq_map_append {α β : Type*} (f : α → β) (L : List α) (Lx : List β)
     (L' : List β) (hL : L' = L.map f ++ Lx) (i : ℕ) (hi : i < L.length) (hi' : i < L'.length) :
@@ -52,28 +52,8 @@ private theorem getElem_of_eq_map_append {α β : Type*} (f : α → β) (L : Li
   have h1 : i < (L.map f).length := by simpa using hi
   rw [List.getElem_append_left h1, List.getElem_map]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Use the invariant to obtain the center's normal crossings with the ambient boundary and the restricted divisor. The ambient step is a blowup, so its composite structure map is smooth and its new boundary still has strict normal crossings. The kernel of the next restricted embedding is the strict transform of the preceding kernel. The chosen boundary index remains within the transformed original part of the list, so this kernel is again the chosen boundary entry. For the boundary comparison after deleting that entry, restrict the strict transform and exceptional ideal to the next lower open. The restriction formulas identify these with the updated lower boundary. Unit ideals remain unit under strict transform, so the agreement of nontrivial entries persists. For the derivative conditions, keep the earlier exceptional divisibilities and use the center power bound to add divisibility at this step. The logarithmic derivative estimate for a blowup then transports the preceding derivative bound to the next stage, using the new structural map and the new restricted kernel. These are all the conditions of the next invariant on the open.
 -/
 theorem succ {hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}}
     {hno : BlowupPreservesNoetherian.{u}} {T : MarkedIdealWithBoundary.{u}}

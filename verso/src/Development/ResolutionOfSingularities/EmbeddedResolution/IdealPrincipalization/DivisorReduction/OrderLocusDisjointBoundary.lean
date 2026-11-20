@@ -25,12 +25,8 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace DivisorReduction
 
-/- English proof (translation)
-By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The kernel support of a closed immersion is its image. If a point belonged to both this support and the order locus, choose its preimage in the closed subscheme. Pulling an ideal back can only increase its order at this point. The preimage would therefore lie in the order locus of the restricted ideal, which is empty.
 -/
 theorem orderAtLeastLocus_inter_ker_support_eq_empty_of_comap
     {S X : Scheme.{u}} (ι : S ⟶ X) [AlgebraicGeometry.IsClosedImmersion ι]
@@ -55,10 +51,8 @@ theorem orderAtLeastLocus_inter_ker_support_eq_empty_of_comap
   rw [h] at hy'
   exact hy'
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The untwisted lower initial ideal equals the original ideal. At the last stage the controlled-transform restriction theorem identifies the restriction of the ambient transform along the stage embedding with the final lower ideal, using the given divisibilities. That lower ideal has empty order locus. Apply the disjointness result for a closed immersion to this last embedding.
 -/
 theorem orderAtLeastLocus_inter_support_ker_eq_empty
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}) (hno : BlowupPreservesNoetherian.{u})
@@ -103,8 +97,8 @@ theorem orderAtLeastLocus_inter_support_ker_eq_empty
   rw [hctrl, hcomap]
   exact hempty
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The first-step formula identifies the first transform of the prepended sequence with the initial residual ideal. Thus its final controlled transform agrees with the final transform of the unprepended ambient sequence starting from that residual ideal. The restriction theorem identifies the latter transform on the embedded divisor with the final twisted lower ideal. Its order locus is empty, so the ambient order locus misses the support of the final embedding kernel.
 -/
 theorem orderAtLeastLocus_controlledTransform_inter_ker_support_eq_empty
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}) (hno : BlowupPreservesNoetherian.{u})

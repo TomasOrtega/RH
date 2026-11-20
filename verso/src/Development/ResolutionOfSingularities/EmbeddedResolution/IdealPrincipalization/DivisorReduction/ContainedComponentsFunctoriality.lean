@@ -27,10 +27,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The boundary divisor is smooth and Noetherian, so its irreducible components are pairwise disjoint and open and closed. The connected component of the point is contained in an irreducible component through it. That irreducible component is connected, hence is contained in the connected component. They are therefore equal and the connected component is irreducible.
 -/
 theorem isIrreducible_connectedComponent_boundary_subscheme (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible)
     (j : ℕ) (hj : j < T.boundary.length) (z : ↥(T.boundary.get ⟨j, hj⟩).subscheme) :
@@ -52,8 +50,8 @@ theorem isIrreducible_connectedComponent_boundary_subscheme (T : MarkedIdealWith
   rw [Set.Subset.antisymm h1 h2]
   exact isIrreducible_irreducibleComponent
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Both selected loci are unions of connected components in Noetherian spaces, hence are closed in addition to the assumed openness. The original connected components are irreducible and the original ambient locus is closed. These are the hypotheses for the flat pullback formula for the kernel of an open and closed part of a subscheme. Applying it gives the equality of the new selected ideal and the pullback of the original one.
 -/
 theorem openSubschemeKer_comap_of_flat_of_noetherian {X Y : Scheme.{u}} (g : Y ⟶ X)
     [AlgebraicGeometry.Flat g] (D : X.IdealSheafData) (A : Set X) (hA : IsClosed A)
@@ -77,8 +75,8 @@ theorem openSubschemeKer_comap_of_flat_of_noetherian {X Y : Scheme.{u}} (g : Y �
       ↥(D.comap g).subscheme
       (⇑(D.comap g).subschemeι.base ⁻¹' (⇑g.base ⁻¹' A))) hirr
 
-/- English proof (translation)
-Substitute using the available equality. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The replacement list is obtained by applying pullback to each entry of the original list in order. Evaluation at the valid index thus gives the pullback of the original entry at that index.
 -/
 private theorem get_eq_comap_get_of_eq_map {X Y : Scheme.{u}} (g : Y ⟶ X) (E : List X.IdealSheafData)
     (F : List Y.IdealSheafData) (hF : F = E.map (fun D => D.comap g)) (j : ℕ)
@@ -87,12 +85,8 @@ private theorem get_eq_comap_get_of_eq_map {X Y : Scheme.{u}} (g : Y ⟶ X) (E :
   subst hF
   simp [List.get_eq_getElem]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The two admissible boundary divisors are Noetherian, and their selected unions are open. The original boundary has irreducible connected components because it is smooth. The assumptions identify the new boundary ideal with the pullback of the original one and the new order locus with the inverse image of the original order locus. Thus the two selected ideals are the kernels of the open and closed parts related by the flat kernel comparison for the given closed order locus. This yields the pullback equality.
 -/
 private theorem containedComponentsIdeal_comap_of_flat (T T' : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible)
     (hV' : T'.IsAdmissible) (g : T'.scheme ⟶ T.scheme) (hflat : AlgebraicGeometry.Flat g) (j : ℕ)
@@ -130,10 +124,8 @@ private theorem containedComponentsIdeal_comap_of_flat (T T' : MarkedIdealWithBo
   rw [containedComponentsIdeal_eq_openSubschemeKer T j hj hopen, containedComponentsIdeal_eq_openSubschemeKer T' j hj' hopen']
   exact key _ hD _ hset hopen' hN'
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The smooth map is flat. The new boundary entry is the pullback of the original one by the entrywise boundary formula. In characteristic zero the order locus for the original smooth input is closed, and its smooth pullback is its inverse image. Apply the flat comparison for selected components to these data.
 -/
 theorem containedComponentsIdeal_pullbackAlong_of_smooth (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (Y : Scheme.{u})
     (q : Y ⟶ Spec (CommRingCat.of T.base)) (h : Y ⟶ T.scheme) [AlgebraicGeometry.Smooth h]
@@ -155,10 +147,8 @@ theorem containedComponentsIdeal_pullbackAlong_of_smooth (T : MarkedIdealWithBou
     isClosed_orderAtLeastLocus T.base T.structMap T.ideal T.mult
   exact containedComponentsIdeal_comap_of_flat T (T.pullbackAlong Y q h) hV hV' h hfl j hj hj' hD hcs hcl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The field-extension projection is flat. The boundary is pulled back entry by entry, and the field-extension order comparison makes the new order locus the inverse image of the original closed order locus. The flat comparison of selected component kernels then gives the equality.
 -/
 theorem containedComponentsIdeal_baseChange (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (L : Type u) [Field L]
     [CharZero L] (f : T.base →+* L) (hV' : (T.baseChange L f).IsAdmissible) (j : ℕ)

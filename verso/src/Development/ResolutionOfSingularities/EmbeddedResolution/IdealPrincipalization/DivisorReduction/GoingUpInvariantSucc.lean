@@ -37,8 +37,8 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace DivisorReduction
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The structural map is projection to the ambient base followed by the original map to the field. At the next stage the projection is the current transition followed by the preceding projection. Associativity gives the asserted structural map.
 -/
 theorem structureMorphism_ambientBlowupSeq_succ (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -54,8 +54,8 @@ theorem structureMorphism_ambientBlowupSeq_succ (hres : FunctorialResolution.Blo
         ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).projectionToBase t ≫ T.structMap)
   rw [BlowupSequenceData.projectionToBase_succ, Category.assoc]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The adjacent ambient embedding theorem identifies the next kernel with the strict transform of the preceding kernel for every genuine step. Apply it to the closed immersion of the chosen divisor and the blowup data from the lower sequence, whose length is the lower length.
 -/
 theorem ker_embeddingIntoAmbient_succ (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -73,8 +73,8 @@ theorem ker_embeddingIntoAmbient_succ (hres : FunctorialResolution.Blowup.Strict
 
 namespace GoingUpInvariant
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The index is smaller than the original list length and mapping preserves that length. It therefore lies in the mapped part of the concatenation. Evaluation there gives the image of the original entry.
 -/
 private theorem getElem_map_append_of_lt_length.{v, w} {α : Type v} {β : Type w} (f : α → β)
     (M : List β) (L : List α) (i : ℕ) (hi : i < L.length)
@@ -82,30 +82,8 @@ private theorem getElem_map_append_of_lt_length.{v, w} {α : Type v} {β : Type 
     (L.map f ++ M)[i]'h = f (L[i]'hi) := by
   rw [List.getElem_append_left (by simpa using hi), List.getElem_map]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The ambient step is a blowup. The preceding invariant and the normal crossings lifting result give strict normal crossings for the center with the transformed boundary, including its presentation with the embedding kernel distinguished. Thus the next stage is smooth and its updated boundary still has strict normal crossings. The new embedding kernel is the strict transform of the old one. Since the exceptional ideal is appended, the selected index still addresses that transformed kernel. After deleting that entry, the strict-transform and exceptional restriction formulas, together with the previous boundary comparison, give the updated lower boundary. The ambient center restricts to the lower center because it is its image under the closed immersion. Retain the existing derivative divisibilities and use the preceding center power bounds and exceptional transform products for the new divisibilities. The logarithmic estimate for a blowup propagates the derivative inequality, with the new structural map and the strict transform of the distinguished embedding kernel. This gives the successor invariant.
 -/
 theorem succ {hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}}
     {hno : BlowupPreservesNoetherian.{u}} {T : MarkedIdealWithBoundary.{u}}

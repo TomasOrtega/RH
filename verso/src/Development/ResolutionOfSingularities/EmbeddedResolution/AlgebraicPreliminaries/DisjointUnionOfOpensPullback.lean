@@ -6,10 +6,8 @@ namespace FunctorialResolution.EmbeddedResolution
 
 universe u
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Every point of X lifts to a point of one of the given open immersions. Such an immersion induces an isomorphism on the stalk at that point. The source stalk is reduced by hypothesis, so the target stalk is reduced. As this holds at every point, X is reduced.
 -/
 private theorem isReduced_of_isOpenImmersion_cover {X : Scheme.{u}} {J : Type u} {V : J → Scheme.{u}}
     (m : (j : J) → V j ⟶ X) (hm : ∀ j, IsOpenImmersion (m j))
@@ -26,8 +24,8 @@ private theorem isReduced_of_isOpenImmersion_cover {X : Scheme.{u}} {J : Type u}
       (asIso ((m j).stalkMap y)).commRingCatIsoToRingEquiv.injective
   exact isReduced_of_isReduced_stalk X
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The underlying space of the coproduct is the disjoint union of the underlying spaces of the summands. The given point therefore determines an index and a point in that summand, and the summand inclusion sends that point to the given one.
 -/
 private theorem exists_sigma_ι_base_eq {J : Type u} (f : J → Scheme.{u}) (x : ↥(∐ f)) :
     ∃ (j : J) (y : ↥(f j)), (Sigma.ι f j).base y = x := by
@@ -35,10 +33,8 @@ private theorem exists_sigma_ι_base_eq {J : Type u} (f : J → Scheme.{u}) (x :
   rw [← sigmaMk_mk]
   simp
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
+/- English proof (authored)
+The spectrum of a field has one point, so a compact open in it is empty or the whole space. Its inverse image is accordingly empty or the whole domain. Both are compact by the hypothesis on the domain, proving quasi-compactness of the map.
 -/
 private theorem quasiCompact_of_compactSpace_to_spec_field {k : Type u} [Field k] {V : Scheme.{u}}
     [CompactSpace ↥V] (f : V ⟶ Spec (CommRingCat.of k)) : QuasiCompact f := by
@@ -51,12 +47,8 @@ private theorem quasiCompact_of_compactSpace_to_spec_field {k : Type u} [Field k
     rw [hW2]
     simpa using isCompact_univ
 
-/- English proof (translation)
-Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
+/- English proof (authored)
+Since the scheme is affine and locally of finite type over the field, its coordinate ring is a finitely generated algebra over the field. It is Noetherian, so its spectrum and hence the scheme are Noetherian topological spaces. Every subset of a Noetherian space is quasi-compact. In particular inverse images of quasi-compact opens under g are quasi-compact.
 -/
 private theorem quasiCompact_of_isAffine_of_locallyOfFiniteType {k : Type u} [Field k] {W' : Scheme.{u}}
     [IsAffine W'] (q : W' ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType q]
@@ -82,10 +74,8 @@ private theorem quasiCompact_of_isAffine_of_locallyOfFiniteType {k : Type u} [Fi
   have he : IsCompact (e '' (⇑g ⁻¹' Vo)) := TopologicalSpace.NoetherianSpace.isCompact _
   rwa [Homeomorph.isCompact_image] at he
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+Pull the open coproduct summands back along the second projection. Their inverse images are open subschemes covering the pullback, since every point of the coproduct belongs to a summand. Each pulled-back summand is canonically the pullback of the corresponding open immersion into Y along g′, hence is an open subscheme of W′. Such an open subscheme is reduced. Reducedness follows on the whole pullback from this open cover.
 -/
 theorem isReduced_pullback_sigmaOpensDesc (Y : Scheme.{u}) {ι : Type u} (U : ι → Y.Opens)
     (W' : Scheme.{u}) [IsReduced W'] (g' : W' ⟶ Y) :
@@ -115,10 +105,8 @@ theorem isReduced_pullback_sigmaOpensDesc (Y : Scheme.{u}) {ι : Type u} (U : ι
         (g := Sigma.ι (fun j => (U j).toScheme) i) x y hy.symm
     exact ⟨i, z, hz1⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
-
-Simplify to obtain the desired conclusion from the available facts.
+/- English proof (authored)
+The finite coproduct of the affine opens is affine and hence quasi-compact. The projection from the pullback to this coproduct is quasi-compact by base change of g′. Its inverse image of the whole coproduct is the whole pullback, so the pullback is quasi-compact.
 -/
 theorem compactSpace_pullback_sigmaOpensDesc (Y : Scheme.{u}) {ι : Type u} [Finite ι]
     (U : ι → Y.Opens) (hU : ∀ i, IsAffineOpen (U i))
@@ -132,10 +120,8 @@ theorem compactSpace_pullback_sigmaOpensDesc (Y : Scheme.{u}) {ι : Type u} [Fin
     Set.univ isOpen_univ isCompact_univ
   simpa using hcp
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+The scheme W′ is affine and locally of finite type over the field, so g′ is quasi-compact. Its pullback along the coproduct of the affine opens is therefore quasi-compact as a scheme, and the open summand argument makes it reduced. The first projection is étale by base change of the coproduct map, so its composite with q is locally of finite type. This composite is quasi-compact because its source is quasi-compact and the field spectrum has one point. Apply the construction of a reduced affine étale cover to this structure morphism. Its stated factorization is exactly the structure map obtained for the cover.
 -/
 theorem exists_affine_etale_cover_pullback_sigmaOpensDesc {k : Type u} [Field k]
     (Y : Scheme.{u}) (p : Y ⟶ Spec (CommRingCat.of k))
@@ -162,8 +148,8 @@ theorem exists_affine_etale_cover_pullback_sigmaOpensDesc {k : Type u} [Field k]
       (pullback.fst g' (sigmaOpensDesc Y U) ≫ q)
   exact ⟨V, s, r, h1, h2, h3, h4, h5, h6, h7⟩
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The first projection is a base change of the étale coproduct map. It is therefore étale, and its composite with the étale map r is étale.
 -/
 theorem etale_comp_fst_pullback_sigmaOpensDesc (Y : Scheme.{u}) {ι : Type u} (U : ι → Y.Opens)
     (W' : Scheme.{u}) (g' : W' ⟶ Y) (V : Scheme.{u})
@@ -172,8 +158,8 @@ theorem etale_comp_fst_pullback_sigmaOpensDesc (Y : Scheme.{u}) {ι : Type u} (U
   have : Etale (pullback.fst g' (sigmaOpensDesc Y U)) := inferInstance
   infer_instance
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The second projection is a base change of the given étale morphism g′. Since étale morphisms are preserved by base change and composition, the composite with r is étale.
 -/
 theorem etale_comp_snd_pullback_sigmaOpensDesc (Y : Scheme.{u}) {ι : Type u} (U : ι → Y.Opens)
     (W' : Scheme.{u}) (g' : W' ⟶ Y) [Etale g'] (V : Scheme.{u})
@@ -182,8 +168,8 @@ theorem etale_comp_snd_pullback_sigmaOpensDesc (Y : Scheme.{u}) {ι : Type u} (U
   have : Etale (pullback.snd g' (sigmaOpensDesc Y U)) := inferInstance
   infer_instance
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The coproduct map to Y is surjective because the opens cover Y. Base change makes the first projection surjective. Composing that projection with the surjective map r gives a surjective composite.
 -/
 theorem surjective_comp_fst_pullback_sigmaOpensDesc (Y : Scheme.{u}) {ι : Type u}
     (U : ι → Y.Opens) (hU : iSup U = ⊤)
@@ -194,8 +180,8 @@ theorem surjective_comp_fst_pullback_sigmaOpensDesc (Y : Scheme.{u}) {ι : Type 
   have : Surjective (pullback.fst g' (sigmaOpensDesc Y U)) := inferInstance
   infer_instance
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The second projection is a base change of the surjective map g′ and is therefore surjective. Its composite with the surjective r remains surjective.
 -/
 theorem surjective_comp_snd_pullback_sigmaOpensDesc (Y : Scheme.{u}) {ι : Type u}
     (U : ι → Y.Opens)
@@ -205,8 +191,8 @@ theorem surjective_comp_snd_pullback_sigmaOpensDesc (Y : Scheme.{u}) {ι : Type 
   have : Surjective (pullback.snd g' (sigmaOpensDesc Y U)) := inferInstance
   infer_instance
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The two composites from the pullback to Y agree by commutativity of the pullback square. Precomposing this equality by r gives the claimed identity.
 -/
 theorem comp_fst_comp_eq_comp_snd_comp_sigmaOpensDesc (Y : Scheme.{u}) {ι : Type u}
     (U : ι → Y.Opens) (W' : Scheme.{u}) (g' : W' ⟶ Y) (V : Scheme.{u})

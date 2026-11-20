@@ -5,12 +5,8 @@ universe u
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The given squares exhibit the C components as the pullbacks of the B coproduct summands along f. Finite coproducts of schemes are stable under this pullback, so the maps from the C components to P make P a coproduct of them. The comparison from their chosen coproduct to P is an isomorphism by uniqueness of coproducts, and it is the map induced by the given component maps.
 -/
 private theorem isIso_sigmaDesc_of_isPullback {ι : Type u} [Finite ι] {P : Scheme.{u}}
     (B C : ι → Scheme.{u}) (f : P ⟶ ∐ B) (j : ∀ a, C a ⟶ B a) (u : ∀ a, C a ⟶ P)
@@ -41,16 +37,8 @@ private theorem isIso_sigmaDesc_of_isPullback {ι : Type u} [Finite ι] {P : Sch
   rw [key]
   infer_instance
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
-
-Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
-
-Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Form the pullback of the coproduct map to A along i. The component pullback squares give maps from each C component to this pullback. By pasting with the defining pullback square, the squares over the coproduct inclusions are pullbacks. Stability of the finite coproduct under pullback identifies the coproduct of the C components with the constructed pullback. This identification gives the prescribed maps on each component by construction, so the stated square is a pullback.
 -/
 theorem isPullback_sigmaMap_sigmaDesc {ι : Type u} [Finite ι] {A Y : Scheme.{u}} (i : Y ⟶ A)
     (B C : ι → Scheme.{u}) (j : ∀ a, C a ⟶ B a) (q : ∀ a, C a ⟶ Y) (h : ∀ a, B a ⟶ A)

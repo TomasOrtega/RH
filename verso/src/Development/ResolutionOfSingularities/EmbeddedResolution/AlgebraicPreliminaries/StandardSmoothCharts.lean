@@ -6,15 +6,15 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+A point lies in the inverse image under the composite exactly when its image under f lies in the inverse image of U under g. Thus the two opens have the same points.
 -/
 private theorem preimage_comp {X Y Z : Scheme.{u}} (f : X ⟶ Y) (g : Y ⟶ Z) (U : Z.Opens) :
     (f ≫ g) ⁻¹ᵁ U = f ⁻¹ᵁ (g ⁻¹ᵁ U) := by
   simp
 
-/- English proof (translation)
-Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+An image point from the inverse image of A lies in A by definition. Conversely any point of A is in U by hypothesis and therefore is itself the image of a point of the open subscheme U lying above A.
 -/
 private theorem image_preimage_of_le {X : Scheme.{u}} (U A : X.Opens) (hA : A ≤ U) :
     U.ι ''ᵁ (U.ι ⁻¹ᵁ A) = A := by
@@ -24,8 +24,8 @@ private theorem image_preimage_of_le {X : Scheme.{u}} (U A : X.Opens) (hA : A �
   · intro z hz
     exact ⟨⟨z, hA hz⟩, hz, rfl⟩
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+Pullback of the basic open of s along f is the basic open of its pulled-back section. Restricting that section further to V intersects its nonvanishing locus with V. This gives the stated intersection.
 -/
 private theorem basicOpen_appLE {X Y : Scheme.{u}} (f : X ⟶ Y) {U : Y.Opens} {V : X.Opens}
     (e : V ≤ f ⁻¹ᵁ U) (s : ↑(Y.presheaf.obj (Opposite.op U))) :
@@ -33,8 +33,8 @@ private theorem basicOpen_appLE {X Y : Scheme.{u}} (f : X ⟶ Y) {U : Y.Opens} {
       V ⊓ f ⁻¹ᵁ Y.basicOpen s := by
   simp [AlgebraicGeometry.Scheme.Hom.appLE, AlgebraicGeometry.Scheme.preimage_basicOpen]
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The algebra structure on sections of the basic open is given by restriction from U. Its algebra map is therefore the indicated presheaf restriction.
 -/
 private theorem algebraMap_basicOpen_eq_presheaf_map {X : Scheme.{u}} {U : X.Opens}
     (s : ↑(X.presheaf.obj (Opposite.op U))) :
@@ -43,10 +43,8 @@ private theorem algebraMap_basicOpen_eq_presheaf_map {X : Scheme.{u}} {U : X.Ope
       (X.presheaf.map (homOfLE (X.basicOpen_le s)).op).hom :=
   rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Localize the section ring of U at s and the section ring of V at its image. On the given affine opens these are the section rings of the two basic opens. Standard smoothness of relative dimension n is preserved under this localization. The localized ring map equals the pullback on the two basic opens because both agree with the original pullback after restriction, and the localization map is determined by that agreement.
 -/
 private theorem isStandardSmoothOfRelativeDimension_appLE_basicOpen_target {X Y : Scheme.{u}}
     (f : X ⟶ Y) (n : ℕ) {U : Y.Opens}
@@ -84,8 +82,8 @@ private theorem isStandardSmoothOfRelativeDimension_appLE_basicOpen_target {X Y 
     ← CommRingCat.hom_comp, AlgebraicGeometry.Scheme.Hom.map_appLE,
     AlgebraicGeometry.Scheme.Hom.appLE_map]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The ring of sections on the basic open of t is the localization of the ring of V at t. The localization map is standard smooth of relative dimension zero. Compose it with the given section map, adding relative dimensions to get n. The composite is the section map into the smaller open, by compatibility with restriction.
 -/
 private theorem isStandardSmoothOfRelativeDimension_appLE_basicOpen_source {X Y : Scheme.{u}}
     (f : X ⟶ Y) (n : ℕ) {U : Y.Opens}
@@ -106,8 +104,8 @@ private theorem isStandardSmoothOfRelativeDimension_appLE_basicOpen_source {X Y 
     AlgebraicGeometry.Scheme.Hom.appLE_map] at hcomp
   exact hcomp
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Use the stated equalities to identify the two target opens and the two source opens. Under these identifications the maps on sections are the same, so their standard smoothness properties agree.
 -/
 private theorem isStandardSmoothOfRelativeDimension_appLE_congr {X Y : Scheme.{u}} (f : X ⟶ Y)
     (n : ℕ) {U U' : Y.Opens}
@@ -120,12 +118,8 @@ private theorem isStandardSmoothOfRelativeDimension_appLE_congr {X Y : Scheme.{u
   subst hV
   exact hstd
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+Use smoothness of relative dimension r to choose affine neighborhoods of y and its image with standard smooth section map. Find a basic open in the target neighborhood containing the image of y and lying in A₀. Shrink the source neighborhood to the basic open of the pullback of its defining section. This contains y and maps into the chosen target open, and the localized section map remains standard smooth of relative dimension r. Now choose a further basic open in this source neighborhood containing y and lying in B₀. Localizing only the source by this second step again preserves the relative dimension. The resulting affine opens satisfy all the requirements.
 -/
 private theorem exists_affineChart_isStandardSmoothOfRelativeDimension {X X' : Scheme.{u}}
     (φ : X' ⟶ X) (r : ℕ)
@@ -157,12 +151,8 @@ private theorem exists_affineChart_isStandardSmoothOfRelativeDimension {X X' : S
   exact ⟨X.basicOpen s, X'.basicOpen t, hU.basicOpen s, hB₁aff.basicOpen t, hsA₀, htB₀, hyt,
     hBle, isStandardSmoothOfRelativeDimension_appLE_basicOpen_source φ r hB₁aff hB₁le hstd₁ t hBle⟩
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At a point of V₀ choose affine neighborhoods inside U₀ and V₀ with a standard smooth section map of relative dimension r. Their inverse images under the two open inclusions are affine and contain the corresponding points. The restricted morphism maps the source neighborhood into the target neighborhood because it agrees with the original morphism after the inclusions. Sections on these inverse-image opens identify with sections on the chosen original opens, and the restricted pullback corresponds to the original section map. Thus it is standard smooth of relative dimension r at every point, which gives the claimed smoothness.
 -/
 theorem smoothOfRelativeDimension_resLE {X X' : Scheme.{u}} (φ : X' ⟶ X) (r : ℕ)
     [AlgebraicGeometry.SmoothOfRelativeDimension r φ] (U₀ : X.Opens) (V₀ : X'.Opens)

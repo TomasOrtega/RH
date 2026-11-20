@@ -7,8 +7,8 @@ noncomputable section
 
 namespace Formalism.ZeroFreeDirichlet
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Coprimality makes the residue of n a unit. Evaluate the character-square identity there. The principal character takes the value one, so the square of the original value is one.
 -/
 theorem real_character_apply_sq_eq_one {q : ℕ} (χ : DirichletCharacter ℂ q) (hsq : χ ^ 2 = 1) {n : ℕ}
     (hn : n.Coprime q) : χ (n : ZMod q) * χ (n : ZMod q) = 1 := by
@@ -18,10 +18,8 @@ theorem real_character_apply_sq_eq_one {q : ℕ} (χ : DirichletCharacter ℂ q)
   rw [← sq]
   exact h
 
-/- English proof (translation)
-By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At a unit modulo the product, a representative is coprime to both moduli. The product character value is the product of the two values, each with square one. Thus the square character equals one on every unit, and this determines it as the principal character.
 -/
 theorem product_real_characters_sq_eq_one {q₁ q : ℕ} [NeZero q₁] [NeZero q] (χ₁ : DirichletCharacter ℂ q₁) (χ : DirichletCharacter ℂ q)
     (ψ : DirichletCharacter ℂ (q₁ * q)) (h1 : χ₁ ^ 2 = 1) (h2 : χ ^ 2 = 1) (hψ : IsProdChar χ₁ χ ψ) :
@@ -38,10 +36,8 @@ theorem product_real_characters_sq_eq_one {q₁ q : ℕ} [NeZero q₁] [NeZero q
     MulChar.one_apply ((ZMod.isUnit_iff_coprime m q₁).mpr c1),
     MulChar.one_apply ((ZMod.isUnit_iff_coprime m q).mpr c2), one_mul]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At an integer coprime to the product, the product of the two values is one. The second value squares to one, so multiply that product by the second value to see that the first value equals the second.
 -/
 theorem agree_coprime_of_product_principal {q₁ q : ℕ} (χ₁ : DirichletCharacter ℂ q₁) (χ : DirichletCharacter ℂ q)
     (ψ : DirichletCharacter ℂ (q₁ * q)) (h2 : χ ^ 2 = 1) (hψ : IsProdChar χ₁ χ ψ) (hψ1 : ψ = 1) :
@@ -56,22 +52,16 @@ theorem agree_coprime_of_product_principal {q₁ q : ℕ} (χ₁ : DirichletChar
     _ = (χ₁ (n : ZMod q₁) * χ (n : ZMod q)) * χ (n : ZMod q) := by ring
     _ = χ (n : ZMod q) := by rw [e1, one_mul]
 
-/- English proof (translation)
-Chain the equalities or inequalities of the calculation.
+/- English proof (authored)
+Every distinct prime divisor is at least two. Their product is therefore at least two raised to their number, and their product divides the positive n, so it is at most n.
 -/
 private theorem two_pow_card_primeFactors_le_self (n : ℕ) (hn : n ≠ 0) : 2 ^ n.primeFactors.card ≤ n := by
   calc 2 ^ n.primeFactors.card ≤ ∏ p ∈ n.primeFactors, p :=
         Finset.pow_card_le_prod _ _ _ (fun p hp => (Nat.prime_of_mem_primeFactors hp).two_le)
     _ ≤ n := Nat.le_of_dvd (Nat.pos_of_ne_zero hn) (Nat.prod_primeFactors_dvd n)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
-
-Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
+/- English proof (authored)
+Taking logarithms in the distinct-prime bound gives the count times log 2 at most log n. Bound log n by the power with exponent ε/2 divided by ε/2. The same power is at least one, so it can absorb the added one. Squaring the nonnegative sides gives the asserted bound.
 -/
 private theorem card_primeFactors_add_one_sq_le_rpow {ε : ℝ} (hε : 0 < ε) (n : ℕ) (hn : n ≠ 0) :
     ((n.primeFactors.card : ℝ) + 1) ^ 2 ≤ (2 / (ε * Real.log 2) + 1) ^ 2 * (n : ℝ) ^ ε := by
@@ -96,12 +86,8 @@ private theorem card_primeFactors_add_one_sq_le_rpow {ε : ℝ} (hε : 0 < ε) (
         rw [mul_pow, ← Real.rpow_natCast ((n : ℝ) ^ (ε / 2)) 2, ← Real.rpow_mul (by positivity)]
         norm_num
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+Replace C by its positive majorant, and bound the two supplied factors by the stated multiples of M. Their product then contains M², which is Pc times Q. Divide the resulting lower bound by the positive coefficient to obtain the inequality.
 -/
 private theorem div_le_mul_of_main_bound_caseA {σ ε C L₁ X Lψ Nk M Q Pc A : ℝ} (hε : 0 < ε) (h1σ : 0 < 1 - σ)
     (hL₁ : 0 < L₁) (hX : 0 ≤ X) (hA : 0 < A) (hNk0 : 0 ≤ Nk) (hLψ0 : 0 ≤ Lψ) (hM0 : 0 ≤ M)
@@ -126,8 +112,8 @@ private theorem div_le_mul_of_main_bound_caseA {σ ε C L₁ X Lψ Nk M Q Pc A :
   rw [div_le_iff₀ hden]
   linarith
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
+/- English proof (authored)
+In the lower comparison for L₁ replace W by its upper bound, using X ≥ 0. Next replace the modulus power by Pc times Q. Dividing the result by the positive product D Pc gives the stated claim.
 -/
 private theorem div_le_mul_of_chain_caseB {L₁ X W D Nε Pc Q : ℝ} (hL₁ : 0 < L₁) (hX : 0 ≤ X) (hD : 0 < D)
     (hPc : 0 < Pc) (hS : L₁ ≤ W * X) (hW : W ≤ D * Nε) (hN : Nε ≤ Pc * Q) :
@@ -138,22 +124,8 @@ private theorem div_le_mul_of_chain_caseB {L₁ X W D Nε Pc Q : ℝ} (hL₁ : 0
     _ ≤ D * (Pc * Q) * X := mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hN hD.le) hX
     _ = X * Q * (D * Pc) := by ring
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
-
-Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+For each target character construct its product with the fixed quadratic character at the product modulus. If the product is principal, the original characters agree on the common units. The comparison at one bounds the fixed nonzero value by the target norm times a product-prime count factor. Bound that factor by a constant times the product modulus to the power ε. If the product is nonprincipal, the Taylor lower bound and the nonpositive product value force a positive lower bound on the residue expression at one. The upper bound for the product-character value at one and the small exponent hypothesis each cost at most a constant times the half-ε power of the product modulus. Rearrange to get a positive multiple of q to the power −ε in each case. The smaller of the two fixed constants works uniformly.
 -/
 theorem siegel_product_character_inequality (hP : ProdCharExists) (hS : SameCharacterLFunctionOne) {C K CL : ℝ}
     (hKey : ∀ (q₁ q₂ : ℕ) [NeZero q₁] [NeZero q₂] [NeZero (q₁ * q₂)] (χ₁ : DirichletCharacter ℂ q₁)

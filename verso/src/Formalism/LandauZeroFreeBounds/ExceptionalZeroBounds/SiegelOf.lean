@@ -6,24 +6,8 @@ noncomputable section
 
 namespace Formalism.ZeroFreeDirichlet
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Clear the denominators using the available nonvanishing facts. Chain the equalities or inequalities of the calculation. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
+/- English proof (authored)
+Choose σ₀ between 7/8 and one so that the product exponent at any point between σ₀ and one is at most ε/2. If a nonprincipal quadratic character has a real zero there, fix that character and evaluate the product at its zero. The product vanishes, so the product-character inequality gives the uniform lower bound at one for every target character. If no such zero exists, all nonprincipal quadratic L-functions are nonzero for real arguments at or above σ₀, using the ordinary nonvanishing at and above one. Their values at σ₀ are positive real numbers by continuity and the limit at infinity. Fix an available nonprincipal real character. Whenever the product character is nonprincipal, its value at σ₀ is positive too, while zeta is strictly negative there. Thus the product has nonpositive real part at σ₀. Apply the same product-character inequality, which includes the separate comparison when the product character is principal.
 -/
 theorem siegel_theorem_of : SiegelOf := by
   intro hP hR hB hL1 hZ hLP hS ε hε

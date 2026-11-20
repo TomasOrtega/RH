@@ -6,14 +6,8 @@ noncomputable section
 
 namespace Formalism.ZeroFreeDirichlet
 
-/- English proof (translation)
-Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Expand the character sums and exchange the sums over characters and integers. Because a is a unit modulo q, character orthogonality makes the inner sum equal to the totient when the residue of n equals a, and zero otherwise. The surviving von Mangoldt sum is exactly the progression sum.
 -/
 lemma chebyshev_progression_orthogonality (q a : ℕ) [NeZero q] (ha : Nat.Coprime a q) (x : ℝ) :
     (q.totient : ℂ) * ((psiAP q a x : ℝ) : ℂ) =
@@ -37,8 +31,8 @@ lemma chebyshev_progression_orthogonality (q a : ℕ) [NeZero q] (ha : Nat.Copri
   · rw [if_pos h, if_pos (hiff.mp h)]; ring
   · rw [if_neg h, if_neg (fun h' => h (hiff.mpr h'))]; simp
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Only the principal character contributes to the finite sum. The inverse of a is a unit, so the character value at it is one. Its contribution is therefore x.
 -/
 lemma principal_character_orthogonality_term (q a : ℕ) [NeZero q] (ha : Nat.Coprime a q) (x : ℝ) :
     ∑ χ : DirichletCharacter ℂ q, χ ((a : ZMod q)⁻¹) * (if χ = 1 then (x : ℂ) else 0) = (x : ℂ) := by
@@ -46,8 +40,8 @@ lemma principal_character_orthogonality_term (q a : ℕ) [NeZero q] (ha : Nat.Co
   rw [← hu, ZMod.inv_coe_unit]
   simp [mul_ite, mul_zero, Finset.sum_ite_eq', MulChar.one_apply (Units.isUnit _)]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The complex numbers contain the roots of unity needed for the full character group of the finite unit group. The character group has the same cardinality as the unit group, namely the totient. Taking the real value of that cardinality gives the formula.
 -/
 lemma card_dirichletCharacter_eq_totient (q : ℕ) [NeZero q] :
     ((Finset.univ : Finset (DirichletCharacter ℂ q)).card : ℝ) = (q.totient : ℝ) := by

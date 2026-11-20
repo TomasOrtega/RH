@@ -16,10 +16,8 @@ def vonMangoldtCharRe (n : ℕ) : ℝ := (Λ n : ℝ) * (χ (n : ZMod q)).re
 
 def vonMangoldtCharIm (n : ℕ) : ℝ := (Λ n : ℝ) * (χ (n : ZMod q)).im
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
-
-Treat this case separately. Treat this case separately. A detailed English derivation is pending.
+/- English proof (authored)
+The absolute value of the real part of the character is bounded by its norm, which is at most one. Multiplication by the nonnegative von Mangoldt coefficient gives the bound.
 -/
 lemma vonMangoldtCharRe_bound (n : ℕ) : |vonMangoldtCharRe χ n| ≤ 1 * Λ n := by
   unfold vonMangoldtCharRe
@@ -31,10 +29,8 @@ lemma vonMangoldtCharRe_bound (n : ℕ) : |vonMangoldtCharRe χ n| ≤ 1 * Λ n 
   | exact Complex.abs_re_le_norm _
   | exact Complex.abs_re_le_abs _
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
-
-Treat this case separately. Treat this case separately. A detailed English derivation is pending.
+/- English proof (authored)
+The absolute value of the imaginary part is at most the norm of the character value and hence at most one. Multiply by the nonnegative von Mangoldt coefficient.
 -/
 lemma vonMangoldtCharIm_bound (n : ℕ) : |vonMangoldtCharIm χ n| ≤ 1 * Λ n := by
   unfold vonMangoldtCharIm
@@ -46,20 +42,18 @@ lemma vonMangoldtCharIm_bound (n : ℕ) : |vonMangoldtCharIm χ n| ≤ 1 * Λ n 
   | exact Complex.abs_im_le_norm _
   | exact Complex.abs_im_le_abs _
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The von Mangoldt coefficient at zero is zero, so its product with the real part of the character is zero.
 -/
 lemma vonMangoldtCharRe_zero : vonMangoldtCharRe χ 0 = 0 := by simp [vonMangoldtCharRe]
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The von Mangoldt coefficient at zero vanishes, so its product with the imaginary part is zero.
 -/
 lemma vonMangoldtCharIm_zero : vonMangoldtCharIm χ 0 = 0 := by simp [vonMangoldtCharIm]
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Write each character value as its real part plus the imaginary unit times its imaginary part. Distribute over the weighted finite sum. The two sums are exactly the real-coefficient summatory functions in the formula.
 -/
 lemma chebyshev_character_re_im (x : ℝ) :
     Schi χ x = (Formalism.Sa (vonMangoldtCharRe χ) x : ℂ) + I * (Formalism.Sa (vonMangoldtCharIm χ) x : ℂ) := by
@@ -70,10 +64,8 @@ lemma chebyshev_character_re_im (x : ℝ) :
   conv_lhs => rw [← Complex.re_add_im (χ (n : ZMod q))]
   ring
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The summation only includes positive indices at most the natural floor of x. If x ≤ 1 the only possible index is one, and the von Mangoldt coefficient there is zero.
 -/
 lemma chebyshev_character_eq_zero_of_le_one {x : ℝ} (hx : x ≤ 1) : Schi χ x = 0 := by
   unfold Schi
@@ -90,10 +82,8 @@ end
 section
 variable {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
+/- English proof (authored)
+At each positive index the norm of the new term is at most that of the von Mangoldt series term at the same argument. The zero-index terms both vanish. The comparison series is absolutely summable for real part above one, so the new series is summable.
 -/
 lemma lseries_summable_of_vonMangoldt_bound {a : ℕ → ℝ} (ha : ∀ n, |a n| ≤ 1 * Λ n) {w : ℂ} (hw : 1 < w.re) :
     LSeriesSummable (fun n => (a n : ℂ)) w := by
@@ -111,10 +101,8 @@ lemma lseries_summable_of_vonMangoldt_bound {a : ℕ → ℝ} (ha : ∀ n, |a n|
   | exact Summable.of_norm_bounded hΛ.norm hb
   | exact Summable.of_norm_bounded _ hΛ.norm hb
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+In a neighborhood within the half-plane of convergence, the L-function equals its character Dirichlet series. Their derivatives therefore agree. The von Mangoldt twist formula for the character series gives the negative logarithmic derivative.
 -/
 lemma neg_log_deriv_eq_lseries_mul_vonMangoldt {w : ℂ} (hw : 1 < w.re) : negLD χ w = LSeries (↗χ * ↗Λ) w := by
   unfold negLD
@@ -126,10 +114,8 @@ lemma neg_log_deriv_eq_lseries_mul_vonMangoldt {w : ℂ} (hw : 1 < w.re) : negLD
     exact hEq s hs
   rw [hev.deriv_eq, hEq w hw]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
-
-Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
+/- English proof (authored)
+The real and imaginary coefficient series are absolutely summable by their von Mangoldt bounds. Split the character coefficient into those two components and use linearity of the series, keeping the imaginary unit as a scalar.
 -/
 lemma neg_log_deriv_eq_lseries_re_im {w : ℂ} (hw : 1 < w.re) :
     negLD χ w = LSeries (fun n => (vonMangoldtCharRe χ n : ℂ)) w +
@@ -144,12 +130,8 @@ lemma neg_log_deriv_eq_lseries_re_im {w : ℂ} (hw : 1 < w.re) :
   conv_lhs => rw [← Complex.re_add_im (χ (n : ZMod q))]
   ring
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Treat this case separately. Treat this case separately. A detailed English derivation is pending.
+/- English proof (authored)
+Write the derivative quotient as the twisted Dirichlet series. Each term norm is bounded by the untwisted von Mangoldt term norm at σ₀ because the character has norm at most one and the denominator norm depends only on the real part. The comparison series converges, and the norm of the sum is at most the sum of the bounds.
 -/
 lemma norm_neg_log_deriv_le_tsum {σ₀ : ℝ} (hσ : 1 < σ₀) (w : ℂ) (hw : w.re = σ₀) :
     ‖negLD χ w‖ ≤ ∑' n, ‖LSeries.term ↗Λ (σ₀ : ℂ) n‖ := by
@@ -173,16 +155,8 @@ lemma norm_neg_log_deriv_le_tsum {σ₀ : ℝ} (hσ : 1 < σ₀) (w : ℂ) (hw :
   | exact tsum_le_tsum hb hsum hs.norm
   | exact Summable.tsum_le_tsum hb hsum hs.norm
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions. A detailed English derivation is pending.
+/- English proof (authored)
+Along the right vertical line the L-function and its derivative are continuous, and the L-function is nonzero. The power of the positive y is continuous and the two kernel factors never vanish there because the real part exceeds one. Products and quotients of these factors give continuity.
 -/
 lemma perron_integrand_continuous {y : ℝ} (hy : 0 < y) {σ₀ : ℝ} (hσ : 1 < σ₀) :
     Continuous (fun t : ℝ => Fchi χ y ((σ₀ : ℂ) + t * I)) := by
@@ -212,12 +186,8 @@ lemma perron_integrand_continuous {y : ℝ} (hy : 0 < y) {σ₀ : ℝ} (hσ : 1 
   unfold Fchi negLD
   exact ((c1.div c2 hne).neg.mul c3).div (hline.mul (hline.sub continuous_const)) hw0
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
+/- English proof (authored)
+On the fixed line the derivative quotient is uniformly bounded by the absolute von Mangoldt series at the real coordinate. The norm of the power of y is also constant. The denominator norm is bounded below by a positive constant times 1 + t², using the positive real-part gap from one. Thus the continuous integrand is dominated by a constant times the integrable reciprocal of 1 + t².
 -/
 lemma perron_integrand_integrable {y : ℝ} (hy : 0 < y) {σ₀ : ℝ} (hσ : 1 < σ₀) :
     Integrable (fun t : ℝ => Fchi χ y ((σ₀ : ℂ) + t * I)) := by
@@ -249,10 +219,8 @@ end
 section
 variable {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+Express the summatory function by its weighted series identity. For every n outside the chosen range, n ≥ N > x, so its summation weight is zero. The infinite sum therefore equals the sum on the stated finite range.
 -/
 lemma summatory_eq_sum_range {a : ℕ → ℝ} (ha0 : a 0 = 0) {N : ℕ} {x : ℝ} (hx : x < N) :
     Formalism.Sa a x = ∑ n ∈ Finset.range N, a n * Formalism.mxS n x := by
@@ -267,8 +235,8 @@ lemma summatory_eq_sum_range {a : ℕ → ℝ} (ha0 : a 0 = 0) {N : ℕ} {x : �
   have : (n : ℝ) ≤ x := (Nat.cast_le.mpr h2).trans (Nat.floor_le (by linarith))
   linarith
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+Choose a natural N above y. In a neighborhood of y the summatory function is equal to the finite range sum up to N. Each summation weight is continuous, so that finite sum is continuous there.
 -/
 lemma summatory_function_continuousAt {a : ℕ → ℝ} (ha0 : a 0 = 0) (y : ℝ) :
     ContinuousAt (fun x => (Formalism.Sa a x : ℂ)) y := by
@@ -281,8 +249,8 @@ lemma summatory_function_continuousAt {a : ℕ → ℝ} (ha0 : a 0 = 0) (y : ℝ
   exact (Complex.continuous_ofReal.comp (continuous_finsetSum _
     (fun n _ => continuous_const.mul (Formalism.ZF.perron_continuous_mxS n)))).continuousAt
 
-/- English proof (translation)
-Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Decompose the character sum into the two real-coefficient summatory functions. Both coefficient functions vanish at zero, so each summatory function is continuous. Their complex linear combination is continuous.
 -/
 lemma chebyshev_character_continuousAt (y : ℝ) : ContinuousAt (fun x => Schi χ x) y := by
   have h : (fun x => Schi χ x) =
@@ -292,10 +260,8 @@ lemma chebyshev_character_continuousAt (y : ℝ) : ContinuousAt (fun x => Schi �
   exact (summatory_function_continuousAt (vonMangoldtCharRe_zero χ) y).add
     (continuousAt_const.mul (summatory_function_continuousAt (vonMangoldtCharIm_zero χ) y))
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The real Mellin summatory theorem gives integrability for the real-part exponent under the von Mangoldt coefficient bound. On x > 1 the norm of the complex power uses exactly that exponent. The complex integrand is measurable and dominated by the same integrable absolute value.
 -/
 lemma summatory_rpow_integrableOn {a : ℕ → ℝ} (ha : ∀ n, |a n| ≤ 1 * Λ n) {w : ℂ} (hw : 1 < w.re) :
     IntegrableOn (fun x : ℝ => (Formalism.Sa a x : ℂ) * (x : ℂ) ^ (-w - 1)) (Ioi 1) := by
@@ -308,8 +274,8 @@ lemma summatory_rpow_integrableOn {a : ℕ → ℝ} (ha : ∀ n, |a n| ≤ 1 * �
     rw [norm_mul, norm_cpow_eq_rpow_re_of_pos hx0, Complex.norm_real, Real.norm_eq_abs]
     simp
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+Split the character summatory function into its real and imaginary coefficient sums. The preceding integrability result applies to both after multiplication by the Mellin power. Their complex linear combination gives the assertion.
 -/
 lemma chebyshev_character_integrableOn {w : ℂ} (hw : 1 < w.re) :
     IntegrableOn (fun x : ℝ => (x : ℂ) ^ (-w - 1) • Schi χ x) (Ioi 1) := by
@@ -318,14 +284,8 @@ lemma chebyshev_character_integrableOn {w : ℂ} (hw : 1 < w.re) :
   rw [Pi.add_apply, chebyshev_character_re_im χ x, smul_eq_mul]
   ring
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
-
-Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The summatory function vanishes for positive x up to one, so the Mellin integral can start at one. Split it into the two integrable components using the real and imaginary coefficient sums. The Mellin summatory theorem identifies each component with its Dirichlet series divided by the common kernel denominator. Recombine the series into the negative logarithmic derivative.
 -/
 lemma mellin_chebyshev_character {w : ℂ} (hw : 1 < w.re) :
     mellin (fun x : ℝ => Schi χ x) (-w) = negLD χ w / (w * (w - 1)) := by
@@ -349,10 +309,8 @@ lemma mellin_chebyshev_character {w : ℂ} (hw : 1 < w.re) :
     have hx1 : x ≤ 1 := not_lt.mp hx.2
     simp [chebyshev_character_eq_zero_of_le_one χ hx1]
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Split the positive axis at one. The integrand is identically zero on the first part. On the remaining interval the character summatory integrability result applies with the real vertical parameter σ₀.
 -/
 lemma mellin_convergent_chebyshev_character {σ₀ : ℝ} (hσ : 1 < σ₀) :
     MellinConvergent (fun x : ℝ => Schi χ x) ((-σ₀ : ℝ) : ℂ) := by
@@ -365,10 +323,8 @@ lemma mellin_convergent_chebyshev_character {σ₀ : ℝ} (hσ : 1 < σ₀) :
     refine h.congr_fun (fun x _ => ?_) measurableSet_Ioi
     simp only [ofReal_neg]
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The Mellin formula identifies the transform on the line with real part −σ₀ with the right-line Perron integrand for y = 1 after reversing the sign of the height. That integrand is integrable, and reversal of height preserves integrability.
 -/
 lemma perron_vertical_integrable {σ₀ : ℝ} (hσ : 1 < σ₀) :
     VerticalIntegrable (mellin (fun x : ℝ => Schi χ x)) (-σ₀) := by
@@ -384,14 +340,8 @@ lemma perron_vertical_integrable {σ₀ : ℝ} (hσ : 1 < σ₀) :
 
 end
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+The right-line integrand is integrable. Apply Mellin inversion at the positive y using convergence of the Mellin integral, vertical integrability, and continuity of the summatory function. Substitute the Mellin transform formula so the inverse integral is the Perron integrand with the height reversed. Change the height variable to remove the reversal, leaving exactly the inverse factor 1/(2π).
 -/
 theorem perron_formula_character : PerronChi := by
   intro q _ χ y hy σ₀ hσ

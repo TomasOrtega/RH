@@ -6,18 +6,8 @@ noncomputable section
 
 namespace Formalism.ZeroFreeDirichlet
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+Induct by adjoining the largest element a. If s is the previous set, its elements lie among the integers from two through a − 1, so a ≥ |s| + 2. Consequently 1 − 1/a is at least (|s| + 1)/(|s| + 2). Multiplying the inductive bound by this factor yields 1/(|s| + 2). The empty set gives equality.
 -/
 theorem prod_one_sub_inv_ge_inv_card_succ (S : Finset ℕ) (hS : ∀ p ∈ S, 2 ≤ p) :
     1 / ((S.card : ℝ) + 1) ≤ ∏ p ∈ S, (1 - 1 / (p : ℝ)) := by
@@ -54,8 +44,8 @@ theorem prod_one_sub_inv_ge_inv_card_succ (S : Finset ℕ) (hS : ∀ p ∈ S, 2 
       mul_le_mul_of_nonneg_left ih' hpos
     linarith
 
-/- English proof (translation)
-By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+A unit modulo the product has an integer representative coprime to that product. At such a representative the lifted values are the corresponding original values, which agree by assumption. The character values on units determine the lifted characters, so they are equal.
 -/
 theorem changeLevel_eq_of_agree_coprime {q₁ q : ℕ} [NeZero q₁] [NeZero q] (χ₁ : DirichletCharacter ℂ q₁)
     (χ : DirichletCharacter ℂ q)
@@ -68,10 +58,8 @@ theorem changeLevel_eq_of_agree_coprime {q₁ q : ℕ} [NeZero q₁] [NeZero q] 
     ZMod.cast_eq_val, ZMod.cast_eq_val]
   exact h _ (ZMod.val_coe_unit_coprime a)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+For positive p the reciprocal power has norm 1/p and the character value has norm at most one. Multiplying gives the bound. At p = 0 the expression and the reciprocal bound are zero under the stated conventions.
 -/
 theorem euler_factor_term_norm_le {M : ℕ} (φ : DirichletCharacter ℂ M) (p : ℕ) :
     ‖φ (p : ZMod M) * (p : ℂ) ^ (-(1 : ℂ))‖ ≤ 1 / (p : ℝ) := by
@@ -84,8 +72,8 @@ theorem euler_factor_term_norm_le {M : ℕ} (φ : DirichletCharacter ℂ M) (p :
     rw [h1]
     exact mul_le_of_le_one_left (by positivity) (DirichletCharacter.norm_le_one φ _)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+The triangle inequality bounds each Euler factor’s norm by one plus the norm of the subtracted term, at most 1 + 1/p. Multiply the nonnegative bounds and use multiplicativity of the norm.
 -/
 theorem euler_factor_product_upper {M : ℕ} (φ : DirichletCharacter ℂ M) (S : Finset ℕ) :
     ‖∏ p ∈ S, (1 - φ (p : ZMod M) * (p : ℂ) ^ (-(1 : ℂ)))‖ ≤ ∏ p ∈ S, (1 + 1 / (p : ℝ)) := by
@@ -95,10 +83,8 @@ theorem euler_factor_product_upper {M : ℕ} (φ : DirichletCharacter ℂ M) (S 
   rw [norm_one]
   linarith [euler_factor_term_norm_le φ p]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+The reverse triangle inequality gives each factor norm at least one minus the norm of the subtracted term, hence at least 1 − 1/p. These lower bounds are nonnegative because p ≥ 2. Multiply them over the finite set.
 -/
 theorem euler_factor_product_lower {M : ℕ} (φ : DirichletCharacter ℂ M) (S : Finset ℕ)
     (hS : ∀ p ∈ S, 2 ≤ p) :
@@ -113,10 +99,8 @@ theorem euler_factor_product_lower {M : ℕ} (φ : DirichletCharacter ℂ M) (S 
     rw [norm_one] at h2
     linarith
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+/- English proof (authored)
+Multiply the two products term by term. Each local product equals 1 − 1/p², which lies between zero and one. Their product is therefore at most one.
 -/
 theorem prod_one_add_mul_one_sub_le_one (S : Finset ℕ) (hS : ∀ p ∈ S, 2 ≤ p) :
     (∏ p ∈ S, (1 + 1 / (p : ℝ))) * ∏ p ∈ S, (1 - 1 / (p : ℝ)) ≤ 1 := by
@@ -129,16 +113,8 @@ theorem prod_one_add_mul_one_sub_le_one (S : Finset ℕ) (hS : ∀ p ∈ S, 2 �
   · have h2 : (0 : ℝ) ≤ 1 / (p : ℝ) := by positivity
     nlinarith
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
-
-Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
+/- English proof (authored)
+Lift both characters to the product modulus, where they are equal by agreement on units. Their values at one after lifting equal the old values multiplied by their finite Euler factors. Taking norms identifies the two products. For the first character use the lower Euler-factor product, and for the second use the upper product. If there are k distinct primes, the lower product is at least 1/(k + 1) and the upper product is at most k + 1 because the two comparison products multiply to at most one. These give the factor (k + 1)².
 -/
 theorem lfunction_one_same_character : SameCharacterLFunctionOne := by
   intro q₁ q _ _ χ₁ χ hχ₁ hχ h

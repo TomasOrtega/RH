@@ -1389,8 +1389,8 @@ theorem UpperTheory.LiteratureTheorems.published_results_arithmetic (O : _root_.
   q15 := (_root_.UpperTheory.LiteratureTheorems.nadel_vanishing_and_non_klt_divisor_of_literature O)
   q16 := (_root_.UpperTheory.LiteratureTheorems.principalisation_of_literature O)
   q18 := (_root_.UpperTheory.LiteratureTheorems.formal_algebraisation_of_literature O)
-/- English proof (translation)
-The claim follows from `_root_.UpperTheory.Lit.every_character_of_theta_integrals_local_matching (_root_.UpperTheory.LiteratureTheorems.published_results_eigen O) (_root_.UpperTheory.LiteratureTheorems.published_results_first O) (_root_.UpperTheory.LiteratureTheorems.theta_integrals_agree_and_local_matc …`.
+/- English proof (authored)
+Obtain the eigenvalue and first-stage results from the literature interface O. The same interface yields agreement of the theta integrals and local matching. Use the geometric and arithmetic results in O, together with the Hilbert–Samuel and bigness estimates, in the top covolume estimate `topCovolSlim2_use_alt_alt`. Supply these inputs, the local reciprocity existence theorem, and the window hypothesis to `every_character_of_theta_integrals_local_matching`.
 -/
 theorem UpperTheory.LiteratureTheorems.every_character_of_literature_of_vWin (O : _root_.UpperTheory.LiteratureTheorems.OpenLiteratureStatements) (hV : UpperTheory.Top.VWin) : UpperTheory.EveryCharacter :=
   _root_.UpperTheory.Lit.every_character_of_theta_integrals_local_matching (_root_.UpperTheory.LiteratureTheorems.published_results_eigen O) (_root_.UpperTheory.LiteratureTheorems.published_results_first O) (_root_.UpperTheory.LiteratureTheorems.theta_integrals_agree_and_local_matching_of_literature O).1 (_root_.UpperTheory.LiteratureTheorems.theta_integrals_agree_and_local_matching_of_literature O).2

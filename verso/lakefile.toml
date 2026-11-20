@@ -1,0 +1,6 @@
+name = "rhProofBrowser"
+
+[[require]]
+name = "verso"
+git = "https://github.com/leanprover/verso"
+rev = "v4.33.0"

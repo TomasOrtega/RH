@@ -2,30 +2,10 @@ import Mathlib
 
 open Complex
 
-/- English proof (translation)
-Unfold `RiemannHypothesis`. Introduce `s hs htriv hs1`. Break down `lt_trichotomy s.re (1 / 2) with hlt | heq | hgt` into its components or cases. It suffices to derive a contradiction. Establish `hpi : (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`.
+/- English proof (authored)
+Let s be a nontrivial zero distinct from 1. The value of zeta at 0 also excludes s = 0. The assumed nonvanishing rules out Re(s) > 1/2. If Re(s) < 1/2, set t = 1 − s. Then Re(t) > 1/2 and t is distinct from 1, so ζ(t) is nonzero. The functional equation expresses ζ(s) as the product of ζ(t), Γ(t), cos(πt/2), and 2(2π)^(−t). The gamma and power factors are nonzero.
 
-Establish `hs0 : s ≠ 0`. Introduce and unpack `rfl`. Rewrite `hs` using `[riemannZeta_zero]`. Evaluate the numerical expressions using `at hs`. Establish `ht : 1 / 2 < (1 - s).re`.
-
-Rewrite using `[Complex.sub_re, Complex.one_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : (1 - s) ≠ 1`. Introduce `h`. Apply `hs0` to reduce the goal to its premises.
-
-Take the linear combination `-h`. Establish `hnat : ∀ n : ℕ, (1 - s) ≠ -(n : ℂ)`. Introduce `n h`. Establish `hr` using `congrArg Complex.re h`. Rewrite `hr` using `[Complex.sub_re, Complex.one_re, Complex.neg_re, Complex.natCast_re]`.
-
-Establish `: (0 : ℝ) ≤ n` using `n.cast_nonneg`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `key` using `riemannZeta_one_sub hnat h1`. Rewrite `key` using `[sub_sub_cancel, hs]`. Establish `hz'` using `hz (1 - s) ht h1`.
-
-Establish `h2pi : (2 : ℂ) * (2 * (Real.pi : ℂ)) ^ (-(1 - s)) ≠ 0` using `mul_ne_zero two_ne_zero (Complex.cpow_ne_zero_iff.2 (Or.inl (mul_ne_zero two_ne_zero hpi)))`. Establish `hG : Complex.Gamma (1 - s) ≠ 0` using `Complex.Gamma_ne_zero_of_re_pos (by linarith)`. Establish `hcos : Complex.cos ((Real.pi : ℂ) * (1 - s) / 2) ≠ 0`. Rewrite using `[Ne, Complex.cos_eq_zero_iff]`. Introduce and unpack `⟨k, hk⟩`.
-
-Establish `h3 : ((1 - s) - (2 * (k : ℂ) + 1)) * (Real.pi : ℂ) = 0`. Take the linear combination `2 * hk`. Break down `mul_eq_zero.1 h3 with h | h` into its components or cases. Establish `hsk : s = -2 * (k : ℂ)` using `by linear_combination -h`. Establish `hre : s.re = -2 * (k : ℝ)`.
-
-Rewrite using `[hsk, Complex.mul_re]`. Simplify using the standard rewrite rules. Break down `lt_trichotomy k 0 with hk0 | hk0 | hk0` into its components or cases. Establish `: (k : ℝ) ≤ -1` using `by exact_mod_cast (show k ≤ -1 by omega)`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Apply `hs0` to reduce the goal to its premises. Rewrite using `[hsk, hk0]`. Simplify using the standard rewrite rules. Apply `htriv` to reduce the goal to its premises. Use `⟨(k - 1).toNat, ?_⟩` and prove the remaining obligations.
-
-Establish `hnk : ((k - 1).toNat : ℤ) = k - 1` using `Int.toNat_of_nonneg (by omega)`. Establish `h' : (((k - 1).toNat : ℕ) : ℂ) = (k : ℂ) - 1`. Use `congrArg (fun m : ℤ => (m : ℂ)) hnk` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`.
-
-Rewrite using `[hsk, h']`. Expand and normalize the polynomial expressions, which then agree. Conclude with `hpi h`. Conclude with `(mul_ne_zero (mul_ne_zero (mul_ne_zero h2pi hG) hcos) hz') key.symm`. Conclude with `heq`.
-
-Conclude with `absurd hs (hz s hgt hs1)`.
+If the cosine vanished, t would equal 2k + 1 for an integer k, giving s = −2k. A negative k contradicts Re(s) < 1/2. The value k = 0 gives s = 0, and a positive k gives an excluded trivial zero. Thus the cosine factor is also nonzero. This contradicts ζ(s) = 0, so Re(s) = 1/2.
 -/
 theorem Formalism.VW.rh_of_right (hz : ∀ s : ℂ, 1 / 2 < s.re → s ≠ 1 → riemannZeta s ≠ 0) : RiemannHypothesis := by
   unfold RiemannHypothesis

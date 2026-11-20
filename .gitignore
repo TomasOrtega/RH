@@ -4,3 +4,4 @@
 *.olean.server
 *.ilean
 .DS_Store
+/verso/_out/

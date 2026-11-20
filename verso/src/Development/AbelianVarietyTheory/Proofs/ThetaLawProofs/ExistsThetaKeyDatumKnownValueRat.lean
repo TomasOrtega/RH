@@ -20,12 +20,10 @@ open GlobalTheory.KeyPow GlobalTheory.KeyFam GlobalTheory.ZM GlobalTheory.AbLaw
 
 namespace GlobalTheory.KeyFam
 
-/- English proof (translation)
-Take `⟨τ, M, a, b, c, ⟨ha, hb⟩, hc, hN, rfl⟩` from `h`. Establish `ea : a = fun k => (((a k).re : ℝ) : ℂ)`. Use function extensionality and compare the values at `k`. Apply the tactic sequence `rcases ha k with h | h <;> rw [h] <;> norm_num`. Establish `eb : b = fun k => (((b k).re : ℝ) : ℂ)`.
+/- English proof (authored)
+Unpack the normal-form data for a value of x. Each entry of the two characteristic vectors is either zero or one half, so both vectors coincide pointwise with their real-part vectors viewed over ℂ. The power formula for normal forms then gives the transformed data for y and its determinant relation.
 
-Use function extensionality and compare the values at `k`. Apply the tactic sequence `rcases hb k with h | h <;> rw [h] <;> norm_num`. Rewrite `hN` using `[ea, eb]`. Take `⟨e, τ', M', hdet, hN'⟩` from `normalAt_pow x y j τ M _ _ c hp hN`. Use `⟨τ', M', _, _, c ^ j, ⟨fun p => ?_, fun p => ?_⟩, pow_ne_zero _ hc, hN', ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← congrFun ea]`. Conclude with `ha _`. Rewrite using `[← congrFun eb]`. Conclude with `hb _`. Rewrite using `[hdet, div_pow, ← pow_mul, ← pow_mul, ← pow_mul, ← pow_mul, Nat.mul_comm 4, Nat.mul_comm 8]`.
+Use the transformed data as the witnesses for the value of y. The new constant is cʲ and is nonzero because c is nonzero. Substituting the determinant relation and combining the powers gives the value tʲ.
 -/
 theorem Val.pow {x y : KeyIn ℂ} {j : ℕ} {t : ℂ} (hp : IsKeyPow y x j) (h : Val x t) : Val y (t ^ j) := by
   obtain ⟨τ, M, a, b, c, ⟨ha, hb⟩, hc, hN, rfl⟩ := h
@@ -42,19 +40,17 @@ theorem Val.pow {x y : KeyIn ℂ} {j : ℕ} {t : ℂ} (hp : IsKeyPow y x j) (h :
   · rw [← congrFun eb]; exact hb _
   · rw [hdet, div_pow, ← pow_mul, ← pow_mul, ← pow_mul, ← pow_mul, Nat.mul_comm 4, Nat.mul_comm 8]
 
-/- English proof (translation)
-Use `⟨Ne.isUnit ?_⟩` and prove the remaining obligations. Evaluate the numerical expressions using `[WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆, WeierstrassCurve.b₈]`.
+/- English proof (authored)
+Compute the Weierstrass invariants of the model y² = x³ − x and substitute them in the discriminant formula. The discriminant is 64. It is nonzero, hence a unit in ℚ, which is the ellipticity criterion for the model.
 -/
 theorem isElliptic_cube_sub : (⟨0, 0, 0, -1, 0⟩ : WeierstrassCurve ℚ).IsElliptic := by
   refine ⟨Ne.isUnit ?_⟩
   norm_num [WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆, WeierstrassCurve.b₈]
 
-/- English proof (translation)
-Introduce `_ hU g hg`. Use `isElliptic_cube_sub` as an intermediate fact. Take `⟨y₁, h₁, hval⟩` from `EllipticKey.exists_keyIn_value_eq_discriminant hU ℚ ⟨0, 0, 0, -1, 0⟩`. Take `⟨y, hy⟩` from `exists_isKeyPow ℚ y₁ g hg`. Use `⟨y, ?_, (⟨0, 0, 0, -1, 0⟩ : WeierstrassCurve ℚ).Δ ^ g, fun e x hx => ?_⟩` and prove the remaining obligations.
+/- English proof (authored)
+Start with the rational elliptic curve y² = x³ − x. Its elliptic key has genus one and known value equal to the discriminant. Take its gth key power to get genus g. The proposed known value is the gth power of the discriminant.
 
-Take `⟨-, h, -⟩` from `hy`. Rewrite using `[← h, h₁, Nat.mul_one]`. Take `⟨x₁, hx₁⟩` from `exists_keyPB_ring y₁ e`. Take `⟨⟨τ, M, a, b, c, hab, hc, -, hN⟩, -⟩` from `KeyNormalExists.exists_normalAt hU x₁`. Establish `hv₁ : Val x₁ (e (⟨0, 0, 0, -1, 0⟩ : WeierstrassCurve ℚ).Δ)` using `⟨τ, M, a, b, c, hab, hc, hN, (hval e x₁ τ M a b c hx₁ hab hc hN).symm⟩`.
-
-Take `⟨x', hx'⟩` from `exists_isKeyPow ℂ x₁ g hg`. Establish `hpb` using `keyPB_of_isKeyPow ℚ ℂ e y₁ y x₁ x' g hx₁ hy hx'`. Establish `hid : KeyPB x x' (RingHom.id ℂ)` using `KeyCancel.keyPB_cancel ℚ ℂ ℂ y x' x e (RingHom.id ℂ) hpb hx`. Rewrite using `[map_pow]`. Conclude with `((GlobalTheory.T.normalForms_eq_of_keyDataIso_complex x' x hid).1 _).1 (hv₁.pow hx')`.
+After extension to ℂ, choose normal-form data for the original elliptic key. The discriminant formula gives its value in this normal form. The key power raises that value to the gth power by `Val.pow`. The base-change comparison and cancellation identify this normal form with the one for the given complex key of genus g, giving the required known value.
 -/
 theorem exists_known_rat : Out.Laws → ThetaUnifAV → ∀ g : ℕ, 1 ≤ g → ∃ y : KeyIn ℚ, y.P.g = g ∧ Known ℚ y := by
   intro _ hU g hg

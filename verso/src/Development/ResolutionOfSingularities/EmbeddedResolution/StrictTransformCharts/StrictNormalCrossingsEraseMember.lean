@@ -13,22 +13,22 @@ namespace FunctorialResolution.EmbeddedResolution
 
 private def natSuccAbove (j i : ℕ) : ℕ := if i < j then i else i + 1
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
+/- English proof (authored)
+A position below the omitted position remains below it. A position at or above it is increased by one and is strictly above it. Neither case gives the omitted position.
 -/
 private theorem natSuccAbove_ne (j i : ℕ) : natSuccAbove j i ≠ j := by
   unfold natSuccAbove
   split_ifs with h <;> omega
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
+/- English proof (authored)
+The position map is the identity below the omitted position and adds one at or above it. Both formulas are injective within their ranges, and the two ranges are disjoint. Equal output positions therefore have equal inputs.
 -/
 private theorem natSuccAbove_inj (j i i' : ℕ) (h : natSuccAbove j i = natSuccAbove j i') : i = i' := by
   unfold natSuccAbove at h
   split_ifs at h <;> omega
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
+/- English proof (authored)
+Removing an entry preserves all positions before it and shifts each later entry down by one. Hence an index in the shortened list refers to the same original index before the omission and to the next original index at or after it.
 -/
 private theorem getElem_eraseIdx_natSuccAbove {α : Type u} (l : List α) (j i : ℕ)
     (hi : i < (l.eraseIdx j).length) (hs : natSuccAbove j i < l.length) :
@@ -40,8 +40,8 @@ private theorem getElem_eraseIdx_natSuccAbove {α : Type u} (l : List α) (j i :
 private def complOrderEmbPreimage (m : ℕ) (S : Finset (Fin m)) (s : Fin m) : Option (Fin (m - S.card)) :=
   if hs : s ∈ S then none else some (Classical.choose (exists_complOrderEmb_eq m S hs))
 
-/- English proof (translation)
-Assume the negation of the conclusion and derive a contradiction. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Every index outside the removed set has a preimage under the complement embedding, and the construction returns that chosen preimage. Thus a missing result is possible only for an index in the removed set.
 -/
 private theorem mem_of_complOrderEmbPreimage_eq_none (m : ℕ) (S : Finset (Fin m)) (s : Fin m)
     (h : complOrderEmbPreimage m S s = none) : s ∈ S := by
@@ -50,10 +50,8 @@ private theorem mem_of_complOrderEmbPreimage_eq_none (m : ℕ) (S : Finset (Fin 
   rw [dif_neg hs] at h
   simp at h
 
-/- English proof (translation)
-Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
-
-Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+If the index lay in the removed set, the construction would return no preimage. Otherwise it chooses an index of the complement whose image is the given one. The specified output is this chosen index, so applying the embedding recovers the original index.
 -/
 private theorem complOrderEmb_of_complOrderEmbPreimage_eq_some (m : ℕ) (S : Finset (Fin m)) (s : Fin m)
     (u : Fin (m - S.card)) (h : complOrderEmbPreimage m S s = some u) : complOrderEmb m S u = s := by
@@ -72,10 +70,8 @@ private def transportSuccAboveToCompl {m : ℕ} (S : Finset (Fin m)) (j : ℕ) (
     (i : ℕ) : Option (Fin (m - S.card)) :=
   (a (natSuccAbove j i)).bind (complOrderEmbPreimage m S)
 
-/- English proof (translation)
-Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+For the transported value to exist, the assignment at the corresponding original list position must have a coordinate index. Applying the complement embedding to the returned complement index recovers this original coordinate, by the choice of preimage.
 -/
 private theorem transportSuccAboveToCompl_eq_some {m : ℕ} (S : Finset (Fin m)) (j : ℕ)
     (a : ℕ → Option (Fin m)) (i : ℕ) (u : Fin (m - S.card))
@@ -91,10 +87,8 @@ private theorem transportSuccAboveToCompl_eq_some {m : ℕ} (S : Finset (Fin m))
       exact h
     rw [complOrderEmb_of_complOrderEmbPreimage_eq_some m S s u h']
 
-/- English proof (translation)
-Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
-
-Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+If the original assignment has no coordinate, the first alternative holds. If it has a coordinate, a missing transported value means that coordinate has no preimage under the complement embedding and so belongs to the removed set.
 -/
 private theorem transportSuccAboveToCompl_eq_none {m : ℕ} (S : Finset (Fin m)) (j : ℕ)
     (a : ℕ → Option (Fin m)) (i : ℕ) (h : transportSuccAboveToCompl S j a i = none) :
@@ -108,10 +102,8 @@ private theorem transportSuccAboveToCompl_eq_none {m : ℕ} (S : Finset (Fin m))
       exact h
     exact mem_of_complOrderEmbPreimage_eq_none m S s h'
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
+/- English proof (authored)
+The local étale charts give the pointwise normal crossings condition because each present divisor is assigned a distinct coordinate. They also show that each list member is a smooth divisor, since its ideal is locally either the unit ideal or a single coordinate ideal. These are the two parts of the strict normal crossings condition.
 -/
 theorem inStrictNormalCrossingPosition_of_forall_etaleChart {Y : Scheme.{u}} {k : Type u} [Field k]
     (q : Y ⟶ Spec (CommRingCat.of k)) (L : List Y.IdealSheafData)
@@ -133,22 +125,8 @@ theorem inStrictNormalCrossingPosition_of_forall_etaleChart {Y : Scheme.{u}} {k 
   · exact Or.inl (h2 i hi hai)
   · exact Or.inr ⟨t, h3 i hi t hai⟩
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
-
-Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At the image of the point, choose a strict normal crossings chart and shrink it to an affine open. The chosen divisor passes through the image, so it is defined there by one coordinate. Its subscheme inherits an étale chart using the complementary coordinates. Each position of the shortened list comes from its original position skipping the removed entry. If that divisor was absent, its pulled-back ideal remains the unit ideal. If it was present, its coordinate differs from the removed coordinate by the original distinctness condition. It therefore restricts to the corresponding complementary coordinate. Distinct original assignments remain distinct under this restriction, giving all the required properties.
 -/
 theorem exists_etaleChart_comap_subschemeι_eraseIdx {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) (E : List X.IdealSheafData) (hE : InStrictNormalCrossingPosition p E)
@@ -230,8 +208,8 @@ theorem exists_etaleChart_comap_subschemeι_eraseIdx {X : Scheme.{u}} {k : Type 
         (h3V (natSuccAbove j i) (hlen i hi) (complOrderEmb m {t} u)
           (transportSuccAboveToCompl_eq_some {t} j a i u hu))
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+At every point of the selected divisor, the chart obtained by removing its coordinate gives distinct coordinates for the other divisors that meet the chart. Apply the local chart criterion to the remaining boundary restricted to this divisor.
 -/
 theorem inStrictNormalCrossingPosition_comap_subschemeι_eraseIdx {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) (E : List X.IdealSheafData) (hE : InStrictNormalCrossingPosition p E)
@@ -242,8 +220,8 @@ theorem inStrictNormalCrossingPosition_comap_subschemeι_eraseIdx {X : Scheme.{u
     ((E.eraseIdx j).map fun D => D.comap (E[j]'hj).subschemeι)
     (exists_etaleChart_comap_subschemeι_eraseIdx p E hE j hj)
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Use the given equality to identify the named ideal with the list member being removed. The statement is then the restriction result for that member and its closed subscheme.
 -/
 theorem inStrictNormalCrossingPosition_comap_subschemeι_eraseIdx_of_eq {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) (E : List X.IdealSheafData) (hE : InStrictNormalCrossingPosition p E)

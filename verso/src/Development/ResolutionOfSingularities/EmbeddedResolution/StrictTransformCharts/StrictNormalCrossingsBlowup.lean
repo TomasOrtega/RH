@@ -19,8 +19,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+Every point of the upstairs open maps into the complement of the center’s support. The pullback of the center ideal along the composite from that open therefore has empty support and is the unit ideal.
 -/
 private theorem comap_comp_eq_top_of_le_preimage_compl {X X₁ : Scheme.{u}} (π : X₁ ⟶ X)
     (Z : X.IdealSheafData) (V : X₁.Opens) (hV : V ≤ π ⁻¹ᵁ Z.support.compl) :
@@ -29,8 +29,8 @@ private theorem comap_comp_eq_top_of_le_preimage_compl {X X₁ : Scheme.{u}} (π
   show π.base x.1 ∉ Z.support
   exact hV x.2
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The inverse-image square commutes. Restricting the pulled-back ideal along the upstairs inclusion is consequently the same as restricting the original ideal downstairs and pulling it back along the restricted morphism.
 -/
 private theorem restrictIdeal_comap_preimage {X X₁ : Scheme.{u}} (π : X₁ ⟶ X)
     (D : X.IdealSheafData) (W : X.Opens) :
@@ -38,16 +38,16 @@ private theorem restrictIdeal_comap_preimage {X X₁ : Scheme.{u}} (π : X₁ �
   rw [restrictIdeal_eq_comap_ι, restrictIdeal_eq_comap_ι, ← Scheme.IdealSheafData.comap_comp,
     ← Scheme.IdealSheafData.comap_comp, morphismRestrict_ι]
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+Taking the strict transform of each entry preserves the number of entries. Appending the exceptional ideal adds exactly one.
 -/
 private theorem length_strictTransform_append_exceptionalIdeal {X X₁ : Scheme.{u}} (π : X₁ ⟶ X) (Z : X.IdealSheafData)
     (E : List X.IdealSheafData) :
     (E.map (Blowup.strictTransform π Z) ++ [Blowup.exceptionalIdeal π Z]).length = E.length + 1 := by
   simp
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The given index is in the first part of the appended list. Its entry there is the strict transform of the original entry at that index.
 -/
 private theorem getElem_strictTransform_append_exceptionalIdeal_of_lt {X X₁ : Scheme.{u}} (π : X₁ ⟶ X) (Z : X.IdealSheafData)
     (E : List X.IdealSheafData) (i : ℕ) (hi : i < E.length)
@@ -57,8 +57,8 @@ private theorem getElem_strictTransform_append_exceptionalIdeal_of_lt {X X₁ : 
   rw [List.getElem_append_left (by simpa using hi)]
   simp
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The mapped list has the original length, so the next index is the first position of the appended singleton. This holds the exceptional ideal.
 -/
 private theorem getElem_length_strictTransform_append_exceptionalIdeal {X X₁ : Scheme.{u}} (π : X₁ ⟶ X) (Z : X.IdealSheafData)
     (E : List X.IdealSheafData)
@@ -68,8 +68,8 @@ private theorem getElem_length_strictTransform_append_exceptionalIdeal {X X₁ :
   rw [List.getElem_append_right (by simp)]
   simp
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Restrict the blowup to the open, where it remains a blowup of the restricted center ideal. The open avoids the center’s support, so this ideal is the unit ideal. The blowup of the unit ideal is an isomorphism by the universal property.
 -/
 theorem isIso_morphismRestrict_of_isBlowupAlongIdealSheaf {X X₁ : Scheme.{u}} {π : X₁ ⟶ X}
     {Z : X.IdealSheafData} (hπ : Blowup.IsBlowupAlongIdealSheaf π Z) (W : X.Opens)
@@ -83,10 +83,8 @@ theorem isIso_morphismRestrict_of_isBlowupAlongIdealSheaf {X X₁ : Scheme.{u}} 
   rw [h2] at h1
   exact h1.isIso_of_top
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Restrict the strict transform to the open, which commutes with its formation. The center ideal pulls back to the unit ideal there because the open lies off its support. The strict transform is saturation of the total transform by this unit ideal. Saturation by powers of one leaves every section ideal unchanged.
 -/
 theorem restrictIdeal_strictTransform_eq_comap_of_le_compl {X X₁ : Scheme.{u}} (π : X₁ ⟶ X)
     (Z D : X.IdealSheafData) [QuasiCompact (strictTransformι π Z D)]
@@ -99,8 +97,8 @@ theorem restrictIdeal_strictTransform_eq_comap_of_le_compl {X X₁ : Scheme.{u}}
   funext W
   exact strictTransform_ideal_eq_comap_of_isUnit (V.ι ≫ π) Z D W 1 (by simp [hZ]) isUnit_one
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The pointwise condition says that the open lies in the inverse image of the complement of the center. On such an open the strict and total transforms agree because the exceptional ideal is the unit ideal.
 -/
 theorem restrictIdeal_strictTransform_eq_comap_of_notMem_support {X X₁ : Scheme.{u}} (π : X₁ ⟶ X)
     (Z D : X.IdealSheafData) [QuasiCompact (strictTransformι π Z D)]
@@ -110,8 +108,8 @@ theorem restrictIdeal_strictTransform_eq_comap_of_notMem_support {X X₁ : Schem
   intro x hx
   exact hV x hx
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The exceptional ideal is the pullback of the center. Its restriction is the pullback along the composite from the given open. This composite avoids the center support, so the ideal is the unit ideal.
 -/
 theorem restrictIdeal_exceptionalIdeal_eq_top_of_le_compl {X X₁ : Scheme.{u}} (π : X₁ ⟶ X)
     (Z : X.IdealSheafData) (V : X₁.Opens) (hV : V ≤ π ⁻¹ᵁ Z.support.compl) :
@@ -119,8 +117,8 @@ theorem restrictIdeal_exceptionalIdeal_eq_top_of_le_compl {X X₁ : Scheme.{u}} 
   rw [restrictIdeal_eq_comap_ι, Blowup.exceptionalIdeal_eq_comap, ← Scheme.IdealSheafData.comap_comp]
   exact comap_comp_eq_top_of_le_preimage_compl π Z V hV
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The pointwise hypothesis puts the open in the inverse image of the complement of the center. The exceptional ideal is the unit ideal there, since it is pulled back from the center.
 -/
 theorem restrictIdeal_exceptionalIdeal_eq_top_of_notMem_support {X X₁ : Scheme.{u}} (π : X₁ ⟶ X)
     (Z : X.IdealSheafData) (V : X₁.Opens)
@@ -130,38 +128,8 @@ theorem restrictIdeal_exceptionalIdeal_eq_top_of_notMem_support {X X₁ : Scheme
   intro x hx
   exact hV x hx
 
-/- English proof (translation)
-Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
-
-It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
-
-Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. It suffices to derive a contradiction.
-
-Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
-
-Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
-
-Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
-
-Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
-
-Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
-
-Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Choose a downstairs étale chart with distinct boundary coordinates and a coordinate center, then a blowup chart containing the given point upstairs. Assign the exceptional divisor the distinguished coordinate. An original divisor absent downstairs stays absent. An original divisor defined by the distinguished coordinate has empty strict transform on this chart. Every other present divisor has strict transform given by its corresponding chart coordinate. These remaining indices retain their original distinctness and none is the distinguished index. Together with the exceptional divisor they give the required pointwise chart.
 -/
 theorem inStrictNormalCrossingPositionAt_strictTransform_of_mem_support {X X₁ : Scheme.{u}} {k : Type u}
     [Field k] [NoetherianSpace X₁] (p : X ⟶ Spec (CommRingCat.of k)) (π : X₁ ⟶ X)
@@ -260,28 +228,8 @@ theorem inStrictNormalCrossingPositionAt_strictTransform_of_mem_support {X X₁ 
         rw [BlowupChart.restrictIdeal_strictTransform_coordIdeal B Z (E[i]'hi) hs hZU t hD,
           if_neg hts]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
-
-Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
-
-Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Take a downstairs boundary chart and shrink it to the complement of the center. The blowup restricts to an isomorphism, so transporting the chart upstairs gives an étale chart with the same boundary coordinate assignment. On this open strict transforms equal total transforms, which preserve the coordinate and unit ideals under the transported chart. The exceptional ideal is the unit ideal, so it is assigned no coordinate. The coordinate indices that remain are distinct.
 -/
 theorem inStrictNormalCrossingPositionAt_strictTransform_of_notMem_support {X X₁ : Scheme.{u}} {k : Type u}
     [Field k] [NoetherianSpace X₁] (p : X ⟶ Spec (CommRingCat.of k)) (π : X₁ ⟶ X)
@@ -360,14 +308,8 @@ theorem inStrictNormalCrossingPositionAt_strictTransform_of_notMem_support {X X�
     simp only [EtaleChart.coordIdeal_eq_comap_coordSubspaceIdeal]
     exact (Scheme.IdealSheafData.comap_comp ..).symm
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
-
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+At every point choose the strict-transform boundary chart for points over the center or the transported chart for points off the center. This proves the pointwise normal crossings condition. The same charts show each member is a smooth divisor, since its ideal is everywhere locally a coordinate ideal or the unit ideal. Thus the full list is in strict normal crossings position.
 -/
 theorem inStrictNormalCrossingPosition_strictTransform_append {X X₁ : Scheme.{u}} {k : Type u} [Field k]
     [NoetherianSpace X₁] (p : X ⟶ Spec (CommRingCat.of k)) (π : X₁ ⟶ X) (Z : X.IdealSheafData)
@@ -394,8 +336,8 @@ theorem inStrictNormalCrossingPosition_strictTransform_append {X X₁ : Scheme.{
   | none => exact Or.inl (h2 i hi hai)
   | some t => exact Or.inr ⟨t, h3 i hi t hai⟩
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Apply the strict-transform and exceptional-divisor result to the list with the specified first member. Taking strict transforms entry by entry gives the strict transform of that member as the first entry, followed by the transformed tail and the exceptional ideal.
 -/
 theorem inStrictNormalCrossingPosition_strictTransform_cons_append {X X₁ : Scheme.{u}} {k : Type u} [Field k]
     [NoetherianSpace X₁] (p : X ⟶ Spec (CommRingCat.of k)) (π : X₁ ⟶ X) (Z : X.IdealSheafData)

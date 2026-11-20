@@ -22,15 +22,15 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Restriction is pullback along the open inclusion. Pullback extends the section ideals and preserves their product, giving the restriction formula.
 -/
 theorem restrictIdeal_mul {X : Scheme.{u}} (I J : X.IdealSheafData) (U : X.Opens) :
     restrictIdeal (I * J) U = restrictIdeal I U * restrictIdeal J U :=
   Scheme.IdealSheafData.comap_mul I J U.ι
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The original chart commutes with the structural map to the field. Composing its field equation with the restricted morphism gives the composite through the downstairs open inclusion. The restriction square identifies that composite with the upstairs inclusion followed by the original morphism, giving the required equation.
 -/
 private theorem etaleChart_comap_map_comp_affineSpaceFinToSpec {X X' : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) (π : X' ⟶ X) {U : X.Opens} {m : ℕ}
@@ -39,8 +39,8 @@ private theorem etaleChart_comap_map_comp_affineSpaceFinToSpec {X X' : Scheme.{u
   have h1 : π.resLE U V hV ≫ U.ι = V.ι ≫ π := by simp
   rw [Category.assoc, c.comp_struct, ← Category.assoc, h1, Category.assoc]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The restricted morphism and the original chart map are both étale by hypothesis. Étale morphisms are closed under composition.
 -/
 private theorem etale_etaleChart_comap_map {X X' : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) (π : X' ⟶ X) {U : X.Opens} {m : ℕ}
@@ -59,8 +59,8 @@ def EtaleChart.comap {X X' : Scheme.{u}} {k : Type u} [Field k]
   comp_struct := etaleChart_comap_map_comp_affineSpaceFinToSpec p π c V hV
   isEtale := etale_etaleChart_comap_map p π c V hV he
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The pulled-back chart is defined with map given by the restricted morphism followed by the original chart map. Its map is therefore that composite.
 -/
 theorem EtaleChart.comap_map {X X' : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) (π : X' ⟶ X) {U : X.Opens} {m : ℕ}
@@ -68,8 +68,8 @@ theorem EtaleChart.comap_map {X X' : Scheme.{u}} {k : Type u} [Field k]
     (he : AlgebraicGeometry.Etale (π.resLE U V hV)) :
     (EtaleChart.comap p π c V hV he).map = π.resLE U V hV ≫ c.map := rfl
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The coordinate ideal on a chart is the pullback of the corresponding coordinate ideal on affine space. For the pulled-back chart its map is a composite. Functoriality makes this pullback the pullback to the original chart followed by pullback along the restricted morphism.
 -/
 theorem EtaleChart.comap_coordIdeal {X X' : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) (π : X' ⟶ X) {U : X.Opens} {m : ℕ}
@@ -80,20 +80,8 @@ theorem EtaleChart.comap_coordIdeal {X X' : Scheme.{u}} {k : Type u} [Field k]
   rw [EtaleChart.coordIdeal_eq_comap_coordSubspaceIdeal, EtaleChart.coordIdeal_eq_comap_coordSubspaceIdeal, EtaleChart.comap_map,
     Scheme.IdealSheafData.comap_comp]
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+At a point of either divisor, choose an étale chart making that divisor a coordinate divisor. Shrink to avoid the support of the other divisor, which is possible by disjointness. The ideal of the other divisor is the unit ideal there, so the product is the same coordinate ideal. At a point outside both supports choose a chart in their common complement, where both ideals are unit ideals. These local descriptions give the smooth divisor property.
 -/
 theorem isSmoothDivisor_mul_of_disjoint_support {X : Scheme.{u}} {k : Type u} [Field k]
     [CharZero k] (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -140,12 +128,8 @@ theorem isSmoothDivisor_mul_of_disjoint_support {X : Scheme.{u}} {k : Type u} [F
       have hBtop : restrictIdeal B U = ⊤ := restrictIdeal_eq_top_of_le B hUW hBtopW
       rw [restrictIdeal_mul, hAtop, hBtop, Scheme.IdealSheafData.mul_top]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Pulling back along the indicated morphism and restricting to the open is the same as pulling back along the composite from the open subscheme. The composite avoids the support by hypothesis. Thus the pulled-back ideal is the unit ideal on that open.
 -/
 private theorem restrictIdeal_comap_eq_top_of_notMem_support {X X' : Scheme.{u}} (π : X' ⟶ X)
     (B : X.IdealSheafData) (V : X'.Opens) (hV : ∀ y : X', y ∈ V → π.base y ∉ B.support) :
@@ -162,14 +146,8 @@ private theorem restrictIdeal_comap_eq_top_of_notMem_support {X X' : Scheme.{u}}
   rw [restrictIdeal_eq_comap_ι, ← hcc]
   exact htop
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+At a point whose image belongs to the divisor support, take a downstairs coordinate chart for the divisor and shrink it into the complement of the center. The blowup is an isomorphism there, and composing with this isomorphism gives an étale chart upstairs. Its coordinate ideal is the pullback of the original divisor ideal. At any other point choose an upstairs étale chart in the inverse image of the complement of the divisor support, where the pullback is the unit ideal. Thus the pulled-back ideal satisfies the local coordinate criterion for a smooth divisor.
 -/
 theorem isSmoothDivisor_comap_of_isBlowupAlongIdealSheaf {X X' : Scheme.{u}} {k : Type u} [Field k]
     [CharZero k] (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -210,14 +188,8 @@ theorem isSmoothDivisor_comap_of_isBlowupAlongIdealSheaf {X X' : Scheme.{u}} {k 
     have hy' : y ∈ π ⁻¹ᵁ B.support.compl := hUW hy
     exact hy'
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At a point over the center, the image is outside the second support. On the inverse image of that complement the pullback of the second ideal is the unit ideal, so the total transform of the product equals that of the first ideal. The strict transforms therefore agree there, since both saturate the same total transform by the same exceptional ideal. Away from the center strict transforms agree with the total transforms, and ideal pullback preserves products. These two kinds of opens cover the scheme, giving the equality.
 -/
 theorem strictTransform_mul_of_disjoint_support {X X' : Scheme.{u}} [IsLocallyNoetherian X']
     (π : X' ⟶ X) (Z A B : X.IdealSheafData)

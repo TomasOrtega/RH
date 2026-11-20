@@ -50,10 +50,8 @@ noncomputable abbrev blowupTripleAtCenterIdeal (T : MarkedIdealWithBoundary.{u})
     (transformedBoundary (Blowup.blowup.proj (monomialCenter T.ideal T.mult T.boundary))
       (monomialCenter T.ideal T.mult T.boundary) T.boundary)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Both products use each member of the finite family once. Formally, at size zero both are the unit ideal, and at a successor size both multiply the first entry by the product of the remaining family. Induction gives the equality.
 -/
 private theorem foldr_mul_ofFn_eq_prod {Y : Scheme.{u}} :
     ∀ {n : ℕ} (F : Fin n → Y.IdealSheafData),
@@ -68,10 +66,8 @@ private theorem foldr_mul_ofFn_eq_prod {Y : Scheme.{u}} :
       intro F
       rw [List.ofFn_succ, List.foldr_cons, ih, Fin.prod_univ_succ]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The empty product is the unit ideal, which pulls back to the unit ideal. At a successor size, split the first factor from the product. Pullback preserves multiplication, and induction pulls back the remaining product term by term.
 -/
 private theorem comap_prod {X Y : Scheme.{u}} (f : X ⟶ Y) :
     ∀ {n : ℕ} (F : Fin n → Y.IdealSheafData),
@@ -87,12 +83,8 @@ private theorem comap_prod {X Y : Scheme.{u}} (f : X ⟶ Y) :
       intro F
       rw [Fin.prod_univ_succ, Scheme.IdealSheafData.comap_mul, ih, Fin.prod_univ_succ]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The transformed list has exactly the old positions and one final position. Split its finite product at the final position. For every old position the list entry is the corresponding strict transform and its exponent is the old exponent. The last position carries the exceptional ideal and has the new exponent. This gives the two factors on the right.
 -/
 private theorem prod_pow_comap_transformedBoundary_eq {X X' : Scheme.{u}} (π : X' ⟶ X)
     (Z : X.IdealSheafData) (L : List X.IdealSheafData) (W : X'.Opens)
@@ -128,44 +120,10 @@ private theorem prod_pow_comap_transformedBoundary_eq {X X' : Scheme.{u}} (π : 
     exact congrArg (fun t : ℕ => ((Blowup.strictTransform π Z (L.get j)).comap W.ι) ^ t) (dif_pos j.isLt)
   · rw [hg2, dif_neg (by simp : ¬ ((Fin.last L.length : Fin (L.length + 1)) : ℕ) < L.length)]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
+/- English proof (authored)
+First put the image point in the lower cosupport. On the exceptional divisor this follows because the image is in the center. Off the exceptional divisor, the order of the total transform equals the lower order and is at least the order of the controlled transform. Choose a lower monomial expression near the image, with old boundary exponents aᵢ. For each old divisor the local total transform is its strict transform times the exceptional ideal to exponent εᵢ, where εᵢ is zero or one. Pass to a common neighborhood upstairs where all these formulas and the pulled-back monomial expression hold. The total transform there is the product of the strict-transform factors with exponents aᵢ and the exceptional factor with exponent e = ∑ εᵢaᵢ.
 
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+The exponent e is at least the mark. Over the center, the chosen center indices all have εᵢ = 1, and the sum of their exponents is the order along the selected component containing the image, which is at least the mark. Off the center, the local containment criterion for εᵢ = 1 holds vacuously on the complement of the center, so e is the sum of all exponents. It bounds the order at the image and hence the mark. The exceptional ideal is locally generated by a nonzerodivisor, so cancel its mark-th power from the two expressions for the total transform. This leaves the strict-transform factors and the exceptional factor with exponent e minus the mark. These are the transformed boundary ideals with nonnegative exponents, giving local monomiality.
 -/
 private theorem isMonomialNear_transformedBoundary_of_isBlowupAlongIdealSheaf (hGeom : MonomialGeometryHypotheses.{u})
     {T : MarkedIdealWithBoundary.{u}} (hT : MonomialCenter.IsLocallyMonomialTriple T)
@@ -351,10 +309,8 @@ private theorem isMonomialNear_transformedBoundary_of_isBlowupAlongIdealSheaf (h
     prod_pow_comap_transformedBoundary_eq π Z T.boundary W a (e - T.mult), Blowup.exceptionalIdeal_eq_comap]
   exact hfinal
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The monomial center is smooth, has strict normal crossings with the boundary and lies in the cosupport. It admits a controlled transform, so it defines a single admissible marked blowup. The stage-admissibility property applies at its sole successor and identifies that stage with the blown-up triple. The center support is the selected component union and the residual ideal satisfies the controlled-transform identity. The local monomiality theorem for that blowup then supplies a monomial expression at every point of the new cosupport.
 -/
 theorem isLocallyMonomialTriple_blowupTripleAtCenterIdeal (hGeom : MonomialGeometryHypotheses.{u})
     {T : MarkedIdealWithBoundary.{u}} (hT : MonomialCenter.IsLocallyMonomialTriple T)
@@ -385,8 +341,8 @@ theorem isLocallyMonomialTriple_blowupTripleAtCenterIdeal (hGeom : MonomialGeome
       (pow_mul_residualByPow _ _ _ (exists_controlledTransform_monomialCenter hGeom hT h))
       x' hx'
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+Reconstruct the marked sequence from its data. The length bound ensures its stage one is defined within the sequence. Apply the geometry hypothesis bounding the dimension successor of every such stage by that of the original triple. Reconstruction identifies its stage one with the scheme in the data.
 -/
 private theorem krullDimSucc_schemeAt_one_le_dim (hGeom : MonomialGeometryHypotheses.{u})
     {T : MarkedIdealWithBoundary.{u}} (hT : MonomialCenter.IsLocallyMonomialTriple T)
@@ -397,8 +353,8 @@ private theorem krullDimSucc_schemeAt_one_le_dim (hGeom : MonomialGeometryHypoth
     (by rw [MarkedBlowupSequenceData.toMarkedSequence_length]; exact hlen)
   rwa [MarkedBlowupSequenceData.toMarkedSequence_schemeAt] at key
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Positive minimum size gives an admissible single blowup at the monomial center. The scheme of the blown-up triple is its stage-one scheme. The stage-one dimension bound yields the assertion.
 -/
 theorem krullDimSucc_blowupTripleAtCenterIdeal_le (hGeom : MonomialGeometryHypotheses.{u})
     {T : MarkedIdealWithBoundary.{u}} (hT : MonomialCenter.IsLocallyMonomialTriple T)
@@ -412,10 +368,8 @@ theorem krullDimSucc_blowupTripleAtCenterIdeal_le (hGeom : MonomialGeometryHypot
       (exists_controlledTransform_monomialCenter hGeom hT h))
     (Nat.le_refl 1)
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At the given point the pulled-back center ideal has unit stalk, since the point is outside its support. The controlled-transform identity then identifies the controlled and total transform stalks. The blown-up point is outside the exceptional support, so the total-transform order is the original order at its image. Combining the equalities gives the result.
 -/
 private theorem orderAt_controlledTransform_eq_of_notMem_support (hGeom : MonomialGeometryHypotheses.{u})
     {T : MarkedIdealWithBoundary.{u}}
@@ -436,18 +390,16 @@ private theorem orderAt_controlledTransform_eq_of_notMem_support (hGeom : Monomi
   exact hGeom.orderAt_comap_off_exceptional T hT.valid _ π Z hπ x'
     (by rw [Blowup.exceptionalIdeal_eq_comap]; exact hx') T.ideal
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The strict-transform index has the old numeric position and lies in the initial list of strict transforms. The entry there is the strict transform of the old boundary ideal at that position.
 -/
 private theorem get_transformedBoundary_strictTransformIndex_eq_strictTransform {X' X : Scheme.{u}} (π : X' ⟶ X)
     (Z : X.IdealSheafData) (L : List X.IdealSheafData) (j : Fin L.length) :
     (transformedBoundary π Z L).get (strictTransformIndex π Z L j) = Blowup.strictTransform π Z (L.get j) := by
   simp [transformedBoundary, List.get_eq_getElem, strictTransformIndex_val, j.isLt]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
-
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The exceptional index is the last position of the enlarged list, after all strict transforms. Its entry is the exceptional ideal, which equals the pullback of the center.
 -/
 private theorem get_transformedBoundary_exceptionalIndex_eq_comap {X' X : Scheme.{u}} (π : X' ⟶ X)
     (Z : X.IdealSheafData) (L : List X.IdealSheafData) :
@@ -462,8 +414,8 @@ private theorem get_transformedBoundary_exceptionalIndex_eq_comap {X' X : Scheme
     simp [exceptionalIndex_val]
   rw [hfin, hg2, Blowup.exceptionalIdeal_eq_comap]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
+/- English proof (authored)
+The strict-transform index map preserves numeric positions. Equal images therefore have equal original positions, so the original finite indices coincide.
 -/
 private theorem injective_strictTransformIndex {X' X : Scheme.{u}} (π : X' ⟶ X) (Z : X.IdealSheafData)
     (L : List X.IdealSheafData) : Function.Injective (strictTransformIndex π Z L) := by
@@ -472,8 +424,8 @@ private theorem injective_strictTransformIndex {X' X : Scheme.{u}} (π : X' ⟶ 
   have h := congrArg (fun z : Fin (transformedBoundary π Z L).length => (z : ℕ)) hij
   simpa [strictTransformIndex_val] using h
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The comparison of indices is the comparison of their numeric positions. The map keeps both values, so any strict comparison is preserved.
 -/
 private theorem strictMono_strictTransformIndex {X' X : Scheme.{u}} (π : X' ⟶ X) (Z : X.IdealSheafData)
     (L : List X.IdealSheafData) : StrictMono (strictTransformIndex π Z L) := by
@@ -481,8 +433,8 @@ private theorem strictMono_strictTransformIndex {X' X : Scheme.{u}} (π : X' ⟶
   rw [Fin.lt_def, strictTransformIndex_val, strictTransformIndex_val]
   exact hij
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+/- English proof (authored)
+Sorting commutes with the strictly increasing strict-transform index map. Each new index has its old numeric value, so taking the sorted numeric positions gives the original list.
 -/
 private theorem sortedIndices_image_strictTransformIndex {X' X : Scheme.{u}} (π : X' ⟶ X)
     (Z : X.IdealSheafData) (L : List X.IdealSheafData) (S : Finset (Fin L.length)) :
@@ -493,14 +445,8 @@ private theorem sortedIndices_image_strictTransformIndex {X' X : Scheme.{u}} (π
   simp only [strictTransformIndex_val]
   rfl
 
-/- English proof (translation)
-Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+Every image index belongs to the selection by definition of its preimage, and is below the exceptional position. Conversely, a selected index other than the exceptional one lies below the old length and so has an old index at the same position. This old index lies in the preimage. Hence the image equals the selection with its exceptional position removed.
 -/
 private theorem image_strictTransformIndex_preimageStrictTransformIndex_eq_erase {X' X : Scheme.{u}} (π : X' ⟶ X) (Z : X.IdealSheafData)
     (L : List X.IdealSheafData)
@@ -530,12 +476,8 @@ private theorem image_strictTransformIndex_preimageStrictTransformIndex_eq_erase
     refine Finset.mem_image.2 ⟨⟨(i : ℕ), hlt⟩, ?_, hid⟩
     exact (mem_preimageStrictTransformIndex_iff π Z L J' ⟨(i : ℕ), hlt⟩).2 (by rw [hid]; exact hmem)
 
-/- English proof (translation)
-Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
+/- English proof (authored)
+Suppose the sum of the exponents on the chosen indices reaches the mark. These indices are nonempty because the mark is positive. The point lies in the intersection of their supports, so choose a component of that intersection through it. The local monomial formula for its generic order gives precisely the stipulated sum. It therefore makes a candidate with positive size equal to the chosen cardinality, contradicting the strict bound below the minimum.
 -/
 private theorem sum_lt_mult_of_card_lt_minIndexCard (hGeom : MonomialGeometryHypotheses.{u})
     {T : MarkedIdealWithBoundary.{u}}
@@ -569,10 +511,8 @@ private theorem sum_lt_mult_of_card_lt_minIndexCard (hGeom : MonomialGeometryHyp
     S.card hone S C hcand
   omega
 
-/- English proof (translation)
-Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Since the exceptional index is excluded, the upper selection is the image of its old indices under the strict-transform map. The transformed-component property gives an old intersection component outside the selected center family, identifies the image of the upper generic point with its generic point and places the upper generic point off the exceptional divisor. The controlled and original orders agree at these points. Taking the orders along the two components gives the required equality.
 -/
 private theorem exists_mem_intersectionComponents_orderAlong_eq (hGeom : MonomialGeometryHypotheses.{u})
     {T : MarkedIdealWithBoundary.{u}}
@@ -612,38 +552,8 @@ private theorem exists_mem_intersectionComponents_orderAlong_eq (hGeom : Monomia
   rw [Blowup.exceptionalIdeal_eq_comap] at hoff
   exact hoff
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
-
-Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The upper generic point lies on the exceptional divisor. Its image lies in a selected center component, where there is a local monomial expression. Let S be the old indices represented by strict transforms in the upper selection, and let A be the chosen lower center indices. The order formula says that the upper order plus the mark equals the sum of the exponents on S plus the sum on A. All these quantities are finite, and the upper order is at least the mark. If the size of S is already at least the old minimum, the size bound follows. Otherwise its exponents sum to less than the mark, since all the corresponding old divisors contain the image point. The order formula then gives upper order strictly below the sum on A, which equals the old maximum. To obtain the size bound in this case, choose an index of A outside S, possible because A has the old minimum size. Removing this index from A leaves a sum less than the mark by the same small-selection argument. Since the combined sums on S and A are at least twice the mark, adding the chosen index to S gives a sum of at least the mark. All these divisors contain the image point. An intersection component through it has that sum as its generic order, so it is a positive-size candidate downstairs. The old minimum is therefore at most the size of S plus one.
 -/
 private theorem minIndexCard_le_card_add_one_of_exceptionalIndex_mem (hGeom : MonomialGeometryHypotheses.{u})
     {T : MarkedIdealWithBoundary.{u}}
@@ -801,40 +711,8 @@ private theorem minIndexCard_le_card_add_one_of_exceptionalIndex_mem (hGeom : Mo
     exact_mod_cast hlt
   · exact ⟨by omega, fun hc => absurd hc hk⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
-
-Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction.
-
-Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
-
-Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Consider any positive-size upper candidate. If its indices omit the exceptional position, its component comes from a lower component of the same order and the same selection size. If they include it, the size bound for an exceptional selection again gives size at least the lower minimum. Thus the upper minimum is at least the lower one. A strict inequality gives the first outcome. At equality, take a component for the chosen upper selection that attains the upper maximum. If the selection contains the exceptional index, its old preimage has one fewer index and hence has size below the common minimum. The exceptional order bound gives a strict drop in the maximum. Otherwise it comes from a lower candidate of the same size and order whose component is outside the center family. The upper maximum is therefore at most the lower one. A strict inequality gives the second outcome. If the maxima also agree, the preimage selection is a maximum-order lower selection and its sorted positions are those of the upper choice. The lower choice is lexicographically at most these positions by optimality. Equality would make the old selection the lower choice and put its maximizing component in the center family, a contradiction. Hence the lower sorted list is strictly lexicographically smaller.
 -/
 private theorem minIndexCard_lt_or_maxCandidateOrder_lt_of_isBlowupAlongIdealSheaf (hGeom : MonomialGeometryHypotheses.{u})
     {T : MarkedIdealWithBoundary.{u}}
@@ -1083,10 +961,8 @@ private theorem minIndexCard_lt_or_maxCandidateOrder_lt_of_isBlowupAlongIdealShe
       · exact hmC
     · exact absurd hlex hnotlex
 
-/- English proof (translation)
-Consider separately whether the proposition holds or fails. Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+If the transformed minimum size is zero, take that case. Otherwise the transformed triple is locally monomial and its ideal satisfies the controlled-transform identity. The center is the ideal of the chosen component union. Apply the one-blowup comparison of minimum size, maximum order and sorted positions to these data. Its alternatives are exactly the strict comparison of the two center invariants.
 -/
 theorem minIndexCard_blowupTripleAtCenterIdeal_eq_zero_or_centerInvariant_lt (hGeom : MonomialGeometryHypotheses.{u})
     {T : MarkedIdealWithBoundary.{u}} (hT : MonomialCenter.IsLocallyMonomialTriple T)
@@ -1130,10 +1006,8 @@ noncomputable def monomialInvariant (D : ℕ) (T : MarkedIdealWithBoundary.{u}) 
   toLex (D - minIndexCard T.ideal T.mult T.boundary,
     toLex ((maxCandidateOrder T.ideal T.mult T.boundary).toNat, numMaxOrderCandidates T))
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality. Substitute using the available equality. Establish an intermediate fact.
-
-Simplify to obtain the desired conclusion from the available facts.
+/- English proof (authored)
+The larger order is finite by hypothesis, and the smaller is finite because it is below it. Writing both as natural numbers preserves the strict comparison. Taking their natural-number values returns those same numbers.
 -/
 private theorem toNat_lt_toNat_of_lt_of_ne_top {a b : ℕ∞} (hab : a < b) (hb : b ≠ ⊤) :
     a.toNat < b.toNat := by
@@ -1144,10 +1018,8 @@ private theorem toNat_lt_toNat_of_lt_of_ne_top {a b : ℕ∞} (hab : a < b) (hb 
   have hmn : m < n := by exact_mod_cast hab
   simpa using hmn
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The invariant is the lexicographic triple of the specified natural-number entries. A smaller first entry gives a strict comparison. At equal first entries the second entries are compared, and at equal second entries the comparison passes to the third entries. The given disjunction provides exactly one of these comparisons.
 -/
 private theorem monomialInvariant_lt_of_lex_lt {D : ℕ} {T1 T2 : MarkedIdealWithBoundary.{u}}
     (hstep :
@@ -1174,12 +1046,8 @@ private theorem monomialInvariant_lt_of_lex_lt {D : ℕ} {T1 T2 : MarkedIdealWit
       · exact Prod.Lex.right _ h2
   exact hgen hstep
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
-
-Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+The transformed minimum is positive, so the one-step center comparison gives either a larger minimum size, a smaller maximum order at equal size, or equal sizes and orders with a strict comparison of sorted positions. In the first case a candidate attaining the upper minimum has cardinality below the transformed dimension successor, which is at most the old dimension successor and hence at most D. Subtracting the larger upper size from D gives a smaller first entry. In the second case the lower maximum is finite, so the strict order drop gives a smaller second entry and equal first entries. In the final case the size and order entries agree, and the count of maximizing pairs strictly drops under the blowup. In each case the new lexicographic invariant is smaller.
 -/
 theorem monomialInvariant_blowupTripleAtCenterIdeal_lt (hGeom : MonomialGeometryHypotheses.{u}) {D : ℕ} {T : MarkedIdealWithBoundary.{u}}
     (hT : MonomialCenter.IsLocallyMonomialTriple T)

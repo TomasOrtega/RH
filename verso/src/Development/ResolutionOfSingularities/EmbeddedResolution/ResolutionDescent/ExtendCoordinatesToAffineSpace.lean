@@ -17,10 +17,8 @@ def specHomOfGlobalSections (A : Scheme.{u}) [AlgebraicGeometry.IsAffine A] {B' 
   Spec.map σ ≫ A.isoSpec.inv
 
 @[simp]
-/- English proof (translation)
-Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The scheme map is obtained by taking spectra of the ring map and identifying the spectrum of the ambient global sections with the affine ambient scheme. Naturality of the identification between rings and sections on spectra shows that pullback sends a section to its image under the given ring map, viewed as a section on the source spectrum.
 -/
 theorem specHomOfGlobalSections_appTop (A : Scheme.{u}) [AlgebraicGeometry.IsAffine A]
     {B' : CommRingCat.{u}} (σ : Γ(A, ⊤) ⟶ B') (s : Γ(A, ⊤)) :
@@ -51,8 +49,8 @@ def specToAffineSpaceExtendCoords (k : Type u) [Field k] (A : Scheme.{u}) [Algeb
         i.down)
 
 @[simp]
-/- English proof (translation)
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The map determined by the two blocks of sections is constructed over the field, using the structural map obtained through the ambient scheme. Its composite with the target projection is that structural map.
 -/
 theorem specToAffineSpaceExtendCoords_comp_toSpec (k : Type u) [Field k] (A : Scheme.{u})
     [AlgebraicGeometry.IsAffine A] (pA : A ⟶ Spec (CommRingCat.of k)) (M : ℕ)
@@ -63,8 +61,8 @@ theorem specToAffineSpaceExtendCoords_comp_toSpec (k : Type u) [Field k] (A : Sc
   simp [specToAffineSpaceExtendCoords]
 
 @[simp]
-/- English proof (translation)
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+In the first coordinate block, the defining sections are the pullbacks of the original affine-space coordinates along the map through the ambient scheme. The coordinate formula for a map into affine space gives exactly these sections.
 -/
 theorem specToAffineSpaceExtendCoords_appTop_coord_inl (k : Type u) [Field k] (A : Scheme.{u})
     [AlgebraicGeometry.IsAffine A] (pA : A ⟶ Spec (CommRingCat.of k)) (M : ℕ)
@@ -78,8 +76,8 @@ theorem specToAffineSpaceExtendCoords_appTop_coord_inl (k : Type u) [Field k] (A
   simp [specToAffineSpaceExtendCoords]
 
 @[simp]
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The defining vector uses the sections corresponding to the given ring elements as its second block. Pullback of the coordinate in this block returns its defining section.
 -/
 theorem specToAffineSpaceExtendCoords_appTop_coord_inr (k : Type u) [Field k] (A : Scheme.{u})
     [AlgebraicGeometry.IsAffine A] (pA : A ⟶ Spec (CommRingCat.of k)) (M : ℕ)
@@ -91,8 +89,8 @@ theorem specToAffineSpaceExtendCoords_appTop_coord_inr (k : Type u) [Field k] (A
       (Scheme.ΓSpecIso B').inv (b j) := by
   simp [specToAffineSpaceExtendCoords]
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+After projection to the first block, both maps have the same structural map by the hypothesis that the ambient embedding is over the field. Their pullbacks of the first-block coordinates agree by construction. The coordinate characterization of maps into affine space gives equality.
 -/
 theorem specToAffineSpaceExtendCoords_comp_projLeft (k : Type u) [Field k] (A : Scheme.{u})
     [AlgebraicGeometry.IsAffine A] (pA : A ⟶ Spec (CommRingCat.of k)) (M : ℕ)
@@ -106,20 +104,8 @@ theorem specToAffineSpaceExtendCoords_comp_projLeft (k : Type u) [Field k] (A : 
     rw [Scheme.Hom.comp_appTop, CommRingCat.comp_apply, projLeft_appTop_coord,
       specToAffineSpaceExtendCoords_appTop_coord_inl]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The closed immersion of the ambient scheme induces a surjection on global sections. Lift each ambient coefficient to a section of the first affine space and then pull that section back along projection from the larger affine space. The first-block comparison ensures its image is the corresponding coefficient in the target ring. Each new generator is the pullback of its second-block coordinate. Thus sums and products of these lifted coordinates and coefficients give preimages of all polynomial expressions in the generators. By the generation hypothesis these expressions give every global section of the source spectrum.
 -/
 theorem specToAffineSpaceExtendCoords_appTop_surjective (k : Type u) [Field k] (A : Scheme.{u})
     [AlgebraicGeometry.IsAffine A] (pA : A ⟶ Spec (CommRingCat.of k)) (M : ℕ)
@@ -171,8 +157,8 @@ theorem specToAffineSpaceExtendCoords_appTop_surjective (k : Type u) [Field k] (
   rw [hP, hp]
   simp
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Both schemes are affine and the map on global sections is surjective by the coordinate generation result. For affine schemes, such a map defines a closed immersion.
 -/
 theorem isClosedImmersion_specToAffineSpaceExtendCoords (k : Type u) [Field k] (A : Scheme.{u})
     [AlgebraicGeometry.IsAffine A] (pA : A ⟶ Spec (CommRingCat.of k)) (M : ℕ)

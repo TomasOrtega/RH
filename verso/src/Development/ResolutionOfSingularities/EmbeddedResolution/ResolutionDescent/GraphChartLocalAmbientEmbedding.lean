@@ -28,8 +28,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
+/- English proof (authored)
+Pullback of global sections is contravariantly functorial. Thus the pullback along the composite first pulls the section back along the second map and then along the first.
 -/
 private theorem appTop_comp_hom_apply {X Y Z : Scheme.{u}} (f : X ⟶ Y) (g : Y ⟶ Z)
     (s : ↑(Z.presheaf.obj (Opposite.op ⊤))) :
@@ -41,10 +41,8 @@ private theorem appTop_comp_hom_apply {X Y Z : Scheme.{u}} (f : X ⟶ Y) (g : Y 
   rw [h]
   rfl
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Check the structural map and every first-block coordinate. The graph morphism and both projections are over the field, so the structural maps agree. Projection pulls a coordinate back to its first-block coordinate, and the graph morphism pulls that coordinate back to the corresponding original coordinate restricted to the open. These are exactly the pullbacks through the open inclusion and original projection.
 -/
 theorem graphMorphismToAffineSpace_comp_projLeft (k : Type u) [Field k] (M n q : ℕ)
     (F : Fin q →
@@ -62,10 +60,8 @@ theorem graphMorphismToAffineSpace_comp_projLeft (k : Type u) [Field k] (M n q :
     rw [appTop_comp_hom_apply, appTop_comp_hom_apply, projLeft_appTop_coord, projLeft_appTop_coord,
       graphMorphismToAffineSpace_appTop_coord_inl]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
+/- English proof (authored)
+The square formed by the map, the open immersion, the composite, and the identity of the source is a pullback. Indeed a compatible pair of maps into the source and the open must agree after factoring through the given map to the open, because the open immersion is a monomorphism. The original map is therefore a base change of the smooth composite, hence smooth.
 -/
 private theorem smooth_of_smooth_comp_isOpenImmersion {X Y Z : Scheme.{u}} (f : X ⟶ Y)
     (i : Y ⟶ Z) [IsOpenImmersion i] (h : Smooth (f ≫ i)) : Smooth f := by
@@ -81,10 +77,8 @@ private theorem smooth_of_smooth_comp_isOpenImmersion {X Y Z : Scheme.{u}} (f : 
     · simpa using h₂
   exact MorphismProperty.IsStableUnderBaseChange.of_isPullback hp.flip h
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
-
-Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+On an affine open, the closed subscheme's map on sections is the quotient by the ideal on that open followed by an isomorphism. The isomorphism is injective, so the kernel is exactly the defining ideal on the open.
 -/
 private theorem ker_subschemeι_app {Z : Scheme.{u}} (I : Z.IdealSheafData)
     (V : Z.affineOpens) :
@@ -101,8 +95,8 @@ private theorem ker_subschemeι_app {Z : Scheme.{u}} (I : Z.IdealSheafData)
     CommRingCat.hom_ofHom]
   rw [← map_zero ((I.subschemeObjIso V).inv.hom), hinj.eq_iff, Ideal.Quotient.eq_zero_iff_mem]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+On an affine scheme the correspondence between ideal sheaves and ideals of the section ring evaluates a sheaf on the whole scheme. Applying this correspondence to the ideal sheaf associated to the given ideal returns that ideal.
 -/
 private theorem ideal_top_ofIdealTop_eq {Z : Scheme.{u}} [IsAffine Z]
     (J : Ideal Γ(Z, ⊤)) :
@@ -112,8 +106,8 @@ private theorem ideal_top_ofIdealTop_eq {Z : Scheme.{u}} [IsAffine Z]
     Scheme.IdealSheafData.equivOfIsAffine_apply] at h
   exact h
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Each ideal sheaf on an affine scheme is recovered from its ideal on global sections. Equal global ideals therefore give equal ideal sheaves.
 -/
 private theorem eq_of_ideal_top_eq {Z : Scheme.{u}} [IsAffine Z] {I J : Z.IdealSheafData}
     (h : I.ideal ⟨⊤, isAffineOpen_top Z⟩ = J.ideal ⟨⊤, isAffineOpen_top Z⟩) : I = J := by
@@ -123,8 +117,8 @@ private theorem eq_of_ideal_top_eq {Z : Scheme.{u}} [IsAffine Z] {I J : Z.IdealS
     Scheme.IdealSheafData.equivOfIsAffine_symm_apply] at hI hJ
   rw [← hI, ← hJ, h]
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
+/- English proof (authored)
+It is enough to compare global ideals on the affine scheme. The ideal of the supremum is the sum of the two global ideals, which is also the global ideal of the sheaf associated to their sum.
 -/
 private theorem ofIdealTop_sup {Z : Scheme.{u}} [IsAffine Z] (I J : Ideal Γ(Z, ⊤)) :
     Scheme.IdealSheafData.ofIdealTop (I ⊔ J) =
@@ -132,8 +126,8 @@ private theorem ofIdealTop_sup {Z : Scheme.{u}} [IsAffine Z] (I J : Ideal Γ(Z, 
   refine eq_of_ideal_top_eq ?_
   simp only [Scheme.IdealSheafData.ideal_sup, Pi.sup_apply, ideal_top_ofIdealTop_eq]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+For affine schemes the global ideal of the pulled-back ideal sheaf is extension of the original global ideal along the map on sections. Extension carries an ideal generated by a set to the ideal generated by its images. This gives the stated sheaf.
 -/
 private theorem comap_ofIdealTop_span {X Y : Scheme.{u}} [IsAffine X] [IsAffine Y]
     (f : X ⟶ Y) (s : Set Γ(Y, ⊤)) :
@@ -142,8 +136,8 @@ private theorem comap_ofIdealTop_span {X Y : Scheme.{u}} [IsAffine X] [IsAffine 
         (Ideal.span (⇑(CommRingCat.Hom.hom (Scheme.Hom.appTop f)) '' s)) := by
   rw [Scheme.IdealSheafData.comap_ofIdealTop, Ideal.map_span]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The ideal of a coordinate subspace is generated by the coordinates in the specified set. With every index selected, these are precisely all coordinate sections.
 -/
 private theorem coordSubspaceIdeal_univ_eq_ofIdealTop (k : Type u) [Field k] (m : ℕ) :
     coordSubspaceIdeal k m Finset.univ =
@@ -152,18 +146,8 @@ private theorem coordSubspaceIdeal_univ_eq_ofIdealTop (k : Type u) [Field k] (m 
           AffineSpace.coord (Spec (CommRingCat.of k)) (ULift.up.{u, 0} i)))) := by
   rw [coordSubspaceIdeal_eq_ofIdealTop_span_coord, Finset.coe_univ, Set.image_univ]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
-
-Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+A closed immersion identifies its source with its scheme-theoretic image. Its pullback on global sections thus factors as the pullback of the canonical inclusion for the kernel ideal sheaf, followed by an isomorphism. The kernel of the latter composite is the global ideal of that ideal sheaf by the quotient description of the inclusion. The affine correspondence recovers the sheaf from this ideal.
 -/
 private theorem ker_eq_ofIdealTop_ker_appTop {X Y : Scheme.{u}} [IsAffine X] [IsAffine Y]
     (f : X ⟶ Y) [IsClosedImmersion f] :
@@ -209,22 +193,8 @@ private theorem ker_eq_ofIdealTop_ker_appTop {X Y : Scheme.{u}} [IsAffine X] [Is
     ← ker_subschemeι_app (Scheme.Hom.ker f) ⟨⊤, isAffineOpen_top Y⟩]
   exact hkers.symm
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
-
-Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+All coordinates of the space of summed dimension pull back by reindexing to the coordinates in the two disjoint blocks. The projections pull back all coordinates in the first and second smaller spaces to exactly those blocks. Thus the reindexed generating set is the union of the two projected sets. The ideal generated by the union is the sum of the two generated ideals, yielding the equality of pulled-back ideal sheaves.
 -/
 private theorem coordSubspaceIdeal_univ_comap_affineSpaceIsoOfEquiv (k : Type u) [Field k] (c q : ℕ) :
     (coordSubspaceIdeal k (c + q) Finset.univ).comap
@@ -294,28 +264,10 @@ private theorem coordSubspaceIdeal_univ_comap_affineSpaceIsoOfEquiv (k : Type u)
     coordSubspaceIdeal_univ_eq_ofIdealTop, comap_ofIdealTop_span, comap_ofIdealTop_span,
     comap_ofIdealTop_span, ← ofIdealTop_sup, ← Ideal.span_union, hset]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
+/- English proof (authored)
+For any point of the new ambient lift, choose a smooth coordinate chart near its image in the original affine space. The projected point is in this chart by the projection identity. Intersect the inverse image of this chart with the basic open on which the graph map is smooth. The new embedded point lies there because the basic open contains the whole image. On the intersection the graph map is smooth. Its first block is the original projection, so it factors through the inverse image of the original chart in the target graph space. This factor is smooth because its composite with the open inclusion is smooth.
 
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+On that graph space over the original chart, use the product of the original smooth coordinate map and the unchanged second block. This product map is smooth and over the field. Composing it with the restricted graph map and reindexing the coordinates gives the required smooth chart. The pullback of its first block's coordinate ideal is the original embedding ideal pulled back to the intersection. The pullback of its second block's coordinate ideal is generated by the graph functions there. The reindexed full coordinate ideal pulls back to the sum of these two ideals. By the given formula for the new kernel on global sections and the affine correspondence with ideal sheaves, this sum is exactly the restriction of the new embedding ideal.
 -/
 theorem hasSmoothCoordCodim_add_of_smooth_graphMorphism (hsm : AffineSpaceIsSmooth.{u}) (k : Type u) [Field k]
     {A A' : Scheme.{u}} [IsAffine A] [IsAffine A'] (M c n q : ℕ)
@@ -454,14 +406,8 @@ theorem hasSmoothCoordCodim_add_of_smooth_graphMorphism (hsm : AffineSpaceIsSmoo
         ← Scheme.IdealSheafData.comap_comp]
     rw [key2, key, hA, hB]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Take the data supplied by the local graph chart, including the affine neighborhood and the pullback square of the new embedding. Use its number of added variables as the presentation threshold. It is at least the relative dimension because it equals that dimension plus the number of equations. The graph codimension result gives smooth coordinate codimension equal to the original codimension plus the number of equations. Reindex the two blocks as a single coordinate set. At a dimension above the threshold, append the additional coordinates as zero coordinates. This is a closed immersion and increases the coordinate codimension by the number of added zeros, giving the required formula. The projection identity and the fact that reindexing and zero-coordinate inclusions are over the field show that all the resulting presentations have the desired structural map.
 -/
 theorem smoothPullbackHasLocalAmbientEmbedding_of_hasGraphChart (hsm : AffineSpaceIsSmooth.{u})
     (hgr : SmoothPullbackHasGraphChart.{u}) : SmoothPullbackHasLocalAmbientEmbedding.{u} := by

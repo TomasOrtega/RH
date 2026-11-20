@@ -9,8 +9,8 @@ namespace FunctorialResolution.EmbeddedResolution
 
 variable {α : Type*} [TopologicalSpace α]
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The kernel is contained in its radical. If an element has a power in the kernel, its image has a power equal to zero. The target ring is reduced, so the image is zero and the original element already lies in the kernel.
 -/
 private theorem radical_ringHom_ker_eq {R S : Type*} [CommRing R] [CommRing S] [_root_.IsReduced S]
     (φ : R →+* S) : (RingHom.ker φ).radical = RingHom.ker φ := by
@@ -20,10 +20,8 @@ private theorem radical_ringHom_ker_eq {R S : Type*} [CommRing R] [CommRing S] [
   have hx : φ x ^ n = 0 := by rw [← map_pow]; exact hn
   exact IsNilpotent.eq_zero ⟨n, hx⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+A Noetherian space has finitely many irreducible components, each closed. The selected family is a subset of this finite family, so its union is closed.
 -/
 theorem isClosed_sUnion_irreducibleComponents [NoetherianSpace α]
     {S : Set (Set α)} (hS : S ⊆ irreducibleComponents α) :
@@ -36,18 +34,16 @@ theorem isClosed_sUnion_irreducibleComponents [NoetherianSpace α]
   apply isClosed_of_mem_irreducibleComponents
   exact hS hs
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The excluded components are a family of irreducible components of the Noetherian space. Their union is closed, so its complement is open.
 -/
 theorem isOpen_compl_sUnion_irreducibleComponents_sdiff [NoetherianSpace α]
     (S : Set (Set α)) :
     IsOpen ((⋃₀ (irreducibleComponents α \ S))ᶜ) :=
   (isClosed_sUnion_irreducibleComponents Set.sdiff_subset).isOpen_compl
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
-
-Consider separately whether the proposition holds or fails. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+Every point lies on an irreducible component. If the point avoids the union of excluded components, any such component through the point must belong to the selected family. Hence the point belongs to that family's union.
 -/
 theorem compl_sUnion_irreducibleComponents_sdiff_subset (S : Set (Set α)) :
     (⋃₀ (irreducibleComponents α \ S))ᶜ ⊆ ⋃₀ S := by
@@ -60,14 +56,8 @@ theorem compl_sUnion_irreducibleComponents_sdiff_subset (S : Set (Set α)) :
   · exact ⟨irreducibleComponent x, hC, hmem⟩
   · exact (hx ⟨irreducibleComponent x, ⟨hcomp, hC⟩, hmem⟩).elim
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+The open complement of the excluded components lies in the selected union, which is closed, so its closure also lies there. Conversely take a selected component. It cannot be contained in the union of excluded components, because that is a finite union of closed sets and irreducibility would put it inside a single excluded component. Maximality would then identify the two components, contradicting the choice. Thus the selected component meets the complement in a nonempty open subset, which is dense in that component. Every selected component therefore lies in the closure.
 -/
 theorem closure_compl_sUnion_irreducibleComponents_sdiff [NoetherianSpace α]
     {S : Set (Set α)} (hS : S ⊆ irreducibleComponents α) :
@@ -98,8 +88,8 @@ theorem closure_compl_sUnion_irreducibleComponents_sdiff [NoetherianSpace α]
       hZcl.isOpen_compl ⟨x, hxC, hxo⟩ ⟨y, hyC, hyZ⟩
     exact ⟨z, hzo, hzZ⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Closed subsets with the same underlying set are equal. Their vanishing ideal sheaves are therefore equal.
 -/
 theorem vanishingIdeal_congr {X : Scheme.{u}} {Z₁ Z₂ : Closeds ↥X}
     (h : (Z₁ : Set ↥X) = (Z₂ : Set ↥X)) :
@@ -112,17 +102,15 @@ def complSUnionOtherComponents (X : Scheme.{u}) [NoetherianSpace ↥X] (S : Set 
     isOpen_compl_sUnion_irreducibleComponents_sdiff S⟩
 
 @[simp]
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The open is defined as the complement of the union of the excluded irreducible components, so its underlying subset is exactly that complement.
 -/
 theorem coe_complSUnionOtherComponents (X : Scheme.{u}) [NoetherianSpace ↥X] (S : Set (Set ↥X)) :
     (complSUnionOtherComponents X S : Set ↥X) = (⋃₀ (irreducibleComponents ↥X \ S))ᶜ :=
   rfl
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
+/- English proof (authored)
+The kernel ideal sheaf is contained in its radical. For the reverse containment, on each affine target open the ideal of the kernel sheaf lies in the kernel of the section map. Sections over the inverse image form a reduced ring because the source scheme is reduced. The kernel of this section map is therefore radical and also contains the radical of the kernel sheaf ideal on that open. These local containments give containment in the kernel ideal sheaf, which is determined by the section kernels.
 -/
 private theorem radical_scheme_ker_eq {X Y : Scheme.{u}} (g : X ⟶ Y)
     [AlgebraicGeometry.IsReduced X] :
@@ -141,8 +129,8 @@ private theorem radical_scheme_ker_eq {X Y : Scheme.{u}} (g : X ⟶ Y)
       ≤ (RingHom.ker (CommRingCat.Hom.hom (g.app U.1))).radical := Ideal.radical_mono hle
     _ = RingHom.ker (CommRingCat.Hom.hom (g.app U.1)) := radical_ringHom_ker_eq _
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The ideal of the support of an ideal sheaf is its radical. Here the kernel sheaf equals its radical because the source is reduced, and its support is the given closed subset. Thus its kernel is the vanishing ideal of that subset.
 -/
 private theorem ker_eq_vanishingIdeal_of_support {X Y : Scheme.{u}} (g : X ⟶ Y)
     [AlgebraicGeometry.IsReduced X] {Z : Closeds ↥Y}
@@ -151,22 +139,10 @@ private theorem ker_eq_vanishingIdeal_of_support {X Y : Scheme.{u}} (g : X ⟶ Y
   rw [← vanishingIdeal_congr hZ, Scheme.IdealSheafData.vanishingIdeal_support,
     radical_scheme_ker_eq g]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
+/- English proof (authored)
+Let the open in the target be the complement of the excluded irreducible components. Its closure is the selected union, so the support of the kernel of the open inclusion is that union. Since the open is reduced, the kernel is its support's vanishing ideal.
 
-Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+The closure of the inverse image of the open is contained in the inverse image of the selected union because the latter is closed. For the reverse inclusion, take any point above a selected component. Its image is a specialization of that component's generic point. The generic point belongs to the open, because any excluded component containing it would contain the selected component and hence equal it. Flatness lifts this generalization of the image to a generalization of the original point. That lift belongs to the inverse image of the open, so the original point is in its closure. The preimage open inclusion therefore has kernel the vanishing ideal of the inverse image of the selected union. Both open inclusions are quasi-compact by Noetherianity. The flat pullback formula for the kernels of their pullback square gives the desired equality.
 -/
 theorem comap_vanishingIdeal_sUnion {X X' : Scheme.{u}} (f : X' ⟶ X)
     [AlgebraicGeometry.IsReduced X] [AlgebraicGeometry.IsReduced X']

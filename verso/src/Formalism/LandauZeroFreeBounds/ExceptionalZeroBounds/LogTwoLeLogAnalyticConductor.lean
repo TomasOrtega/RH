@@ -6,32 +6,30 @@ noncomputable section
 
 namespace Formalism.ZeroFreeDirichlet
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+A nonzero natural modulus is at least one. The inequality is preserved on viewing the modulus as a real number.
 -/
 lemma one_le_modulus_real (q : ℕ) [NeZero q] : (1 : ℝ) ≤ q := by
   exact_mod_cast Nat.one_le_iff_ne_zero.2 (NeZero.ne q)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Since q ≥ 1 and |t| + 2 ≥ 2, their product is at least two. Monotonicity of the logarithm gives the claim.
 -/
 lemma log_two_le_log_analytic_conductor (q : ℕ) [NeZero q] (t : ℝ) : Real.log 2 ≤ Real.log ((q : ℝ) * (|t| + 2)) := by
   have h1 := one_le_modulus_real q
   have h2 := abs_nonneg t
   exact Real.log_le_log (by norm_num) (by nlinarith)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+The conductor logarithm is at least log 2, which exceeds 0.69.
 -/
 lemma log_analytic_conductor_ge_const (q : ℕ) [NeZero q] (t : ℝ) : 69 / 100 ≤ Real.log ((q : ℝ) * (|t| + 2)) := by
   have h := Real.log_two_gt_d9
   have h2 := log_two_le_log_analytic_conductor q t
   linarith
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The conductor logarithm is positive. Dividing the half constant by it gives a smaller shift than dividing the full constant. The lower bound for the real part in the half-constant region therefore implies the lower bound for the full region.
 -/
 lemma zero_free_region_mono_half {c₁ : ℝ} (hc : 0 < c₁) (q : ℕ) [NeZero q] (s : ℂ)
     (h : InRegion (c₁ / 2) q s) : InRegion c₁ q s := by
@@ -43,8 +41,8 @@ lemma zero_free_region_mono_half {c₁ : ℝ} (hc : 0 < c₁) (q : ℕ) [NeZero 
     exact div_le_div_of_nonneg_left hc.le hL (by linarith)
   linarith
 
-/- English proof (translation)
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+The norm of the displacement bounds the absolute value of its real part, and that norm is at most the radius. Thus the point’s real part is at least the center’s real part minus the radius.
 -/
 lemma re_ge_of_mem_closedBall {z₀ w : ℂ} {r : ℝ} (hw : w ∈ Metric.closedBall z₀ r) : z₀.re - r ≤ w.re := by
   rw [Metric.mem_closedBall, Complex.dist_eq] at hw
@@ -53,18 +51,16 @@ lemma re_ge_of_mem_closedBall {z₀ w : ℂ} {r : ℝ} (hw : w ∈ Metric.closed
   have h2 := neg_abs_le (w.re - z₀.re)
   linarith
 
-/- English proof (translation)
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+The reverse triangle inequality says the difference of the two norms is at most the norm of the displacement. The latter is at most the radius.
 -/
 lemma norm_le_norm_add_of_mem_closedBall' {z₀ w : ℂ} {r : ℝ} (hw : w ∈ Metric.closedBall z₀ r) : ‖w‖ ≤ ‖z₀‖ + r := by
   rw [Metric.mem_closedBall, Complex.dist_eq] at hw
   have := norm_sub_norm_le w z₀
   linarith
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Apply the triangle inequality to the center. The positive real term has norm 21/20 and the imaginary term has norm |t|.
 -/
 lemma norm_disc_center_le (t : ℝ) : ‖(21 / 20 : ℂ) + t * I‖ ≤ 21 / 20 + |t| := by
   refine (norm_add_le _ _).trans ?_
@@ -75,12 +71,8 @@ lemma norm_disc_center_le (t : ℝ) : ‖(21 / 20 : ℂ) + t * I‖ ≤ 21 / 20 
     rw [norm_mul, Complex.norm_I, mul_one, Complex.norm_real, Real.norm_eq_abs]
   rw [h1, h2]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+Take logarithms of the positive upper bound to get log M ≤ log(2A) + L. The first term is nonnegative, so multiply it by L/log 2, which is at least one. Group the two terms to get the desired multiple of L.
 -/
 lemma log_le_of_le_exp_log_conductor {A M L : ℝ} (hA : 1 ≤ A) (hM : 1 ≤ M) (hL : Real.log 2 ≤ L) (hX : 0 < Real.exp L)
     (hML : M ≤ 2 * A * Real.exp L) :

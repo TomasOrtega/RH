@@ -7,14 +7,8 @@ noncomputable section
 
 namespace Formalism.ZeroFreeDirichlet
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
-
-Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+Use the integral of the corresponding real difference as r. On the interval from a to a + 1 the power with exponent −σ is nonincreasing, so the difference is nonnegative and hence so is the integral. Positive real bases with real exponent have the same power in the complex expression. Passing the real integral to the complex numbers gives the identity.
 -/
 lemma exponential_integral_nonneg_real {σ a : ℝ} (hσ : 0 ≤ σ) (ha : 0 < a) :
     ∃ r : ℝ, 0 ≤ r ∧ Formalism.ZF.ComplexPowerDifferenceIntegral.eint (σ : ℂ) a = (r : ℂ) := by
@@ -35,20 +29,8 @@ lemma exponential_integral_nonneg_real {σ a : ℝ} (hσ : 0 ≤ σ) (ha : 0 < a
     push_cast
     ring
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
-
-Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+For 0 < σ < 1 the power-difference terms are σ − 1 times nonnegative real integrals. Their absolute summability implies summability of those integrals because σ − 1 is nonzero. Let R be their nonnegative sum. Substitute the factored sum in the continuation formula for zeta. It gives the real value σ/(σ − 1) − R, which is strictly negative.
 -/
 theorem zeta_negative_real_axis : ZetaNegReal := by
   intro σ hσ0 hσ1

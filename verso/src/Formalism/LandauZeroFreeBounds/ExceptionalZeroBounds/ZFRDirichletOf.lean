@@ -6,14 +6,14 @@ noncomputable section
 
 namespace Formalism.ZeroFreeDirichlet
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The modulus is a nonzero natural number and is therefore at least one, also when regarded as a real number.
 -/
 lemma one_le_natCast (q : ℕ) [NeZero q] : (1 : ℝ) ≤ q := by
   exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne q)
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities.
+/- English proof (authored)
+The modulus is at least one and the other factor is at least two. Their product is at least two, so its logarithm is at least log 2.
 -/
 lemma log_two_le_log_mul_abs_add_two (q : ℕ) [NeZero q] (t : ℝ) :
     Real.log 2 ≤ Real.log ((q : ℝ) * (|t| + 2)) := by
@@ -21,14 +21,14 @@ lemma log_two_le_log_mul_abs_add_two (q : ℕ) [NeZero q] (t : ℝ) :
   apply Real.log_le_log (by norm_num)
   nlinarith [abs_nonneg t]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The preceding lower bound is log 2, which is strictly positive.
 -/
 lemma log_mul_abs_add_two_pos (q : ℕ) [NeZero q] (t : ℝ) :
     0 < Real.log ((q : ℝ) * (|t| + 2)) := lt_of_lt_of_le (Real.log_pos (by norm_num)) (log_two_le_log_mul_abs_add_two q t)
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+The conductor logarithm is positive. Replacing the region constant by a larger one increases the shift subtracted from one, lowering the real-part threshold. The original region condition implies the new one.
 -/
 lemma inRegion_mono' {c c' : ℝ} {q : ℕ} [NeZero q] {s : ℂ} (h : c ≤ c') (hs : InRegion c q s) :
     InRegion c' q s := by
@@ -37,10 +37,8 @@ lemma inRegion_mono' {c c' : ℝ} {q : ℕ} [NeZero q] {s : ℂ} (h : c ≤ c') 
   have := div_le_div_of_nonneg_right h hL.le
   linarith
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+The shift in the real-part threshold is at most one half divided by log 2. Because log 2 exceeds one half, this upper bound is less than one, so the real part is positive.
 -/
 lemma re_pos_of_inRegion {c : ℝ} {q : ℕ} [NeZero q] {s : ℂ} (hc : c ≤ 1 / 2) (hs : InRegion c q s) :
     0 < s.re := by
@@ -55,10 +53,8 @@ lemma re_pos_of_inRegion {c : ℝ} {q : ℕ} [NeZero q] {s : ℂ} (hc : c ≤ 1 
     rw [div_lt_one h2pos]; linarith [Real.log_two_gt_d9]
   linarith
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+The modulus is at least one, so the conductor logarithm is at least the height logarithm, and both are positive. Replacing c by the larger positive constant and then dividing by the smaller logarithm can only increase the shift. This gives the weaker lower bound on the real part.
 -/
 lemma one_sub_div_log_le_re {c cz : ℝ} {q : ℕ} [NeZero q] {s : ℂ} (hcz : 0 < cz) (h : c ≤ cz)
     (hs : InRegion c q s) : 1 - cz / Real.log (|s.im| + 2) ≤ s.re := by
@@ -73,24 +69,8 @@ lemma one_sub_div_log_le_re {c cz : ℝ} {q : ℕ} [NeZero q] {s : ℂ} (hcz : 0
   have h2 := div_le_div_of_nonneg_left hcz.le hlogT hle
   linarith
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
-
-Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Take the minimum of the positive region constants and one half. In this common region the principal character is excluded by its reduction to zeta, using the positive real part and the zeta region. The nonreal-character bound forces any remaining character to be quadratic. The large-height exclusion puts the zero in the small-height range, where it is real and simple. If two different quadratic characters had zeros there, their real zeros would contradict the two-character bound. Thus any second zero is for the same character, and the small-height uniqueness theorem makes it the same zero.
 -/
 theorem zeroFreeRegionExceptionalZeroOfBounds : ZFRDirichletOf := by
   intro hZ hT hN hL hS h2

@@ -6,44 +6,8 @@ noncomputable section
 
 namespace Formalism.ZeroFreeDirichlet
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
-
-Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
-
-Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+Write L for the conductor logarithm at s. A local zero outside the exceptional set lies outside the wider zero-free region. Its imaginary part differs from that of s by at most 11/60, so its own conductor logarithm is at most 6L/5. Comparing the wider-region exclusion with the narrower-region hypothesis at s gives a real-part separation of at least c₁/(3L). The norm of its reciprocal is therefore at most 3L/c₁. Summing with multiplicities gives the quadratic logarithmic term. If the exceptional zero is local, its simple multiplicity makes its two reciprocal terms cancel. If it is outside the local disk, geometry bounds its reciprocal by 120/11. Combining these bounds with the logarithmic derivative approximation gives the result.
 -/
 lemma log_deriv_sub_exceptional_zeros {c₁ : ℝ} (hc₁ : 0 < c₁) {q : ℕ} [NeZero q] {χ : DirichletCharacter ℂ q}
     {B : Finset ℝ} (hχ : χ ≠ 1) (hBcard : B.card ≤ 1)

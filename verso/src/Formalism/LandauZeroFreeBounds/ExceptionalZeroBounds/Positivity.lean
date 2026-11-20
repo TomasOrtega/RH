@@ -7,8 +7,8 @@ noncomputable section
 
 namespace Formalism.ZeroFreeDirichlet
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+To the right of one, both the L-function and its derivative agree with those of the character Dirichlet series. Substitute them in the negative logarithmic derivative and apply the von Mangoldt twist identity.
 -/
 lemma negLogDeriv_eq_LSeries {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) {s : ℂ}
     (hs : 1 < s.re) : negLD χ s = LSeries (↗χ * ↗Λ) s := by
@@ -18,18 +18,16 @@ lemma negLogDeriv_eq_LSeries {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q
     DirichletCharacter.LFunction_eq_LSeries χ hs]
   ring
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The von Mangoldt-twisted series is summable in the half-plane. Taking real parts term by term gives a series summing to the real part of its value, which is the negative logarithmic derivative.
 -/
 lemma hasSum_re_term {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) {s : ℂ}
     (hs : 1 < s.re) : HasSum (fun n ↦ (term (↗χ * ↗Λ) s n).re) (negLD χ s).re := by
   rw [negLogDeriv_eq_LSeries χ hs]
   exact Complex.hasSum_re (DirichletCharacter.LSeriesSummable_twist_vonMangoldt χ hs).hasSum
 
-/- English proof (translation)
-Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
-
-Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+At zero both terms vanish. At positive n split the complex power in the denominator into the real exponent power and the imaginary exponent power. The former is the corresponding positive real power and collects with the von Mangoldt coefficient, giving the stated factorization.
 -/
 lemma term_ofReal_add_mul_I {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (σ u : ℝ) (n : ℕ) :
     term (↗χ * ↗Λ) ((σ : ℂ) + u * I) n =
@@ -45,10 +43,8 @@ lemma term_ofReal_add_mul_I {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q)
     rw [div_mul_div_comm]
     ring
 
-/- English proof (translation)
-Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
-
-Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+At zero the series term and the von Mangoldt coefficient vanish. For positive n the complex power with real exponent is the real power. Group its reciprocal with the von Mangoldt coefficient.
 -/
 lemma term_ofReal {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (σ : ℝ) (n : ℕ) :
     term (↗χ * ↗Λ) (σ : ℂ) n = ((Λ n / (n : ℝ) ^ σ : ℝ) : ℂ) * χ n := by
@@ -61,26 +57,14 @@ lemma term_ofReal {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (σ : ℝ
     simp only [Pi.mul_apply]
     ring
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The von Mangoldt function is nonnegative and the real power of the nonnegative base is nonnegative. Their quotient is nonnegative.
 -/
 lemma vonMangoldt_div_rpow_nonneg (σ : ℝ) (n : ℕ) : 0 ≤ Λ n / (n : ℝ) ^ σ :=
   div_nonneg ArithmeticFunction.vonMangoldt_nonneg (Real.rpow_nonneg (Nat.cast_nonneg n) σ)
 
-/- English proof (translation)
-Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+At a nonunit all three character values vanish, and the term at zero also vanishes. At a unit, let w be the character value divided by the imaginary-exponent factor. Both have norm one, and the term for the squared character at double height uses w². The combination has the common nonnegative von Mangoldt weight times 3 + 4 Re(w) + Re(w²). Since |w| = 1, this equals twice the square of 1 + Re(w), and is nonnegative.
 -/
 lemma term_three_four_one_nonneg {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (σ t : ℝ) (n : ℕ) :
     0 ≤ 3 * (term (↗(1 : DirichletCharacter ℂ q) * ↗Λ) (σ : ℂ) n).re
@@ -121,8 +105,8 @@ lemma term_three_four_one_nonneg {q : ℕ} [NeZero q] (χ : DirichletCharacter �
     have h3 : (χ ^ 2) n = 0 := MulChar.map_nonunit _ hu
     simp [h1, h2, h3]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At a unit the principal character equals one. Evaluating the quadratic identity there gives the value’s square equal to one. Over the complex numbers its only possibilities are one and minus one.
 -/
 lemma eq_one_or_eq_neg_one_of_sq_eq_one {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (hχ : χ ^ 2 = 1)
     {n : ℕ} (hu : IsUnit (n : ZMod q)) : χ n = 1 ∨ χ n = -1 := by
@@ -130,10 +114,8 @@ lemma eq_one_or_eq_neg_one_of_sq_eq_one {q : ℕ} [NeZero q] (χ : DirichletChar
     rw [← pow_two, ← MulChar.pow_apply' χ two_ne_zero, hχ, MulChar.one_apply hu]
   exact mul_self_eq_one_iff.mp h
 
-/- English proof (translation)
-Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
-
-Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+At a unit the character values are one and either one or minus one, so their sum is nonnegative. At a nonunit both vanish, and the zero-index term vanishes separately. Multiply by the common nonnegative von Mangoldt weight.
 -/
 lemma term_one_add_real_nonneg {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (hχ : χ ^ 2 = 1)
     (σ : ℝ) (n : ℕ) :
@@ -150,12 +132,8 @@ lemma term_one_add_real_nonneg {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ
   · rw [MulChar.map_nonunit _ hu, MulChar.map_nonunit _ hu]
     simp
 
-/- English proof (translation)
-Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
-
-Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+At a unit write a and b for the two signs. The sum of the four character values is 1 + a + b + ab, which is (1 + a)(1 + b) and is nonnegative. At a nonunit all character terms vanish, and the zero-index term also vanishes. The common von Mangoldt weight is nonnegative.
 -/
 lemma term_two_real_nonneg {q : ℕ} [NeZero q] (χ₁ χ₂ : DirichletCharacter ℂ q)
     (h₁ : χ₁ ^ 2 = 1) (h₂ : χ₂ ^ 2 = 1) (σ : ℝ) (n : ℕ) :
@@ -176,10 +154,8 @@ lemma term_two_real_nonneg {q : ℕ} [NeZero q] (χ₁ χ₂ : DirichletCharacte
   · rw [MulChar.map_nonunit _ hu, MulChar.map_nonunit _ hu, MulChar.map_nonunit _ hu]
     simp
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At each argument with real part above one, the real part of the negative logarithmic derivative is the sum of the real parts of the corresponding series terms. Form the three asserted linear combinations of these absolutely convergent series. Their termwise nonnegativity gives nonnegativity of the corresponding sums.
 -/
 theorem negLogDerivPositivity : Positivity := by
   intro q _ σ hσ

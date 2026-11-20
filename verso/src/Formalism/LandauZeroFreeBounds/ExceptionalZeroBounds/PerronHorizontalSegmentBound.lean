@@ -6,16 +6,16 @@ noncomputable section
 
 namespace Formalism.ZeroFreeDirichlet
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Expand the integrand as a product divided by w(w − 1). Norms multiply, and for positive y the norm of its complex power is the real power with exponent Re(w). This gives the asserted quotient.
 -/
 theorem norm_perron_integrand_eq {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (y : ℝ) (hy : 0 < y) (w : ℂ) :
     ‖Fchi χ y w‖ = ‖negLD χ w‖ * y ^ w.re / (‖w‖ * ‖w - 1‖) := by
   unfold Fchi
   rw [norm_div, norm_mul, norm_mul, Complex.norm_cpow_eq_rpow_re_of_pos hy]
 
-/- English proof (translation)
-Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
+/- English proof (authored)
+The set is empty or a singleton. Its sum is either zero, bounded by the nonnegative M, or one of the values bounded by M by hypothesis.
 -/
 theorem norm_sum_le_of_card_le_one (B : Finset ℝ) (hB : B.card ≤ 1) (f : ℝ → ℂ) (M : ℝ) (hM : 0 ≤ M)
     (hf : ∀ β ∈ B, ‖f β‖ ≤ M) : ‖∑ β ∈ B, f β‖ ≤ M := by
@@ -24,18 +24,8 @@ theorem norm_sum_le_of_card_le_one (B : Finset ℝ) (hB : B.card ≤ 1) (f : ℝ
   · obtain ⟨b, rfl⟩ := Finset.card_eq_one.mp h
     simpa using hf b (Finset.mem_singleton_self b)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
+/- English proof (authored)
+On the line with real part 1 + 1/log y, the right-half-plane derivative bound is log y + C₀ and the power of y is ey. The norms of w and w − 1 are each at least |t|. Apply the integrand norm identity and the positive lower bound t² for the denominator.
 -/
 theorem perron_right_line_bound {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (C₀ : ℝ)
     (hR : ∀ s : ℂ, 1 < s.re → ‖negLD χ s‖ ≤ 1 / (s.re - 1) + C₀)
@@ -75,16 +65,16 @@ theorem perron_right_line_bound {q : ℕ} [NeZero q] (χ : DirichletCharacter �
     _ ≤ (L + C₀) * (Real.exp 1 * y) / t ^ 2 :=
         div_le_div_of_nonneg_left (mul_nonneg hNn hey.le) htt0 htt
 
-/- English proof (translation)
-Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+/- English proof (authored)
+The modulus is at least one and |u| + 2 is at least two. Their product is greater than one, so its logarithm is positive.
 -/
 theorem log_conductor_pos_real (q : ℕ) [NeZero q] (u : ℝ) : 0 < Real.log ((q : ℝ) * (|u| + 2)) := by
   apply Real.log_pos
   have hq : (1:ℝ) ≤ q := by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne q)
   nlinarith [abs_nonneg u]
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
+/- English proof (authored)
+Multiply |u| + 2 ≤ T + 2 by the positive modulus and apply monotonicity of the logarithm.
 -/
 theorem log_analytic_conductor_mono (q : ℕ) [NeZero q] (u T : ℝ) (hu : |u| ≤ T) :
     Real.log ((q : ℝ) * (|u| + 2)) ≤ Real.log ((q : ℝ) * (T + 2)) := by
@@ -93,22 +83,8 @@ theorem log_analytic_conductor_mono (q : ℕ) [NeZero q] (u T : ℝ) (hu : |u| �
   · nlinarith [abs_nonneg u]
   · exact mul_le_mul_of_nonneg_left (by linarith) (by linarith)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
+/- English proof (authored)
+The horizontal point is in the smaller zero-free region by the lower bound on its real part. Its distance from every real exceptional zero is at least T, so the exceptional reciprocal sum has norm at most one. The adjusted derivative estimate thus bounds the unadjusted norm by the conductor term plus one. The two denominator norms are each at least T, and the numerator power of y is at most the power at the right endpoint. Substitute these estimates in the integrand norm identity.
 -/
 theorem perron_horizontal_segment_bound {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (c₁ C : ℝ)
     (B : Finset ℝ) (hB : B.card ≤ 1)
@@ -162,26 +138,8 @@ theorem perron_horizontal_segment_bound {q : ℕ} [NeZero q] (χ : DirichletChar
     _ ≤ (C * Real.log ((q : ℝ) * (T + 2)) ^ 2 + 1) * y ^ σ₀ / T ^ 2 :=
         div_le_div_of_nonneg_left (mul_nonneg hK (Real.rpow_nonneg hy0.le _)) (by positivity) hden
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
-
-Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+At height u the conductor logarithm is no greater than at T, so the lower real-part bound puts the point in the region. Its horizontal distance from each exceptional zero is at least δ. Since there is at most one, removing its correction costs at most 1/δ in the derivative bound. The factors in the denominator of the integrand have norms at least one half and ε, respectively, by the real-part and gap assumptions. Together these give the stated factor 2/ε.
 -/
 theorem perron_left_line_bound {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (c₁ C : ℝ)
     (hc₁ : 0 ≤ c₁) (hC : 0 ≤ C) (B : Finset ℝ) (hB : B.card ≤ 1)
@@ -253,14 +211,8 @@ theorem perron_left_line_bound {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ
     _ ≤ (C * Real.log ((q : ℝ) * (T + 2)) ^ 2 + 1 / δ) * y ^ σ₁ * (2 / ε) * (‖s‖ * ‖s - 1‖) :=
         mul_le_mul_of_nonneg_left hden (mul_nonneg (mul_nonneg hK hyp.le) (by positivity))
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Chain the equalities or inequalities of the calculation.
+/- English proof (authored)
+The numerator norm is the β power of y, at most the σ₁ power because y ≥ 1. The denominator norm is β(1 − β), at least ε/2 by β ≥ 1/2 and the assumed gap from one. Divide the two bounds.
 -/
 theorem real_zero_residue_term_bound (y β σ₁ ε : ℝ) (hy : 1 ≤ y) (hβ : 1 / 2 ≤ β) (hβσ : β ≤ σ₁) (hε : 0 < ε)
     (hgap : ε ≤ 1 - σ₁) :

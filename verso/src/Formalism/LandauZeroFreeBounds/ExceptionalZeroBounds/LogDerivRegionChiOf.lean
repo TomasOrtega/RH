@@ -7,28 +7,8 @@ noncomputable section
 
 namespace Formalism.ZeroFreeDirichlet
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
+/- English proof (authored)
+Write L for the conductor logarithm, which is at least 0.69. If the real part is at least 11/10, the right-half-plane bound for the negative logarithmic derivative is at most 10 + C₀. Each exceptional zero is below one, so its reciprocal contribution has norm at most ten, and there is at most one. In the other case the small region constant forces the real part to be at least 26/27. The point is nonzero because all zeros in the larger region are listed and the point avoids them. Apply the local zero expansion and then the exceptional-zero subtraction estimate. Since L ≥ 1/2, both the linear and constant terms are bounded by fixed multiples of L². The stated coefficient covers both cases.
 -/
 theorem log_deriv_in_zero_free_region : LogDerivRegionChiOf := by
   intro hLL hG hInv hR c₁ hc₁ hc₁'

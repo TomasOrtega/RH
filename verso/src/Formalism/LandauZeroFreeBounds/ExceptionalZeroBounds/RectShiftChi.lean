@@ -7,8 +7,8 @@ noncomputable section
 
 namespace Formalism.ZeroFreeDirichlet
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The nonprincipal L-function is holomorphic and so is its derivative. At a point where the L-function is nonzero their quotient is holomorphic. Taking its negative preserves differentiability.
 -/
 lemma neg_log_deriv_differentiableAt {q : ℕ} [NeZero q] {χ : DirichletCharacter ℂ q} (hχ : χ ≠ 1) {w : ℂ}
     (hL : DirichletCharacter.LFunction χ w ≠ 0) : DifferentiableAt ℂ (negLD χ) w := by
@@ -19,8 +19,8 @@ lemma neg_log_deriv_differentiableAt {q : ℕ} [NeZero q] {χ : DirichletCharact
     DirichletCharacter.LFunction χ s)) w
   exact (hd'.div (hLd w) hL).neg
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+At w the negative logarithmic derivative is holomorphic, and a positive base raised to a complex exponent is holomorphic in the exponent. The denominator is holomorphic and nonzero at w. The quotient is therefore holomorphic there.
 -/
 lemma perron_integrand_differentiableAt {q : ℕ} [NeZero q] {χ : DirichletCharacter ℂ q} (hχ : χ ≠ 1) {y : ℝ}
     (hy : 0 < y) {w : ℂ} (h0 : w ≠ 0) (h1 : w ≠ 1) (hL : DirichletCharacter.LFunction χ w ≠ 0) :
@@ -30,12 +30,8 @@ lemma perron_integrand_differentiableAt {q : ℕ} [NeZero q] {χ : DirichletChar
   refine ((neg_log_deriv_differentiableAt hχ hL).mul ?_).div (by fun_prop) (mul_ne_zero h0 (sub_ne_zero.2 h1))
   exact DifferentiableAt.const_cpow (f := fun w => w) differentiableAt_id (Or.inl hy')
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components.
-
-Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
+/- English proof (authored)
+Write the integrand as h(z)/(z − 1), with h the negative logarithmic derivative times the power of y divided by z. The L-function is nonzero at one, so h is holomorphic near one and h(1) is the stated coefficient. Subtracting that coefficient divided by z − 1 leaves the divided difference of h, which extends holomorphically at one.
 -/
 lemma perron_integrand_residue_at_one {q : ℕ} [NeZero q] {χ : DirichletCharacter ℂ q} (hχ : χ ≠ 1) {y : ℝ}
     (hy : 0 < y) :
@@ -65,20 +61,8 @@ lemma perron_integrand_residue_at_one {q : ℕ} [NeZero q] {χ : DirichletCharac
   simp only [hh, Fchi, cpow_one, div_one]
   field_simp [sub_ne_zero.2 hz1]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
-
-Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
+/- English proof (authored)
+Factor the L-function near the simple zero β as (z − β)g(z) with g holomorphic and nonzero at β. Its negative logarithmic derivative is minus the reciprocal of z − β minus g′/g. The kernel multiplying this expression is holomorphic at β because β is neither zero nor one. Subtracting the polar part leaves minus the divided difference of the kernel and minus the kernel times g′/g. Both extend holomorphically, and g stays nonzero on a neighborhood, so the L-function has no other zero there.
 -/
 lemma perron_integrand_residue_real_zero {q : ℕ} [NeZero q] {χ : DirichletCharacter ℂ q} (hχ : χ ≠ 1) {y : ℝ}
     (hy : 0 < y) {β : ℂ} (h0 : 0 < β.re) (h1 : β ≠ 1)
@@ -139,42 +123,8 @@ lemma perron_integrand_residue_real_zero {q : ℕ} [NeZero q] {χ : DirichletCha
   field_simp [sub_ne_zero.2 hzβ, hgz, hz0, sub_ne_zero.2 hz1, hβ0, sub_ne_zero.2 h1]
   ring
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
-
-Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
-
-Prove the first alternative. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Consider separately whether the proposition holds or fails.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
-
-Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
-
-Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The poles in the rectangle are at one and the listed simple real zeros, all strictly inside. The local formulas give each principal part. Subtract all these parts and fill in their removable values to get a function holomorphic on an open neighborhood of the rectangle. Apply the rectangular residue theorem to the resulting decomposition. The residue at one is the negative logarithmic derivative there times y, and each listed zero contributes minus its kernel value. Summing them gives the formula.
 -/
 theorem rectangle_contour_shift_character : RectShiftChi := by
   intro q _ χ hχ y hy σ₁ σ₀ T B hσ₁ hσ₁1 hσ₀ hT hB hZ hBz

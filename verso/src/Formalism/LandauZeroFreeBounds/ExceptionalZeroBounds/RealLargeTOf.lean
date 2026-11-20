@@ -6,10 +6,8 @@ noncomputable section
 
 namespace Formalism.ZeroFreeDirichlet
 
-/- English proof (translation)
-Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The nonprincipal L-function has no zeros with real part at least one. Hence the difference between the evaluation point and the zero has positive real part when σ > 1. The real part of its reciprocal divides that positive value by the positive squared norm.
 -/
 lemma re_one_div_sub_zero_pos {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (hχ : χ ≠ 1) (ρ : ℂ)
     (hρ : DirichletCharacter.LFunction χ ρ = 0) (σ t : ℝ) (hσ : 1 < σ) :
@@ -24,27 +22,23 @@ lemma re_one_div_sub_zero_pos {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ 
   rw [one_div, Complex.inv_re]
   exact div_pos (by rw [hwre]; linarith) (Complex.normSq_pos.mpr hw0)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The reciprocal of a complex number is its conjugate divided by its squared norm. Taking the real part of the conjugate and expanding the squared norm gives the formula.
 -/
 lemma re_one_div_ofReal_add_mul_I (x y : ℝ) :
     (1 / ((x : ℂ) + y * I)).re = x / (x ^ 2 + y ^ 2) := by
   rw [one_div, Complex.inv_re, Complex.normSq_add_mul_I]
   simp
 
-/- English proof (translation)
-Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+/- English proof (authored)
+The positive natural modulus is at least one, and |t| + 2 is at least two. Their product is at least two.
 -/
 lemma two_le_mul_abs_add_two (q : ℕ) [NeZero q] (t : ℝ) : 2 ≤ (q : ℝ) * (|t| + 2) := by
   have hq : (1 : ℝ) ≤ q := by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne q)
   nlinarith [abs_nonneg t]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
-
-Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+Since |2t| = 2|t|, the conductor at height 2t is at most q times the square of |t| + 2. With q ≥ 1 this is at most the square of the original conductor. Taking logarithms gives the factor of two.
 -/
 lemma log_mul_abs_two_mul_le (q : ℕ) [NeZero q] (t : ℝ) :
     Real.log ((q : ℝ) * (|2 * t| + 2)) ≤ 2 * Real.log ((q : ℝ) * (|t| + 2)) := by
@@ -62,50 +56,8 @@ lemma log_mul_abs_two_mul_le (q : ℕ) [NeZero q] (t : ℝ) :
     exact mul_le_mul_of_nonneg_right (by nlinarith) (by positivity)
   linarith
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
-
-Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
-
-Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+Choose a positive a small enough that the derivative error constants times a total at most one quarter, and take a ≤ δ/2. For a proposed zero at height at least δ/L, evaluate at σ = 1 + a/L. It belongs to the local zero set and contributes at least 8L/(9a) to the zero sum, since its real-part gap is at most 9a/(8L). All other contributions are nonnegative. Apply the three-four-one positivity inequality, in which the square character is principal. Its term at double height has a pole contribution at most L/(16a) by the height condition, as well as the logarithmic error. The principal term at height zero contributes at most L/a plus its constant. The zero contribution enters with factor four, and the chosen bounds make the resulting upper bound strictly negative, a contradiction.
 -/
 theorem realCharZeroFreeLargeHeightOfBounds : RealLargeTOf := by
   intro hLZ hLD hPos hTriv δ hδ

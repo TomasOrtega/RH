@@ -8,12 +8,8 @@ noncomputable section
 
 namespace Formalism.ZeroFreeDirichlet
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Use the polynomial consequences of the given equalities and inequalities.
+/- English proof (authored)
+The principal character logarithmic derivative differs from the zeta term by a correction bounded above in real part by log q. Apply the zeta real-part bound and use log(q(|t| + 2)) = log q + log(|t| + 2). Both logarithms are nonnegative, so enlarging the constant by one covers the combined bound.
 -/
 theorem trivial_log_deriv_bound : TrivLogDeriv := by
   obtain ⟨K, hK0, hK⟩ := zeta_neg_log_deriv_re_bound

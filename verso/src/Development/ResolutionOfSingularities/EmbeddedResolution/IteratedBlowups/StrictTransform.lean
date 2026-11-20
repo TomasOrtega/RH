@@ -23,8 +23,8 @@ def strictTransformOpens {X X₁ : Scheme.{u}} (π : X₁ ⟶ X) (Z D : X.IdealS
     ((D.comap π).subscheme).Opens :=
   (D.comap π).subschemeι ⁻¹ᵁ (Z.comap π).support.compl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The open in the pulled-back closed subscheme consists exactly of the points whose images lie outside the support of the pulled-back center ideal. This is the inverse image defining the open.
 -/
 theorem coe_strictTransformOpens {X X₁ : Scheme.{u}} (π : X₁ ⟶ X) (Z D : X.IdealSheafData) :
     ((strictTransformOpens π Z D : ((D.comap π).subscheme).Opens) :
@@ -35,52 +35,52 @@ def strictTransformι {X X₁ : Scheme.{u}} (π : X₁ ⟶ X) (Z D : X.IdealShea
     (strictTransformOpens π Z D).toScheme ⟶ X₁ :=
   Scheme.Opens.ι (strictTransformOpens π Z D) ≫ (D.comap π).subschemeι
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The strict-transform immersion first includes the open away from the exceptional support into the pulled-back subscheme and then includes that closed subscheme into the ambient scheme.
 -/
 theorem strictTransformι_eq_ι_comp_subschemeι {X X₁ : Scheme.{u}} (π : X₁ ⟶ X) (Z D : X.IdealSheafData) :
     strictTransformι π Z D =
       Scheme.Opens.ι (strictTransformOpens π Z D) ≫ (D.comap π).subschemeι := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+Both constructions are the same composite of the open inclusion away from the pulled-back center and the closed immersion of the pulled-back subscheme.
 -/
 theorem strictTransformImmersion_eq_strictTransformι {X X₁ : Scheme.{u}} (π : X₁ ⟶ X)
     (Z D : X.IdealSheafData) :
     Blowup.strictTransformImmersion π Z D = strictTransformι π Z D := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The strict-transform ideal is the ideal of the scheme-theoretic image of the open immersion into the pulled-back subscheme followed by its ambient inclusion. This is the kernel ideal sheaf of the displayed immersion.
 -/
 theorem strictTransform_eq_ker_strictTransformι {X X₁ : Scheme.{u}} (π : X₁ ⟶ X)
     (Z D : X.IdealSheafData) :
     Blowup.strictTransform π Z D = (strictTransformι π Z D).ker := rfl
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+For a quasi-compact morphism, the kernel ideal on an affine target open is the kernel of the homomorphism from its section ring to the sections over its inverse image.
 -/
 private theorem ker_ideal_eq_ker_app {W Z : Scheme.{u}} (g : W ⟶ Z) [QuasiCompact g]
     (U : Z.affineOpens) :
     (Scheme.Hom.ker g).ideal U = RingHom.ker (CommRingCat.Hom.hom (g.app U.1)) := by
   simp
 
-/- English proof (translation)
-By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
+/- English proof (authored)
+A point belongs to the range of the composite exactly when it is the image under the second map of some value of the first map. This gives equality with the image of the first range.
 -/
 private theorem range_comp_eq_image_range {A B C : Scheme.{u}} (f : A ⟶ B) (g : B ⟶ C) :
     Set.range ⇑(f ≫ g) = ⇑g '' Set.range ⇑f := by
   ext x
   simp [Set.range_comp]
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Precomposing with an isomorphism changes the induced maps on sections by isomorphisms on their targets. These preserve exactly which sections map to zero, so the kernel ideal sheaf is unchanged.
 -/
 theorem ker_eq_ker_of_isIso_comp {A B T : Scheme.{u}} (f : A ⟶ T) (g : B ⟶ T) (e : A ⟶ B)
     [IsIso e] (h : e ≫ g = f) : f.ker = g.ker := by
   subst h; exact Scheme.Hom.ker_comp_of_isIso e g
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+The image of the inverse image lies inside the original open. Conversely, any point of that open belongs to the larger open by hypothesis and so has a lift to the larger open whose image is the point itself.
 -/
 private theorem image_preimage_ι_of_le {X : Scheme.{u}} (U O : X.Opens) (h : O ≤ U) :
     Scheme.Opens.ι U ''ᵁ (Scheme.Opens.ι U ⁻¹ᵁ O) = O := by
@@ -90,20 +90,8 @@ private theorem image_preimage_ι_of_le {X : Scheme.{u}} (U O : X.Opens) (h : O 
   · intro x hx
     exact ⟨⟨x, h hx⟩, hx, rfl⟩
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
-
-Simplify by unfolding definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Take an affine open in the restricted target and identify it with its image in the ambient target. Its inverse images under the restricted map and the original map likewise identify via the open inclusion of the restricted source. The corresponding square of section maps commutes. The horizontal identifications of the section rings are isomorphisms, so an ambient section lies in the original kernel exactly when its restricted section lies in the new kernel. The affine charts therefore give equality of the two ideal sheaves.
 -/
 theorem ker_comap_ι_eq_ker_morphismRestrict {W T : Scheme.{u}} (m : W ⟶ T) [QuasiCompact m]
     (V : T.Opens) :
@@ -166,8 +154,8 @@ theorem ker_comap_ι_eq_ker_morphismRestrict {W T : Scheme.{u}} (m : W ⟶ T) [Q
     apply hinj
     rw [← hsqr x, hy, map_zero]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Restriction along the open inclusion gives the kernel of the restricted morphism. The new morphism is obtained from it by precomposition with an isomorphism, which preserves the kernel.
 -/
 theorem ker_comap_ι_eq_ker_of_isIso_comp {W T S : Scheme.{u}} (m : W ⟶ T) [QuasiCompact m]
     (V : T.Opens) (n : S ⟶ V.toScheme) (e : S ⟶ (m ⁻¹ᵁ V).toScheme) [IsIso e]
@@ -175,12 +163,8 @@ theorem ker_comap_ι_eq_ker_of_isIso_comp {W T S : Scheme.{u}} (m : W ⟶ T) [Qu
     (Scheme.Hom.ker m).comap (Scheme.Opens.ι V) = Scheme.Hom.ker n := by
   rw [ker_comap_ι_eq_ker_morphismRestrict m V, ker_eq_ker_of_isIso_comp n (m ∣_ V) e h]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
-
-Simplify using the standard rewrite rules. The claim follows by propositional logic.
+/- English proof (authored)
+The support of the kernel ideal of the quasi-compact immersion is the closure of its point image. That image is the support of the pulled-back subscheme ideal intersected with the complement of the pulled-back center support. Both pulled-back supports are inverse images. Taking their difference commutes with inverse image, giving the asserted closure.
 -/
 theorem support_strictTransform_eq_closure_preimage {X X₁ : Scheme.{u}} (π : X₁ ⟶ X) (Z D : X.IdealSheafData)
     [QuasiCompact (strictTransformι π Z D)] :
@@ -201,10 +185,8 @@ theorem support_strictTransform_eq_closure_preimage {X X₁ : Scheme.{u}} (π : 
   simp only [Set.mem_inter_iff, Set.mem_compl_iff, Set.mem_preimage, Set.mem_sdiff]
   tauto
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Replace each pulled-back support by the inverse image of its original support. The difference of the two inverse images is the inverse image of the difference, so the previous closure description gives the equality.
 -/
 theorem support_strictTransform_eq_closure_sdiff {X X₁ : Scheme.{u}} (π : X₁ ⟶ X) (Z D : X.IdealSheafData)
     [QuasiCompact (strictTransformι π Z D)] :
@@ -218,8 +200,8 @@ theorem support_strictTransform_eq_closure_sdiff {X X₁ : Scheme.{u}} (π : X�
     rw [Scheme.IdealSheafData.support_comap]; rfl
   rw [support_strictTransform_eq_closure_preimage π Z D, h1, h2, Set.preimage_sdiff]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
+/- English proof (authored)
+The pulled-back subscheme ideal is the kernel of its closed immersion. The strict-transform immersion is obtained by precomposing that immersion with an open inclusion. Every section vanishing on the whole subscheme still vanishes on its open part, yielding the containment.
 -/
 theorem comap_le_strictTransform {X X₁ : Scheme.{u}} (π : X₁ ⟶ X)
     (Z D : X.IdealSheafData) :
@@ -229,8 +211,8 @@ theorem comap_le_strictTransform {X X₁ : Scheme.{u}} (π : X₁ ⟶ X)
         (Scheme.IdealSheafData.ker_subschemeι _).symm
     _ ≤ _ := Scheme.Hom.le_ker_comp _ _
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Pullback of the unit ideal is the unit ideal. The total-transform ideal is contained in the strict-transform ideal, so the latter contains the unit ideal and equals it.
 -/
 theorem strictTransform_top {X' X : Scheme.{u}} (f : X' ⟶ X) (Z : X.IdealSheafData) :
     Blowup.strictTransform f Z (⊤ : X.IdealSheafData) = ⊤ := by
@@ -238,16 +220,16 @@ theorem strictTransform_top {X' X : Scheme.{u}} (f : X' ⟶ X) (Z : X.IdealSheaf
   rw [Scheme.IdealSheafData.comap_top] at h
   exact le_antisymm le_top h
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Pulling back the kernel of the composite along the open immersion recovers the kernel of the closed immersion. The latter is the ideal defining that closed subscheme.
 -/
 theorem comap_ker_subschemeι_comp {A B : Scheme.{u}} (K : A.IdealSheafData) (f : A ⟶ B)
     [IsOpenImmersion f] [QuasiCompact K.subschemeι] [QuasiCompact (K.subschemeι ≫ f)] :
     (K.subschemeι ≫ f).ker.comap f = K := by
   rw [Blowup.comap_ker_comp_of_isOpenImmersion, Scheme.IdealSheafData.ker_subschemeι]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Restricting the closed immersion to the open gives the base change of the closed immersion by the open inclusion. The pullback closed immersion is defined by the pulled-back ideal, so this ideal is its kernel.
 -/
 private theorem ker_morphismRestrict_subschemeι {T : Scheme.{u}} (K : T.IdealSheafData) (V : T.Opens) :
     (K.subschemeι ∣_ V).ker = K.comap (Scheme.Opens.ι V) := by
@@ -257,8 +239,8 @@ private theorem ker_morphismRestrict_subschemeι {T : Scheme.{u}} (K : T.IdealSh
   show (K.subschemeι ∣_ V).ker = (Limits.pullback.fst (Scheme.Opens.ι V) K.subschemeι).ker
   rw [← hfac, Scheme.Hom.ker_comp_of_isIso]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+The restriction of the given closed immersion and the closed immersion defined by the pulled-back ideal have the same kernel. The equal kernels give a factorization of the first immersion through the second and make the resulting morphism an isomorphism. Its factorization equation is the asserted compatibility.
 -/
 private theorem exists_isIso_subschemeι_preimage_comap {T : Scheme.{u}} (K : T.IdealSheafData) (V : T.Opens) :
     ∃ e : (K.subschemeι ⁻¹ᵁ V).toScheme ⟶ (K.comap (Scheme.Opens.ι V)).subscheme,
@@ -270,8 +252,8 @@ private theorem exists_isIso_subschemeι_preimage_comap {T : Scheme.{u}} (K : T.
   exact IsClosedImmersion.isIso_of_ker_eq (K.subschemeι ∣_ V)
     (K.comap (Scheme.Opens.ι V)).subschemeι _ (IsClosedImmersion.lift_fac _ _ _) hk
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The restriction of the closed immersion factors through an isomorphism to the closed subscheme of the restricted ideal. The equation for restricting a morphism identifies the two ambient maps after that isomorphism. Precomposition with the isomorphism leaves the kernel unchanged.
 -/
 theorem ker_ι_preimage_comp_subschemeι_eq_ker_comap {T : Scheme.{u}} (K : T.IdealSheafData) (V : T.Opens) :
     (Scheme.Opens.ι (K.subschemeι ⁻¹ᵁ V) ≫ K.subschemeι).ker =
@@ -281,16 +263,8 @@ theorem ker_ι_preimage_comp_subschemeι_eq_ker_comap {T : Scheme.{u}} (K : T.Id
   rw [← morphismRestrict_ι K.subschemeι V, ← hfac, Category.assoc]
   exact Scheme.Hom.ker_comp_of_isIso e _
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The blowup is an isomorphism over the complement of the center. Under this isomorphism the open used in the strict transform identifies with the restriction of the original closed subscheme to that complement. It is therefore reduced because the original subscheme is reduced. The kernel ideal of a morphism from a reduced scheme is radical, so the scheme-theoretic closure defining the strict transform is reduced.
 -/
 theorem isReduced_subscheme_strictTransform {X X₁ : Scheme.{u}} (π : X₁ ⟶ X)
     (Z D : X.IdealSheafData) (h : Blowup.IsBlowupAlongIdealSheaf π Z) [IsReduced D.subscheme]
@@ -333,10 +307,8 @@ theorem isReduced_subscheme_strictTransform {X X₁ : Scheme.{u}} (π : X₁ ⟶
   rw [strictTransform_eq_ker_strictTransformι]
   exact isReduced_subscheme_ker _
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The complement of the pulled-back center support is the inverse image of the center complement. Restrict the total-transform subscheme to this open. Its ideal is the pullback of the original ideal restricted to the center complement, by the commuting restriction square. The strict-transform kernel is consequently the kernel of this restricted closed immersion followed by the ambient open inclusion.
 -/
 theorem strictTransform_eq_ker_restrict {X X₁ : Scheme.{u}} (f : X₁ ⟶ X)
     (W D₁ : X.IdealSheafData) :
@@ -355,8 +327,8 @@ theorem strictTransform_eq_ker_restrict {X X₁ : Scheme.{u}} (f : X₁ ⟶ X)
       (D₁.comap f).subschemeι).ker = _
   rw [hUV, ker_ι_preimage_comp_subschemeι_eq_ker_comap, hcomap]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The restricted kernel formula computes the strict transform using only the ideal restricted to the complement of the center. The two restrictions agree by hypothesis, hence so do the two strict transforms.
 -/
 theorem strictTransform_congr_of_comap_ι_eq {X X₁ : Scheme.{u}} (f : X₁ ⟶ X)
     (W D₁ D₂ : X.IdealSheafData)
@@ -365,14 +337,8 @@ theorem strictTransform_congr_of_comap_ι_eq {X X₁ : Scheme.{u}} (f : X₁ ⟶
     Blowup.strictTransform f W D₁ = Blowup.strictTransform f W D₂ := by
   rw [strictTransform_eq_ker_restrict f W D₁, strictTransform_eq_ker_restrict f W D₂, h]
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The pullback of the center ideal along the new morphism is the pullback of the original Cartier ideal along the given isomorphism and thus is Cartier. For any morphism satisfying the blowup lifting condition, take its unique lift to the original blowup and compose with the inverse isomorphism. This gives a lift to the new source. Any other lift would compose with the forward isomorphism to give the original lift, proving uniqueness.
 -/
 theorem isBlowupAlongIdealSheaf_of_isIso_comp {X A B : Scheme.{u}} (f : A ⟶ X) (g : B ⟶ X) (e : A ⟶ B)
     [IsIso e] (hfac : e ≫ g = f) (I : X.IdealSheafData) (hg : Blowup.IsBlowupAlongIdealSheaf g I) :
@@ -399,10 +365,8 @@ theorem isBlowupAlongIdealSheaf_of_isIso_comp {X A B : Scheme.{u}} (f : A ⟶ X)
         exact hy'
       rw [← hye, Category.assoc, IsIso.hom_inv_id, Category.comp_id]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
-
-Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
+/- English proof (authored)
+Regard the given subset as a subset of the Noetherian subspace. Every subset of a Noetherian space is quasi-compact. Its image under the continuous inclusion is the original subset, hence is quasi-compact in the ambient space.
 -/
 private theorem isCompact_of_subset_noetherianSpace {α : Type u} [TopologicalSpace α] (s : Set α)
     [NoetherianSpace s] (t : Set α) (ht : t ⊆ s) : IsCompact t := by
@@ -416,14 +380,8 @@ private theorem isCompact_of_subset_noetherianSpace {α : Type u} [TopologicalSp
       exact ⟨⟨x, ht hx⟩, hx, rfl⟩
   rwa [h3] at h2
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Cover the larger quasi-compact set by finitely many affine opens. Each of those opens is Noetherian because the scheme is locally Noetherian, so its intersection with the smaller set is quasi-compact. The smaller set is the finite union of those intersections and is quasi-compact.
 -/
 private theorem isCompact_of_subset_isCompact {B : Scheme.{u}} [IsLocallyNoetherian B]
     {U : Set B} (hc : IsCompact U) {T : Set B} (hT : T ⊆ U) : IsCompact T := by
@@ -451,8 +409,8 @@ private theorem isCompact_of_subset_isCompact {B : Scheme.{u}} [IsLocallyNoether
   have : NoetherianSpace (W.1 : Set B) := noetherianSpace_of_isAffineOpen W.1 W.2
   exact isCompact_of_subset_noetherianSpace (W.1 : Set B) (T ∩ (W.1 : Set B)) Set.inter_subset_right
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+The image of the inverse image of a quasi-compact open is a subset of that open. In a locally Noetherian scheme it is therefore quasi-compact. An inducing map reflects quasi-compactness from the image to the inverse-image space, proving quasi-compactness of the morphism.
 -/
 private theorem quasiCompact_of_isInducing {A B : Scheme.{u}} [IsLocallyNoetherian B]
     (f : A ⟶ B) (hf : Topology.IsInducing ⇑f.base) : QuasiCompact f := by
@@ -460,10 +418,8 @@ private theorem quasiCompact_of_isInducing {A B : Scheme.{u}} [IsLocallyNoetheri
   refine hf.isCompact_iff.mpr ?_
   exact isCompact_of_subset_isCompact hU' (Set.image_preimage_subset _ _)
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The strict-transform immersion is a composite of an open immersion and a closed immersion. Both induce the subspace topology and so does their composite. Since the ambient target is locally Noetherian, the quasi-compactness criterion for an inducing morphism applies.
 -/
 theorem quasiCompact_strictTransformι_of_isLocallyNoetherian {X X₁ : Scheme.{u}} (π : X₁ ⟶ X)
     (Z D : X.IdealSheafData) [IsLocallyNoetherian X₁] :

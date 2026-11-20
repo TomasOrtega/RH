@@ -12,22 +12,20 @@ namespace FunctorialResolution.EmbeddedResolution
 def complComapSupport {X X₁ : Scheme.{u}} (π : X₁ ⟶ X) (Z : X.IdealSheafData) : X₁.Opens :=
   (Z.comap π).support.compl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The open under consideration is defined as the complement of the support of the center ideal pulled back along the given morphism.
 -/
 theorem complComapSupport_eq {X X₁ : Scheme.{u}} (π : X₁ ⟶ X) (Z : X.IdealSheafData) :
     complComapSupport π Z = (Z.comap π).support.compl := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+Passing to underlying sets, the points of this open are exactly the points outside the support of the pulled-back center ideal.
 -/
 theorem coe_complComapSupport {X X₁ : Scheme.{u}} (π : X₁ ⟶ X) (Z : X.IdealSheafData) :
     ((complComapSupport π Z : X₁.Opens) : Set X₁) = ((Z.comap π).support : Set X₁)ᶜ := rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The strict transform is the scheme-theoretic closure of the pulled-back closed subscheme restricted to the complement of the exceptional support. Equivalently, its ideal is the kernel of the restricted closed immersion followed by the open inclusion. Restricting that kernel back along the open inclusion gives the kernel of the restricted closed immersion itself. This is precisely the restriction of the pulled-back ideal.
 -/
 theorem strictTransform_comap_complComapSupport_ι {X X₁ : Scheme.{u}} [IsNoetherian X₁]
     (π : X₁ ⟶ X) (Z D : X.IdealSheafData) :
@@ -48,14 +46,8 @@ theorem strictTransform_comap_complComapSupport_ι {X X₁ : Scheme.{u}} [IsNoet
     ((D.comap π).comap (Scheme.Opens.ι (complComapSupport π Z)))
     (Scheme.Opens.ι (complComapSupport π Z))
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The pulled-back center ideal on the new source is the unit ideal, so its support is empty. Since support is preserved by inverse image, the morphism factors through the complement of the center support on the blowup. On that open the strict-transform ideal agrees with the pulled-back ideal. Pull the equality back along the factorization.
 -/
 theorem strictTransform_comap_of_comap_center_eq_top {X X₁ B : Scheme.{u}} [IsNoetherian X₁]
     (π : X₁ ⟶ X) (Z D : X.IdealSheafData) (g : B ⟶ X₁)

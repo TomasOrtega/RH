@@ -11,8 +11,8 @@ open CategoryTheory AlgebraicGeometry CategoryTheory.Limits Opposite
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The restriction of the composite to the target open factors as the restriction of the first morphism to the inverse image open followed by the restriction of the second morphism. Both factors are isomorphisms, so their composite is an isomorphism.
 -/
 private theorem isIso_restrict_comp {X Y Z : Scheme.{u}} (f : X ⟶ Y) (g : Y ⟶ Z) (V : Z.Opens)
     (h1 : IsIso (f ∣_ (g ⁻¹ᵁ V))) (h2 : IsIso (g ∣_ V)) : IsIso ((f ≫ g) ∣_ V) := by
@@ -22,16 +22,8 @@ private theorem isIso_restrict_comp {X Y Z : Scheme.{u}} (f : X ⟶ Y) (g : Y �
   rw [morphismRestrict_comp]
   exact h
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the stage. Initially projection to the base is the given isomorphism, whose restriction remains an isomorphism. At a successor, the center misses the inverse image of the chosen open because all center points project into the prescribed disjoint set. Hence the restricted center ideal is the unit ideal and the restricted blowup is an isomorphism. Compose this with the preceding restricted projection, which is an isomorphism by induction.
 -/
 private theorem isIso_restrict_projectionToBase_of_centersLieOver {X : Scheme.{u}} (s : SequenceOfBlowups X)
     (S : Set X) (U : X.Opens) (hU : Disjoint (U : Set X) S) (hs : s.CentersLieOver S)
@@ -73,8 +65,8 @@ private theorem isIso_restrict_projectionToBase_of_centersLieOver {X : Scheme.{u
     rw [hcomp] at key
     exact key
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The last structural map is the projection at the final stage. Apply the stagewise isomorphism result there to the given disjoint open.
 -/
 theorem isIso_restrict_lastStructMap_of_centersLieOver {X : Scheme.{u}} (s : SequenceOfBlowups X)
     (S : Set X) (U : X.Opens) (hU : Disjoint (U : Set X) S) (hs : s.CentersLieOver S) :
@@ -82,8 +74,8 @@ theorem isIso_restrict_lastStructMap_of_centersLieOver {X : Scheme.{u}} (s : Seq
   rw [SequenceOfBlowups.lastStructMap_eq_projectionToBase]
   exact isIso_restrict_projectionToBase_of_centersLieOver s S U hU hs s.length le_rfl
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+The smooth locus is disjoint from its complement. All centers lie over that complement by hypothesis, so the last structural map restricts to an isomorphism over the smooth locus.
 -/
 theorem isIso_restrict_lastStructMap_smoothLocus {k : Type u} [Field k] {X : Scheme.{u}}
     (f : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFinitePresentation f] (s : SequenceOfBlowups X)

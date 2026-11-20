@@ -13,21 +13,21 @@ namespace FunctorialResolution.EmbeddedResolution
 def imageIdealSheaf {S X : Scheme.{u}} (σ : S ⟶ X) (I : S.IdealSheafData) : X.IdealSheafData :=
   (I.subschemeι ≫ σ).ker
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+Both ideals are defined as the kernel ideal sheaf of the closed subscheme inclusion followed by the morphism to the target.
 -/
 theorem map_eq_imageIdealSheaf {S X : Scheme.{u}} (f : S ⟶ X) (I : S.IdealSheafData) :
     I.map f = imageIdealSheaf f I := rfl
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The image ideal is the direct image operation on ideal sheaves that takes the scheme-theoretic image of the corresponding closed subscheme. This operation is functorial in the morphism. Applying it to the composite gives the image of the intermediate image.
 -/
 theorem imageIdealSheaf_comp {W A B : Scheme.{u}} (g : W ⟶ A) (w : A ⟶ B) (I : W.IdealSheafData) :
     imageIdealSheaf (g ≫ w) I = imageIdealSheaf w (imageIdealSheaf g I) := by
   simp only [← map_eq_imageIdealSheaf, Scheme.IdealSheafData.map_comp]
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+By definition the image ideal is the kernel of the map of schemes from the given closed subscheme to the target.
 -/
 theorem imageIdealSheaf_eq_ker {S X : Scheme.{u}} (σ : S ⟶ X) (I : S.IdealSheafData) :
     imageIdealSheaf σ I = (I.subschemeι ≫ σ).ker := rfl
@@ -41,8 +41,8 @@ def SequenceOfBlowups.Isomorphic {X : Scheme.{u}} (B B' : SequenceOfBlowups X) :
       (∀ i : ℕ, ∀ hi : i < B.length,
         (B'.center i).comap (e i hi.le).hom = B.center i)
 
-/- English proof (translation)
-Apply the first step, then apply the next step to every resulting obligation.
+/- English proof (authored)
+The lengths are equal. Choose the identity isomorphism at every stage. These preserve the initial structural map, commute with all successor transitions, and pull every center back to itself.
 -/
 theorem SequenceOfBlowups.isomorphic_refl {X : Scheme.{u}} (B : SequenceOfBlowups X) : B.Isomorphic B := by
   refine ⟨rfl, fun i _ => Iso.refl _, ?_, ?_, ?_⟩ <;> simp
@@ -76,8 +76,8 @@ private def schemeAtHomOfEqZero {X' X : Scheme.{u}} (g : X' ⟶ X) (t : Sequence
   eqToHom (congrArg t.schemeAt hi0) ≫ t.isoZero.hom ≫ g ≫ s.isoZero.inv ≫
     eqToHom (congrArg s.schemeAt hi0).symm
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The sequence lengths agree because both are zero. The only stage to compare is stage zero. Use its isomorphism to the source base, apply the given base morphism, and then use the inverse initial isomorphism on the target side. The required equality at stage zero follows by cancellation. There are no successive squares or centers to compare.
 -/
 theorem IsStrictPullbackBlowupSeq.of_length_zero {X' X : Scheme.{u}} (g : X' ⟶ X) (t : SequenceOfBlowups X')
     (s : SequenceOfBlowups X) (ht : t.length = 0) (hs : s.length = 0) :
@@ -91,8 +91,8 @@ theorem IsStrictPullbackBlowupSeq.of_length_zero {X' X : Scheme.{u}} (g : X' ⟶
   · intro i hi
     exact absurd (lt_of_lt_of_eq hi ht) (Nat.not_lt_zero i)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Equal lengths are the first condition in the definition of a strict pullback of blowup sequences.
 -/
 theorem IsStrictPullbackBlowupSeq.length_eq {X' X : Scheme.{u}} {φ : X' ⟶ X}
     {B' : SequenceOfBlowups X'} {B : SequenceOfBlowups X} (h : IsStrictPullbackBlowupSeq φ B' B) :

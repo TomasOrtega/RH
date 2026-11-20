@@ -16,10 +16,8 @@ namespace SequenceOfBlowups
 
 variable {X Y : Scheme.{u}}
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
-
-Fix the arbitrary inputs or assume the hypotheses. Prove the second alternative. A detailed English derivation is pending.
+/- English proof (authored)
+The first admissible index at or above the starting index in the second sequence is also admissible in the first. If it is within the common length, its center is nontrivial in both sequences by hypothesis. If it is at or beyond the length, it meets the stopping condition in both. Minimality in the first sequence gives the inequality.
 -/
 private theorem nextNontrivialIndex_le_of_center_eq_top_iff (s : SequenceOfBlowups X) (t : SequenceOfBlowups Y)
     (hlen : s.length = t.length)
@@ -35,8 +33,8 @@ private theorem nextNontrivialIndex_le_of_center_eq_top_iff (s : SequenceOfBlowu
     · exact absurd hd (not_le.mpr hlt)
   · exact Or.inr h
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Apply the comparison inequality in both directions. Reversing the roles of the sequences preserves equal length and exchanges the two sides of the equivalence for unit centers. The two inequalities give equality.
 -/
 theorem nextNontrivialIndex_congr_of_center_eq_top_iff (s : SequenceOfBlowups X) (t : SequenceOfBlowups Y)
     (hlen : s.length = t.length)
@@ -48,10 +46,8 @@ theorem nextNontrivialIndex_congr_of_center_eq_top_iff (s : SequenceOfBlowups X)
   have hi' : i < s.length := by rw [hlen]; exact hi
   exact (htriv i hi').symm
 
-/- English proof (translation)
-Apply function extensionality and compare values at an arbitrary argument. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The first retained indices agree because both searches start at zero. If the current retained indices agree, the next searches start at the same successor index and again have equal results. Induction gives pointwise equality of the index functions.
 -/
 theorem nontrivialIndex_congr_of_center_eq_top_iff (s : SequenceOfBlowups X) (t : SequenceOfBlowups Y)
     (hlen : s.length = t.length)
@@ -66,8 +62,8 @@ theorem nontrivialIndex_congr_of_center_eq_top_iff (s : SequenceOfBlowups X) (t 
       rw [nontrivialIndex_succ, nontrivialIndex_succ, ih]
       exact nextNontrivialIndex_congr_of_center_eq_top_iff s t hlen htriv _
 
-/- English proof (translation)
-Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+If the first shortened length exceeded the second, its retained index at the second shortened length would still be below the common original length. At the same position the second retained index is at least the original length, by the stopping criterion. This contradicts equality of their retained index functions.
 -/
 private theorem lengthWithoutIsoBlowups_le_of_nontrivialIndex_eq (s : SequenceOfBlowups X) (t : SequenceOfBlowups Y)
     (hlen : s.length = t.length) (hret : s.nontrivialIndex = t.nontrivialIndex) :
@@ -79,8 +75,8 @@ private theorem lengthWithoutIsoBlowups_le_of_nontrivialIndex_eq (s : SequenceOf
   rw [← hret, ← hlen] at h2
   exact absurd h2 (not_le.mpr h1)
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The two retained index functions agree because the sequences have the same length and the same trivial center positions. Shortened length comparison in both directions then gives equality.
 -/
 theorem lengthWithoutIsoBlowups_congr_of_center_eq_top_iff (s : SequenceOfBlowups X) (t : SequenceOfBlowups Y)
     (hlen : s.length = t.length)
@@ -92,15 +88,15 @@ theorem lengthWithoutIsoBlowups_congr_of_center_eq_top_iff (s : SequenceOfBlowup
 
 end SequenceOfBlowups
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Replace the source open by the forward inverse image of the target open. Taking the inverse isomorphism’s inverse image amounts to taking the inverse image along the composite of the inverse and forward maps. That composite is the identity.
 -/
 private theorem preimage_inv_eq {P Q : Scheme.{u}} (m : P ⟶ Q) [IsIso m] {V : Q.Opens}
     {U : P.Opens} (h : m ⁻¹ᵁ V = U) : (inv m) ⁻¹ᵁ U = V := by
   rw [← h, ← Scheme.Hom.comp_preimage, IsIso.inv_hom_id, Scheme.Hom.id_preimage]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Pullback of the ideal along the composite is successive pullback along the two maps. Base-changing the closed subscheme along the isomorphism identifies its pulled-back subscheme with the original one and gives an isomorphism commuting with the closed inclusions.
 -/
 private theorem exists_isIso_subscheme_comap_of_isIso {A B C : Scheme.{u}} (e : C ⟶ B) [IsIso e] (π : B ⟶ A)
     (D : A.IdealSheafData) :
@@ -109,16 +105,8 @@ private theorem exists_isIso_subscheme_comap_of_isIso {A B C : Scheme.{u}} (e : 
   rw [Scheme.IdealSheafData.comap_comp]
   exact Scheme.IdealSheafData.exists_iso_subscheme_comap_of_isIso e (D.comap π)
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The ambient isomorphism induces an isomorphism of the two pulled-back closed subschemes. The support of the pulled-back center is the inverse image of the original center support, and taking complements commutes with inverse image. Because the subscheme isomorphism commutes with the inclusions, it identifies the two opens used for strict transform. Restrict the isomorphism and its inverse to those opens. They are still inverse after composing with the open inclusions, and the restricted forward map commutes with the strict-transform immersions.
 -/
 private theorem exists_isIso_strictTransformOpens_of_isIso {A B C : Scheme.{u}} (e : C ⟶ B) [IsIso e] (π : B ⟶ A)
     (Z D : A.IdealSheafData) :
@@ -167,14 +155,8 @@ private theorem exists_isIso_strictTransformOpens_of_isIso {A B C : Scheme.{u}} 
   · rw [strictTransformι_eq_ι_comp_subschemeι, strictTransformι_eq_ι_comp_subschemeι, ← Category.assoc,
       Scheme.Hom.resLE_comp_ι, Category.assoc, hμfac, ← Category.assoc]
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The unit center ideal has empty support, so its pullback also has empty support. The open used to define the strict transform is therefore the entire pulled-back subscheme, and its open inclusion is an isomorphism. Taking the kernel of the composite immersion gives the kernel of the pulled-back closed immersion itself, which is the pulled-back ideal.
 -/
 theorem strictTransform_top_eq_comap {A B : Scheme.{u}} (π : B ⟶ A) (D : A.IdealSheafData)
     [QuasiCompact (strictTransformι π ⊤ D)] :
@@ -207,10 +189,8 @@ theorem strictTransform_top_eq_comap {A B : Scheme.{u}} (π : B ⟶ A) (D : A.Id
   rw [strictTransform_eq_ker_strictTransformι, strictTransformι_eq_ι_comp_subschemeι,
     Scheme.Hom.ker_comp_of_isIso, Scheme.IdealSheafData.ker_subschemeι]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The isomorphism between the two strict-transform opens commutes with their maps into the original source. Thus precomposing the original strict-transform immersion with that isomorphism leaves its kernel unchanged and gives the same kernel as the new immersion followed by the ambient isomorphism. Pulling this kernel back along the ambient isomorphism gives the kernel of the new immersion. These kernels are the strict-transform ideals.
 -/
 theorem strictTransform_isIso_comp {A B C : Scheme.{u}} [IsLocallyNoetherian B]
     [IsLocallyNoetherian C] (e : C ⟶ B) [IsIso e] (π : B ⟶ A) (Z D : A.IdealSheafData)

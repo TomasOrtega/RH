@@ -15,8 +15,8 @@ open CategoryTheory AlgebraicGeometry CategoryTheory.Limits
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
+/- English proof (authored)
+A morphism locally of finite type over a Noetherian scheme has a locally Noetherian source. Its quasi-compactness makes the source quasi-compact because the target is quasi-compact. These two properties make the source Noetherian.
 -/
 theorem isNoetherian_of_locallyOfFiniteType {X Y : Scheme.{u}} (f : X ⟶ Y)
     [AlgebraicGeometry.IsNoetherian Y] [AlgebraicGeometry.LocallyOfFiniteType f]
@@ -27,8 +27,8 @@ theorem isNoetherian_of_locallyOfFiniteType {X Y : Scheme.{u}} (f : X ⟶ Y)
   have : CompactSpace ↥X := AlgebraicGeometry.QuasiCompact.compactSpace_of_compactSpace f
   constructor
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The inverse isomorphism is quasi-compact and locally of finite type. Apply the Noetherianity result to it with the given Noetherian scheme as target.
 -/
 theorem isNoetherian_of_iso {X Y : Scheme.{u}} (e : X ≅ Y)
     [AlgebraicGeometry.IsNoetherian X] :
@@ -37,8 +37,8 @@ theorem isNoetherian_of_iso {X Y : Scheme.{u}} (e : X ≅ Y)
   have : AlgebraicGeometry.QuasiCompact e.inv := inferInstance
   exact isNoetherian_of_locallyOfFiniteType e.inv
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+A blowup over the Noetherian target is proper, hence quasi-compact and locally of finite type. These two properties over a Noetherian base give a Noetherian source.
 -/
 theorem isNoetherian_of_isBlowupAlongIdealSheaf {X X' : Scheme.{u}} [AlgebraicGeometry.IsNoetherian X]
     {π : X' ⟶ X} {I : X.IdealSheafData} (h : Blowup.IsBlowupAlongIdealSheaf π I) :
@@ -57,10 +57,8 @@ instance instIsNoetherianAffineSpaceIdx (k : Type u) [Field k] (n : Type u) [Fin
   exact isNoetherian_of_iso
     (AlgebraicGeometry.AffineSpace.SpecIso n (CommRingCat.of k)).symm
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the stage within the length of the sequence. Stage zero is isomorphic to the Noetherian base. At each successor the transition is a blowup of the previous Noetherian stage, so its source is Noetherian as well.
 -/
 theorem isNoetherian_schemeAt {X : Scheme.{u}} (B : SequenceOfBlowups X)
     [AlgebraicGeometry.IsNoetherian X] (i : ℕ) (hi : i ≤ B.length) :
@@ -80,10 +78,8 @@ instance SequenceOfBlowups.instIsNoetherianTop {X : Scheme.{u}} (B : SequenceOfB
     [AlgebraicGeometry.IsNoetherian X] : AlgebraicGeometry.IsNoetherian B.lastObj :=
   isNoetherian_schemeAt B B.length le_rfl
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The base ambient scheme is finite-dimensional affine space over a field. Its polynomial coordinate ring is Noetherian, hence so is its spectrum. The initial ambient stage is isomorphic to that scheme. Each successor is a blowup of a Noetherian previous stage and is Noetherian by induction.
 -/
 theorem isNoetherian_ambientLevel {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}}
     [AlgebraicGeometry.IsAffine Y] {pY : Y ⟶ Spec (CommRingCat.of k)}
@@ -103,8 +99,8 @@ theorem isNoetherian_ambientLevel {k : Type u} [Field k] [CharZero k] {Y : Schem
     exact @isNoetherian_of_isBlowupAlongIdealSheaf (S.ambientLevel n) (S.ambientLevel (n + 1)) (ih (le_of_lt hn)) _ _
       (S.ambientBlowups.isBlowupAlongIdealSheaf_blowupMorphism n hn)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Construct the affine-space principalization data using the specified embedding, empty boundary, and smooth ambient structure. The ambient-stage Noetherianity result applies to these data at every stage within the sequence.
 -/
 theorem embeddedPrincipalizationAmbientIsNoetherian (A : PrincipalizationAlgorithm.{u}) (hemb : AffineEmbedsIntoAffineSpace.{u})
     (hsnc : NilIsStrictNormalCrossingsOnAffineSpace.{u}) (hsm : AffineSpaceIsSmooth.{u}) :

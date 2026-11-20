@@ -13,15 +13,15 @@ open CategoryTheory AlgebraicGeometry CategoryTheory.Limits
 
 namespace FunctorialResolution.Blowup
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Two successive extensions of an ideal equal extension along the composite of the ring maps. The forward isomorphism followed by its inverse is the identity, which fixes the ideal.
 -/
 private theorem ideal_map_inv_map_hom {A B : CommRingCat.{u}} (e : A ≅ B) (K : Ideal A) :
     Ideal.map e.inv.hom (Ideal.map e.hom.hom K) = K := by
   rw [Ideal.map_map, ← CommRingCat.hom_comp, e.hom_inv_id, CommRingCat.hom_id, Ideal.map_id]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The given pullback condition is the hypothesis of the blowup universal property. Its unique lift in particular gives a lift.
 -/
 theorem IsBlowupAlongIdealSheaf.exists_lift {X X' : Scheme.{u}} {π : X' ⟶ X} {I : X.IdealSheafData}
     (h : IsBlowupAlongIdealSheaf π I) {W : Scheme.{u}} (g : W ⟶ X)
@@ -36,8 +36,8 @@ noncomputable def IsBlowupAlongIdealSheaf.lift {X X' : Scheme.{u}} {π : X' ⟶ 
     (hg : IsLocallyGeneratedByNonZeroDivisor (I.comap g)) : W ⟶ X' :=
   (h.exists_lift g hg).choose
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The chosen lift is a witness of the existence theorem. Its defining composite with the blowup projection equals the original map.
 -/
 theorem IsBlowupAlongIdealSheaf.lift_comp {X X' : Scheme.{u}} {π : X' ⟶ X} {I : X.IdealSheafData}
     (h : IsBlowupAlongIdealSheaf π I) {W : Scheme.{u}} (g : W ⟶ X)
@@ -47,8 +47,8 @@ theorem IsBlowupAlongIdealSheaf.lift_comp {X X' : Scheme.{u}} {π : X' ⟶ X} {I
 
 end
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Both maps are lifts of the same morphism under the same pullback condition. The blowup universal property gives uniqueness.
 -/
 theorem IsBlowupAlongIdealSheaf.hom_ext {X X' : Scheme.{u}} {π : X' ⟶ X} {I : X.IdealSheafData}
     (h : IsBlowupAlongIdealSheaf π I) {W : Scheme.{u}} {g : W ⟶ X}
@@ -56,12 +56,8 @@ theorem IsBlowupAlongIdealSheaf.hom_ext {X X' : Scheme.{u}} {π : X' ⟶ X} {I :
     (ha : a ≫ π = g) (hb : b ≫ π = g) : a = b :=
   h.hom_ext_of_comp_eq hg ha hb
 
-/- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Transport the center by pulling it back along the inverse target isomorphism. Its pullback along the new projection equals the old pulled-back center because the two target isomorphisms cancel. A map to the new target is eligible exactly when its composite with the inverse is eligible for the old blowup. Lift that composite. The same map lifts to the new projection, and any such lift also gives an old lift after composing its equation with the inverse. This gives uniqueness.
 -/
 theorem IsBlowupAlongIdealSheaf.comp_iso_hom {X X' Y : Scheme.{u}} {π : X' ⟶ X} {I : X.IdealSheafData}
     (h : IsBlowupAlongIdealSheaf π I) (e : X ≅ Y) :
@@ -82,14 +78,8 @@ theorem IsBlowupAlongIdealSheaf.comp_iso_hom {X X' Y : Scheme.{u}} {π : X' ⟶ 
       rw [← hb']
       simp
 
-/- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The center on the new base pulls back to the restriction of the old pulled-back center by commutativity. The first projection is an open immersion, so local generation by a nonzerodivisor persists. Given an eligible map to the new base, lift its composite to the original base. That lift and the given map have the same image in the original base, so together they determine a map into the fiber product. Its second projection is the given map. Any other lift has that same second projection, and its first projection must be the old lift by uniqueness. The two projections determine the map.
 -/
 theorem IsBlowupAlongIdealSheaf.pullback_snd_of_isOpenImmersion {X X' U : Scheme.{u}} {π : X' ⟶ X} {I : X.IdealSheafData}
     (h : IsBlowupAlongIdealSheaf π I) (f : U ⟶ X) [IsOpenImmersion f] :
@@ -114,10 +104,8 @@ theorem IsBlowupAlongIdealSheaf.pullback_snd_of_isOpenImmersion {X X' U : Scheme
       rw [Category.assoc, pullback.condition, ← Category.assoc, hb']
     · rw [pullback.lift_snd, hb']
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Use the affine spectrum's global section isomorphism to express the given ideal sheaf as the sheaf of an ideal of the original ring. This identification follows by comparing their global section ideals. The affine Rees blowup projection has the blowup property for that ring ideal's sheaf.
 -/
 private theorem exists_isBlowupAlongIdealSheaf_spec_of_commRing (R : Type u) [CommRing R]
     (I : (Spec (CommRingCat.of R)).IdealSheafData) :
@@ -131,15 +119,15 @@ private theorem exists_isBlowupAlongIdealSheaf_spec_of_commRing (R : Type u) [Co
   rw [← hJ]
   exact isBlowupAlongIdealSheaf_affineBlowup_toSpec J
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Apply the affine blowup existence theorem to the commutative ring underlying the stated spectrum.
 -/
 theorem exists_isBlowupAlongIdealSheaf_spec (R : CommRingCat.{u}) (I : (Spec R).IdealSheafData) :
     ∃ (Y : Scheme.{u}) (π : Y ⟶ Spec R), IsBlowupAlongIdealSheaf π I :=
   exists_isBlowupAlongIdealSheaf_spec_of_commRing (R : Type u) I
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+An affine scheme is isomorphic to the spectrum of its global section ring. Transport the ideal to that spectrum and form its blowup there. Transport the projection back along the inverse isomorphism. The center transports back to the original ideal, so this is the required blowup.
 -/
 theorem exists_isBlowupAlongIdealSheaf_of_isAffine (X : Scheme.{u}) [IsAffine X] (I : X.IdealSheafData) :
     ∃ (Y : Scheme.{u}) (π : Y ⟶ X), IsBlowupAlongIdealSheaf π I := by
@@ -150,22 +138,22 @@ theorem exists_isBlowupAlongIdealSheaf_of_isAffine (X : Scheme.{u}) [IsAffine X]
   rwa [← Scheme.IdealSheafData.comap_comp, Iso.hom_inv_id,
     Scheme.IdealSheafData.comap_id] at h2
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The map on points of a composite applies the first point map and then the second. Evaluating at the given point gives the identity.
 -/
 private theorem comp_base_apply {A B C : Scheme.{u}} (u : A ⟶ B) (z : B ⟶ C) (p : A) :
     (u ≫ z).base p = z.base (u.base p) := by simp
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+The inclusion of the open subscheme sends a point to its underlying ambient point in that open.
 -/
 private theorem ι_base_mem {X : Scheme.{u}} (U : X.Opens) (v : U.toScheme) :
     U.ι.base v ∈ U := by
   have h : U.ι.base v ∈ Set.range ⇑U.ι.base := Set.mem_range_self v
   rwa [Scheme.Opens.range_ι] at h
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The pullback along the composite is obtained by pulling back along the second map and then along the open immersion. The first pulled-back ideal has the stated local generators, and open pullback preserves them.
 -/
 private theorem isLocallyGeneratedByNonZeroDivisor_comap_openImmersion_comp {X P Z : Scheme.{u}} (I : X.IdealSheafData)
     (u : P ⟶ Z) [IsOpenImmersion u] (z : Z ⟶ X) (hz : IsLocallyGeneratedByNonZeroDivisor (I.comap z)) :
@@ -173,16 +161,16 @@ private theorem isLocallyGeneratedByNonZeroDivisor_comap_openImmersion_comp {X P
   rw [Scheme.IdealSheafData.comap_comp]
   exact hz.comap_of_isOpenImmersion u
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Every point is its own preimage under the identity, so the range is the whole space.
 -/
 private theorem range_id_base (Z : Scheme.{u}) :
     Set.range ⇑(𝟙 Z : Z ⟶ Z).base = Set.univ := by
   refine Set.eq_univ_of_forall (fun v => ⟨v, ?_⟩)
   simp
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Cancel the first monomorphism from the assumed identity to equate the first projections. Commutativity of the pullback gives equality of the second projections after composition with the second monomorphism. Cancel it too. The universal property then identifies the two maps.
 -/
 private theorem pullback_hom_ext_of_mono {Z A B : Scheme.{u}} (a : A ⟶ Z) (b : B ⟶ Z)
     [Mono a] [Mono b] {P : Scheme.{u}} {u v : P ⟶ pullback a b}
@@ -201,8 +189,8 @@ private def IsBlowupAlongIdealSheafOver {X : Scheme.{u}} (I : X.IdealSheafData) 
     ∀ {Y : Scheme.{u}} (y : Y ⟶ X), IsLocallyGeneratedByNonZeroDivisor (I.comap y) →
       Set.range ⇑y.base ⊆ (S : Set X) → ∃! a : Y ⟶ Z, a ≫ z = y
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The blowup over the open gives a unique lift of a map with this image and ideal condition. Both proposed maps satisfy its lifting equation, so they coincide.
 -/
 private theorem blowupOver_hom_ext {X Z : Scheme.{u}} {I : X.IdealSheafData} {S : X.Opens}
     {z : Z ⟶ X} (hz : IsBlowupAlongIdealSheafOver I S z) {Y : Scheme.{u}} (y : Y ⟶ X)
@@ -216,8 +204,8 @@ private noncomputable def liftOfIsBlowupAlongIdealSheafOver {X Z : Scheme.{u}} {
     (hy : IsLocallyGeneratedByNonZeroDivisor (I.comap y)) (hr : Set.range ⇑y.base ⊆ (S : Set X)) : Y ⟶ Z :=
   (hz.2.2 y hy hr).choose
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The chosen lift from the universal property over the open is chosen with this composite identity. Its projection is the original map.
 -/
 private theorem blowupOverLift_comp {X Z : Scheme.{u}} {I : X.IdealSheafData} {S : X.Opens}
     {z : Z ⟶ X} (hz : IsBlowupAlongIdealSheafOver I S z) {Y : Scheme.{u}} (y : Y ⟶ X)
@@ -225,16 +213,8 @@ private theorem blowupOverLift_comp {X Z : Scheme.{u}} {I : X.IdealSheafData} {S
     liftOfIsBlowupAlongIdealSheafOver hz y hy hr ≫ z = y :=
   (hz.2.2 y hy hr).choose_spec.1
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The composite to the ambient scheme lands in the given open. Its pulled-back center is the center from the restricted blowup, which has the required local generators. Any eligible morphism into the ambient scheme with image in the open uniquely factors through the open inclusion. The ideal condition is the same for this factorization by functoriality of pullback, so lift it to the blowup of the restricted ideal. The projection of the lift is the original map. Any competitor has the same projection into the open by cancellation of the open inclusion, so uniqueness there gives uniqueness here.
 -/
 private theorem blowupOver_of_isBlowupAlongIdealSheaf {X Z : Scheme.{u}} {I : X.IdealSheafData} {W : X.Opens}
     {p : Z ⟶ W.toScheme} (h : IsBlowupAlongIdealSheaf p (I.comap W.ι)) : IsBlowupAlongIdealSheafOver I W (p ≫ W.ι) := by
@@ -262,14 +242,8 @@ private theorem blowupOver_of_isBlowupAlongIdealSheaf {X Z : Scheme.{u}} {I : X.
         rw [Category.assoc, hbb, hfac]
       exact (cancel_mono W.ι).mp hbb2
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Restrict the source to the inverse image of the second open. Its image lies in both opens, and the local nonzerodivisor condition for the pulled-back ideal persists under restriction. An eligible map with image in the intersection already lifts to the old blowup over the first open. Its lift lies in the inverse image of the second open, so it factors through that restriction and has the required projection. Any competitor yields the same old lift and hence the same factorization.
 -/
 private theorem blowupOver_inf_preimage {X Z : Scheme.{u}} {I : X.IdealSheafData} {S : X.Opens}
     {z : Z ⟶ X} (hz : IsBlowupAlongIdealSheafOver I S z) (T : X.Opens) :
@@ -301,8 +275,8 @@ private theorem blowupOver_inf_preimage {X Z : Scheme.{u}} {I : X.IdealSheafData
         IsOpenImmersion.lift_fac _ _ _
       exact (cancel_mono (z ⁻¹ᵁ T).ι).mp (by rw [h1, h2])
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The chosen open is affine as a scheme. Apply affine blowup existence to the restricted ideal on that open.
 -/
 private theorem exists_isBlowupAlongIdealSheaf_affineOpen {X : Scheme.{u}} (I : X.IdealSheafData) (U : X.affineOpens) :
     ∃ (Z : Scheme.{u}) (p : Z ⟶ (U : X.Opens).toScheme),
@@ -318,8 +292,8 @@ private noncomputable def localBlowupProjection {X : Scheme.{u}} (I : X.IdealShe
     localBlowup I U ⟶ (U : X.Opens).toScheme :=
   (exists_isBlowupAlongIdealSheaf_affineOpen I U).choose_spec.choose
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The chosen local projection is a witness of affine blowup existence for the restricted ideal, so it satisfies the blowup property.
 -/
 private theorem isBlowupAlongIdealSheaf_localBlowupProj {X : Scheme.{u}} (I : X.IdealSheafData) (U : X.affineOpens) :
     IsBlowupAlongIdealSheaf (localBlowupProjection I U) (I.comap (U : X.Opens).ι) :=
@@ -329,8 +303,8 @@ private noncomputable def localBlowupToBase {X : Scheme.{u}} (I : X.IdealSheafDa
     localBlowup I U ⟶ X :=
   localBlowupProjection I U ≫ (U : X.Opens).ι
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The local projection is the blowup on the affine open. Following it by the open inclusion makes it a blowup over that open in the ambient scheme.
 -/
 private theorem blowupOver_localBlowupMap {X : Scheme.{u}} (I : X.IdealSheafData) (U : X.affineOpens) :
     IsBlowupAlongIdealSheafOver I (U : X.Opens) (localBlowupToBase I U) :=
@@ -344,14 +318,14 @@ private noncomputable def overlapInclusion {X : Scheme.{u}} (I : X.IdealSheafDat
     (i j : X.affineOpens) : (overlap I i j).toScheme ⟶ localBlowup I i :=
   (overlap I i j).ι
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The overlap is an open subscheme of the first local blowup, and its transition into that blowup is defined as its open inclusion.
 -/
 private theorem overlapIncl_eq {X : Scheme.{u}} (I : X.IdealSheafData) (i j : X.affineOpens) :
     overlapInclusion I i j = (overlap I i j).ι := rfl
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The overlap map into the first local blowup is the inclusion of an open subscheme, hence an open immersion.
 -/
 private theorem isOpenImmersion_overlapIncl {X : Scheme.{u}} (I : X.IdealSheafData)
     (i j : X.affineOpens) : IsOpenImmersion (overlapInclusion I i j) := by
@@ -362,30 +336,30 @@ private noncomputable def overlapToBase {X : Scheme.{u}} (I : X.IdealSheafData)
     (i j : X.affineOpens) : (overlap I i j).toScheme ⟶ X :=
   overlapInclusion I i j ≫ localBlowupToBase I i
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The map from the overlap to the base is defined by its inclusion into the first local blowup followed by that blowup's map to the base.
 -/
 private theorem overlapMap_eq {X : Scheme.{u}} (I : X.IdealSheafData) (i j : X.affineOpens) :
     overlapToBase I i j = overlapInclusion I i j ≫ localBlowupToBase I i := rfl
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The first local blowup is a blowup over its affine open. Restrict its source to the inverse image of the second affine open. The restriction theorem for a blowup over an open gives a blowup over their intersection.
 -/
 private theorem blowupOver_overlapMap {X : Scheme.{u}} (I : X.IdealSheafData)
     (i j : X.affineOpens) :
     IsBlowupAlongIdealSheafOver I ((i : X.Opens) ⊓ (j : X.Opens)) (overlapToBase I i j) :=
   blowupOver_inf_preimage (blowupOver_localBlowupMap I i) (j : X.Opens)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The overlap projects to the intersection of the two affine opens by the image property of its blowup over that intersection. Apply this to the chosen point.
 -/
 private theorem overlapMap_base_mem_inf {X : Scheme.{u}} (I : X.IdealSheafData)
     (i j : X.affineOpens) (p : (overlap I i j).toScheme) :
     (overlapToBase I i j).base p ∈ ((i : X.Opens) ⊓ (j : X.Opens)) :=
   (blowupOver_overlapMap I i j).1 (Set.mem_range_self p)
 
-/- English proof (translation)
-Assume the hypotheses and unpack their components. A detailed English derivation is pending.
+/- English proof (authored)
+Every image point of the overlap belongs to both affine opens. Interchanging the order of the two memberships gives the claimed containment.
 -/
 private theorem range_overlapMap_subset_inf_swap {X : Scheme.{u}} (I : X.IdealSheafData)
     (i j : X.affineOpens) :
@@ -400,17 +374,15 @@ private noncomputable def overlapTransition {X : Scheme.{u}} (I : X.IdealSheafDa
   liftOfIsBlowupAlongIdealSheafOver (blowupOver_overlapMap I j i) (overlapToBase I i j)
     (blowupOver_overlapMap I i j).2.1 (range_overlapMap_subset_inf_swap I i j)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The transition is the chosen lift of the original overlap's map to the base into the blowup over the reversed intersection. The defining lift identity gives its composite with the overlap projection.
 -/
 private theorem overlapTrans_comp_overlapMap {X : Scheme.{u}} (I : X.IdealSheafData) (i j : X.affineOpens) :
     overlapTransition I i j ≫ overlapToBase I j i = overlapToBase I i j :=
   blowupOverLift_comp _ _ _ _
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Every point of the local blowup projects into its own base open. Thus its overlap with itself is the whole local blowup. The overlap inclusion is an open immersion with the same range as the identity, and is therefore an isomorphism.
 -/
 private theorem isIso_overlapIncl_self {X : Scheme.{u}} (I : X.IdealSheafData)
     (i : X.affineOpens) : IsIso (overlapInclusion I i i) := by
@@ -428,10 +400,8 @@ private theorem isIso_overlapIncl_self {X : Scheme.{u}} (I : X.IdealSheafData)
   rw [← h2]
   infer_instance
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Compare the transition and the identity after composing with the self-overlap inclusion. Both composites are lifts to the local blowup of the same map to the base, and the pulled-back center satisfies the required generator condition. The two lifts agree. Cancel the self-overlap inclusion, which is a monomorphism.
 -/
 private theorem overlapTrans_self {X : Scheme.{u}} (I : X.IdealSheafData) (i : X.affineOpens) :
     overlapTransition I i i = 𝟙 ((overlap I i i).toScheme) := by
@@ -448,18 +418,16 @@ private noncomputable def tripleOverlapToBase {X : Scheme.{u}} (I : X.IdealSheaf
     (i j k : X.affineOpens) : pullback (overlapInclusion I i j) (overlapInclusion I i k) ⟶ X :=
   pullback.fst (overlapInclusion I i j) (overlapInclusion I i k) ≫ overlapToBase I i j
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The base map on a triple overlap is defined as the first projection to the pairwise overlap followed by its base map.
 -/
 private theorem overlapPullbackMap_eq {X : Scheme.{u}} (I : X.IdealSheafData)
     (i j k : X.affineOpens) :
     tripleOverlapToBase I i j k
       = pullback.fst (overlapInclusion I i j) (overlapInclusion I i k) ≫ overlapToBase I i j := rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The triple overlap maps to the first local blowup through the first overlap projection and its inclusion. Both maps are open immersions, by base change and the overlap construction. The pulled-back center on the local blowup has the required generators, which persist under these open restrictions.
 -/
 private theorem isLocallyGeneratedByNonZeroDivisor_comap_overlapPullbackMap {X : Scheme.{u}} (I : X.IdealSheafData)
     (i j k : X.affineOpens) :
@@ -473,8 +441,8 @@ private theorem isLocallyGeneratedByNonZeroDivisor_comap_overlapPullbackMap {X :
   rw [h]
   exact isLocallyGeneratedByNonZeroDivisor_comap_openImmersion_comp I _ (localBlowupToBase I i) (blowupOver_localBlowupMap I i).2.1
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The triple overlap base map factors through the pairwise overlap for the first and second opens. Its image therefore lies in their intersection.
 -/
 private theorem overlapPullbackMap_base_mem_inf_left {X : Scheme.{u}} (I : X.IdealSheafData)
     (i j k : X.affineOpens) (p : ↥(pullback (overlapInclusion I i j) (overlapInclusion I i k))) :
@@ -482,8 +450,8 @@ private theorem overlapPullbackMap_base_mem_inf_left {X : Scheme.{u}} (I : X.Ide
   rw [overlapPullbackMap_eq, comp_base_apply]
   exact (blowupOver_overlapMap I i j).1 (Set.mem_range_self _)
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The pullback projections have the same composite into the first local blowup. Thus the triple overlap base map also factors through the pairwise overlap for the first and third opens, whose base image is in their intersection.
 -/
 private theorem overlapPullbackMap_base_mem_inf_right {X : Scheme.{u}} (I : X.IdealSheafData)
     (i j k : X.affineOpens) (p : ↥(pullback (overlapInclusion I i j) (overlapInclusion I i k))) :
@@ -495,8 +463,8 @@ private theorem overlapPullbackMap_base_mem_inf_right {X : Scheme.{u}} (I : X.Id
   rw [h, comp_base_apply]
   exact (blowupOver_overlapMap I i k).1 (Set.mem_range_self _)
 
-/- English proof (translation)
-Assume the hypotheses and unpack their components. A detailed English derivation is pending.
+/- English proof (authored)
+Every image point belongs to the intersection of the first two affine opens, hence to the first open.
 -/
 private theorem range_overlapPullbackMap_subset_source {X : Scheme.{u}} (I : X.IdealSheafData)
     (i j k : X.affineOpens) :
@@ -504,8 +472,8 @@ private theorem range_overlapPullbackMap_subset_source {X : Scheme.{u}} (I : X.I
   rintro _ ⟨p, rfl⟩
   exact (TopologicalSpace.Opens.mem_inf.mp (overlapPullbackMap_base_mem_inf_left I i j k p)).1
 
-/- English proof (translation)
-Assume the hypotheses and unpack their components. A detailed English derivation is pending.
+/- English proof (authored)
+Every image point lies in the intersection of the first two affine opens and hence lies in the second one.
 -/
 private theorem range_overlapPullbackMap_subset_target {X : Scheme.{u}} (I : X.IdealSheafData)
     (i j k : X.affineOpens) :
@@ -513,8 +481,8 @@ private theorem range_overlapPullbackMap_subset_target {X : Scheme.{u}} (I : X.I
   rintro _ ⟨p, rfl⟩
   exact (TopologicalSpace.Opens.mem_inf.mp (overlapPullbackMap_base_mem_inf_left I i j k p)).2
 
-/- English proof (translation)
-Assume the hypotheses and unpack their components. A detailed English derivation is pending.
+/- English proof (authored)
+The two factorizations of the triple overlap base map put every image point in the intersection of the first two and in that of the first and third opens. It consequently belongs to the intersection of the second and third opens.
 -/
 private theorem range_overlapPullbackMap_subset_inf {X : Scheme.{u}} (I : X.IdealSheafData)
     (i j k : X.affineOpens) :
@@ -531,16 +499,16 @@ private noncomputable def tripleOverlapLift {X : Scheme.{u}} (I : X.IdealSheafDa
   liftOfIsBlowupAlongIdealSheafOver (blowupOver_overlapMap I j k) (tripleOverlapToBase I i j k)
     (isLocallyGeneratedByNonZeroDivisor_comap_overlapPullbackMap I i j k) (range_overlapPullbackMap_subset_inf I i j k)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The triple-overlap lift is chosen by the blowup property over the intersection of the second and third opens. Its projection is the original triple-overlap base map.
 -/
 private theorem overlapPullbackLift_comp_overlapMap {X : Scheme.{u}} (I : X.IdealSheafData)
     (i j k : X.affineOpens) :
     tripleOverlapLift I i j k ≫ overlapToBase I j k = tripleOverlapToBase I i j k :=
   blowupOverLift_comp _ _ _ _
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Both displayed composites lift the triple-overlap base map to the second local blowup. The first does so by the triple-overlap lift identity, and the other by the pairwise transition identity. The base image lies in the second open and the pulled-back ideal has the generator condition. Uniqueness of lifts there gives equality.
 -/
 private theorem overlapPullbackLift_comp_overlapIncl {X : Scheme.{u}} (I : X.IdealSheafData)
     (i j k : X.affineOpens) :
@@ -561,8 +529,8 @@ private noncomputable def tripleOverlapTransition {X : Scheme.{u}} (I : X.IdealS
     (pullback.fst (overlapInclusion I i j) (overlapInclusion I i k) ≫ overlapTransition I i j)
     (overlapPullbackLift_comp_overlapIncl I i j k)
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The transition between triple overlaps is defined by the two indicated maps to the target's pairwise overlaps. Their composites to its local blowup agree by the lift compatibility, so the universal property combines them into the stated map.
 -/
 private theorem overlapTransPullback_eq {X : Scheme.{u}} (I : X.IdealSheafData)
     (i j k : X.affineOpens) :
@@ -571,8 +539,8 @@ private theorem overlapTransPullback_eq {X : Scheme.{u}} (I : X.IdealSheafData)
           (pullback.fst (overlapInclusion I i j) (overlapInclusion I i k) ≫ overlapTransition I i j)
           (overlapPullbackLift_comp_overlapIncl I i j k) := rfl
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The triple-overlap transition is a map into a pullback with the given second component. Composing with the second projection gives precisely that component.
 -/
 private theorem overlapTransPullback_comp_snd {X : Scheme.{u}} (I : X.IdealSheafData)
     (i j k : X.affineOpens) :
@@ -581,8 +549,8 @@ private theorem overlapTransPullback_comp_snd {X : Scheme.{u}} (I : X.IdealSheaf
   rw [overlapTransPullback_eq]
   exact pullback.lift_snd _ _ _
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The target triple-overlap base map factors through its first projection. This projection of the transition is the chosen triple-overlap lift. Its composite to the base gives the original triple-overlap base map.
 -/
 private theorem overlapTransPullback_comp_overlapPullbackMap {X : Scheme.{u}} (I : X.IdealSheafData)
     (i j k : X.affineOpens) :
@@ -591,10 +559,8 @@ private theorem overlapTransPullback_comp_overlapPullbackMap {X : Scheme.{u}} (I
   rw [overlapPullbackMap_eq, overlapTransPullback_eq, ← Category.assoc, pullback.lift_fst,
     overlapPullbackLift_comp_overlapMap]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Every triple-overlap transition preserves the map to the base. Hence the cyclic composite and the identity project to the same base map. Their projections into the first local blowup lift this same map, whose image lies in the first affine open and whose ideal satisfies the generator condition. Uniqueness equates the lifts into that local blowup. The two overlap inclusions into the local blowup are monomorphisms, so equality after projection there determines the map to the triple-overlap pullback.
 -/
 private theorem overlapTransPullback_cocycle {X : Scheme.{u}} (I : X.IdealSheafData) (i j k : X.affineOpens) :
     tripleOverlapTransition I i j k ≫ tripleOverlapTransition I j k i ≫ tripleOverlapTransition I k i j
@@ -638,23 +604,23 @@ private noncomputable def localBlowupToGlued {X : Scheme.{u}} (I : X.IdealSheafD
     (i : X.affineOpens) : localBlowup I i ⟶ gluedBlowup I :=
   (blowupGlueData I).ι i
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The gluing construction puts each local blowup into the glued scheme as an open subscheme. Its canonical inclusion is therefore an open immersion.
 -/
 private theorem isOpenImmersion_gluedIncl {X : Scheme.{u}} (I : X.IdealSheafData)
     (i : X.affineOpens) : IsOpenImmersion (localBlowupToGlued I i) :=
   (blowupGlueData I).ι_isOpenImmersion i
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The gluing condition identifies each overlap inclusion with the inclusion from the other chart after applying the transition. This is the stated equality of composites.
 -/
 private theorem overlapTrans_comp_gluedIncl {X : Scheme.{u}} (I : X.IdealSheafData) (i j : X.affineOpens) :
     overlapTransition I i j ≫ overlapInclusion I j i ≫ localBlowupToGlued I j
       = overlapInclusion I i j ≫ localBlowupToGlued I i :=
   (blowupGlueData I).glue_condition i j
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+The glued scheme is covered by the images of the local blowups. Choose a chart containing the given point and one of its points mapping to it.
 -/
 private theorem gluedIncl_jointly_surjective {X : Scheme.{u}} (I : X.IdealSheafData)
     (p : gluedBlowup I) :
@@ -662,10 +628,8 @@ private theorem gluedIncl_jointly_surjective {X : Scheme.{u}} (I : X.IdealSheafD
   obtain ⟨j, y, hy⟩ := (blowupGlueData I).ι_jointly_surjective p
   exact ⟨j, y, hy⟩
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The pairwise overlap represents the pullback of the two inclusions into the glued scheme, so the chosen fiber product maps to that overlap with its two projections. The two maps from the overlap to the original base agree by the overlap transition identity. Precompose this agreement with the map from the fiber product to get the claimed equality.
 -/
 private theorem pullback_fst_comp_localBlowupMap_eq {X : Scheme.{u}} (I : X.IdealSheafData)
     (x y : X.affineOpens) :
@@ -696,27 +660,23 @@ private noncomputable def gluedBlowupProjection {X : Scheme.{u}} (I : X.IdealShe
   (blowupGlueData I).openCover.glueMorphisms (fun i => localBlowupToBase I i)
     (fun x y => pullback_fst_comp_localBlowupMap_eq I x y)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The projection is obtained by gluing the compatible local base maps. Its restriction to each local blowup is the local base map by the gluing property.
 -/
 private theorem gluedIncl_comp_gluedProj {X : Scheme.{u}} (I : X.IdealSheafData)
     (i : X.affineOpens) : localBlowupToGlued I i ≫ gluedBlowupProjection I = localBlowupToBase I i :=
   (blowupGlueData I).openCover.ι_glueMorphisms _ _ i
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Evaluate the identity for the glued projection on the local blowup at the given point. Functoriality on points gives the claimed equality.
 -/
 private theorem gluedProj_base_gluedIncl {X : Scheme.{u}} (I : X.IdealSheafData)
     (i : X.affineOpens) (v : localBlowup I i) :
     (gluedBlowupProjection I).base ((localBlowupToGlued I i).base v) = (localBlowupToBase I i).base v := by
   rw [← comp_base_apply, gluedIncl_comp_gluedProj]
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Choose a representative of the point in any local blowup. Its image in the base lies in the specified affine open by the glued projection identity. The representative therefore lies in the overlap with that open's local blowup. Transport it to the other side of the overlap and use the gluing identification. Its image in the specified chart is the original point.
 -/
 private theorem mem_range_gluedIncl_of_mem {X : Scheme.{u}} (I : X.IdealSheafData) (i : X.affineOpens)
     (p : gluedBlowup I) (hp : (gluedBlowupProjection I).base p ∈ (i : X.Opens)) :
@@ -737,10 +697,8 @@ private theorem mem_range_gluedIncl_of_mem {X : Scheme.{u}} (I : X.IdealSheafDat
   rw [hcb, hv]
   exact hy
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The common base map lands in the intersection of the two affine opens and has the required ideal condition. Lift it to the blowup over this overlap. Its composites to the two local blowups are the stated lifts, by uniqueness on each open and compatibility of the overlap transition. Their images in the glued scheme agree by the gluing condition.
 -/
 private theorem comp_gluedIncl_eq_of_comp_localBlowupMap {X P : Scheme.{u}} (I : X.IdealSheafData)
     (x y : X.affineOpens) (q : P ⟶ X) (hq : IsLocallyGeneratedByNonZeroDivisor (I.comap q))
@@ -771,22 +729,22 @@ private noncomputable def preimageAffineOpenToBase {X W : Scheme.{u}} (g : W ⟶
     (preimageAffineOpen g i).toScheme ⟶ X :=
   (preimageAffineOpen g i).ι ≫ g
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The map to the base from the inverse image of an affine open is defined as the inverse-image inclusion followed by the original morphism.
 -/
 private theorem preimageAffineOpenToBase_eq {X W : Scheme.{u}} (g : W ⟶ X) (i : X.affineOpens) :
     preimageAffineOpenToBase g i = (preimageAffineOpen g i).ι ≫ g := rfl
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The pulled-back ideal on the inverse-image open is the restriction of the already pulled-back ideal on the original source. Its local nonzerodivisor generators persist under this restriction.
 -/
 private theorem isLocallyGeneratedByNonZeroDivisor_comap_preimageAffineOpenToBase {X W : Scheme.{u}} (I : X.IdealSheafData) (g : W ⟶ X)
     (hg : IsLocallyGeneratedByNonZeroDivisor (I.comap g)) (i : X.affineOpens) :
     IsLocallyGeneratedByNonZeroDivisor (I.comap (preimageAffineOpenToBase g i)) :=
   isLocallyGeneratedByNonZeroDivisor_comap_openImmersion_comp I _ g hg
 
-/- English proof (translation)
-Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+A point of the inverse-image open has image in the specified affine base open by definition. The restricted base map has exactly the corresponding image points.
 -/
 private theorem range_preimageAffineOpenToBase_subset {X W : Scheme.{u}} (g : W ⟶ X) (i : X.affineOpens) :
     Set.range ⇑(preimageAffineOpenToBase g i).base ⊆ ((i : X.Opens) : Set X) := by
@@ -800,8 +758,8 @@ private noncomputable def localBlowupLift {X W : Scheme.{u}} (I : X.IdealSheafDa
   liftOfIsBlowupAlongIdealSheafOver (blowupOver_localBlowupMap I i) (preimageAffineOpenToBase g i) (isLocallyGeneratedByNonZeroDivisor_comap_preimageAffineOpenToBase I g hg i)
     (range_preimageAffineOpenToBase_subset g i)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The local lift is chosen to lift the restricted map into the blowup over the affine open. Its composite to the base equals that restricted map by the lift's specification.
 -/
 private theorem liftChart_comp_localBlowupMap {X W : Scheme.{u}} (I : X.IdealSheafData) (g : W ⟶ X)
     (hg : IsLocallyGeneratedByNonZeroDivisor (I.comap g)) (i : X.affineOpens) :
@@ -819,22 +777,16 @@ private noncomputable def preimageAffineOpensCover {X W : Scheme.{u}} (g : W ⟶
       obtain ⟨v, hv⟩ := hw
       exact ⟨i, v, hv⟩)
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+The affine opens cover the base, so their inverse images cover the source. The two maps agree on every member of this open cover and therefore agree.
 -/
 private theorem hom_ext_of_preimageAffineOpen_ι_comp {X W : Scheme.{u}} (g : W ⟶ X) {Z : Scheme.{u}} (a b : W ⟶ Z)
     (h : ∀ i : X.affineOpens, (preimageAffineOpen g i).ι ≫ a = (preimageAffineOpen g i).ι ≫ b) : a = b := by
   refine (preimageAffineOpensCover g).hom_ext a b (fun i => ?_)
   exact h i
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+On the pullback intersection of two inverse-image opens their maps to the base agree, since they are restrictions of the original map. The common map lands in both affine opens, and the pulled-back center has the generator condition because it is an open restriction. The two local lifts both project to this common map. The overlap comparison identifies their composites into the glued blowup, giving the compatibility needed for gluing.
 -/
 private theorem liftChart_pullback_condition {X W : Scheme.{u}} (I : X.IdealSheafData) (g : W ⟶ X)
     (hg : IsLocallyGeneratedByNonZeroDivisor (I.comap g)) (x y : X.affineOpens) :
@@ -873,16 +825,16 @@ private noncomputable def gluedBlowupLift {X W : Scheme.{u}} (I : X.IdealSheafDa
   (preimageAffineOpensCover g).glueMorphisms (fun i => localBlowupLift I g hg i ≫ localBlowupToGlued I i)
     (fun x y => liftChart_pullback_condition I g hg x y)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The global lift is obtained by gluing the local lifts followed by their inclusions into the glued blowup. Its restriction to the indicated inverse-image open is the corresponding local composite.
 -/
 private theorem ι_comp_liftGlued {X W : Scheme.{u}} (I : X.IdealSheafData) (g : W ⟶ X)
     (hg : IsLocallyGeneratedByNonZeroDivisor (I.comap g)) (i : X.affineOpens) :
     (preimageAffineOpen g i).ι ≫ gluedBlowupLift I g hg = localBlowupLift I g hg i ≫ localBlowupToGlued I i :=
   (preimageAffineOpensCover g).ι_glueMorphisms _ _ i
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+On each inverse-image open the glued lift is the local lift followed by the chart inclusion. Composing with the glued projection therefore gives the local projection of the lift, which is the restriction of the original map. Equality on the cover gives the global identity.
 -/
 private theorem liftGlued_comp_gluedProj {X W : Scheme.{u}} (I : X.IdealSheafData) (g : W ⟶ X)
     (hg : IsLocallyGeneratedByNonZeroDivisor (I.comap g)) : gluedBlowupLift I g hg ≫ gluedBlowupProjection I = g := by
@@ -890,12 +842,8 @@ private theorem liftGlued_comp_gluedProj {X W : Scheme.{u}} (I : X.IdealSheafDat
   rw [← Category.assoc, ι_comp_liftGlued, Category.assoc, gluedIncl_comp_gluedProj, liftChart_comp_localBlowupMap,
     preimageAffineOpenToBase_eq]
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+On the inverse image of any base affine open, the proposed lift has image in the corresponding glued chart because its projection to the base is the original map. It factors through this chart by the open-immersion property. The factorization lifts the restricted base map to the local blowup, and local uniqueness equates it with the chosen local lift. This gives equality with the glued lift on every inverse-image open, hence globally.
 -/
 private theorem eq_liftGlued_of_comp_eq {X W : Scheme.{u}} (I : X.IdealSheafData) (g : W ⟶ X)
     (hg : IsLocallyGeneratedByNonZeroDivisor (I.comap g)) (b : W ⟶ gluedBlowup I)
@@ -919,12 +867,8 @@ private theorem eq_liftGlued_of_comp_eq {X W : Scheme.{u}} (I : X.IdealSheafData
       (range_preimageAffineOpenToBase_subset g i) hc2 (liftChart_comp_localBlowupMap I g hg i)
   rw [← hc, hc3]
 
-/- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The glued blowup is covered by the local blowup charts. On each chart the pullback of the center has local nonzerodivisor generators, because its projection is the corresponding local blowup projection. This condition descends from the open cover. Every eligible map lifts to the glued scheme by gluing its local lifts. The resulting map projects to the original map and is unique by the local uniqueness argument. Thus the glued projection satisfies the blowup property.
 -/
 private theorem isBlowupAlongIdealSheaf_gluedProj {X : Scheme.{u}} (I : X.IdealSheafData) :
     IsBlowupAlongIdealSheaf (gluedBlowupProjection I) I := by
@@ -943,8 +887,8 @@ private theorem isBlowupAlongIdealSheaf_gluedProj {X : Scheme.{u}} (I : X.IdealS
     exact ⟨gluedBlowupLift I g hg, liftGlued_comp_gluedProj I g hg,
       fun b hb => eq_liftGlued_of_comp_eq I g hg b hb⟩
 
-/- English proof (translation)
-Supply the required witnesses or components.
+/- English proof (authored)
+Take the scheme obtained by gluing the affine blowups and its glued projection. The universal property established for this projection makes it a blowup of the given ideal sheaf.
 -/
 theorem exists_isBlowupAlongIdealSheaf (X : Scheme.{u}) (I : X.IdealSheafData) :
     ∃ (Y : Scheme.{u}) (π : Y ⟶ X), IsBlowupAlongIdealSheaf π I :=
@@ -960,8 +904,8 @@ noncomputable def blowup.proj {X : Scheme.{u}} (I : X.IdealSheafData) : blowup I
 
 end
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The chosen blowup and its projection are witnesses of the existence theorem for this ideal sheaf. That choice includes the blowup property.
 -/
 theorem blowup.isBlowupAlongIdealSheaf_proj {X : Scheme.{u}} (I : X.IdealSheafData) :
     IsBlowupAlongIdealSheaf (blowup.proj I) I :=

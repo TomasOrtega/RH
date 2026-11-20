@@ -73,8 +73,8 @@ private def markedPullbackSquareId {T : MarkedIdealWithBoundary.{u}} {Y : Scheme
   isPullback := (IsPullback.of_horiz_isIso ⟨by simp⟩).flip
   valid := hT
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Use the marked pullback square whose lower map is the identity of the original scheme. Its vertical map is g, so the order comparison in the base-change compatibility gives the stated pointwise equality.
 -/
 theorem orderAt_comap_of_baseChangeCompatible (hinv : ComapIsoInvariance.{u}) (F : PrincipalizationAssignment.{u}) (n : ℕ)
     (T : MarkedIdealWithBoundary.{u}) (hT : T.IsAdmissible) {Y : Scheme.{u}} (g : Y ⟶ T.scheme)
@@ -84,10 +84,8 @@ theorem orderAt_comap_of_baseChangeCompatible (hinv : ComapIsoInvariance.{u}) (F
     orderAt (A.comap g) y = orderAt A (g.base y) :=
   MarkedPullbackSquare.orderAt_comap_verticalMap (markedPullbackSquareId g hT) hT hbc.order A y
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+A point in the pulled back marked locus would have order at least the marking. Order compatibility gives the same order at its image, placing that image in the original empty locus. Thus the pulled back locus is empty.
 -/
 theorem orderAtLeastLocus_comap_eq_empty_of_baseChangeCompatible (hinv : ComapIsoInvariance.{u})
     (F : PrincipalizationAssignment.{u}) (n : ℕ) (T : MarkedIdealWithBoundary.{u}) (hT : T.IsAdmissible)
@@ -103,16 +101,16 @@ theorem orderAtLeastLocus_comap_eq_empty_of_baseChangeCompatible (hinv : ComapIs
   rw [h] at hmem
   simp only [Set.mem_empty_iff_false] at hmem
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The stage transform is defined using the stage scheme, its projection followed by the original structure map, the current ideal and boundary, and the unchanged marking. These are exactly the fields shown.
 -/
 private theorem transformAt_eq_mk (T : MarkedIdealWithBoundary.{u}) (s : T.SequenceOfBlowups) (i : ℕ) :
     T.transformAt s i =
       MarkedIdealWithBoundary.mk T.base (s.schemeAt i) (s.projectionToBase i ≫ T.structMap) (s.ideal i) T.mult
         (s.boundary i) := rfl
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Apply the dimension bound in the monomial geometry hypotheses to the marked sequence at its final stage. The sequence has the same stage schemes and length as its data, so this bounds the dimension of the stated final scheme.
 -/
 theorem MonomialGeometryHypotheses.krullDimSucc_schemeAt_length_le_dim (hmg : MonomialGeometryHypotheses.{u})
     (T : MarkedIdealWithBoundary.{u}) (hT : T.IsAdmissible)
@@ -120,8 +118,8 @@ theorem MonomialGeometryHypotheses.krullDimSucc_schemeAt_length_le_dim (hmg : Mo
     krullDimSucc (s.obj s.length) ≤ T.krullDimSucc :=
   hmg.level_schemeDim_le T hT s.toMarkedSequenceOfBlowups s.length le_rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The level admissibility property applies to the final transform of the marked sequence. Its scheme, ideal, and boundary are the final data, and its structure map is the final projection composed with the original one. This is precisely the marked object in the conclusion.
 -/
 theorem MonomialGeometryHypotheses.isAdmissible_tripleAtLength (hmg : MonomialGeometryHypotheses.{u}) (T : MarkedIdealWithBoundary.{u})
     (hT : T.IsAdmissible) (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) :
@@ -132,8 +130,8 @@ theorem MonomialGeometryHypotheses.isAdmissible_tripleAtLength (hmg : MonomialGe
     toMarkedSequence_projectionToBase s s.length] at h
   exact h
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Substitute the equal ideal and marking. All remaining fields were already fixed, so admissibility is the same proposition for both constructions.
 -/
 private theorem isAdmissible_mk_congr {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I₁ I₂ : X.IdealSheafData} {m₁ m₂ : ℕ}
@@ -167,12 +165,8 @@ def SequenceOfBlowupsPullback.toMarkedPullbackSquare {T T' : MarkedIdealWithBoun
     rwa [toMarkedSequence_projectionToBase, toMarkedSequence_projectionToBase] at h
   valid := hval
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The final lower object is admissible and its dimension is bounded by that of the original object. This makes the comparison of the final stages a marked pullback square. By the final ideal and marking identities the upstairs object is admissible with the corresponding pullback ideal, and the last boundaries are equivalent. The nonmonomial part clause of base-change compatibility therefore gives the equality of the final factors.
 -/
 theorem lastNonMonomialPart_eq_comap_lastMap_of_pullback (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     (n : ℕ) (A : PrincipalizationAssignment.{u}) (T T' : MarkedIdealWithBoundary.{u}) (g : T'.scheme ⟶ T.scheme)
@@ -200,12 +194,8 @@ theorem lastNonMonomialPart_eq_comap_lastMap_of_pullback (hG : PrincipalizationG
   rw [h0, h1, hlastIdeal]
   exact hmain
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The last upper nonmonomial factor is the pullback of the lower one. The final pullback square and order compatibility identify its order at an upper point with the lower order at the image. The lower maximum bounds that value. Therefore every natural number witnessed by an upper point is at most the lower maximum, so its supremum has the same bound.
 -/
 theorem maxOrderNonMonomial_le_of_pullback (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     (n : ℕ) (A : PrincipalizationAssignment.{u}) (T T' : MarkedIdealWithBoundary.{u}) (g : T'.scheme ⟶ T.scheme)
@@ -250,8 +240,8 @@ theorem maxOrderNonMonomial_le_of_pullback (hG : PrincipalizationGeometryHypothe
   have hcast : (m : ℕ∞) ≤ (maxOrderNonMonomial T s : ℕ∞) := hy.trans (hmain y)
   exact_mod_cast hcast
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
+/- English proof (authored)
+Every element of the set defining the maximum on S is a natural number witnessed by a point of S with order at least that number. The given hypothesis bounds each such number by K. Hence their supremum is at most K.
 -/
 private theorem maxOrderOn_le_of_forall {X : Scheme.{u}} (N : X.IdealSheafData) (S : Set ↥X)
     (K : ℕ) (h : ∀ m : ℕ, ∀ x ∈ S, (m : ℕ∞) ≤ orderAt N x → m ≤ K) :
@@ -262,14 +252,8 @@ private theorem maxOrderOn_le_of_forall {X : Scheme.{u}} (N : X.IdealSheafData) 
   obtain ⟨x, hx, hmx⟩ := hmem
   exact h m x hx hmx
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The final ideal and its nonmonomial factor both pull back. Order compatibility in the final square gives equality of the respective orders at an upper point and its lower image. Since the markings agree, a point of the upper marked locus maps into the lower marked locus. Thus each natural number witnessed by the upper nonmonomial order there is bounded by the lower maximum on that locus. Taking the supremum gives the assertion.
 -/
 theorem maxOrderNonMonomialOnOrderLocus_le_of_pullback (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     (n : ℕ) (A : PrincipalizationAssignment.{u}) (T T' : MarkedIdealWithBoundary.{u}) (g : T'.scheme ⟶ T.scheme)
@@ -316,12 +300,8 @@ theorem maxOrderNonMonomialOnOrderLocus_le_of_pullback (hG : PrincipalizationGeo
   have hfin : ((m : ℕ) : ℕ∞) ≤ ((maxOrderNonMonomialOnOrderLocus T s : ℕ) : ℕ∞) := (hm.trans_eq hEq2).trans hle
   exact_mod_cast hfin
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Zero belongs to the defining set because the scheme has the point x₀. The assumed order bound makes the supremum a finite upper bound for every natural number in the set. A nonempty bounded set of natural numbers contains its supremum. The point witnessing that membership is in the order locus at the supremum.
 -/
 private theorem orderAtLeastLocus_sSup_nonempty {X : Scheme.{u}} (N : X.IdealSheafData)
     (x₀ : ↥X)
@@ -340,10 +320,8 @@ private theorem orderAtLeastLocus_sSup_nonempty {X : Scheme.{u}} (N : X.IdealShe
   obtain ⟨y, hy⟩ := Nat.sSup_mem hne hbdd
   exact ⟨y, (mem_orderAtLeastLocus_iff N _ y).2 hy⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The upper maximum is bounded by the lower maximum, so the common marking is at most the lower maximum. The upper continuation condition supplies a point, whose image shows the lower final scheme is nonempty. The lower nonmonomial order is bounded by its finite maximum. Hence that maximum is attained and its locus is nonempty, giving the second continuation condition downstairs.
 -/
 theorem nonMonomialOrderReductionContinues_of_pullback (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     (n : ℕ) (A : PrincipalizationAssignment.{u}) (T T' : MarkedIdealWithBoundary.{u}) (g : T'.scheme ⟶ T.scheme)
@@ -371,8 +349,8 @@ theorem nonMonomialOrderReductionContinues_of_pullback (hG : PrincipalizationGeo
     fun x => orderAt_lastNonMonomialPart_le_maxOrderNonMonomial hG hT s x
   exact orderAtLeastLocus_sSup_nonempty (lastNonMonomialPart T s) (c.lastMap.base x') hbound
 
-/- English proof (translation)
-Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
+/- English proof (authored)
+The upper continuation condition gives a maximum on the upper marked locus of at least one. The pullback bound makes this maximum at most the lower one, so the lower maximum is also at least one.
 -/
 theorem companionIdealReductionContinues_of_pullback (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     (n : ℕ) (A : PrincipalizationAssignment.{u}) (T T' : MarkedIdealWithBoundary.{u}) (g : T'.scheme ⟶ T.scheme)
@@ -393,15 +371,15 @@ theorem companionIdealReductionContinues_of_pullback (hG : PrincipalizationGeome
   unfold CompanionIdealReductionContinues at hcont ⊢
   omega
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+Ideal pullback preserves sums and powers. Apply these properties to the sum of the two powers.
 -/
 private theorem comap_pow_sup_pow {A B : Scheme.{u}} (f : A ⟶ B) (N J : B.IdealSheafData)
     (a b : ℕ) : (N ^ a ⊔ J ^ b).comap f = (N.comap f) ^ a ⊔ (J.comap f) ^ b := by
   simp only [Scheme.IdealSheafData.comap_sup, Scheme.IdealSheafData.comap_pow]
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Replace the two upper ideals by the pullbacks and identify their exponents with the lower ones. Pullback commutes with the sum and both powers, giving the equality.
 -/
 private theorem pow_sup_pow_eq_comap_pow_sup_pow {A B : Scheme.{u}} (f : A ⟶ B)
     (N₁ N₂ : B.IdealSheafData) (M₁ M₂ : A.IdealSheafData) (a a' b b' : ℕ)
@@ -413,8 +391,8 @@ private theorem pow_sup_pow_eq_comap_pow_sup_pow {A B : Scheme.{u}} (f : A ⟶ B
   subst hb
   exact (comap_pow_sup_pow f N₁ N₂ _ _).symm
 
-/- English proof (translation)
-Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
+/- English proof (authored)
+The last ideal and its nonmonomial factor both pull back along the final comparison. The exponents in the companion ideal agree because the markings and the maxima on the marked loci agree. Pullback preserves the two powers and their sum, giving the desired companion ideal.
 -/
 theorem companionIdeal_eq_comap_lastMap_of_pullback (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     (n : ℕ) (A : PrincipalizationAssignment.{u}) (T T' : MarkedIdealWithBoundary.{u}) (g : T'.scheme ⟶ T.scheme)
@@ -436,10 +414,8 @@ theorem companionIdeal_eq_comap_lastMap_of_pullback (hG : PrincipalizationGeomet
   exact pow_sup_pow_eq_comap_pow_sup_pow _ _ _ _ _ T'.mult T.mult (maxOrderNonMonomialOnOrderLocus T' s') (maxOrderNonMonomialOnOrderLocus T s)
     hnonMon hlastIdeal hmult hinveq
 
-/- English proof (translation)
-Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The dimension bound permits evaluation of the recursive sequence. The markedness test returns no data, so the conditional append returns the input sequence.
 -/
 private theorem appendRecursivePrincipalization_eq_self_of_eq_none (hinv : ComapIsoInvariance.{u})
     (T : MarkedIdealWithBoundary.{u}) (rc : (S : MarkedIdealWithBoundary.{u}) → S.krullDimSucc ≤ T.krullDimSucc → S.SequenceOfBlowups)
@@ -455,10 +431,8 @@ private theorem appendRecursivePrincipalization_eq_self_of_eq_none (hinv : Comap
   unfold appendIfMarked
   rw [h]
 
-/- English proof (translation)
-Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The dimension bound allows the recursive call and the markedness test returns d. Reading the successful branch of the conditional append gives the original sequence followed by d.
 -/
 private theorem appendRecursivePrincipalization_eq_append_of_eq_some (hinv : ComapIsoInvariance.{u})
     (T : MarkedIdealWithBoundary.{u}) (rc : (S : MarkedIdealWithBoundary.{u}) → S.krullDimSucc ≤ T.krullDimSucc → S.SequenceOfBlowups)
@@ -500,14 +474,8 @@ private def markedPullbackSquareAtLength (T T' : MarkedIdealWithBoundary.{u}) (g
     rwa [toMarkedSequence_projectionToBase, toMarkedSequence_projectionToBase] at h
   valid := hJ
 
-/- English proof (translation)
-Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
-
-Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Substitute using the available equality.
-
-Supply the required witnesses or components. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Each given output is present, so each markedness test has succeeded. Uniqueness of a present value identifies d and d′ with the reassigned marked data for the two sequences. Reassigning those markings keeps the underlying blowup data, and the conversion of a sequence comparison to its underlying data supplies the required comparison.
 -/
 private theorem nonempty_sequenceOfBlowupsPullback_of_markedDataOfSeq {k₁ k₂ : Type u} [Field k₁] [Field k₂]
     {X Y : Scheme.{u}} {p : X ⟶ Spec (CommRingCat.of k₁)} {q : Y ⟶ Spec (CommRingCat.of k₂)}
@@ -551,16 +519,8 @@ private theorem nonempty_sequenceOfBlowupsPullback_of_markedDataOfSeq {k₁ k₂
       exact dif_neg hm
     exact absurd (hrem.symm.trans hnone) (Option.some_ne_none d)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately.
-
-Treat this case separately. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The geometric dimension bounds permit both recursive calls. The hypothesis on the markedness tests gives either two failed tests or two successful tests. In the failed case both appends leave the existing comparison unchanged. In the successful case the final marked pullback square, admissibility, order and dimension conditions, and boundary equivalence let the assignment's base-change rule compare the two recursive sequences. Their underlying blowup comparison persists after giving them the original markings. Append that comparison to the existing comparison to obtain the required one.
 -/
 theorem nonempty_sequenceOfBlowupsPullback_appendRecursive (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     (n : ℕ) (A B : PrincipalizationAssignment.{u}) (_hspec : IsOrderReduction (fun d => d ≤ n) A B)
@@ -623,8 +583,8 @@ theorem nonempty_sequenceOfBlowupsPullback_appendRecursive (hG : Principalizatio
               hd' d' hq']
           exact (isPullbackBlowupSequence_append_of_two_fields g s d s' d' hinv c e).nonempty_sequenceOfBlowupsPullback
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The underlying point map of a composite is the composite of the underlying point maps. Evaluate the three arrows in their order of application at a.
 -/
 private theorem base_comp_comp_apply {A B C D : Scheme.{u}} (f : A ⟶ B) (g : B ⟶ C) (h : C ⟶ D)
     (a : ↥A) : (f ≫ g ≫ h).base a = h.base (g.base (f.base a)) := rfl
@@ -639,10 +599,8 @@ private noncomputable def markedBlowupSequenceDataAtEndOfIsMarked {k : Type u} [
   (MarkedBlowupSequenceData.ofMarkedSequence σ).toMarkedBlowupSequenceData (s.proj s.length ≫ p) (s.ideal s.length) m
     (s.boundary s.length) hm
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Admissibility of the starting triple gives admissibility at every stage. The order-locus inclusion along the transition to stage zero sends z into the stage-zero locus at μ. The initial ideal is pulled back from J along the initial isomorphism, so its order locus is the inverse image of the locus of J. The projection to the starting scheme passes through that isomorphism, and its image of z therefore lies in the locus of J.
 -/
 private theorem projectionToBase_mem_orderAtLeastLocus_tripleAtLength (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     (T : MarkedIdealWithBoundary.{u})
@@ -667,18 +625,10 @@ private theorem projectionToBase_mem_orderAtLeastLocus_tripleAtLength (hG : Prin
   rw [hcomp]
   exact h0
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
+/- English proof (authored)
+At the joining index, the center is the first center of the appended sequence transported by its initial isomorphism and the join identification. A point of this center corresponds to a point at the first tail stage of order at least μ for the tail ideal. Projecting this point to the joining scheme puts it in the locus of J, and the projection formula for the append identifies its original ambient image with that of z.
 
-Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+After the join, shift the index by the prefix length. The center point corresponds to a point of the tail center at that index, hence belongs to the tail stage's marked order locus. Its projection to the joining scheme belongs to the locus of J by the order-locus comparison. The projection of the append factors through this tail projection and the prefix's last projection, giving the claimed equality of images.
 -/
 private theorem exists_mem_orderAtLeastLocus_of_mem_center_append (hG : PrincipalizationGeometryHypotheses.{u})
     (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -736,14 +686,8 @@ private theorem exists_mem_orderAtLeastLocus_of_mem_center_append (hG : Principa
       MarkedBlowupSequenceData.appendProjectionToBase_of_length_lt s (markedBlowupSequenceDataAtEndOfIsMarked s J μ σ hm) hlt, hprojd]
     exact base_comp_comp_apply _ _ _ z
 
-/- English proof (translation)
-Substitute using the available equality. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The appended center point projects via a point x of the locus of J on the final lower scheme. If its further image were the image of an upper base point, the final pullback square would lift this pair to a point of the final upper scheme. Order invariance in that square gives order at least μ for the pullback of J at the lifted point. This contradicts emptiness of that locus, so the two images differ.
 -/
 private theorem append_proj_center_ne_base_of_orderAtLeastLocus_empty (hG : PrincipalizationGeometryHypotheses.{u})
     (hinv : ComapIsoInvariance.{u})
@@ -783,12 +727,8 @@ private theorem append_proj_center_ne_base_of_orderAtLeastLocus_empty (hG : Prin
   rw [hempty] at hmem
   simp only [Set.mem_empty_iff_false] at hmem
 
-/- English proof (translation)
-Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Establish an intermediate fact. Replace the relevant objects with their definitions.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. It suffices to derive a contradiction. Establish an intermediate fact.
-
-Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
+/- English proof (authored)
+If the dimension test fails or the recursive sequence fails its markedness test, the result is the original sequence. There could then be no index at or beyond the original length strictly smaller than the resulting length. Thus the stated index belongs to a successful append. Apply the image-disjointness result for centers of such an append to the empty pulled back locus.
 -/
 theorem appendRecursive_proj_center_ne_of_orderAtLeastLocus_empty (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     (n : ℕ) (A B : PrincipalizationAssignment.{u}) (_hspec : IsOrderReduction (fun d => d ≤ n) A B)
@@ -832,10 +772,8 @@ theorem appendRecursive_proj_center_ne_of_orderAtLeastLocus_empty (hG : Principa
     rw [he] at hi
     omega
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Split into cases according to the possible forms of the given data.
-
-Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Prove the first alternative.
+/- English proof (authored)
+Evaluate the dimension test. If it fails, the result is the starting sequence. If it succeeds, evaluate the markedness test of the assigned sequence. A failed test again returns the starting sequence, while a successful test supplies a marked tail and returns its append.
 -/
 private theorem appendRecursivePrincipalization_eq_self_or_append (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u})
     (rc : (S : MarkedIdealWithBoundary.{u}) → S.krullDimSucc ≤ T.krullDimSucc → S.SequenceOfBlowups)
@@ -854,16 +792,8 @@ private theorem appendRecursivePrincipalization_eq_self_or_append (hinv : ComapI
   · rw [dif_neg hd]
     exact Or.inl rfl
 
-/- English proof (translation)
-Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+If the recursive operation leaves the lower sequence unchanged, retain the given pullback comparison. If it appends a tail, the empty pulled back order locus guarantees that the projections of all appended center points miss the image of the upper base. The marked append has the underlying append of blowup data with the same centers and projections. The comparison theorem for an appended tail with centers missing the upper image therefore extends the lower side while retaining the existing upper sequence.
 -/
 theorem nonempty_sequenceOfBlowupsPullback_of_orderAtLeastLocus_empty (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     (n : ℕ) (A B : PrincipalizationAssignment.{u}) (hspec : IsOrderReduction (fun d => d ≤ n) A B)
@@ -926,12 +856,8 @@ theorem nonempty_sequenceOfBlowupsPullback_of_orderAtLeastLocus_empty (hG : Prin
     exact SequenceOfBlowupsPullback.nonempty_append_of_disjoint_centers g s'.toBlowupSequenceData s.toBlowupSequenceData
       t.toBlowupSequenceData c key
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The nonmonomial continuation conditions give admissibility of both final nonmonomial objects. The upper final nonmonomial ideal is the pullback of the lower one, and the equal maxima give the same marking. The lower maximum bounds all lower orders. With these identifications, the simultaneous markedness-test assumption is the one in the recursive append comparison. Apply it and identify those appends with the two nonmonomial extensions.
 -/
 theorem nonempty_sequenceOfBlowupsPullback_extendByNonMonomialPart (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     (n : ℕ) (A B : PrincipalizationAssignment.{u}) (hspec : IsOrderReduction (fun d => d ≤ n) A B)
@@ -982,8 +908,8 @@ theorem nonempty_sequenceOfBlowupsPullback_extendByNonMonomialPart (hG : Princip
   rw [hL, hU]
   exact key
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
+/- English proof (authored)
+Substitute the equal ideal and marking. The two recursive append constructions now have identical inputs and are equal.
 -/
 private theorem appendRecursivePrincipalization_congr (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u})
     (rc : (S : MarkedIdealWithBoundary.{u}) → S.krullDimSucc ≤ T.krullDimSucc → S.SequenceOfBlowups)
@@ -994,8 +920,8 @@ private theorem appendRecursivePrincipalization_congr (hinv : ComapIsoInvariance
   subst hμν
   rfl
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+The final marked objects differ through the given ideal and marking, which are equal by assumption. Substituting the equalities transfers admissibility.
 -/
 private theorem isAdmissible_tripleAtLength_congr (T : MarkedIdealWithBoundary.{u})
     (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary)
@@ -1005,12 +931,8 @@ private theorem isAdmissible_tripleAtLength_congr (T : MarkedIdealWithBoundary.{
   subst hμν
   exact h
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The equality of the maxima and of the original markings gives equal companion markings. The companion ideal comparison identifies the upper companion ideal with the pullback of the lower one. Both companion triples are admissible by continuation, and the lower companion ideal has order bounded by its marking. The recursive append comparison now applies using the simultaneous markedness tests. These appends are the stated companion extensions after substituting the ideal and marking identities.
 -/
 theorem nonempty_sequenceOfBlowupsPullback_extendByCompanionIdeal (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     (n : ℕ) (A B : PrincipalizationAssignment.{u}) (hspec : IsOrderReduction (fun d => d ≤ n) A B)
@@ -1073,10 +995,8 @@ theorem nonempty_sequenceOfBlowupsPullback_extendByCompanionIdeal (hG : Principa
     hideal hbdry hbc s s' c hlastIdeal hsameBoundary (companionIdeal T s) (T.mult * maxOrderNonMonomialOnOrderLocus T s)
     hJ hJ' hord hmark
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Identify the pulled back lower factor with the upper nonmonomial factor. Its order at every point is at most the upper maximum, which is strictly less than the lower maximum. Hence no point reaches the lower threshold.
 -/
 theorem orderAtLeastLocus_comap_lastNonMonomialPart_eq_empty_of_lt (hG : PrincipalizationGeometryHypotheses.{u})
     (hinv : ComapIsoInvariance.{u}) (n : ℕ) (A : PrincipalizationAssignment.{u})
@@ -1106,10 +1026,8 @@ theorem orderAtLeastLocus_comap_lastNonMonomialPart_eq_empty_of_lt (hG : Princip
   have hnat : maxOrderNonMonomial T s ≤ maxOrderNonMonomial T' s' := by exact_mod_cast hcast
   exact absurd hnat (not_le.mpr hlt)
 
-/- English proof (translation)
-Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+If a is infinite, the bound by a holds automatically. Otherwise write a as a natural number. Commute the factors on the left so both sides have the positive factor p. Cancelling this factor in the natural-number inequality gives m at most a.
 -/
 private theorem natCast_le_of_natCast_mul_le_mul (m p : ℕ) (hp : 1 ≤ p) (a : ℕ∞)
     (h : ((m * p : ℕ) : ℕ∞) ≤ ((p : ℕ) : ℕ∞) * a) : ((m : ℕ) : ℕ∞) ≤ a := by
@@ -1123,20 +1041,8 @@ private theorem natCast_le_of_natCast_mul_le_mul (m p : ℕ) (hp : 1 ≤ p) (a :
     have hle : m ≤ a₀ := Nat.le_of_mul_le_mul_left h'' (by omega)
     exact_mod_cast hle
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. It suffices to derive a contradiction. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
+/- English proof (authored)
+The pulled back lower companion ideal is the sum of the powers of the upper nonmonomial factor and upper final ideal, with the lower exponents. The lower maximum is positive by the strict inequality, and the marking is positive. If a point attained the lower companion threshold, the minimum formula would make both weighted orders at least that threshold. Cancelling the respective positive exponents shows that the point lies in the upper marked order locus and its nonmonomial order there is at least the lower maximum. This exceeds the upper maximum on that locus, a contradiction.
 -/
 theorem orderAtLeastLocus_comap_companionIdeal_eq_empty_of_lt (hG : PrincipalizationGeometryHypotheses.{u})
     (hinv : ComapIsoInvariance.{u}) (n : ℕ) (A : PrincipalizationAssignment.{u})

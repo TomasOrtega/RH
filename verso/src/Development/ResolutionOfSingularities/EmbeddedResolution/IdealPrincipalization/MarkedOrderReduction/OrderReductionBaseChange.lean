@@ -46,8 +46,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+The data and their marked sequence have the same length, so the indicated stage is in range in the sequence. Admissibility and the preservation of Noetherianity along marked blowups give a Noetherian stage scheme, which is also the stage scheme of the data.
 -/
 private theorem isNoetherian_schemeAt_of_isAdmissible (T : MarkedIdealWithBoundary.{u}) (hT : T.IsAdmissible)
     (u : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) (i : ℕ) (hi : i ≤ u.length) :
@@ -56,8 +56,8 @@ private theorem isNoetherian_schemeAt_of_isAdmissible (T : MarkedIdealWithBounda
   have h := MarkedSequenceOfBlowups.isNoetherian_schemeAt effectiveCartierSupportContainsNoComponent hT u.toMarkedSequenceOfBlowups i hlen
   rwa [MarkedBlowupSequenceData.toMarkedSequence_schemeAt] at h
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+An empty original sequence has no center, so its centers vacuously miss the image of the flat map. The pulled back candidate also has length zero. Apply the comparison construction for centers that miss the image to the underlying data, then transfer the comparison back to the original sequences.
 -/
 private theorem nonempty_sequenceOfBlowupsPullback_of_length_eq_zero {X Y : Scheme.{u}} (g : Y ⟶ X)
     (hflat : AlgebraicGeometry.Flat g) (sD : SequenceOfBlowups X) (sU : SequenceOfBlowups Y)
@@ -71,8 +71,8 @@ private theorem nonempty_sequenceOfBlowupsPullback_of_length_eq_zero {X Y : Sche
     exact absurd hi (Nat.not_lt_zero i)
   · exact (BlowupSequenceData.ofSequenceOfBlowups_length sU).trans hU
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At zero iterations the construction uses the empty marked blowup data, of length zero. Passing to the marked sequence and forgetting the marking preserve that length.
 -/
 private theorem length_nonMonomialOrderReductionIter_zero (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u})
     (rc : (S : MarkedIdealWithBoundary.{u}) → S.krullDimSucc ≤ T.krullDimSucc → S.SequenceOfBlowups) :
@@ -81,8 +81,8 @@ private theorem length_nonMonomialOrderReductionIter_zero (hinv : ComapIsoInvari
     rw [nonMonomialOrderReductionIter_zero, emptyMarkedBlowupSequenceData_length]
   exact (MarkedBlowupSequenceData.toMarkedSequence_length (nonMonomialOrderReductionIter hinv T rc 0)).trans h
 
-/- English proof (translation)
-Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The supplied markedness makes the test succeed. The construction returns the blowup sequence with its new marking, so the result is a present value.
 -/
 private theorem markedDataOfSeq_ne_none_of_isMarked {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
@@ -98,8 +98,8 @@ private theorem markedDataOfSeq_ne_none_of_isMarked {k : Type u} [Field k] {X : 
   rw [he]
   exact Option.some_ne_none _
 
-/- English proof (translation)
-Substitute using the available equality. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Substitute the equality of markings so that both sequences use the same exponent for controlled transformations. Under the initial pullback and boundary comparison and the stage Noetherian hypotheses, the flat comparison theorem identifies their final ideals and nontrivial boundaries.
 -/
 private theorem lastIdeal_and_boundary_comap_of_flat {k k' : Type u} [Field k] [Field k'] {X Y : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {q : Y ⟶ Spec (CommRingCat.of k')} {g : Y ⟶ X}
@@ -119,16 +119,10 @@ private theorem lastIdeal_and_boundary_comap_of_flat {k k' : Type u} [Field k] [
   have := hflat
   exact SequenceOfBlowupsPullback.ideal_boundary_last_eq_comap_lastMap s s' c hI hE hN hN'
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
+/- English proof (authored)
+The flat comparison gives the pullback of the last ideal and the equivalence of last boundaries. The last nonmonomial factor therefore pulls back, and its maximum upstairs is at most the lower maximum. If the upper sequence continues and the two maxima agree, the new marked nonmonomial ideals are compatible for pullback. The markedness tests succeed on both sides, so the comparison for recursive appends gives the result with both sequences extended.
 
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
-
-Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+If the upper maximum is smaller, the pullback of the lower nonmonomial ideal has empty locus at the lower marking, so the added lower steps can be omitted upstairs. The remaining case has equal maxima with the upper continuation condition false. Equality of markings transfers the lower inequality between the marking and the maximum, so the failed upper condition means its locus at that maximum is empty. This again gives the comparison with only the lower sequence extended.
 -/
 private theorem extendByNonMonomialPart_sequenceOfBlowupsPullback_cases (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     (n : ℕ) (A B : PrincipalizationAssignment.{u}) (hspec : IsOrderReduction (fun d => d ≤ n) A B)
@@ -197,16 +191,8 @@ private theorem extendByNonMonomialPart_sequenceOfBlowupsPullback_cases (hG : Pr
       rw [hnonMon, heq] at h3
       exact h3
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Supply the required witnesses or components.
-
-Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Separate the alternatives or extract the components of the hypothesis.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+At zero, both iterations are empty and there is a pullback comparison. Induct on the lower iteration index. If the lower iterate has stopped, its successor is unchanged. If it continues, the one-extension comparison says either to extend both sequences, increasing the upper iteration index by one, or to extend only the lower sequence and retain the upper index. Thus there is a matching upper iterate in each case. Apply the flat final-stage comparison to its pullback data to obtain the ideal and boundary assertions.
 -/
 theorem nonMonomialOrderReductionIter_exists_sequenceOfBlowupsPullback (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     (n : ℕ) (A B : PrincipalizationAssignment.{u}) (hspec : IsOrderReduction (fun d => d ≤ n) A B)
@@ -262,8 +248,8 @@ theorem nonMonomialOrderReductionIter_exists_sequenceOfBlowupsPullback (hG : Pri
     (isNoetherian_schemeAt_of_isAdmissible T hT (nonMonomialOrderReductionIter hinv T (principalizationOfDimLe T A) f))
     (isNoetherian_schemeAt_of_isAdmissible T' hT' (nonMonomialOrderReductionIter hinv T' (principalizationOfDimLe T' A) f'))
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Each stage in either sequence is Noetherian by admissibility and preservation along the marked blowups. These are the stage hypotheses needed by the flat final-stage comparison, which gives the stated equations.
 -/
 private theorem lastIdeal_and_boundary_comap_of_isAdmissible (T T' : MarkedIdealWithBoundary.{u}) (g : T'.scheme ⟶ T.scheme)
     (hT : T.IsAdmissible) (hT' : T'.IsAdmissible) (hflat : AlgebraicGeometry.Flat g)
@@ -278,8 +264,8 @@ private theorem lastIdeal_and_boundary_comap_of_isAdmissible (T T' : MarkedIdeal
   lastIdeal_and_boundary_comap_of_flat s s' hmult c hflat hideal hbdry
     (isNoetherian_schemeAt_of_isAdmissible T hT s) (isNoetherian_schemeAt_of_isAdmissible T' hT' s')
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Substitute the given companion ideal and its marking. The companion sequence is marked for the original final object by the companion transform theorem. Its markedness test therefore succeeds and returns data.
 -/
 private theorem markedDataOfSeq_companionIdeal_ne_none (hG : PrincipalizationGeometryHypotheses.{u}) (T : MarkedIdealWithBoundary.{u})
     (hT : T.IsAdmissible) (A : PrincipalizationAssignment.{u})
@@ -294,12 +280,8 @@ private theorem markedDataOfSeq_companionIdeal_ne_none (hG : PrincipalizationGeo
     (principalizationOfDimLe T A (tripleAtLength T s (companionIdeal T s) (T.mult * maxOrderNonMonomialOnOrderLocus T s)) h)
     (isMarked_seqAtEnd_companionIdeal hG hT A s hcont)
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Apply the iteration comparison at the stopping bound of the lower nonmonomial reduction. It yields an upper iterate and the final ideal and boundary identifications. The lower iterate has stopped. The continuation comparison shows that if its matched upper iterate continued, so would the lower one, so the upper iterate has stopped as well. Compare the upper index and the prescribed upper stopping bound at their maximum. Stability of stopped iterates identifies the matched upper sequence with the full upper reduction. Substitute both final identifications in the comparison.
 -/
 private theorem nonempty_sequenceOfBlowupsPullback_nonMonomialOrderReduction (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     (n : ℕ) (A B : PrincipalizationAssignment.{u}) (hspec : IsOrderReduction (fun d => d ≤ n) A B)
@@ -342,22 +324,10 @@ private theorem nonempty_sequenceOfBlowupsPullback_nonMonomialOrderReduction (hG
   rw [← hup, ← hlow]
   exact c
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
+/- English proof (authored)
+The zero iterates are the completed nonmonomial reductions, which already have a pullback comparison. At the successor of a stopped lower iterate, keep the existing comparison. At a continuing lower iterate, the final ideal and boundary comparison gives that the upper nonmonomial maximum on the marked locus is at most the lower one.
 
-Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
-
-A detailed English derivation is pending.
+If the upper maximum is smaller, the pulled back lower companion ideal has empty locus at its marking, so its appended steps are omitted upstairs. If the maxima agree, the upper companion step is active and its ideal and marking are the pullback of the lower ones. The markedness tests succeed for both new sequences, so compare the two appends and increment the upper iteration index. This completes the induction. The flat final-stage comparison supplies the final ideal and boundary for the chosen matched iterate.
 -/
 theorem companionIdealReductionIter_exists_sequenceOfBlowupsPullback (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     (n : ℕ) (A B : PrincipalizationAssignment.{u}) (hspec : IsOrderReduction (fun d => d ≤ n) A B)
@@ -477,10 +447,8 @@ theorem companionIdealReductionIter_exists_sequenceOfBlowupsPullback (hG : Princ
     (companionIdealReductionIter hinv T (principalizationOfDimLe T A) (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A)) f)
     (companionIdealReductionIter hinv T' (principalizationOfDimLe T' A) (nonMonomialOrderReduction hinv T' (principalizationOfDimLe T' A)) f') c⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+All stages within the marked sequence are admissible. The order-locus inclusion along a composite of blowup transitions sends the point to the initial stage's marked order locus. That locus is the inverse image of the original locus under the initial isomorphism. Since the stage projection is the composite with that isomorphism, its image lies in the original marked locus.
 -/
 private theorem projectionToBase_mem_orderAtLeastLocus (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     (T : MarkedIdealWithBoundary.{u}) (hT : T.IsAdmissible) (σ : T.SequenceOfBlowups)
@@ -502,10 +470,8 @@ private theorem projectionToBase_mem_orderAtLeastLocus (hG : PrincipalizationGeo
   rw [hcomp]
   exact h0
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Convert the sequences to blowup data, preserving the lengths, centers, and projections. The original centers miss the image of the flat map by hypothesis, and the proposed pulled back data have length zero. The construction for missed centers gives a pullback comparison with these empty data upstairs. Transfer it back through the conversion.
 -/
 private theorem nonempty_sequenceOfBlowupsPullback_of_center_not_mem_range {X Y : Scheme.{u}} (g : Y ⟶ X)
     (hflat : AlgebraicGeometry.Flat g) (sD : SequenceOfBlowups X) (sU : SequenceOfBlowups Y)
@@ -525,8 +491,8 @@ private theorem nonempty_sequenceOfBlowupsPullback_of_center_not_mem_range {X Y 
     exact hmiss i hi z hz y
   · exact (BlowupSequenceData.ofSequenceOfBlowups_length sU).trans hU
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Substitute the two equalities of marked blowup data. The existing comparison then has the required source and target sequences, and its last ideal and boundary comparisons are exactly those asserted.
 -/
 private theorem exists_sequenceOfBlowupsPullback_congr {T T' : MarkedIdealWithBoundary.{u}} (g : T'.scheme ⟶ T.scheme)
     (S₁ S₂ : MarkedBlowupSequenceData T'.structMap T'.ideal T'.mult T'.boundary)
@@ -544,8 +510,8 @@ private theorem exists_sequenceOfBlowupsPullback_congr {T T' : MarkedIdealWithBo
   subst hR
   exact hex
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+The two final objects use the same stage, structure map, and boundary. Substitute the equal ideal and marking to identify them, then use the given local monomiality property.
 -/
 private theorem isLocallyMonomialTriple_tripleAtLength_congr (T : MarkedIdealWithBoundary.{u})
     (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary)
@@ -556,8 +522,8 @@ private theorem isLocallyMonomialTriple_tripleAtLength_congr (T : MarkedIdealWit
   subst hμν
   exact h
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Substitute the equality of the upper ideal and the equality of the upper marking. The upper input to monomial principalization is now the same object, so its given pullback relation is the desired one.
 -/
 private theorem isPullbackBlowupSequence_monomialPrincipalization_congr (hinv : ComapIsoInvariance.{u})
     (T T' : MarkedIdealWithBoundary.{u})
@@ -575,8 +541,8 @@ private theorem isPullbackBlowupSequence_monomialPrincipalization_congr (hinv : 
   subst hν
   exact h
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The lower final object is admissible and has dimension at most the original dimension, so the final stage comparison provides a marked pullback square. The upper final ideal is the pullback of the lower one, and their markings are equal. These identifications express upper local monomiality in the form required by the compatibility assumption. Apply the monomial sequence comparison with the equivalent final boundaries, then substitute the actual upper ideal and marking back into the result.
 -/
 private theorem isPullbackSequenceOfBlowups_monomial_of_pullback (hinv : ComapIsoInvariance.{u})
     (hmg : MonomialGeometryHypotheses.{u})
@@ -607,22 +573,10 @@ private theorem isPullbackSequenceOfBlowups_monomial_of_pullback (hinv : ComapIs
     T.mult ((S.ideal S.length).comap c.lastMap) (S'.ideal S'.length) T.mult T'.mult hidealLastComap.symm
     hmult.symm hmain
 
-/- English proof (translation)
-Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
+/- English proof (authored)
+If the initial marked order locus upstairs is empty, the upper sequence has length zero. Every lower center lies in its stage's marked order locus and its projection lies in the original lower order locus. The order compatibility would put any point upstairs mapping to such a projection in the empty upper locus. Thus all lower centers miss the image, so the empty upper sequence is the required pullback.
 
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+Otherwise the lower initial locus is nonempty too, since pullback preserves order and the markings coincide. Match a companion iterate upstairs to the completed companion reduction downstairs. Its final data obey the pullback comparison. The lower reduction has stopped, so the upper matched iterate has stopped by the continuation comparison. Its stability, and that of the prescribed final upper iterate, identify it with the completed upper companion reduction. Both resulting final objects are locally monomial. The monomial sequence comparison applies to the final square, and the append theorem combines that comparison with the one for the companion prefixes. The nonempty-locus formulas identify the completed appends with the requested sequences.
 -/
 private theorem orderReductionSeq_isPullbackBlowupSequence_of_comap (hG : PrincipalizationGeometryHypotheses.{u})
     (hinv : ComapIsoInvariance.{u}) (n : ℕ)
@@ -714,8 +668,8 @@ private theorem orderReductionSeq_isPullbackBlowupSequence_of_comap (hG : Princi
       (companionIdealReduction hinv T' (principalizationOfDimLe T' A)) (orderReductionMonomialSequence hinv T' A) hinv c
       (SequenceOfBlowupsPullback.toBlowupDataOfSeq cc)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+In the constructed upper object, the ideal is the original ideal pulled back along g and the marking is the original marking. Together with the given equivalence of boundaries, admissibility, dimension, and base-change compatibility, these are the hypotheses of the general pullback result.
 -/
 theorem orderReductionSeq_isPullbackBlowupSequence_mk (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u}) (n : ℕ)
     (A B : PrincipalizationAssignment.{u}) (hspec : IsOrderReduction (fun d => d ≤ n) A B)
@@ -733,8 +687,8 @@ theorem orderReductionSeq_isPullbackBlowupSequence_mk (hG : PrincipalizationGeom
   orderReductionSeq_isPullbackBlowupSequence_of_comap hG hinv n A B hspec T
     (MarkedIdealWithBoundary.mk k' Y q (T.ideal.comap g) T.mult E') g hT hT' hdim hdim' rfl rfl hE hbc
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The pulled back object with the replacement boundary has precisely the new field and structure map, pulled back ideal, original marking, and specified boundary used by the explicit construction. Its admissibility and dimension bounds therefore apply to that construction, and the preceding pullback result gives the sequence comparison.
 -/
 theorem orderReductionSeq_isPullbackBlowupSequence_pullbackOverField (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     (n : ℕ) (A B : PrincipalizationAssignment.{u}) (hspec : IsOrderReduction (fun d => d ≤ n) A B)

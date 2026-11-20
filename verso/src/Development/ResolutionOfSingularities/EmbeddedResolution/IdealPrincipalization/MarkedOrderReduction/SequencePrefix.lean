@@ -18,15 +18,15 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The map induced by a scheme's equality with itself is the identity. Pullback by that map fixes J.
 -/
 private theorem comap_eqToHom_self {X : Scheme.{u}} (h : X = X) (J : X.IdealSheafData) :
     J.comap (eqToHom h) = J := by
   simp
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The comparison map for the composite equality is the composite of the two equality-induced maps. Successive pullbacks along these maps therefore give pullback along the composite equality.
 -/
 private theorem comap_eqToHom_trans {X Y Z : Scheme.{u}} (h1 : X = Y) (h2 : Y = Z)
     (J : Z.IdealSheafData) :
@@ -35,8 +35,8 @@ private theorem comap_eqToHom_trans {X Y Z : Scheme.{u}} (h1 : X = Y) (h2 : Y = 
   subst h2
   simp
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately.
+/- English proof (authored)
+The self-equality of the scheme induces the identity, which fixes every ideal under pullback. The entrywise pullback then fixes the whole list.
 -/
 private theorem map_comap_eqToHom_self {X : Scheme.{u}} (h : X = X) (L : List X.IdealSheafData) :
     List.map (fun D => D.comap (eqToHom h)) L = L := by
@@ -44,8 +44,8 @@ private theorem map_comap_eqToHom_self {X : Scheme.{u}} (h : X = X) (L : List X.
   | nil => rfl
   | cons a l ih => rw [List.map_cons, ih, comap_eqToHom_self]
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Each entry transported through the two equalities equals that entry transported through their composite. The list orders agree, so equality entrywise proves equality of the lists.
 -/
 private theorem map_comap_eqToHom_trans {X Y Z : Scheme.{u}} (h1 : X = Y) (h2 : Y = Z)
     (L : List Z.IdealSheafData) :
@@ -56,8 +56,8 @@ private theorem map_comap_eqToHom_trans {X Y Z : Scheme.{u}} (h1 : X = Y) (h2 : 
   | cons a l ih =>
     rw [List.map_cons, List.map_cons, List.map_cons, ih, comap_eqToHom_trans]
 
-/- English proof (translation)
-Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Identify A with B using the given equality. The two equality-induced maps become identities, so the hypothesis becomes g equal to f. Symmetry gives the desired equality.
 -/
 private theorem eq_eqToHom_comp_of_eq_eqToHom_symm_comp {A B C : Scheme.{u}} (f : A ⟶ C) (g : B ⟶ C) (h : A = B)
     (hg : g = eqToHom h.symm ≫ f) : f = eqToHom h ≫ g := by
@@ -65,8 +65,8 @@ private theorem eq_eqToHom_comp_of_eq_eqToHom_symm_comp {A B C : Scheme.{u}} (f 
   simp only [eqToHom_refl, Category.id_comp] at hg ⊢
   exact hg.symm
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Substitute the equality of the blowup data. The two centers at i then agree, and transporting along the resulting equality of the scheme with itself leaves the ideal unchanged.
 -/
 private theorem blowupSequenceData_center_eq_comap_eqToHom {X : Scheme.{u}} {d d' : BlowupSequenceData X} (hd : d = d')
     (i : ℕ) (hobj : d.obj i = d'.obj i) :
@@ -74,8 +74,8 @@ private theorem blowupSequenceData_center_eq_comap_eqToHom {X : Scheme.{u}} {d d
   subst hd
   exact (comap_eqToHom_self hobj _).symm
 
-/- English proof (translation)
-Substitute using the available equality. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Substituting the equality of the data makes the blowup morphisms identical. The identifications at their two endpoints then induce identity maps, and both composites equal that morphism.
 -/
 private theorem blowupSequenceData_blowupMorphism_comp_eqToHom {X : Scheme.{u}} {d d' : BlowupSequenceData X} (hd : d = d')
     (i : ℕ) (h0 : d.obj i = d'.obj i) (h1 : d.obj (i + 1) = d'.obj (i + 1)) :
@@ -83,10 +83,8 @@ private theorem blowupSequenceData_blowupMorphism_comp_eqToHom {X : Scheme.{u}} 
   subst hd
   simp
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Simplify using the standard rewrite rules.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Identify the three source schemes by the given equalities and do the same for the targets. Every comparison map becomes an identity. The two hypotheses then give M equal to N and N equal to f. Reversing and composing these equalities gives the conclusion.
 -/
 private theorem comp_eqToHom_eq_eqToHom_comp_of_eqToHom_conj {A B A' B' A'' B'' : Scheme.{u}}
     (f : A ⟶ B) (M : A'' ⟶ B'') (N : A' ⟶ B')
@@ -121,10 +119,8 @@ structure IsPrefix (s t : MarkedBlowupSequenceData p I m E) : Prop where
     s.map i ≫ eqToHom (obj_eq i (Nat.le_of_lt hi)) =
       eqToHom (obj_eq (i + 1) (Nat.succ_le_of_lt hi)) ≫ t.map i
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
-
-Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Use the identical length and stage schemes. The induced stage maps are identities, so the projections and transitions commute with them and the pullbacks fix the stage ideals, boundary entries, and centers. These are the prefix conditions.
 -/
 theorem IsPrefix.refl (s : MarkedBlowupSequenceData p I m E) : s.IsPrefix s := by
   refine ⟨le_rfl, fun _ _ => rfl, ?_, ?_, ?_, ?_, ?_⟩
@@ -139,12 +135,8 @@ theorem IsPrefix.refl (s : MarkedBlowupSequenceData p I m E) : s.IsPrefix s := b
   · intro i hi
     simp
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The length bounds compose, and the stage identifications compose at all indices through the first sequence's end. For the projections and transitions, paste the two comparison diagrams. For the ideals, boundaries, and centers, the two pullbacks equal pullback along the composed stage identifications. The index bounds ensure the two comparisons apply wherever needed. This gives all the prefix conditions.
 -/
 theorem IsPrefix.trans {s t r : MarkedBlowupSequenceData p I m E} (h : s.IsPrefix t)
     (h' : t.IsPrefix r) : s.IsPrefix r := by
@@ -167,16 +159,8 @@ theorem IsPrefix.trans {s t r : MarkedBlowupSequenceData p I m E} (h : s.IsPrefi
         (h'.obj_eq (i + 1) (Nat.succ_le_of_lt hi')),
       ← Category.assoc, h.map_eq i hi, Category.assoc, h'.map_eq i hi', ← Category.assoc]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The length of the append is the sum of the lengths, so it is at least the first length. Through the joining stage, the appended scheme, projection, ideal, and boundary are the corresponding first-sequence data under the stage identification. Pulling back along the inverse identification gives the required orientation of the comparison. For steps strictly before the join, the center and transition also come from the first sequence. The marked append has the same underlying data as the unmarked append, so these comparisons apply to its centers and maps as well.
 -/
 theorem isPrefix_append (s : MarkedBlowupSequenceData p I m E)
     (t : MarkedBlowupSequenceData (s.proj s.length ≫ p) (s.ideal s.length) m (s.boundary s.length))
@@ -232,8 +216,8 @@ def NonMonomialOrderReductionContinues (T : MarkedIdealWithBoundary.{u})
   T.mult ≤ maxOrderNonMonomial T s ∧
     (orderAtLeastLocus (lastNonMonomialPart T s) (maxOrderNonMonomial T s)).Nonempty
 
-/- English proof (translation)
-Unfold both sides to obtain the same proposition, which implies itself.
+/- English proof (authored)
+By definition, a nonmonomial iteration continues when the maximum order of the final nonmonomial factor is at least the marking and the locus at that maximum is nonempty. The two conditions give precisely the displayed equivalence.
 -/
 theorem nonMonomialOrderReductionContinues_iff (T : MarkedIdealWithBoundary.{u})
     (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) :
@@ -250,8 +234,8 @@ def CompanionIdealReductionContinues (T : MarkedIdealWithBoundary.{u})
     (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) : Prop :=
   1 ≤ maxOrderNonMonomialOnOrderLocus T s
 
-/- English proof (translation)
-Unfold both sides to obtain the same proposition, which implies itself.
+/- English proof (authored)
+The continuation condition is defined by positivity of the maximum order of the nonmonomial factor on the marked order locus. For a natural number this means it is at least one.
 -/
 theorem companionIdealReductionContinues_iff (T : MarkedIdealWithBoundary.{u})
     (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) :
@@ -263,8 +247,8 @@ def companionIdeal (T : MarkedIdealWithBoundary.{u})
     (s.obj s.length).IdealSheafData :=
   lastNonMonomialPart T s ^ T.mult ⊔ s.ideal s.length ^ maxOrderNonMonomialOnOrderLocus T s
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The marked object at the end of the sequence uses the final stage scheme. Changing its ideal to J and its marking to μ leaves that scheme and its dimension the same.
 -/
 theorem tripleAtLength_dim (T : MarkedIdealWithBoundary.{u})
     (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary)
@@ -284,8 +268,8 @@ def principalizationSeqAtEnd (T : MarkedIdealWithBoundary.{u})
     MarkedSequenceOfBlowups (s.proj s.length ≫ T.structMap) J μ (s.boundary s.length) :=
   rc (tripleAtLength T s J μ) hd
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The stated dimension bound permits the recursive principalization call on the final marked object with ideal J and marking μ. The definition then appends its sequence precisely through the operation that tests markedness for the original data.
 -/
 theorem appendRecursivePrincipalization_eq_appendIfMarked (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u})
     (rc : ∀ S : MarkedIdealWithBoundary.{u}, S.krullDimSucc ≤ T.krullDimSucc → S.SequenceOfBlowups)
@@ -296,10 +280,8 @@ theorem appendRecursivePrincipalization_eq_appendIfMarked (hinv : ComapIsoInvari
   unfold appendRecursivePrincipalization principalizationSeqAtEnd
   rw [dif_pos hd]
 
-/- English proof (translation)
-Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The dimension bound allows the recursive call. The resulting blowup data meet the supplied markedness condition for the original final ideal, marking, and boundary. The marked-data construction therefore returns those data endowed with this marking. In the append operation this successful case appends that continuation.
 -/
 theorem appendRecursivePrincipalization_eq_append (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u})
     (rc : ∀ S : MarkedIdealWithBoundary.{u}, S.krullDimSucc ≤ T.krullDimSucc → S.SequenceOfBlowups)
@@ -337,33 +319,31 @@ def extendByCompanionIdeal (s : MarkedBlowupSequenceData T.structMap T.ideal T.m
     MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary :=
   appendRecursivePrincipalization hinv T rc s (companionIdeal T s) (T.mult * maxOrderNonMonomialOnOrderLocus T s)
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The initial value of the nonmonomial iteration is the empty marked blowup sequence on the given object.
 -/
 theorem nonMonomialOrderReductionIter_zero :
     nonMonomialOrderReductionIter hinv T rc 0 = emptyMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary :=
   rfl
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+When the continuation condition holds, the successor rule appends the reduction obtained using the current nonmonomial factor. This is exactly the stated extension.
 -/
 theorem nonMonomialOrderReductionIter_succ_of_continues (f : ℕ) (h : NonMonomialOrderReductionContinues T (nonMonomialOrderReductionIter hinv T rc f)) :
     nonMonomialOrderReductionIter hinv T rc (f + 1) = extendByNonMonomialPart hinv T rc (nonMonomialOrderReductionIter hinv T rc f) := by
   rw [nonMonomialOrderReductionIter]
   exact if_pos h
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+When the continuation condition fails, the successor rule returns the previous sequence unchanged.
 -/
 theorem nonMonomialOrderReductionIter_succ_of_not_continues (f : ℕ) (h : ¬ NonMonomialOrderReductionContinues T (nonMonomialOrderReductionIter hinv T rc f)) :
     nonMonomialOrderReductionIter hinv T rc (f + 1) = nonMonomialOrderReductionIter hinv T rc f := by
   rw [nonMonomialOrderReductionIter]
   exact if_neg h
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Induct from iteration f. At f the equality is reflexive. If the later iterate equals the iterate at f, its continuation condition also fails. The successor rule therefore leaves it unchanged, proving the equality at the next index.
 -/
 theorem nonMonomialOrderReductionIter_eq_of_not_continues (f : ℕ) (h : ¬ NonMonomialOrderReductionContinues T (nonMonomialOrderReductionIter hinv T rc f)) :
     ∀ g, f ≤ g → nonMonomialOrderReductionIter hinv T rc g = nonMonomialOrderReductionIter hinv T rc f := by
@@ -377,23 +357,23 @@ theorem nonMonomialOrderReductionIter_eq_of_not_continues (f : ℕ) (h : ¬ NonM
     rw [nonMonomialOrderReductionIter_succ_of_not_continues hinv T rc n hn']
     exact ih
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The full nonmonomial reduction is defined by running its iteration for one more than the starting nonmonomial factor's maximum order.
 -/
 theorem nonMonomialOrderReduction_eq :
     nonMonomialOrderReduction hinv T rc =
       nonMonomialOrderReductionIter hinv T rc (maxOrder (nonMonomialPart T.boundary T.ideal) + 1) :=
   rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The companion iteration begins at the supplied sequence, so its zero iterate is that sequence.
 -/
 theorem companionIdealReductionIter_zero (s₀ : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) :
     companionIdealReductionIter hinv T rc s₀ 0 = s₀ :=
   rfl
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Under the continuation condition, the successor rule extends the current iterate by the recursive principalization of its companion ideal.
 -/
 theorem companionIdealReductionIter_succ_of_continues (s₀ : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary)
     (f : ℕ) (h : CompanionIdealReductionContinues T (companionIdealReductionIter hinv T rc s₀ f)) :
@@ -402,8 +382,8 @@ theorem companionIdealReductionIter_succ_of_continues (s₀ : MarkedBlowupSequen
   rw [companionIdealReductionIter]
   exact if_pos h
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+If the companion continuation condition fails, the successor rule returns the current iterate unchanged.
 -/
 theorem companionIdealReductionIter_succ_of_not_continues
     (s₀ : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary)
@@ -412,10 +392,8 @@ theorem companionIdealReductionIter_succ_of_not_continues
   rw [companionIdealReductionIter]
   exact if_neg h
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Start the induction at f, where the equality holds. If an iterate equals the one at f, its continuation condition fails as at f. The successor rule leaves it unchanged, so the equality holds at every later iterate.
 -/
 theorem companionIdealReductionIter_eq_of_not_continues
     (s₀ : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary)
@@ -431,8 +409,8 @@ theorem companionIdealReductionIter_eq_of_not_continues
     rw [companionIdealReductionIter_succ_of_not_continues hinv T rc s₀ n hn']
     exact ih
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The companion reduction starts from the completed nonmonomial reduction. The number of iterations is one more than the maximum order of that sequence's final nonmonomial part on its marked order locus. Evaluating this definition gives the equality.
 -/
 theorem companionIdealReduction_eq :
     companionIdealReduction hinv T rc =
@@ -440,8 +418,8 @@ theorem companionIdealReduction_eq :
         (maxOrderNonMonomialOnOrderLocus T (nonMonomialOrderReduction hinv T rc) + 1) :=
   rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The construction appends monomial principalization to the companion reduction. The input to that principalization is the marked object at the end of the companion sequence with its final transformed ideal and the original marking. Passing to marked blowup data for this tail gives the stated append.
 -/
 theorem orderReductionData_eq :
     orderReductionData hinv T rc =
@@ -453,8 +431,8 @@ theorem orderReductionData_eq :
         hinv :=
   rfl
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+A nonempty initial marked order locus rules out the empty-sequence branch of the definition. The remaining branch returns the marked sequence obtained from the order-reduction data.
 -/
 theorem orderReductionSeq_eq_of_nonempty (h : (orderAtLeastLocus T.ideal T.mult).Nonempty) :
     orderReductionSeq hinv T rc = (orderReductionData hinv T rc).toMarkedSequenceOfBlowups := by

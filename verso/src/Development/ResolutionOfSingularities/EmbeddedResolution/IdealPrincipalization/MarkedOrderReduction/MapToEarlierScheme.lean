@@ -30,10 +30,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The nontrivial boundary is obtained by deleting every unit entry. The appended unit is deleted, so the filtered list is the same as the original filtered list.
 -/
 private theorem sameNontrivialBoundary_append_top {X : Scheme.{u}} (L : List X.IdealSheafData) :
     MarkedIdealWithBoundary.SameNontrivialBoundary (L ++ [⊤]) L := by
@@ -44,24 +42,24 @@ private theorem sameNontrivialBoundary_append_top {X : Scheme.{u}} (L : List X.I
       simp only [MarkedIdealWithBoundary.nontrivialPart, List.cons_append, List.filter_cons] at ih ⊢
       rw [ih]
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Substitute the equality of the second and third lists in the boundary equivalence. The given equivalence then has the required form.
 -/
 private theorem sameNontrivialBoundary_of_eq {X : Scheme.{u}} {A B C : List X.IdealSheafData}
     (h : MarkedIdealWithBoundary.SameNontrivialBoundary A B) (e : C = B) : MarkedIdealWithBoundary.SameNontrivialBoundary A C := by
   subst e
   exact h
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The unit ideal is the multiplicative identity. Every power of it is the identity, which leaves J fixed under multiplication.
 -/
 private theorem top_pow_mul {X : Scheme.{u}} (J : X.IdealSheafData) (m : ℕ) :
     (⊤ : X.IdealSheafData) ^ m * J = J := by
   have e : (1 : X.IdealSheafData) = ⊤ := rfl
   rw [← e, one_pow, one_mul]
 
-/- English proof (translation)
-Split into cases according to the possible forms of the given data. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+After substituting the equality of indices, the induced comparison between the schemes is the identity and the two stage ideals are the same. The composite is simply f, giving equal pullbacks.
 -/
 private theorem comap_comp_eqToHom {F : ℕ → Scheme.{u}} (G : ∀ n, (F n).IdealSheafData)
     {a b : ℕ} (h : a = b) {W : Scheme.{u}} (f : W ⟶ F a) :
@@ -70,8 +68,8 @@ private theorem comap_comp_eqToHom {F : ℕ → Scheme.{u}} (G : ∀ n, (F n).Id
   have e : (eqToHom (congrArg F (rfl : a = a)) : F a ⟶ F a) = 𝟙 (F a) := rfl
   rw [e, Category.comp_id]
 
-/- English proof (translation)
-Split into cases according to the possible forms of the given data. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Substitute the equality of indices to identify the two lists and make the last map in the composite the identity. Every entry is now pulled back along f on both sides.
 -/
 private theorem map_comap_comp_eqToHom {F : ℕ → Scheme.{u}} (G : ∀ n, List (F n).IdealSheafData)
     {a b : ℕ} (h : a = b) {W : Scheme.{u}} (f : W ⟶ F a) :
@@ -82,14 +80,8 @@ private theorem map_comap_comp_eqToHom {F : ℕ → Scheme.{u}} (G : ∀ n, List
   rw [e]
   simp
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+On W the pullback of the center ideal is the unit ideal. Pulling back the controlled-transform factorization therefore removes the exceptional power, leaving equality of the old ideal pulled back through the transition and the new ideal pulled back directly. Every strict transform pulls back to the pullback of its original ideal because W lies off the center support. The new exceptional entry pulls back to the unit ideal, which disappears from the nontrivial boundary. This gives the boundary equivalence.
 -/
 private theorem comap_ideal_boundary_succ_of_comap_center_eq_top {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
@@ -133,31 +125,31 @@ def mapToEarlierScheme {s' : SequenceOfBlowups X'} {s : SequenceOfBlowups X} (c 
     (j : ℕ) (hj : j ≤ s'.length) (i : ℕ) (hi : i ≤ c.idx j) : s'.schemeAt j ⟶ s.schemeAt i :=
   c.map j hj ≫ s.transitionMap hi
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+By definition, the map to the earlier stage first takes the pullback comparison map to the matched stage, then follows the original sequence's transition to the earlier index.
 -/
 theorem mapToEarlierScheme_eq_map_comp_transitionMap {s' : SequenceOfBlowups X'} {s : SequenceOfBlowups X} (c : SequenceOfBlowupsPullback φ s' s)
     (j : ℕ) (hj : j ≤ s'.length) (i : ℕ) (hi : i ≤ c.idx j) :
     c.mapToEarlierScheme j hj i hi = c.map j hj ≫ s.transitionMap hi := rfl
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+At the matched index the extra transition goes from that stage to itself and is the identity. The composite is the original comparison map.
 -/
 theorem mapToEarlierScheme_index {s' : SequenceOfBlowups X'} {s : SequenceOfBlowups X} (c : SequenceOfBlowupsPullback φ s' s)
     (j : ℕ) (hj : j ≤ s'.length) :
     c.mapToEarlierScheme j hj (c.idx j) le_rfl = c.map j hj := by
   rw [mapToEarlierScheme_eq_map_comp_transitionMap, SequenceOfBlowups.transitionMap_self_eq_id, Category.comp_id]
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The transition from the matched stage down to i factors through i+1, followed by the single blowup map. Compose this factorization with the comparison map on the pulled back stage.
 -/
 theorem mapToEarlierScheme_eq_comp_blowupMorphism {s' : SequenceOfBlowups X'} {s : SequenceOfBlowups X} (c : SequenceOfBlowupsPullback φ s' s)
     (j : ℕ) (hj : j ≤ s'.length) (i : ℕ) (hi : i < c.idx j) :
     c.mapToEarlierScheme j hj i (le_of_lt hi) = c.mapToEarlierScheme j hj (i + 1) hi ≫ s.transitionMapSucc i := by
   simp only [mapToEarlierScheme_eq_map_comp_transitionMap, SequenceOfBlowups.blowupMorphism_eq_transitionMap, Category.assoc, SequenceOfBlowups.transitionMap_trans]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The projection from the earlier original stage composed with the transition from the matched original stage is the matched stage's projection. The pullback square at the matched stage then identifies the composite with the projection from the new stage followed by the original base map.
 -/
 theorem mapToEarlierScheme_comp_projectionToBase {s' : SequenceOfBlowups X'} {s : SequenceOfBlowups X} (c : SequenceOfBlowupsPullback φ s' s)
     (j : ℕ) (hj : j ≤ s'.length) (i : ℕ) (hi : i ≤ c.idx j) :
@@ -165,12 +157,8 @@ theorem mapToEarlierScheme_comp_projectionToBase {s' : SequenceOfBlowups X'} {s 
   rw [mapToEarlierScheme_eq_map_comp_transitionMap, Category.assoc, SequenceOfBlowups.transitionMap_comp_projectionToBase]
   exact (c.isPullback j hj).w
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the upper index b. At zero the two indices must agree. At b equal to n+1, if a is at most n, induction gives the comparison with the matched index of n, and strict increase then gives the comparison with the matched index of n+1. If a equals n+1 the comparison is reflexive.
 -/
 private theorem index_mono {s' : SequenceOfBlowups X'} {s : SequenceOfBlowups X}
     (c : SequenceOfBlowupsPullback φ s' s) :
@@ -189,8 +177,8 @@ private theorem index_mono {s' : SequenceOfBlowups X'} {s : SequenceOfBlowups X}
         subst hae
         exact le_rfl
 
-/- English proof (translation)
-Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+At a stage strictly before the end of the pulled back sequence the matched index is strictly smaller than the original length. At the last stage the matched index equals the original length. Both cases give the bound.
 -/
 theorem index_le_length {s' : SequenceOfBlowups X'} {s : SequenceOfBlowups X} (c : SequenceOfBlowupsPullback φ s' s)
     (j : ℕ) (hj : j ≤ s'.length) : c.idx j ≤ s.length := by
@@ -200,10 +188,8 @@ theorem index_le_length {s' : SequenceOfBlowups X'} {s : SequenceOfBlowups X} (c
     subst hje
     exact le_of_eq c.idx_length
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
+/- English proof (authored)
+The bound on the matched index puts i within the original steps. If the pulled back center had a point in its support, its image in stage i would be a center point. Its further image in the initial scheme lies in the image of the base map because the comparison commutes with projections. This contradicts the omission property for an unmatched step. The pulled back support is therefore empty and the ideal is the unit ideal.
 -/
 theorem comap_center_mapToEarlierScheme_eq_top_of_unmatched {s' : SequenceOfBlowups X'} {s : SequenceOfBlowups X}
     (c : SequenceOfBlowupsPullback φ s' s) (j : ℕ) (hj : j ≤ s'.length) (i : ℕ) (hi : i < c.idx j)
@@ -222,10 +208,8 @@ theorem comap_center_mapToEarlierScheme_eq_top_of_unmatched {s' : SequenceOfBlow
       = (s'.projectionToBase j ≫ φ).base y := by rw [hw]
   simpa using hb.symm
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
-
-Use linear arithmetic over natural numbers and integers.
+/- English proof (authored)
+If a pulled back index is at most j, monotonicity puts its matched index at most the match of j and below i. If it is at least j+1, monotonicity puts its match at least the match of j+1 and above i. Thus no pulled back step matches i.
 -/
 theorem index_ne_of_index_lt_of_lt_index_succ {s' : SequenceOfBlowups X'} {s : SequenceOfBlowups X}
     (c : SequenceOfBlowupsPullback φ s' s) (j : ℕ) (hj : j + 1 ≤ s'.length) (i : ℕ)
@@ -238,8 +222,8 @@ theorem index_ne_of_index_lt_of_lt_index_succ {s' : SequenceOfBlowups X'} {s : S
   · have hm := index_mono c j' (le_of_lt hj') (j + 1) h
     omega
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
+/- English proof (authored)
+Monotonicity makes the matched index at stage zero a lower bound on all matched indices. Since i is smaller, no actual step has i as its match.
 -/
 theorem index_ne_of_lt_index_zero {s' : SequenceOfBlowups X'} {s : SequenceOfBlowups X}
     (c : SequenceOfBlowupsPullback φ s' s) (i : ℕ) (hi : i < c.idx 0) :
@@ -248,8 +232,8 @@ theorem index_ne_of_lt_index_zero {s' : SequenceOfBlowups X'} {s : SequenceOfBlo
   have hm := index_mono c j' (le_of_lt hj') 0 (Nat.zero_le _)
   omega
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The matched stage comparison occurs in a pullback square for the given flat base map. Therefore it is flat by stability under base change.
 -/
 theorem flat_map {s' : SequenceOfBlowups X'} {s : SequenceOfBlowups X} (c : SequenceOfBlowupsPullback φ s' s)
     [AlgebraicGeometry.Flat φ] (j : ℕ) (hj : j ≤ s'.length) :
@@ -257,14 +241,8 @@ theorem flat_map {s' : SequenceOfBlowups X'} {s : SequenceOfBlowups X} (c : Sequ
   have h : MorphismProperty.IsStableUnderBaseChange (@AlgebraicGeometry.Flat) := inferInstance
   exact h.of_isPullback (c.isPullback j hj).flip inferInstance
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The matched original step is a blowup, and the new center is the pullback of its center under the flat stage comparison. Flat base change of blowup gives a comparison map from the new next stage to the original next stage making a pullback square. On the other hand, the compatibility of transitions shows that the map obtained by going back from the next matched stage also has the required composite to the original current stage. On the new scheme the pulled back center is locally generated by a nonzero divisor, since it is the exceptional ideal of its blowup. Uniqueness in the blowup universal property therefore identifies the two comparison maps. The stated square is the pullback square.
 -/
 theorem isPullback_blowupMorphism {s' : SequenceOfBlowups X'} {s : SequenceOfBlowups X} (c : SequenceOfBlowupsPullback φ s' s)
     [AlgebraicGeometry.Flat φ] (j : ℕ) (hj : j < s'.length) :
@@ -311,8 +289,8 @@ private def markedMap {k k' : Type u} [Field k] [Field k'] {A B : Scheme.{u}}
     (j : ℕ) (hj : j ≤ s'.length) : s'.obj j ⟶ s.obj (c.idx j) :=
   c.map j hj
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The projections of the marked data are the underlying sequence projections. Apply the projection formula for the map to the earlier stage and identify those projections with the marked ones.
 -/
 private theorem markedMapToEarlierScheme_comp_projectionToBase {k k' : Type u} [Field k] [Field k'] {A B : Scheme.{u}}
     {p : A ⟶ Spec (CommRingCat.of k)} {q : B ⟶ Spec (CommRingCat.of k')} {g : B ⟶ A}
@@ -325,8 +303,8 @@ private theorem markedMapToEarlierScheme_comp_projectionToBase {k k' : Type u} [
   rw [MarkedBlowupSequenceData.toMarkedSequence_projectionToBase, MarkedBlowupSequenceData.toMarkedSequence_projectionToBase] at h
   exact h
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+When the earlier index is the matched index itself, the underlying comparison is the ordinary stage comparison. The marked maps use these same morphisms.
 -/
 private theorem markedMapToEarlierScheme_index {k k' : Type u} [Field k] [Field k'] {A B : Scheme.{u}}
     {p : A ⟶ Spec (CommRingCat.of k)} {q : B ⟶ Spec (CommRingCat.of k')} {g : B ⟶ A}
@@ -337,52 +315,12 @@ private theorem markedMapToEarlierScheme_index {k k' : Type u} [Field k] [Field 
     markedMapToEarlierScheme s s' c j hj (c.idx j) le_rfl = markedMap s s' c j hj :=
   c.mapToEarlierScheme_index j hj
 
-/- English proof (translation)
-Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
+/- English proof (authored)
+First fix a stage of the pulled back sequence and compare pullbacks of the original ideal and boundary between two earlier stages separated only by unmatched steps. At each such step the center pulls back to the unit ideal, so the one-step formulas give equality of ideals and equivalence of boundaries. The maps to successive earlier stages compose through the original transition, so induction along the interval gives the comparison for the entire run of unmatched steps.
 
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components. Treat this case separately.
+Next induct over the pulled back stages. At zero, the initial ideal and boundary comparison, together with the projection formula, identifies the pulled back data with the data from original stage zero. The unmatched-step comparison advances this to the first matched stage. For a successor, the two blowups at the current match form a pullback square and their exceptional ideals agree after pullback. Comparing the controlled-transform factorizations and cancelling the marked power of the exceptional ideal gives equality of successor ideals. Flat pullback commutes with strict transform, and the exceptional entries agree. Since the strict transform of a unit ideal is a unit ideal, the boundary equivalence also advances to the next original stage. Apply the unmatched-step comparison between that stage and the next matched index.
 
-Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
+The last pulled back index matches the original last index. Transporting the stage comparison along that equality yields the stated ideal equality and boundary equivalence for the final map.
 -/
 theorem ideal_boundary_last_eq_comap_lastMap {k k' : Type u} [Field k] [Field k'] {X Y : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {q : Y ⟶ Spec (CommRingCat.of k')}

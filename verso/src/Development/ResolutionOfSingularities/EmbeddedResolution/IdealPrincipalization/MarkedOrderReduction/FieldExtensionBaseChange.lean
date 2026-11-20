@@ -41,18 +41,16 @@ abbrev baseChangeStructMap (T : MarkedIdealWithBoundary.{u}) (L : Type u) [Field
     (T.baseChange L f).scheme ⟶ Spec (CommRingCat.of L) :=
   pullback.snd T.structMap (specMapOfFieldHom T.base L f)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The two successive pullbacks equal pullback along the forward map followed by the inverse map. This composite is the identity on the original scheme, so the ideal is unchanged.
 -/
 private theorem comap_hom_comap_inv_eq_self {A B : Scheme.{u}} (e : A ≅ B) (D : A.IdealSheafData) :
     (D.comap e.inv).comap e.hom = D := by
   rw [← Scheme.IdealSheafData.comap_comp, e.hom_inv_id]
   simp
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The given splitting witnesses existence, so the definition selects some pair that also satisfies the splitting condition. By uniqueness, its second entry is N. That entry is the defined nonmonomial part.
 -/
 private theorem nonMonomialPart_eq_of_isMonomialSplitting_unique {X : Scheme.{u}} {E : List X.IdealSheafData}
     {I M N : X.IdealSheafData} (hs : IsMonomialSplitting E I M N)
@@ -66,8 +64,8 @@ private theorem nonMonomialPart_eq_of_isMonomialSplitting_unique {X : Scheme.{u}
   rw [dif_pos hex]
   exact hNN.symm
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
+/- English proof (authored)
+The scheme and field are fixed. Substituting the equalities of the structure maps, ideals, markings, and boundaries makes the two marked objects equal.
 -/
 private theorem markedIdealWithBoundary_mk_congr {k : Type u} [Field k] {A : Scheme.{u}}
     {p q : A ⟶ Spec (CommRingCat.of k)} {I J : A.IdealSheafData} {m n : ℕ}
@@ -75,8 +73,8 @@ private theorem markedIdealWithBoundary_mk_congr {k : Type u} [Field k] {A : Sch
     MarkedIdealWithBoundary.mk k A p I m E = MarkedIdealWithBoundary.mk k A q J n F := by
   subst hp; subst hI; subst hm; subst hE; rfl
 
-/- English proof (translation)
-Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+First substitute the equality of the marked objects so that the two maps have the same domain. The given equality of those maps then has a common type. Substituting it makes the pullback statement exactly the hypothesis.
 -/
 private theorem isPullbackBlowupSequence_of_eq_of_heq (F : PrincipalizationAssignment.{u}) (B : MarkedIdealWithBoundary.{u})
     {W U : MarkedIdealWithBoundary.{u}} (h : W = U) (g : W.scheme ⟶ B.scheme) (g' : U.scheme ⟶ B.scheme)
@@ -88,8 +86,8 @@ private theorem isPullbackBlowupSequence_of_eq_of_heq (F : PrincipalizationAssig
   subst hgg
   exact hh
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
+/- English proof (authored)
+The scheme isomorphism induces a homeomorphism of the underlying spaces. Topological Krull dimension is invariant under homeomorphism, and applying the same successor and natural-number conversion gives equality of the stated dimensions.
 -/
 theorem krullDimSucc_eq_of_iso {A B : Scheme.{u}} (e : A ≅ B) : krullDimSucc A = krullDimSucc B := by
   have hh := (TopCat.homeoOfIso (Scheme.forgetToTop.mapIso e)).isHomeomorph
@@ -97,8 +95,8 @@ theorem krullDimSucc_eq_of_iso {A B : Scheme.{u}} (e : A ≅ B) : krullDimSucc A
   congr 1
   exact hh.topologicalKrullDim_eq
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+An isomorphism preserves smoothness and quasi-compactness of the structure map and gives local finite type for the transported map. It also carries irreducible components and the strict normal crossing configuration to their counterparts, preserving nonvanishing and the crossing condition. The field and positive marking are unchanged. These are all the admissibility requirements.
 -/
 theorem isAdmissible_comap_of_iso {k : Type u} [Field k] {A B : Scheme.{u}} (e : A ≅ B)
     (s : B ⟶ Spec (CommRingCat.of k)) (J : B.IdealSheafData) (m : ℕ)
@@ -117,8 +115,8 @@ theorem isAdmissible_comap_of_iso {k : Type u} [Field k] {A B : Scheme.{u}} (e :
       smooth := inferInstance
       snc := inStrictNormalCrossingPosition_comap_iso s e E h.snc }
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Given a test pullback square for the vertical map, paste it with the marked pullback square. Its composite lower map respects the structure map by commutativity of the two structure triangles. Use the original marking on the test lower scheme, keeping its geometric and ideal data and taking positivity from the admissibility of T. The original order invariance then applies to the pasted square and gives the needed equality for its left projection.
 -/
 theorem orderAtPullbackInvariant_verticalMap {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
     {Y : Scheme.{u}} {g : Y ⟶ T.scheme} (hg : OrderAtPullbackInvariant T g)
@@ -138,10 +136,8 @@ theorem orderAtPullbackInvariant_verticalMap {T : MarkedIdealWithBoundary.{u}} (
     exact hbp
   · exact hpb.paste_vert S.isPullback
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The vertical map in each marked pullback square is flat. Choose a monomial splitting of the lower ideal using admissibility. Its pullback is a splitting for the pulled back boundary, and equivalence of boundaries makes it a splitting for the designated upper boundary. Uniqueness on each admissible object identifies the chosen nonmonomial parts with these lower and upper factors. The upper factor is the pullback of the lower factor.
 -/
 theorem nonMonomialPartBaseChange_of_flat (hG : PrincipalizationGeometryHypotheses.{u}) (T : MarkedIdealWithBoundary.{u})
     {Y : Scheme.{u}} (g : Y ⟶ T.scheme) [AlgebraicGeometry.Flat g] (k' : Type u) [Field k']
@@ -163,8 +159,8 @@ theorem nonMonomialPartBaseChange_of_flat (hG : PrincipalizationGeometryHypothes
       (N.comap S.left) M' N' hMNcomap h'
   rw [nonMonomialPart_eq_of_isMonomialSplitting_unique hMNcomap hu2, nonMonomialPart_eq_of_isMonomialSplitting_unique hMN hu1]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+In the marked pullback square the vertical map is flat, and the test-square order invariance for the original map passes to that vertical map by pasting. Use the flat pullback theorem for monomial principalization with this order invariance, the two locally monomial objects, and the equivalence between the pulled back boundary and the upper boundary. It gives the required comparison of their sequences.
 -/
 theorem monomialPrincipalizationBaseChange_of_flat (hG : PrincipalizationGeometryHypotheses.{u}) (τ : ComapIsoInvariance.{u})
     (T : MarkedIdealWithBoundary.{u}) (hT : T.IsAdmissible) {Y : Scheme.{u}} (g : Y ⟶ T.scheme)
@@ -180,8 +176,8 @@ theorem monomialPrincipalizationBaseChange_of_flat (hG : PrincipalizationGeometr
 
 namespace MarkedPullbackSquare
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Paste the marked square with the defining pullback square for the extension of the ground field. The lower composite is the lower object's structure map by its compatibility with the original structure map. The pasted square is therefore the claimed field-extension pullback.
 -/
 theorem isPullback_comp_baseChangeStructMap {T : MarkedIdealWithBoundary.{u}} {L : Type u} [Field L]
     {f : T.base →+* L} (S : MarkedPullbackSquare T (baseChangeProj T L f)) :
@@ -193,30 +189,10 @@ theorem isPullback_comp_baseChangeStructMap {T : MarkedIdealWithBoundary.{u}} {L
 
 end MarkedPullbackSquare
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
+/- English proof (authored)
+The pasted square identifies the upper scheme with the direct extension of the lower scheme to the new field. Its canonical isomorphism commutes with both projections. Transport the chosen upper boundary along the inverse isomorphism. This boundary is equivalent to the direct field-change boundary because pullbacks compose and remove unit ideals in the same way. Admissibility and the dimension bound persist under transport, and the order bound follows from order invariance under field extension and along the isomorphism. The lower dimension bound follows from the marked square.
 
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+Apply the field-change property of the assignment on the direct field extension. The isomorphism from the upper scheme is smooth and surjective, so the strict smooth pullback property compares its assigned sequence to the sequence on the direct field extension. Pullbacks in the two directions of the isomorphism cancel on the boundary, and the ideal and structure-map identities identify the transported object with the given upper one. Composing the two sequence comparisons and identifying the composite projection with the original vertical map gives the desired pullback.
 -/
 theorem commutesWithBaseChange_baseChangeProj_of_isOrderReduction (hG : PrincipalizationGeometryHypotheses.{u}) (n : ℕ)
     (F G : PrincipalizationAssignment.{u}) (hF : IsOrderReduction (fun d => d ≤ n) F G)
@@ -343,8 +319,8 @@ theorem commutesWithBaseChange_baseChangeProj_of_isOrderReduction (hG : Principa
   rw [hfst] at hres
   exact isPullbackBlowupSequence_of_eq_of_heq F S.lowerTriple htri S.left S.left HEq.rfl hres
 
-/- English proof (translation)
-Establish an intermediate fact. Supply the required witnesses or components.
+/- English proof (authored)
+The field extension projection is flat and preserves order in all test squares. The comparison for the order-reduction assignment gives the required rule. Flatness and the order invariance supply the comparison for monomial principalization, and flatness gives the pullback formula for the nonmonomial part. These properties are the components of the asserted base-change compatibility.
 -/
 theorem baseChangeCompatible_baseChangeProj_of_isOrderReduction (hG : PrincipalizationGeometryHypotheses.{u}) (τ : ComapIsoInvariance.{u}) (n : ℕ)
     (F G : PrincipalizationAssignment.{u}) (hF : IsOrderReduction (fun d => d ≤ n) F G)

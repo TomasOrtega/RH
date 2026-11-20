@@ -21,22 +21,16 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+If the irreducible set were contained in neither closed set, the complements of the two closed sets would each meet it. Irreducibility forces their intersection to meet it, contradicting the given containment in the union.
 -/
 private theorem subset_or_subset_of_isIrreducible {W : Type*} [TopologicalSpace W] {s a b : Set W}
     (hs : IsIrreducible s) (ha : IsClosed a) (hb : IsClosed b) (h : s ⊆ a ∪ b) :
     s ⊆ a ∨ s ⊆ b :=
   isPreirreducible_iff_isClosed_union_isClosed.mp hs.2 a b ha hb h
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
-
-Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the finite family of closed sets. The empty family cannot cover a nonempty irreducible set. When one set is added, split the union into that closed set and the finite closed union of the other sets. Irreducibility puts the original set entirely in one of these two parts. In the second case apply the induction hypothesis to the remaining family.
 -/
 private theorem exists_mem_finset_subset_of_isIrreducible {W : Type*} [TopologicalSpace W]
     {s : Set W} (hs : IsIrreducible s) (F : Finset (Set W))
@@ -65,10 +59,8 @@ private theorem exists_mem_finset_subset_of_isIrreducible {W : Type*} [Topologic
     · obtain ⟨Z, hZ, hZs⟩ := ih hclG hh
       exact ⟨Z, Finset.mem_insert_of_mem hZ, hZs⟩
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
-
-Supply the required witnesses or components.
+/- English proof (authored)
+Represent the finite family by a finite list of its distinct members. The same closed sets cover the irreducible set. The finite-family result supplies a member containing it, which belongs to the original family.
 -/
 theorem exists_mem_of_isIrreducible_subset_sUnion {W : Type*} [TopologicalSpace W]
     {s : Set W} (hs : IsIrreducible s) {F : Set (Set W)} (hF : F.Finite)
@@ -85,22 +77,16 @@ theorem exists_mem_of_isIrreducible_subset_sUnion {W : Type*} [TopologicalSpace 
         simpa only [Finset.mem_coe, Set.Finite.mem_toFinset] using hZF)
   exact ⟨Z, hF.mem_toFinset.mp hZ, hsZ⟩
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+A closed embedding induces the subspace topology on its source. By the definition of the induced topology, every source open is the inverse image of an ambient open.
 -/
 private theorem exists_isOpen_preimage_eq {X Z : Type*} [TopologicalSpace X] [TopologicalSpace Z]
     {f : X → Z} (hf : Topology.IsClosedEmbedding f) {u : Set X} (hu : IsOpen u) :
     ∃ U : Set Z, IsOpen U ∧ f ⁻¹' U = u :=
   hf.isInducing.isOpen_iff.mp hu
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Let two source opens each meet the inverse image. Express them as inverse images of ambient opens, using the induced topology. Their ambient counterparts each meet the given preirreducible set, so the intersection of the two ambient opens also meets it. Every point of this set is in the image of the embedding, so lift the intersection point. The lift belongs to both source opens and to the inverse image, proving preirreducibility.
 -/
 theorem isPreirreducible_preimage_of_isClosedEmbedding {X Z : Type*} [TopologicalSpace X]
     [TopologicalSpace Z] {f : X → Z} (hf : Topology.IsClosedEmbedding f) {t : Set Z}
@@ -127,8 +113,8 @@ theorem isPreirreducible_preimage_of_isClosedEmbedding {X Z : Type*} [Topologica
     rw [hVeq] at hw
     exact hw
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+Preirreducibility follows by the open-intersection argument. The original set is nonempty and lies in the embedding range, so any chosen point of it has a preimage. Hence the preimage is also nonempty and is irreducible.
 -/
 theorem isIrreducible_preimage_of_isClosedEmbedding {X Z : Type*} [TopologicalSpace X]
     [TopologicalSpace Z] {f : X → Z} (hf : Topology.IsClosedEmbedding f) {t : Set Z}
@@ -139,8 +125,8 @@ theorem isIrreducible_preimage_of_isClosedEmbedding {X Z : Type*} [TopologicalSp
   obtain ⟨w, rfl⟩ := hran hz
   exact ⟨w, hz⟩
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Membership in the discarded family requires being an irreducible component of the strict transform, in addition to being contained in the ambient center. The first condition gives the inclusion.
 -/
 theorem discardedComponents_subset_irreducibleComponents (A : PrincipalizationAlgorithm.{u})
     (hemb : AffineEmbedsIntoAffineSpace.{u}) (hsnc : NilIsStrictNormalCrossingsOnAffineSpace.{u})
@@ -153,8 +139,8 @@ theorem discardedComponents_subset_irreducibleComponents (A : PrincipalizationAl
   intro C hC
   exact (((AffineSpacePrincipalizationData.ofAffine A hemb hsnc hsm k Y pY).mem_discardedComponents_iff i C).mp hC).1
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The discarded scheme is the closed subscheme of the strict transform defined by the discarded ideal. Its inclusion is a closed immersion and hence a closed embedding on points.
 -/
 theorem isClosedEmbedding_discardedι (A : PrincipalizationAlgorithm.{u})
     (hemb : AffineEmbedsIntoAffineSpace.{u}) (hsnc : NilIsStrictNormalCrossingsOnAffineSpace.{u})
@@ -166,8 +152,8 @@ theorem isClosedEmbedding_discardedι (A : PrincipalizationAlgorithm.{u})
   AlgebraicGeometry.Scheme.Hom.isClosedEmbedding
     ((AffineSpacePrincipalizationData.ofAffine A hemb hsnc hsm k Y pY).discardedIdeal i).subschemeι
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The range of the discarded inclusion is the support of the discarded ideal. This ideal is the vanishing ideal of the closure of the discarded locus, so its support is that closure. In the Noetherian strict transform the discarded locus is a finite union of closed components and is already closed. Substituting its definition gives the claimed union.
 -/
 theorem range_discardedι_eq_sUnion_discardedComponents (A : PrincipalizationAlgorithm.{u})
     (hemb : AffineEmbedsIntoAffineSpace.{u}) (hsnc : NilIsStrictNormalCrossingsOnAffineSpace.{u})
@@ -191,14 +177,8 @@ theorem range_discardedι_eq_sUnion_discardedComponents (A : PrincipalizationAlg
   rw [h1, AffineSpacePrincipalizationData.discardedIdeal_eq_vanishingIdeal, Scheme.IdealSheafData.coe_support_vanishingIdeal,
     AffineSpacePrincipalizationData.coe_discardedLocusClosure, AffineSpacePrincipalizationData.discardedLocus_eq_sUnion_discardedComponents]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The principalization algorithm ends with the unit ideal, which has order zero at every point. If the last strict transform had a component, choose a generic point of it. The componentwise order-one result would give order one for the final principalization ideal at that point, a contradiction. Every point lies on an irreducible component, so the final strict transform is empty. The support of its defining ideal is the range of the inclusion and therefore empty, making the ideal the unit ideal.
 -/
 theorem affineStrictTransformEmptyAtLast_of_isFunctorialPrincipalization (A : PrincipalizationAlgorithm.{u}) (hA : IsFunctorialPrincipalization A)
     (hemb : AffineEmbedsIntoAffineSpace.{u}) (hsnc : NilIsStrictNormalCrossingsOnAffineSpace.{u})
@@ -246,20 +226,8 @@ theorem affineStrictTransformEmptyAtLast_of_isFunctorialPrincipalization (A : Pr
     exact Set.range_eq_empty _
   exact (Scheme.IdealSheafData.eq_top_iff_support_eq_empty _).mpr hsupp
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The discarded scheme embeds into the strict transform as a finite union of its irreducible components. The image of a component of the discarded scheme is irreducible, so it lies in one of these closed components. The inverse image of that component under the closed embedding is irreducible and contains the chosen component. Maximality makes them equal, so the image is the entire corresponding strict-transform component. Choose its generic point. Its ambient image avoids earlier centers, so it cannot lie in the support of any current boundary member. If the entire discarded component image lay in the indicated boundary support, it would contain this generic image there, which is impossible.
 -/
 theorem affineDetachedComponentsNotInBoundary (A : PrincipalizationAlgorithm.{u})
     (hemb : AffineEmbedsIntoAffineSpace.{u}) (hsnc : NilIsStrictNormalCrossingsOnAffineSpace.{u})

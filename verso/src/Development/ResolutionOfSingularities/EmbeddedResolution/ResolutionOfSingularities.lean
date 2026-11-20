@@ -37,8 +37,8 @@ abbrev lastObj (s : SequenceOfBlowups X) : Scheme.{u} := s.schemeAt s.length
 
 def lastStructMap (s : SequenceOfBlowups X) : s.lastObj ⟶ X := s.projectionToBase s.length
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The projection from a stage first transitions to stage zero and then uses the initial isomorphism to the base. The composite of the transition from the later stage to the intermediate stage and the transition from there to zero equals the direct transition to zero by functoriality of the tower. Following both sides by the initial isomorphism gives the stated compatibility.
 -/
 theorem transitionMap_comp_projectionToBase (s : SequenceOfBlowups X) {i i' : ℕ} (h : i ≤ i') :
     s.transitionMap h ≫ s.projectionToBase i = s.projectionToBase i' :=

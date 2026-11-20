@@ -21,16 +21,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+The other irreducible components form a finite closed union. The chosen component cannot lie in that union, since irreducibility would put it in one of the other components and maximality would make the two equal. Thus the complement of the union is a nonempty open, and every point of that open lies in the chosen component because the components cover the space. Density gives a point of the given set in that open.
 -/
 theorem nonempty_inter_of_dense_of_mem_irreducibleComponents
     {X : Type*} [TopologicalSpace X] [TopologicalSpace.NoetherianSpace X]
@@ -76,8 +68,8 @@ variable {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}} [AlgebraicGeometry
 
 variable (S : EmbeddedBlowupSequence k Y pY)
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The strict-transform inclusion is the immersion of a closed subscheme. It induces an embedding on points whose range is the closed support of the defining ideal, so the embedding is closed.
 -/
 theorem isClosedEmbedding_strictTransformι (i : ℕ) :
     Topology.IsClosedEmbedding ⇑(S.strictTransformι i).base := by
@@ -88,8 +80,8 @@ theorem isClosedEmbedding_strictTransformι (i : ℕ) :
   rw [hrange]
   exact (S.strictTransformIdeal i).support.2
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The ambient scheme at the given stage is Noetherian, so its underlying topological space is Noetherian. The strict-transform inclusion identifies its space with a subspace of that ambient space, which is therefore Noetherian as well.
 -/
 theorem noetherianSpace_strictTransform_of_isNoetherian
     (hN : ∀ j ≤ S.length, AlgebraicGeometry.IsNoetherian (S.schemeAt j)) (i : ℕ) (hi : i ≤ S.length) :
@@ -97,10 +89,8 @@ theorem noetherianSpace_strictTransform_of_isNoetherian
   have := hN i hi
   exact S.noetherianSpace_strictTransform_of_noetherianSpace_schemeAt i inferInstance
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The inverse image of the center support under the strict-transform inclusion is closed. If it contained the generic point, it would contain the closure of that point, which is the whole component. The definition would then make the component detached, contradicting the hypothesis.
 -/
 theorem notMem_ambientCenter_support_of_isGenericPoint (i : ℕ) (C : Set ↥(S.strictTransform i))
     (hC : C ∈ irreducibleComponents ↥(S.strictTransform i)) (hfr : C ∉ S.detachedComponents i)
@@ -118,10 +108,8 @@ theorem notMem_ambientCenter_support_of_isGenericPoint (i : ℕ) (C : Set ↥(S.
     exact hclosed.closure_subset_iff.mpr (Set.singleton_subset_iff.mpr hmem')
   exact hfr ((S.mem_detachedComponents i C).mpr ⟨hC, Set.image_subset_iff.mpr hsub⟩)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The range of the successor strict-transform inclusion is the support of its defining ideal. The locally closed immersion used in the strict-transform construction is quasi-compact in the Noetherian ambient stage. Its kernel support is therefore the closure of its image. This image is the inverse image under blowdown of the previous strict-transform support with the center removed, giving the formula.
 -/
 theorem range_strictTransformι_succ [AlgebraicGeometry.IsReduced Y]
     (hN : ∀ j ≤ S.length, AlgebraicGeometry.IsNoetherian (S.schemeAt j)) (i : ℕ) (hi : i < S.length) :
@@ -140,14 +128,14 @@ theorem range_strictTransformι_succ [AlgebraicGeometry.IsReduced Y]
 
 abbrev ambientCenterSupportCompl (i : ℕ) : (S.schemeAt i).Opens := (S.ambientCenter i).support.compl
 
-/- English proof (translation)
-Unfold both sides to obtain the same proposition, which implies itself.
+/- English proof (authored)
+The ambient center complement is the open complement of the center’s support. Its points are exactly those outside that support.
 -/
 @[simp] theorem mem_ambientCenterSupportCompl (i : ℕ) (x : ↥(S.schemeAt i)) :
     x ∈ S.ambientCenterSupportCompl i ↔ x ∉ ((S.ambientCenter i).support : Set ↥(S.schemeAt i)) := Iff.rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Restrict the blowup to the complement of the center support. There the center ideal restricts to the unit ideal. The restricted morphism is the blowup along that unit ideal, which is an isomorphism.
 -/
 theorem isIso_blowdown_restrict_ambientCenterSupportCompl (i : ℕ) (hi : i < S.length) :
     CategoryTheory.IsIso (S.blowdown i ∣_ S.ambientCenterSupportCompl i) := by
@@ -160,8 +148,8 @@ theorem isIso_blowdown_restrict_ambientCenterSupportCompl (i : ℕ) (hi : i < S.
 def strictTransformOffCenter (i : ℕ) : (S.strictTransform i).Opens :=
   (TopologicalSpace.Opens.map (S.strictTransformι i).base).obj (S.ambientCenterSupportCompl i)
 
-/- English proof (translation)
-Unfold both sides to obtain the same proposition, which implies itself.
+/- English proof (authored)
+The strict-transform open off the center is the inverse image of the ambient center complement under the inclusion. A point belongs to it exactly when its ambient image lies outside the center support.
 -/
 @[simp] theorem mem_strictTransformOffCenter (i : ℕ) (x : ↥(S.strictTransform i)) :
     x ∈ S.strictTransformOffCenter i ↔
@@ -170,66 +158,16 @@ Unfold both sides to obtain the same proposition, which implies itself.
 abbrev strictTransformMapPreimageOffCenter (i : ℕ) : (S.strictTransform (i + 1)).Opens :=
   (TopologicalSpace.Opens.map (S.strictTransformMap i).base).obj (S.strictTransformOffCenter i)
 
-/- English proof (translation)
-Unfold both sides to obtain the same proposition, which implies itself.
+/- English proof (authored)
+The open is the inverse image of the preceding strict-transform open off the center. Its membership condition is therefore that the image in the preceding strict transform has ambient image outside the center support.
 -/
 theorem mem_strictTransformMapPreimageOffCenter (i : ℕ) (x : ↥(S.strictTransform (i + 1))) :
     x ∈ S.strictTransformMapPreimageOffCenter i ↔
       (S.strictTransformι i).base ((S.strictTransformMap i).base x) ∉
         ((S.ambientCenter i).support : Set ↥(S.schemeAt i)) := Iff.rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+The successor strict-transform support is the closure of the inverse image of the preceding support off the center. The part over the center complement is therefore dense and open in the successor strict transform. This open meets every component and contains each component’s generic point. The blowdown is an isomorphism over the center complement, where the two strict transforms identify topologically with the corresponding parts of the preceding and successor supports. If a point downstairs generizes the image of the given generic point, it too lies off the center. Lift it through this isomorphism. The lift belongs to the successor strict transform and generizes the given generic point, because the open embeddings and the isomorphism reflect specialization. Maximality of the successor component forces the lift into that component. Thus every such generization downstairs lies in the closure of the image generic point. To see that this closure is a component, take any irreducible set containing it and apply the preceding argument to a generic point of that set’s closure. The larger set must lie in the same closure. Finally, the image generic point lies off the center, so its component is not detached.
 -/
 theorem exists_irreducibleComponent_isGenericPoint_strictTransformMap [AlgebraicGeometry.IsReduced Y]
     (hN : ∀ j ≤ S.length, AlgebraicGeometry.IsNoetherian (S.schemeAt j)) (i : ℕ) (hi : i < S.length)
@@ -463,13 +401,13 @@ def blowdownIterate (j : ℕ) : (n : ℕ) → (S.schemeAt (j + n) ⟶ S.schemeAt
   | 0 => 𝟙 _
   | (n + 1) => S.blowdown (j + n) ≫ blowdownIterate j n
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+A blowdown across zero successive stages is defined to be the identity of the starting stage.
 -/
 @[simp] theorem blowdownIterate_zero (j : ℕ) : S.blowdownIterate j 0 = 𝟙 _ := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The recursive successor first blows down one stage from the new endpoint and then applies the previously defined iterate to the starting stage.
 -/
 @[simp] theorem blowdownIterate_succ (j n : ℕ) :
     S.blowdownIterate j (n + 1) = S.blowdown (j + n) ≫ S.blowdownIterate j n := rfl
@@ -478,13 +416,13 @@ def strictTransformMapIterate (j : ℕ) : (n : ℕ) → (S.strictTransform (j + 
   | 0 => S.strictTransformMap j
   | (n + 1) => S.strictTransformMap (j + n + 1) ≫ strictTransformMapIterate j n
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The zero case of this iteration already crosses one stage. It is defined as the single strict-transform transition at the starting index.
 -/
 @[simp] theorem strictTransformMapIterate_zero (j : ℕ) : S.strictTransformMapIterate j 0 = S.strictTransformMap j := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+To add a stage to this iteration, first apply the strict-transform transition from the new endpoint to the preceding endpoint. Then apply the previous iterate.
 -/
 @[simp] theorem strictTransformMapIterate_succ (j n : ℕ) :
     S.strictTransformMapIterate j (n + 1) = S.strictTransformMap (j + n + 1) ≫ S.strictTransformMapIterate j n := rfl

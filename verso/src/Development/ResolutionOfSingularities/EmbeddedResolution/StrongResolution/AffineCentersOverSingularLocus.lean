@@ -224,8 +224,8 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+An open immersion is locally of finite presentation and induces isomorphisms on stalks. Each stalk map is formally smooth, so every point of the open lies in the smooth locus of the inclusion. The inclusion is therefore smooth.
 -/
 private theorem smooth_opens_ι {X : Scheme.{u}} (U : X.Opens) :
     AlgebraicGeometry.Smooth U.ι := by
@@ -235,10 +235,8 @@ private theorem smooth_opens_ι {X : Scheme.{u}} (U : X.Opens) :
   exact (RingHom.FormallySmooth.of_bijective (ConcreteCategory.bijective_of_isIso _) :
     (CommRingCat.Hom.hom (AlgebraicGeometry.Scheme.Hom.stalkMap U.ι x)).FormallySmooth)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Every point of the given open maps to a point at which the structural morphism has formally smooth stalk map. The open inclusion induces an isomorphism on stalks, hence a formally smooth map. Their composite is the stalk map of the restricted morphism and is formally smooth. Since the restricted morphism is locally of finite presentation, this proves smoothness.
 -/
 private theorem smooth_ι_comp_of_le_smoothLocus {X Z : Scheme.{u}} (f : X ⟶ Z)
     [AlgebraicGeometry.LocallyOfFinitePresentation f] (U : X.Opens)
@@ -260,8 +258,8 @@ private theorem smooth_ι_comp_of_le_smoothLocus {X Z : Scheme.{u}} (f : X ⟶ Z
       (AlgebraicGeometry.Scheme.Hom.stalkMap_comp U.ι f x)
   exact Eq.mpr heq (RingHom.FormallySmooth.comp hx hg)
 
-/- English proof (translation)
-Unfold both sides to obtain the same proposition, which implies itself.
+/- English proof (authored)
+The closed complement consists exactly of the points that do not belong to the smooth locus.
 -/
 private theorem mem_smoothLocusComplement_iff {X Z : Scheme.{u}} (f : X ⟶ Z)
     [AlgebraicGeometry.LocallyOfFinitePresentation f] (x : ↥X) :
@@ -269,8 +267,8 @@ private theorem mem_smoothLocusComplement_iff {X Z : Scheme.{u}} (f : X ⟶ Z)
       x ∉ (↑(AlgebraicGeometry.Scheme.Hom.smoothLocus f) : Set ↥X) :=
   Iff.rfl
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Restriction of the closed immersion to the target open is a pullback square along the open inclusion. The flat base-change formula for kernel ideals identifies the new kernel with the original kernel pulled back to that open.
 -/
 private theorem ker_morphismRestrict {X W : Scheme.{u}} (f : X ⟶ W)
     [AlgebraicGeometry.IsClosedImmersion f] (V : W.Opens) :
@@ -279,8 +277,8 @@ private theorem ker_morphismRestrict {X W : Scheme.{u}} (f : X ⟶ W)
   OpenImmersionRestriction.ker_eq_comap_ker_of_isPullback_isOpenImmersion f V.ι (f ∣_ V) ((f ⁻¹ᵁ V).ι)
     (AlgebraicGeometry.isPullback_morphismRestrict f V).flip
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The shortened induced sequence is defined by first constructing the full induced sequence and then deleting the unit-center blowups.
 -/
 private theorem inducedBlowupsWithoutIso_eq_withoutIsoBlowups {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}}
     [AlgebraicGeometry.IsAffine Y] {pY : Y ⟶ Spec (CommRingCat.of k)}
@@ -317,8 +315,8 @@ private noncomputable def restrictEmbeddingDatumBasicOpen {k : Type u} [Field k]
     have := smooth_opens_ι (D.ambient.basicOpen r)
     exact hsnc k _ _ inferInstance
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The ambient morphism is smooth over the field and the new embedding is the pullback of the original one along it. These are the hypotheses of the smooth compatibility theorem for the embedded resolution rule constructed from functorial principalization. The theorem gives the required pullback of sequences along the induced morphism of embedded schemes.
 -/
 private theorem isPullbackSeq_of_smooth
     (A : PrincipalizationAlgorithm.{u}) (hA : IsFunctorialPrincipalization A) (hw : TransitionsAreBlowupsForEmbeddings A)
@@ -337,12 +335,8 @@ private theorem isPullbackSeq_of_smooth
   have := hsmφ
   exact embeddedResolutionRule_isPullbackBlowupSequence_of_smooth A hA hw k Y Y' p p' D D' φ ψ hφ hsq
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+A point in the support of an original center shows that its ideal is nonunit, since the unit ideal has empty support. The corresponding step is retained in the shortened sequence. The shortened center and its projection to the base are the original center and projection at that index. The shortened sequence’s center condition therefore applies to the given point.
 -/
 private theorem centersLieOver_of_withoutIsoBlowups {X : Scheme.{u}} (s : SequenceOfBlowups X) (Z : Set ↥X)
     (h : s.withoutIsoBlowups.CentersLieOver Z) : s.CentersLieOver Z := by
@@ -360,8 +354,8 @@ private theorem centersLieOver_of_withoutIsoBlowups {X : Scheme.{u}} (s : Sequen
     (by rw [SequenceOfBlowups.withoutIsoBlowups_center]; exact hx)
   rwa [SequenceOfBlowups.withoutIsoBlowups_projectionToBase] at h1
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Replace the first embedded sequence by the equal second one. The certificates that its transitions are blowups prove the same proposition and do not change the induced sequence data or the center condition.
 -/
 private theorem blowupSequence_centersLieOver_congr {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}}
     [AlgebraicGeometry.IsAffine Y] {pY : Y ⟶ Spec (CommRingCat.of k)}
@@ -371,8 +365,8 @@ private theorem blowupSequence_centersLieOver_congr {k : Type u} [Field k] [Char
   subst e
   exact h
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The datum identifies the structural morphism with the closed immersion into the ambient scheme followed by the ambient structural morphism. Both maps are quasi-compact, so their composite is quasi-compact.
 -/
 private theorem quasiCompact_of_embeddingDatum {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}}
     [AlgebraicGeometry.IsAffine Y] {pY : Y ⟶ Spec (CommRingCat.of k)}
@@ -381,12 +375,8 @@ private theorem quasiCompact_of_embeddingDatum {k : Type u} [Field k] [CharZero 
   rw [← D.comp_eq]
   infer_instance
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The detached locus is open by canonical chart isolation and is closed because the strict transform is Noetherian. A point on the support of the center off the detached locus maps into the ambient center. For a smooth original scheme, the component isolation theorem puts every such point in the detached locus. But the support of the center off that locus lies in its complement. This contradiction proves the support is empty and the ideal is the unit ideal.
 -/
 theorem centerOffDetached_eq_top_of_smooth
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}) (hB : (canonicalAlgorithmRules hres).ReducesInductivelyOnDimension)
@@ -419,8 +409,8 @@ theorem centerOffDetached_eq_top_of_smooth
   rw [EmbeddedBlowupSequence.detachedClosureCompl_coe, EmbeddedBlowupSequence.detachedClosure_coe] at h3
   exact h3 h2
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+For a smooth input the center off the detached locus is the unit ideal, so it defines the empty subscheme. The total-space center is the kernel of the map from that subscheme into the total space. A map from an empty scheme has unit kernel, giving the result.
 -/
 theorem toEmbeddedBlowupSequence_center_eq_top_of_smooth
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}) (hB : (canonicalAlgorithmRules hres).ReducesInductivelyOnDimension)
@@ -436,10 +426,8 @@ theorem toEmbeddedBlowupSequence_center_eq_top_of_smooth
     centerOffDetached_eq_top_of_smooth hres hB hrad D hsm t ht]
   exact AlgebraicGeometry.Scheme.ker_eq_top_of_isEmpty ..
 
-/- English proof (translation)
-Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Every induced center is the unit ideal for a smooth input. If the shortened sequence had positive length, its first retained center would be nonunit and would come from a step within the original length. This contradicts the unit-center result, so the shortened length is zero.
 -/
 private theorem withoutIsoBlowups_length_eq_zero_of_smooth
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}) (hB : (canonicalAlgorithmRules hres).ReducesInductivelyOnDimension)
@@ -458,22 +446,8 @@ private theorem withoutIsoBlowups_length_eq_zero_of_smooth
   rw [EmbeddedBlowupSequence.inducedBlowups_length] at h1
   exact h2 (toEmbeddedBlowupSequence_center_eq_top_of_smooth hres hB hrad D hsm hbl _ h1)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Suppose a center point projects to the smooth locus of the original affine scheme. Since the embedding is closed, that smooth locus is the inverse image of an ambient open. Choose an ambient basic open through the image point contained in that ambient open. Its inverse image in the original scheme is affine and smooth over the field. Restrict the embedding datum to these opens. The ambient inclusion is smooth, so compatibility of the embedded rule identifies its sequence on this chart with the pullback of the original sequence, with empty centers deleted. The chart sequence has length zero because its source is smooth. Yet the given center point lifts to a point in the support of the pulled-back center over the chart, and such a nonempty center must be retained. This would give a step of the length-zero sequence, a contradiction.
 -/
 private theorem centersLieOver_embeddedResolutionRuleOfPrincipalization
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}) (hB : (canonicalAlgorithmRules hres).ReducesInductivelyOnDimension)
@@ -580,8 +554,8 @@ private theorem centersLieOver_embeddedResolutionRuleOfPrincipalization
   rw [hlen0] at hj
   exact absurd hj (Nat.not_lt_zero j)
 
-/- English proof (translation)
-Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The shortened sequence is the embedded resolution rule on the given datum, so every one of its centers lies over the complement of the smooth locus. Every point of an original center belongs to a retained step. The transfer from the shortened sequence thus gives the center condition for the full induced sequence.
 -/
 theorem toEmbeddedBlowupSequence_centersLieOver_smoothLocusComplement
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}) (hB : (canonicalAlgorithmRules hres).ReducesInductivelyOnDimension)
@@ -602,10 +576,8 @@ theorem toEmbeddedBlowupSequence_centersLieOver_smoothLocusComplement
   rw [embeddedResolutionRuleOfPrincipalization_apply] at h
   exact h
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Apply the embedded center avoidance result to the affine-space embedding datum for the canonical principalization with radical centers. Its hypotheses are supplied by correctness and functoriality of the canonical algorithm, radicality of smooth centers, the blowup transition result, and the empty-boundary property for smooth schemes. The embedded sequence formed from the chosen datum agrees with the sequence obtained from the affine-space data. Their induced blowup sequences thus have the same center condition, which puts the affine centers over the singular locus.
 -/
 theorem affineCentersLieOverSingularLocus_principalizationWithRadicalCenters :
     AffineCentersLieOverSingularLocus.{u} principalizationWithRadicalCenters affineEmbedsIntoAffineSpace

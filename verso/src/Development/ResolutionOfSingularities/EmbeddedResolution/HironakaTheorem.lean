@@ -23,8 +23,8 @@ open CategoryTheory AlgebraicGeometry
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Embed the affine input in smooth affine space with empty boundary and apply canonical principalization to its embedding ideal. The radical-center construction gives open detached loci and induced blowup transitions. Functorial principalization ends with the unit ideal, so no strict-transform component remains at the final stage. Each discarded piece is smooth, and the preimage of the original smooth locus is dense there. The induced centers lie over the singular locus. The reduced inverse image of that locus on each discarded piece is described by the ambient boundary, with the discarded pieces open and closed in the relevant centers and no discarded component contained in a boundary member. The ambient stages are smooth, their boundaries have strict normal crossings, and each ambient center meets the boundary in strict normal crossings. The restriction result gives strict normal crossings on the discarded pieces, while properness comes from the blowups. These are the hypotheses of the affine criterion for the induced sequence after the unit-center steps are removed. That criterion gives strong resolution for the canonical affine rule.
 -/
 theorem isStrongResolution_canonicalAffineResolutionRule (k : Type u) [Field k] [CharZero k] (Y : Scheme.{u})
     (p : Y ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.IsAffine Y]
@@ -69,8 +69,8 @@ theorem isStrongResolution_canonicalAffineResolutionRule (k : Type u) [Field k] 
       nilIsStrictNormalCrossingsOnAffineSpace affineSpaceIsSmooth)
     strictNormalCrossingsRestrictToClopen Blowup.blowupIsProper k Y p
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Use the canonical principalization algorithm with radical centers. It is functorial, and its induced transitions in the embedded construction are blowups. Every affine input embeds in smooth affine space with empty boundary, and any two such closed embeddings can be compared by an automorphism after introducing the other set of coordinates. The canonical affine rule is a strong resolution by the affine criterion. The globalization theorem for principalization applies to these data, giving a strong resolution rule in characteristic zero with the required smooth pullback and field extension compatibilities.
 -/
 theorem strongResolutionOfSingularitiesCharZero :
     StrongResolutionOfSingularitiesCharZero.{u} :=

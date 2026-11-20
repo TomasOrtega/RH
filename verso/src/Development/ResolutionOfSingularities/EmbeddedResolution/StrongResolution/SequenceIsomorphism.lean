@@ -13,25 +13,15 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Unfold both sides to obtain the same proposition, which implies itself.
+/- English proof (authored)
+The map on spectra sends a prime ideal to its inverse image under the ring homomorphism. Membership in that inverse image means that the element’s image lies in the original prime.
 -/
 private theorem mem_specMap_asIdeal {A B : CommRingCat.{u}} (ψ : A ⟶ B)
     (q : PrimeSpectrum B) (a : A) :
     a ∈ ((Spec.map ψ) q).asIdeal ↔ (ConcreteCategory.hom ψ) a ∈ q.asIdeal := Iff.rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
-
-Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
-
-Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The ring isomorphism gives a bijection on prime ideals, with its inverse giving the inverse correspondence. If an element vanishes on all primes above the given set, apply the inverse ring isomorphism to it. Its inverse image belongs to every prime of the given set by the prime-membership correspondence. Thus the original element belongs to the image of the vanishing ideal. Conversely, an element of the original vanishing ideal maps to an element of every prime above the given set, and the ideal they generate is contained in the vanishing ideal upstairs.
 -/
 private theorem vanishingIdeal_preimage_specMap {A B : CommRingCat.{u}} (φ : A ⟶ B) [IsIso φ]
     (W : Set (PrimeSpectrum A)) :
@@ -73,12 +63,8 @@ private theorem vanishingIdeal_preimage_specMap {A B : CommRingCat.{u}} (φ : A 
     intro q hq
     exact (mem_specMap_asIdeal φ q a).mp (ha _ hq)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
-
-Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+The affine coordinate maps commute with the scheme isomorphism and the map on spectra of the section-ring isomorphism. Consequently, the inverse image of the subset in the new affine spectrum is the inverse image under that spectrum map of the subset in the original affine spectrum. The vanishing ideal formula for a ring isomorphism gives the result.
 -/
 private theorem vanishingIdeal_preimage_fromSpec_of_isIso {Y Y' : Scheme.{u}} (ψ : Y' ⟶ Y) [IsIso ψ]
     (T : Set Y) (U : Y.affineOpens) (hV : IsAffineOpen (ψ ⁻¹ᵁ (U : Y.Opens))) :
@@ -101,8 +87,8 @@ private theorem vanishingIdeal_preimage_fromSpec_of_isIso {Y Y' : Scheme.{u}} (�
   exact congrArg PrimeSpectrum.vanishingIdeal
     (Set.ext fun z => iff_of_eq (congrArg (fun y => y ∈ T) (hpt z)))
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The maximal ideal of a local ring consists of its nonunits. A ring isomorphism preserves and reflects being a unit, since its inverse is also a ring homomorphism. Thus the image of the given nonunit is a nonunit.
 -/
 private theorem map_mem_maximalIdeal_ringEquiv {R S : Type u} [CommRing R] [CommRing S]
     [IsLocalRing R] [IsLocalRing S] (e : R ≃+* S) {a : R}
@@ -112,14 +98,8 @@ private theorem map_mem_maximalIdeal_ringEquiv {R S : Type u} [CommRing R] [Comm
   intro hu
   exact h (by simpa using hu.map (e.symm : S →+* R))
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+The images of the parameters lie in the new maximal ideal. Conversely, an element of that maximal ideal is carried by the inverse isomorphism into the original maximal ideal, which is generated by the given parameters. Mapping such an expression forward puts the element in the ideal generated by the images. These images therefore generate the new maximal ideal, and invariance of Krull dimension gives the required number of them.
 -/
 private theorem isRegularParameterSystem_ringEquiv {R S : Type u} [CommRing R] [CommRing S]
     [IsLocalRing R] [IsLocalRing S] (e : R ≃+* S) (n : ℕ) (x : Fin n → R)
@@ -148,8 +128,8 @@ private theorem isRegularParameterSystem_ringEquiv {R S : Type u} [CommRing R] [
     simpa using h4
   exact ⟨le_antisymm hle hge, hdim.trans (ringKrullDim_eq_of_ringEquiv e)⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The two parameter lists agree at every index, so they are equal as functions. Substitute the second list into the stated regular parameter property.
 -/
 private theorem isRegularParameterSystem_congr {R : Type u} [CommRing R] [IsLocalRing R]
     (n : ℕ) {x y : Fin n → R} (h : ∀ i, x i = y i) (hy : IsRegularParameterSystem R n y) :
@@ -158,28 +138,24 @@ private theorem isRegularParameterSystem_congr {R : Type u} [CommRing R] [IsLoca
   rw [hxy]
   exact hy
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Start from the commuting square for the forward isomorphisms. Precompose with the inverse source isomorphism and postcompose with the inverse target isomorphism. Cancelling the inverse pairs gives the commuting square in the opposite direction.
 -/
 private theorem iso_inv_comp_eq_comp_inv {W Y Z T : Scheme.{u}} (a : W ≅ Y) (b : Z ≅ T)
     (p : W ⟶ Z) (q : Y ⟶ T) (hw : a.hom ≫ q = p ≫ b.hom) :
     a.inv ≫ p = q ≫ b.inv := by
   rw [Iso.inv_comp_eq, ← Category.assoc, hw, Category.assoc, Iso.hom_inv_id, Category.comp_id]
 
-/- English proof (translation)
-Substitute using the available equality. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Identify the two equal indices. The induced stage isomorphism is the identity and leaves the projection to the base unchanged.
 -/
 private theorem eqToIso_hom_comp_projectionToBase_of_eq {X : Scheme.{u}} (s : SequenceOfBlowups X) {i j : ℕ}
     (hij : i = j) : (eqToIso (congrArg s.schemeAt hij)).hom ≫ s.projectionToBase j = s.projectionToBase i := by
   subst hij
   simp
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the stage. At zero the assertion is the stipulated compatibility of the initial isomorphisms. At a successor factor each projection through the preceding stage. Use the commuting square for the successor transitions to move the stage isomorphism across that factor. The induction hypothesis then identifies the remaining composite with the preceding projection to the base.
 -/
 private theorem iso_hom_comp_projectionToBase_of_commute_blowupMorphism {X : Scheme.{u}} {B B' : SequenceOfBlowups X}
     (e : ∀ i : ℕ, i ≤ B.length → (B.schemeAt i ≅ B'.schemeAt i))
@@ -201,8 +177,8 @@ private theorem iso_hom_comp_projectionToBase_of_commute_blowupMorphism {X : Sch
       = B.transitionMapSucc n ≫ B.projectionToBase n
     rw [hstep n hn, Category.assoc, ih hn.le]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The support of the pulled-back ideal is the inverse image of the original support. Its membership condition states exactly that the point’s image lies in the original support.
 -/
 private theorem mem_support_of_mem_support_comap {Y Z : Scheme.{u}} (g : Y ⟶ Z)
     (I : Z.IdealSheafData) {x : Y} (hx : x ∈ (I.comap g).support) : g x ∈ I.support := by
@@ -210,8 +186,8 @@ private theorem mem_support_of_mem_support_comap {Y Z : Scheme.{u}} (g : Y ⟶ Z
   rw [h] at hx
   exact hx
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The support of the pulled-back ideal is the inverse image under the forward isomorphism of the original support. The image of the inverse point under the forward isomorphism is the original point, which lies in the support by hypothesis.
 -/
 private theorem inv_mem_support_comap_of_iso {Y Z : Scheme.{u}} (g : Y ≅ Z) (I : Z.IdealSheafData)
     {x : Z} (hx : x ∈ I.support) : g.inv x ∈ (I.comap g.hom).support := by
@@ -220,30 +196,22 @@ private theorem inv_mem_support_comap_of_iso {Y Z : Scheme.{u}} (g : Y ≅ Z) (I
   have hx' : x ∈ ((I.comap g.hom).comap g.inv).support := by rw [hI]; exact hx
   exact mem_support_of_mem_support_comap g.inv (I.comap g.hom) hx'
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Equal morphisms have equal restrictions to the same target open. Transport the given isomorphism property across this equality.
 -/
 private theorem isIso_restrict_of_eq {Y Z : Scheme.{u}} {f₁ f₂ : Y ⟶ Z} (hf : f₁ = f₂)
     (U : Z.Opens) (h : IsIso (f₁ ∣_ U)) : IsIso (f₂ ∣_ U) := by
   subst hf
   exact h
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+A scheme isomorphism induces a homeomorphism on underlying spaces. Every homeomorphism takes open sets to open sets.
 -/
 private theorem isOpenMap_iso_hom {Y Z : Scheme.{u}} (g : Y ≅ Z) : IsOpenMap (⇑g.hom) :=
   (Scheme.homeoOfIso g).isOpenMap
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+At the corresponding point of the original scheme, choose an affine neighborhood and the local product description by regular parameters. The inverse isomorphism gives an affine inverse-image neighborhood and identifies its section and local rings with the original ones. Regularity and the regular parameter system transport along the local ring isomorphism, and compatibility with germs shows the transported sections realize those parameters. The new inverse-image closed set is the inverse image of the old one, so its vanishing ideal on the new chart is the image of the original ideal under the section-ring isomorphism. This image is generated by the product of the transported parameters, giving strict normal crossings at the chosen point.
 -/
 private theorem isStrictNormalCrossingsDivisor_reducedInverseImage_iso_inv_comp {Y Y' X : Scheme.{u}} (g : Y ≅ Y') (p : Y ⟶ X)
     (S : TopologicalSpace.Closeds X) (hS : IsStrictNormalCrossingsDivisor (reducedInverseImage p S)) :
@@ -285,12 +253,8 @@ private theorem isStrictNormalCrossingsDivisor_reducedInverseImage_iso_inv_comp 
       Ideal.map_span]
     simp [map_prod]
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+Use the inverse isomorphism at each stage and reverse the equality of lengths. The initial compatibility inverts, and the commuting transition squares remain commutative after replacing the vertical maps by their inverses. The center pullback identities reverse as well because successive pullbacks along an isomorphism and its inverse give the original ideal.
 -/
 theorem SequenceOfBlowups.Isomorphic.symm {X : Scheme.{u}} {B B' : SequenceOfBlowups X}
     (h : B.Isomorphic B') : B'.Isomorphic B := by
@@ -313,12 +277,8 @@ theorem SequenceOfBlowups.Isomorphic.symm {X : Scheme.{u}} {B B' : SequenceOfBlo
       Scheme.IdealSheafData.comap_id]
   exact ⟨hL.symm, fun i hi => (e i (by omega)).symm, p1, p2, p3⟩
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
+/- English proof (authored)
+Compose the isomorphisms at each stage and chain the equalities of lengths. The initial equations and the commuting transition squares compose. Pullback of a center along the composite is successive pullback, giving the two center identities in succession. These data satisfy all comparison conditions.
 -/
 theorem SequenceOfBlowups.Isomorphic.trans {X : Scheme.{u}} {B B' B'' : SequenceOfBlowups X}
     (h : B.Isomorphic B') (h' : B'.Isomorphic B'') : B.Isomorphic B'' := by
@@ -340,8 +300,8 @@ theorem SequenceOfBlowups.Isomorphic.trans {X : Scheme.{u}} {B B' B'' : Sequence
     rw [Scheme.IdealSheafData.comap_comp, gcen i hi', hcen i hi]
   exact ⟨hL.trans hL', fun i hi => (e i hi) ≪≫ (g i (by omega)), p1, p2, p3⟩
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Use the stage isomorphism at the final index of the first sequence. Equality of lengths identifies the corresponding stage of the second sequence with its final object. The stagewise compatibility with projections to the base gives the required compatibility of the final structural maps.
 -/
 theorem SequenceOfBlowups.Isomorphic.exists_lastObjIso {X : Scheme.{u}} {B B' : SequenceOfBlowups X}
     (h : B.Isomorphic B') :
@@ -352,22 +312,8 @@ theorem SequenceOfBlowups.Isomorphic.exists_lastObjIso {X : Scheme.{u}} {B B' : 
     Category.assoc, eqToIso_hom_comp_projectionToBase_of_eq B' hL]
   exact iso_hom_comp_projectionToBase_of_commute_blowupMorphism e h0 hstep B.length le_rfl
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+The final objects are isomorphic over the base, so smoothness over the field and properness of the original final map transfer to the new one. Restricting the final isomorphism over the smooth locus transfers the isomorphism property there. The homeomorphism of final spaces carries the dense smooth-locus inverse image to its counterpart. At each stage the comparison identifies both the centers and the projection to the base, so the new centers still lie over the singular locus. Finally, the strict normal crossings description of the reduced inverse image of that locus transports along the final isomorphism. Thus all strong resolution conditions hold.
 -/
 theorem IsStrongResolution.of_isomorphic (k : Type u) [Field k] (X : Scheme.{u})
     (f : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.LocallyOfFiniteType f]

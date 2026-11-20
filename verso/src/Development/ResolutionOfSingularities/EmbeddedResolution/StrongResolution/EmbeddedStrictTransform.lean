@@ -65,14 +65,14 @@ def strictTransformIdeal (i : ℕ) : (S.ambientLevel i).IdealSheafData :=
     (Scheme.Hom.ker (S.emb ≫ S.ambientBlowups.isoZero.inv))
     (fun j ih => Blowup.strictTransform (S.ambientBlowupMorphism j) (S.ambientCenter j) ih) i
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The initial ideal is the kernel of the original embedding transported into the first ambient stage by the inverse of the stage-zero isomorphism.
 -/
 @[simp] theorem strictTransformIdeal_zero :
     S.strictTransformIdeal 0 = Scheme.Hom.ker (S.emb ≫ S.ambientBlowups.isoZero.inv) := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+At a successor, the ideal is defined as the strict transform of the preceding ideal under the current ambient blowup with its current center.
 -/
 @[simp] theorem strictTransformIdeal_succ (i : ℕ) :
     S.strictTransformIdeal (i + 1) =
@@ -82,16 +82,16 @@ abbrev strictTransform (i : ℕ) : Scheme.{u} := (S.strictTransformIdeal i).subs
 
 abbrev strictTransformι (i : ℕ) : S.strictTransform i ⟶ S.ambientLevel i := (S.strictTransformIdeal i).subschemeι
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The strict transform is a closed subscheme of the ambient stage. Its underlying space is a subspace of the ambient Noetherian space and is therefore Noetherian.
 -/
 theorem noetherianSpace_strictTransform (i : ℕ)
     [TopologicalSpace.NoetherianSpace ↥(S.ambientLevel i)] :
     TopologicalSpace.NoetherianSpace ↥(S.strictTransform i) :=
   Blowup.noetherianSpace_subscheme (S.strictTransformIdeal i)
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+The pulled-back preceding ideal is contained in the successor strict-transform ideal. Thus the ambient blowup restricted to the successor strict transform factors through the closed subscheme defined by the preceding ideal. The factorization gives the desired map and identifies the two composites to the preceding ambient stage.
 -/
 theorem exists_strictTransformMap (i : ℕ) :
     ∃ f : S.strictTransform (i + 1) ⟶ S.strictTransform i,
@@ -105,8 +105,8 @@ theorem exists_strictTransformMap (i : ℕ) :
 
 def strictTransformMap (i : ℕ) : S.strictTransform (i + 1) ⟶ S.strictTransform i := (S.exists_strictTransformMap i).choose
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The chosen strict-transform map comes from factoring the ambient blowup on the successor strict transform through the preceding strict transform. Composing with the preceding inclusion recovers that restricted blowup.
 -/
 theorem strictTransformMap_comp_strictTransformι (i : ℕ) :
     S.strictTransformMap i ≫ S.strictTransformι i = S.strictTransformι (i + 1) ≫ S.ambientBlowupMorphism i :=
@@ -116,8 +116,8 @@ def discardedComponents (i : ℕ) : Set (Set ↥(S.strictTransform i)) :=
   {C | C ∈ irreducibleComponents ↥(S.strictTransform i) ∧
     (S.strictTransformι i).base '' C ⊆ ((S.ambientCenter i).support : Set ↥(S.ambientLevel i))}
 
-/- English proof (translation)
-Unfold both sides to obtain the same proposition, which implies itself.
+/- English proof (authored)
+A discarded component is by definition an irreducible component of the strict transform whose image in the ambient stage lies entirely in the current center support.
 -/
 theorem mem_discardedComponents_iff (i : ℕ) (C : Set ↥(S.strictTransform i)) :
     C ∈ S.discardedComponents i ↔
@@ -126,13 +126,13 @@ theorem mem_discardedComponents_iff (i : ℕ) (C : Set ↥(S.strictTransform i))
 
 def discardedLocus (i : ℕ) : Set ↥(S.strictTransform i) := ⋃₀ (S.discardedComponents i)
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The discarded locus is defined by taking the union of the discarded components.
 -/
 theorem discardedLocus_eq_sUnion_discardedComponents (i : ℕ) : S.discardedLocus i = ⋃₀ (S.discardedComponents i) := rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+There are finitely many irreducible components in the Noetherian strict transform. Each discarded component is one of them and is closed, so their union is a finite union of closed sets.
 -/
 theorem isClosed_discardedLocus (i : ℕ)
     [TopologicalSpace.NoetherianSpace ↥(S.strictTransform i)] :
@@ -150,8 +150,8 @@ theorem isClosed_discardedLocus (i : ℕ)
 def discardedLocusClosure (i : ℕ) : TopologicalSpace.Closeds ↥(S.strictTransform i) :=
   ⟨closure (S.discardedLocus i), isClosed_closure⟩
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The discarded locus is closed by the finiteness argument, and taking its closure leaves it unchanged.
 -/
 theorem coe_discardedLocusClosure (i : ℕ)
     [TopologicalSpace.NoetherianSpace ↥(S.strictTransform i)] :
@@ -162,8 +162,8 @@ theorem coe_discardedLocusClosure (i : ℕ)
 def discardedIdeal (i : ℕ) : (S.strictTransform i).IdealSheafData :=
   Scheme.IdealSheafData.vanishingIdeal (S.discardedLocusClosure i)
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The ideal of the discarded scheme is defined as the vanishing ideal of the closed discarded locus.
 -/
 theorem discardedIdeal_eq_vanishingIdeal (i : ℕ) :
     S.discardedIdeal i = Scheme.IdealSheafData.vanishingIdeal (S.discardedLocusClosure i) := rfl
@@ -174,8 +174,8 @@ abbrev discardedι (i : ℕ) : S.discardedSubscheme i ⟶ S.strictTransform i :=
 
 def discardedLocusClosureCompl (i : ℕ) : (S.strictTransform i).Opens := (S.discardedLocusClosure i).compl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The complement open is obtained by removing the discarded closure. Its underlying set is therefore the complement of the underlying closed set.
 -/
 theorem coe_discardedLocusClosureCompl (i : ℕ) :
     ((S.discardedLocusClosureCompl i : (S.strictTransform i).Opens) : Set ↥(S.strictTransform i)) =
@@ -184,8 +184,8 @@ theorem coe_discardedLocusClosureCompl (i : ℕ) :
 def comapAmbientCenter (i : ℕ) : (S.strictTransform i).IdealSheafData :=
   (S.ambientCenter i).comap (S.strictTransformι i)
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The ideal of the ambient center restricted to the strict transform is its pullback along the strict-transform inclusion, by definition.
 -/
 theorem comapAmbientCenter_eq (i : ℕ) :
     S.comapAmbientCenter i = (S.ambientCenter i).comap (S.strictTransformι i) := rfl
@@ -194,8 +194,8 @@ def centerOffDetached (i : ℕ) : (S.strictTransform i).IdealSheafData :=
   Scheme.Hom.ker
     (((S.comapAmbientCenter i).comap (S.discardedLocusClosureCompl i).ι).subschemeι ≫ (S.discardedLocusClosureCompl i).ι)
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+First pull the ambient center ideal to the strict transform and restrict to the open complement of the discarded closure. Include the resulting closed subscheme into that open and then into the strict transform. The center off the detached part is the kernel of the composite.
 -/
 theorem centerOffDetached_eq (i : ℕ) :
     S.centerOffDetached i =
@@ -207,13 +207,13 @@ def discardedUnion (i : ℕ) : Scheme.{u} :=
   Nat.rec (motive := fun _ => Scheme.{u}) (⊥_ Scheme.{u})
     (fun j ih => ih ⨿ S.discardedSubscheme j) i
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The recursive union at stage zero has no discarded summands and is the initial scheme.
 -/
 @[simp] theorem discardedUnion_zero : S.discardedUnion 0 = ⊥_ Scheme.{u} := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+At each successor the recursion adds the subscheme discarded at the preceding stage by forming its coproduct with the previously accumulated discarded schemes.
 -/
 @[simp] theorem discardedUnion_succ (i : ℕ) :
     S.discardedUnion (i + 1) = (S.discardedUnion i ⨿ S.discardedSubscheme i) := rfl
@@ -226,8 +226,8 @@ def transitionMap (i : ℕ) : S.totalSpace (i + 1) ⟶ S.totalSpace i :=
         (S.discardedι i ≫ coprod.inl) :
       S.discardedUnion i ⨿ S.discardedSubscheme i ⟶ S.totalSpace i)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The transition on total spaces is defined on the strict-transform summand by the strict-transform map followed by inclusion of the preceding strict-transform summand. Restriction along the first coproduct inclusion therefore gives the stated composite.
 -/
 theorem inl_comp_transitionMap (i : ℕ) :
     (coprod.inl : S.strictTransform (i + 1) ⟶ S.totalSpace (i + 1)) ≫ S.transitionMap i =
@@ -238,8 +238,8 @@ def centerOnTotalSpace (i : ℕ) : (S.totalSpace i).IdealSheafData :=
   Scheme.Hom.ker
     ((S.centerOffDetached i).subschemeι ≫ (coprod.inl : S.strictTransform i ⟶ S.totalSpace i))
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The center on the total space is defined as the kernel of the inclusion of the center off the detached part followed by inclusion of the strict-transform summand in the total space.
 -/
 theorem centerOnTotalSpace_eq_ker (i : ℕ) :
     S.centerOnTotalSpace i =
@@ -247,8 +247,8 @@ theorem centerOnTotalSpace_eq_ker (i : ℕ) :
         ((S.centerOffDetached i).subschemeι ≫
           (coprod.inl : S.strictTransform i ⟶ S.totalSpace i)) := rfl
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The coproduct with the initial scheme is canonically isomorphic to the original closed subscheme, and the first inclusion followed by this isomorphism is the identity. Follow that isomorphism by the inverse of the given isomorphism to the original source. Composing with the original map cancels the given isomorphism and recovers the subscheme inclusion.
 -/
 private theorem exists_coprodInitialIso_inl_comp_eq_subschemeι {Z W : Scheme.{u}} (I : Z.IdealSheafData)
     (g : W ⟶ Z) (e0 : W ≅ I.subscheme) (he0 : e0.hom ≫ I.subschemeι = g) :
@@ -263,10 +263,8 @@ private theorem exists_coprodInitialIso_inl_comp_eq_subschemeι {Z W : Scheme.{u
     rw [Iso.trans_hom, ← Category.assoc, hunit, Category.id_comp, Iso.symm_hom]
   rw [← Category.assoc, h1, ← he0, ← Category.assoc, e0.inv_hom_id, Category.id_comp]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The given closed immersion and the closed immersion of its kernel subscheme have equal kernels. Each factors through the other by the closed-immersion lifting property. Their composites become identities after composition with the respective closed immersions and hence are identities by cancellation. The resulting isomorphism has the required compatibility.
 -/
 private theorem exists_iso_ker_subscheme {W V : Scheme.{u}} (f : W ⟶ V)
     [AlgebraicGeometry.IsClosedImmersion f] :
@@ -289,8 +287,8 @@ private theorem exists_iso_ker_subscheme {W V : Scheme.{u}} (f : W ⟶ V)
   · rw [← cancel_mono f, Category.assoc, hβ, hα, Category.id_comp]
   · rw [← cancel_mono (Scheme.Hom.ker f).subschemeι, Category.assoc, hα, hβ, Category.id_comp]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
+/- English proof (authored)
+The original embedding transported into the stage-zero ambient scheme is a closed immersion. It identifies the original scheme with the subscheme defined by the initial strict-transform ideal. At stage zero the discarded summand is empty, so this identification extends to the total space and its restriction to the strict-transform summand commutes with the ambient inclusions.
 -/
 theorem exists_totalSpaceZeroIso :
     ∃ e : S.totalSpace 0 ≅ Y,
@@ -305,8 +303,8 @@ theorem exists_totalSpaceZeroIso :
 
 def totalSpaceZeroIso : S.totalSpace 0 ≅ Y := S.exists_totalSpaceZeroIso.choose
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The chosen isomorphism satisfies the equation constructed for the initial total space. Restricted to the first summand, it followed by the transported embedding is the initial strict-transform inclusion.
 -/
 theorem totalSpaceZeroIso_spec :
     (coprod.inl : S.strictTransform 0 ⟶ S.totalSpace 0) ≫ S.totalSpaceZeroIso.hom ≫
@@ -316,13 +314,13 @@ theorem totalSpaceZeroIso_spec :
 def tower : ℕᵒᵖ ⥤ Scheme.{u} :=
   (Functor.ofSequence (fun i => (S.transitionMap i).op)).leftOp
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The tower is formed from the successive total-space maps, so its object at the given stage is the corresponding total space.
 -/
 theorem tower_obj (i : ℕ) : S.tower.obj (Opposite.op i) = S.totalSpace i := rfl
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
+/- English proof (authored)
+The sequence functor sends a consecutive order arrow to the specified transition in the opposite category. Removing the opposite gives the original total-space transition.
 -/
 theorem tower_map_succ (i : ℕ) :
     S.tower.map (homOfLE (Nat.le_succ i)).op = S.transitionMap i := by
@@ -341,23 +339,23 @@ def blowupSequence (h : S.TransitionsAreBlowups) : SequenceOfBlowups Y where
   center := S.centerOnTotalSpace
   isBlowup := h
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The induced sequence is assigned the ambient blowup length when it is constructed.
 -/
 @[simp] theorem blowupSequence_length (h : S.TransitionsAreBlowups) : (S.blowupSequence h).length = S.ambientLength := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The induced blowup sequence uses the already defined tower of total spaces as its tower.
 -/
 @[simp] theorem blowupSequence_tower (h : S.TransitionsAreBlowups) : (S.blowupSequence h).tower = S.tower := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The chosen isomorphism from the initial total space to the original scheme is used as the initial isomorphism of the induced sequence.
 -/
 theorem blowupSequence_isoObjZero (h : S.TransitionsAreBlowups) : (S.blowupSequence h).isoZero = S.totalSpaceZeroIso := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The center assigned to the induced blowup sequence at the given stage is the center on its total space.
 -/
 @[simp] theorem blowupSequence_center (h : S.TransitionsAreBlowups) (i : ℕ) :
     (S.blowupSequence h).center i = S.centerOnTotalSpace i := rfl

@@ -22,12 +22,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+The closed immersion from the pulled-back ideal and the first projection from the canonical pullback have the same kernel. Each therefore factors through the other over the new ambient scheme. Cancellation of the two closed immersions makes the factorizations inverse. Under the resulting isomorphism, take the second pullback projection as the map to the original closed subscheme. It commutes with the immersions and gives the asserted pullback.
 -/
 private theorem exists_isPullback_subschemeι_comap {X X' : Scheme.{u}} (f : X' ⟶ X)
     (I : X.IdealSheafData) :
@@ -63,16 +59,16 @@ variable {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}} [AlgebraicGeometry
 
 namespace EmbeddedBlowupSequence
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The ambient scheme at the stage is Noetherian. The strict transform is its closed subscheme, so its underlying subspace is Noetherian.
 -/
 theorem noetherianSpace_strictTransform (S : EmbeddedBlowupSequence k Y pY) (i : ℕ) (hi : i ≤ S.length) :
     TopologicalSpace.NoetherianSpace ↥(S.strictTransform i) := by
   have : AlgebraicGeometry.IsNoetherian (S.schemeAt i) := S.isNoetherian_schemeAt i hi
   exact S.noetherianSpace_strictTransform_of_noetherianSpace_schemeAt i inferInstance
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The ground input is reduced and all ambient stages within the length are Noetherian. The stagewise reducedness theorem for strict transforms therefore applies.
 -/
 theorem isReduced_strictTransform (S : EmbeddedBlowupSequence k Y pY) [AlgebraicGeometry.IsReduced Y]
     (i : ℕ) (hi : i ≤ S.length) : AlgebraicGeometry.IsReduced (S.strictTransform i) :=
@@ -84,8 +80,8 @@ namespace ChartFlatBaseChange
 
 variable {S : EmbeddedBlowupSequence k Y pY} {S' : EmbeddedBlowupSequence k' Y' pY'}
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The new ambient center is the pullback of the original center, so its support is the inverse image of the original support. The commuting square of strict-transform inclusions identifies the image of the given point under the ambient comparison with the ambient image of its strict-transform comparison. This gives the membership equivalence.
 -/
 theorem mem_support_ambientCenter_iff (F : ChartFlatBaseChange S S') (j : ℕ) (hj : j < S'.length)
     (y : ↥(S'.strictTransform j)) :
@@ -98,18 +94,8 @@ theorem mem_support_ambientCenter_iff (F : ChartFlatBaseChange S S') (j : ℕ) (
       (F.strictTransformComparison_comp_strictTransformι j hj.le)
   rw [F.center_eq j hj, FunctorialResolution.EmbeddedResolution.support_comap, Set.mem_preimage, hcomp]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The strict-transform comparison is flat. If a point belongs to a detached component upstairs, closure of that component’s image is an irreducible component downstairs by flatness. The support comparison puts its image in the closed inverse image of the original center, and this holds for the closure as well. Thus the image component is detached. Conversely, if the image of a point belongs to a detached component downstairs, the component lifting property for flat maps gives a component through the point upstairs whose image closure is the specified downstairs component. Its entire image therefore lies on the original center. The support comparison puts the whole upstairs component on the new center, making it detached.
 -/
 theorem detachedLocus_eq_preimage (F : ChartFlatBaseChange S S') (j : ℕ) (hj : j < S'.length) :
     S'.detachedLocus j =
@@ -151,8 +137,8 @@ theorem detachedLocus_eq_preimage (F : ChartFlatBaseChange S S') (j : ℕ) (hj :
       exact subset_closure ⟨y, hy, rfl⟩
     exact hsub ⟨_, hgy, rfl⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The two strict transforms are Noetherian, so each detached locus is closed and equals its closure. The pullback formula for detached loci therefore also gives the equality for their closures.
 -/
 theorem coe_detachedClosure_eq_preimage (F : ChartFlatBaseChange S S') (j : ℕ) (hj : j < S'.length) :
     (↑(S'.detachedClosure j) : Set ↥(S'.strictTransform j)) =
@@ -164,12 +150,8 @@ theorem coe_detachedClosure_eq_preimage (F : ChartFlatBaseChange S S') (j : ℕ)
     S.noetherianSpace_strictTransform (F.reindex j) (F.reindex_le_length hj.le)
   rw [S'.detachedClosure_coe j, S.detachedClosure_coe (F.reindex j), F.detachedLocus_eq_preimage j hj]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Both strict transforms are reduced and Noetherian, and their comparison is flat. The original detached closure is a union of irreducible components, and the new detached closure is its inverse image. The flat pullback formula for vanishing ideals of unions of components identifies the new vanishing ideal with the pullback of the original one.
 -/
 theorem detachedIdeal_eq_comap (F : ChartFlatBaseChange S S') [AlgebraicGeometry.IsReduced Y]
     [AlgebraicGeometry.IsReduced Y'] (j : ℕ) (hj : j < S'.length) :
@@ -198,8 +180,8 @@ theorem detachedIdeal_eq_comap (F : ChartFlatBaseChange S S') [AlgebraicGeometry
     (S := S.detachedComponents (F.reindex j)) (Z := S.detachedClosure (F.reindex j))
     (Z' := S'.detachedClosure j) hS hZ hZ').symm
 
-/- English proof (translation)
-Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
+/- English proof (authored)
+The new detached ideal is the pullback of the original detached ideal along the strict-transform comparison. The closed subscheme of a pulled-back ideal is the base change of the original closed subscheme. Apply this identification to obtain the comparison map, its commuting equation, and the pullback square.
 -/
 theorem exists_isPullback_detachedScheme (F : ChartFlatBaseChange S S') [AlgebraicGeometry.IsReduced Y]
     [AlgebraicGeometry.IsReduced Y'] (j : ℕ) (hj : j < S'.length) :
@@ -222,8 +204,8 @@ def detachedSchemeComparison (F : ChartFlatBaseChange S S') [AlgebraicGeometry.I
     S'.detachedScheme j ⟶ S.detachedScheme (F.reindex j) :=
   (F.exists_isPullback_detachedScheme j hj).choose
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The chosen comparison of detached schemes was constructed to commute with their inclusions into the strict transforms. Its defining factorization equation gives the result.
 -/
 theorem detachedSchemeComparison_comp_detachedι (F : ChartFlatBaseChange S S') [AlgebraicGeometry.IsReduced Y]
     [AlgebraicGeometry.IsReduced Y'] (j : ℕ) (hj : j < S'.length) :
@@ -231,8 +213,8 @@ theorem detachedSchemeComparison_comp_detachedι (F : ChartFlatBaseChange S S') 
       S'.detachedι j ≫ F.strictTransformComparison j hj.le :=
   (F.exists_isPullback_detachedScheme j hj).choose_spec.1
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Postcompose the commuting equation for the detached comparison with the given morphism and use associativity.
 -/
 theorem detachedSchemeComparison_comp_detachedι_assoc (F : ChartFlatBaseChange S S') [AlgebraicGeometry.IsReduced Y]
     [AlgebraicGeometry.IsReduced Y'] (j : ℕ) (hj : j < S'.length) {Z : Scheme.{u}}
@@ -241,8 +223,8 @@ theorem detachedSchemeComparison_comp_detachedι_assoc (F : ChartFlatBaseChange 
       S'.detachedι j ≫ F.strictTransformComparison j hj.le ≫ h := by
   rw [← Category.assoc, F.detachedSchemeComparison_comp_detachedι j hj, Category.assoc]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The chosen map is the one given by the pullback result for detached subschemes. By that construction its comparison square with the strict transforms is a pullback.
 -/
 theorem isPullback_detachedSchemeComparison (F : ChartFlatBaseChange S S') [AlgebraicGeometry.IsReduced Y]
     [AlgebraicGeometry.IsReduced Y'] (j : ℕ) (hj : j < S'.length) :
@@ -250,8 +232,8 @@ theorem isPullback_detachedSchemeComparison (F : ChartFlatBaseChange S S') [Alge
       (F.strictTransformComparison j hj.le) :=
   (F.exists_isPullback_detachedScheme j hj).choose_spec.2
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The detached closure upstairs is the inverse image of the detached closure downstairs. Inverse image commutes with complements, so the corresponding open complements also pull back.
 -/
 theorem detachedClosureCompl_eq_preimage (F : ChartFlatBaseChange S S') (j : ℕ) (hj : j < S'.length) :
     S'.detachedClosureCompl j = (F.strictTransformComparison j hj.le) ⁻¹ᵁ (S.detachedClosureCompl (F.reindex j)) := by
@@ -265,16 +247,8 @@ theorem detachedClosureCompl_eq_preimage (F : ChartFlatBaseChange S S') (j : ℕ
   rw [h1, h2, S.detachedClosureCompl_coe (F.reindex j), Set.preimage_compl,
     F.coe_detachedClosure_eq_preimage j hj]
 
-/- English proof (translation)
-Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
-
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The commuting maps from the given scheme induce a map to the pullback of the skipped ambient stage. Any point maps through the detached scheme, whose support is the detached locus because the strict transform is Noetherian. Its ambient image lies on the skipped center by the definition of detachment. Thus its image in the pullback belongs to the pulled-back center support. But an omitted step has unit pulled-back center, with empty support. This contradiction rules out every point of the given scheme.
 -/
 theorem isEmpty_of_forall_reindex_ne (F : ChartFlatBaseChange S S') (s : ℕ) (hs : s < S.length)
     (hskip : ∀ j, j < S'.length → F.reindex j ≠ s) (P : Scheme.{u})

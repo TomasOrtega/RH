@@ -35,8 +35,8 @@ variable {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}} [AlgebraicGeometry
   {pY' : Y' ⟶ Spec (CommRingCat.of k')} [AlgebraicGeometry.LocallyOfFiniteType pY']
   {S : EmbeddedBlowupSequence k Y pY} {S' : EmbeddedBlowupSequence k' Y' pY'}
 
-/- English proof (translation)
-Substitute using the available equality. Both sides reduce to the same expression. A detailed English derivation is pending.
+/- English proof (authored)
+Equal scheme morphisms give equal maps on points. Evaluate the equality at the chosen point.
 -/
 private theorem congr_hom_apply {A B : Scheme.{u}} {f g : A ⟶ B} (e : f = g) (a : A) :
     f a = g a := by
@@ -44,10 +44,8 @@ private theorem congr_hom_apply {A B : Scheme.{u}} {f g : A ⟶ B} (e : f = g) (
   rfl
 
 @[reassoc]
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The pullback square for the retained step says that the new successor comparison followed by the original transition across the omitted stages and the retained blowup equals the new blowdown followed by the old comparison. The original transitions compose to the full transition between retained indices. Substituting gives the result.
 -/
 theorem levelMap_succ_comp_transitionMap (F : ChartFlatBaseChange S S') (j : ℕ) (hj : j < S'.length)
     (hσ : F.reindex j ≤ F.reindex (j + 1)) :
@@ -62,10 +60,8 @@ theorem levelMap_succ_comp_transitionMap (F : ChartFlatBaseChange S S') (j : ℕ
   exact hw
 
 @[reassoc]
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Postcompose the two maps with the closed inclusion of the earlier strict transform. Compatibility of the strict-transform inclusions with their comparisons and with the ambient transitions reduces both composites to the same ambient map by the stage comparison equation. The closed inclusion is a monomorphism, so the original maps agree.
 -/
 theorem strictTransformComparison_succ_comp_strictTransformMapOfLE (F : ChartFlatBaseChange S S') (j : ℕ) (hj : j < S'.length)
     (hσ : F.reindex j ≤ F.reindex (j + 1)) :
@@ -84,8 +80,8 @@ theorem strictTransformComparison_succ_comp_strictTransformMapOfLE (F : ChartFla
   rw [e1, e2]
 
 @[reassoc]
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The total-space comparison is defined on the detached coproduct by its comparison map followed by inclusion of the detached summand downstairs. Restricting the coproduct map to that summand yields the stated formula.
 -/
 theorem inr_totalSpaceMap (F : ChartFlatBaseChange S S') [AlgebraicGeometry.IsReduced Y]
     [AlgebraicGeometry.IsReduced Y'] (j : ℕ) (hj : j ≤ S'.length) :
@@ -94,16 +90,8 @@ theorem inr_totalSpaceMap (F : ChartFlatBaseChange S S') [AlgebraicGeometry.IsRe
         (coprod.inr : S.detachedCoprod (F.reindex j) ⟶ S.totalSpace (F.reindex j)) := by
   simp [ChartFlatBaseChange.totalSpaceMap]
 
-/- English proof (translation)
-Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Check the two composites on the new strict transform and each detached summand. On the strict transform equality is the compatibility of the strict-transform comparisons with the retained transitions. A piece detached earlier travels through the preceding detached coproduct under the new transition. Its corresponding piece downstairs also stays in the detached coproduct throughout the intervening stages, so both paths give its earlier comparison. A newly detached piece maps into the preceding new strict transform. Downstairs its corresponding piece detaches at the retained index and the iterated transition takes it back into that strict transform. Compatibility of the detached comparison with its inclusion makes these two composites agree. The coproduct property gives equality on the total space.
 -/
 private theorem totalTransition_comp_totalSpaceMap (F : ChartFlatBaseChange S S')
     [AlgebraicGeometry.IsReduced Y] [AlgebraicGeometry.IsReduced Y'] (j : ℕ) (hj : j < S'.length)
@@ -142,12 +130,8 @@ private theorem totalTransition_comp_totalSpaceMap (F : ChartFlatBaseChange S S'
       rw [S'.detachedCoprodInr_inr_totalTransition_assoc s (F.totalSpaceMap s (le_of_lt hj)),
         F.inl_totalSpaceMap, F.detachedSchemeComparison_comp_detachedι_assoc s hj coprod.inl]
 
-/- English proof (translation)
-Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Restrict the two ideals to the strict-transform summand. The total centers restrict there to the centers off the detached loci, and their equality after pulling back follows from the flat comparison of those centers. On the already detached summand both ideals are unit, because the total-space comparison sends that summand into the downstairs detached coproduct and the centers have empty restriction there. Equality on both summands gives equality on the total space.
 -/
 private theorem totalCenter_eq_comap (F : ChartFlatBaseChange S S')
     [AlgebraicGeometry.IsReduced Y] [AlgebraicGeometry.IsReduced Y'] (i : ℕ) (hi : i < S'.length) :
@@ -173,20 +157,8 @@ private theorem totalCenter_eq_comap (F : ChartFlatBaseChange S S')
       FunctorialResolution.Blowup.ker_comp_coprod_inl_comap_inr]
     simp
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Suppose a point of the base-changed total space lies over the total center. Its downstairs image lies in the closed image of the center off the detached locus in the strict-transform summand. The resulting strict-transform point lies over the original ambient center. The pullback equation over the original scheme, the commuting embedding square, and compatibility of the strict-transform projection with the ambient projection give compatible points in the new ambient base and the original ambient stage. Lift them to the ambient stage pullback. This lift belongs to the pulled-back ambient center support, which is empty because the stage was omitted. Thus the pulled-back total center support is empty and its ideal is unit.
 -/
 private theorem comap_center_eq_top_of_not_mem_range_reindex (F : ChartFlatBaseChange S S') (h : S.TransitionsAreBlowups) (i : ℕ)
     (hi : i < S.length) (hskip : ∀ j, j < S'.length → F.reindex j ≠ i) :
@@ -259,8 +231,8 @@ private def inducedBlowupsSchemeAtIsoPullback (F : ChartFlatBaseChange S S') [Al
   ((F.isPullback_totalSpaceMap h h' i
     (by rwa [FunctorialResolution.EmbeddedResolution.EmbeddedBlowupSequence.inducedBlowups_length] at hi)).flip).isoPullback
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The isomorphism identifies the induced stage with the pullback of the corresponding original induced stage. Its first projection is the induced projection to the new base by the defining pullback square.
 -/
 private theorem inducedBlowupsIso_hom_fst (F : ChartFlatBaseChange S S') [AlgebraicGeometry.IsReduced Y]
     [AlgebraicGeometry.IsReduced Y'] (h : S.TransitionsAreBlowups) (h' : S'.TransitionsAreBlowups)
@@ -269,8 +241,8 @@ private theorem inducedBlowupsIso_hom_fst (F : ChartFlatBaseChange S S') [Algebr
       = (S'.inducedBlowups h').projectionToBase i :=
   IsPullback.isoPullback_hom_fst _
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Under the pullback isomorphism, the second projection is the comparison from the new total space to the corresponding original total space. This is its defining second projection equation.
 -/
 private theorem inducedBlowupsIso_hom_snd (F : ChartFlatBaseChange S S') [AlgebraicGeometry.IsReduced Y]
     [AlgebraicGeometry.IsReduced Y'] (h : S.TransitionsAreBlowups) (h' : S'.TransitionsAreBlowups)
@@ -279,16 +251,8 @@ private theorem inducedBlowupsIso_hom_snd (F : ChartFlatBaseChange S S') [Algebr
       = F.totalSpaceMap i (by rwa [FunctorialResolution.EmbeddedResolution.EmbeddedBlowupSequence.inducedBlowups_length] at hi) :=
   IsPullback.isoPullback_hom_snd _
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Use the ambient reindexing and the total-space pullback isomorphisms at each stage. The induced sequences have the corresponding ambient lengths, so the indexing inequalities and final-index equality hold. Every omitted original center has unit pullback by the support argument. The first projection gives compatibility with the new base. The transition equation follows by checking both pullback projections. The first agrees by structural-map compatibility, and the second agrees by the total-space transition calculation. Finally the total centers are corresponding pullbacks by the center comparison. These are exactly the pullback conditions up to empty centers.
 -/
 theorem isPullbackUpToEmptyCenters_inducedBlowups (F : ChartFlatBaseChange S S')
     [AlgebraicGeometry.IsReduced Y] [AlgebraicGeometry.IsReduced Y']
@@ -329,8 +293,8 @@ theorem isPullbackUpToEmptyCenters_inducedBlowups (F : ChartFlatBaseChange S S')
     rw [F.inducedBlowupsIso_hom_snd, FunctorialResolution.EmbeddedResolution.EmbeddedBlowupSequence.inducedBlowups_center, FunctorialResolution.EmbeddedResolution.EmbeddedBlowupSequence.inducedBlowups_center]
     exact F.totalCenter_eq_comap i hi'
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The full induced sequences have the pullback comparison up to empty centers. The shortening theorem for this comparison removes unit-center steps from both sequences and yields the asserted pullback of their shortened sequences.
 -/
 theorem isPullbackBlowupSequence_inducedBlowupsWithoutIso (F : ChartFlatBaseChange S S')
     [AlgebraicGeometry.IsReduced Y] [AlgebraicGeometry.IsReduced Y']

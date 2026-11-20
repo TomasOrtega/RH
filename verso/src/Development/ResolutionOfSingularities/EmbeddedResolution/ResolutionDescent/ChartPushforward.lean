@@ -20,8 +20,8 @@ def subschemeIsoOfEq {V : Scheme.{u}} {I J : V.IdealSheafData} (h : I = J) :
   eqToIso (congrArg (fun K : V.IdealSheafData => K.subscheme) h)
 
 @[reassoc (attr := simp)]
-/- English proof (translation)
-Substitute using the available equality. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Identify the two defining ideal sheaves using their equality. The induced isomorphism of the closed subschemes is then the identity, so both composites to the ambient scheme are the same inclusion.
 -/
 theorem subschemeIsoOfEq_hom_subschemeι {V : Scheme.{u}} {I J : V.IdealSheafData} (h : I = J) :
     (subschemeIsoOfEq h).hom ≫ J.subschemeι = I.subschemeι := by
@@ -67,8 +67,8 @@ instance instIsClosedImmersionLevelMap (P : ChartPushforward S S') (i : ℕ) (hi
     AlgebraicGeometry.IsClosedImmersion (P.levelMap i hi) :=
   P.isClosedImmersion_levelMap i hi
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The two embedded sequences have the same length. Transfer the given index bound along the equality of lengths.
 -/
 theorem le_length (P : ChartPushforward S S') {i : ℕ} (hi : i ≤ S'.length) : i ≤ S.length :=
   hi.trans_eq P.len_eq.symm
@@ -80,16 +80,16 @@ section
 variable (S S' : EmbeddedBlowupSequence k Y pY) (f : S.ambient ⟶ S'.ambient)
   [AlgebraicGeometry.IsClosedImmersion f]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The chosen stage comparisons in a pushforward blowup sequence are closed immersions at every stage. The lengths agree, so the given index is in range for this property.
 -/
 private theorem isClosedImmersion_of_isPushforwardBlowupSeq
     (h : IsPushforwardBlowupSeq f S.ambientSeq S'.ambientSeq) (i : ℕ) (hi : i ≤ S'.length) :
     AlgebraicGeometry.IsClosedImmersion (h.2.choose i (hi.trans_eq h.1.symm)) :=
   h.2.choose_spec.1 i (hi.trans_eq h.1.symm)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+At zero the pushforward comparison is required to commute with the two initial isomorphisms and the given ambient immersion. The chosen family comes with this equation.
 -/
 private theorem isoObjZero_comm_of_isPushforwardBlowupSeq
     (h : IsPushforwardBlowupSeq f S.ambientSeq S'.ambientSeq) :
@@ -97,8 +97,8 @@ private theorem isoObjZero_comm_of_isPushforwardBlowupSeq
       S.ambientSeq.isoZero.hom ≫ f := by
   exact h.2.choose_spec.2.1
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The stage comparisons of the pushforward sequence form commuting squares with every consecutive blowdown. This is the required equation at the indicated step.
 -/
 private theorem blowdown_comm_of_isPushforwardBlowupSeq
     (h : IsPushforwardBlowupSeq f S.ambientSeq S'.ambientSeq) (i : ℕ) (hi : i < S'.length) :
@@ -106,8 +106,8 @@ private theorem blowdown_comm_of_isPushforwardBlowupSeq
       S.blowdown i ≫ h.2.choose i (hi.le.trans_eq h.1.symm) :=
   h.2.choose_spec.2.2.1 i (hi.trans_eq h.1.symm)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+At each step the pushforward condition defines the new ambient center as the image of the original center under the chosen closed immersion at that stage. The chosen family satisfies precisely this equality.
 -/
 private theorem ambientCenter_eq_imageIdealSheaf_of_isPushforwardBlowupSeq
     (h : IsPushforwardBlowupSeq f S.ambientSeq S'.ambientSeq) (i : ℕ) (hi : i < S'.length) :
@@ -115,8 +115,8 @@ private theorem ambientCenter_eq_imageIdealSheaf_of_isPushforwardBlowupSeq
       imageIdealSheaf (h.2.choose i (hi.le.trans_eq h.1.symm)) (S.ambientCenter i) :=
   h.2.choose_spec.2.2.2.1 i (hi.trans_eq h.1.symm)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The pushforward condition identifies the kernel of the next stage comparison with the strict transform of the preceding kernel along the target blowup. Apply this condition at the specified index.
 -/
 private theorem ker_succ_eq_strictTransform_of_isPushforwardBlowupSeq
     (h : IsPushforwardBlowupSeq f S.ambientSeq S'.ambientSeq) (i : ℕ) (hi : i < S'.length) :
@@ -138,8 +138,8 @@ def ofIsPushforwardSeq (hemb : S.emb ≫ f = S'.emb)
   ambientCenter_eq := fun i hi => ambientCenter_eq_imageIdealSheaf_of_isPushforwardBlowupSeq S S' f h i hi
   ker_levelMap_succ := fun i hi => ker_succ_eq_strictTransform_of_isPushforwardBlowupSeq S S' f h i hi
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The chart pushforward constructed from the sequence comparison is assigned the given closed immersion as its ambient comparison.
 -/
 theorem ofIsPushforwardSeq_ambientMap (hemb : S.emb ≫ f = S'.emb)
     (h : IsPushforwardBlowupSeq f S.ambientSeq S'.ambientSeq) :
@@ -151,16 +151,8 @@ section
 
 variable {S S' : EmbeddedBlowupSequence k Y pY}
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+At zero, the strict-transform ideal is the kernel of the transported embedding. The initial comparison and embedding compatibilities identify the composite into the target initial stage with the transported target embedding. Thus the image ideal equals the target strict-transform ideal. At a successor use the commutative blowdown square and the requirement that the successor stage immersion has strict-transform kernel. The result commuting image ideals with strict transform then applies. The previous strict-transform ideal maps to the corresponding target ideal by induction and the original center maps to the target center by the pushforward condition. This proves the successor equality.
 -/
 private theorem map_strictTransformIdeal_levelMap {T T' : EmbeddedBlowupSequence k Y pY}
     (P : ChartPushforward T T') (i : ℕ) :
@@ -197,12 +189,8 @@ private theorem map_strictTransformIdeal_levelMap {T T' : EmbeddedBlowupSequence
       (P.levelMap (n + 1) hi) hsq hker
     rw [EmbeddedBlowupSequence.strictTransformIdeal_succ, EmbeddedBlowupSequence.strictTransformIdeal_succ, hmain, ih hn.le, hcenter]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The composite from the original strict transform into the target ambient stage is a closed immersion. Its kernel is the image of the original strict-transform ideal, which equals the target strict-transform ideal by the stagewise calculation. Thus this composite and the target strict-transform inclusion have the same kernel. The closed-immersion comparison is an isomorphism of their sources over the target ambient stage.
 -/
 theorem exists_strictTransform_iso (P : ChartPushforward S S') (i : ℕ) (hi : i ≤ S'.length) :
     ∃ e : S.strictTransform i ≅ S'.strictTransform i,
@@ -228,18 +216,16 @@ def strictTransformIso (P : ChartPushforward S S') (i : ℕ) (hi : i ≤ S'.leng
   (P.exists_strictTransform_iso i hi).choose
 
 @[reassoc (attr := simp)]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The chosen isomorphism identifies the two strict transforms over the target ambient stage. Its defining equation says exactly that its composite with the target inclusion is the original inclusion followed by the stage comparison.
 -/
 theorem strictTransformIso_hom_comp_strictTransformι (P : ChartPushforward S S') (i : ℕ) (hi : i ≤ S'.length) :
     (P.strictTransformIso i hi).hom ≫ S'.strictTransformι i = S.strictTransformι i ≫ P.levelMap i hi :=
   (P.exists_strictTransform_iso i hi).choose_spec
 
 @[reassoc]
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Compose both maps with the target strict-transform inclusion. The comparison isomorphisms commute with the inclusions, and the strict-transform transitions commute with ambient blowdowns. Use the pushforward blowdown square to identify the two resulting composites. Cancellation of the target closed immersion gives the asserted equality.
 -/
 theorem strictTransformIso_hom_comp_strictTransformMap (P : ChartPushforward S S') (i : ℕ) (hi : i < S'.length) :
     (P.strictTransformIso (i + 1) hi).hom ≫ S'.strictTransformMap i =
@@ -253,12 +239,8 @@ theorem strictTransformIso_hom_comp_strictTransformMap (P : ChartPushforward S S
     strictTransformIso_hom_comp_strictTransformι P (i + 1) hi, Category.assoc, P.levelMap_blowdown i hi,
     ← Category.assoc, ← EmbeddedBlowupSequence.strictTransformMap_comp_strictTransformι S i, Category.assoc]
 
-/- English proof (translation)
-Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Compose both maps to the original scheme with the target embedding. The stage-zero strict-transform equations replace these composites by the relevant strict-transform inclusions followed by their ambient initial isomorphisms. The initial stage comparison commutes with the ambient initial isomorphisms, and the original embedding followed by the ambient comparison is the target embedding. Hence the composites agree. Cancel the target embedding to obtain equality of the two maps to the original scheme.
 -/
 theorem strictTransformIso_zero_hom_comp_strictTransformZeroIso_hom (P : ChartPushforward S S') :
     (P.strictTransformIso 0 (Nat.zero_le _)).hom ≫ S'.strictTransformZeroIso.hom = S.strictTransformZeroIso.hom := by
@@ -287,8 +269,8 @@ theorem strictTransformIso_zero_hom_comp_strictTransformZeroIso_hom (P : ChartPu
           rw [P.emb_ambientMap]
   exact (cancel_mono S'.emb).mp key
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The kernel containment makes the first closed immersion factor through the second by the closed-immersion lifting property. Thus every point in the range of the first map is the image of a point under the second map.
 -/
 private theorem range_subset_range_of_ker_le {U V W : Scheme.{u}} (f : U ⟶ W) (g : V ⟶ W)
     [AlgebraicGeometry.IsClosedImmersion f] [AlgebraicGeometry.IsClosedImmersion g]
@@ -301,8 +283,8 @@ private theorem range_subset_range_of_ker_le {U V W : Scheme.{u}} (f : U ⟶ W) 
   have hx : ⇑(e ≫ g) x = ⇑f x := by rw [he]
   exact hx
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The closed subscheme of the kernel ideal has range equal to that ideal’s support. Its inclusion has the same kernel as the original closed immersion, so each factors through the other. The ranges are therefore equal.
 -/
 private theorem support_ker_eq_range {U W : Scheme.{u}} (h : U ⟶ W)
     [AlgebraicGeometry.IsClosedImmersion h] :
@@ -316,10 +298,8 @@ private theorem support_ker_eq_range {U W : Scheme.{u}} (h : U ⟶ W)
   exact Set.Subset.antisymm (range_subset_range_of_ker_le _ h (le_of_eq hker.symm))
     (range_subset_range_of_ker_le h _ (le_of_eq hker))
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The target center ideal is the kernel of the original center inclusion followed by the stage comparison. This composite is a closed immersion, so the support of its kernel is its range. That range is the image, under the stage comparison, of the range of the original center inclusion. The latter range is the original center support.
 -/
 theorem support_ambientCenter_eq_image (P : ChartPushforward S S') (i : ℕ) (hi : i < S'.length) :
     ((S'.ambientCenter i).support : Set ↥(S'.schemeAt i)) =

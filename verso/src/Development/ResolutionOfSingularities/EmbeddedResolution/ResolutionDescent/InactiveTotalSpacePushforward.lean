@@ -29,15 +29,15 @@ variable {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}} [AlgebraicGeometry
   {pY : Y ⟶ Spec (CommRingCat.of k)} [AlgebraicGeometry.LocallyOfFiniteType pY]
   {S S' : EmbeddedBlowupSequence k Y pY}
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The two sequences have equal length. Replacing the length in the given weak inequality gives the required weak inequality.
 -/
 theorem le_length_of_le_length (P : ChartPushforward S S') {i : ℕ} (hi : i ≤ S.length) : i ≤ S'.length := by
   rw [← P.len_eq]
   exact hi
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The two sequences have equal length. Replacing the length in the given strict inequality gives the required strict inequality.
 -/
 theorem lt_length_of_lt_length (P : ChartPushforward S S') {i : ℕ} (hi : i < S.length) : i < S'.length := by
   rw [← P.len_eq]
@@ -50,8 +50,8 @@ private def detachedCoprodIsoOfLE (P : ChartPushforward S S') [AlgebraicGeometry
     (fun n ih hn => coprod.mapIso (ih (Nat.le_of_succ_le hn))
       (P.detachedSchemeIso n (lt_of_lt_of_le (Nat.lt_succ_self n) hn))) i
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Construct the isomorphism by induction on the stage. At stage zero, both detached coproducts are empty, so use the unique isomorphism between them. At a successor stage each detached coproduct consists of the preceding detached coproduct and the piece detached at this step. Take the coproduct of the inductive isomorphism and the given comparison on the new piece. Its restrictions to the two summands are exactly the required comparison maps.
 -/
 theorem exists_iso_detachedCoprod_compatible (P : ChartPushforward S S')
     [AlgebraicGeometry.IsReduced Y] :
@@ -82,8 +82,8 @@ def inactiveTotalIso (P : ChartPushforward S S') [AlgebraicGeometry.IsReduced Y]
   P.exists_iso_detachedCoprod_compatible.choose i hi
 
 @[reassoc]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The recursive detached-coproduct comparison is taken summand by summand. Its restriction to the old detached coproduct is therefore the preceding comparison followed by the old-summand inclusion.
 -/
 theorem detachedCoprodInl_inactiveTotalIso_hom (P : ChartPushforward S S')
     [AlgebraicGeometry.IsReduced Y] (i : ℕ) (hi : i < S'.length) :
@@ -92,8 +92,8 @@ theorem detachedCoprodInl_inactiveTotalIso_hom (P : ChartPushforward S S')
   P.exists_iso_detachedCoprod_compatible.choose_spec.2.1 i hi
 
 @[reassoc]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The recursive detached-coproduct comparison is taken summand by summand. Its restriction to the newly detached piece is therefore the comparison of that piece followed by its inclusion on the other side.
 -/
 theorem detachedCoprodInr_inactiveTotalIso_hom (P : ChartPushforward S S')
     [AlgebraicGeometry.IsReduced Y] (i : ℕ) (hi : i < S'.length) :
@@ -105,8 +105,8 @@ def totalSpaceIso (P : ChartPushforward S S') [AlgebraicGeometry.IsReduced Y] (i
     (hi : i ≤ S'.length) : S.totalSpace i ≅ S'.totalSpace i :=
   coprod.mapIso (P.strictTransformIso i hi) (P.inactiveTotalIso i hi)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+At each stage the total space is the coproduct of the strict transform and the accumulated detached pieces. Its comparison isomorphism was defined as the coproduct of the two comparison isomorphisms.
 -/
 theorem totalSpaceIso_hom_eq_coprodMap (P : ChartPushforward S S') [AlgebraicGeometry.IsReduced Y] (i : ℕ)
     (hi : i ≤ S'.length) :
@@ -114,8 +114,8 @@ theorem totalSpaceIso_hom_eq_coprodMap (P : ChartPushforward S S') [AlgebraicGeo
       coprod.map (P.strictTransformIso i hi).hom (P.inactiveTotalIso i hi).hom := rfl
 
 @[reassoc]
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The total space comparison is the coproduct map of the strict-transform and detached-piece comparisons. Restricting this map to the strict-transform summand gives its comparison followed by the corresponding inclusion.
 -/
 theorem inl_totalSpaceIso_hom (P : ChartPushforward S S') [AlgebraicGeometry.IsReduced Y] (i : ℕ)
     (hi : i ≤ S'.length) :
@@ -125,8 +125,8 @@ theorem inl_totalSpaceIso_hom (P : ChartPushforward S S') [AlgebraicGeometry.IsR
   simp
 
 @[reassoc]
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The total space comparison is the coproduct map of the strict-transform and detached-piece comparisons. Restricting this map to the detached summand gives its comparison followed by the corresponding inclusion.
 -/
 theorem inr_totalSpaceIso_hom (P : ChartPushforward S S') [AlgebraicGeometry.IsReduced Y] (i : ℕ)
     (hi : i ≤ S'.length) :
@@ -135,26 +135,22 @@ theorem inr_totalSpaceIso_hom (P : ChartPushforward S S') [AlgebraicGeometry.IsR
   rw [P.totalSpaceIso_hom_eq_coprodMap i hi]
   simp
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Successive pullback of ideals is pullback along the composite. A comparison isomorphism and its inverse compose to the identity, which pulls the ideal back to itself.
 -/
 private theorem comap_hom_comap_inv {A B : Scheme.{u}} (e : A ≅ B) (I : B.IdealSheafData) :
     (I.comap e.hom).comap e.inv = I := by
   rw [← Scheme.IdealSheafData.comap_comp, e.inv_hom_id, Scheme.IdealSheafData.comap_id]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Successive pullback of ideals is pullback along the composite. The inverse comparison and the forward comparison compose to the identity in this order as well, so the ideal returns to itself.
 -/
 private theorem comap_inv_comap_hom {A B : Scheme.{u}} (e : A ≅ B) (I : A.IdealSheafData) :
     (I.comap e.inv).comap e.hom = I := by
   rw [← Scheme.IdealSheafData.comap_comp, e.hom_inv_id, Scheme.IdealSheafData.comap_id]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+For the first containment, use the image–pullback adjunction on one vertical map. Functoriality and commutativity of the square turn the resulting containment into the pullback of the adjunction counit for the other vertical map. Apply this same containment to the square with the horizontal isomorphisms reversed. Pull it back along the forward isomorphism and cancel the inverse pullbacks to obtain the opposite containment.
 -/
 private theorem comap_map_of_comm_iso {A B A' B' : Scheme.{u}} (eA : A ≅ A') (eB : B ≅ B')
     (u : A ⟶ B) (u' : A' ⟶ B') (hcomm : u ≫ eB.hom = eA.hom ≫ u')
@@ -183,8 +179,8 @@ private theorem comap_map_of_comm_iso {A B A' B' : Scheme.{u}} (eA : A ≅ A') (
       Scheme.IdealSheafData.comap_mono eB.hom key
     rwa [comap_inv_comap_hom eB] at h3
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The total center is obtained by mapping the center off the detached locus along the strict-transform inclusion. Pull its ideal back along the total space comparison. The commutative square of strict-transform inclusions permits this pullback to pass through the image, and the established comparison of the centers on the strict transforms identifies the result with the other total center.
 -/
 theorem comap_totalCenter (P : ChartPushforward S S') [AlgebraicGeometry.IsReduced Y] (i : ℕ)
     (hi : i < S'.length) :
@@ -196,10 +192,8 @@ theorem comap_totalCenter (P : ChartPushforward S S') [AlgebraicGeometry.IsReduc
   rw [P.comap_centerOffDetached i hi] at h
   exact h
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Compare the composites first on the strict-transform summand, where they agree by compatibility of the strict-transform transitions. On the prior detached coproduct the transition preserves each old piece, and the restriction of its comparison is the preceding detached-coproduct comparison. On the newly detached piece the two composites agree by compatibility with its detachment inclusion into the preceding strict transform. The coproduct universal property gives the equality on the total space.
 -/
 private theorem totalSpaceIso_hom_totalTransition (P : ChartPushforward S S')
     [AlgebraicGeometry.IsReduced Y] (i : ℕ) (hi : i < S'.length) :
@@ -218,10 +212,8 @@ private theorem totalSpaceIso_hom_totalTransition (P : ChartPushforward S S')
         P.inl_totalSpaceIso_hom i hi.le]
       exact P.detachedSchemeIso_hom_comp_detachedι_assoc i hi _
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The two compositions have equal length. Use the total space isomorphism at each stage. At the initial stage the strict-transform comparison respects the map to the base and the detached summand is empty. At each later step the total space isomorphisms respect the transition maps and pull back the corresponding center ideals. These data give the sequence isomorphism.
 -/
 theorem inducedBlowups_isomorphic (P : ChartPushforward S S') [AlgebraicGeometry.IsReduced Y]
     (h : S.TransitionsAreBlowups) (h' : S'.TransitionsAreBlowups) :
@@ -240,8 +232,8 @@ theorem inducedBlowups_isomorphic (P : ChartPushforward S S') [AlgebraicGeometry
   · intro i hi
     exact P.comap_totalCenter i (P.lt_length_of_lt_length hi)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The induced blowup sequences are isomorphic before removing steps. The operation of deleting blowups whose center ideal is the unit ideal preserves isomorphism of sequences, giving the required result.
 -/
 theorem inducedBlowupsWithoutIso_isomorphic (P : ChartPushforward S S') [AlgebraicGeometry.IsReduced Y]
     (h : S.TransitionsAreBlowups) (h' : S'.TransitionsAreBlowups) :

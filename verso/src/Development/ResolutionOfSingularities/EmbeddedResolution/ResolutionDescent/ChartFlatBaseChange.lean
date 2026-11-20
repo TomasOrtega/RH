@@ -59,8 +59,8 @@ variable {S : EmbeddedBlowupSequence k Y pY} {S' : EmbeddedBlowupSequence k' Y' 
 instance instFlatAmbientMap (F : ChartFlatBaseChange S S') :
     AlgebraicGeometry.Flat F.ambientMap := F.flat_ambientMap
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Each consecutive pair of values through the bound is strictly increasing. Chaining these inequalities from the lower index to the higher one gives the stated strict inequality.
 -/
 private theorem apply_lt_apply_of_forall_lt_succ
     {σ : ℕ → ℕ} {N : ℕ} (h : ∀ j, j < N → σ j < σ (j + 1)) :
@@ -69,16 +69,16 @@ private theorem apply_lt_apply_of_forall_lt_succ
   exact strictMonoOn_Iic_of_lt_succ h (Set.mem_Iic.mpr (le_trans (le_of_lt hij) hj))
     (Set.mem_Iic.mpr hj) hij
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The chart comparison requires strict increase at each consecutive source index. The chain of one-step inequalities gives strict increase between the two specified indices.
 -/
 theorem reindex_lt_reindex_of_lt (F : ChartFlatBaseChange S S') {i j : ℕ} (hij : i < j) (hj : j ≤ S'.length) :
     F.reindex i < F.reindex j :=
   apply_lt_apply_of_forall_lt_succ (σ := F.reindex) (N := S'.length)
     F.reindex_lt_succ j hj i hij
 
-/- English proof (translation)
-Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+At the final source index the reindexing is the target length by hypothesis. At any earlier index it is strictly below the target length. Either case gives the weak bound.
 -/
 theorem reindex_le_length (F : ChartFlatBaseChange S S') {j : ℕ} (hj : j ≤ S'.length) :
     F.reindex j ≤ S.length := by
@@ -87,8 +87,8 @@ theorem reindex_le_length (F : ChartFlatBaseChange S S') {j : ℕ} (hj : j ≤ S
     exact le_of_eq F.reindex_len
   · exact le_of_lt (F.reindex_lt j h)
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The stage comparison is a pullback of the flat ambient comparison along the target projection to its ambient base. Flatness is preserved by pullback.
 -/
 theorem flat_levelMap (F : ChartFlatBaseChange S S') (j : ℕ) (hj : j ≤ S'.length) :
     AlgebraicGeometry.Flat (F.levelMap j hj) := by
@@ -96,8 +96,8 @@ theorem flat_levelMap (F : ChartFlatBaseChange S S') (j : ℕ) (hj : j ≤ S'.le
       (@AlgebraicGeometry.Flat : MorphismProperty Scheme.{u}) := inferInstance
   exact hst.of_isPullback (F.isPullback_level j hj).flip F.flat_ambientMap
 
-/- English proof (translation)
-Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
+/- English proof (authored)
+The reindexed zero is at most every retained index by monotonicity. An index strictly below it therefore cannot be retained.
 -/
 theorem reindex_ne_of_lt_reindex_zero (F : ChartFlatBaseChange S S') (m : ℕ)
     (hm : m < F.reindex 0) (j : ℕ) (hj : j < S'.length) : F.reindex j ≠ m := by
@@ -108,12 +108,8 @@ theorem reindex_ne_of_lt_reindex_zero (F : ChartFlatBaseChange S S') (m : ℕ)
     · exact le_of_lt (F.reindex_lt_reindex_of_lt h0 (le_of_lt hj))
   omega
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
-
-Substitute using the available equality. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+An index at or before the given source stage has reindexed value at most the earlier endpoint. An index at or after its successor has value at least the later endpoint. Thus no retained value lies strictly between these consecutive endpoints.
 -/
 theorem reindex_ne_of_reindex_lt_of_lt_reindex_succ (F : ChartFlatBaseChange S S') (j : ℕ) (hj : j < S'.length) (m : ℕ)
     (h1 : F.reindex j < m) (h2 : m < F.reindex (j + 1)) (j' : ℕ) (hj' : j' < S'.length) :
@@ -133,16 +129,8 @@ theorem reindex_ne_of_reindex_lt_of_lt_reindex_succ (F : ChartFlatBaseChange S S
       · exact le_of_lt (F.reindex_lt_reindex_of_lt h (le_of_lt hj'))
     omega
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Substitute using the available equality. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the number of omitted steps between the earlier stage and the reindexed stage. With zero steps the transition is the identity. Otherwise the first omitted center pulls back to the unit ideal on the comparison scheme, since the relevant stage square is a pullback and the step is omitted. The strict transform agrees with the total transform after this pullback because the pulled-back center is unit. Thus pulling the earlier ideal back equals pulling back the next strict-transform ideal along the comparison to that stage. Apply induction across the remaining omitted steps, using composition of the ambient transitions.
 -/
 private theorem strictTransformIdeal_comap_transitionMap_eq (F : ChartFlatBaseChange S S') (j : ℕ) (hj : j ≤ S'.length) :
     ∀ (n i : ℕ) (hi : i ≤ F.reindex j), i + n = F.reindex j →
@@ -181,22 +169,8 @@ private theorem strictTransformIdeal_comap_transitionMap_eq (F : ChartFlatBaseCh
       rw [← hIH, S.strictTransformIdeal_succ i, hst, ← Scheme.IdealSheafData.comap_comp, Category.assoc,
         hdown]
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+At zero the ideals are the kernels of the original closed embeddings transported to their initial ambient stages. The embedding pullback square remains a pullback after transport by the initial isomorphisms, and the comparison to the original stage zero is flat. Thus the kernel formula for flat base change gives equality there. The omitted initial centers have unit pullbacks, so the equality also holds at the first retained stage. At a successor the ambient comparison square identifies the new blowup with the flat base change of the original retained blowup. The preceding strict-transform ideal and center are corresponding pullbacks, so flat base change of strict transforms identifies the successor ideals at this blowup. All intervening stages before the next retained index are omitted, and pullback across their unit centers preserves the strict-transform ideal. This gives the equality at the next retained index and completes the induction.
 -/
 theorem strictTransformIdeal_eq_comap (F : ChartFlatBaseChange S S') (j : ℕ) (hj : j ≤ S'.length) :
     S'.strictTransformIdeal j = (S.strictTransformIdeal (F.reindex j)).comap (F.levelMap j hj) := by
@@ -262,8 +236,8 @@ theorem strictTransformIdeal_eq_comap (F : ChartFlatBaseChange S S') (j : ℕ) (
       rw [← hkey, S.strictTransformIdeal_succ (F.reindex n), hst, ← hIH, ← hcenter]
       exact S'.strictTransformIdeal_succ n
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Each composite of the two proposed maps becomes the identity after composition with the corresponding ambient monomorphism, by the two factorization equations. Cancellation makes the two composites identities. The maps therefore form an isomorphism with the stated factorization.
 -/
 private theorem exists_iso_of_mono_of_comp_eq
     {A Z W : Scheme.{u}} (g : Z ⟶ A) (i : W ⟶ A)
@@ -276,8 +250,8 @@ private theorem exists_iso_of_mono_of_comp_eq
   · refine (cancel_mono g).mp ?_
     rw [Category.assoc, ha, hb, Category.id_comp]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The closed immersion and the immersion defined by its kernel have the same kernel ideal. Each therefore factors through the other by the closed-immersion lifting property. They are monomorphisms, so the two factorizations form an isomorphism over the ambient scheme.
 -/
 private theorem exists_iso_subscheme_ker
     {A Z : Scheme.{u}} (g : Z ⟶ A) [AlgebraicGeometry.IsClosedImmersion g] :
@@ -293,10 +267,8 @@ private theorem exists_iso_subscheme_ker
     (AlgebraicGeometry.IsClosedImmersion.lift_fac ..)
     (AlgebraicGeometry.IsClosedImmersion.lift_fac ..)
 
-/- English proof (translation)
-Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
+/- English proof (authored)
+The base change of the original closed immersion is itself a closed immersion. Its kernel is the specified new ideal, so the new closed subscheme is isomorphic over the new ambient scheme to this pullback. Under that isomorphism use the other projection as the comparison to the original closed subscheme. The projections commute and the square is a pullback.
 -/
 private theorem exists_isPullback_subscheme_of_ker_eq
     {A B : Scheme.{u}} (f : A ⟶ B) (I : B.IdealSheafData) (J : A.IdealSheafData)
@@ -323,8 +295,8 @@ private theorem exists_isPullback_subscheme_of_ker_eq
   exact ⟨(u ≪≫ pullbackSymmetry f I.subschemeι).hom ≫ pullback.fst I.subschemeι f, hcomm,
     IsPullback.of_iso_pullback ⟨hcomm⟩ (u ≪≫ pullbackSymmetry f I.subschemeι) rfl hsnd⟩
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The new strict-transform ideal is the pullback of the original one, which is the kernel of the base-changed strict-transform immersion. Apply the closed-subscheme pullback result for equal kernels to construct the comparison and its pullback square.
 -/
 theorem exists_isPullback_strictTransformι (F : ChartFlatBaseChange S S') (j : ℕ) (hj : j ≤ S'.length) :
     ∃ g : S'.strictTransform j ⟶ S.strictTransform (F.reindex j),
@@ -340,23 +312,23 @@ def strictTransformComparison (F : ChartFlatBaseChange S S') (j : ℕ) (hj : j �
     S'.strictTransform j ⟶ S.strictTransform (F.reindex j) :=
   (F.exists_isPullback_strictTransformι j hj).choose
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The strict-transform comparison was chosen with a commuting square of strict-transform inclusions and ambient comparison. The displayed equality is its commuting equation.
 -/
 theorem strictTransformComparison_comp_strictTransformι (F : ChartFlatBaseChange S S') (j : ℕ) (hj : j ≤ S'.length) :
     F.strictTransformComparison j hj ≫ S.strictTransformι (F.reindex j) = S'.strictTransformι j ≫ F.levelMap j hj :=
   (F.exists_isPullback_strictTransformι j hj).choose_spec.1
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The chosen strict-transform comparison exhibits the new strict transform as the pullback of the original strict-transform inclusion. Its defining property is exactly this pullback square.
 -/
 theorem isPullback_strictTransformComparison_strictTransformι (F : ChartFlatBaseChange S S') (j : ℕ) (hj : j ≤ S'.length) :
     IsPullback (F.strictTransformComparison j hj) (S'.strictTransformι j) (S.strictTransformι (F.reindex j))
       (F.levelMap j hj) :=
   (F.exists_isPullback_strictTransformι j hj).choose_spec.2
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The ambient stage comparison is flat, and the square of strict transforms identifies their comparison as its base change along the original strict-transform inclusion. This comparison is therefore flat.
 -/
 theorem flat_strictTransformComparison (F : ChartFlatBaseChange S S') (j : ℕ) (hj : j ≤ S'.length) :
     AlgebraicGeometry.Flat (F.strictTransformComparison j hj) := by

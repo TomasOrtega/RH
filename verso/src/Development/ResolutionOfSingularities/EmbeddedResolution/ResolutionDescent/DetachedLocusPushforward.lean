@@ -29,22 +29,8 @@ variable {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}} [AlgebraicGeometry
   {pY : Y ⟶ Spec (CommRingCat.of k)} [AlgebraicGeometry.LocallyOfFiniteType pY]
   {S S' : EmbeddedBlowupSequence k Y pY}
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
-
-Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
+/- English proof (authored)
+The two continuous inverse maps give a homeomorphism. They carry irreducible sets to irreducible sets in both directions. If the image of a component lies in a larger irreducible set, apply the inverse map and use maximality of the component. Applying the forward map gives maximality of the image. The same argument with the maps reversed proves the converse.
 -/
 private theorem mem_irreducibleComponents_iff_image {α β : Type*} [TopologicalSpace α]
     [TopologicalSpace β] (f : α → β) (g : β → α) (hf : Continuous f) (hg : Continuous g)
@@ -93,16 +79,8 @@ private theorem mem_irreducibleComponents_iff_image {α β : Type*} [Topological
       have hx'x : x' = x := hinj hxx
       rwa [← hx'x]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+The strict-transform isomorphism carries irreducible components to irreducible components and reflects that condition. The ambient center support upstairs is the image of the support downstairs under the closed stage comparison. The square with the strict-transform inclusions commutes, so a component image contained in the original center maps to one contained in the new center. Conversely, if its image is contained in the new center, injectivity of the ambient stage comparison forces every original point into the original center. Thus the componentwise containment conditions are equivalent.
 -/
 theorem mem_detachedComponents_iff (P : ChartPushforward S S') (i : ℕ) (hi : i < S'.length)
     (C : Set ↥(S.strictTransform i)) :
@@ -144,10 +122,8 @@ theorem mem_detachedComponents_iff (P : ChartPushforward S S') (i : ℕ) (hi : i
     have hwx : w = (S.strictTransformι i).base x := hinj hweq'
     rwa [hwx] at hw
 
-/- English proof (translation)
-Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+A point of a set in the source family maps into the image of that set, which belongs to the target family. Conversely, for a point of a target family member, choose a preimage by surjectivity. The inverse image of that member maps onto the member and hence belongs to the source family by the assumed equivalence. This preimage point belongs to the source union, proving the reverse containment.
 -/
 private theorem sUnion_eq_image_sUnion {α β : Type u} (f : α → β)
     (hf : Function.Surjective f) (A : Set (Set α)) (B : Set (Set β))
@@ -164,8 +140,8 @@ private theorem sUnion_eq_image_sUnion {α β : Type u} (f : α → β)
     obtain ⟨C, hC, hyC⟩ := hy
     exact ⟨f '' C, (h C).mp hC, ⟨y, hyC, rfl⟩⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The strict-transform isomorphism is surjective and sends exactly the detached components to the detached components of the target. Taking their unions therefore sends the original detached locus onto the target one.
 -/
 theorem detachedLocus_eq_image (P : ChartPushforward S S') (i : ℕ) (hi : i < S'.length) :
     S'.detachedLocus i = ⇑((P.strictTransformIso i hi.le).hom) '' S.detachedLocus i := by
@@ -175,8 +151,8 @@ theorem detachedLocus_eq_image (P : ChartPushforward S S') (i : ℕ) (hi : i < S
   exact sUnion_eq_image_sUnion _ hsurj _ _
     (fun C => P.mem_detachedComponents_iff i hi C)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The strict-transform isomorphism gives a homeomorphism on point spaces. It sends the original detached locus to the target locus and commutes with taking topological closure, giving the equality.
 -/
 theorem coe_detachedClosure_eq_image (P : ChartPushforward S S') (i : ℕ) (hi : i < S'.length) :
     (↑(S'.detachedClosure i) : Set ↥(S'.strictTransform i)) =
@@ -186,8 +162,8 @@ theorem coe_detachedClosure_eq_image (P : ChartPushforward S S') (i : ℕ) (hi :
   rw [h1, h2, P.detachedLocus_eq_image i hi]
   exact ((Scheme.homeoOfIso (P.strictTransformIso i hi.le)).image_closure (S.detachedLocus i)).symm
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The target detached closure is the image of the original closure. The strict-transform map is injective, so the inverse image of that image is the original closure.
 -/
 theorem preimage_coe_detachedClosure (P : ChartPushforward S S') (i : ℕ) (hi : i < S'.length) :
     ⇑((P.strictTransformIso i hi.le).hom) ⁻¹' (↑(S'.detachedClosure i) : Set ↥(S'.strictTransform i)) =
@@ -195,12 +171,8 @@ theorem preimage_coe_detachedClosure (P : ChartPushforward S S') (i : ℕ) (hi :
   rw [P.coe_detachedClosure_eq_image i hi]
   exact Set.preimage_image_eq _ (Scheme.homeoOfIso (P.strictTransformIso i hi.le)).injective
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The strict transforms are reduced and Noetherian. Their isomorphism is flat and takes the inverse image of the target detached closure to the original detached closure. The target closure is a union of irreducible components. The flat pullback formula for the vanishing ideal of such a union identifies its pullback with the original detached ideal.
 -/
 theorem comap_detachedIdeal (P : ChartPushforward S S') [AlgebraicGeometry.IsReduced Y] (i : ℕ)
     (hi : i < S'.length) :
@@ -225,12 +197,8 @@ theorem comap_detachedIdeal (P : ChartPushforward S S') [AlgebraicGeometry.IsRed
   rw [S'.detachedIdeal_eq i, S.detachedIdeal_eq i]
   exact comap_vanishingIdeal_sUnion (P.strictTransformIso i hi.le).hom hS hZ hZ'
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The ideal pullback equality lets the forward ambient isomorphism restrict to a map between the two closed subschemes. Pulling the equality back by the inverse gives the restriction in the reverse direction. The composites become identities after composing with the closed immersions, so cancellation makes them inverse. The forward restriction has the desired ambient compatibility.
 -/
 private theorem exists_subschemeIso_of_comap_eq {X Z : Scheme.{u}} (e : X ≅ Z)
     (I : X.IdealSheafData) (J : Z.IdealSheafData) (h : J.comap e.hom = I) :
@@ -256,8 +224,8 @@ private theorem exists_subschemeIso_of_comap_eq {X Z : Scheme.{u}} (e : X ≅ Z)
     rw [Category.assoc, ha, ← Category.assoc, hb, Category.assoc, e.inv_hom_id,
       Category.comp_id, Category.id_comp]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The strict-transform isomorphism identifies the two detached ideals by pullback. Restrict it to the closed subschemes of these ideals to get an isomorphism commuting with their inclusions.
 -/
 theorem exists_iso_detachedScheme (P : ChartPushforward S S') [AlgebraicGeometry.IsReduced Y] (i : ℕ)
     (hi : i < S'.length) :
@@ -271,16 +239,16 @@ def detachedSchemeIso (P : ChartPushforward S S') [AlgebraicGeometry.IsReduced Y
   (P.exists_iso_detachedScheme i hi).choose
 
 @[reassoc]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The detached-scheme isomorphism was chosen with the condition that its composite with the target detached inclusion equals the original detached inclusion followed by the strict-transform isomorphism.
 -/
 theorem detachedSchemeIso_hom_comp_detachedι (P : ChartPushforward S S') [AlgebraicGeometry.IsReduced Y] (i : ℕ)
     (hi : i < S'.length) :
     (P.detachedSchemeIso i hi).hom ≫ S'.detachedι i = S.detachedι i ≫ (P.strictTransformIso i hi.le).hom :=
   (P.exists_iso_detachedScheme i hi).choose_spec
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The original detached closure is the inverse image of the target detached closure. Taking complements and using that inverse image commutes with complement gives the identity of the two opens.
 -/
 theorem preimage_detachedClosureCompl (P : ChartPushforward S S') (i : ℕ) (hi : i < S'.length) :
     (P.strictTransformIso i hi.le).hom ⁻¹ᵁ (S'.detachedClosureCompl i) = S.detachedClosureCompl i := by
@@ -292,8 +260,8 @@ theorem preimage_detachedClosureCompl (P : ChartPushforward S S') (i : ℕ) (hi 
     rw [Set.preimage_compl, h]
   exact TopologicalSpace.Opens.ext h2
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The target ambient center is the image ideal of the original center under the stage closed immersion. Pulling that image back along the closed immersion recovers the original center. By the commuting square of strict transforms, pulling back the restriction of the target center is the same as first pulling back along that stage immersion and then restricting to the original strict transform. The result is the original restricted center.
 -/
 theorem comap_comapAmbientCenter (P : ChartPushforward S S') (i : ℕ) (hi : i < S'.length) :
     (S'.comapAmbientCenter i).comap (P.strictTransformIso i hi.le).hom = S.comapAmbientCenter i := by
@@ -303,16 +271,8 @@ theorem comap_comapAmbientCenter (P : ChartPushforward S S') (i : ℕ) (hi : i <
   rw [← Scheme.IdealSheafData.comap_comp, P.strictTransformIso_hom_comp_strictTransformι i hi.le,
     Scheme.IdealSheafData.comap_comp, hmap, Blowup.comap_map_of_isClosedImmersion]
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The equality of opens ensures that the forward isomorphism sends the first open into the second and that its inverse sends the second into the first. Restrict both maps using the open inclusions. Their composites are identities by cancellation after the inclusions, and the forward restriction commutes with the inclusions by construction.
 -/
 private theorem exists_isIso_of_preimage_opens_eq {X Z : Scheme.{u}} (e : X ≅ Z) (U : X.Opens)
     (U' : Z.Opens) (hU : e.hom ⁻¹ᵁ U' = U) :
@@ -349,12 +309,8 @@ private theorem exists_isIso_of_preimage_opens_eq {X Z : Scheme.{u}} (e : X ≅ 
         Category.id_comp]
   · rw [IsOpenImmersion.lift_fac]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The complements of the detached closures correspond under the strict-transform isomorphism, giving a pullback square of open inclusions. The restricted target ambient center pulls back in this square to the restricted original ambient center by the commuting square and the comparison of ambient centers on strict transforms. The center off the detached locus is the image ideal of that restricted center along the open inclusion. Flat base change allows this image operation to commute with pullback along the isomorphism, which gives the stated equality.
 -/
 theorem comap_centerOffDetached (P : ChartPushforward S S') (i : ℕ) (hi : i < S'.length) :
     (S'.centerOffDetached i).comap (P.strictTransformIso i hi.le).hom = S.centerOffDetached i := by

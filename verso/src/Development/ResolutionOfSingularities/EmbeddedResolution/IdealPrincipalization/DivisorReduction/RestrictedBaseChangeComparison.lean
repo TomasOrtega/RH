@@ -24,28 +24,28 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace DivisorReduction
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+An isomorphism of schemes is an open immersion onto the entire target, hence is smooth.
 -/
 private theorem smooth_of_isIso {A B : Scheme.{u}} (g : A ⟶ B) [IsIso g] :
     AlgebraicGeometry.Smooth g := inferInstance
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Each target point is the image of its preimage under the inverse isomorphism. This gives surjectivity.
 -/
 private theorem surjective_of_isIso {A B : Scheme.{u}} (g : A ⟶ B) [IsIso g] :
     AlgebraicGeometry.Surjective g := inferInstance
 
-/- English proof (translation)
-Substitute using the available equality. Both sides reduce to the same expression.
+/- English proof (authored)
+Substitute the equality of the two morphisms. Both sides are then the pullback of the same ideal along the same morphism.
 -/
 private theorem comap_congr {X W : Scheme.{u}} {a b : W ⟶ X} (h : a = b)
     (I : X.IdealSheafData) : I.comap a = I.comap b := by
   subst h
   rfl
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+For each boundary entry, successive pullback is pullback along the composite by functoriality. Applying that equality entry by entry gives the two lists in the same order.
 -/
 private theorem map_comap_map_comap_eq_map_comap_comp {X Y W : Scheme.{u}} (a : W ⟶ Y) (b : Y ⟶ X)
     (M : List X.IdealSheafData) :
@@ -58,8 +58,8 @@ private theorem map_comap_map_comap_eq_map_comap_comp {X Y W : Scheme.{u}} (a : 
       simp only [List.map_cons]
       rw [← Scheme.IdealSheafData.comap_comp, ih]
 
-/- English proof (translation)
-Substitute using the available equality. Both sides reduce to the same expression.
+/- English proof (authored)
+Replace the two equal morphisms by their common value. Each entry is then pulled back by the same morphism on both sides.
 -/
 private theorem map_comap_congr {X W : Scheme.{u}} {a b : W ⟶ X} (h : a = b)
     (M : List X.IdealSheafData) :
@@ -68,15 +68,15 @@ private theorem map_comap_congr {X W : Scheme.{u}} {a b : W ⟶ X} (h : a = b)
   subst h
   rfl
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Substitute the equality of the two right-hand lists in the given nontrivial-boundary comparison.
 -/
 private theorem sameNontrivialBoundary_of_eq_right {X : Scheme.{u}} {A B B' : List X.IdealSheafData}
     (h : MarkedIdealWithBoundary.SameNontrivialBoundary A B) (hB : B = B') : MarkedIdealWithBoundary.SameNontrivialBoundary A B' :=
   hB ▸ h
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The square of the selected divisor inclusions is a pullback because the new divisor ideal is the pullback of the original one. The square defining the field extension is also a pullback. Paste the two squares to obtain the stated pullback over the field spectra.
 -/
 private theorem isPullback_subschemeMapOfComap_comp_structureMorphism (T : MarkedIdealWithBoundary.{u}) (j : ℕ)
     (hj : j < T.boundary.length) (K : Type u) [Field K] (f : T.base →+* K)
@@ -91,12 +91,8 @@ private theorem isPullback_subschemeMapOfComap_comp_structureMorphism (T : Marke
   exact (isPullback_subschemeMapOfComap _ _ (fieldBaseChangeProjection T K f)
     (T.boundary.get ⟨j, hj⟩) Z hZ).paste_vert h2
 
-/- English proof (translation)
-Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The selected divisor after field extension and the base-changed original divisor both realize the same pullback square over the field spectra. The unique isomorphism between these pullbacks respects their projections to the original divisor and to the extension field. Use its forward map as the required smooth surjective comparison. Transport the shortened replacement boundary to the base-changed divisor by pulling it back along the inverse isomorphism. The given agreement of nontrivial boundaries, restricted to the divisor and transported through the isomorphism, identifies this list with the base-changed original boundary up to unit entries. Pulling it back again recovers the shortened replacement list. The given pullback identity for the lower ideal and the commutative squares identify the transported ideal with the base-changed ideal. Admissibility is preserved by this isomorphism, and the two underlying divisors have equal successor dimension.
 -/
 theorem exists_smooth_surjective_to_restrictToBoundaryDivisor_baseChange (T : MarkedIdealWithBoundary.{u}) (j : ℕ)
     (hj : j < T.boundary.length) (K : Type u) [Field K] [CharZero K] (f : T.base →+* K)

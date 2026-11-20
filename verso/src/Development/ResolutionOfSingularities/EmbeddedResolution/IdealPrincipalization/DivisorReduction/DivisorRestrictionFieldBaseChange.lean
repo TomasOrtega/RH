@@ -49,22 +49,22 @@ def StrictPullbackSmoothSurjectiveOfDimLT (n : ℕ) (L : PrincipalizationAssignm
         IsStrictPullbackBlowupSeq h
           (L ((T.pullbackAlong Y q h).withBoundary E')).toSequenceOfBlowups (L T).toSequenceOfBlowups
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Maximum-order reduction correctness below dimension n includes the strict field-extension comparison for admissible inputs below that bound. Applying this clause gives the stated lower-dimensional property.
 -/
 theorem strictPullbackFieldBaseChangeOfDimLT_of_isMaxOrderReduction (n : ℕ) (L O : PrincipalizationAssignment.{u})
     (hL : IsMaxOrderReduction (fun d => d < n) L O) : StrictPullbackFieldBaseChangeOfDimLT n L :=
   hL.base_change_strict
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The strict smooth surjective pullback requirement of maximum-order reduction correctness applies to the given admissible inputs below dimension n. This supplies the indicated compatibility.
 -/
 theorem strictPullbackSmoothSurjectiveOfDimLT_of_isMaxOrderReduction (n : ℕ) (L O : PrincipalizationAssignment.{u})
     (hL : IsMaxOrderReduction (fun d => d < n) L O) : StrictPullbackSmoothSurjectiveOfDimLT n L :=
   hL.smooth_pullback_strict
 
-/- English proof (translation)
-Substitute using the available equality. Both sides reduce to the same expression.
+/- English proof (authored)
+Replace the marked inputs by their common value. The assignment gives the same marked sequence and hence the same underlying sequence.
 -/
 private theorem toSequenceOfBlowups_heq_of_eq (L : PrincipalizationAssignment.{u}) {A B : MarkedIdealWithBoundary.{u}} (h : A = B) :
     HEq (L A).toSequenceOfBlowups (L B).toSequenceOfBlowups := by
@@ -159,16 +159,8 @@ structure DivisorRestrictionFieldBaseChange : Prop where
             (List.map (fun D => D.comap (fieldBaseChangeProjection T K f))
               (List.take (T.boundary.length - 1) ((lowerBoundaryAfterBlowup T j hj).eraseIdx j)))
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Compare the divisor cut out after field extension with the field extension of the original restricted divisor. The restriction comparison gives a smooth surjective map to the latter, with matching projections and nontrivial boundary entries and with admissibility transported to the intermediate input. The strict dimension drops on both sides put the original, intermediate, and final divisor inputs below n. Apply the field-extension comparison to the original input and the intermediate one. The ideal pullback around the divisor square and the boundary comparison identify the final restricted input with the smooth pullback of the intermediate one with its prescribed boundary. Apply the smooth surjective comparison to this second map. Composing the two strict comparisons gives the stated one over the induced divisor map.
 -/
 private theorem restrictToBoundaryDivisor_isStrictPullbackBlowupSeq_baseChange (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hfacts : DivisorReductionTerminationProperties hres blowupPreservesNoetherian)
@@ -292,10 +284,8 @@ private theorem restrictToBoundaryDivisor_isStrictPullbackBlowupSeq_baseChange (
         (divisorPullbackMap T j hj I₀ E₀ (T.baseChange K f).scheme (fieldBaseChangeProjection T K f)
           (E'.get ⟨j, hjE⟩) hD) t (L (restrictToBoundaryDivisor T j hj I₀ E₀)).toSequenceOfBlowups) hLe).mp h4
 
-/- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+In the unit-center case the ordinary restricted ideals and boundaries match under field extension, and both ordinary restrictions are admissible. Apply the strict comparison for restricted divisors. In the nonunit case the field-extension projection preserves nonunit ideals, so both twisted restrictions are admissible. Their ideals and nontrivial boundaries match by the post-blowup field-extension formulas. Apply the same strict comparison to the twisted data. These are the two required properties.
 -/
 theorem restrictedFieldBaseChange_of_strictPullback (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hfacts : DivisorReductionTerminationProperties hres blowupPreservesNoetherian)
@@ -329,8 +319,8 @@ theorem restrictedFieldBaseChange_of_strictPullback (hres : FunctorialResolution
       (hfacts.valid_lowerPre T hV hO hbal j hj hZ)
       (hfacts.valid_lowerPre ((T.baseChange K f).withBoundary E') hV' hO' hDB' j hjE hZ2)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Lower-dimensional correctness provides strict comparisons for field extension and smooth surjective pullback. The restricted divisor theorem combines them to give the lower comparisons for both kinds of divisor input. Supply these comparisons to the strict field-extension theorem for the ambient divisor family.
 -/
 theorem divisorFamily_isStrictPullbackBlowupSeq_fieldBaseChange_of_isMaxOrderReduction
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
@@ -361,8 +351,8 @@ theorem divisorFamily_isStrictPullbackBlowupSeq_fieldBaseChange_of_isMaxOrderRed
       (strictPullbackSmoothSurjectiveOfDimLT_of_isMaxOrderReduction n L O hL) j)
     hshape T hV hdim hO hbal hj K f E' hBE htake hV' hdim' hO' hDB' hjE
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Use lower-dimensional correctness to obtain the two strict comparisons for restricted divisors. The canonical center theorem makes every actual center nonempty. Therefore removing empty-center steps from the field-extended sequence yields an isomorphic sequence. The field-extension pullback theorem uses these facts to give the asserted comparison.
 -/
 theorem divisorFamily_isPullbackBlowupSequence_fieldBaseChange_of_isMaxOrderReduction
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})

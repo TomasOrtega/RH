@@ -27,8 +27,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Converting the source to blowup data and back preserves its length, stages, initial isomorphism, adjacent maps, and centers. The stage embeddings in the given pushforward comparison therefore have the same types and satisfy the same compatibility conditions for the original source.
 -/
 private theorem isPushforwardBlowupSeq_of_ofSequenceOfBlowups {S X : Scheme.{u}} (ι : S ⟶ X) [IsClosedImmersion ι]
     (B : SequenceOfBlowups S) (B' : SequenceOfBlowups X)
@@ -37,20 +37,16 @@ private theorem isPushforwardBlowupSeq_of_ofSequenceOfBlowups {S X : Scheme.{u}}
   simp only [BlowupSequenceData.toSequenceOfBlowups_blowupMorphism] at h
   exact h
 
-/- English proof (translation)
-Substitute using the available equality. Both sides reduce to the same expression.
+/- English proof (authored)
+Substitute the equality of the marked inputs. Both assigned sequences now come from the same input and the underlying sequences are equal.
 -/
 private theorem heq_toSequenceOfBlowups_of_eq (L : PrincipalizationAssignment.{u}) {A B : MarkedIdealWithBoundary.{u}} (h : A = B) :
     HEq ((L A).toSequenceOfBlowups) ((L B).toSequenceOfBlowups) := by
   subst h
   rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Both sequences consist of their initial stages. Identify each initial stage with its base, and use the given closed immersion between the bases to define the stage embedding. It is a closed immersion and commutes with those identifications. There are no transitions, centers, or strict-transform conditions at indices below length zero. These data witness the pushforward.
 -/
 theorem isPushforwardSequenceOfBlowups_of_length_eq_zero {S X : Scheme.{u}} (ι : S ⟶ X)
     [IsClosedImmersion ι] (BS : SequenceOfBlowups S) (B : SequenceOfBlowups X)
@@ -73,8 +69,8 @@ theorem isPushforwardSequenceOfBlowups_of_length_eq_zero {S X : Scheme.{u}} (ι 
   · intro i hi
     exact absurd hi (by omega)
 
-/- English proof (translation)
-Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The unmarked data of the marked sequence are obtained by converting its underlying sequence. The given comparison for the converted source therefore gives the same comparison for the original source by the conversion result.
 -/
 theorem isPushforwardBlowupSeq_toSequenceOfBlowups_of_ofMarkedSequence (T : MarkedIdealWithBoundary.{u}) (s : T.SequenceOfBlowups)
     {Y : Scheme.{u}} (ι : T.scheme ⟶ Y) [IsClosedImmersion ι] (B : SequenceOfBlowups Y)
@@ -85,8 +81,8 @@ theorem isPushforwardBlowupSeq_toSequenceOfBlowups_of_ofMarkedSequence (T : Mark
 
 namespace DivisorReduction
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The untwisted lower ideal is the original ideal, since identity pullback does nothing. By hypothesis this is the image of J along the closed divisor inclusion. Pulling back that image along the same inclusion recovers J.
 -/
 theorem comap_lowerIdealWithoutBlowup_of_eq_imageIdealSheaf (T : MarkedIdealWithBoundary.{u}) (j : ℕ) (hj : j < T.boundary.length)
     (J : (T.boundary.get ⟨j, hj⟩).subscheme.IdealSheafData)
@@ -96,10 +92,8 @@ theorem comap_lowerIdealWithoutBlowup_of_eq_imageIdealSheaf (T : MarkedIdealWith
   rw [Scheme.IdealSheafData.comap_id, him]
   exact Blowup.comap_map_of_isClosedImmersion _ J
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The untwisted lower boundary is the original list because pulling each entry back along the identity fixes it. Removing the selected entry leaves exactly the original length minus one entries, so the truncation retains them all. Pulling this list back along the divisor inclusion then gives the asserted list.
 -/
 theorem map_comap_take_eraseIdx_lowerBoundaryWithoutBlowup (T : MarkedIdealWithBoundary.{u}) (j : ℕ) (hj : j < T.boundary.length) :
     List.map (fun D => D.comap (T.boundary.get ⟨j, hj⟩).subschemeι)
@@ -114,8 +108,8 @@ theorem map_comap_take_eraseIdx_lowerBoundaryWithoutBlowup (T : MarkedIdealWithB
     simp [List.length_eraseIdx, hj]
   rw [← hlen, List.take_length]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The ordinary divisor restriction uses the boundary subscheme with its induced structural map. Its ideal is J because the ambient ideal is the image of J, which pulls back to J. Its boundary is the restriction of the original list with the selected entry removed, by the deletion and truncation formula. These are precisely the data on the right.
 -/
 theorem restrictToDivisor_eq_withSchemeIdealBoundary (T : MarkedIdealWithBoundary.{u}) (j : ℕ) (hj : j < T.boundary.length)
     (J : (T.boundary.get ⟨j, hj⟩).subscheme.IdealSheafData)
@@ -132,18 +126,8 @@ theorem restrictToDivisor_eq_withSchemeIdealBoundary (T : MarkedIdealWithBoundar
 
 end DivisorReduction
 
-/- English proof (translation)
-Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The mark is one, so an empty ambient order locus implies that the ambient ideal has empty support and is unit. Its pullback to the divisor is J and is also unit. The two reductions then have length zero by the empty-order-locus properties, and the length-zero pushforward result applies. If the order locus is nonempty, the selected preliminary ideal is unit because the ambient ideal is the image of an admissible divisor ideal at mark one. The canonical sequence is therefore the ambient lift of the ordinary restriction. That restriction has ideal J and the original boundary with the selected entry deleted and the others pulled back. The ambient tower is the pushforward of this lower sequence by construction. Converting its marking and the lower sequence data preserves the pushforward comparison.
 -/
 theorem isPushforwardBlowupSeq_divisorFamily_canonicalAlgorithmRules (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hfacts : DivisorReductionTerminationProperties hres blowupPreservesNoetherian)

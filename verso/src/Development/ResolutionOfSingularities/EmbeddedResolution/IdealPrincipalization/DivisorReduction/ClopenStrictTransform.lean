@@ -18,12 +18,8 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Every point of the closed subscheme defined by Z maps into the given open, so the inverse image open in that subscheme is the whole subscheme. Its open inclusion is therefore an isomorphism. Restricting Z to the open and taking its image back in the ambient scheme gives the kernel of the composite from this inverse image open. Precomposition by the open isomorphism preserves the kernel, so this is the original defining ideal Z.
 -/
 theorem imageIdealSheaf_comap_ι_eq_self_of_support_subset {Y : Scheme.{u}} (Z : Y.IdealSheafData)
     (U : Y.Opens) (_hU : IsClosed (U : Set Y))
@@ -54,16 +50,16 @@ theorem imageIdealSheaf_comap_ι_eq_self_of_support_subset {Y : Scheme.{u}} (Z :
       (Scheme.Opens.ι (Z.subschemeι ⁻¹ᵁ U)) rfl,
     Scheme.IdealSheafData.ker_subschemeι]
 
-/- English proof (translation)
-Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
+/- English proof (authored)
+On an underlying point the composite first applies the point map of the first morphism and then that of the second. This is the stated equality of functions.
 -/
 private theorem coe_base_comp {A B C : Scheme.{u}} (a : A ⟶ B) (b : B ⟶ C) :
     ⇑(a ≫ b).base = ⇑b.base ∘ ⇑a.base := by
   funext x
   simp
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The open inclusion is a topological embedding onto the given subset, which is closed by hypothesis. It is therefore a closed embedding. The second map is also a closed embedding, so the composite is one.
 -/
 private theorem isClosedEmbedding_base_opens_ι_comp_of_isClosed {S Y : Scheme.{u}} (f : S ⟶ Y)
     [IsClosedImmersion f] (U : S.Opens) (hU : IsClosed (U : Set S)) :
@@ -75,10 +71,8 @@ private theorem isClosedEmbedding_base_opens_ι_comp_of_isClosed {S Y : Scheme.{
   rw [coe_base_comp]
   exact (Scheme.Hom.isClosedEmbedding f).comp hUce
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The composite of the clopen inclusion and the closed immersion is a closed embedding on points and is quasi-compact. Its kernel support is the closure of its image. The image is the closed image of the given open subset under f, so its closure is itself.
 -/
 theorem support_ker_opens_ι_comp {S Y : Scheme.{u}} (f : S ⟶ Y) [IsClosedImmersion f]
     (U : S.Opens) (hU : IsClosed (U : Set S)) :
@@ -97,15 +91,15 @@ theorem support_ker_opens_ι_comp {S Y : Scheme.{u}} (f : S ⟶ Y) [IsClosedImme
   rw [Scheme.Hom.support_ker, hrange]
   exact hclosed.closure_eq
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The underlying point map of the composite is the composite of the two underlying functions. Its range is the image of the range of the first function under the second.
 -/
 private theorem range_base_comp {A B C : Scheme.{u}} (a : A ⟶ B) (b : B ⟶ C) :
     Set.range ⇑(a ≫ b).base = ⇑b.base '' Set.range ⇑a.base := by
   rw [coe_base_comp, Set.range_comp]
 
-/- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+A closed embedding identifies the inverse image of a quasi-compact open with its intersection with the closed image. That intersection is closed in the quasi-compact open and is quasi-compact. This gives quasi-compactness of the morphism.
 -/
 private theorem quasiCompact_of_isClosedEmbedding_base {A B : Scheme.{u}} (g : A ⟶ B)
     (hg : Topology.IsClosedEmbedding ⇑g.base) : QuasiCompact g := by
@@ -113,8 +107,8 @@ private theorem quasiCompact_of_isClosedEmbedding_base {A B : Scheme.{u}} (g : A
   intro V _ hV
   exact hg.isCompact_preimage hV
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The composite inclusion has image the intersection of U with the inverse image of W under f. That inverse image is contained in U by hypothesis, so the intersection equals the full inverse image. This is the range of its own inclusion.
 -/
 private theorem range_base_preimage_ι_comp_ι_eq_of_le {S Y : Scheme.{u}} (f : S ⟶ Y) (U : S.Opens)
     (W : Y.Opens) (hW : (f ⁻¹ᵁ W : S.Opens) ≤ U) :
@@ -128,12 +122,8 @@ private theorem range_base_preimage_ι_comp_ι_eq_of_le {S Y : Scheme.{u}} (f : 
   intro x hx
   exact hW hx
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The hypothesis gives equal images in the original source for the inverse-image open of W under f and the inverse-image open under its restriction to U. Both are open immersions into the original source, so their domains are canonically isomorphic over it. The induced maps to W coincide under that isomorphism, since their composites with the open inclusion agree. The restrictions of the kernel ideals are the kernels of these two maps, which agree under precomposition by the isomorphism.
 -/
 theorem restrictIdeal_ker_opens_ι_comp_of_preimage_le {S Y : Scheme.{u}} (f : S ⟶ Y) [IsClosedImmersion f]
     (U : S.Opens) (hU : IsClosed (U : Set S)) (W : Y.Opens)
@@ -168,10 +158,8 @@ theorem restrictIdeal_ker_opens_ι_comp_of_preimage_le {S Y : Scheme.{u}} (f : S
     (IsOpenImmersion.isoOfRangeEq (Scheme.Opens.ι (f ⁻¹ᵁ W))
       (Scheme.Opens.ι ((U.ι ≫ f) ⁻¹ᵁ W) ≫ U.ι) hrange).hom key).symm
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Restricting a strict transform to the inverse image of W computes the strict transform of the restrictions along the restricted morphism. The center is the same in both computations and the two restricted input ideals agree by hypothesis. Their strict transforms therefore agree on this open.
 -/
 theorem restrictIdeal_strictTransform_congr {Y Y₁ : Scheme.{u}} [IsLocallyNoetherian Y₁]
     (f : Y₁ ⟶ Y) (Z : Y.IdealSheafData) (W : Y.Opens) (A B : Y.IdealSheafData)
@@ -190,26 +178,8 @@ theorem restrictIdeal_strictTransform_congr {Y Y₁ : Scheme.{u}} [IsLocallyNoet
       strictTransform_comp_ι W (f ∣_ W) Z B]
   rw [hA, hB, h]
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
-
-Supply the required witnesses or components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The inverse images of the two given opens cover the new ambient scheme. On the first, commutativity makes the inverse image along the new immersion lie entirely in the selected lower open. There the kernel of the selected inclusion equals the full embedding kernel, both before and after the transformation. Apply the full strict-transform equality and the locality of strict transform. On the second open the selected original image is empty by hypothesis, and the selected new image is also disjoint by commutativity. The restricted kernels are unit there, and the transform of the unit ideal is unit. The two local equalities prove the global equality.
 -/
 private theorem ker_preimage_ι_comp_eq_strictTransform_of_cover {S Y S₁ Y₁ : Scheme.{u}}
     [IsLocallyNoetherian Y₁]
@@ -282,14 +252,8 @@ private theorem ker_preimage_ι_comp_eq_strictTransform_of_cover {S Y S₁ Y₁ 
       have e2 := restrictIdeal_ker_opens_ι_comp_of_preimage_le ι U hU W₁ h₁
       rw [e1, hker, restrictIdeal_strictTransform_congr f Z W₁ _ _ e2]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
-
-Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The clopen subset and its complement have disjoint closed images in the original ambient scheme under the closed immersion. Their open complements cover the ambient scheme. The complement of the image of the unselected part has inverse image inside U, and the complement of the image of U misses every selected point. The inverse image of U under the lower transition remains clopen. The two-open strict-transform comparison now applies.
 -/
 theorem ker_preimage_ι_comp_eq_strictTransform_of_isClopen {S Y S₁ Y₁ : Scheme.{u}} [IsLocallyNoetherian Y₁]
     (ι : S ⟶ Y) [IsClosedImmersion ι] (ι₁ : S₁ ⟶ Y₁) [IsClosedImmersion ι₁]
@@ -329,8 +293,8 @@ theorem ker_preimage_ι_comp_eq_strictTransform_of_isClopen {S Y S₁ Y₁ : Sch
     have hmem' : ι.base x ∈ (⇑ι.base '' (U : Set S))ᶜ := hmem
     exact absurd (show ι.base x ∈ ⇑ι.base '' (U : Set S) from ⟨x, hxU, rfl⟩) hmem'
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The exceptional ideal is the pullback of the center. Restricting it is pullback along the inclusion of the inverse-image open. The composite with the original morphism equals the restricted morphism followed by the original open inclusion. Functoriality identifies this with the pullback of the restricted center.
 -/
 theorem restrictIdeal_exceptionalIdeal {Y Y₁ : Scheme.{u}} (f : Y₁ ⟶ Y)
     (Z : Y.IdealSheafData) (W : Y.Opens) :
@@ -341,8 +305,8 @@ theorem restrictIdeal_exceptionalIdeal {Y Y₁ : Scheme.{u}} (f : Y₁ ⟶ Y)
   rw [← Scheme.IdealSheafData.comap_comp, ← Scheme.IdealSheafData.comap_comp,
     morphismRestrict_ι]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+First restrict the strict transform on the source by composing the morphism with the inverse-image open inclusion. This composite is the restricted morphism followed by the open inclusion of W. The strict-transform rule for composition with that open inclusion replaces the center and input ideal by their restrictions, giving the stated formula.
 -/
 theorem restrictIdeal_strictTransform_preimage {Y Y₁ : Scheme.{u}} [IsLocallyNoetherian Y₁]
     (f : Y₁ ⟶ Y) (Z D : Y.IdealSheafData) (W : Y.Opens) :

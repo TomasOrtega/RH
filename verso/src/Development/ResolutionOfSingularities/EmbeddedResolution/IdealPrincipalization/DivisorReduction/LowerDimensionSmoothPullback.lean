@@ -35,8 +35,8 @@ def PullbackSmoothOfDimLT (n : ℕ) (L : PrincipalizationAssignment.{u}) : Prop 
         IsPullbackBlowupSequence h (L ((T.pullbackAlong Y q h).withBoundary E')).toSequenceOfBlowups
           (L T).toSequenceOfBlowups
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Maximum-order reduction correctness below dimension n includes compatibility with smooth pullback for admissible inputs in that dimension range. Apply that clause to the two given inputs and the prescribed boundary replacement.
 -/
 theorem pullbackSmoothOfDimLT_of_isMaxOrderReduction (n : ℕ) (L O : PrincipalizationAssignment.{u})
     (hL : IsMaxOrderReduction (fun d => d < n) L O) : PullbackSmoothOfDimLT n L := by
@@ -44,14 +44,8 @@ theorem pullbackSmoothOfDimLT_of_isMaxOrderReduction (n : ℕ) (L O : Principali
   have := hsm
   exact hL.smooth_pullback T hV hdim Y q h hq E' hBE hV' hdim'
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
-
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The only relevant stage of either sequence is zero. The projection from the original stage zero to its base is an isomorphism, so its fiber product with the new base is canonically isomorphic to the new base. The new sequence's stage zero is also identified with that base by its initial isomorphism. Compose these identifications to obtain the pullback comparison. All conditions involving a genuine blowup step or an omitted center are vacuous because both lengths are zero.
 -/
 theorem isPullbackSequenceOfBlowups_of_length_eq_zero (X X' : Scheme.{u}) (φ : X' ⟶ X) (B' : SequenceOfBlowups X')
     (B : SequenceOfBlowups X) (hB' : B'.length = 0) (hB : B.length = 0) : IsPullbackBlowupSequence φ B' B := by
@@ -81,14 +75,8 @@ theorem isPullbackSequenceOfBlowups_of_length_eq_zero (X X' : Scheme.{u}) (φ : 
   · intro i hi
     exact absurd hi (by rw [hB']; exact Nat.not_lt_zero i)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Substitute using the available equality. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the source index of the transition. A transition between equal indices is the identity in both sequences. For a transition from a larger successor index, factor it through the preceding index. Conversion to data and back preserves the adjacent transition, and the remaining transition is preserved by induction. The composites agree.
 -/
 private theorem forall_ofSequenceOfBlowups_transitionMap_eq {X : Scheme.{u}} (s : SequenceOfBlowups X) :
     ∀ (j i : ℕ) (h : i ≤ j), (BlowupSequenceData.ofSequenceOfBlowups s).toSequenceOfBlowups.transitionMap h = s.transitionMap h := by
@@ -120,19 +108,15 @@ private theorem forall_ofSequenceOfBlowups_transitionMap_eq {X : Scheme.{u}} (s 
       have c2 := congrArg (fun g => s.transitionMap (Nat.le_succ k) ≫ g) (ih i hik)
       exact E1.trans ((c1.trans c2).trans E2.symm)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Apply the transition comparison proved by induction to these two stage indices and their given order.
 -/
 private theorem ofSequenceOfBlowups_transitionMap {X : Scheme.{u}} (s : SequenceOfBlowups X) {i j : ℕ} (h : i ≤ j) :
     (BlowupSequenceData.ofSequenceOfBlowups s).toSequenceOfBlowups.transitionMap h = s.transitionMap h :=
   forall_ofSequenceOfBlowups_transitionMap_eq s j i h
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The converted tower has the same object at every index. Every arrow of the opposite natural-number category corresponds to an inequality of indices and its image is the transition for that inequality. These transitions are preserved under conversion, so the two functors agree on arrows and objects.
 -/
 private theorem ofSequenceOfBlowups_tower {X : Scheme.{u}} (s : SequenceOfBlowups X) :
     (BlowupSequenceData.ofSequenceOfBlowups s).toSequenceOfBlowups.tower = s.tower := by
@@ -152,12 +136,8 @@ private theorem ofSequenceOfBlowups_tower {X : Scheme.{u}} (s : SequenceOfBlowup
     simp
   exact key.trans hid
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
-
-Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Both sides reduce to the same expression.
+/- English proof (authored)
+Identify the lengths and the towers by their equalities. This aligns the types of the centers and the initial isomorphisms. Their given equalities then identify both remaining data fields. The blowup conditions are propositions, so the resulting sequences are equal.
 -/
 private theorem sequenceOfBlowups_eq_of_tower_eq {X : Scheme.{u}} (s t : SequenceOfBlowups X)
     (ht : s.tower = t.tower) (hl : s.length = t.length)
@@ -174,15 +154,15 @@ private theorem sequenceOfBlowups_eq_of_tower_eq {X : Scheme.{u}} (s t : Sequenc
   obtain rfl := eq_of_heq hc'
   rfl
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The tower comparison gives equality of the reconstructed tower with the original. The conversion also preserves the original length, initial isomorphism, and center ideals. These data determine the sequence.
 -/
 private theorem ofSequenceOfBlowups_toSequenceOfBlowups {X : Scheme.{u}} (s : SequenceOfBlowups X) :
     (BlowupSequenceData.ofSequenceOfBlowups s).toSequenceOfBlowups = s :=
   sequenceOfBlowups_eq_of_tower_eq _ _ (ofSequenceOfBlowups_tower s) rfl (HEq.refl _) (HEq.refl _)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The unmarked data of either marked sequence are the data obtained from its original underlying sequence. Converting each back recovers that original sequence. Thus the given pullback relation applies unchanged.
 -/
 theorem isPullbackBlowupSequence_ofMarkedSequence (A B : MarkedIdealWithBoundary.{u})
     (φ : A.scheme ⟶ B.scheme) (sA : A.SequenceOfBlowups) (sB : B.SequenceOfBlowups)
@@ -196,8 +176,8 @@ theorem isPullbackBlowupSequence_ofMarkedSequence (A B : MarkedIdealWithBoundary
   rw [hA, hB]
   exact hs
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Substitute the equality of the two ideals. All other data already agree, so the marked inputs coincide.
 -/
 private theorem markedIdealWithBoundary_mk_ideal_congr {k : Type u} [inst : Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {m : ℕ} {E : List X.IdealSheafData}
@@ -205,8 +185,8 @@ private theorem markedIdealWithBoundary_mk_ideal_congr {k : Type u} [inst : Fiel
     (@MarkedIdealWithBoundary.mk k inst X p I₁ m E) = (@MarkedIdealWithBoundary.mk k inst X p I₂ m E) := by
   rw [hI]
 
-/- English proof (translation)
-Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Identify the two equal marked inputs first. The domain schemes agree, so the given equality of comparison maps is an ordinary equality. Substitute it into the pullback relation to obtain the desired one.
 -/
 private theorem isPullbackSequenceOfBlowups_apply_congr (L : PrincipalizationAssignment.{u})
     {X : Scheme.{u}} (B : SequenceOfBlowups X) (S S' : MarkedIdealWithBoundary.{u}) (hS : S = S')
@@ -218,14 +198,8 @@ private theorem isPullbackSequenceOfBlowups_apply_congr (L : PrincipalizationAss
   subst hee
   exact hpb
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The selected new divisor is the pullback of the original one, so their inclusion square is a pullback. Its induced map is smooth and respects the structural maps to the field. The two routes around that square give equal pullbacks of the lower ideal. The hypothesis on shortened boundaries also gives the same nontrivial boundary after restriction to the divisor. Consequently the newly restricted marked input is the smooth pullback of the original restricted input with this boundary replacement. Both are admissible and below the dimension bound, so the assumed lower-dimensional compatibility gives the pullback comparison.
 -/
 private theorem isPullbackBlowupSequence_restrictToBoundaryDivisor (n : ℕ) (L : PrincipalizationAssignment.{u})
     (hL : PullbackSmoothOfDimLT n L) (hbc : DivisorReduction.SmoothPullbackCompatibility.{u})
@@ -323,12 +297,8 @@ private theorem isPullbackBlowupSequence_restrictToBoundaryDivisor (n : ℕ) (L 
     (L (DivisorReduction.restrictToBoundaryDivisor T j hj I₀ E₀)).toSequenceOfBlowups _ _ heq _ _
     (HEq.refl (DivisorReduction.divisorPullbackMap T j hj I₀ E₀ Y h (E'.get ⟨j, hjE⟩) hD)) hmain
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+In each case the selected new boundary divisor is the pullback of the selected original one. The nonempty order loci supply strict dimension drops on both sides, and the appropriate ordinary or twisted admissibility theorem applies. When both selected centers are unit, the ordinary lower ideals and boundaries match under smooth pullback. When the original center is nonunit but becomes unit, the empty-center formulas identify the pullback of the twisted data with the ordinary data on the new side. When both centers are nonunit, the twisted data match by the lower ideal and boundary comparisons for smooth pullback. The pullback theorem for restricted divisors applies to the corresponding data in each case.
 -/
 theorem restrictedSmoothPullback_of_pullbackSmoothOfDimLT
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
@@ -405,8 +375,8 @@ theorem restrictedSmoothPullback_of_pullbackSmoothOfDimLT
         (DivisorReduction.lowerIdealAfterBlowup ((T.pullbackAlong Y q h).withBoundary E') j hjE)
         (DivisorReduction.lowerBoundaryAfterBlowup ((T.pullbackAlong Y q h).withBoundary E') j hjE)) hdim')
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The lower-dimensional maximum-order reduction hypothesis supplies smooth pullback compatibility below the bound. Use this in the three-case restricted comparison to obtain the required property.
 -/
 theorem restrictedSmoothPullback_of_isMaxOrderReduction
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
@@ -418,8 +388,8 @@ theorem restrictedSmoothPullback_of_isMaxOrderReduction
   restrictedSmoothPullback_of_pullbackSmoothOfDimLT hres hfacts hbc hdt n L j
     (pullbackSmoothOfDimLT_of_isMaxOrderReduction n L O hL)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The supplied empty-cosupport comparison gives the first requirement. The comparison for two sequences of length zero gives the second, and preservation of comparison under conversion of marked sequence data gives the third. Together they give the stated empty-sequence comparison property.
 -/
 theorem pullbackOfEmptySequence_of_isPullbackSequenceOfBlowups (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (L : PrincipalizationAssignment.{u}) (j : ℕ)

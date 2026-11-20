@@ -18,18 +18,14 @@ def openSubschemeKer {X : Scheme.{u}} (Z : X.IdealSheafData) (W : Z.subscheme.Op
     X.IdealSheafData :=
   (Scheme.Opens.ι W ≫ Z.subschemeι).ker
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The ideal of the open piece is defined to be the kernel of its inclusion into the closed subscheme followed by the closed immersion into X.
 -/
 theorem openSubschemeKer_eq_ker {X : Scheme.{u}} (Z : X.IdealSheafData) (W : Z.subscheme.Opens) :
     openSubschemeKer Z W = (Scheme.Opens.ι W ≫ Z.subschemeι).ker := rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Since W is closed as well as open in the closed subscheme, its inclusion is quasi-compact. Its composite with the closed immersion is also quasi-compact. The support of the kernel is the closure of the image of this composite. The image is the image of W under the closed embedding, which is closed because W is closed. Its closure is therefore itself.
 -/
 theorem support_openSubschemeKer {X : Scheme.{u}} (Z : X.IdealSheafData) (W : Z.subscheme.Opens)
     (hW : IsClosed (W : Set Z.subscheme)) :
@@ -57,8 +53,8 @@ theorem support_openSubschemeKer {X : Scheme.{u}} (Z : X.IdealSheafData) (W : Z.
   rw [hrange]
   exact hclosed.closure_eq
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+The inclusion of the clopen piece is a closed immersion, as is its composite into X. The closed subscheme defined by the kernel of that composite has the same defining ideal as the composite closed immersion. Closed immersions with the same defining ideal identify the two source schemes over X, giving the required isomorphism and factorization.
 -/
 private theorem exists_isIso_openSubschemeKer_subscheme {X : Scheme.{u}} (Z : X.IdealSheafData)
     (W : Z.subscheme.Opens) (hW : IsClosed (W : Set Z.subscheme)) :
@@ -74,10 +70,8 @@ private theorem exists_isIso_openSubschemeKer_subscheme {X : Scheme.{u}} (Z : X.
   exact IsClosedImmersion.isIso_of_ker_eq (Scheme.Opens.ι W ≫ Z.subschemeι)
     (openSubschemeKer Z W).subschemeι _ (IsClosedImmersion.lift_fac _ _ _) hker
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+The subscheme of the kernel is isomorphic over X to the clopen piece of the original closed subscheme. Its structure map therefore corresponds to the original smooth map restricted to that open piece. The restriction of a smooth morphism to an open source is smooth, and transport by the isomorphism preserves smoothness.
 -/
 theorem smooth_subschemeι_openSubschemeKer_comp {X S : Scheme.{u}} (Z : X.IdealSheafData)
     (W : Z.subscheme.Opens) (hW : IsClosed (W : Set Z.subscheme)) (g : X ⟶ S)
@@ -93,14 +87,14 @@ theorem smooth_subschemeι_openSubschemeKer_comp {X S : Scheme.{u}} (Z : X.Ideal
   have key : Smooth (inv e ≫ Scheme.Opens.ι W ≫ Z.subschemeι ≫ g) := inferInstance
   rwa [hfac2] at key
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The pullback ideal is defined as the kernel of the first projection of the fibre product with the closed subscheme of I. This is the stated kernel.
 -/
 private theorem comap_eq_ker_fst {A B : Scheme.{u}} (f : A ⟶ B) (I : B.IdealSheafData) :
     I.comap f = (Limits.pullback.fst f I.subschemeι).ker := rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The restriction of the closed immersion to V is the fibre-product projection for base change along its open inclusion. The pullback ideal is the kernel of that projection. The isomorphism to the restricted source preserves the kernel, so it is the kernel of the restricted immersion.
 -/
 private theorem comap_opensι_eq_ker_morphismRestrict {T : Scheme.{u}} (K : T.IdealSheafData)
     (V : T.Opens) : K.comap (Scheme.Opens.ι V) = (K.subschemeι ∣_ V).ker := by
@@ -109,8 +103,8 @@ private theorem comap_opensι_eq_ker_morphismRestrict {T : Scheme.{u}} (K : T.Id
       = K.subschemeι ∣_ V := h.isoPullback_hom_fst
   rw [comap_eq_ker_fst, ← hfac, Scheme.Hom.ker_comp_of_isIso]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The image of the inverse image of O is the intersection of O with the image of the inclusion of V. This image is V, and O is already contained in V, so the intersection is O.
 -/
 private theorem image_preimage_opensι_of_le {Y : Scheme.{u}} (V O : Y.Opens) (h : O ≤ V) :
     Scheme.Opens.ι V ''ᵁ (Scheme.Opens.ι V ⁻¹ᵁ O) = O := by
@@ -121,8 +115,8 @@ private theorem image_preimage_opensι_of_le {Y : Scheme.{u}} (V O : Y.Opens) (h
   rw [Scheme.Opens.range_ι]
   exact h hx
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The open inclusion identifies the inverse image of O with O because O lies in V. Its map on sections over these opens is therefore an isomorphism and hence injective.
 -/
 private theorem injective_app_opensι_of_le {Y : Scheme.{u}} (V O : Y.Opens) (h : O ≤ V) :
     Function.Injective (CommRingCat.Hom.hom ((Scheme.Opens.ι V).app O)) := by
@@ -131,18 +125,10 @@ private theorem injective_app_opensι_of_le {Y : Scheme.{u}} (V O : Y.Opens) (h 
   rw [Scheme.Hom.app_eq_appLE]
   exact hb.1
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
+/- English proof (authored)
+Let Q be the image of the affine open P in T. The open inclusion of V identifies P with Q, and the source open inclusion identifies the inverse image of P for the restricted map with the inverse image of Q for the original map. These identifications give a commutative square of section maps. The map from sections on Q to sections on P is surjective, and the identification on the source side is injective.
 
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+If a section on P vanishes under the restricted map, lift it to a section on Q. Commutativity and injectivity on the source side show that the lift vanishes under the original map. Conversely the image of any section in the original kernel lies in the restricted kernel by the same square. Thus the restricted kernel is the image ideal of the original kernel.
 -/
 private theorem ker_app_morphismRestrict_eq_map_ker {Y T : Scheme.{u}} (m : Y ⟶ T) (V : T.Opens)
     (P : V.toScheme.affineOpens)
@@ -201,22 +187,10 @@ private theorem ker_app_morphismRestrict_eq_map_ker {Y T : Scheme.{u}} (m : Y �
     rw [RingHom.mem_ker] at hx
     rw [hx, map_zero]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
+/- English proof (authored)
+Consider an affine open in U and its image in X. Its inverse image in the full closed subscheme lies in W by hypothesis. The map on sections from the full closed subscheme to the open piece on this inverse image is injective because the inclusion identifies the opens. Thus adding this map to the pullback from X does not change its kernel. On the affine image the kernels for the full closed subscheme and the open piece are therefore equal.
 
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+Transport these equal kernels to the affine open of U using the restriction formula for kernels. They are the section ideals of the two restricted sheaves. Since this works on every affine open in U, the restrictions agree.
 -/
 theorem restrictIdeal_openSubschemeKer_of_preimage_le {X : Scheme.{u}} (Z : X.IdealSheafData)
     (W : Z.subscheme.Opens) (hW : IsClosed (W : Set Z.subscheme)) (U : X.Opens)
@@ -284,8 +258,8 @@ theorem restrictIdeal_openSubschemeKer_of_preimage_le {X : Scheme.{u}} (Z : X.Id
     ker_app_morphismRestrict_eq_map_ker (openSubschemeKer Z W).subschemeι U P e,
     ker_app_morphismRestrict_eq_map_ker Z.subschemeι U P e, hmain]
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The sheaf axiom for the empty cover says that the section ring over the empty open is terminal. The terminal commutative ring has only one element.
 -/
 private theorem subsingleton_sections_of_eq_bot {Y : Scheme.{u}} (V : Y.Opens)
     (hV : V = ⊥) : Subsingleton ↥(Y.presheaf.obj (Opposite.op V)) := by
@@ -293,20 +267,8 @@ private theorem subsingleton_sections_of_eq_bot {Y : Scheme.{u}} (V : Y.Opens)
     Y.sheaf.isTerminalOfEqEmpty hV
   exact CommRingCat.subsingleton_of_isTerminal h
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
-
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
-
-Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The support of the kernel is the image of W, which misses U by hypothesis. The part of the kernel's closed subscheme above U is therefore empty. On every affine open of U, the section pullback for the restricted immersion has the zero ring as its target. Its whole source lies in the kernel. Thus the restricted ideal is the unit ideal on all affine opens and hence on U.
 -/
 theorem restrictIdeal_openSubschemeKer_eq_top {X : Scheme.{u}} (Z : X.IdealSheafData)
     (W : Z.subscheme.Opens) (hW : IsClosed (W : Set Z.subscheme)) (U : X.Opens)
@@ -356,10 +318,8 @@ theorem restrictIdeal_openSubschemeKer_eq_top {X : Scheme.{u}} (Z : X.IdealSheaf
   rw [AlgebraicGeometry.Scheme.Hom.ker_apply ((openSubschemeKer Z W).subschemeι ∣_ U) V, hker]
   simp
 
-/- English proof (translation)
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The closed immersion is a topological embedding, so the open W is the inverse image of some ambient open U. Since x is the image of a point of W, it belongs to U. The inverse image inclusion follows from the choice of U.
 -/
 theorem exists_opens_preimage_subschemeι_le {X : Scheme.{u}} (Z : X.IdealSheafData)
     (W : Z.subscheme.Opens) (x : X)
@@ -379,8 +339,8 @@ theorem exists_opens_preimage_subschemeι_le {X : Scheme.{u}} (Z : X.IdealSheafD
     rw [hteq] at hy'
     exact hy'
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The image of W is closed because W is closed and the closed immersion is a closed embedding. Its complement is an open containing x and missing the image of every point of W.
 -/
 theorem exists_opens_notMem_image {X : Scheme.{u}} (Z : X.IdealSheafData)
     (W : Z.subscheme.Opens) (hW : IsClosed (W : Set Z.subscheme)) (x : X)
@@ -392,10 +352,8 @@ theorem exists_opens_notMem_image {X : Scheme.{u}} (Z : X.IdealSheafData)
   intro w hw hmem
   exact hmem ⟨w, hw, rfl⟩
 
-/- English proof (translation)
-Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The section map of the composite first pulls back along the closed immersion and then restricts to the open piece W. Over V, the inverse image in the closed subscheme is contained in W, so the second map is injective. An injective map after the original pullback leaves its kernel unchanged.
 -/
 private theorem ker_app_opensι_comp_subschemeι_eq_of_preimage_le {X : Scheme.{u}} (Z : X.IdealSheafData) (W : Z.subscheme.Opens)
     (V : X.Opens) (hVW : (Z.subschemeι ⁻¹ᵁ V) ≤ W) :
@@ -416,8 +374,8 @@ private theorem ker_app_opensι_comp_subschemeι_eq_of_preimage_le {X : Scheme.{
   · intro ha
     exact (congrArg _ ha).trans (map_zero _)
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+The section ring of the basic open is the localization at s, and its ideal is the extension of the original section ideal. Extending the principal ideal gives the principal ideal of the image of f. Multiplication by f remains injective after localization, so the image is a non-zero-divisor.
 -/
 private theorem exists_ideal_basicOpen_eq_span_singleton_of_eq_span {X : Scheme.{u}} (J : X.IdealSheafData)
     (U : X.affineOpens) (s f : Γ(X, U.1)) (hf : f ∈ nonZeroDivisors Γ(X, U.1))
@@ -430,32 +388,18 @@ private theorem exists_ideal_basicOpen_eq_span_singleton_of_eq_span {X : Scheme.
   refine ⟨_, ?_, hmap.symm⟩
   exact IsLocalization.nonZeroDivisors_le_comap (Submonoid.powers s) Γ(X, X.basicOpen s) hf
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The section ring on the empty open has just one element. Thus its zero and unit coincide.
 -/
 private theorem one_eq_zero_sections_of_eq_bot {Y : Scheme.{u}} (V : Y.Opens) (hV : V = ⊥) :
     (1 : Γ(Y, V)) = 0 := by
   have := subsingleton_sections_of_eq_bot V hV
   exact Subsingleton.elim _ _
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
+/- English proof (authored)
+At a point in the image of W, choose a neighbourhood whose inverse image in the closed subscheme lies in W. Choose an affine neighbourhood on which Z is generated by a non-zero-divisor, and take a smaller basic open containing the point inside both neighbourhoods. There the kernel for W agrees with Z, and the localized generator remains a non-zero-divisor.
 
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
-
-Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+At a point outside the image of W, choose a neighbourhood disjoint from that image and take an affine basic open inside it containing the point. The section pullback to the open piece then lands in the zero ring, so its kernel is the unit ideal. The generator 1 is a non-zero-divisor. These two cases give the stated local generators everywhere.
 -/
 theorem isLocallyGeneratedByNonZeroDivisor_openSubschemeKer {X : Scheme.{u}} (Z : X.IdealSheafData)
     (W : Z.subscheme.Opens) (hW : IsClosed (W : Set Z.subscheme))

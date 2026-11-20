@@ -9,8 +9,8 @@ open CategoryTheory AlgebraicGeometry
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+If p is the contraction of Q, take Q itself. If p is strictly smaller than that contraction, going-down supplies a prime below Q lying over p.
 -/
 private theorem exists_prime_le_under_eq_of_hasGoingDown (R S : Type*) [CommRing R] [CommRing S] [Algebra R S]
     [Algebra.HasGoingDown R S] (p : Ideal R) [p.IsPrime] (Q : Ideal S) [Q.IsPrime]
@@ -22,18 +22,8 @@ private theorem exists_prime_le_under_eq_of_hasGoingDown (R S : Type*) [CommRing
       Algebra.HasGoingDown.exists_ideal_le_liesOver_of_lt (R := R) Q h
     exact ⟨P, hPQ, hP, hlo.over.symm⟩
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the length of the prime chain. Lift its last prime to a prime P below Q by going-down, allowing equality of the contractions. For a chain of length zero this prime is the whole lift. Otherwise apply induction to the chain with its last prime removed, using P as the upper bound. The last prime of the lifted shorter chain lies below P. It is strictly smaller because its contraction is the penultimate prime of the original chain, which differs from the contraction of P. Append P to obtain the asserted length and last prime.
 -/
 private theorem exists_ltSeries_le_of_hasGoingDown (R S : Type*) [CommRing R] [CommRing S]
     [Algebra R S] [Algebra.HasGoingDown R S] (n : ℕ) :
@@ -75,10 +65,8 @@ private theorem exists_ltSeries_le_of_hasGoingDown (R S : Type*) [CommRing R] [C
       · rw [RelSeries.last_snoc]; exact hPQ
       · rw [RelSeries.last_snoc]; exact hunder
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
+/- English proof (authored)
+In the base local ring, the last prime of any finite prime chain lies inside the maximal ideal. Under a local ring map this maximal ideal is the contraction of the maximal ideal of S. Going-down lifts the chain to S with the same length, using that maximal ideal as the bound. Every prime chain length in R is therefore bounded by the dimension of S. Taking the supremum gives the inequality.
 -/
 private theorem ringKrullDim_le_of_hasGoingDown (R S : Type*) [CommRing R] [CommRing S]
     [IsLocalRing R] [IsLocalRing S] [Algebra R S] [IsLocalHom (algebraMap R S)]
@@ -98,14 +86,8 @@ private theorem ringKrullDim_le_of_hasGoingDown (R S : Type*) [CommRing R] [Comm
       _ ≤ ringKrullDim S := Order.LTSeries.length_le_krullDim q
   exact iSup_le key
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
+/- English proof (authored)
+Choose a generating set of least size for I. It is finite because R is Noetherian. Its image generates the extended ideal in S and has at most as many elements as the original set. The minimal number of generators of the extension is bounded by this size.
 -/
 private theorem spanFinrank_map_le (R S : Type*) [CommRing R] [CommRing S] [IsNoetherianRing R]
     [Algebra R S] (I : Ideal R) :
@@ -139,10 +121,8 @@ private theorem spanFinrank_map_le (R S : Type*) [CommRing R] [CommRing S] [IsNo
     _ ≤ Cardinal.toNat (Cardinal.mk s) := h3
     _ = I.spanFinrank := by rw [hcard, ← Submodule.spanFinrank.eq_def]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+In the Noetherian local ring S, the height of its maximal ideal is its Krull dimension and is bounded by the minimal number of generators of that ideal. The displayed extension formula bounds this generator count by that of the maximal ideal of R. Regularity of R identifies that count with its dimension, giving the claimed inequality.
 -/
 private theorem ringKrullDim_le_of_map_maximalIdeal (R S : Type*) [CommRing R] [CommRing S]
     [IsLocalRing S] [IsNoetherianRing S] [_root_.IsRegularLocalRing R] [Algebra R S]
@@ -162,10 +142,8 @@ private theorem ringKrullDim_le_of_map_maximalIdeal (R S : Type*) [CommRing R] [
     le_trans hh (Nat.cast_le.mpr hfr)
   exact_mod_cast h
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Flatness gives going-down, so the dimension of S is at least that of R. For a formally unramified local map essentially of finite type, the maximal ideal of the target is the extension of the maximal ideal of the source. The preceding generator bound then gives the opposite dimension inequality because R is regular.
 -/
 theorem ringKrullDim_eq_of_flat_formallyUnramified (R S : Type*) [CommRing R] [CommRing S]
     [IsLocalRing S] [IsNoetherianRing S] [_root_.IsRegularLocalRing R] [Algebra R S]
@@ -180,12 +158,8 @@ theorem ringKrullDim_eq_of_flat_formallyUnramified (R S : Type*) [CommRing R] [C
     (Algebra.FormallyUnramified.map_maximalIdeal (R := R) (S := S)).symm
   exact le_antisymm (ringKrullDim_le_of_map_maximalIdeal R S hmax) h1
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The dimensions of the two local rings agree by the preceding argument. The maximal ideal of S is the extension of the maximal ideal of R by formal unramifiedness and essential finite type. It needs at most as many generators, which by regularity of R is the common dimension. The height bound in the Noetherian local ring S gives the reverse inequality on the generator count. Equality is the criterion for regularity of S.
 -/
 theorem isRegularLocalRing_of_flat_formallyUnramified (R S : Type*) [CommRing R] [CommRing S]
     [IsLocalRing S] [IsNoetherianRing S] [_root_.IsRegularLocalRing R] [Algebra R S]
@@ -213,10 +187,8 @@ theorem isRegularLocalRing_of_flat_formallyUnramified (R S : Type*) [CommRing R]
   rw [hdim, ← hR]
   exact_mod_cast h4
 
-/- English proof (translation)
-Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The isomorphism sends x to a prime of R. The stalk at that point on the spectrum is the localization at that prime. It is regular by hypothesis. The isomorphism identifies it with the stalk at x, which is therefore regular.
 -/
 private theorem isRegularLocalRing_stalk_of_iso_spec {X : Scheme.{u}} (R : Type u) [CommRing R]
     (hreg : ∀ (p : Ideal R) (hp : p.IsPrime),
@@ -239,8 +211,8 @@ private theorem isRegularLocalRing_stalk_of_iso_spec {X : Scheme.{u}} (R : Type 
     (asIso (e.hom.stalkMap x)).commRingCatIsoToRingEquiv
   exact IsRegularLocalRing.of_ringEquiv e3
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Affine space is the spectrum of the coordinate polynomial ring over k. A polynomial ring in finitely many variables over a field is regular at each prime. Applying the comparison with the localizations at these primes gives the result for the stalk.
 -/
 theorem isRegularLocalRing_stalk_affineSpace (k : Type u) [Field k] (n : Type u) [Finite n]
     (x : AffineSpace n (Spec (CommRingCat.of k))) :
@@ -249,10 +221,8 @@ theorem isRegularLocalRing_stalk_affineSpace (k : Type u) [Field k] (n : Type u)
     (fun p hp => by have := hp; infer_instance)
     (AffineSpace.SpecIso n (CommRingCat.of k)) x
 
-/- English proof (translation)
-Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The map on the two stalks is local. The source stalk is Noetherian by its regularity, and the target stalk is Noetherian because the map is essentially of finite type. The local algebra regularity theorem applies using flatness, formal unramifiedness, and essential finite type.
 -/
 private theorem isRegularLocalRing_stalk_of_stalkMap_flat_formallyUnramified {Y Z : Scheme.{u}} (f : Y ⟶ Z) (y : Y)
     (hZ : _root_.IsRegularLocalRing (Z.presheaf.stalk (f.base y)))
@@ -274,8 +244,8 @@ private theorem isRegularLocalRing_stalk_of_stalkMap_flat_formallyUnramified {Y 
   exact isRegularLocalRing_of_flat_formallyUnramified
     (Z.presheaf.stalk (f.base y)) (Y.presheaf.stalk y)
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+An open inclusion induces an isomorphism on the corresponding local rings. Transport regularity of the local ring of the open subscheme across this isomorphism.
 -/
 private theorem isRegularLocalRing_stalk_of_opens {X : Scheme.{u}} (U : X.Opens) (y : U)
     (h : _root_.IsRegularLocalRing (U.toScheme.presheaf.stalk y)) :
@@ -283,8 +253,8 @@ private theorem isRegularLocalRing_stalk_of_opens {X : Scheme.{u}} (U : X.Opens)
   have := h
   exact IsRegularLocalRing.of_ringEquiv (U.stalkIso y).commRingCatIsoToRingEquiv
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Choose an étale chart around x. The local ring of the affine-space target at the image point is regular. The map on stalks induced by the chart is local, flat, essentially of finite type, and formally unramified, so the local algebra criterion makes the source stalk regular. The chart domain is an open neighbourhood of x, and its local ring at x agrees with the ambient one.
 -/
 theorem isRegularLocalRing_stalk_of_smooth {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] (x : X) :
@@ -301,8 +271,8 @@ theorem isRegularLocalRing_stalk_of_smooth {X : Scheme.{u}} {k : Type u} [Field 
       (AlgebraicGeometry.FormallyUnramified.stalkMap c.map (⟨x, hxU⟩ : U))
   exact isRegularLocalRing_stalk_of_opens U (⟨x, hxU⟩ : U) h2
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The local ring at x is regular by the preceding theorem. Every regular local ring is an integral domain.
 -/
 theorem isDomain_stalk_of_smooth {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] (x : X) :
@@ -311,8 +281,8 @@ theorem isDomain_stalk_of_smooth {X : Scheme.{u}} {k : Type u} [Field k]
     isRegularLocalRing_stalk_of_smooth p x
   exact IsRegularLocalRing.isDomain _
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Apply the regularity result on stalks of a smooth scheme to the supplied smoothness of p and the point x.
 -/
 theorem smooth_isRegularLocalRing_stalk {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) (hp : AlgebraicGeometry.Smooth p) (x : X) :
@@ -320,8 +290,8 @@ theorem smooth_isRegularLocalRing_stalk {X : Scheme.{u}} {k : Type u} [Field k]
   have := hp
   exact isRegularLocalRing_stalk_of_smooth p x
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The supplied smoothness gives regularity of the local ring at x, hence that ring is a domain.
 -/
 theorem smooth_isDomain_stalk {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) (hp : AlgebraicGeometry.Smooth p) (x : X) :
@@ -329,8 +299,8 @@ theorem smooth_isDomain_stalk {X : Scheme.{u}} {k : Type u} [Field k]
   have := hp
   exact isDomain_stalk_of_smooth p x
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Every stalk is a domain by smoothness and therefore has no nonzero nilpotent elements. Reducedness can be checked on stalks, proving that X is reduced.
 -/
 theorem isReduced_of_smooth {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] :
@@ -341,8 +311,8 @@ theorem isReduced_of_smooth {X : Scheme.{u}} {k : Type u} [Field k]
     infer_instance
   exact AlgebraicGeometry.isReduced_of_isReduced_stalk X
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Apply the reducedness result for schemes smooth over a field using the given smoothness proof for p.
 -/
 theorem smooth_isReduced {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) (hp : AlgebraicGeometry.Smooth p) :
@@ -354,10 +324,8 @@ private noncomputable def pointOfIsoSpec {Y : Scheme.{u}} (R : CommRingCat.{u}) 
     PrimeSpectrum ↥R :=
   e.hom.base y
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+For any point of T and any open neighbourhood of it, irreducibility of T makes that neighbourhood meet V inside T, since V is open and meets T. Thus T is contained in the closure of V. The latter is irreducible. Maximality of the irreducible component T gives equality.
 -/
 private theorem eq_closure_of_mem_irreducibleComponents {α : Type*} [TopologicalSpace α]
     {V : Set α} (hVopen : IsOpen V) (hVirr : IsIrreducible V) {T : Set α}
@@ -370,14 +338,8 @@ private theorem eq_closure_of_mem_irreducibleComponents {α : Type*} [Topologica
     exact ⟨z, hzo, hzV⟩
   exact le_antisymm hsub (hT.2 hVirr.closure hsub)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+Remove the union of all components that miss z. This is a finite union of closed sets, so its complement is an open neighbourhood of z. Every point of that complement lies in a component, and that component must contain z because it was not removed. The uniqueness hypothesis identifies the component with T₀. Thus the complement is a nonempty open subset of the irreducible space T₀, so it is irreducible.
 -/
 private theorem exists_isOpen_isIrreducible_of_unique_irreducibleComponent {α : Type*} [TopologicalSpace α]
     (hfin : (irreducibleComponents α).Finite) {T₀ : Set α} (hT₀ : IsIrreducible T₀) {z : α}
@@ -413,14 +375,8 @@ private theorem exists_isOpen_isIrreducible_of_unique_irreducibleComponent {α :
       ⟨a, hWT haW, hau, haW⟩ ⟨b, hWT hbW, hbv, hbW⟩
   exact ⟨c, hcW, hcu, hcv⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The zero locus of K is irreducible because K is prime, and it contains the point P. If an irreducible component contains P, its defining prime is contained in P and hence contains K by hypothesis. Its closed set is therefore contained in the zero locus of K. Maximality of the component makes the two closed sets equal. There are finitely many components because the ring is Noetherian. The unique component result now provides an irreducible open neighbourhood of P.
 -/
 private theorem exists_isOpen_isIrreducible_of_unique_minimal_prime_le {A : Type u} [CommRing A]
     [IsNoetherianRing A] (P : PrimeSpectrum A) (K : Ideal A) (hK : K.IsPrime)
@@ -453,10 +409,8 @@ private theorem exists_isOpen_isIrreducible_of_unique_minimal_prime_le {A : Type
     TopologicalSpace.NoetherianSpace.finite_irreducibleComponents
   exact exists_isOpen_isIrreducible_of_unique_irreducibleComponent hfin hT₀irr hPT₀ hcomp
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The restricted structure map on the affine open V is smooth and thus locally of finite type. Under the affine identification with the spectrum of its global section ring, this is the spectrum map of the indicated scalar map from k. The affine criterion for local finite type makes that ring map of finite type.
 -/
 private theorem finiteType_appTop_of_isAffineOpen_of_smooth {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] (V : X.Opens)
@@ -478,8 +432,8 @@ private theorem finiteType_appTop_of_isAffineOpen_of_smooth {X : Scheme.{u}} {k 
     infer_instance
   exact AlgebraicGeometry.HasRingHomProperty.Spec_iff.mp h2
 
-/- English proof (translation)
-Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The global section ring of V is a finite type algebra over k by the preceding result. A field is Noetherian, and a finite type algebra over a Noetherian ring is Noetherian.
 -/
 private theorem isNoetherianRing_sections_of_isAffineOpen_of_smooth {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] (V : X.Opens)
@@ -492,10 +446,8 @@ private theorem isNoetherianRing_sections_of_isAffineOpen_of_smooth {X : Scheme.
   have : IsNoetherianRing ↥(CommRingCat.of k) := inferInstanceAs (IsNoetherianRing k)
   exact Algebra.FiniteType.isNoetherianRing ↥(CommRingCat.of k) ↥Γ(V.toScheme, ⊤)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The point y corresponds under the affine identification to a prime of R. The localization of R at this prime identifies with the stalk on its spectrum and hence with the local ring at y. The latter is a domain by hypothesis, so the localization is also a domain.
 -/
 private theorem isDomain_localization_of_iso_spec {Y : Scheme.{u}} (R : CommRingCat.{u})
     (e : Y ≅ Spec R) (y : Y) (hdom : IsDomain ↥(Y.presheaf.stalk y)) :
@@ -517,14 +469,10 @@ private theorem isDomain_localization_of_iso_spec {Y : Scheme.{u}} (R : CommRing
     (asIso (e.hom.stalkMap y)).commRingCatIsoToRingEquiv
   exact (e2.trans e3).toMulEquiv.isDomain _
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
+/- English proof (authored)
+Let P be the prime corresponding to y. Its local ring is a domain by the stalk hypothesis. The kernel K of the localization at P is therefore prime. If q is a prime contained in P and a lies in K, some element outside P annihilates a by the localization criterion. This element is outside q, so primality of q implies a lies in q. Thus K lies in every prime below P.
 
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
-
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+The unique minimal prime criterion supplies an irreducible open neighbourhood of P in the spectrum, using Noetherianity. Transport it back along the affine homeomorphism to obtain the required neighbourhood of y.
 -/
 private theorem exists_isOpen_isIrreducible_of_iso_spec_of_isDomain_stalk {Y : Scheme.{u}} (R : CommRingCat.{u})
     [IsNoetherianRing ↥R] (e : Y ≅ Spec R) (y : Y)
@@ -567,10 +515,8 @@ private theorem exists_isOpen_isIrreducible_of_iso_spec_of_isDomain_stalk {Y : S
     hWirr.image _ (Scheme.homeoOfIso e).symm.continuous.continuousOn,
     ⟨pointOfIsoSpec R e y, hPW, (Scheme.homeoOfIso e).symm_apply_apply y⟩⟩
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
+/- English proof (authored)
+Choose an affine open containing x. Its section ring is Noetherian by smoothness, and its local ring at x is a domain, since it agrees with the ambient stalk of the smooth scheme. Apply the irreducible-neighbourhood criterion to this affine scheme. The open inclusion carries the resulting neighbourhood to an open irreducible subset of X containing x.
 -/
 private theorem exists_isOpen_isIrreducible_mem_of_smooth {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] (x : X) :
@@ -588,10 +534,8 @@ private theorem exists_isOpen_isIrreducible_mem_of_smooth {X : Scheme.{u}} {k : 
   exact ⟨U.ι.base '' V, hoe.isOpenMap V hVopen,
     hVirr.image _ hoe.continuous.continuousOn, ⟨(⟨x, hxU⟩ : U), hyV, rfl⟩⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+The irreducible component T is closed. For each point in T, choose an open irreducible neighbourhood using smoothness. The closure of that neighbourhood equals T by the component closure result, because they meet at the given point. Thus the neighbourhood lies in T. Every point has such an open neighbourhood inside T, proving that T is also open.
 -/
 theorem isClopen_irreducibleComponent_of_smooth {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) (hp : AlgebraicGeometry.Smooth p)

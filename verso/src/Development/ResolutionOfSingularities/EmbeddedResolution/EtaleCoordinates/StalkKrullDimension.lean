@@ -11,16 +11,16 @@ private noncomputable def fromSpecStalkPoint (X : Scheme.{u}) (x : X)
     (p : PrimeSpectrum (X.presheaf.stalk x)) : X :=
   (X.fromSpecStalk x).base p
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The canonical map from the spectrum of the local ring at x into X is a topological embedding. An embedding preserves and reflects specialization, giving the equivalence.
 -/
 private theorem fromSpecStalkPoint_specializes_iff (X : Scheme.{u}) (x : X)
     (p q : PrimeSpectrum (X.presheaf.stalk x)) :
     fromSpecStalkPoint X x p ⤳ fromSpecStalkPoint X x q ↔ p ⤳ q :=
   (AlgebraicGeometry.Scheme.Hom.isEmbedding (X.fromSpecStalk x)).toIsInducing.specializes_iff
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+The image of the spectrum of the local ring at x consists exactly of the generizations of x. Since y specializes to x, it has a preimage in that spectrum.
 -/
 private theorem exists_fromSpecStalkPoint_eq_of_specializes (X : Scheme.{u}) (x : X) {y : X} (h : y ⤳ x) :
     ∃ p : PrimeSpectrum (X.presheaf.stalk x), fromSpecStalkPoint X x p = y := by
@@ -29,8 +29,8 @@ private theorem exists_fromSpecStalkPoint_eq_of_specializes (X : Scheme.{u}) (x 
   obtain ⟨p, hp⟩ := hy
   exact ⟨p, hp⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The ring dimension of the local ring equals the topological dimension of its spectrum. The canonical map embeds this spectrum into X, and the topological dimension of the embedded subspace is bounded by that of X.
 -/
 theorem ringKrullDim_stalk_le_topologicalKrullDim (X : Scheme.{u}) (x : X) :
     ringKrullDim (X.presheaf.stalk x) ≤ topologicalKrullDim X := by
@@ -43,8 +43,8 @@ theorem ringKrullDim_stalk_le_topologicalKrullDim (X : Scheme.{u}) (x : X) :
     hemb.toIsInducing.topologicalKrullDim_le
   exact le_trans h1 h2
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The canonical map from the stalk spectrum is a topological embedding. Apply reflection of specialization to the two image points.
 -/
 private theorem specializes_of_fromSpecStalk_base_specializes {X : Scheme.{u}} (x : X)
     {a b : PrimeSpectrum (X.presheaf.stalk x)}
@@ -53,22 +53,10 @@ private theorem specializes_of_fromSpecStalk_base_specializes {X : Scheme.{u}} (
     AlgebraicGeometry.Scheme.Hom.isEmbedding (X.fromSpecStalk x)
   exact hemb.toIsInducing.specializes_iff.mp hab
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
+/- English proof (authored)
+Take any strict chain of irreducible closed subsets of X. Choose the generic point of each subset. Inclusions in the chain give specializations from the larger subsets' generic points to the smaller ones. Distinct closed subsets have distinct generic points.
 
-Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. A detailed English derivation is pending.
+All these generic points are generizations of the generic point of the smallest subset, so they lift to the spectrum of the local ring there. The embedding reflects specialization, and the distinctness of the image points gives strictness. In reverse order the lifted points form a prime chain of the same length. The local dimension bound therefore bounds the length of the original chain. Taking the supremum over the chains gives the topological bound.
 -/
 theorem topologicalKrullDim_le_of_forall_ringKrullDim_stalk_le (X : Scheme.{u}) (d : WithBot ℕ∞)
     (h : ∀ x : X, ringKrullDim (X.presheaf.stalk x) ≤ d) :
@@ -128,10 +116,8 @@ theorem topologicalKrullDim_le_of_forall_ringKrullDim_stalk_le (X : Scheme.{u}) 
       ⟨p.length, fun i => q i.rev, fun i => hg Fin.castSucc_lt_succ⟩
   exact le_trans hlen (h (y 0))
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The map on stalks of the étale morphism is local, flat, essentially of finite type, and formally unramified. The source and target rings of this local map satisfy the regularity and Noetherian hypotheses of the dimension equality theorem. Their dimensions are therefore equal, giving the asserted inequality.
 -/
 theorem ringKrullDim_stalk_le_of_etale {Y W : Scheme.{u}} (f : Y ⟶ W)
     [AlgebraicGeometry.Etale f] (y : Y) [IsNoetherianRing (Y.presheaf.stalk y)]
@@ -152,10 +138,8 @@ theorem ringKrullDim_stalk_le_of_etale {Y W : Scheme.{u}} (f : Y ⟶ W)
   exact le_of_eq (FunctorialResolution.EmbeddedResolution.ringKrullDim_eq_of_flat_formallyUnramified
     (W.presheaf.stalk (f.base y)) (Y.presheaf.stalk y))
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The étale morphism induces a local map from the stalk on W to the stalk on Y which is flat, formally unramified, and essentially of finite type. Apply the local dimension equality theorem, using regularity of the stalk on W and Noetherianity of the stalk on Y.
 -/
 theorem ringKrullDim_stalk_eq_of_etale {Y W : Scheme.{u}} (f : Y ⟶ W)
     [AlgebraicGeometry.Etale f] (y : Y) [IsNoetherianRing (Y.presheaf.stalk y)]
@@ -176,10 +160,8 @@ theorem ringKrullDim_stalk_eq_of_etale {Y W : Scheme.{u}} (f : Y ⟶ W)
   exact FunctorialResolution.EmbeddedResolution.ringKrullDim_eq_of_flat_formallyUnramified
     (W.presheaf.stalk (f.base y)) (Y.presheaf.stalk y)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+Identify the affine scheme with the spectrum of its global section ring. Extend the prime corresponding to a to a maximal ideal. Its point is closed in the spectrum and remains closed under the affine homeomorphism.
 -/
 private theorem exists_isClosed_singleton_of_isAffine (A : Scheme.{u}) [IsAffine A] (a : A) :
     ∃ x : A, IsClosed ({x} : Set A) := by
@@ -193,8 +175,8 @@ private theorem exists_isClosed_singleton_of_isAffine (A : Scheme.{u}) [IsAffine
   have h2 := h.symm.isClosedMap _ hq
   rwa [Set.image_singleton] at h2
 
-/- English proof (translation)
-Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
+/- English proof (authored)
+A point of U exists by nonemptiness. The open subscheme U is affine, so the result for a nonempty affine scheme gives a closed point of U.
 -/
 theorem exists_isClosed_singleton_of_isAffineOpen {X : Scheme.{u}} (U : X.Opens)
     (hU : IsAffineOpen U) (hne : (U : Set X).Nonempty) :
@@ -203,8 +185,8 @@ theorem exists_isClosed_singleton_of_isAffineOpen {X : Scheme.{u}} (U : X.Opens)
   obtain ⟨x0, hx0⟩ := hne
   exact exists_isClosed_singleton_of_isAffine U.toScheme ⟨x0, hx0⟩
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+Choose a closed point of the affine open subscheme U by the preceding result. It consists of a point of X together with its membership in U. Take those data and the closedness proof in U.
 -/
 theorem exists_mem_isClosed_singleton_of_isAffineOpen {X : Scheme.{u}} (U : X.Opens)
     (hU : IsAffineOpen U) (hne : (U : Set X).Nonempty) :
@@ -213,8 +195,8 @@ theorem exists_mem_isClosed_singleton_of_isAffineOpen {X : Scheme.{u}} (U : X.Op
   obtain ⟨y, hy⟩ := x
   exact ⟨y, hy, hx⟩
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The topological Krull dimension of the prime spectrum of a ring equals the ring's Krull dimension. The displayed inequality follows.
 -/
 private theorem topologicalKrullDim_spec_le_ringKrullDim (R : CommRingCat.{u}) :
     topologicalKrullDim ↥(Spec R) ≤ ringKrullDim ↥R := by
@@ -222,8 +204,8 @@ private theorem topologicalKrullDim_spec_le_ringKrullDim (R : CommRingCat.{u}) :
     PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim ↥R
   exact le_of_eq h
 
-/- English proof (translation)
-Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The affine-space isomorphism identifies it with the spectrum of the coordinate polynomial ring. The topological dimension equals that of this spectrum, which is the ring dimension of the polynomial ring.
 -/
 private theorem topologicalKrullDim_affineSpace_le_ringKrullDim (k : Type u) [Field k] (m : ℕ) :
     topologicalKrullDim ↥(AffineSpace (ULift.{u} (Fin m)) (Spec (CommRingCat.of k))) ≤
@@ -234,8 +216,8 @@ private theorem topologicalKrullDim_affineSpace_le_ringKrullDim (k : Type u) [Fi
     (topologicalKrullDim_spec_le_ringKrullDim
       (CommRingCat.of (MvPolynomial (ULift.{u} (Fin m)) k)))
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The two index sets are bijective, so renaming the variables gives an isomorphism to the polynomial ring in m variables. Ring isomorphisms preserve Krull dimension, and that polynomial ring over the field has dimension m.
 -/
 private theorem ringKrullDim_mvPolynomial_uLift_le (k : Type u) [Field k] (m : ℕ) :
     ringKrullDim (MvPolynomial (ULift.{u} (Fin m)) k) ≤ ((m : ℕ∞) : WithBot ℕ∞) := by
@@ -246,8 +228,8 @@ private theorem ringKrullDim_mvPolynomial_uLift_le (k : Type u) [Field k] (m : �
   rw [he]
   simp
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The affine-space stalk at the image is regular. The étale stalk dimension comparison bounds the dimension at y by the dimension of that target stalk. The target stalk dimension is bounded by the dimension of the whole affine space via the embedding of its spectrum, and the affine space has dimension m by its polynomial description.
 -/
 theorem ringKrullDim_stalk_le_of_etale_affineSpace {k : Type u} [Field k] {m : ℕ} {Y : Scheme.{u}}
     (c : Y ⟶ AffineSpace (ULift.{u} (Fin m)) (Spec (CommRingCat.of k)))
@@ -264,10 +246,8 @@ theorem ringKrullDim_stalk_le_of_etale_affineSpace {k : Type u} [Field k] {m : �
   exact h1.trans (h2.trans ((topologicalKrullDim_affineSpace_le_ringKrullDim k m).trans
     (ringKrullDim_mvPolynomial_uLift_le k m)))
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Contraction of an ideal twice is contraction along the composite of the two ring maps in the appropriate order. Here the composite applies the isomorphism and then its inverse, so it is the identity on A. The contracted ideal is I.
 -/
 private theorem comap_comap_symm {A B : Type u} [CommRing A] [CommRing B] (φ : A ≃+* B)
     (I : Ideal A) : Ideal.comap (φ : A →+* B) (Ideal.comap (φ.symm : B →+* A) I) = I := by
@@ -282,10 +262,8 @@ private theorem comap_comap_symm {A B : Type u} [CommRing A] [CommRing B] (φ : 
     rw [h]
     exact hmem
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The double contraction is along the composite that applies the inverse isomorphism and then the isomorphism. This is the identity on B and returns J.
 -/
 private theorem comap_symm_comap {A B : Type u} [CommRing A] [CommRing B] (φ : A ≃+* B)
     (J : Ideal B) : Ideal.comap (φ.symm : B →+* A) (Ideal.comap (φ : A →+* B) J) = J := by
@@ -300,12 +278,8 @@ private theorem comap_symm_comap {A B : Type u} [CommRing A] [CommRing B] (φ : 
     rw [h]
     exact hmem
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+Contract every prime in the given chain along the ring isomorphism. Contraction preserves inclusion, and it reflects equality because contraction along the inverse isomorphism recovers the original prime. Thus strict inclusions remain strict. The new chain has the same length and its last prime is the contraction of the given last prime.
 -/
 private theorem exists_ltSeries_comap {A B : Type u} [CommRing A] [CommRing B] (φ : A ≃+* B)
     (s : LTSeries (PrimeSpectrum B)) :
@@ -327,10 +301,8 @@ private theorem exists_ltSeries_comap {A B : Type u} [CommRing A] [CommRing B] (
   exact ⟨⟨s.length, fun i => PrimeSpectrum.comap (φ : A →+* B) (s i), fun i => hstrict (s.step i)⟩,
     rfl, rfl⟩
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+A constant polynomial belongs to the extended ideal exactly when all its coefficients belong to I. Its only possibly nonzero coefficient is the original scalar, so membership is equivalent to that scalar belonging to I. This identifies the contraction with I.
 -/
 private theorem comap_C_map_C {S : Type u} [CommRing S] (I : Ideal S) :
     Ideal.comap (Polynomial.C : S →+* Polynomial S) (I.map (Polynomial.C : S →+* Polynomial S))
@@ -344,10 +316,8 @@ private theorem comap_C_map_C {S : Type u} [CommRing S] (I : Ideal S) :
   · intro h
     exact Ideal.mem_map_of_mem _ h
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Over a Jacobson base the map from S to the quotient by the maximal polynomial ideal is integral. The quotient is a field, so contraction of its zero maximal ideal is maximal in S. That contraction is exactly the contraction of the given polynomial ideal along the constants.
 -/
 private theorem isMaximal_comap_C {S : Type u} [CommRing S] [IsJacobsonRing S]
     (M' : Ideal (Polynomial S)) (hM' : M'.IsMaximal) :
@@ -369,12 +339,8 @@ private theorem isMaximal_comap_C {S : Type u} [CommRing S] [IsJacobsonRing S]
   rw [← hker]
   exact hmax
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+If the extension of N were the maximal ideal M′, the polynomial variable would be outside M′, since its coefficient of degree one is 1 outside N. In the field quotient by M′ its class would have an inverse. Thus some polynomial times the variable would agree with 1 modulo the ideal extended from N. Taking constant coefficients forces 1 to lie in N, since the polynomial times the variable has zero constant coefficient. This contradicts that N is proper.
 -/
 private theorem map_C_ne_of_isMaximal {S : Type u} [CommRing S] (N : Ideal S) (hN : N.IsMaximal)
     (M' : Ideal (Polynomial S)) (hM' : M'.IsMaximal) :
@@ -395,22 +361,10 @@ private theorem map_C_ne_of_isMaximal {S : Type u} [CommRing S] (N : Ideal S) (h
   have hone : (1 : S) ∈ N := by rw [← h0]; exact hc
   exact hN.ne_top ((Ideal.eq_top_iff_one N).mpr hone)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
+/- English proof (authored)
+Induct on the number of variables. For zero variables the maximal ideal itself is a chain of length zero. For the successor step, view the ring as a polynomial ring in one variable over the ring with n variables. The smaller ring is Jacobson because it is of finite type over a field, so the contraction N of the given maximal ideal is maximal. By induction there is a chain of length n ending at N.
 
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+Extend the primes in that chain to the one-variable polynomial ring. Extension preserves primality because the quotient by an extended prime is a polynomial ring over a domain. It preserves strict inclusion because contracting along constants recovers the original ideals. The last extended prime is contained in the given maximal ideal and is strictly smaller by the preceding result. Append the maximal ideal and transport the chain back along the polynomial-ring isomorphism.
 -/
 private theorem exists_ltSeries_of_isMaximal_mvPolynomial (k : Type u) [Field k] :
     ∀ (m : ℕ) (M : Ideal (MvPolynomial (Fin m) k)), M.IsMaximal →
@@ -484,10 +438,8 @@ private theorem exists_ltSeries_of_isMaximal_mvPolynomial (k : Type u) [Field k]
     · rw [hslast, RelSeries.last_snoc]
       exact comap_comap_symm φ M
 
-/- English proof (translation)
-Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Reindex the variables by the bijection with the ordinary finite index set. The maximal ideal corresponds to a maximal ideal in the ordinary polynomial ring, where the preceding result gives the chain. Contraction along the isomorphism transports the chain back, preserving its length and recovering the original maximal ideal at its end.
 -/
 private theorem exists_ltSeries_of_isMaximal_mvPolynomial_uLift (k : Type u) [Field k] (m : ℕ)
     (M : Ideal (MvPolynomial (ULift.{u} (Fin m)) k)) (hM : M.IsMaximal) :
@@ -506,12 +458,8 @@ private theorem exists_ltSeries_of_isMaximal_mvPolynomial_uLift (k : Type u) [Fi
   rw [hslast, htlast]
   exact comap_comap_symm φ M
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Each point in the specialization chain is a generization of x, so lift it to the spectrum of the stalk at x. The embedding reflects each specialization as inclusion of the lifted primes. The given points are distinct, so adjacent inclusions of primes are strict. This gives a prime chain of length n in the stalk and hence the lower bound.
 -/
 private theorem le_ringKrullDim_stalk_of_chain (X : Scheme.{u}) (x : X) (n : ℕ)
     (z : Fin (n + 1) → X) (hspec : ∀ i, z i ⤳ x)
@@ -538,16 +486,8 @@ private theorem le_ringKrullDim_stalk_of_chain (X : Scheme.{u}) (x : X) (n : ℕ
   rw [hcast]
   exact hlen
 
-/- English proof (translation)
-Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Under the identification with the polynomial spectrum, the closed point corresponds to a maximal ideal. The polynomial prime-chain result gives a chain of length m ending at that ideal. Transporting this chain to affine space gives distinct points ordered by specialization, all specializing to x. The stalk chain criterion therefore gives dimension at least m.
 -/
 private theorem le_ringKrullDim_stalk_affineSpace (k : Type u) [Field k] (m : ℕ)
     (x : ↥(AffineSpace (ULift.{u} (Fin m)) (Spec (CommRingCat.of k))))
@@ -586,8 +526,8 @@ private theorem le_ringKrullDim_stalk_affineSpace (k : Type u) [Field k] (m : �
   rw [hslen] at key
   exact key
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The dimension of the stalk at y is at most m by the affine-space bound. An étale map to affine space over a field takes a closed point to a closed point by the closed-point result. Thus the target stalk at the image of y has dimension at least m by the prime-chain construction. Its dimension equals the source stalk dimension by the étale comparison, giving equality.
 -/
 theorem ringKrullDim_stalk_eq_of_etale_affineSpace {k : Type u} [Field k] {m : ℕ} {Y : Scheme.{u}}
     (c : Y ⟶ AffineSpace (ULift.{u} (Fin m)) (Spec (CommRingCat.of k)))

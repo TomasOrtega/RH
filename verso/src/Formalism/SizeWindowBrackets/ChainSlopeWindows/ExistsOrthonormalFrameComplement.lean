@@ -11,10 +11,8 @@ open Formalism.LFunctionChainParameters.HilbertSchmidtNormSquare
 
 noncomputable section
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The traces of the two identity products are the dimensions of their respective coordinate spaces. Trace cyclicity gives equality of the two traces, so the dimensions are equal.
 -/
 theorem unitary_dimension : UniDim := by
   intro m n V h
@@ -24,8 +22,8 @@ theorem unitary_dimension : UniDim := by
   have : (m : ℂ) = n := by rw [← h2, h1]
   exact_mod_cast this
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Express the squared norm of SM as the real trace of its Gram matrix. That Gram matrix is the adjoint of M times the adjoint of S times S times M. The middle product is the identity, leaving the Gram matrix of M.
 -/
 lemma hsSq_left {a a' b : ℕ} (M : Matrix (Fin a) (Fin b) ℂ) (S : Matrix (Fin a') (Fin a) ℂ)
     (hS : Sᴴ * S = 1) : hsSq (S * M) = hsSq M := by
@@ -33,16 +31,16 @@ lemma hsSq_left {a a' b : ℕ} (M : Matrix (Fin a) (Fin b) ℂ) (S : Matrix (Fin
   have : Mᴴ * Sᴴ * (S * M) = Mᴴ * (Sᴴ * S) * M := by simp only [Matrix.mul_assoc]
   rw [this, hS, Matrix.mul_one]
 
-/- English proof (translation)
-Rewrite the hypotheses and the conclusion using the stated equalities.
+/- English proof (authored)
+Take adjoints, which preserve the squared norm. Right multiplication by T becomes left multiplication by its adjoint. The given identity is the left-isometry condition for that adjoint, so the preceding norm equality applies.
 -/
 lemma hsSq_right {a b b' : ℕ} (M : Matrix (Fin a) (Fin b) ℂ) (T : Matrix (Fin b) (Fin b') ℂ)
     (hT : T * Tᴴ = 1) : hsSq (M * T) = hsSq M := by
   rw [← hsSq_conjTranspose (M * T), conjTranspose_mul, hsSq_left _ _ (by simpa using hT),
     hsSq_conjTranspose]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Apply the right-multiplication norm equality and the left-multiplication norm equality in succession. Both operations preserve the squared norm.
 -/
 theorem hilbert_schmidt_unitary_invariant : HsUni := by
   intro a b a' b' M S T hS hT
@@ -52,8 +50,8 @@ section Fam
 
 variable {ι : Type} [Fintype ι] {D D' : ℕ} {d : ι → ℕ}
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The numerator is the product of one complex scalar's conjugate with the other scalar. Its modulus equals the product of their moduli, which is the positive denominator. The quotient has modulus one.
 -/
 lemma norm_phase (c : ι → ℂ) (hc : ∀ u, c u ≠ 0) (u u' : ι) : ‖phase c u u'‖ = 1 := by
   unfold phase
@@ -63,8 +61,8 @@ lemma norm_phase (c : ι → ℂ) (hc : ∀ u, c u ≠ 0) (u u' : ι) : ‖phase
     abs_of_pos (mul_pos h1 h2)]
   exact div_self (mul_pos h1 h2).ne'
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
+/- English proof (authored)
+A scalar times its conjugate equals the square of its modulus. On the diagonal the denominator is this same nonzero square, so the quotient is one.
 -/
 lemma phase_self (c : ι → ℂ) (hc : ∀ u, c u ≠ 0) (u : ι) : phase c u u = 1 := by
   unfold phase
@@ -73,10 +71,8 @@ lemma phase_self (c : ι → ℂ) (hc : ∀ u, c u ≠ 0) (u : ι) : phase c u u
   push_cast
   field_simp
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
-
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Combining the two weight denominators gives the square of the positive product of the two scalar moduli. Taking the square root of the quotient divides the square root of the original weight product by that product of moduli.
 -/
 lemma sqrt_gaTw (ga : ι → ℝ) (c : ι → ℂ) (hc : ∀ u, c u ≠ 0) (u u' : ι) :
     Real.sqrt (gaTw ga c u * gaTw ga c u') = Real.sqrt (ga u * ga u') / (‖c u‖ * ‖c u'‖) := by
@@ -87,12 +83,8 @@ lemma sqrt_gaTw (ga : ι → ℝ) (c : ι → ℂ) (hc : ∀ u, c u ≠ 0) (u u'
     field_simp
   rw [this, Real.sqrt_div' _ (by positivity), Real.sqrt_sq (by positivity)]
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
-
-Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+Expand the twisted weighted Gram product. The middle ambient isometry cancels with its adjoint, leaving the original cross product with the two unitary factors on the outside. The new weights divide the old scalar factor by the product of the scalar moduli. The conjugated scalar from the first matrix and the scalar from the second supply the numerator of the phase. Together these give the claimed phase times the unitary change of basis of the original kernel.
 -/
 lemma Kp_tw (B : ∀ u, Matrix (Fin D) (Fin (d u)) ℂ) (ga : ι → ℝ) (c : ι → ℂ)
     (V : Matrix (Fin D') (Fin D) ℂ) (U : ∀ u, Matrix (Fin (d u)) (Fin (d u)) ℂ)
@@ -113,8 +105,8 @@ lemma Kp_tw (B : ∀ u, Matrix (Fin D) (Fin (d u)) ℂ) (ga : ι → ℝ) (c : �
   simp only [Complex.star_def]
   ring
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Specialize the cross-kernel formula to equal indices. The phase is one on the diagonal, leaving the conjugation by the corresponding unitary matrix.
 -/
 lemma Kd_tw (B : ∀ u, Matrix (Fin D) (Fin (d u)) ℂ) (ga : ι → ℝ) (c : ι → ℂ)
     (V : Matrix (Fin D') (Fin D) ℂ) (U : ∀ u, Matrix (Fin (d u)) (Fin (d u)) ℂ)
@@ -123,8 +115,8 @@ lemma Kd_tw (B : ∀ u, Matrix (Fin D) (Fin (d u)) ℂ) (ga : ι → ℝ) (c : �
   unfold Kd
   rw [Kp_tw B ga c V U hc hV, phase_self c hc, one_smul]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Use the diagonal transformation. Conjugating the original identity by the unitary matrix gives the identity, so the transformed difference is the conjugation of the original deviation.
 -/
 lemma Kd_tw_sub (B : ∀ u, Matrix (Fin D) (Fin (d u)) ℂ) (ga : ι → ℝ) (c : ι → ℂ)
     (V : Matrix (Fin D') (Fin D) ℂ) (U : ∀ u, Matrix (Fin (d u)) (Fin (d u)) ℂ)
@@ -132,8 +124,8 @@ lemma Kd_tw_sub (B : ∀ u, Matrix (Fin D) (Fin (d u)) ℂ) (ga : ι → ℝ) (c
     Kd (Btwist B c V U) (gaTw ga c) u - 1 = (U u)ᴴ * (Kd B ga u - 1) * U u := by
   rw [Kd_tw B ga c V U hc hV, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, (hU u).1]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The transformed cross kernel differs by left and right unitary factors and multiplication by a phase of modulus one. All three operations preserve its squared Hilbert–Schmidt norm.
 -/
 lemma hs_Kp_tw (B : ∀ u, Matrix (Fin D) (Fin (d u)) ℂ) (ga : ι → ℝ) (c : ι → ℂ)
     (V : Matrix (Fin D') (Fin D) ℂ) (U : ∀ u, Matrix (Fin (d u)) (Fin (d u)) ℂ)
@@ -142,8 +134,8 @@ lemma hs_Kp_tw (B : ∀ u, Matrix (Fin D) (Fin (d u)) ℂ) (ga : ι → ℝ) (c 
   rw [Kp_tw B ga c V U hc hV, hsSq_smul, norm_phase c hc, one_pow, one_mul]
   exact hilbert_schmidt_unitary_invariant _ _ _ _ _ _ _ (by simpa using (hU u).2) (hU u').2
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The transformed deviation is the original deviation conjugated by a unitary matrix. Both its left and right unitary factors preserve the squared norm.
 -/
 lemma hs_Kd_tw (B : ∀ u, Matrix (Fin D) (Fin (d u)) ℂ) (ga : ι → ℝ) (c : ι → ℂ)
     (V : Matrix (Fin D') (Fin D) ℂ) (U : ∀ u, Matrix (Fin (d u)) (Fin (d u)) ℂ)
@@ -152,14 +144,8 @@ lemma hs_Kd_tw (B : ∀ u, Matrix (Fin D) (Fin (d u)) ℂ) (ga : ι → ℝ) (c 
   rw [Kd_tw_sub B ga c V U hc hV hU]
   exact hilbert_schmidt_unitary_invariant _ _ _ _ _ _ _ (by simpa using (hU u).2) (hU u).2
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
-
-Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
+/- English proof (authored)
+In each twisted term the inner unitary factor cancels with its adjoint. Multiplication by the scalar and its conjugate contributes its squared modulus, which cancels the denominator in the adjusted weight. Thus each term is the original term multiplied by V on the left and its adjoint on the right. Factor these two matrices out of the sum.
 -/
 lemma Qm_tw (B : ∀ u, Matrix (Fin D) (Fin (d u)) ℂ) (ga : ι → ℝ) (c : ι → ℂ)
     (V : Matrix (Fin D') (Fin D) ℂ) (U : ∀ u, Matrix (Fin (d u)) (Fin (d u)) ℂ)
@@ -184,15 +170,15 @@ lemma Qm_tw (B : ∀ u, Matrix (Fin D) (Fin (d u)) ℂ) (ga : ι → ℝ) (c : �
   rw [mul_assoc, h2]
   field_simp
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Cycle the adjoint factor to the front under the trace. Its product with V is the identity, leaving the trace of Q.
 -/
 lemma trace_conj (V : Matrix (Fin D') (Fin D) ℂ) (hV : Vᴴ * V = 1) (Q : Matrix (Fin D) (Fin D) ℂ) :
     (V * Q * Vᴴ).trace = Q.trace := by
   rw [trace_mul_comm, ← Matrix.mul_assoc, hV, Matrix.one_mul]
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+When the two conjugated products are multiplied, the middle factors are the adjoint of V followed by V. Cancel them using the isometry identity and reassociate to obtain the conjugation of Q².
 -/
 lemma conj_sq (V : Matrix (Fin D') (Fin D) ℂ) (hV : Vᴴ * V = 1) (Q : Matrix (Fin D) (Fin D) ℂ) :
     (V * Q * Vᴴ) * (V * Q * Vᴴ) = V * (Q * Q) * Vᴴ := by
@@ -202,15 +188,15 @@ lemma conj_sq (V : Matrix (Fin D') (Fin D) ℂ) (hV : Vᴴ * V = 1) (Q : Matrix 
 
 end Fam
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
+/- English proof (authored)
+Use the cross-kernel and diagonal-deviation norm identities. The two unitary assumptions supply all isometry and adjoint relations required for both.
 -/
 theorem twist_hilbert_schmidt : TwHS := by
   intro ι _ D D' d B ga c V U hc hV hU
   exact ⟨hs_Kp_tw B ga c V U hc hV.1 hU, hs_Kd_tw B ga c V U hc hV.1 hU⟩
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The weighted frame operator is conjugated by V. The conjugation preserves its trace and transforms its square into the same conjugation of the original square. Thus both stated traces are preserved.
 -/
 theorem twist_quadratic_form : TwQ := by
   intro ι _ D D' d B ga c V U hc hV hU
@@ -219,12 +205,8 @@ theorem twist_quadratic_form : TwQ := by
   · rw [h, trace_conj V hV.1]
   · rw [h, conj_sq V hV.1, trace_conj V hV.1]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
-
-Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Division by the positive squared scalar modulus preserves positivity of the weights. The dimension equality for the ambient unitary preserves the ambient dimension in the bounds. The cross and diagonal norm identities preserve the input and deviation estimates, and the trace identities preserve the trace-ratio estimate. Substituting these equalities gives the equivalences.
 -/
 theorem twist_invariance : TwInv := by
   intro ι _ D D' d B ga c V U hc hV hU
@@ -245,14 +227,14 @@ variable {n : ℕ}
 
 end Inv
 
-/- English proof (translation)
-Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The scalar modulus is one at every index, so dividing each weight by its square leaves the weight unchanged.
 -/
 lemma gaTw_one {ι : Type} (ga : ι → ℝ) : gaTw ga (fun _ => (1 : ℂ)) = ga := by
   funext u; simp [gaTw]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The factor 1 − δ is positive. Multiply the quotient inequality by it to get the equivalent retained-dimension inequality.
 -/
 theorem block_count_valid : RowsCount := by
   intro Dall D del h
@@ -262,10 +244,8 @@ section Frame
 
 variable {Dall D D1 : ℕ}
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
+/- English proof (authored)
+Multiply the sum of the two range projections on the left by the adjoint of J and on the right by J₁. Since the projections sum to the identity, the result is the cross Gram matrix. Expanding the sum and using each frame's isometry identity gives two copies of the same cross matrix. Subtract one copy to conclude that it is zero.
 -/
 lemma frame_orth (J : Matrix (Fin Dall) (Fin D) ℂ) (J1 : Matrix (Fin Dall) (Fin D1) ℂ)
     (h : OrthFrame J J1) : Jᴴ * J1 = 0 := by
@@ -280,16 +260,16 @@ lemma frame_orth (J : Matrix (Fin Dall) (Fin D) ℂ) (J1 : Matrix (Fin Dall) (Fi
     _ = Jᴴ * J1 - Jᴴ * J1 := by rw [← e]
     _ = 0 := sub_self _
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Take the adjoint of the vanishing cross Gram matrix. The factors reverse and the adjoint of zero is zero.
 -/
 lemma frame_orth' (J : Matrix (Fin Dall) (Fin D) ℂ) (J1 : Matrix (Fin Dall) (Fin D1) ℂ)
     (h : OrthFrame J J1) : J1ᴴ * J = 0 := by
   have : (Jᴴ * J1)ᴴ = J1ᴴ * J := by rw [conjTranspose_mul, conjTranspose_conjTranspose]
   rw [← this, frame_orth J J1 h, conjTranspose_zero]
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Take the trace of the identity expressing the sum of range projections. By cyclicity each projection's trace equals the trace of the corresponding identity on its frame space. The ambient dimension is therefore the sum of the two frame dimensions.
 -/
 lemma frame_dim (J : Matrix (Fin Dall) (Fin D) ℂ) (J1 : Matrix (Fin Dall) (Fin D1) ℂ)
     (h : OrthFrame J J1) : Dall = D + D1 := by
@@ -299,8 +279,8 @@ lemma frame_dim (J : Matrix (Fin Dall) (Fin D) ℂ) (J1 : Matrix (Fin Dall) (Fin
   simp only [trace_one, Fintype.card_fin] at t
   exact_mod_cast t.symm
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The row-change matrix is the vertical stack of the two adjoints, with rows relabeled by the finite-sum bijection. Multiplying a vertical stack on the right multiplies each row block separately. Relabeling its rows does not change that calculation.
 -/
 lemma Wfr_mul {m : Type} (J : Matrix (Fin Dall) (Fin D) ℂ) (J1 : Matrix (Fin Dall) (Fin D1) ℂ)
     (X : Matrix (Fin Dall) m ℂ) :
@@ -310,8 +290,8 @@ lemma Wfr_mul {m : Type} (J : Matrix (Fin Dall) (Fin D) ℂ) (J1 : Matrix (Fin D
   ext i j
   simp only [Matrix.mul_apply, Matrix.submatrix_apply, id]
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Taking the adjoint turns the vertical stack of frame adjoints into the horizontal concatenation of the frames themselves. The row relabeling becomes the corresponding column relabeling.
 -/
 lemma Wfr_H (J : Matrix (Fin Dall) (Fin D) ℂ) (J1 : Matrix (Fin Dall) (Fin D1) ℂ) :
     (Wfr J J1)ᴴ = (Matrix.fromCols J J1).submatrix id finSumFinEquiv.symm := by
@@ -319,8 +299,8 @@ lemma Wfr_H (J : Matrix (Fin Dall) (Fin D) ℂ) (J1 : Matrix (Fin Dall) (Fin D1)
   rw [conjTranspose_submatrix, Matrix.conjTranspose_fromRows_eq_fromCols_conjTranspose,
     conjTranspose_conjTranspose, conjTranspose_conjTranspose]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Use the column-block form for the adjoint of the row-change matrix. Multiplying a vertical stack by that horizontal concatenation gives the four products in the stated block matrix. The two outer index relabelings then give the formula.
 -/
 lemma rows_mul_WfrH {a b : ℕ} (X : Matrix (Fin a) (Fin Dall) ℂ) (X1 : Matrix (Fin b) (Fin Dall) ℂ)
     (J : Matrix (Fin Dall) (Fin D) ℂ) (J1 : Matrix (Fin Dall) (Fin D1) ℂ) :
@@ -331,10 +311,8 @@ lemma rows_mul_WfrH {a b : ℕ} (X : Matrix (Fin a) (Fin Dall) ℂ) (X1 : Matrix
   ext i j
   simp only [Matrix.mul_apply, Matrix.submatrix_apply, id]
 
-/- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Multiplying the horizontally concatenated frames by their stacked adjoints adds their range projections, which sum to the ambient identity. The reverse product has each frame's identity on its diagonal and the zero cross Gram matrices off the diagonal. After relabeling it is also the identity.
 -/
 lemma Wfr_uni (J : Matrix (Fin Dall) (Fin D) ℂ) (J1 : Matrix (Fin Dall) (Fin D1) ℂ)
     (h : OrthFrame J J1) : IsUni (Wfr J J1) := by
@@ -349,12 +327,8 @@ lemma Wfr_uni (J : Matrix (Fin Dall) (Fin D) ℂ) (J1 : Matrix (Fin Dall) (Fin D
 
 end Frame
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The orthogonality, dimension equality and unitarity have already been established. The projection onto J's range is self-adjoint, and it is idempotent because the adjoint of J times J is the identity. Its product with the complementary projection is zero by orthogonality. In the stacked row coordinates the projection acts as the identity on the J rows and zero on the complementary rows, which gives the displayed block form.
 -/
 theorem frame_properties : FrameFacts := by
   intro Dall D D1 J J1 h
@@ -371,23 +345,21 @@ theorem frame_properties : FrameFacts := by
     have a2 : J1ᴴ * (J * Jᴴ) = 0 := by rw [← Matrix.mul_assoc, o', Matrix.zero_mul]
     rw [a1, a2, h.1, o, Matrix.zero_mul, Matrix.zero_mul]
 
-/- English proof (translation)
-Supply the required witnesses or components.
+/- English proof (authored)
+The adjoint of the identity is the identity. Both products in the unitarity condition are therefore the identity.
 -/
 lemma isUni_one (n : ℕ) : IsUni (1 : Matrix (Fin n) (Fin n) ℂ) := ⟨by simp, by simp⟩
 
-/- English proof (translation)
-Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
+/- English proof (authored)
+With all scalar factors and right unitary matrices equal to one, the twist at each index is just left multiplication by the prescribed row matrix.
 -/
 lemma Brow_eq {ι : Type} {D D' : ℕ} {d : ι → ℕ} (W : Matrix (Fin D') (Fin D) ℂ)
     (B : ∀ u, Matrix (Fin D) (Fin (d u)) ℂ) :
     Brow W B = Btwist B (fun _ => 1) W (fun _ => 1) := by
   funext u; simp [Brow, Btwist]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The stacked adjoint row change is unitary, so apply twist invariance with unit scalar factors and identity right matrices. The weights stay fixed. The row-block multiplication identity identifies each row of the result with the appropriate frame adjoint applied to the original matrix. This gives the two entry formulas together with the three preserved bounds.
 -/
 theorem block_matrix_decomposition : RowsBlock := by
   intro ι _ Dall D D1 d B ga J J1 h
@@ -398,10 +370,8 @@ theorem block_matrix_decomposition : RowsBlock := by
   · unfold Brow; rw [Wfr_mul]; simp
   · unfold Brow; rw [Wfr_mul]; simp
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Use twist invariance to preserve positive weights and the two frame bounds. Change to the stacked frame coordinates and carry those bounds through the unitary row change. The first row-block formula, combined with the assumed matrix identity, gives the required first-block entries. Finally the frame dimension equality identifies the total number of rows, and the block-count equivalence gives the deletion inequality.
 -/
 theorem corollary_transport : CorTransport := by
   intro ι _ Dall D D1 d P ga c V U J J1 A Y' Y η e del hga hc hV hU hJ hdel hD hMI hF1 hF2
@@ -415,8 +385,8 @@ theorem corollary_transport : CorTransport := by
     rw [Matrix.mul_smul]
   · rw [hdim]; exact (block_count_valid Dall D del hdel).mp hD
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+A constant summed over the index set equals the cardinality times that constant. Compare each summand to its given dimension lower bound and sum to obtain the total-rank inequality.
 -/
 lemma card_mul_le {ι : Type} [Fintype ι] (d : ι → ℕ) (t : ℝ) (h : ∀ u, t ≤ (d u : ℝ)) :
     (Fintype.card ι : ℝ) * t ≤ Rs d := by
@@ -425,10 +395,8 @@ lemma card_mul_le {ι : Type} [Fintype ι] (d : ι → ℕ) (t : ℝ) (h : ∀ u
         rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
     _ ≤ _ := Finset.sum_le_sum fun u _ => h u
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The ceiling makes the number of words at least C₀Γ² divided by the scale. Multiply this by the common nonnegative dimension lower bound and use the bound on the sum of the dimensions. Cancelling C₀ and Γ² leaves the reference dimension divided by the scale.
 -/
 theorem wordCount_valid : WordCount := by
   intro ι _ d C0 Gam sg Dstar hC hG hs hD hcard hd
@@ -438,10 +406,8 @@ theorem wordCount_valid : WordCount := by
   rw [h3]
   exact le_trans (mul_le_mul_of_nonneg_right h1 (by positivity)) h2
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The natural ceiling of X is at most X + 1 and hence at most the given power of two. If the ceiling is positive, take logarithms and expand the power logarithm. If the ceiling is zero, its logarithm in the stated convention is zero, while the power is at least one and has nonnegative logarithm.
 -/
 theorem word_log_real : WordLogReal := by
   intro k X hX h
@@ -452,26 +418,8 @@ theorem word_log_real : WordLogReal := by
     exact Real.log_nonneg (by linarith)
   · exact Real.log_le_log (by exact_mod_cast h0) ((Nat.ceil_lt_add_one hX).le.trans h)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Substitute using the available equality.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The word-count estimate gives the required lower bound on total rank. Apply the compression estimates to obtain the trace and deviation bounds and the retained-rank estimate. The transport result preserves the frame bounds in the twisted row coordinates and identifies the requested entries. The bound on the initial error implies the new error is at most one quarter. The retained rank is positive because the original total rank is positive and the lost fraction is below one. If the ambient dimension were zero, every original diagonal kernel would vanish, and the diagonal-defect bound with error below one would force all original ranks to be zero. Thus the ambient dimension is positive. The dimension equality puts the retained block dimension at most the ambient dimension, which together with the deletion inequality bounds the deletion parameter below by zero. The remaining parameter bounds follow from the assumed scale and the nonnegative square root of the deficit.
 -/
 theorem corollary_chain : CorChain := by
   intro ι _ Dall D D1 d r Pf Vr ga c V U J J1 A Y' Y Dstar sg η0 η1 e0 de del C0 Gam h
@@ -533,10 +481,8 @@ def En (n : ℕ) : Matrix (Fin 2) (Fin n) ℂ := fun i j => if i.val = j.val the
 def V0 : Matrix (Fin 2) (Fin 2) ℂ := !![0, 1; 1, 0]
 def U0 : ∀ u : Fin 20, Matrix (Fin (r0 u)) (Fin (r0 u)) ℂ := fun _ => Complex.I • 1
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
-
-Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The two columns are the two coordinate vectors in dimension two. Each has squared norm one and their range projections are the two complementary diagonal projections, whose sum is the identity.
 -/
 lemma frame0 : OrthFrame J0 modelEmbedding := by
   refine ⟨?_, ?_, ?_⟩
@@ -546,41 +492,41 @@ lemma frame0 : OrthFrame J0 modelEmbedding := by
     fin_cases i <;> fin_cases j <;>
       simp [J0, modelEmbedding, Matrix.vecMul, dotProduct, Matrix.conjTranspose_apply]
 
-/- English proof (translation)
-Simplify using the standard rewrite rules. Evaluate the numerical expressions.
+/- English proof (authored)
+The two diagonal entries contribute one each to the squared norm of the identity. All other contributions vanish.
 -/
 lemma hs_one : hsSq (1 : Matrix (Fin 2) (Fin 2) ℂ) = 2 := by
   simp [hsSq, Fin.sum_univ_two, Matrix.one_apply]; norm_num
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+In the model each weight and matrix is the identity scalar or identity matrix of the appropriate size. Substitution makes each cross kernel the identity.
 -/
 lemma kp0 (u u' : Fin 20) : Kp (d := fun _ => 2) P0 (fun _ => (1 : ℝ)) u u' = 1 := by
   simp [Kp, P0]
 
-/- English proof (translation)
-Separate the alternatives or extract the components of the hypothesis. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
+/- English proof (authored)
+For either permitted rank, the columns are distinct coordinate vectors in the two-dimensional target. Their Gram matrix is the identity on the chosen column space.
 -/
 lemma en_isom (n : ℕ) (hn : n = 1 ∨ n = 2) : (En n)ᴴ * En n = 1 := by
   rcases hn with rfl | rfl
   · ext i j; fin_cases i; fin_cases j; simp [En, Matrix.mul_apply]
   · ext i j; fin_cases i <;> fin_cases j <;> simp [En, Matrix.mul_apply]
 
-/- English proof (translation)
-Apply the first step, then apply the next step to every resulting obligation.
+/- English proof (authored)
+The model assigns rank one at the distinguished word and rank two at every other word.
 -/
 lemma model_rank_one_or_two (u : Fin 20) : r0 u = 1 ∨ r0 u = 2 := by
   unfold r0; split_ifs <;> simp
 
-/- English proof (translation)
-Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
+/- English proof (authored)
+The matrix swaps the two coordinate vectors. It preserves their inner products and is its own inverse, so it is unitary.
 -/
 lemma model_unitary : IsUni V0 := by
   constructor <;>
   · ext i j; fin_cases i <;> fin_cases j <;> simp [V0, Matrix.mul_apply, Fin.sum_univ_two]
 
-/- English proof (translation)
-Apply the first step, then apply the next step to every resulting obligation.
+/- English proof (authored)
+Each matrix is the identity multiplied by i. Since i has modulus one, multiplying the matrix by its adjoint in either order gives the identity.
 -/
 lemma model_unitary_entries (u : Fin 20) : IsUni (U0 u) := by
   constructor <;> simp [U0, Matrix.conjTranspose_smul, smul_smul]
@@ -588,14 +534,8 @@ lemma model_unitary_entries (u : Fin 20) : IsUni (U0 u) := by
 def A0 : ∀ u, Matrix (Fin 1) (Fin (r0 u)) ℂ :=
   fun u => c0 u • (J0ᴴ * (V0 * Bram (d := fun _ => 2) (r := r0) P0 (fun u => En (r0 u)) u * U0 u))
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
-
-Evaluate the numerical expressions. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The model has twenty words with original rank two, and the numerical ceiling requirement gives exactly twenty. The original Gram kernels are identities, so the off-diagonal squared norm is two and the diagonal defect is zero. Each compression uses coordinate columns and is an isometry. Only the distinguished word loses a dimension, so the total loss is one out of forty, matching the allowed fraction. The coordinate frame and the two types of unitary matrices satisfy the required transport identities. The scalar 2i is nonzero, and the remaining bounds follow by substituting the model constants.
 -/
 theorem hyp0 :
     ChainHyp (d := fun _ => 2) (r := r0) P0 (fun u => En (r0 u)) (fun _ => 1) c0 V0 U0 J0 modelEmbedding A0 1
@@ -620,12 +560,8 @@ theorem hyp0 :
 
 end Model
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Expand the row-changed twist of the compressed family. Reassociate the products to put all left factors and the scalar into the original family, and place the compression followed by the right unitary in the final factor. This final factor has identity Gram matrix because both parts are isometries. The input estimates for the left family are preserved first by the scalar and ambient twist and then by the unitary row change, giving the equivalence.
 -/
 theorem twist_ramified_factor : TwRamFactor := by
   intro ι _ Dall D' d r Pf Vr ga c V U W hc hV hU hW hVr
@@ -644,8 +580,8 @@ theorem twist_ramified_factor : TwRamFactor := by
     rw [gaTw_one, ← Brow_eq] at j3
     exact (j3 _ _ _ _).trans (i3 _ _ _ _)
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The adjoint of the stacked frame adjoints horizontally concatenates the frames. Their product adds the two range projections, which is the identity by the frame hypothesis.
 -/
 lemma WfrS_isom {Dall D D1 : ℕ} (J : Matrix (Fin Dall) (Fin D) ℂ) (J1 : Matrix (Fin Dall) (Fin D1) ℂ)
     (h : OrthFrame J J1) : (WfrS J J1)ᴴ * WfrS J J1 = 1 := by
@@ -653,10 +589,8 @@ lemma WfrS_isom {Dall D D1 : ℕ} (J : Matrix (Fin Dall) (Fin D) ℂ) (J1 : Matr
   rw [Matrix.conjTranspose_fromRows_eq_fromCols_conjTranspose, conjTranspose_conjTranspose,
     conjTranspose_conjTranspose, Matrix.fromCols_mul_fromRows, h.2.2]
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+In the cross Gram product of the stacked family, the stacked row change appears with its adjoint. That product is the identity because the row change is an isometry. The remaining scalars, ambient factors and weight are exactly those of the twisted cross kernel with identity right factors.
 -/
 lemma KpG_BfS {ι : Type} [Fintype ι] {Dall D D1 : ℕ} {d : ι → ℕ}
     (Pf : ∀ u, Matrix (Fin Dall) (Fin (d u)) ℂ) (c : ι → ℂ) (V : Matrix (Fin Dall) (Fin Dall) ℂ)
@@ -672,20 +606,8 @@ lemma KpG_BfS {ι : Type} [Fintype ι] {Dall D D1 : ℕ} {d : ι → ℕ}
     rw [this, WfrS_isom J J1 h, Matrix.mul_one]
   simp only [conjTranspose_smul, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_one, key]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
-
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
+/- English proof (authored)
+The corollary for the transformed family gives positive weights, the identified first-row entries, the dimension bound and the positive retained rank. The word-count estimate gives the original rank lower bound. The transformed compression matrices are isometries, and expanding the block product shows that it is the row-changed compressed family with the finite-sum indexing. Transfer the original input estimates via twist invariance and the cross-kernel identity, including the diagonal specialization. The frame dimension equality identifies the ambient dimensions. Restrict the block product identity to the first row block to recover its entries, and use the retained-rank identification and the given deletion bound to finish.
 -/
 theorem chain_substitution : ChainCondition := by
   intro ι _ Dall D D1 d r Pf Vr ga c V U J J1 A Y' Y Dstar sg η0 η1 e0 de del C0 Gam h

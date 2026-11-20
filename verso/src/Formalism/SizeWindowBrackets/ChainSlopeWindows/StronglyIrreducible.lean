@@ -14,68 +14,62 @@ namespace PB
 section
 variable {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H]
 
-/- English proof (translation)
-Evaluate the decidable proposition. A detailed English derivation is pending.
+/- English proof (authored)
+There are exactly two residues modulo two. They are represented by zero and one.
 -/
 lemma zmod_two_cases_bis (e : ZMod 2) : e = 0 ∨ e = 1 := by
   revert e
   decide
 
-/- English proof (translation)
-Unfold both sides to obtain the same proposition, which implies itself.
+/- English proof (authored)
+The defining condition for the selected half of the group is that the first binary coordinate is zero.
 -/
 lemma inPhi_iff (g : E0 × H) : InPhi g ↔ g.1.1 = 0 := Iff.rfl
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
+/- English proof (authored)
+The first binary coordinate is either zero or one. Excluding zero is therefore equivalent to requiring one.
 -/
 lemma not_inPhi_iff (g : E0 × H) : ¬ InPhi g ↔ g.1.1 = 1 := by
   rw [inPhi_iff]
   rcases zmod_two_cases_bis g.1.1 with h | h <;> rw [h] <;> decide
 
-/- English proof (translation)
-Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Both first binary coordinates are zero, and the coordinate of the sum is their sum. Hence the sum belongs to the selected half.
 -/
 lemma inPhi_add {x y : E0 × H} (hx : InPhi x) (hy : InPhi y) : InPhi (x + y) := by
   rw [inPhi_iff] at hx hy ⊢
   simp [hx, hy]
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
+/- English proof (authored)
+The zero multiple lies in the selected half. If the n-th multiple lies there, adding the original element stays there by closure under addition. Induction gives the result.
 -/
 lemma inPhi_nsmul {x : E0 × H} (hx : InPhi x) (i : ℕ) : InPhi (i • x) := by
   induction i with
   | zero => rw [zero_smul]; exact (inPhi_iff _).2 rfl
   | succ n ih => rw [succ_nsmul]; exact inPhi_add ih hx
 
-/- English proof (translation)
-By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The top-place translation has zero first binary coordinate, so it preserves the first coordinate of each element. Membership in the complementary half is therefore unchanged.
 -/
 lemma filter_notPhi_eq (t : H) :
     (univ.filter (fun g : E0 × H => ¬ InPhi g)) = univ.filter (fun g : E0 × H => ¬ InPhi (g + topPl t)) := by
   ext g
   simp [inPhi_iff, topPl]
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The partner translation adds a top-place element with zero first coordinate and a conjugation element with first coordinate one. The resulting first coordinate is one plus the original coordinate.
 -/
 private theorem partner_fst_lemma (t : H) (g : E0 × H) : (partner t g).1.1 = 1 + g.1.1 := by
   simp [partner, cconj, topPl]
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+Subtracting the top-place element changes the first binary coordinate by zero. Subtracting the conjugation element changes it by minus one.
 -/
 private theorem sub_fst_lemma_2 (t : H) (ρ : E0 × H) : (ρ - topPl t - cconj).1.1 = ρ.1.1 - 1 := by
   simp [topPl, cconj]
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Evaluate the decidable proposition. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Evaluate the decidable proposition. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Fix the arbitrary inputs or assume the hypotheses.
-
-Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
+/- English proof (authored)
+The partner translation sends the complementary half to the selected half because it adds one to the first binary coordinate. Subtracting the two translating elements reverses the map and sends each selected element back to the complement. The maps are inverse, so reindexing the finite sum along them preserves its value.
 -/
 lemma sum_partner {β : Type*} [AddCommMonoid β] (t : H) (F : E0 × H → β) :
     ∑ g ∈ univ.filter (fun g : E0 × H => ¬ InPhi g), F (partner t g) = ∑ ρ ∈ PhiSet (H := H), F ρ := by
@@ -99,23 +93,23 @@ lemma sum_partner {β : Type*} [AddCommMonoid β] (t : H) (F : E0 × H → β) :
   · intro a _
     rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
+/- English proof (authored)
+Apply the reindexing identity to the constant summand one. Each sum then counts its indexing half.
 -/
 lemma card_notPhi : (univ.filter (fun g : E0 × H => ¬ InPhi g)).card = (PhiSet (H := H)).card := by
   have h := sum_partner (H := H) (β := ℕ) 0 (fun _ => 1)
   simpa using h
 
-/- English proof (translation)
-Treat this case separately. Treat this case separately. A detailed English derivation is pending.
+/- English proof (authored)
+A complex character of a finite group has values of modulus one. The value at the negative element is the reciprocal of the original value, which for modulus one is its complex conjugate.
 -/
 lemma conj_eq_neg (ψ : AddChar (E0 × H) ℂ) (g : E0 × H) : starRingEnd ℂ (ψ g) = ψ (-g) := by
   first
   | exact (AddChar.map_neg_eq_conj ψ g).symm
   | rw [AddChar.map_neg_eq_inv, Complex.inv_eq_conj (AddChar.norm_apply ψ g)]
 
-/- English proof (translation)
-Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Replace the conjugated character value at g by the value at −g. Multiplicativity combines the two character values into the value at h − g. Character orthogonality gives the group cardinality at the zero element and zero otherwise. The difference is zero exactly when h = g.
 -/
 lemma ortho (g h : E0 × H) :
     ∑ ψ : AddChar (E0 × H) ℂ, starRingEnd ℂ (ψ g) * ψ h
@@ -124,15 +118,13 @@ lemma ortho (g h : E0 × H) :
   rw [AddChar.sum_apply_eq_ite]
   simp only [neg_add_eq_sub, sub_eq_zero]
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The sign character is defined by the first binary coordinate. It is one at coordinate zero and minus one at coordinate one.
 -/
 lemma chC_apply' (g : E0 × H) : (chC : AddChar (E0 × H) ℂ) g = if g.1.1 = 0 then 1 else -1 := rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Evaluate the decidable proposition. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Negation fixes each residue modulo two. The first coordinate therefore keeps the same sign character value.
 -/
 lemma chC_neg (g : E0 × H) : (chC : AddChar (E0 × H) ℂ) (-g) = chC g := by
   have h1 : (-g).1.1 = g.1.1 := by
@@ -142,15 +134,15 @@ lemma chC_neg (g : E0 × H) : (chC : AddChar (E0 × H) ℂ) (-g) = chC g := by
     decide
   rw [chC_apply', chC_apply', h1]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
+/- English proof (authored)
+Each sign value is either one or minus one. Its square is one in both cases.
 -/
 lemma chC_sq (g : E0 × H) : (chC : AddChar (E0 × H) ℂ) g * chC g = 1 := by
   rw [chC_apply']
   split_ifs <;> simp
 
-/- English proof (translation)
-Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
+/- English proof (authored)
+The zero element in the additive character group is the trivial character, whose value at every input is one.
 -/
 private theorem zero_apply_lemma (g : E0 × H) : (0 : AddChar (E0 × H) ℂ) g = 1 := by
   first
@@ -158,17 +150,15 @@ private theorem zero_apply_lemma (g : E0 × H) : (0 : AddChar (E0 × H) ℂ) g =
   | rfl
   | simp
 
-/- English proof (translation)
-By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The product of the sign character with itself evaluates to the square of its sign at each element. That square is one, so the product is the trivial character.
 -/
 lemma chC_mul_self : (chC : AddChar (E0 × H) ℂ) * chC = 0 := by
   ext g
   rw [AddChar.mul_apply, chC_sq, zero_apply_lemma]
 
-/- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Chain the equalities or inequalities of the calculation. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
+/- English proof (authored)
+If the pointwise product is trivial, evaluate at any group element and multiply the resulting equality by the sign value there. Its square is one, so this makes the other character's value equal to the sign. Conversely the sign squared is the trivial character.
 -/
 lemma mul_chC_eq_zero_iff (ψ : AddChar (E0 × H) ℂ) : ψ * chC = 0 ↔ ψ = chC := by
   constructor
@@ -182,10 +172,8 @@ lemma mul_chC_eq_zero_iff (ψ : AddChar (E0 × H) ℂ) : ψ * chC = 0 ↔ ψ = c
   · rintro rfl
     exact chC_mul_self
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Evaluate the decidable proposition. Rewrite the indicated hypotheses using the stated equalities.
-
-Evaluate the numerical expressions.
+/- English proof (authored)
+At the element with first coordinate one and all other coordinates zero, the sign value is minus one. The trivial character takes the value one there, so the two differ.
 -/
 lemma chC_ne_zero : (chC : AddChar (E0 × H) ℂ) ≠ 0 := by
   intro h
@@ -197,18 +185,16 @@ lemma chC_ne_zero : (chC : AddChar (E0 × H) ℂ) ≠ 0 := by
   rw [chC_apply', if_neg h2, zero_apply_lemma] at h1
   norm_num at h1
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components.
+/- English proof (authored)
+The group identity has first coordinate zero and belongs to the selected half. Its cardinality is therefore nonzero, also after embedding in the complex numbers.
 -/
 lemma phi_card_ne_zero : ((PhiSet (H := H)).card : ℂ) ≠ 0 := by
   rw [Nat.cast_ne_zero]
   apply Finset.card_ne_zero.mpr
   exact ⟨0, by simp [PhiSet, inPhi_iff]⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The full group is partitioned into the selected half and its complement. The two subsets have equal cardinalities by the partner bijection, so the total is twice the selected cardinality.
 -/
 lemma card_G : (Fintype.card (E0 × H) : ℂ) = 2 * ((PhiSet (H := H)).card : ℂ) := by
   have hN : Fintype.card (E0 × H) = 2 * (PhiSet (H := H)).card := by
@@ -227,12 +213,8 @@ open PB
 section
 variable {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Evaluate the decidable proposition.
-
-Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Evaluate the decidable proposition. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
+/- English proof (authored)
+The partner map adds one to the first binary coordinate, sending the complement into the selected half. It is injective because it is translation by a fixed element. For a selected target, subtract the top-place and conjugation elements to produce its preimage. The first coordinate of that preimage is one, so it lies in the complement.
 -/
 theorem partner_bijection : PartnerBij (H := H) := by
   intro t
@@ -252,22 +234,8 @@ theorem partner_bijection : PartnerBij (H := H) := by
     · simp only [partner]
       abel
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
-
-Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
-
-Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+The indicator of the complementary half is one half of one minus the sign character. Multiply it by the conjugated character value and sum over the group. Negation reindexes the sum, so orthogonality makes the untwisted sum vanish unless the character is trivial. The sign-twisted sum vanishes unless the product with the sign is trivial, which occurs exactly for the sign character itself. In the two exceptional cases the corresponding sum is the group cardinality. Divide their difference by two and use that this is twice the selected cardinality.
 -/
 theorem colour_sum : ColourSum (H := H) := by
   intro ψ
@@ -311,10 +279,8 @@ theorem colour_sum : ColourSum (H := H) := by
     · simp only [if_neg h0, if_neg h1]
       ring
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The primitive value is a product of coset averages. For the trivial character every summand in each average is one. The inertia subgroup contains zero, so its cardinality is positive and cancels in the average. Every factor of the product is thus one.
 -/
 theorem primitive_value_trivial : PrimValTriv (H := H) := by
   intro D n
@@ -326,8 +292,8 @@ theorem primitive_value_trivial : PrimValTriv (H := H) := by
   rw [Nat.cast_ne_zero]
   exact Finset.card_ne_zero.mpr ⟨0, by simp⟩
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
+/- English proof (authored)
+For a positive power of a prime, the prime support is the singleton containing that prime and its exponent is i. The primitive-value product therefore has exactly the stated coset-average factor.
 -/
 theorem primitive_value_pow : PrimValPow (H := H) := by
   intro D ψ p i hp hi
@@ -337,22 +303,14 @@ theorem primitive_value_pow : PrimValPow (H := H) := by
       Finsupp.single_eq_same]
   | simp [Nat.primeFactors_prime_pow (by omega : i ≠ 0) hp, hp.factorization_pow]
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The translating element has first binary coordinate one. Adding it adds one to the first coordinate of x.
 -/
 private theorem sgc0_fst_lemma_3 (x : E0 × H) : (x + sgc0).1.1 = x.1.1 + 1 := by
   simp [sgc0]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
-
-Rewrite the conclusion using the stated equalities. Evaluate the decidable proposition. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis.
-
-It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Evaluate the decidable proposition.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+At the distinguished prime the inertia subgroup consists of zero and the element with first binary coordinate one. Its coset therefore consists of the unshifted Frobenius multiple and that multiple plus the translating element. The two first coordinates differ by one. Exactly one is in the complementary half, giving the claimed unique element in either case.
 -/
 theorem double_coset_singleton : DCosetSingle (H := H) := by
   intro D hD i
@@ -386,8 +344,8 @@ end
 section
 variable {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H]
 
-/- English proof (translation)
-Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
+/- English proof (authored)
+Elements of the subgroup are exactly the ambient group elements satisfying its membership predicate. The subgroup type counts these elements once each, as does the filtered finite set.
 -/
 lemma natCard_eq_filter (I : AddSubgroup (E0 × H)) [DecidablePred (fun x => x ∈ I)] :
     Nat.card I = (univ.filter (fun x => x ∈ I)).card := by
@@ -397,16 +355,8 @@ lemma natCard_eq_filter (I : AddSubgroup (E0 × H)) [DecidablePred (fun x => x �
   | simp [Nat.card_eq_fintype_card, Fintype.card_subtype]
 
 open Classical in
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Expand the coset average and interchange its finite sum with the character sum. By orthogonality, for a subgroup element x the inner sum is zero unless h + x = g, when it equals the ambient group cardinality. The only possible contributing element is x = g − h. If it belongs to the subgroup, divide by the subgroup cardinality and the selected cardinality, noting that the ambient group has twice the selected cardinality. Otherwise every summand is zero.
 -/
 lemma ortho_coset (I : AddSubgroup (E0 × H)) (h g : E0 × H) :
     (1 / ((PhiSet (H := H)).card : ℂ)) * ∑ ψ : AddChar (E0 × H) ℂ, starRingEnd ℂ (ψ g) * cosetMean I h ψ
@@ -445,8 +395,8 @@ end
 section
 variable {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
+/- English proof (authored)
+For each character substitute the prime-power formula for its primitive value. The resulting sum is the coset orthogonality expression with the inertia subgroup and the given Frobenius multiple, so the coset formula applies.
 -/
 theorem orthogonality_ramified : OrthoRam (H := H) := by
   intro D p i hp hi g
@@ -455,10 +405,8 @@ theorem orthogonality_ramified : OrthoRam (H := H) := by
   simp_rw [hv]
   convert ortho_coset (D.inertia p) (i • D.frob p) g
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
-
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At the specified unramified prime the inertia subgroup is trivial. Thus its coset condition says exactly that g equals the Frobenius multiple, and its cardinality is one. Substituting these facts into the ramified orthogonality formula gives the two values.
 -/
 theorem orthogonality_unramified : OrthoUnram (H := H) := by
   intro D hD p i hp h2 hq hd hi g
@@ -477,24 +425,8 @@ end
 section
 variable {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The von Mangoldt function vanishes away from positive prime powers. Each such power has a unique prime base and exponent by prime factorization and strict growth of the powers of a prime. When the power is at most N, both its prime base and its exponent are within the indicated bounds. Conversely, candidates whose power exceeds N contribute zero by assumption. Reindex the nonzero contributions by the prime and exponent, using that the von Mangoldt value is the logarithm of the prime.
 -/
 lemma sum_vonMangoldt_primePow (N : ℕ) (X : ℕ → ℂ)
     (hX : ∀ p i, p.Prime → 1 ≤ i → N < p ^ i → X (p ^ i) = 0) :
@@ -556,17 +488,15 @@ lemma sum_vonMangoldt_primePow (N : ℕ) (X : ℕ → ℂ)
     rw [ArithmeticFunction.vonMangoldt_apply_pow (by omega),
       ArithmeticFunction.vonMangoldt_apply_prime hx.1.2]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Evaluate the decidable proposition.
+/- English proof (authored)
+A complementary element has first coordinate one. Its partner adds one to that coordinate, giving zero modulo two and hence membership in the selected half.
 -/
 lemma partner_inPhi {g : E0 × H} (t : H) (hg : ¬ InPhi g) : InPhi (partner t g) := by
   rw [inPhi_iff, partner_fst_lemma, (not_inPhi_iff g).1 hg]
   decide
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+The partner lies in the selected half, so its weight is positive and a divided by that weight is at most N. Since m > N ≥ 0, this gives a < m times the weight. Dividing by positive m makes the argument of the positive part negative, so the positive part is zero.
 -/
 lemma max_zero_of_gt {N : ℕ} {a : ℝ} {t : H} {w : E0 × H → ℝ} (hw : ∀ ρ, InPhi ρ → 0 < w ρ)
     (hN : ∀ ρ, InPhi ρ → a / w ρ ≤ N) {g : E0 × H} (hg : ¬ InPhi g) {m : ℝ} (hm : (N : ℝ) < m) :
@@ -581,10 +511,8 @@ lemma max_zero_of_gt {N : ℕ} {a : ℝ} {t : H} {w : E0 × H → ℝ} (hw : ∀
     linarith [mul_comm m (w (partner t g))]
   exact max_eq_right (by linarith)
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+At every positive exponent the distinguished prime power is at least the prime itself and exceeds N. Each term uses a complementary group element, so its positive-part weight vanishes by the cutoff estimate. Both finite sums are therefore zero.
 -/
 lemma askD_zero_of_gt (D : ArithData H) (hD : HostFacts D) {N : ℕ} {a : ℝ} {t : H} {w : E0 × H → ℝ}
     (hw : ∀ ρ, InPhi ρ → 0 < w ρ) (hN : ∀ ρ, InPhi ρ → a / w ρ ≤ N) (hdN : N < D.d) :
@@ -601,10 +529,8 @@ lemma askD_zero_of_gt (D : ArithData H) (hD : HostFacts D) {N : ℕ} {a : ℝ} {
   have h3 : D.d ≤ D.d ^ i := Nat.le_self_pow (by omega) _
   exact_mod_cast lt_of_lt_of_le hdN h3
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The inertia group at the distinguished prime consists of zero and the specified translating element. They are distinct because their first binary coordinates differ, so the group has cardinality two.
 -/
 lemma card_inertia_d (D : ArithData H) (hD : HostFacts D) : (Nat.card (D.inertia D.d) : ℂ) = 2 := by
   classical
@@ -631,12 +557,8 @@ def Kc (D : ArithData H) (n : ℕ) (g : E0 × H) : ℂ :=
 def Fc (a : ℝ) (t : H) (w : E0 × H → ℝ) (n : ℕ) (g : E0 × H) : ℂ :=
   ((max (a / (n : ℝ) - w (partner t g)) 0 : ℝ) : ℂ)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules.
-
-Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
-
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
+/- English proof (authored)
+The character kernel is two at the Frobenius multiple and zero elsewhere. Thus for each exponent the inner sum contributes only when this multiple lies in the complementary half. Substituting its positive-part weight and summing over exponents gives the defining prime sum multiplied by twice the prime logarithm.
 -/
 lemma local_unram (D : ArithData H) (hD : HostFacts D) (N : ℕ) (a : ℝ) (t : H) (w : E0 × H → ℝ)
     {p : ℕ} (hp : p.Prime) (h2 : p ≠ 2) (hq : p ≠ D.q1) (hd : p ≠ D.d) :
@@ -661,14 +583,8 @@ lemma local_unram (D : ArithData H) (hD : HostFacts D) (N : ℕ) (a : ℝ) (t : 
   refine Finset.sum_congr rfl (fun i _ => ?_)
   split_ifs <;> ring
 
-/- English proof (translation)
-Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
-
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+For these primes, the inertia subgroup and the Frobenius element lie in the selected half. The whole coset of every natural Frobenius multiple also lies there by closure under addition. The ramified orthogonality formula therefore gives zero at every complementary element, and the sum vanishes.
 -/
 lemma local_split (D : ArithData H) (hD : HostFacts D) (N : ℕ) (a : ℝ) (t : H) (w : E0 × H → ℝ)
     {p : ℕ} (hp : p.Prime) (h2 : p = 2 ∨ p = D.q1) :
@@ -691,12 +607,8 @@ lemma local_split (D : ArithData H) (hD : HostFacts D) (N : ℕ) (a : ℝ) (t : 
     rwa [sub_add_cancel] at h4
   rw [hK, zero_mul]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
+/- English proof (authored)
+At the distinguished prime the inertia subgroup has cardinality two. The coset kernel is therefore one on its coset and zero elsewhere. Restricting the complementary sum to that coset leaves exactly the positive-part terms in the distinguished prime contribution. The prime logarithm factors out.
 -/
 lemma local_d (D : ArithData H) (hD : HostFacts D) (N : ℕ) (a : ℝ) (t : H) (w : E0 × H → ℝ) :
     ∑ i ∈ Icc 1 N, (Real.log D.d : ℂ) * ∑ g ∈ univ.filter (fun g : E0 × H => ¬ InPhi g),
@@ -725,32 +637,8 @@ end
 section
 variable {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
-
-Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
-
-Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Simplify using the standard rewrite rules.
-
-Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
-
-Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Interchange the finite sums to combine the normalized character coefficients into the character kernel at each integer n. The cutoff estimate makes all prime-power terms beyond N vanish, so the von Mangoldt sum can be grouped by prime and exponent. The two split primes contribute zero. The distinguished prime contributes its inertia-coset sum. For every other prime, use the unramified kernel and note that a Frobenius element in the selected half has every natural multiple in that half, so only the inert primes contribute. If the distinguished prime exceeds N, its separate contribution vanishes by the same cutoff. This gives the arithmetic sum in the claimed form.
 -/
 theorem characterSum_expansion : AskExpansion (H := H) := by
   classical
@@ -841,8 +729,8 @@ end
 section
 variable {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H]
 
-/- English proof (translation)
-Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Distribute the factor w across the difference. Since w is nonzero, w times a/w is a. The two terms then become a/n and −w.
 -/
 lemma term_real (a w : ℝ) (hw : w ≠ 0) (n : ℕ) : a / n - w = w * (a / w / n - 1) := by
   have hw' : w * (a / w) = a := by
@@ -851,18 +739,8 @@ lemma term_real (a w : ℝ) (hw : w ≠ 0) (n : ℕ) : a / n - w = w * (a / w / 
     | rw [mul_div_assoc', mul_comm, mul_div_assoc, div_self hw, mul_one]
   rw [mul_sub, mul_one, mul_div_assoc', hw']
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
-
-Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+For an integer n ≥ 1, the weight a/n − W is nonnegative exactly when n ≤ a/W. Since n is integral, this is the cutoff at the natural floor of a/W. The positive part equals the weight below that cutoff and vanishes above it. The cutoff is at most N, so removing the zero terms gives the stated shorter sum.
 -/
 lemma sum_cut (D : ArithData H) (ψ : AddChar (E0 × H) ℂ) (N : ℕ) (a W : ℝ) (ha : 0 < a) (hW : 0 < W)
     (hN : a / W ≤ N) :
@@ -900,18 +778,8 @@ lemma sum_cut (D : ArithData H) (ψ : AddChar (E0 × H) ℂ) (N : ℕ) (a W : �
   · rintro ⟨h1, h2⟩
     exact ⟨⟨h1, h2.trans hMN⟩, h2⟩
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+For the trivial character, the primitive values are one. Factor w out of the weight to obtain the zeta smoothing sum at a/w, then expand its logarithmic and linear corrections. Since w times a/w equals a, the logarithm of the quotient splits into log(a) minus log(w) and gives the displayed main terms. For a nontrivial character, the same factorization gives its smoothing sum. The definition adds the linear correction involving the character coefficient, which is removed by subtracting a times that coefficient.
 -/
 lemma inner_eq (D : ArithData H) (ell : AddChar (E0 × H) ℂ → ℂ) (ψ : AddChar (E0 × H) ℂ) (a w : ℝ)
     (ha : 0 < a) (hw : 0 < w) :
@@ -953,24 +821,8 @@ end
 section
 variable {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
-
-Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
-
-Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+Use the character expansion and evaluate each inner sum at the partner weight, which is positive and within the cutoff. The smoothing error terms give the stated double sum. For the remaining terms, interchange the character and group sums. The trivial character contributes its full logarithmic main term. Every nontrivial character's constant correction vanishes by the complement sum except for the sign character, whose complement sum is minus the selected cardinality. This converts its correction into the positive sign-character term. Reindex the trivial character's weight-log sum by the partner bijection, count the constant terms, and divide by the nonzero selected cardinality.
 -/
 theorem colour_balance : AskMainBalance (H := H) := by
   classical

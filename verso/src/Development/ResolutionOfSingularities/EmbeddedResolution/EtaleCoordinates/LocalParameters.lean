@@ -13,14 +13,8 @@ private noncomputable def residueFieldExtension (k A : Type*) [CommRing k] [Comm
       Function.Surjective (algebraMap A (IsLocalRing.ResidueField A)))
     algebraMap_σ := Function.surjInv_eq _ }
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
-
-Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Let κ be the residue field of A. In a pure tensor c ⊗ x with c in κ, lift c to an element a of A. The balancing relation gives c ⊗ x = 1 ⊗ ax. Every tensor is a finite sum of pure tensors, and additivity combines these to give a single tensor of the form 1 ⊗ y.
 -/
 private theorem one_tmul_residueField_surjective (A : Type*) [CommRing A] [IsLocalRing A]
     (M : Type*) [AddCommGroup M] [Module A M] :
@@ -44,14 +38,8 @@ private theorem one_tmul_residueField_surjective (A : Type*) [CommRing A] [IsLoc
       rw [show (1 : IsLocalRing.ResidueField A) ⊗ₜ[A] u = x from hu,
         show (1 : IsLocalRing.ResidueField A) ⊗ₜ[A] v = y from hv]
 
-/- English proof (translation)
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The zero class in I/I² means that x lies in I². Write x as a finite sum of products ab with a and b in I. In the tensor product with I, the term 1 ⊗ ab equals ā ⊗ b by balancing. Since I lies in the maximal ideal, every such ā is zero in the residue field. The sum is therefore zero.
 -/
 private theorem tmul_eq_zero_of_toCotangent_eq_zero (A : Type*) [CommRing A] [IsLocalRing A]
     (I : Ideal A) (hI : I ≤ IsLocalRing.maximalIdeal A) (x : ↥I)
@@ -87,20 +75,16 @@ private noncomputable def kerToTensorResidueField (k A : Type*) [CommRing k] [Co
       IsLocalRing.ResidueField A ⊗[A] KaehlerDifferential k A :=
   KaehlerDifferential.kerToTensor k A (IsLocalRing.ResidueField A)
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The map on the kernel of the residue homomorphism is the restriction of the universal derivation followed by extension to the residue field. Its value at x is consequently 1 ⊗ dx.
 -/
 private theorem dTensor_apply (k A : Type*) [CommRing k] [CommRing A] [Algebra k A]
     [IsLocalRing A] (x : ↥(RingHom.ker (algebraMap A (IsLocalRing.ResidueField A)))) :
     kerToTensorResidueField k A x
       = (1 : IsLocalRing.ResidueField A) ⊗ₜ[A] (KaehlerDifferential.D k A (x : A)) := rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Let κ be the residue field and I the kernel of A → κ. The conormal differential sends the class of x in I/I² to 1 ⊗ dx in κ ⊗ Ω(A/k). Since A is formally smooth over k, the kernel of this differential computes the first cotangent homology of κ over k. This homology vanishes because κ is formally smooth over k as well. Thus a zero differential forces the class of x in I/I² to vanish, which means x lies in I².
 -/
 private theorem mem_ker_sq_of_tmul_D_eq_zero (k A : Type*) [CommRing k] [CommRing A] [Algebra k A]
     [IsLocalRing A]
@@ -131,12 +115,8 @@ private theorem mem_ker_sq_of_tmul_D_eq_zero (k A : Type*) [CommRing k] [CommRin
   rw [Algebra.Extension.Cotangent.mk_eq_zero_iff] at h1
   exact h1
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Write an element in the kernel as 1 ⊗ x with x in the kernel I of the residue map, using surjectivity of the map from I to its residue tensor product. Its image is 1 ⊗ dx, so the vanishing criterion for the conormal differential gives x in I². Every product of two elements of I dies in the tensor product because the first factor acts by zero on the residue field. Thus 1 ⊗ x is zero, proving injectivity.
 -/
 private theorem injective_liftBaseChange_dTensor (k A : Type*) [CommRing k] [CommRing A]
     [Algebra k A] [IsLocalRing A] [Algebra k (IsLocalRing.ResidueField A)]
@@ -179,10 +159,8 @@ variable (k A : Type*) [CommRing k] [CommRing A] [Algebra k A] [IsLocalRing A]
 
 omit [IsNoetherianRing A] [Module.Free A (KaehlerDifferential k A)]
   [Module.Finite A (KaehlerDifferential k A)] in
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
-
-Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The residue-field linear map from the tensor product of the kernel ideal to the tensor product of the differential module is injective. It takes each given tensor to the tensor of the corresponding differential. Applying injectivity to any finite linear relation among the images reduces it to a relation among the given independent tensors, so its coefficients vanish.
 -/
 theorem linearIndependent_tensor_D_of_ker {ι : Type*}
     (m : ι → (RingHom.ker (algebraMap A (IsLocalRing.ResidueField A)) : Ideal A))
@@ -208,8 +186,8 @@ theorem linearIndependent_tensor_D_of_ker {ι : Type*}
 
 omit [IsNoetherianRing A] [Module.Free A (KaehlerDifferential k A)]
   [Module.Finite A (KaehlerDifferential k A)] in
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Identify I with the kernel of the residue map using the given equality of ideals. This identification carries each input tensor to the tensor of the same element of A and preserves its differential. The independence result for the kernel therefore applies to this family.
 -/
 private theorem linearIndependent_tensor_D_of_ideal_eq_ker {ι : Type*} (I : Ideal A)
     (hI : I = RingHom.ker (algebraMap A (IsLocalRing.ResidueField A)))
@@ -224,8 +202,8 @@ private theorem linearIndependent_tensor_D_of_ideal_eq_ker {ι : Type*} (I : Ide
 
 omit [IsNoetherianRing A] [Module.Free A (KaehlerDifferential k A)]
   [Module.Finite A (KaehlerDifferential k A)] in
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The residue field is the quotient by the maximal ideal, so the kernel of the residue map is precisely that ideal. Apply the independence result for an ideal equal to the kernel.
 -/
 theorem linearIndependent_tensor_D_of_maximalIdeal {ι : Type*}
     (m : ι → (IsLocalRing.maximalIdeal A : Ideal A))
@@ -238,14 +216,8 @@ theorem linearIndependent_tensor_D_of_maximalIdeal {ι : Type*}
     (Ideal.mk_ker).symm m hm
 
 omit [Module.Free A (KaehlerDifferential k A)] [Module.Finite A (KaehlerDifferential k A)] in
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
-
-Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Write m for the maximal ideal and κ for the residue field. Noetherianity makes m finitely generated, so κ ⊗ m is finite-dimensional. Choose a basis and lift each basis vector to an element of m using the surjectivity of x ↦ 1 ⊗ x. Nakayama’s lemma shows that the lifts generate m because their residues span m/m². Their residue differentials are independent by injectivity of the conormal differential.
 -/
 theorem exists_local_parameters :
     ∃ (h : ℕ) (y : Fin h → A),
@@ -289,30 +261,8 @@ theorem exists_local_parameters :
     rw [hfun]
     exact Module.Basis.linearIndependent _
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Choose generators of the maximal ideal whose differentials are independent after reduction to the residue field. On the span of these reduced differentials take the dual coordinate functionals, and extend each to the whole reduced differential space. Choose an A-basis of the differential module. Lift the values of each functional on the reduced basis to A and extend those values A-linearly. Let M be the matrix of evaluations of the lifted functionals on the parameter differentials. It reduces to the identity, so its determinant is a unit in the local ring. Take the linear combinations of the lifted functionals given by the rows of M⁻¹. They evaluate on the parameter differentials as the identity matrix. Composing them with the universal derivation gives the required derivations.
 -/
 theorem exists_local_parameters_and_dual_derivations :
     ∃ (h : ℕ) (y : Fin h → A) (δ : Fin h → Derivation k A A),

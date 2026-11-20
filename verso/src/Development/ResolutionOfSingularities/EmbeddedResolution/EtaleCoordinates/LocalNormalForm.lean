@@ -10,14 +10,8 @@ namespace EtaleCoordinates
 
 section
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Extend the given basis of M to the residue field. In the resulting basis the coordinates of 1 ⊗ x are exactly the residues of the original coordinates of x, by the balancing relation. If 1 ⊗ x is zero then every reduced coordinate is zero, so all coordinates of x lie in the maximal ideal.
 -/
 private theorem repr_mem_maximalIdeal_of_tmul_eq_zero {A : Type*} [CommRing A] [IsLocalRing A]
     {M : Type*} [AddCommGroup M] [Module A M] {n : Type*} [Fintype n]
@@ -51,16 +45,8 @@ private theorem repr_mem_maximalIdeal_of_tmul_eq_zero {A : Type*} [CommRing A] [
   rw [← IsLocalRing.residue_eq_zero_iff]
   exact h2
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
-
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Reduce the original basis to obtain a basis of the residue tensor product. The column of the reduced vector 1 ⊗ G(j) in that basis is the reduction of the column of G(j) in the original basis. The determinant of this reduced matrix is therefore the residue of the original determinant. Its columns form the given new basis, so the matrix is invertible and its determinant is nonzero.
 -/
 private theorem residue_det_ne_zero_of_tmul_eq_basis {A : Type*} [CommRing A] [IsLocalRing A]
     {M : Type*} [AddCommGroup M] [Module A M] {ι : Type*} [Fintype ι] [DecidableEq ι]
@@ -101,48 +87,8 @@ private theorem residue_det_ne_zero_of_tmul_eq_basis {A : Type*} [CommRing A] [I
   rw [← hdet]
   exact (bk.isUnit_det B').ne_zero
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
-
-Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
-
-Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Write m for the maximal ideal. The surjection A/mJ → A/J has square-zero kernel J/mJ because J is contained in m. Formal smoothness of A/J supplies a k-algebra section. Subtract the composite through this section from the quotient map A → A/mJ. The difference takes values in J/mJ and is a k-derivation because the product of any two values is zero. By the universal property of differentials it gives an A-linear map from Ω(A/k) to J/mJ. If the residue differential of z is zero then all coordinates of dz in the given basis lie in m. Since m annihilates J/mJ, the linear map sends dz to zero. For z in J that value is the class of z in J/mJ, so z belongs to mJ.
 -/
 private theorem mem_maximalIdeal_mul_of_tmul_D_eq_zero (k : Type*) [CommRing k] (A : Type*)
     [CommRing A] [Algebra k A] [IsLocalRing A] {n : Type*} [Fintype n]
@@ -304,20 +250,8 @@ private theorem mem_maximalIdeal_mul_of_tmul_D_eq_zero (k : Type*) [CommRing k] 
   rw [← hJmdef]
   exact Ideal.Quotient.eq_zero_iff_mem.mp hfinal
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Let L be the ideal generated by the chosen family in J. Given y in J, express its residue differential as a combination of the chosen residue differentials, and lift the coefficients to A. Subtract that combination of the chosen elements from y. Its residue differential is zero by the Leibniz rule, since the chosen elements lie in the maximal ideal. The vanishing criterion puts this difference in mJ, where m is the maximal ideal. Thus J = L + mJ. The quotient J/L is finite, so Nakayama’s lemma gives J/L = 0.
 -/
 private theorem ideal_eq_span_of_tmul_D_mem_span (k : Type*) [CommRing k] (A : Type*) [CommRing A]
     [Algebra k A] [IsLocalRing A] {n : Type*} [Fintype n]
@@ -379,10 +313,8 @@ private theorem ideal_eq_span_of_tmul_D_mem_span (k : Type*) [CommRing k] (A : T
     rintro _ ⟨i, rfl⟩
     exact hxJ i
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
-
-Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
+/- English proof (authored)
+In the localization at the product g₁d, the product is a unit and hence g₁ is a unit. The map from S therefore factors through the localization at g₁. Extending the equality of the two ideals along this factorization gives equality in the localization at g₁d.
 -/
 private theorem map_eq_of_map_eq_of_away_mul {S : Type*} [CommRing S] {T₁ T₂ : Type*}
     [CommRing T₁] [CommRing T₂] [Algebra S T₁] [Algebra S T₂] (g₁ d : S)
@@ -408,12 +340,8 @@ private theorem map_eq_of_map_eq_of_away_mul {S : Type*} [CommRing S] {T₁ T₂
     _ = Ideal.map F (Ideal.map (algebraMap S T₁) J) := by rw [h]
     _ = Ideal.map (algebraMap S T₂) J := by rw [Ideal.map_map, hF]
 
-/- English proof (translation)
-Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+For the original polynomial coordinates, the map to the localization is formally étale by composition with localization. Thus the localized algebra is formally smooth over k and its differentials have the basis obtained from the original coordinates. The determinant for the images of the new coordinates is the image of their determinant over S, since differentials and the coordinate basis are compatible with this localization. It is a unit by assumption, so the new differentials form a basis. The differential criterion for formal étaleness now applies to evaluation of the polynomial variables at the new coordinates.
 -/
 private theorem formallyEtale_away_of_isUnit_det (k : Type*) [CommRing k] (ι : Type*) [Fintype ι]
     [DecidableEq ι] (S : Type*) [CommRing S] [Algebra k S] [Algebra (MvPolynomial ι k) S]
@@ -461,50 +389,8 @@ variable (k : Type*) [CommRing k] (ι : Type*) [Fintype ι] [DecidableEq ι]
   [IsScalarTower k (MvPolynomial ι k) S] [Algebra.FormallyEtale (MvPolynomial ι k) S]
   [IsNoetherianRing S] (I q : Ideal S) [q.IsPrime]
 
-/- English proof (translation)
-Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
-
-Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
-
-Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Supply the required witnesses or components.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Put A = S localized at q and let J be the extension of I to A. Choose finite generators for I. The residue differentials of their images span the residue differentials of all elements of J by the Leibniz rule, since J lies in the maximal ideal of A. Choose a basis of this span from those images and take the corresponding generators in I. The local generation criterion gives that these elements generate J. Complete their residue differentials to a basis by retaining a subset of the old coordinate differentials. The number of omitted old coordinates equals the number of chosen generators. Replace the omitted coordinates by these generators, using a bijection between their index sets. The resulting determinant is nonzero in the residue field of A, so its original value in S lies outside q. The ideal generated by the new coordinates from I and the ideal I have the same extension to A. By finite generation, clear the denominators in the local equalities to obtain an element g₁ outside q on whose principal localization the ideals agree. Localize at the product of g₁ and the determinant. This product lies outside q by primality, the ideal equality persists, and the determinant becomes a unit. The remaining coordinates were retained from the original family.
 -/
 theorem exists_away_ideal_eq_span_and_isUnit_det
     (A : Type*) [CommRing A] [Algebra S A] [Algebra k A] [IsScalarTower k S A]
@@ -727,8 +613,8 @@ theorem exists_away_ideal_eq_span_and_isUnit_det
     rw [map_mul] at hu
     exact isUnit_of_mul_isUnit_right hu
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+Choose the principal localization and replacement coordinates from the construction with unit determinant. The coordinates taken from I generate its extension there, while the other coordinates come from the original family. The determinant criterion on that localization makes the map obtained by evaluating the polynomial variables at the replacement coordinates formally étale.
 -/
 theorem exists_away_ideal_eq_span_and_formallyEtale
     (A : Type*) [CommRing A] [Algebra S A] [Algebra k A] [IsScalarTower k S A]

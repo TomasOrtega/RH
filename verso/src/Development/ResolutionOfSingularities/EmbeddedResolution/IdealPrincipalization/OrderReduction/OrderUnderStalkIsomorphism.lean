@@ -16,10 +16,8 @@ open CategoryTheory AlgebraicGeometry
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+An element of the maximal ideal in a local ring is a nonunit. If its image under the first map were a unit, applying the retraction would give a unit in the original ring. The retraction sends the image back to the original element, a contradiction. Thus the images of elements of the first maximal ideal lie in the second, and so does the ideal they generate.
 -/
 theorem map_maximalIdeal_le_maximalIdeal_of_retraction {R S : Type*} [CommRing R] [IsLocalRing R]
     [CommRing S] [IsLocalRing S] (f : R →+* S) (g : S →+* R) (hgf : g.comp f = RingHom.id R) :
@@ -35,10 +33,8 @@ theorem map_maximalIdeal_le_maximalIdeal_of_retraction {R S : Type*} [CommRing R
   have h2 := hu.map g
   rwa [h3] at h2
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The two maps are inverses, so each sends the maximal ideal into the other by the retraction argument. Extension of ideals along such a map cannot decrease the order, since it carries containment in a maximal-ideal power into the corresponding containment. Apply the inequality first to the forward map and then to the inverse on the extended ideal. Extending back gives the original ideal, so the two inequalities give equality.
 -/
 theorem idealOrder_map_eq_of_comp_eq_id {R S : Type*} [CommRing R] [IsLocalRing R]
     [CommRing S] [IsLocalRing S] (f : R →+* S) (g : S →+* R)
@@ -51,10 +47,8 @@ theorem idealOrder_map_eq_of_comp_eq_id {R S : Type*} [CommRing R] [IsLocalRing 
   rw [Ideal.map_map, hgf, Ideal.map_id] at h3
   exact le_antisymm h3 h1
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The stalk of the pullback ideal is the extension of the original ideal stalk along the stalk map. That map is an isomorphism of local rings and its inverse identifies the maximal ideals and their powers. Consequently the extended stalk and original stalk have the same ideal order, which is the pointwise order of each ideal sheaf.
 -/
 theorem orderAt_comap_of_isIso_stalkMap {X Y : Scheme.{u}} (f : X ⟶ Y) (J : Y.IdealSheafData)
     (x : X) [IsIso (f.stalkMap x)] :
@@ -69,14 +63,8 @@ theorem orderAt_comap_of_isIso_stalkMap {X Y : Scheme.{u}} (f : X ⟶ Y) (J : Y.
   rw [stalkIdeal_comap]
   exact idealOrder_map_eq_of_comp_eq_id _ _ hgf hfg _
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Restrict to the complement of the center support. The restricted center is the unit ideal, so the restricted blowup is an isomorphism. At the given point, the open immersions from the two complementary opens also induce stalk isomorphisms. The restriction square identifies the composite stalk map on one side with the composite on the other. Composing with the inverse of the source-open stalk map identifies the original blowup stalk map as a composite of isomorphisms.
 -/
 theorem isIso_stalkMap_of_isBlowupAlongIdealSheaf {X X₁ : Scheme.{u}} (π : X₁ ⟶ X) (Z : X.IdealSheafData)
     (h : Blowup.IsBlowupAlongIdealSheaf π Z) (x : X₁) (hx : π.base x ∉ Z.support) :
@@ -117,10 +105,8 @@ theorem isIso_stalkMap_of_isBlowupAlongIdealSheaf {X X₁ : Scheme.{u}} (π : X�
 
 namespace OrderLocusBlowup
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
+/- English proof (authored)
+If the image point is on the center, it has sufficient original order by the hypothesis on the center. Otherwise the blowup induces a stalk isomorphism. The total-transform ideal is the product of the exceptional power and the transformed ideal, so its stalk lies in the transformed stalk. This makes its order at least the transformed order. The stalk isomorphism identifies its order with the original order at the image. Therefore any point of the transformed order locus maps into the original one.
 -/
 theorem orderAtLeastLocus_subset_preimage_of_isBlowupAlongIdealSheaf {X X₁ : Scheme.{u}} (π : X₁ ⟶ X)
     (Z : X.IdealSheafData) (hπ : Blowup.IsBlowupAlongIdealSheaf π Z) (A : X.IdealSheafData) (A₁ : X₁.IdealSheafData)

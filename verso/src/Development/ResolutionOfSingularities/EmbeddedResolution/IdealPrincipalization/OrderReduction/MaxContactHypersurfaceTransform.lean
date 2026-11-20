@@ -30,8 +30,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Substitute the equal structural morphisms, marked ideals and hypersurface ideals. With the same mark, the property to prove is the supplied maximal-contact property.
 -/
 theorem isMaxContactHypersurface_of_eq_of_eq_of_eq (k : Type u) [Field k] {P : Scheme.{u}}
     {p p' : P ⟶ Spec (CommRingCat.of k)}
@@ -44,16 +44,16 @@ theorem isMaxContactHypersurface_of_eq_of_eq_of_eq (k : Type u) [Field k] {P : S
   subst hp hA hH
   exact h
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+A smooth morphism is locally of finite presentation, which implies it is locally of finite type.
 -/
 private theorem locallyOfFiniteType_of_smooth_morphism {X Y : Scheme.{u}} {f : X ⟶ Y}
     (h : AlgebraicGeometry.Smooth f) : AlgebraicGeometry.LocallyOfFiniteType f := by
   have := h
   infer_instance
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+After identifying the structural morphisms and the two ideals, the maximal-contact conditions agree. The two witnesses of being locally of finite type express the same property of the identified morphism.
 -/
 private theorem isMaxContactHypersurface_congr (k : Type u) [instk : Field k] {P : Scheme.{u}}
     {p p' : P ⟶ Spec (CommRingCat.of k)}
@@ -66,14 +66,8 @@ private theorem isMaxContactHypersurface_congr (k : Type u) [instk : Field k] {P
   subst hp hA hH
   exact h
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the components needed by the constructor for the conclusion.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At the image point choose an affine neighborhood from the maximal-contact description. Its inverse image under the isomorphism is affine. If the original open misses the marked order locus and the hypersurface ideal is the unit ideal there, the pulled-back open has the same two properties by preservation of order and of the unit ideal. Otherwise transport the étale chart through the isomorphism. Its chosen coordinate ideal is the restriction of the pulled-back hypersurface. The maximal-contact ideal, as the iterated derivative ideal, also commutes with the isomorphism. Thus the coordinate ideal remains contained in the restricted maximal-contact ideal, proving maximal contact on the transported chart.
 -/
 private theorem isMaxContactHypersurface_comap_iso (k : Type u) [Field k] {X Y : Scheme.{u}}
     (q : Y ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth q]
@@ -108,18 +102,8 @@ private theorem isMaxContactHypersurface_comap_iso (k : Type u) [Field k] {X Y :
       rw [isMaxContactCoord_iff, EtaleChart.ofIso_coordIdeal, hmax, restrictIdeal_comap]
       exact Scheme.IdealSheafData.comap_mono _ hmc
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
+/- English proof (authored)
+The structural map at every actual stage is smooth over the base by admissibility of the marked sequence, so each is locally of finite type. At stage zero the original hypersurface and ideal are pulled back along the initial isomorphism. Maximal contact survives that isomorphism. At a successor, the induction result gives maximal contact for the preceding stage. Apply the assumed one-step maximal-contact theorem to its blowup in the reconstructed sequence. Reconstruction identifies the projection, ideal and blowup with those stored in the data, and the iterated strict transform at the successor is the strict transform used by the theorem. This proves the result up to the given stage.
 -/
 theorem isMaxContactHypersurface_iteratedStrictTransform (hstar : MaxContactCoverProperties.{u})
     (S : MarkedIdealWithBoundary.{u}) (hv : S.IsAdmissible)
@@ -188,12 +172,8 @@ theorem isMaxContactHypersurface_iteratedStrictTransform (hstar : MaxContactCove
           (MarkedBlowupSequenceData.toMarkedSequence_ideal u (j + 1)) hHeq hstep
   exact key t ht (hlft t ht)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+On each affine open, the given ideal is the kernel of the section map to the corresponding open in its closed subscheme. An element in the radical has a power in the kernel, so its image in the section ring of the closed subscheme is nilpotent. That section ring is reduced, and the image is zero. Hence the element lies in the kernel itself. Applying this on every affine open proves the inclusion.
 -/
 private theorem radical_le_of_isReduced_subscheme {X : Scheme.{u}} (I : X.IdealSheafData)
     (hred : AlgebraicGeometry.IsReduced I.subscheme) : I.radical ≤ I := by
@@ -219,28 +199,8 @@ private theorem radical_le_of_isReduced_subscheme {X : Scheme.{u}} (I : X.IdealS
     exact RingHom.mem_ker.mp (hle U hn)
   exact le_trans hgoal (le_of_eq hker)
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At every stage, the transformed hypersurface has maximal contact, so its support contains the order locus that contains the center. The center subscheme is smooth over the field and hence reduced. Its ideal equals its radical, so this support containment implies that the hypersurface ideal is contained in the center ideal. Now induct on the stages. At zero, dropping the original boundary length leaves the empty list, giving the assumed singleton normal-crossings condition. At a successor, the center has strict normal crossings with the boundary tail because it has them with the full boundary. By induction the hypersurface and tail are in strict normal-crossing position. The center containment lets us add the hypersurface to the list with which the center has strict normal crossings, using the stated geometry property. The normal-crossings blowup theorem preserves the condition for the strict transforms of this combined list with the new exceptional ideal appended. The boundary-tail recursion identifies that list with the strict transform of the hypersurface followed by the new tail.
 -/
 theorem inStrictNormalCrossingPosition_iteratedStrictTransform_cons_drop (hstar : MaxContactCoverProperties.{u})
     (S : MarkedIdealWithBoundary.{u}) (hv : S.IsAdmissible)

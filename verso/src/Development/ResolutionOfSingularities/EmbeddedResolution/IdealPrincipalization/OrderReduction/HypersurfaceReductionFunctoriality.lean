@@ -33,16 +33,8 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace MaxContactFunctoriality
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Compare the boundary-separation sequences under the smooth map, removing unit boundary entries upstairs. The surviving-entry count equals the length of the new boundary, so this comparison reaches the end of both separation sequences. Their final structural morphisms are locally of finite type. The separation invariant gives separation on both sides, and the maximal-contact transform theorem puts the transformed hypersurface and remaining boundary in strict normal-crossings position. The resulting derived triples are admissible. Their dimensions stay within the reference bound, so the downward-closed dimension condition applies. The lower-dimensional continuation theorem now compares the continuations over the final-stage map, using the inherited order bound upstairs. Each hypersurface reduction is the corresponding separation sequence followed by this continuation. The append comparison gives the asserted pullback of the full reductions.
 -/
 theorem isPullbackBlowupSequence_reduceAlongHypersurface_of_smooth
     (hstar : _root_.FunctorialResolution.EmbeddedResolution.MaxContactCoverProperties.{u}) (hinv : ComapIsoInvariance.{u})
@@ -172,8 +164,8 @@ theorem isPullbackBlowupSequence_reduceAlongHypersurface_of_smooth
     (hdimU := hdimU) (hPU := hPU) (hVU := hVU) (hdimU' := hdimU') (hPU' := hPU') (hVU' := hVU')
     (hsep := hsep) (hsep' := hsep')
 
-/- English proof (translation)
-Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The two reference dimensions are comparable. If the lower reference dimension is smaller, the dimension comparison for hypersurface reduction replaces its lower-dimensional family by the one at the larger reference. Both triples then satisfy the dimension bounds at that reference. If the upper reference is smaller, make the corresponding replacement on the upper side and use the larger lower reference. In both cases use the dimension condition for the larger reference and apply the smooth pullback theorem with that common family.
 -/
 theorem isPullbackBlowupSequence_reduceAlongHypersurface_lowerDimensionalFamily
     (hstar : _root_.FunctorialResolution.EmbeddedResolution.MaxContactCoverProperties.{u})

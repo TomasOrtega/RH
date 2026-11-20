@@ -17,14 +17,8 @@ open CategoryTheory AlgebraicGeometry
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the stage within the sequence. At stage zero the ideal is the original ideal transported along the initial isomorphism and its order is unchanged. At a successor the previous structural map is smooth and the center has strict normal crossings with the boundary. The center lies in the marked order locus, so the previous ideal is contained in the mark-th power of the center ideal. The successor product identity identifies the successor ideal with the controlled transform for this containment. The order bound for a controlled transform applies to the induction bound at the previous stage and gives the same bound at every point of the successor.
 -/
 theorem orderAt_ideal_le_mult_along_sequence (T : MarkedIdealWithBoundary.{u}) (hT : T.IsAdmissible)
     (hord : ∀ x : ↥T.scheme, orderAt T.ideal x ≤ (T.mult : ℕ∞)) (s : T.SequenceOfBlowups) :

@@ -99,14 +99,14 @@ def iteratedStrictTransform (s : MarkedBlowupSequenceData p I m E) (H : X.IdealS
   | 0 => H.comap s.isoZero.hom
   | i + 1 => Blowup.strictTransform (s.map i) (s.center i) (iteratedStrictTransform s H i)
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The zero stage is identified with the starting scheme by the initial isomorphism. The recursion starts by pulling back the hypersurface ideal along this isomorphism.
 -/
 theorem iteratedStrictTransform_zero (s : MarkedBlowupSequenceData p I m E) (H : X.IdealSheafData) :
     iteratedStrictTransform s H 0 = H.comap s.isoZero.hom := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The recursion takes the strict transform of the previous ideal under the next blowup along its center. This is the stated formula at a successor index.
 -/
 theorem iteratedStrictTransform_succ (s : MarkedBlowupSequenceData p I m E) (H : X.IdealSheafData) (i : ℕ) :
     iteratedStrictTransform s H (i + 1) =
@@ -116,8 +116,8 @@ def strictTransformAtLength (s : MarkedBlowupSequenceData p I m E) (H : X.IdealS
     (s.obj s.length).IdealSheafData :=
   iteratedStrictTransform s H s.length
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The final strict transform is defined by evaluating the iterated strict transform at the length of the sequence.
 -/
 theorem strictTransformAtLength_eq (s : MarkedBlowupSequenceData p I m E) (H : X.IdealSheafData) :
     strictTransformAtLength s H = iteratedStrictTransform s H s.length := rfl
@@ -197,44 +197,44 @@ def asMarkedSeq (T : MarkedIdealWithBoundary.{u}) (d : BlowupSequenceData T.sche
 def dropTrivialBoundary (T : MarkedIdealWithBoundary.{u}) : MarkedIdealWithBoundary.{u} :=
   T.withBoundary (T.boundary.filter (fun D => decide (D ≠ ⊤)))
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+Remove the unit ideals by filtering the original boundary list, then replace the triple's boundary with that filtered list. This is the trimming construction.
 -/
 theorem dropTrivialBoundary_def (T : MarkedIdealWithBoundary.{u}) :
     dropTrivialBoundary T = T.withBoundary (T.boundary.filter (fun D => decide (D ≠ ⊤))) := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+Replacing the boundary copies the original base field. Thus filtering the boundary leaves that field equal to the original.
 -/
 @[simp] theorem dropTrivialBoundary_baseField (T : MarkedIdealWithBoundary.{u}) : (dropTrivialBoundary T).base = T.base := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The construction changes the boundary on the original scheme. Its underlying scheme is therefore the same scheme.
 -/
 @[simp] theorem dropTrivialBoundary_scheme (T : MarkedIdealWithBoundary.{u}) : (dropTrivialBoundary T).scheme = T.scheme := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The replacement operation keeps the structural morphism of the triple and changes its listed boundary ideals.
 -/
 @[simp] theorem dropTrivialBoundary_structureMorphism (T : MarkedIdealWithBoundary.{u}) : (dropTrivialBoundary T).structMap = T.structMap := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+Filtering the boundary entries does not alter the marked ideal sheaf. It remains the same field of the triple.
 -/
 @[simp] theorem dropTrivialBoundary_ideal (T : MarkedIdealWithBoundary.{u}) : (dropTrivialBoundary T).ideal = T.ideal := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+Replacing the boundary copies the mark from the original triple, so the two marks agree.
 -/
 @[simp] theorem dropTrivialBoundary_mult (T : MarkedIdealWithBoundary.{u}) : (dropTrivialBoundary T).mult = T.mult := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The dimension successor depends on the underlying scheme. Filtering the boundary leaves the scheme unchanged, so the dimension successor agrees.
 -/
 @[simp] theorem dropTrivialBoundary_dim (T : MarkedIdealWithBoundary.{u}) : (dropTrivialBoundary T).krullDimSucc = T.krullDimSucc := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The boundary of the constructed triple is the old list filtered for entries different from the unit ideal. Its retained entries are in their original order.
 -/
 theorem dropTrivialBoundary_boundary (T : MarkedIdealWithBoundary.{u}) :
     (dropTrivialBoundary T).boundary = T.boundary.filter (fun D => decide (D ≠ ⊤)) := rfl
@@ -257,8 +257,8 @@ def reduceOrder (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u}
   else
     emptyMarkedSeq T
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Admissibility selects the admissible branch of the reduction. In that branch the empty marked order locus selects the empty marked sequence.
 -/
 theorem reduceOrder_of_orderAtLeastLocus_eq_empty (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u})
     (resolveLower : ∀ S : MarkedIdealWithBoundary.{u}, S.krullDimSucc ≤ T.krullDimSucc → ℕ → S.SequenceOfBlowups) (hv : T.IsAdmissible)

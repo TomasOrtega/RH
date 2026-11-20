@@ -26,10 +26,8 @@ open CategoryTheory AlgebraicGeometry
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Suppose a point belongs to the original marked order locus. Surjectivity gives a point over it. Order cannot decrease under pullback, so the point upstairs belongs to the pulled-back marked order locus. This contradicts emptiness upstairs. The original locus is therefore empty.
 -/
 theorem orderAtLeastLocus_eq_empty_of_comap_eq_empty {A B : Scheme.{u}} (f : A ⟶ B)
     [AlgebraicGeometry.Surjective f] (J : B.IdealSheafData) (μ : ℕ)
@@ -47,8 +45,8 @@ theorem orderAtLeastLocus_eq_empty_of_comap_eq_empty {A B : Scheme.{u}} (f : A �
 
 namespace MaxContactFunctoriality
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Trimming the boundary leaves the scheme, ideal and mark unchanged, so it carries over the dimension condition, the order bound and nonempty cosupport. The trimming property in the descent hypotheses supplies admissibility for the new boundary. These are the reduction hypotheses for the trimmed triple.
 -/
 theorem OrderReductionHypotheses.dropTrivialBoundary {P : ℕ → Prop} {T : MarkedIdealWithBoundary.{u}} (h : OrderReductionHypotheses P T)
     {hinv : ComapIsoInvariance.{u}} {A : ℕ → PrincipalizationAssignment.{u}} {B : PrincipalizationAssignment.{u}}
@@ -65,10 +63,8 @@ section
 variable (hinv : ComapIsoInvariance.{u}) (P : ℕ → Prop) (A : ℕ → PrincipalizationAssignment.{u})
   (B : PrincipalizationAssignment.{u})
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
-
-Establish an intermediate fact. Supply the required witnesses or components.
+/- English proof (authored)
+Admissibility supplies the smooth characteristic-zero structural map and the positive mark needed for tuning. The given pointwise bound and nonempty cosupport are the maximal-order hypotheses for the marked ideal. Apply the tuning property to the original ideal, its balanced tuned ideal and the underlying blowup sequence. It identifies their markedness conditions and gives equality of the corresponding controlled-transform order loci at each stage.
 -/
 theorem isMarked_balancedTunedIdeal_iff_and_orderAtLeastLocus_eq (hd : DescentHypotheses hinv P A B) (T : MarkedIdealWithBoundary.{u}) (h : OrderReductionHypotheses P T)
     (d : BlowupSequenceData T.scheme) :
@@ -89,10 +85,8 @@ theorem isMarked_balancedTunedIdeal_iff_and_orderAtLeastLocus_eq (hd : DescentHy
     ⟨(orderLE_iff T.ideal T.mult).mpr h.orderLE, h.coSupport_nonempty⟩ T.boundary d
   exact ⟨key.1, key.2.1⟩
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+Trim the boundary and use the cover descent property to obtain a sequence downstairs whose strict pullback is the constructed cover sequence. Hence the descent operation succeeds and selects such a sequence. For that selected sequence, the descent hypothesis establishes markedness for the balanced tuned ideal on the trimmed triple. The tuning equivalence then makes it marked for the original ideal and mark on the trimmed boundary. The trimming property restores markedness for the full boundary. Since the original order locus is nonempty and the descent operation succeeds, the definition of maximal-contact reduction returns the reconstructed marked sequence from these selected data.
 -/
 theorem exists_blowupSequenceData_isStrictPullback_cover (hstar : CoverSequenceProperties hinv P A)
     (hd : DescentHypotheses hinv P A B) (T : MarkedIdealWithBoundary.{u}) (h : OrderReductionHypotheses P T) :
@@ -132,8 +126,8 @@ theorem exists_blowupSequenceData_isStrictPullback_cover (hstar : CoverSequenceP
   exact MaxContactCoverData.reduceOrder_eq_toMarkedSequence hinv T (lowerDimensionalFamily A T) h.valid
     h.orderAtLeastLocus_ne_empty (h.dropTrivialBoundary hd).valid d hdesc hm
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+For the admissible triple with empty marked order locus, the reduction takes the empty-sequence branch. The principalization is that reduction with the prescribed family, so its length is zero.
 -/
 theorem length_eq_zero_of_orderAtLeastLocus_eq_empty (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible) (_hdim : P T.krullDimSucc)
     (_hord : ∀ x : ↥T.scheme, orderAt T.ideal x ≤ (T.mult : ℕ∞))
@@ -143,12 +137,8 @@ theorem length_eq_zero_of_orderAtLeastLocus_eq_empty (T : MarkedIdealWithBoundar
     MaxContactReduction.reduceOrder_of_orderAtLeastLocus_eq_empty hinv T (lowerDimensionalFamily A T) hv hemp
   rw [maxContactPrincipalization_apply, h1, MaxContactCoverData.emptyMarkedSeq_length]
 
-/- English proof (translation)
-Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+If the original cosupport is empty, the sequence has length zero and there is no index to consider. Otherwise the reduction is reconstructed from a selected strict descent of the cover sequence. The cover centers are proper by the cover properties. The strict pullback comparison forces each corresponding lower center to be proper, because a unit ideal would pull back to a unit ideal. Reconstruction retains the centers and their indices. A proper ideal sheaf has nonempty support, proving the result.
 -/
 theorem center_support_nonempty (hstar : CoverSequenceProperties hinv P A) (hd : DescentHypotheses hinv P A B)
     (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible) (hdim : P T.krullDimSucc)
@@ -177,10 +167,8 @@ theorem center_support_nonempty (hstar : CoverSequenceProperties hinv P A) (hd :
     rw [BlowupSequenceData.toMarkedBlowupSequenceData_toSequenceOfBlowups] at hi ⊢
     exact (Scheme.IdealSheafData.support_nonempty_iff_ne_top _).mpr (hdseq i hi)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
+/- English proof (authored)
+The final comparison map of the strict pullback is surjective, since it is a base change of the surjective base map. Flat pullback of the controlled transforms identifies the final upper ideal with the pullback of the final lower one, using the given divisibility at each lower stage. The sequence lengths are equal by strictness. The final upper order locus is empty, so emptiness descends along the surjective comparison to the final lower order locus.
 -/
 private theorem orderAtLeastLocus_controlledTransform_eq_empty_of_flat_surjective {k : Type u} [Field k] {X' X : Scheme.{u}}
     {q : X' ⟶ Spec (CommRingCat.of k)} {g : X' ⟶ X}
@@ -207,12 +195,8 @@ private theorem orderAtLeastLocus_controlledTransform_eq_empty_of_flat_surjectiv
     (d.controlledTransform I m t.length) m h0
   rwa [hlen] at h1
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+A marked sequence resolves the ideal exactly when its final marked order locus is empty. If the initial locus is empty, the reduction is the empty sequence and its final ideal is the original one transported along the initial isomorphism, which preserves emptiness. Otherwise use the strict descent of the cover sequence and its markedness for the tuned ideal on the trimmed boundary. The cover reductions resolve the tuned ideal. The final order locus of the descended tuned ideal is therefore empty by flat surjective descent along the cover comparison. The tuning equivalence identifies that locus with the final order locus of the original ideal. Thus the reconstruction resolves the original triple.
 -/
 theorem isResolution_of_orderAt_le_mult (hstar : CoverSequenceProperties hinv P A) (hd : DescentHypotheses hinv P A B)
     (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible) (hdim : P T.krullDimSucc)
@@ -256,8 +240,8 @@ theorem isResolution_of_orderAt_le_mult (hstar : CoverSequenceProperties hinv P 
         D hm0.divisible (hstar.resolves (MaxContactReduction.dropTrivialBoundary T) h')
     exact htc.symm.trans key
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The stagewise order bound in the descent hypotheses applies to any marked blowup sequence of the admissible triple when the initial order is bounded by the mark. Apply it to the maximal-contact principalization at the specified stage and point.
 -/
 theorem orderAt_ideal_le_mult (hd : DescentHypotheses hinv P A B) (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible)
     (_hdim : P T.krullDimSucc) (hord : ∀ x : ↥T.scheme, orderAt T.ideal x ≤ (T.mult : ℕ∞))

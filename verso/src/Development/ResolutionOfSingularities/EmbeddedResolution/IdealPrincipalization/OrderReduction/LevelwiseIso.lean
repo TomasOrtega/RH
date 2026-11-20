@@ -18,8 +18,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The total transform of the unit ideal is the unit ideal. The strict transform contains the total transform, so it also equals the unit ideal.
 -/
 theorem strictTransform_top_eq_top {X' X : Scheme.{u}} (f : X' ⟶ X) (Z : X.IdealSheafData) :
     Blowup.strictTransform f Z ⊤ = ⊤ := by
@@ -29,10 +29,8 @@ theorem strictTransform_top_eq_top {X' X : Scheme.{u}} (f : X' ⟶ X) (Z : X.Ide
     simp
   exact top_le_iff.mp h2
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
-
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+At stage zero the iterated transform pulls back the unit ideal along the initial isomorphism, giving the unit ideal. For a successor stage apply the single strict transform to the preceding unit ideal. It stays the unit ideal, completing the induction.
 -/
 theorem BlowupSequenceData.iteratedStrictTransform_top {X : Scheme.{u}} (d : BlowupSequenceData X) (i : ℕ) :
     d.iteratedStrictTransform i ⊤ = ⊤ := by
@@ -62,8 +60,8 @@ structure BlowupSequenceData.LevelwiseIsoOver {Y₁ Y₂ : Scheme.{u}} (φ : Y�
   center_compat : ∀ (i : ℕ) (hi : i < t₁.length),
     (t₂.center i).comap (iso i hi.le).hom = t₁.center i
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+Removing unit entries from an empty list leaves an empty list.
 -/
 private theorem nontrivialPart_nil {X : Scheme.{u}} :
     MarkedIdealWithBoundary.nontrivialPart ([] : List X.IdealSheafData) = [] := rfl

@@ -52,12 +52,8 @@ def MaxContactIdealComapLeControlled : Prop :=
         (maxContactIdeal k p A μ).comap π ≤
           Blowup.exceptionalIdeal π Z * maxContactIdeal k (π ≫ p) A₁ μ
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the stage. At zero the structural map is the initial isomorphism followed by the smooth structural map of the base. At a successor it is the previous structural map composed with the next blowup. The predecessor map is smooth by induction, and the center has strict normal crossings with its boundary. Smoothness of the resulting composite follows from the smoothness theorem for such blowups.
 -/
 theorem smooth_projectionToBase_comp {k : Type u} [Field k] {V : Scheme.{u}}
     {q : V ⟶ Spec (CommRingCat.of k)} [AlgebraicGeometry.Smooth q] {A : V.IdealSheafData}
@@ -80,15 +76,15 @@ theorem smooth_projectionToBase_comp {k : Type u} [Field k] {V : Scheme.{u}}
     rw [hsucc]
     exact smooth_comp_of_isBlowupAlongIdealSheaf (u.center_snc j hj) (u.isBlowupAlongIdealSheaf_blowupMorphism j hj)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The first power of the center ideal is the center ideal itself. The given inclusion is therefore the required inclusion.
 -/
 private theorem le_pow_one_of_le {X : Scheme.{u}} {b Z : X.IdealSheafData} (h : b ≤ Z) :
     b ≤ Z ^ 1 := by
   rw [pow_one]; exact h
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
+/- English proof (authored)
+Substitute the equal structural maps and ideals. The same maximal-contact construction with the same mark is then applied to identical data.
 -/
 private theorem maxContactIdeal_congr {k : Type u} [Field k] {X : Scheme.{u}}
     (p p' : X ⟶ Spec (CommRingCat.of k))
@@ -111,8 +107,8 @@ def weakTransform {k : Type u} [Field k] {V : Scheme.{u}}
   controlledTransform (u.transitionMapSucc i) (u.center i) b 1 (u.isBlowupAlongIdealSheaf_blowupMorphism i hi)
     (le_pow_one_of_le hb)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The weak transform here is the controlled transform with exponent one. Its defining product with the first power of the exceptional ideal equals the total transform. That first power is the exceptional ideal.
 -/
 theorem exceptionalIdeal_mul_weakTransform {k : Type u} [Field k] {V : Scheme.{u}}
     {q : V ⟶ Spec (CommRingCat.of k)} {A : V.IdealSheafData} {μ : ℕ}
@@ -127,8 +123,8 @@ theorem exceptionalIdeal_mul_weakTransform {k : Type u} [Field k] {V : Scheme.{u
   rw [pow_one] at h
   exact h
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The first power of the exceptional ideal equals the ideal itself. The given product identity is consequently the controlled-transform identity for exponent one. Uniqueness of the controlled transform identifies the candidate with the weak transform.
 -/
 theorem weakTransform_unique {k : Type u} [Field k] {V : Scheme.{u}}
     {q : V ⟶ Spec (CommRingCat.of k)} {A : V.IdealSheafData} {μ : ℕ}
@@ -144,14 +140,8 @@ theorem weakTransform_unique {k : Type u} [Field k] {V : Scheme.{u}}
   exact eq_controlledTransform_of_mul_eq_comap (u.transitionMapSucc i) (u.center i) b 1 (u.isBlowupAlongIdealSheaf_blowupMorphism i hi)
     (le_pow_one_of_le hb) c h
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+At the given stage the center has strict normal crossings and lies in the marked order locus, so the stage ideal lies in the mark-th power of the center. The assumed maximal-contact transform inequality applies to this blowup and the controlled-transform identity of the successor ideal. The structural morphism for this calculation is the one at the successor by composition of the projections. Pulling back the given inclusion into the old maximal-contact ideal shows that the total transform of the smaller ideal lies in the exceptional ideal times the new maximal-contact ideal. The total transform is also the exceptional ideal times the weak transform. Cancel the exceptional ideal from this inclusion, since it is locally generated by a nonzerodivisor. This yields the required bound on the weak transform.
 -/
 theorem weakTransform_le_maxContactIdeal {k : Type u} [Field k] [CharZero k]
     {V : Scheme.{u}} {q : V ⟶ Spec (CommRingCat.of k)} {A : V.IdealSheafData} {μ : ℕ}
@@ -209,8 +199,8 @@ private def strictTransformMaxContactIdeal {k : Type u} [Field k] {V : Scheme.{u
           (Blowup.exceptionalIdeal (u.transitionMapSucc j) (u.center j))
       else ⊤) i
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+Within the sequence the recursion pulls the previous ideal back along the next blowup and takes its quotient by the exceptional ideal. If the successor index is beyond the sequence, the recursion uses the unit ideal. This is the displayed successor formula.
 -/
 private theorem strictTransformMaxContactIdeal_succ {k : Type u} [Field k] {V : Scheme.{u}}
     {q : V ⟶ Spec (CommRingCat.of k)} [AlgebraicGeometry.LocallyOfFiniteType q]
@@ -231,26 +221,10 @@ private def maxContactIdealAt {k : Type u} [Field k] {V : Scheme.{u}}
   haveI := smooth_projectionToBase_comp u i hi
   maxContactIdeal k (u.projectionToBase i ≫ q) (u.ideal i) μ
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
+/- English proof (authored)
+Start with the original maximal-contact ideal pulled back to stage zero. It equals the maximal-contact ideal of the stage-zero data because the initial isomorphism preserves derivatives. At each subsequent stage define the ideal by pulling back the preceding one and taking the quotient by the exceptional ideal.
 
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Supply the required witnesses or components. A detailed English derivation is pending.
+Inductively the constructed ideal is contained in the stage maximal-contact ideal. Its support therefore contains the support of the latter, which is the marked order locus. The center lies in that locus, so the assumed support-to-ideal rule puts the constructed ideal inside the center ideal. Its pullback is contained in the exceptional ideal. Since the exceptional ideal is locally generated by a nonzerodivisor, multiplying it by the quotient recovers the total transform. This is the weak-transform identity, which identifies the successor ideal with the weak transform of the preceding one. The assumed maximal-contact transform bound puts that weak transform inside the new maximal-contact ideal, completing the induction. The initial value, product identities and center containments give the required system of controlled transforms.
 -/
 theorem existsMaxContactControlledTransforms_of_comapLeControlled (h : MaxContactIdealComapLeControlled.{u}) :
     ExistsMaxContactControlledTransforms.{u} := by

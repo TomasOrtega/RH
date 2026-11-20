@@ -18,18 +18,8 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace MaxContactFunctoriality
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
-
-Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+For each admissible order-bounded triple satisfying the dimension condition, apply the cover and descent results for the center certificates, the order bound along the sequence, nonempty center supports and resolution. The empty-cosupport result gives the trivial sequence in that case. The pushforward theorem for a smooth divisor uses the lower-dimensional reduction, the boundary-divisor specifications and the link between the two dimension conditions. The descent hypotheses supply field extension and smooth pullback, each in ordinary and strict form. In each pullback property the pointwise bound may be stated using the original mark because extension, pullback and replacement of the boundary preserve it. These are all the conditions of order reduction.
 -/
 theorem isOrderReduction_maxContact_of_descentHypotheses
     (hinv : ComapIsoInvariance.{u}) (P Q : ℕ → Prop) (A : ℕ → PrincipalizationAssignment.{u})
@@ -100,8 +90,8 @@ theorem isOrderReduction_maxContact_of_descentHypotheses
     exact length_eq_zero_of_orderAtLeastLocus_eq_empty hinv P A T hv hdim
       ((MarkedIdealWithBoundary.isOrderBoundedByMult_iff T).mp hO) hemp
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Apply the general order-reduction result with the upper dimension condition given by the bound n and the lower condition by strict inequality with n. A dimension strictly below one at most n is strictly below n. Thus the required dimension link holds, and the other hypotheses give the relevant reduction and descent data.
 -/
 theorem isOrderReduction_maxContact_dim_le_of_descentHypotheses
     (hinv : ComapIsoInvariance.{u}) (n : ℕ) (A : ℕ → PrincipalizationAssignment.{u})

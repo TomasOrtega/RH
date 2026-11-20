@@ -11,8 +11,8 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace MaxContactCoverData
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The chosen maximal-contact opens cover the original scheme. The cover map is induced by their inclusions from the disjoint union of the opens. Each point belongs to one of those opens and is the image of its copy in that summand, so the map is surjective.
 -/
 theorem surjective_coverMap (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible)
     (h : ∃ D : MaxContactReduction.FiniteOpenCoverWithIdeals T,

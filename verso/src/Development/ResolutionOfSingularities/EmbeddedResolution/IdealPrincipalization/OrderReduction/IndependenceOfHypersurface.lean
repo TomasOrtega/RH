@@ -23,8 +23,8 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace DivisorReductionIndependence
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Use the given equalities of ideals, marks and boundaries to identify the two types of marked sequences. The given equality between the sequences is then an equality in the same type. Passing to their underlying blowup sequences preserves it.
 -/
 private theorem toSequenceOfBlowups_eq_of_heq {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I₁ I₂ : X.IdealSheafData} {m₁ m₂ : ℕ}
@@ -36,10 +36,8 @@ private theorem toSequenceOfBlowups_eq_of_heq {k : Type u} [Field k] {X : Scheme
   subst hE
   rw [eq_of_heq h]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
-
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The subscheme of the pulled-back ideal is the pullback of the original closed immersion. On the canonical pullback, the composite through the first projection and the ambient map is the composite through the second projection and the old closed immersion. The two maps out of the old scheme agree after this immersion, so composing from the pullback gives equality. Transport this equality to the closed subscheme of the pulled-back ideal.
 -/
 theorem subschemeι_comap_comp_comp_eq {A B C : Scheme.{u}} (e : A ⟶ B) (J : B.IdealSheafData)
     (f g : B ⟶ C) (h : J.subschemeι ≫ f = J.subschemeι ≫ g) :
@@ -60,8 +58,8 @@ theorem subschemeι_comap_comp_comp_eq {A B C : Scheme.{u}} (e : A ⟶ B) (J : B
   rw [hker, ← kerSubschemeIso_hom_comp (Limits.pullback.fst e J.subschemeι), Category.assoc,
     Category.assoc, key]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The center at the given blowup step is smooth over the field. The radicality property for smooth centers converts containment of its support in the support of the given ideal into inclusion of the given ideal in the center ideal.
 -/
 theorem le_center_of_center_support_subset (hin : OrderReduction.OrderReductionHypotheses.{u}) (T : MarkedIdealWithBoundary.{u}) (s : T.SequenceOfBlowups)
     (i : ℕ) (hi : i < s.length) (J : (s.schemeAt i).IdealSheafData)
@@ -70,18 +68,8 @@ theorem le_center_of_center_support_subset (hin : OrderReduction.OrderReductionH
   hin.smooth_center_radical T.base (s.schemeAt i) (s.projectionToBase i ≫ T.structMap) (s.center i)
     (s.center_smooth i hi) J hJ
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+An étale map is smooth, so the admissibility theorem applies to the pulled-back triple over its given structural map. Its dimension successor is at most that of the original triple, so the downward-closed dimension condition persists. Smooth pullback preserves the order bound and derivative balancing, and the directly pulled-back boundary retains its positive length. The reduction specification therefore gives a pullback comparison of the two blowup sequences. Each lower center has nonempty support by the specification, and every point of a lower center projects into the cosupport. Since the étale map covers the cosupport, the strict comparison criterion applies and yields the stated strict pullback.
 -/
 theorem isAdmissible_and_isStrictPullbackBlowupSeq_of_etale
     (hin : OrderReduction.OrderReductionHypotheses.{u})
@@ -131,20 +119,10 @@ theorem isAdmissible_and_isStrictPullbackBlowupSeq_of_etale
   · intro i hi x hx
     exact hcov (hin.center_mem_coSupport T hV (A T) i hi x hx)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
+/- English proof (authored)
+Use the étale equalization of the two maximal-contact hypersurfaces to find two maps from one scheme, each covering the original cosupport. Their pulled-back triples agree, since the maps identify the ideal, hypersurface and common remaining boundary and have the same structural map. The reduction upstairs gives one blowup sequence, strictly comparing to the two reductions downstairs by the étale pullback result.
 
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+Use the maximal-contact chain on this common sequence. The original two maps agree along its initial ideal subscheme because the equalization makes them agree on the specified downstairs subscheme, and this equality pulls back. The chain is compatible with each blowup and supplies the required center containments. All lower center images lie in the covered cosupport, and smooth center radicality converts the required support containments to ideal containments. These are the hypotheses of the lifting comparison for two strict pullbacks with one source, which yields an isomorphism between the two downstairs blowup sequences.
 -/
 theorem isomorphic_withBoundary_cons_of_isMaxContactHypersurface
     (hin : OrderReduction.OrderReductionHypotheses.{u})

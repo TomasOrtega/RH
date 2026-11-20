@@ -14,16 +14,16 @@ namespace FunctorialResolution.EmbeddedResolution
 
 variable {A B C : Scheme.{u}}
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+Composing the inverse range isomorphism with the inclusion of the source open and then the original map gives the inclusion of the image open. Pullback of an ideal along this composite equals the three successive pullbacks, giving the formula.
 -/
 theorem comap_isoRangeOpens_inv (γ : A ⟶ B) (W : A.Opens) (h : IsOpenImmersion (W.ι ≫ γ))
     (J : B.IdealSheafData) :
     ((J.comap γ).comap W.ι).comap (isoRangeOpens γ W h).inv = J.comap (rangeOpens γ W h).ι := by
   simp [← isoRangeOpens_inv_comp γ W h]
 
-/- English proof (translation)
-By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The composite of the inverse range isomorphism and the two subsequent maps equals the inclusion of the image open. Inverse image along a composite is the succession of inverse images, so the two sets agree.
 -/
 theorem preimage_isoRangeOpens_inv (γ : A ⟶ B) (W : A.Opens) (h : IsOpenImmersion (W.ι ≫ γ))
     (S : Set ↥B) :
@@ -32,18 +32,16 @@ theorem preimage_isoRangeOpens_inv (γ : A ⟶ B) (W : A.Opens) (h : IsOpenImmer
   ext x
   simp [← isoRangeOpens_inv_comp γ W h]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The inclusion of the image open equals the inverse range isomorphism followed by the source-open inclusion and the given morphism. Postcompose with the specified map out of the target and reassociate.
 -/
 theorem rangeOpens_ι_comp (γ : A ⟶ B) (W : A.Opens) (h : IsOpenImmersion (W.ι ≫ γ))
     (f : B ⟶ C) :
     (rangeOpens γ W h).ι ≫ f = (isoRangeOpens γ W h).inv ≫ W.ι ≫ γ ≫ f :=
   (isoRangeOpens_inv_comp_assoc γ W h f).symm
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Surjectivity gives a lift of the given point. Since the map is a local isomorphism, an open around the lift maps by an open immersion onto an open containing the original point. Restrict the upper certificate to this source open using stability under open immersions. Transport it through the inverse range isomorphism to the image open. The composition formula identifies the structural map there, while functoriality identifies the ideal and center pullbacks and the inverse image of the boundary set with their restrictions to the image open. This is the required local certificate.
 -/
 theorem exists_opens_orderCertificate_of_isLocalIsomorphism
     (hopen : ∀ (k : Type u) [Field k], OpenImmersionStability k)
@@ -70,8 +68,8 @@ def OrderCertificateLocalToGlobal : Prop :=
       OrderCertificate V.toScheme (V.ι ≫ p) (N.comap V.ι) μ (V.ι.base ⁻¹' Mem) (Z.comap V.ι)) →
     OrderCertificate W p N μ Mem Z
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+For each point downstairs, the local-isomorphism result gives an open neighborhood with the required certificate, obtained from the pulled-back certificate. Apply the local-to-global certificate property to this family of neighborhoods.
 -/
 theorem orderCertificate_of_comap_of_isLocalIsomorphism
     (hopen : ∀ (k : Type u) [Field k], OpenImmersionStability k)

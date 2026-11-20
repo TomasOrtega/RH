@@ -44,10 +44,8 @@ variable (P : ℕ → Prop) (A : ℕ → PrincipalizationAssignment.{u}) (Bl : P
   (hftT : AlgebraicGeometry.LocallyOfFiniteType
     (s'.proj s'.length ≫ (NontrivialBoundary.pullbackWithNontrivialBoundary S q).structMap))
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+On each side the strict transform at the end is the iteration of strict transforms on the underlying blowup data. Smoothness of the comparison at the base implies flatness. The comparison of iterated strict transforms under this pullback identifies the upper final transform with the pullback of the lower final transform along the last-stage map.
 -/
 theorem strictTransformAtLength_comap_lastMap
     (hstar : MaxContactCoverProperties.{u})
@@ -64,28 +62,10 @@ theorem strictTransformAtLength_comap_lastMap
   exact (NontrivialBoundary.iteratedStrictTransform_comap_lastMap S q s s' Dt hstar hV hV' H).symm
 
 include Dt in
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
+/- English proof (authored)
+The last-stage map is smooth by base change. It pulls the final transformed hypersurface back to the upper transformed hypersurface, and the boundary tails of the derived triples agree after removing unit entries. Since the transformed hypersurface is the first entry on each side, the first entries of the boundaries also agree exactly after pullback. Compatibility of the final tuned ideals, structural maps and marks identifies the upper derived triple with the pullback of the lower one after replacing its boundary by the specified upper list.
 
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+The derived triples are admissible and satisfy the given dimension conditions. They are order-bounded and balanced by the tuning properties, and each boundary is nonempty because it starts with the transformed hypersurface. Apply the smooth-pullback property of the reduction at boundary index zero to compare their continuation sequences. The separated boundary condition ensures on each side that the continuation is a marked sequence for the original final triple and is actually appended. Concatenate the given separation comparison with the continuation comparison over its last-stage map. The resulting pullback relation is the required comparison of the two appended reductions.
 -/
 theorem isPullbackBlowupSequence_appendLowerDimReduction
     (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u})

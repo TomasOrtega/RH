@@ -37,8 +37,8 @@ namespace FunctorialResolution.EmbeddedResolution
 def HasOrderCertificateMultOne {k : Type u} [Field k] (D : MarkedSchemeWithCenter.{u} k) : Prop :=
   OrderCertificate D.ambient D.structMap D.ideal 1 D.boundarySupport D.center
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Transporting the marked scheme with center along an isomorphism pulls back its ideal and center, takes the inverse image of its boundary support and composes its structural map with the isomorphism. The order certificate is preserved under exactly this transport, so the mark-one certificate holds for the transported data.
 -/
 theorem isInvariantUnderIso_hasOrderCertificateMultOne (k : Type u) [Field k] :
     IsInvariantUnderIso (fun D : MarkedSchemeWithCenter.{u} k => HasOrderCertificateMultOne D) := by
@@ -71,8 +71,8 @@ def ContinuationOrderCertificate (hinv : ComapIsoInvariance.{u}) (A : ℕ → Pr
               (MaxContactCoverData.coverTriple T h.valid).boundary.length
               (A 0 (reduceAlongHypersurfaceTriple T h.valid hinv A hft)) hmk).dataAt i)
 
-/- English proof (translation)
-Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The stage-zero boundary is the list of initial boundary ideals pulled back along the initial isomorphism. The given original ideal is in that list before pullback, so its pullback is a member of the stage-zero list.
 -/
 private theorem mem_boundary_zero_of_eq_comap {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
@@ -83,10 +83,8 @@ private theorem mem_boundary_zero_of_eq_comap {k : Type u} [Field k] {X : Scheme
   rw [u.boundary_zero]
   exact List.mem_map.2 ⟨C, hC, rfl⟩
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The hypothesis places the point in the inverse image of the union of supports of the previous boundary. This inverse image is contained in the next boundary support by the transform rule, which retains the strict transforms and adds the exceptional ideal. Thus some listed ideal at the next stage has the point in its support.
 -/
 private theorem exists_mem_boundary_succ_of_map_mem_support {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
@@ -103,10 +101,8 @@ private theorem exists_mem_boundary_succ_of_map_mem_support {k : Type u} [Field 
   simp only [Set.mem_iUnion, exists_prop] at h2
   exact h2
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the stage. At zero the chosen ideal belongs to the boundary, providing a witness. At a successor the support-chain hypothesis sends the point into the preceding chosen support. The induction hypothesis puts its image in the preceding boundary support, so the successor boundary property puts the point in the support of some boundary ideal at the new stage.
 -/
 private theorem exists_mem_boundary_of_mem_support_chain {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
@@ -129,10 +125,8 @@ private theorem exists_mem_boundary_of_mem_support_chain {k : Type u} [Field k] 
       have hn' : n < u.length := hn
       exact exists_mem_boundary_succ_of_map_mem_support u hN hn' x (ih (le_of_lt hn') _ (hstep n hn' x hx))
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+A point of the center support lies in the chosen support at that stage. The support-chain argument places it in the support of a listed boundary ideal. Thus the center support is contained in the boundary support of the stage data, which gives the boundary-memory certificate with mark one.
 -/
 private theorem hasOrderCertificateMultOne_dataAt_of_center_subset {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
@@ -153,22 +147,8 @@ private theorem hasOrderCertificateMultOne_dataAt_of_center_subset {k : Type u} 
   obtain ⟨J, hJ, hJx⟩ := exists_mem_boundary_of_mem_support_chain u hN D hD0 hstep i (le_of_lt hi) x (hcen i hi hx')
   exact (MarkedSchemeWithCenter.mem_boundarySupport_iff (u.dataAt i) x).2 ⟨J, hJ, hJx⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The final stage of the given prefix has finite-type smooth structural map, and its boundary is in strict normal-crossing position. The derived triple using that boundary is admissible, within the dimension bound and hence allowed by the downward-closed dimension condition. It is order-bounded and balanced. The chosen boundary index is within its boundary because the previous blowups add entries to the list. Apply the specified reduction at this index. Its shape provides a chain of divisors whose supports contain the centers, beginning with the pullback of the chosen boundary entry. In the special initial step the next divisor is a total transform, and in all other steps it is a strict transform. In each case its support maps into the preceding support. The chain therefore gives a boundary-memory certificate at each continuation stage after interpreting it as marked data. The append theorem identifies the appended reduction with this continuation after the prefix. Certificates pass to that append because they hold on both pieces and are invariant under stage isomorphisms.
 -/
 private theorem hasOrderCertificateMultOne_appendLowerDimReduction (hstar : MaxContactCoverProperties.{u}) (hinv : ComapIsoInvariance.{u}) (P : ℕ → Prop)
     (hmono : ∀ a b : ℕ, a ≤ b → P b → P a) (A : ℕ → PrincipalizationAssignment.{u})
@@ -251,16 +231,8 @@ private theorem hasOrderCertificateMultOne_appendLowerDimReduction (hstar : MaxC
       exact support_strictTransform_subset_preimage _ _ _ hx
   · exact hcen
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the number of boundary entries separated on the cover. The zero-step separation has no centers. At a successor the previous sequence has its certificates by induction, and the boundary-index reduction extends them to the next append. This gives certificates throughout the full separation. The cover sequence is the full separation followed by the hypersurface continuation, whose certificates are assumed. Invariance under isomorphisms lets the append combine the two families. At the given stage the marked sequence's structural map, ideal, center and boundary locus are those of its stage data, so the stage certificate is the stated one.
 -/
 theorem orderCertificate_coverMarkedBlowupData (hstar : MaxContactCoverProperties.{u}) (hinv : ComapIsoInvariance.{u}) (P : ℕ → Prop)
     (hmono : ∀ a b : ℕ, a ≤ b → P b → P a) (A : ℕ → PrincipalizationAssignment.{u})

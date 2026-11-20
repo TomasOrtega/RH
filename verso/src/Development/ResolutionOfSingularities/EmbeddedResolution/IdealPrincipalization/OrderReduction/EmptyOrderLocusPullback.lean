@@ -19,14 +19,8 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace MaxContactFunctoriality
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+For a length-zero upper sequence it suffices to show that every lower center pulls back to the unit ideal along any comparison to its stage over the base. Suppose an upper point mapped to a lower center support. Projecting to the original scheme would give a point of the original marked order locus, since every center projects into it. Over the base this image is also the image of the upper point under the smooth morphism. Smooth pullback identifies the upper marked order locus with the inverse image of the original one, so the upper point would belong to the assumed empty locus. Thus all these pulled-back center supports are empty, and the comparison with the length-zero sequence follows.
 -/
 theorem isPullback_of_orderAtLeastLocus_comap_eq_empty
     (hinv : ComapIsoInvariance.{u}) (P : ℕ → Prop) (A : ℕ → PrincipalizationAssignment.{u})

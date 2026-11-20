@@ -25,8 +25,8 @@ open CategoryTheory AlgebraicGeometry
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Replace the mark by the equal mark in the certificate. Its other data are identical, so the supplied certificate gives the result.
 -/
 private theorem orderCertificate_congr_mult {k : Type u} [Field k] {W : Scheme.{u}}
     {p : W ⟶ Spec (CommRingCat.of k)} {N : W.IdealSheafData} {μ μ' : ℕ}
@@ -35,8 +35,8 @@ private theorem orderCertificate_congr_mult {k : Type u} [Field k] {W : Scheme.{
   subst h
   exact c
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Identify the structural maps using their equality. The certificate for the first map is then a certificate for the second with the same data.
 -/
 private theorem orderCertificate_congr_map {k : Type u} [Field k] {W : Scheme.{u}}
     {p p' : W ⟶ Spec (CommRingCat.of k)} {N : W.IdealSheafData} {μ : ℕ}
@@ -45,10 +45,8 @@ private theorem orderCertificate_congr_map {k : Type u} [Field k] {W : Scheme.{u
   subst h
   exact c
 
-/- English proof (translation)
-By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
-
-Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+A point belongs to the boundary locus exactly when it lies in the support of some ideal in the stage boundary. The same listed ideal witnesses membership in the union, giving the equality.
 -/
 private theorem boundaryLocus_eq_iUnion_support {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ}
@@ -64,8 +62,8 @@ private theorem boundaryLocus_eq_iUnion_support {k : Type u} [Field k] {X : Sche
     obtain ⟨D, hD, hx⟩ := Set.mem_iUnion₂.1 hx
     exact ⟨D, hD, hx⟩
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The strict comparison pairs stages of the same index in pullback squares. Along a flat comparison the initial boundary ideals are pulled back and both strict transforms and exceptional ideals commute with the pullback. The boundary comparison theorem therefore identifies the upper stage boundary with the list of pullbacks of the lower stage boundary in order.
 -/
 private theorem boundary_eq_map_comap_strictPullbackComparisonMap_of_flat {k : Type u} [Field k] {X' X : Scheme.{u}}
     {q : X' ⟶ Spec (CommRingCat.of k)} {g : X' ⟶ X} {I : X.IdealSheafData} {m : ℕ}
@@ -80,8 +78,8 @@ private theorem boundary_eq_map_comap_strictPullbackComparisonMap_of_flat {k : T
   have := hf
   exact MarkedBlowupSequenceData.boundary_eq_comap_strictPullbackComparisonMap s D hNd hNt i hi
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The comparison at the specified stage is a base change of the original map, by the strict pullback relation. Surjectivity is stable under base change, giving the stagewise surjectivity.
 -/
 private theorem surjective_strictPullbackComparisonMap_of_flat_of_surjective {k : Type u} [Field k] {X' X : Scheme.{u}}
     {q : X' ⟶ Spec (CommRingCat.of k)} {g : X' ⟶ X} {I : X.IdealSheafData} {m : ℕ}
@@ -95,10 +93,8 @@ private theorem surjective_strictPullbackComparisonMap_of_flat_of_surjective {k 
   have := hs
   exact MarkedBlowupSequenceData.surjective_strictPullbackComparisonMap s D i hi
 
-/- English proof (translation)
-By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
+/- English proof (authored)
+A point in the left-hand union lies in the support of a pulled-back ideal from the original list. Its image lies in the support of the corresponding original ideal and hence in the union downstairs. Conversely, if its image belongs to one of the original supports, the point belongs to the corresponding pulled-back support, whose ideal appears in the mapped list.
 -/
 theorem iUnion_support_comap_eq_preimage {X Y : Scheme.{u}} (f : X ⟶ Y)
     (l : List Y.IdealSheafData) :
@@ -119,12 +115,8 @@ theorem iUnion_support_comap_eq_preimage {X Y : Scheme.{u}} (f : X ⟶ Y)
 
 namespace MaxContactFunctoriality
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
-
-Extract witnesses or component facts from the available result. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
-
-Extract witnesses or component facts from the available result. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the stage. At zero the two boundaries are the images of the original lists under pullback by the initial isomorphism, so the assumed list membership transfers. At a successor an entry is either the strict transform of a preceding boundary entry or the exceptional ideal. The preceding entry transfers by induction and its strict transform occurs in the second list. Both lists append the same exceptional ideal.
 -/
 private theorem mem_boundary_of_forall_mem {X : Scheme.{u}} (d : BlowupSequenceData X)
     (E E' : List X.IdealSheafData) (hEE : ∀ D ∈ E, D ∈ E') :
@@ -144,8 +136,8 @@ private theorem mem_boundary_of_forall_mem {X : Scheme.{u}} (d : BlowupSequenceD
         exact List.mem_append.2 (Or.inl (List.mem_map.2 ⟨A, ih A hA, rfl⟩))
       · exact List.mem_append.2 (Or.inr hmem)
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Every entry of the trimmed boundary is an entry of the original boundary, since trimming only filters the list. Apply the stagewise preservation of boundary membership to the two initial lists.
 -/
 theorem mem_boundary_of_mem_boundary_dropTrivialBoundary (T : MarkedIdealWithBoundary.{u}) (d : BlowupSequenceData T.scheme) (t : ℕ)
     (D : (d.obj t).IdealSheafData)
@@ -161,22 +153,10 @@ section
 variable (hinv : ComapIsoInvariance.{u}) (P : ℕ → Prop) (A : ℕ → PrincipalizationAssignment.{u})
   (B : PrincipalizationAssignment.{u})
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+At mark one the balanced tuned ideal equals the original ideal and the tuned mark equals one. The strict pullback comparison has equal lengths. At the given stage the structural morphism of the cover factors through the lower structural morphism via the comparison map, by the pullback square over the bases. The upper stage ideal and center are the pullbacks of the lower ones, and flat comparison gives the upper boundary as the list of pullbacks of the lower boundary. Its boundary locus is therefore the inverse image of the lower locus.
 
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+The cover has the required order certificate at this stage by the cover properties. The stage comparison is a local isomorphism by the descent hypotheses and is surjective because the original cover is surjective. Rewrite the cover certificate using the pullback descriptions of the structural morphism, ideal, center and boundary locus, and identify its mark with the lower mark. The certificate descent hypothesis then gives the lower certificate. Finally, the lower structural map equals the projection to the original scheme followed by its structural map, as used in the reconstructed sequence.
 -/
 theorem orderCertificate_of_isStrictPullbackBlowupSeq (hstar : CoverSequenceProperties hinv P A) (hd : DescentHypotheses hinv P A B)
     (T : MarkedIdealWithBoundary.{u}) (h : OrderReductionHypotheses P T) (hone : T.mult = 1)
@@ -295,18 +275,8 @@ theorem orderCertificate_of_isStrictPullbackBlowupSeq (hstar : CoverSequenceProp
     rw [e1, e2, e3, e4] at hc
     exact orderCertificate_congr_mult hone.symm hc
 
-/- English proof (translation)
-Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+If the mark is at least two, the corresponding certificate is available directly from this inequality. Otherwise admissibility gives mark one. In this case the given center index implies that the initial cosupport is nonempty, since an empty cosupport would produce a length-zero sequence. Use the strict descent of the cover after trimming unit boundary entries. At mark one tuning preserves both the ideal and mark, so the strict pullback certificate theorem gives the certificate for the descended sequence with the trimmed boundary. Every entry of that boundary at the given stage occurs in the full stage boundary, hence its boundary locus is contained in the full locus. Monotonicity of the certificate under this containment gives the desired certificate for the reconstructed original sequence.
 -/
 theorem orderCertificate_of_orderAt_le_mult (hstar : CoverSequenceProperties hinv P A) (hd : DescentHypotheses hinv P A B)
     (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible) (hdim : P T.krullDimSucc)

@@ -7,8 +7,8 @@ open TopologicalSpace AlgebraicGeometry
 namespace FunctorialResolution.EmbeddedResolution
 
 open Order in
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+Topological Krull dimension is defined as the supremum of the lengths of finite strict chains of irreducible closed sets. This gives the displayed expression.
 -/
 private theorem topologicalKrullDim_eq_iSup_length {Z : Type*} [TopologicalSpace Z] :
     topologicalKrullDim Z =
@@ -19,15 +19,15 @@ private def irreducibleClosedsImageSubtypeVal {X : Type u} [TopologicalSpace X] 
   ⟨Subtype.val '' a.1, a.2.image _ continuous_subtype_val.continuousOn,
     hY.isClosedMap_subtype_val _ a.3⟩
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The irreducible closed set in the larger space is constructed as the image of the given set under the inclusion of the closed subspace. Its underlying set is this image.
 -/
 private theorem coe_irreducibleClosedsImageVal {X : Type u} [TopologicalSpace X] {Y : Set X} (hY : IsClosed Y)
     (a : IrreducibleCloseds ↥Y) :
     ((irreducibleClosedsImageSubtypeVal hY a : IrreducibleCloseds X) : Set X) = Subtype.val '' (a : Set ↥Y) := rfl
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
+/- English proof (authored)
+Every point in the image of the closed subspace inclusion is a point of that subspace, so the image of the specified set is contained in the subspace.
 -/
 private theorem irreducibleClosedsImageVal_subset {X : Type u} [TopologicalSpace X] {Y : Set X} (hY : IsClosed Y)
     (a : IrreducibleCloseds ↥Y) :
@@ -36,10 +36,8 @@ private theorem irreducibleClosedsImageVal_subset {X : Type u} [TopologicalSpace
   rintro x ⟨y, -, rfl⟩
   exact y.2
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Taking images preserves inclusions. Since the subspace inclusion is injective, equality of images would imply equality of the original sets. Strict inclusions therefore remain strict.
 -/
 private theorem strictMono_irreducibleClosedsImageVal {X : Type u} [TopologicalSpace X] {Y : Set X}
     (hY : IsClosed Y) : StrictMono (irreducibleClosedsImageSubtypeVal hY) := by
@@ -52,8 +50,8 @@ private theorem strictMono_irreducibleClosedsImageVal {X : Type u} [TopologicalS
       rw [← coe_irreducibleClosedsImageVal hY a, ← coe_irreducibleClosedsImageVal hY b, h]
     exact hab.ne (SetLike.coe_injective (Set.image_injective.mpr Subtype.val_injective h1))
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
+/- English proof (authored)
+Extend the given irreducible set to a maximal preirreducible subset. It is nonempty because it contains the original set, hence irreducible. Its closure is preirreducible and contains it, so maximality makes it closed. The same maximality makes it an irreducible component.
 -/
 private theorem exists_mem_irreducibleComponents_superset_of_isIrreducible {X : Type u} [TopologicalSpace X] {s : Set X}
     (hs : IsIrreducible s) :
@@ -64,8 +62,8 @@ private theorem exists_mem_irreducibleComponents_superset_of_isIrreducible {X : 
   exact ⟨t, ⟨htirr, fun u hu htu => le_of_eq (hmax u hu.2 htu)⟩, htirr,
     closure_eq_iff_isClosed.mp htc, hst⟩
 
-/- English proof (translation)
-Supply the required witnesses or components.
+/- English proof (authored)
+The closure of the singleton of the given point is closed and irreducible, since singletons are irreducible and closure preserves irreducibility. It is nonempty because it contains the point.
 -/
 private theorem nonempty_irreducibleCloseds {Z : Type u} [TopologicalSpace Z] (z : Z) :
     Nonempty (IrreducibleCloseds Z) :=
@@ -73,24 +71,10 @@ private theorem nonempty_irreducibleCloseds {Z : Type u} [TopologicalSpace Z] (z
     isClosed_closure⟩⟩
 
 open Order in
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
+/- English proof (authored)
+Take a finite strict chain of irreducible closed subsets of the closed subspace. Its images are irreducible and closed in the ambient space and remain a strict chain because the inclusion is injective. The last image lies in some ambient irreducible component. No component is contained in the subspace, so this containment is strict. Appending the component produces an ambient chain one step longer.
 
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+The subspace has a point, whose closure gives a chain of length zero. The extended chain shows the ambient dimension is at least one. Since the ambient dimension is finite, write it as a positive natural number. Every chain in the subspace has length at most one less than that number by the extension argument. Their supremum is therefore strictly smaller than the ambient dimension.
 -/
 theorem topologicalKrullDim_lt_of_isClosed_of_not_subset_irreducibleComponents
     {X : Type u} [TopologicalSpace X] (Y : Set X) (hY : IsClosed Y) (hne : Y.Nonempty)
@@ -165,17 +149,15 @@ private def irreducibleClosedsMapHomeomorph {X : Type u} {Y : Type v} [Topologic
     (e : X ≃ₜ Y) (a : IrreducibleCloseds X) : IrreducibleCloseds Y :=
   ⟨e '' a.1, a.2.image e e.continuous.continuousOn, e.isClosedMap _ a.3⟩
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The transported irreducible closed set is defined by taking the image under the homeomorphism. Its underlying subset is that image.
 -/
 private theorem coe_irreducibleClosedsMapOfHomeomorph {X : Type u} {Y : Type v} [TopologicalSpace X] [TopologicalSpace Y]
     (e : X ≃ₜ Y) (a : IrreducibleCloseds X) :
     ((irreducibleClosedsMapHomeomorph e a : IrreducibleCloseds Y) : Set Y) = e '' (a : Set X) := rfl
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Images under the homeomorphism preserve inclusions, and injectivity makes equality of images imply equality of the original sets. Hence the image operation preserves strict inclusions.
 -/
 private theorem strictMono_irreducibleClosedsMapOfHomeomorph {X : Type u} {Y : Type v} [TopologicalSpace X]
     [TopologicalSpace Y] (e : X ≃ₜ Y) : StrictMono (irreducibleClosedsMapHomeomorph e) := by
@@ -189,8 +171,8 @@ private theorem strictMono_irreducibleClosedsMapOfHomeomorph {X : Type u} {Y : T
     exact hab.ne (SetLike.coe_injective (Set.image_injective.mpr e.injective h1))
 
 open Order in
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The homeomorphism sends irreducible closed sets to irreducible closed sets and preserves strict inclusions. Every finite strict chain in the first space therefore has an image chain of the same length in the second. Taking suprema gives the dimension inequality.
 -/
 private theorem topologicalKrullDim_le_of_homeomorph {X : Type u} {Y : Type v} [TopologicalSpace X]
     [TopologicalSpace Y] (e : X ≃ₜ Y) : topologicalKrullDim X ≤ topologicalKrullDim Y := by
@@ -200,24 +182,16 @@ private theorem topologicalKrullDim_le_of_homeomorph {X : Type u} {Y : Type v} [
     (p.map (irreducibleClosedsMapHomeomorph e) (strictMono_irreducibleClosedsMapOfHomeomorph e))
   exact h
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The homeomorphism sends chains to chains of the same length, giving one dimension inequality. Its inverse gives the reverse inequality, so the dimensions agree.
 -/
 theorem topologicalKrullDim_eq_of_homeomorph {X : Type u} {Y : Type v}
     [TopologicalSpace X] [TopologicalSpace Y] (e : X ≃ₜ Y) :
     topologicalKrullDim X = topologicalKrullDim Y :=
   le_antisymm (topologicalKrullDim_le_of_homeomorph e) (topologicalKrullDim_le_of_homeomorph e.symm)
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Assume the hypotheses and unpack their components.
-
-Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Treat this case separately.
-
-Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality.
-
-Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
+/- English proof (authored)
+The upper value is below top and has a smaller value, so it is an embedded finite natural number. Its successor index is positive. If the lower value is bottom, its index is zero. Otherwise it too is finite and its natural value is strictly smaller, so adding one to both values preserves strict inequality.
 -/
 private theorem withBotSuccToNat_lt_withBotSuccToNat {a b : WithBot ℕ∞} (h : a < b) (hb : b < ⊤) :
     withBotSuccToNat a < withBotSuccToNat b := by
@@ -244,16 +218,16 @@ private theorem withBotSuccToNat_lt_withBotSuccToNat {a b : WithBot ℕ∞} (h :
       have e2 : ((N : ℕ∞)).toNat = N := by simp
       omega
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The dimension index is given by the successor conversion of topological Krull dimension. The monotonicity result for that conversion preserves the strict inequality because the greater dimension is below top.
 -/
 theorem krullDimSucc_lt_of_topologicalKrullDim_lt (Z X : Scheme.{u})
     (h : topologicalKrullDim ↥Z < topologicalKrullDim ↥X)
     (hfin : topologicalKrullDim ↥X < ⊤) :
     krullDimSucc Z < krullDimSucc X := withBotSuccToNat_lt_withBotSuccToNat h hfin
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The closed subset has strictly smaller topological Krull dimension because it is nonempty and contains no ambient irreducible component. The given homeomorphism transfers its dimension to the scheme in the statement. Since the greater dimension is finite, passing to successor indices preserves the strict inequality.
 -/
 theorem krullDimSucc_lt_of_homeomorph_isClosed (X Z : Scheme.{u}) (Y : Set ↥X)
     (hY : IsClosed Y) (hne : Y.Nonempty)

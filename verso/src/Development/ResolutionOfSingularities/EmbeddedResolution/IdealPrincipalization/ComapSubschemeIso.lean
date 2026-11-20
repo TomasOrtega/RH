@@ -20,8 +20,8 @@ namespace PrincipalizationIsoTransport
 abbrev preimageOpens {X Y : Scheme.{u}} (e : X ≅ Y) (U : Y.Opens) : X.Opens :=
   (Opens.map e.hom.base).obj U
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The defining ideal is the kernel of the original subscheme inclusion. The kernel of the composite from the pulled-back subscheme is the image of the pulled-back ideal along the forward map. The image–pullback adjunction contains the original ideal in that image.
 -/
 private theorem ker_subschemeι_le_ker_comap_subschemeι_comp_hom {X Y : Scheme.{u}} (f : X ≅ Y) (I : Y.IdealSheafData) :
     Scheme.Hom.ker I.subschemeι
@@ -30,10 +30,8 @@ private theorem ker_subschemeι_le_ker_comap_subschemeι_comp_hom {X Y : Scheme.
     Scheme.IdealSheafData.ker_subschemeι]
   exact Scheme.IdealSheafData.le_map_comap I f.hom
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The two inclusions have kernels equal to their defining ideals. Pulling the pulled-back ideal back along the inverse isomorphism recovers the original ideal. The image–pullback adjunction for that inverse map therefore puts the pulled-back ideal inside the kernel of the composite.
 -/
 private theorem ker_comap_subschemeι_le_ker_subschemeι_comp_inv {X Y : Scheme.{u}} (f : X ≅ Y) (I : Y.IdealSheafData) :
     Scheme.Hom.ker (I.comap f.hom).subschemeι
@@ -46,10 +44,8 @@ private theorem ker_comap_subschemeι_le_ker_subschemeι_comp_inv {X Y : Scheme.
   rw [h] at h2
   exact h2
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The kernel containments allow the forward and inverse ambient maps, restricted to the two closed subschemes, to factor through the opposite closed immersions. Their composites become the respective inclusions because the two ambient maps are inverse. Each inclusion is a monomorphism, so the composites are identities. The forward factorization is the required compatibility.
 -/
 private theorem exists_iso_subscheme_comap_comm {X Y : Scheme.{u}} (f : X ≅ Y) (I : Y.IdealSheafData) :
     ∃ g : (I.comap f.hom).subscheme ≅ I.subscheme,
@@ -73,24 +69,24 @@ def comapSubschemeIso {X Y : Scheme.{u}} (f : X ≅ Y) (I : Y.IdealSheafData) :
   (exists_iso_subscheme_comap_comm f I).choose
 
 @[reassoc]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The isomorphism was chosen to factor the pulled-back subscheme's inclusion followed by the ambient isomorphism through the original subscheme inclusion. Its forward map therefore satisfies the displayed identity.
 -/
 theorem comapSubschemeIso_hom_comp {X Y : Scheme.{u}} (f : X ≅ Y) (I : Y.IdealSheafData) :
     (comapSubschemeIso f I).hom ≫ I.subschemeι = (I.comap f.hom).subschemeι ≫ f.hom :=
   (exists_iso_subscheme_comap_comm f I).choose_spec
 
 @[reassoc]
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The isomorphism from the inverse image open to the original open is the restriction of the ambient isomorphism. After composing with the original open inclusion it gives the restriction of the ambient map to the inverse image open.
 -/
 theorem preimageOpens_ι_comp_hom {X Y : Scheme.{u}} (e : X ≅ Y) (U : Y.Opens) :
     (preimageOpens e U).ι ≫ e.hom = (preimageOpensIso e U).hom ≫ U.ι := by
   rw [preimageOpensIso_hom, Scheme.Hom.resLE_comp_ι]
 
 @[reassoc]
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+First use compatibility of the open inclusions with the ambient isomorphism. Then use compatibility of the subscheme isomorphism with its closed immersions. Associating these maps gives equality of the two routes to the original ambient scheme.
 -/
 theorem subschemeι_comp_preimageOpens_ι_comp_hom {W W' : Scheme.{u}} (e : W' ≅ W) (U : W.Opens)
     (H : U.toScheme.IdealSheafData) :
@@ -98,8 +94,8 @@ theorem subschemeι_comp_preimageOpens_ι_comp_hom {W W' : Scheme.{u}} (e : W' �
       = (comapSubschemeIso (preimageOpensIso e U) H).hom ≫ H.subschemeι ≫ U.ι := by
   rw [preimageOpens_ι_comp_hom, ← Category.assoc, ← comapSubschemeIso_hom_comp, Category.assoc]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Support is the locus where the order is at least one. This locus pulls back along an isomorphism, so the support of the pulled-back ideal is the inverse image of the original support.
 -/
 private theorem coe_support_comap_iso {X Y : Scheme.{u}} (g : X ≅ Y) (J : Y.IdealSheafData) :
     ((J.comap g.hom).support : Set ↥X) = ⇑g.hom.base ⁻¹' (J.support : Set ↥Y) := by
@@ -107,8 +103,8 @@ private theorem coe_support_comap_iso {X Y : Scheme.{u}} (g : X ≅ Y) (J : Y.Id
   rw [orderAtLeastLocus_one, orderAtLeastLocus_one] at h
   exact h
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Both supports are inverse images of their original supports under the same isomorphism. Inverse images preserve the given containment.
 -/
 private theorem support_comap_iso_subset_of_subset {X Y : Scheme.{u}} (g : X ≅ Y)
     {A B : Y.IdealSheafData} (h : (A.support : Set ↥Y) ⊆ (B.support : Set ↥Y)) :
@@ -116,22 +112,16 @@ private theorem support_comap_iso_subset_of_subset {X Y : Scheme.{u}} (g : X ≅
   rw [coe_support_comap_iso, coe_support_comap_iso]
   exact Set.preimage_mono h
 
-/- English proof (translation)
-By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
+/- English proof (authored)
+A point maps into the set under the composite exactly when its image under the first map belongs to the inverse image under the second. This is the asserted equality of inverse images.
 -/
 private theorem preimage_base_comp {X Y Z : Scheme.{u}} (f : X ⟶ Y) (g : Y ⟶ Z) (S : Set ↥Z) :
     ⇑(f ≫ g).base ⁻¹' S = ⇑f.base ⁻¹' (⇑g.base ⁻¹' S) := by
   ext x
   simp
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
-
-Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
+/- English proof (authored)
+The image of the component is irreducible by continuity. If an irreducible set contains this image, its inverse image under the homeomorphism is irreducible and contains the original component. Maximality makes that inverse image equal to the original component, so the containing set is the original image. Thus the image is a component.
 -/
 private theorem image_mem_irreducibleComponents_of_homeomorph {α β : Type u} [TopologicalSpace α]
     [TopologicalSpace β] (h : α ≃ₜ β) {T : Set α} (hT : T ∈ irreducibleComponents α) :
@@ -155,16 +145,16 @@ private theorem image_mem_irreducibleComponents_of_homeomorph {α β : Type u} [
   refine ⟨h.symm y, h3 ?_, by simp⟩
   simpa using hy
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Each iterated pullback is the pullback along a composite. The composite through the inverse image inclusion and the ambient isomorphism agrees with the composite through the restricted isomorphism and original open inclusion. Hence the ideals agree.
 -/
 private theorem comap_preimageOpens_ι_comap_iso {X Y : Scheme.{u}} (e : X ≅ Y) (V : Y.Opens)
     (A : Y.IdealSheafData) :
     (A.comap e.hom).comap (preimageOpens e V).ι = (A.comap V.ι).comap (preimageOpensIso e V).hom := by
   rw [← Scheme.IdealSheafData.comap_comp, ← Scheme.IdealSheafData.comap_comp, preimageOpens_ι_comp_hom]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Pullback along a composite equals successive pullback. Compatibility of the subscheme isomorphism with the two closed immersions identifies the two composite maps, giving the stated equality of ideals.
 -/
 private theorem comap_subschemeι_comap_iso {X Y : Scheme.{u}} (r : X ≅ Y) (B : Y.IdealSheafData)
     (A : Y.IdealSheafData) :
@@ -173,8 +163,8 @@ private theorem comap_subschemeι_comap_iso {X Y : Scheme.{u}} (r : X ≅ Y) (B 
   rw [← Scheme.IdealSheafData.comap_comp, ← Scheme.IdealSheafData.comap_comp,
     comapSubschemeIso_hom_comp]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Restricting the pulled-back ambient ideal to the inverse image open agrees with pulling its original restriction back by the restricted isomorphism. Pullback along that isomorphism preserves the support containment, giving the claim.
 -/
 private theorem support_comap_preimageOpens_subset {X Y : Scheme.{u}} (e : X ≅ Y) (V : Y.Opens)
     (A : Y.IdealSheafData) (B : V.toScheme.IdealSheafData)
@@ -185,8 +175,8 @@ private theorem support_comap_preimageOpens_subset {X Y : Scheme.{u}} (e : X ≅
   rw [comap_preimageOpens_ι_comap_iso]
   exact support_comap_iso_subset_of_subset (preimageOpensIso e V) h
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+First carry the support of the ideal on the original open back through the open isomorphism. Compatibility of the closed immersions with the induced subscheme isomorphism then identifies the desired inverse image with the inverse image of the given open set along this subscheme isomorphism. It is open by continuity.
 -/
 private theorem isOpen_preimage_support_comap_preimageOpensIso {X Y : Scheme.{u}} (e : X ≅ Y) (V : Y.Opens)
     (A : Y.IdealSheafData) (B : V.toScheme.IdealSheafData)
@@ -198,8 +188,8 @@ private theorem isOpen_preimage_support_comap_preimageOpensIso {X Y : Scheme.{u}
     ← comapSubschemeIso_hom_comp, _root_.FunctorialResolution.EmbeddedResolution.PrincipalizationIsoTransport.preimage_base_comp]
   exact h.preimage (comapSubschemeIso (preimageOpensIso e V) B).hom.continuous
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Compose the maps used for the nested inverse images. The compatibility of the subscheme and open isomorphisms says that these composites into the original ambient scheme are equal. Their inverse images of the memory set therefore agree.
 -/
 private theorem preimage_comap_subschemeι_preimageOpens_comp {X Y : Scheme.{u}} (e : X ≅ Y) (V : Y.Opens)
     (B : V.toScheme.IdealSheafData) (Mem : Set ↥Y) :
@@ -209,8 +199,8 @@ private theorem preimage_comap_subschemeι_preimageOpens_comp {X Y : Scheme.{u}}
         (⇑(B.subschemeι ≫ V.ι).base ⁻¹' Mem) := by
   rw [← _root_.FunctorialResolution.EmbeddedResolution.PrincipalizationIsoTransport.preimage_base_comp, ← _root_.FunctorialResolution.EmbeddedResolution.PrincipalizationIsoTransport.preimage_base_comp, Category.assoc, subschemeι_comp_preimageOpens_ι_comp_hom]
 
-/- English proof (translation)
-Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
+/- English proof (authored)
+Pullback in an optional ideal changes its value only when an ideal is present. A present ideal yields a present pulled-back ideal. Hence an absent result forces the original optional ideal to be absent.
 -/
 private theorem eq_none_of_map_comap_eq_none {X Y : Scheme.{u}} (g : X ≅ Y)
     {o : Option Y.IdealSheafData} (h : o.map (fun J => J.comap g.hom) = Option.none) :
@@ -219,8 +209,8 @@ private theorem eq_none_of_map_comap_eq_none {X Y : Scheme.{u}} (g : X ≅ Y)
   | none => rfl
   | some a => simp at h
 
-/- English proof (translation)
-Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
+/- English proof (authored)
+If the pulled-back optional ideal is present, the original one must also be present. Its original ideal pulls back to the given value because equality of present values identifies their underlying ideals.
 -/
 private theorem exists_eq_some_of_map_comap_eq_some {X Y : Scheme.{u}} (g : X ≅ Y)
     {o : Option Y.IdealSheafData} {b : X.IdealSheafData}
@@ -230,10 +220,8 @@ private theorem exists_eq_some_of_map_comap_eq_some {X Y : Scheme.{u}} (g : X �
   | none => simp at h
   | some a => exact ⟨a, rfl, by simpa using h⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The identity of the inverse images of memory shows that the image of the given point on the original subscheme lies outside the old memory. Choose the open around that point on which the two original ideals agree. Take its inverse image under the subscheme isomorphism. It contains the given point, and functoriality of ideal pullback along the compatible open and subscheme maps transports the equality to it.
 -/
 private theorem exists_isOpen_comap_eq_comap_preimageOpensIso {W W' : Scheme.{u}} (e : W' ≅ W) (N : W.IdealSheafData)
     (Mem : Set ↥W) (V : W.Opens) (B : V.toScheme.IdealSheafData)
@@ -260,8 +248,8 @@ private theorem exists_isOpen_comap_eq_comap_preimageOpensIso {W W' : Scheme.{u}
   refine ⟨preimageOpens (comapSubschemeIso (preimageOpensIso e V) B) O, hxO, ?_⟩
   rw [comap_preimageOpens_ι_comap_iso, comap_preimageOpens_ι_comap_iso, comap_subschemeι_comap_iso, comap_preimageOpens_ι_comap_iso, hO]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Apply the hypothesis about principalization certificates to the isomorphism from the pulled-back subscheme to the original one. The inclusion identities identify its structural map with the specified composite. The same identities identify the inverse images of the memory set and the pullback of the target ideal. Substituting gives the required certificate.
 -/
 private theorem principalizationCertificate_comap_preimageOpensIso {k : Type u} [Field k] {W W' : Scheme.{u}}
     (p : W ⟶ Spec (CommRingCat.of k)) (e : W' ≅ W) (Z : W.IdealSheafData) (μ : ℕ)
@@ -283,8 +271,8 @@ private theorem principalizationCertificate_comap_preimageOpensIso {k : Type u} 
     ← comap_preimageOpens_ι_comap_iso] at ht
   exact ht
 
-/- English proof (translation)
-Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components.
+/- English proof (authored)
+The effective Cartier property of the ideal is preserved by transport through an isomorphism. Its closed subscheme is identified with the original smooth divisor over the field. Thus the pulled-back ideal again defines a smooth divisor.
 -/
 theorem isSmoothDivisor_comap_iso {k : Type u} [Field k] {X Y : Scheme.{u}}
     (q : Y ⟶ Spec (CommRingCat.of k)) (e : X ≅ Y) (D : Y.IdealSheafData)
@@ -292,8 +280,8 @@ theorem isSmoothDivisor_comap_iso {k : Type u} [Field k] {X Y : Scheme.{u}}
   rw [isSmoothDivisor_iff] at h ⊢
   exact ⟨h.1.comap_iso e, smooth_comap_iso q e D h.2⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+Pull the smooth divisor back along the isomorphism of the inverse image open with the original open. Compatibility of this isomorphism with open inclusions identifies its structural morphism with the prescribed composite.
 -/
 theorem isSmoothDivisor_comap_preimageOpensIso {k : Type u} [Field k] {W W' : Scheme.{u}}
     (p : W ⟶ Spec (CommRingCat.of k)) (e : W' ≅ W) (U : W.Opens)
@@ -302,10 +290,8 @@ theorem isSmoothDivisor_comap_preimageOpensIso {k : Type u} [Field k] {W W' : Sc
   have h' := isSmoothDivisor_comap_iso (U.ι ≫ p) (preimageOpensIso e U) H h
   rwa [← Category.assoc, ← preimageOpens_ι_comp_hom, Category.assoc] at h'
 
-/- English proof (translation)
-Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+If a component of the new scheme were contained in the pulled-back support, its image would be a component of the original scheme, since the ambient isomorphism is a homeomorphism. The image would lie in the original support by the formula for pulled-back supports. This contradicts original nonvanishing on components.
 -/
 theorem nonzeroOnComponents_comap_iso {X Y : Scheme.{u}} (f : X ≅ Y) (I : Y.IdealSheafData)
     (h : NonzeroOnComponents I) : NonzeroOnComponents (I.comap f.hom) := by
@@ -320,12 +306,10 @@ theorem nonzeroOnComponents_comap_iso {X Y : Scheme.{u}} (f : X ≅ Y) (I : Y.Id
 
 end PrincipalizationIsoTransport
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
+/- English proof (authored)
+At a point of the pulled-back target support, take the inverse image of the original neighborhood and transport its smooth hypersurface along the open isomorphism. The pullback identities preserve both support containments. For each optional hypersurface ideal, transport a present value along the induced subscheme isomorphism and keep an absent value absent.
 
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
+When the ideal is absent, the original openness condition transfers by the subscheme isomorphism. When it is present, the original ideal supplies the pulled-back ideal, and nonvanishing on components transfers under the isomorphism. The equality of local ideals away from memory also transfers, because the inverse images of the old and new memory agree under the same identification. Finally the hypothesis for the descended principalization certificates applies to the induced subscheme isomorphism. These transported data meet every condition of the descent constructor.
 -/
 theorem isoInvariantOrderCertificateDescend : OrderCertificateIsoInvariantOfMaxContact.{u} := by
   intro k inst W p N μ Mem Z U hU H hH hNsubH hZH J hJnone hJcomp hJloc hJcert hJtrans W' e
@@ -373,8 +357,8 @@ theorem isoInvariantOrderCertificateDescend : OrderCertificateIsoInvariantOfMaxC
       (H (e.hom.base z') (hsupp z' hz')) Jz
       (hJtrans (e.hom.base z') (hsupp z' hz') Jz hJz)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The descent case of order certificates has the established invariance under ambient isomorphisms. Apply the certificate transport theorem with that descent result and the given isomorphism to pull back the structural map, ideal, memory, and target ideal.
 -/
 theorem OrderCertificate.comap_iso_hom_comp {k : Type u} [Field k] {W W' : Scheme.{u}}
     {p : W ⟶ Spec (CommRingCat.of k)} {N : W.IdealSheafData} {μ : ℕ}
@@ -382,8 +366,8 @@ theorem OrderCertificate.comap_iso_hom_comp {k : Type u} [Field k] {W W' : Schem
     OrderCertificate W' (e.hom ≫ p) (N.comap e.hom) μ (⇑e.hom.base ⁻¹' Mem) (Z.comap e.hom) :=
   OrderCertificate.comap_iso isoInvariantOrderCertificateDescend e h
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Transport the principalization certificate along the ambient isomorphism using invariance of the order-certificate descent case. The given equality identifies the new structural map with the transported one, yielding the claimed certificate.
 -/
 theorem PrincipalizationCertificate.comap_iso_of_eq_iso_hom_comp {k : Type u} [Field k] {W W' : Scheme.{u}}
     {p : W ⟶ Spec (CommRingCat.of k)} {p' : W' ⟶ Spec (CommRingCat.of k)}
@@ -392,8 +376,8 @@ theorem PrincipalizationCertificate.comap_iso_of_eq_iso_hom_comp {k : Type u} [F
     PrincipalizationCertificate W' p' (I.comap e.hom) m (⇑e.hom.base ⁻¹' Mem) (Z.comap e.hom) :=
   PrincipalizationCertificate.comap_iso_of_eq isoInvariantOrderCertificateDescend e hp h
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The order certificate pulls back under the isomorphism by the established descent invariance and the certificate transport theorem. Substitute the stated equality to write its structural map as the specified new map.
 -/
 theorem OrderCertificate.comap_iso_of_eq_iso_hom_comp {k : Type u} [Field k] {W W' : Scheme.{u}}
     {p : W ⟶ Spec (CommRingCat.of k)} {p' : W' ⟶ Spec (CommRingCat.of k)}

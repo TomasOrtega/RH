@@ -42,14 +42,14 @@ def iteratedPreimage (U₀ : (s.toSequenceOfBlowups.schemeAt 0).Opens) :
   | t + 1 => s.toSequenceOfBlowups.transitionMapSucc t ⁻¹ᵁ iteratedPreimage U₀ t
 
 @[simp]
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+At stage zero the recursively chosen open is the original open U₀.
 -/
 theorem iteratedPreimage_zero (U₀ : (s.toSequenceOfBlowups.schemeAt 0).Opens) :
     iteratedPreimage T j hj I₀ E₀ s U₀ 0 = U₀ := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+At a successor stage the chosen open is defined as the inverse image of the preceding open under the adjacent blowup morphism.
 -/
 theorem iteratedPreimage_succ (U₀ : (s.toSequenceOfBlowups.schemeAt 0).Opens) (t : ℕ) :
     iteratedPreimage T j hj I₀ E₀ s U₀ (t + 1) =
@@ -60,8 +60,8 @@ def restrictedBlowupMorphism (U₀ : (s.toSequenceOfBlowups.schemeAt 0).Opens) (
       (↑(iteratedPreimage T j hj I₀ E₀ s U₀ t) : Scheme.{u}) :=
   s.toSequenceOfBlowups.transitionMapSucc t ∣_ iteratedPreimage T j hj I₀ E₀ s U₀ t
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The restricted transition is the unique map from the inverse-image open to the given open that restricts the original transition. Composing it with the target open inclusion equals the original transition preceded by the source open inclusion.
 -/
 theorem restrictedBlowupMorphism_comp_ι (U₀ : (s.toSequenceOfBlowups.schemeAt 0).Opens) (t : ℕ) :
     restrictedBlowupMorphism T j hj I₀ E₀ s U₀ t ≫ (iteratedPreimage T j hj I₀ E₀ s U₀ t).ι =
@@ -69,10 +69,8 @@ theorem restrictedBlowupMorphism_comp_ι (U₀ : (s.toSequenceOfBlowups.schemeAt
   AlgebraicGeometry.morphismRestrict_ι (s.toSequenceOfBlowups.transitionMapSucc t)
     (iteratedPreimage T j hj I₀ E₀ s U₀ t)
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+At stage zero the assertion is the hypothesis. At each successor the chosen subset is the inverse image of the preceding one under a continuous point map. The inverse image of a closed subset is closed, so induction applies.
 -/
 theorem isClosed_iteratedPreimage (U₀ : (s.toSequenceOfBlowups.schemeAt 0).Opens)
     (hU : IsClosed ((U₀ : Set ↥(s.toSequenceOfBlowups.schemeAt 0)))) (t : ℕ) :
@@ -92,8 +90,8 @@ theorem isClosed_iteratedPreimage (U₀ : (s.toSequenceOfBlowups.schemeAt 0).Ope
           Set ↥(s.toSequenceOfBlowups.schemeAt (n + 1)))ᶜ) := h2
       exact isOpen_compl_iff.mp hop
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The stage projection to the field is smooth for an admissible marked sequence. The chosen open includes by a smooth open immersion. Their composite is smooth.
 -/
 theorem smooth_iteratedPreimage_ι_comp_projectionToSpec (U₀ : (s.toSequenceOfBlowups.schemeAt 0).Opens)
     (hV : (restrictToBoundaryDivisor T j hj I₀ E₀).IsAdmissible) (t : ℕ) (ht : t ≤ s.toSequenceOfBlowups.length) :
@@ -102,10 +100,8 @@ theorem smooth_iteratedPreimage_ι_comp_projectionToSpec (U₀ : (s.toSequenceOf
     MarkedSequenceOfBlowups.smooth_projectionToSpec effectiveCartierSupportContainsNoComponent hV s t ht
   infer_instance
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+A point in the support of the restricted center maps to the support of the whole center, since support pulls back by inverse image. There the stage ideal has order at least the multiplicity by the marking. Pullback along an open immersion identifies the local rings and stalk ideals, so it preserves this order at the chosen point.
 -/
 theorem support_center_comap_subset_orderAtLeastLocus (U₀ : (s.toSequenceOfBlowups.schemeAt 0).Opens)
     (_hV : (restrictToBoundaryDivisor T j hj I₀ E₀).IsAdmissible) (t : ℕ) (ht : t < s.toSequenceOfBlowups.length) :
@@ -127,8 +123,8 @@ theorem support_center_comap_subset_orderAtLeastLocus (U₀ : (s.toSequenceOfBlo
   rw [orderAt_comap_of_isOpenImmersion]
   exact hord
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The marking gives strict normal crossings of the stage center with the stage boundary. Restrict through the open immersion. The normal crossings charts restrict to this open, and their relevant ideals and structural map are exactly the pulled-back center, boundary, and structural map.
 -/
 theorem hasStrictNormalCrossingsWith_iteratedPreimage (U₀ : (s.toSequenceOfBlowups.schemeAt 0).Opens)
     (hV : (restrictToBoundaryDivisor T j hj I₀ E₀).IsAdmissible) (t : ℕ) (ht : t < s.toSequenceOfBlowups.length) :
@@ -143,10 +139,8 @@ theorem hasStrictNormalCrossingsWith_iteratedPreimage (U₀ : (s.toSequenceOfBlo
   exact hasStrictNormalCrossingsWith_comap (s.projectionToSpec t) (iteratedPreimage T j hj I₀ E₀ s U₀ t).ι
     (s.toSequenceOfBlowups.center t) (s.boundary t) hZE
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
+/- English proof (authored)
+Use the boundary update for the marked lower sequence. The next open is the inverse image of the preceding open under the transition. Restriction to this inverse image commutes with each strict transform and sends the exceptional ideal to the exceptional ideal for the restricted morphism and center. Applying these identities to the list and its last entry gives the formula.
 -/
 theorem boundary_comap_iteratedPreimage_succ (U₀ : (s.toSequenceOfBlowups.schemeAt 0).Opens)
     (hV : (restrictToBoundaryDivisor T j hj I₀ E₀).IsAdmissible) (t : ℕ) (ht : t < s.toSequenceOfBlowups.length) :
@@ -189,8 +183,8 @@ def restrictedEmbedding [AlgebraicGeometry.IsNoetherian T.scheme]
     (↑(iteratedPreimage T j hj I₀ E₀ s U₀ t) : Scheme.{u}) ⟶ (ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).obj t :=
   (iteratedPreimage T j hj I₀ E₀ s U₀ t).ι ≫ embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr t
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The restricted embedding is defined as the inclusion of the iterated inverse-image open followed by the full stage embedding into the ambient scheme.
 -/
 theorem restrictedEmbedding_eq_ι_comp_embeddingIntoAmbient [AlgebraicGeometry.IsNoetherian T.scheme]
     (hpr : (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData.CentersContainNoComponent)
@@ -198,8 +192,8 @@ theorem restrictedEmbedding_eq_ι_comp_embeddingIntoAmbient [AlgebraicGeometry.I
     restrictedEmbedding T j hj I₀ E₀ s hres hno hpr U₀ t =
       (iteratedPreimage T j hj I₀ E₀ s U₀ t).ι ≫ embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr t := rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The inverse-image open is closed by induction from the clopen initial open, so its inclusion is a closed immersion. The full embedding into the ambient stage is also a closed immersion. The restricted embedding is their composite.
 -/
 theorem isClosedImmersion_restrictedEmbedding [AlgebraicGeometry.IsNoetherian T.scheme]
     (hpr : (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData.CentersContainNoComponent)
@@ -214,10 +208,8 @@ theorem isClosedImmersion_restrictedEmbedding [AlgebraicGeometry.IsNoetherian T.
   rw [restrictedEmbedding_eq_ι_comp_embeddingIntoAmbient]
   exact @IsClosedImmersion.comp _ _ _ _ _ hι hemb
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Expand the restricted embeddings as open inclusions followed by the full embeddings. The full embedding square commutes with the ambient and lower transitions. The square for restricting the lower transition to the inverse-image open also commutes. Pasting these identities gives the asserted equality of composites.
 -/
 theorem restrictedEmbedding_comp_blowupMorphism [AlgebraicGeometry.IsNoetherian T.scheme]
     (hpr : (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData.CentersContainNoComponent)
@@ -256,10 +248,8 @@ theorem restrictedEmbedding_comp_blowupMorphism [AlgebraicGeometry.IsNoetherian 
     exact Category.assoc _ _ _
   exact e1.trans (e2.trans (e3.trans (e4.trans e5)))
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The full embedding followed by the ambient projection to the base equals the lower projection followed by the original divisor inclusion. Composing with the field structure map gives the lower projection to the field. Precomposing by the chosen open inclusion gives the same equality for the restricted embedding.
 -/
 theorem restrictedEmbedding_comp_structureMorphism_ambientBlowupSeq [AlgebraicGeometry.IsNoetherian T.scheme]
     (hpr : (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData.CentersContainNoComponent)
@@ -291,12 +281,8 @@ theorem restrictedEmbedding_comp_structureMorphism_ambientBlowupSeq [AlgebraicGe
     exact Category.assoc _ _ _
   exact e1.trans (congrArg (fun g => (iteratedPreimage T j hj I₀ E₀ s U₀ t).ι ≫ g) key)
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+At a genuine step the next ambient scheme is Noetherian, and the full new embedding kernel is the strict transform of the full preceding embedding kernel. The successive embedding squares commute and the preceding selected open is clopen. The strict-transform formula for a clopen part of a closed subscheme therefore identifies the kernel of its inverse image at the next stage with the strict transform of the preceding restricted kernel.
 -/
 theorem ker_restrictedEmbedding_succ [AlgebraicGeometry.IsNoetherian T.scheme]
     (hpr : (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData.CentersContainNoComponent)
@@ -335,12 +321,8 @@ theorem ker_restrictedEmbedding_succ [AlgebraicGeometry.IsNoetherian T.scheme]
   rw [restrictedEmbedding_eq_ι_comp_embeddingIntoAmbient, restrictedEmbedding_eq_ι_comp_embeddingIntoAmbient, iteratedPreimage_succ]
   exact h
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The initial support containment is assumed. At a successor stage the support of the controlled ideal lies in the inverse image of the preceding ideal support. Induction places that preceding support inside the chosen preceding open. Taking inverse images therefore puts the next support inside the next chosen open.
 -/
 private theorem support_ideal_subset_iteratedPreimage (U₀ : (s.toSequenceOfBlowups.schemeAt 0).Opens)
     (hsupp : (((s.ideal 0).support : Set ↥(s.toSequenceOfBlowups.schemeAt 0))) ⊆
@@ -363,10 +345,8 @@ private theorem support_ideal_subset_iteratedPreimage (U₀ : (s.toSequenceOfBlo
           (((s.ideal n).support : Set ↥(s.toSequenceOfBlowups.schemeAt n))) := h1 hx
       exact h2 hx1
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Every center point has stage ideal order at least the positive mark, so in particular has order at least one and belongs to the stage ideal support. That entire support lies in the chosen iterated inverse-image open, giving the containment for the center.
 -/
 private theorem support_center_subset_iteratedPreimage (U₀ : (s.toSequenceOfBlowups.schemeAt 0).Opens) (hm : 1 ≤ T.mult)
     (hsupp : (((s.ideal 0).support : Set ↥(s.toSequenceOfBlowups.schemeAt 0))) ⊆
@@ -382,8 +362,8 @@ private theorem support_center_subset_iteratedPreimage (U₀ : (s.toSequenceOfBl
   have h4 : x ∈ (((s.ideal t).support : Set ↥(s.toSequenceOfBlowups.schemeAt t))) := h3
   exact support_ideal_subset_iteratedPreimage T j hj I₀ E₀ s U₀ hsupp t (le_of_lt ht) h4
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Image ideals compose with the morphisms. Taking the image of J along the first map gives Z by hypothesis, so taking the image along the composite gives the image of Z along the second map.
 -/
 private theorem imageIdealSheaf_comp_of_eq {S X P : Scheme.{u}} (ι : S ⟶ X) (emb : X ⟶ P)
     (J : S.IdealSheafData) (Z : X.IdealSheafData) (hJ : imageIdealSheaf ι J = Z) :
@@ -391,10 +371,8 @@ private theorem imageIdealSheaf_comp_of_eq {S X P : Scheme.{u}} (ι : S ⟶ X) (
   subst hJ
   exact Scheme.IdealSheafData.map_comp J ι emb
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The full lower center support lies in the chosen clopen open. Restricting its ideal to that open and pushing it back to the full lower stage recovers the center ideal. The ambient center is the image of this full lower ideal under the stage embedding. Compose the two image operations to obtain the image of the restricted center along the restricted embedding.
 -/
 theorem center_ambientBlowupSeq_eq_imageIdealSheaf [AlgebraicGeometry.IsNoetherian T.scheme]
     (hpr : (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData.CentersContainNoComponent)

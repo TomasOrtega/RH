@@ -41,8 +41,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Substitute using the available equality. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The first entry is unit, so filtering out unit ideals removes it. The remaining filtered entries come from the tail.
 -/
 private theorem filterNeTop_cons_of_eq_top {X : Scheme.{u}} {D : X.IdealSheafData}
     (h : D = ⊤) (E : List X.IdealSheafData) :
@@ -50,23 +50,23 @@ private theorem filterNeTop_cons_of_eq_top {X : Scheme.{u}} {D : X.IdealSheafDat
   subst h
   simp [filterNeTop]
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The first ideal is nonunit, so the filter retains it at the front. The remaining entries are exactly the filtered tail.
 -/
 private theorem filterNeTop_cons_of_ne_top {X : Scheme.{u}} {D : X.IdealSheafData}
     (h : D ≠ ⊤) (E : List X.IdealSheafData) :
     filterNeTop (D :: E) = D :: filterNeTop E := by
   simp [filterNeTop, h]
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+Filtering a concatenation retains precisely the accepted entries of the first list followed by the accepted entries of the second. Apply this with acceptance of nonunit ideals.
 -/
 private theorem filterNeTop_append {Y : Scheme.{u}} (A B : List Y.IdealSheafData) :
     filterNeTop (A ++ B) = filterNeTop A ++ filterNeTop B := by
   simp only [filterNeTop, List.filter_append]
 
-/- English proof (translation)
-Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+If the common head is unit it is removed from both lists. If it is nonunit it is retained as the same first entry on both sides. In either case equality of the filtered tails gives the result.
 -/
 private theorem filterNeTop_cons_congr {Y : Scheme.{u}} (a : Y.IdealSheafData)
     {L L' : List Y.IdealSheafData} (h : filterNeTop L = filterNeTop L') :
@@ -76,12 +76,8 @@ private theorem filterNeTop_cons_congr {Y : Scheme.{u}} (a : Y.IdealSheafData)
     exact h
   · rw [filterNeTop_cons_of_ne_top ha L, filterNeTop_cons_of_ne_top ha L', h]
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the input list. A unit head is removed before mapping and also after mapping because the map preserves the unit ideal. A nonunit head appears in both mapped lists and is treated the same by their final filter. The induction hypothesis gives equality for the remaining tails.
 -/
 private theorem filterNeTop_map_filterNeTop {X Y : Scheme.{u}}
     (f : X.IdealSheafData → Y.IdealSheafData) (hf : f ⊤ = ⊤) (E : List X.IdealSheafData) :
@@ -102,8 +98,8 @@ private theorem filterNeTop_map_filterNeTop {X Y : Scheme.{u}}
       simp only [List.map_cons]
       exact filterNeTop_cons_congr (f a) ih
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Distribute the filter across the appended entry. This entry contributes the same filtered list to both sides. For the mapped parts, filtering before mapping makes no difference to the final filter because the map preserves unit ideals. The given equality of the original filtered parts therefore gives equality of the mapped and filtered parts.
 -/
 theorem filterNeTop_map_append_congr {X Y : Scheme.{u}}
     (f : X.IdealSheafData → Y.IdealSheafData) (hf : f ⊤ = ⊤) (D : Y.IdealSheafData)
@@ -114,8 +110,8 @@ theorem filterNeTop_map_append_congr {X Y : Scheme.{u}}
 
 namespace DivisorReduction
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The ambient center is the image of the restricted lower center under the restricted embedding. Its ideal is therefore the kernel of the lower center inclusion followed by that embedding. A section in the kernel of the embedding also vanishes on the composite, giving inclusion.
 -/
 theorem ker_restrictedEmbedding_le_center (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -172,10 +168,8 @@ structure GoingUpInvariantOnOpen (hres : FunctorialResolution.Blowup.StrictTrans
 
 namespace GoingUpInvariantOnOpen
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+At an earlier step the derivative divisibility clause holds in particular for derivative order zero. This term is the ambient controlled transform itself, and its exceptional exponent is the original mark. Thus the supplied witness gives the desired product.
 -/
 theorem exists_pow_mul_eq_comap_controlledTransform {hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}}
     {hno : BlowupPreservesNoetherian.{u}} {T : MarkedIdealWithBoundary.{u}}
@@ -201,16 +195,16 @@ theorem exists_pow_mul_eq_comap_controlledTransform {hres : FunctorialResolution
   simp only [Nat.sub_zero] at hB
   rw [hB, h0]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Each iterated pullback is the pullback along its corresponding composite. Commutativity identifies the two composites and hence the two ideals.
 -/
 private theorem comap_comap_of_commSq {X A A' B : Scheme.{u}} (ι : A' ⟶ A) (p : A ⟶ X)
     (q : A' ⟶ B) (e : B ⟶ X) (I : X.IdealSheafData) (hsq : ι ≫ p = q ≫ e) :
     (I.comap p).comap ι = (I.comap e).comap q := by
   rw [← Scheme.IdealSheafData.comap_comp, hsq, Scheme.IdealSheafData.comap_comp]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The exceptional ideal in the ambient sequence pulls back to the lower exceptional ideal by commutativity and the center restriction formula. Pull the ambient product formula back to the lower scheme. Its right side is the same as the lower product formula by commutativity and the preceding ideal equality. Consequently the two candidate successor ideals agree after multiplication by the same exceptional power. Cancel this power using its local nonzero divisor generators.
 -/
 private theorem comap_eq_of_pow_mul_comap_eq {A A' B B' : Scheme.{u}} (m : ℕ)
     (π : B ⟶ A) (ιA : A' ⟶ A) (ιB : B' ⟶ B) (ρ : B' ⟶ A')
@@ -231,14 +225,8 @@ private theorem comap_eq_of_pow_mul_comap_eq {A A' B B' : Scheme.{u}} (m : ℕ)
       hpow, ← Scheme.IdealSheafData.comap_comp, hsq, Scheme.IdealSheafData.comap_comp, hprev]
   exact (hcart.pow m).eq_of_mul_eq_mul hkey
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+At zero the square of the two initial projections and the original divisor embedding commutes. Pullback around it identifies the restricted ambient ideal with the initial lower marked ideal. For a successor, the ambient center restricts to the lower center because it is its image. The ambient divisibility gives the controlled-transform product formula, and the lower marking gives the corresponding formula below. Use the commuting square and the preceding ideal equality from induction to compare the two formulas. Cancel the common lower exceptional power, which is locally generated by a nonzero divisor. This identifies the next ideals.
 -/
 private theorem comap_controlledTransform_embeddingIntoAmbient
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
@@ -299,8 +287,8 @@ private theorem comap_controlledTransform_embeddingIntoAmbient
         (embeddingIntoAmbient_comp_blowupMorphism hres hno T j hj I₀ E₀ s hpr t) hcen hprev hpow
         (s.ideal_succ t htlt) (isLocallyGeneratedByNonZeroDivisor_exceptionalIdeal hblow)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The invariant on the open gives ambient exceptional divisibility at each preceding step by taking derivative order zero. Use these divisibilities in the stagewise comparison along the full embedding. The ambient controlled transform restricts to the lower marked ideal.
 -/
 theorem comap_controlledTransform {hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}}
     {hno : BlowupPreservesNoetherian.{u}} {T : MarkedIdealWithBoundary.{u}}
@@ -316,8 +304,8 @@ theorem comap_controlledTransform {hres : FunctorialResolution.Blowup.StrictTran
         (embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr t) = s.ideal t :=
   comap_controlledTransform_embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr t ht hinv.exists_pow_mul_eq_comap_controlledTransform
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+The restricted embedding is the lower open inclusion followed by the full embedding. Pullback along it first restricts the ambient ideal along the full embedding, giving the lower ideal by the previous result. Pulling back along the open inclusion then gives the stated restricted ideal.
 -/
 theorem comap_controlledTransform_restrictedEmbedding {hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}}
     {hno : BlowupPreservesNoetherian.{u}} {T : MarkedIdealWithBoundary.{u}}
@@ -338,14 +326,8 @@ theorem comap_controlledTransform_restrictedEmbedding {hres : FunctorialResoluti
       I.comap (iteratedPreimage T j hj I₀ E₀ s U₀ t).ι)
     (comap_controlledTransform hinv ht)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The ambient center is the image of the lower center restricted to the chosen open, since that open contains its support. Take a point of this restricted center mapping to the given ambient center point. It has the required order for the restricted lower ideal, which is the pullback of the ambient controlled ideal by the invariant. Both structural maps are smooth. The invariant's logarithmic derivative bound at order m−1, where m is the mark, and the derivative power inequalities from balance and previous divisibilities give the hypotheses of the order-locus comparison for this closed immersion. It puts the image point in the required ambient order locus.
 -/
 theorem support_center_subset_orderAtLeastLocus {hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}}
     {hno : BlowupPreservesNoetherian.{u}} {T : MarkedIdealWithBoundary.{u}}
@@ -410,8 +392,8 @@ theorem support_center_subset_orderAtLeastLocus {hres : FunctorialResolution.Blo
     ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).controlledTransform I₀ T.mult t)
     (fun l => ambientDerivIdeal hres hno T j hj I₀ E₀ s hpr l t) hdom hbal' y hy2
 
-/- English proof (translation)
-Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The closed immersion is its kernel subscheme inclusion after precomposing with the isomorphism from its source to that subscheme. The new composites differ by this same source isomorphism, which leaves the kernel unchanged.
 -/
 private theorem ker_comp_eq_ker_subschemeι_comp {A S P : Scheme.{u}} (g : A ⟶ S)
     [AlgebraicGeometry.IsClosedImmersion g] (f : S ⟶ P) :
@@ -419,8 +401,8 @@ private theorem ker_comp_eq_ker_subschemeι_comp {A S P : Scheme.{u}} (g : A ⟶
   symm
   rw [← kerSubschemeIso_hom_comp g, Category.assoc, Scheme.Hom.ker_comp_of_isIso]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Transport of the ideal through the isomorphism is pullback by its inverse. Taking its image under the remaining morphism gives the same image as taking the original ideal's image under the composite, by functoriality.
 -/
 private theorem imageIdealSheaf_iso_hom_comp_eq {A S P : Scheme.{u}} (e : A ≅ S) (f : S ⟶ P)
     (C : A.IdealSheafData) :
@@ -432,18 +414,8 @@ private theorem imageIdealSheaf_iso_hom_comp_eq {A S P : Scheme.{u}} (e : A ≅ 
   rw [imageIdealSheaf_eq_ker_subschemeι_comp, imageIdealSheaf_eq_ker_subschemeι_comp, ← Category.assoc,
     ker_comp_eq_ker_subschemeι_comp (C.subschemeι ≫ e.hom) f, hker]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Move the selected boundary entry to the front. The invariant identifies it with the restricted embedding kernel, and the reordered ambient list retains strict normal crossings. The restricted lower center has strict normal crossings with the restricted lower boundary. By the invariant, the remaining ambient boundary pulls back to a list with the same nontrivial entries, so the condition also holds for that list. Identify the restricted lower scheme with the subscheme defined by the embedding kernel. This transports the lower structural map, center, and boundary to that divisor. The lifting property gives strict normal crossings for its image center on the ambient scheme. This image is the ambient center because the chosen open contains the lower center support.
 -/
 theorem hasStrictNormalCrossingsWith_center_cons {hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}}
     {hno : BlowupPreservesNoetherian.{u}} {T : MarkedIdealWithBoundary.{u}}
@@ -545,8 +517,8 @@ theorem hasStrictNormalCrossingsWith_center_cons {hres : FunctorialResolution.Bl
     hsupp t ht'] at hmain
   exact hmain
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The preceding result works with the kernel divisor at the front, which is the selected boundary entry moved there. Transport the coordinate assignments back to the original list order. The center maintains strict normal crossings with the original boundary.
 -/
 theorem hasStrictNormalCrossingsWith_center {hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}}
     {hno : BlowupPreservesNoetherian.{u}} {T : MarkedIdealWithBoundary.{u}}
@@ -571,14 +543,8 @@ theorem hasStrictNormalCrossingsWith_center {hres : FunctorialResolution.Blowup.
   rw [moveToFront_eq_cons _ j hinv.idx_lt, hinv.bdry_getElem]
   exact hasStrictNormalCrossingsWith_center_cons hinv hlift hm hV hU hsupp ht
 
-/- English proof (translation)
-Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+For derivative order l below the mark m, derivative balance and prior exceptional divisibilities give the power inequality comparing the current derivative and controlled ideals. The order-locus inclusion places the center in the derivative ideal's order-at-least-m−l locus. The center has strict normal crossings, so the derivative ideal lies in this power of the center. Pullback along the blowup makes the center an invertible exceptional ideal and hence gives the claimed factorization. At l equal to m there is no exceptional factor to divide out, so use the whole pullback as the witness.
 -/
 theorem exists_pow_mul_eq_comap_ambientDerivIdeal
     {hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}}
@@ -640,12 +606,8 @@ theorem exists_pow_mul_eq_comap_ambientDerivIdeal
     have h0 : T.mult - l = 0 := Nat.sub_eq_zero_of_le (not_lt.mp hlm)
     rw [h0, pow_zero, one_mul]
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The center has strict normal crossings. If l is below the mark m, the power comparison makes its order for the derivative term at least m−l, by the ambient center order result. If l equals m the order bound is zero and holds everywhere. The power containment criterion for a center with strict normal crossings then puts the derivative term inside the stated power.
 -/
 theorem ambientDerivIdeal_le_center_pow {hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}}
     {hno : BlowupPreservesNoetherian.{u}} {T : MarkedIdealWithBoundary.{u}}
@@ -690,18 +652,8 @@ theorem ambientDerivIdeal_le_center_pow {hres : FunctorialResolution.Blowup.Stri
 
 end GoingUpInvariantOnOpen
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The ambient initial ideal, boundary, and structural map are the starting ones. There are no preceding divisibility conditions. In the logarithmic derivative sum for order n, the term with index n has logarithmic order zero and is the ordinary derivative of the starting ideal of order n. This gives the initial derivative bound. The selected index and the embedding-kernel equality are given, as is agreement of nontrivial boundaries on the chosen open. The initial smoothness and strict normal crossings provide the other clauses.
 -/
 theorem goingUpInvariantOnOpen_zero (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})

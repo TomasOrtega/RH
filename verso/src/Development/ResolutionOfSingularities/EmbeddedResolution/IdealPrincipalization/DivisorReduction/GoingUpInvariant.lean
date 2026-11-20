@@ -49,8 +49,8 @@ def StrictNormalCrossingsLiftFromDivisor : Prop :=
       HasStrictNormalCrossingsWith (H.subschemeι ≫ p) Z (N.map (fun D => D.comap H.subschemeι)) →
       HasStrictNormalCrossingsWith p (imageIdealSheaf H.subschemeι Z) (H :: N)
 
-/- English proof (translation)
-Substitute using the available equality. Both sides reduce to the same expression.
+/- English proof (authored)
+Substitute the equality of the two structural morphisms. Both iterates are then formed with the same field, structural morphism, ideal, and order.
 -/
 theorem derivIdealSheafIterate_congr {k : Type u} [Field k] {Y : Scheme.{u}}
     (p q : Y ⟶ Spec (CommRingCat.of k))
@@ -60,8 +60,8 @@ theorem derivIdealSheafIterate_congr {k : Type u} [Field k] {Y : Scheme.{u}}
   subst h
   rfl
 
-/- English proof (translation)
-Substitute using the available equality. Both sides reduce to the same expression.
+/- English proof (authored)
+The equal structural maps define the same logarithmic derivative operation with the given distinguished ideal. Substituting the equality gives identical iterates.
 -/
 theorem logDerivIdealSheafIterate_congr {k : Type u} [Field k] {Y : Scheme.{u}}
     (p q : Y ⟶ Spec (CommRingCat.of k))
@@ -71,8 +71,8 @@ theorem logDerivIdealSheafIterate_congr {k : Type u} [Field k] {Y : Scheme.{u}}
   subst h
   rfl
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Direct image of an ideal along an isomorphism transports it by that isomorphism. This is the same ideal obtained by pulling it back along the inverse, giving the equality.
 -/
 theorem imageIdealSheaf_hom_eq_comap_inv {A B : Scheme.{u}} (e : A ≅ B) (J : A.IdealSheafData) :
     imageIdealSheaf e.hom J = J.comap e.inv := by
@@ -81,8 +81,8 @@ theorem imageIdealSheaf_hom_eq_comap_inv {A B : Scheme.{u}} (e : A ≅ B) (J : A
 
 namespace DivisorReduction
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At stage zero the ambient projection is the identity initial isomorphism. Following it by the original structural map gives that map itself.
 -/
 theorem structureMorphism_ambientBlowupSeq_zero (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -96,15 +96,15 @@ theorem structureMorphism_ambientBlowupSeq_zero (hres : FunctorialResolution.Blo
     exact Category.id_comp T.structMap
   exact h0
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The identity pullback fixes each ideal. Mapping this pullback over the list fixes every entry and its position.
 -/
 private theorem list_map_comap_id_eq_self {X : Scheme.{u}} (E : List X.IdealSheafData) :
     List.map (fun D : X.IdealSheafData => D.comap (CategoryTheory.CategoryStruct.id X)) E = E := by
   simp
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The initial boundary of a sequence is the given list pulled back entry by entry along its initial isomorphism. For the ambient sequence this is the identity, so the boundary is the original list.
 -/
 theorem ambientBlowupSeq_boundary_zero (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -118,8 +118,8 @@ theorem ambientBlowupSeq_boundary_zero (hres : FunctorialResolution.Blowup.Stric
       D.comap (CategoryTheory.CategoryStruct.id T.scheme)) E₀ = E₀
   exact list_map_comap_id_eq_self E₀
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The initial embedding is the lower initial isomorphism followed by the selected divisor inclusion. Precomposing by an isomorphism preserves the kernel. The divisor inclusion has kernel equal to its defining boundary ideal, giving the claim.
 -/
 theorem ker_embeddingIntoAmbient_zero_eq_boundary_get (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -132,10 +132,8 @@ theorem ker_embeddingIntoAmbient_zero_eq_boundary_get (hres : FunctorialResoluti
   exact (Scheme.Hom.ker_comp_of_isIso s.isoZero.hom (T.boundary.get ⟨j, hj⟩).subschemeι).trans
     (Scheme.IdealSheafData.ker_subschemeι _)
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the stage. At zero the ambient stage is isomorphic to the Noetherian original scheme. At a successor within range, the preceding stage is Noetherian by induction. The ambient and lower lengths agree, so the transition is a blowup. The next stage is Noetherian because blowups preserve Noetherianity.
 -/
 private theorem le_length_imp_isNoetherian_ambientBlowupSeq_schemeAt
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
@@ -160,8 +158,8 @@ private theorem le_length_imp_isNoetherian_ambientBlowupSeq_schemeAt
         exact hn
       exact isNoetherian_of_isBlowupAlongIdealSheaf ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).isBlowup n hlen)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The induction along the ambient blowup sequence establishes Noetherianity for every stage at most its length. The given bound is within this range because the ambient length equals the lower length.
 -/
 theorem isNoetherian_ambientBlowupSeq_schemeAt (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -173,8 +171,8 @@ theorem isNoetherian_ambientBlowupSeq_schemeAt (hres : FunctorialResolution.Blow
     AlgebraicGeometry.IsNoetherian ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).obj t) :=
   le_length_imp_isNoetherian_ambientBlowupSeq_schemeAt hres hno T j hj I₀ E₀ s hpr t ht
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The ambient center is the image of the lower center under the stage embedding. Its ideal is the kernel of the lower center inclusion followed by that embedding. Any section in the kernel of the embedding also vanishes on this composite, so the embedding kernel is contained in the ambient center ideal.
 -/
 theorem ker_embeddingIntoAmbient_le_center (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -193,8 +191,8 @@ theorem ker_embeddingIntoAmbient_le_center (hres : FunctorialResolution.Blowup.S
   have h3 := (ambientBlowupSeq_center_eq_imageIdealSheaf hres hno T j hj I₀ E₀ s hpr t).symm
   exact le_of_le_of_eq key (h2.trans h3)
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The ambient derivative term is the controlled-transform sequence of the given iterated derivative ideal. At stage zero the transform is pullback along the initial ambient isomorphism, which is the identity. Thus it is the initial iterated derivative ideal.
 -/
 theorem ambientDerivIdeal_at_zero_eq_derivIdealSheafIterate (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -213,8 +211,8 @@ theorem ambientDerivIdeal_at_zero_eq_derivIdealSheafIterate (hres : FunctorialRe
     derivIdealSheafIterate T.base T.structMap l I₀
   simp
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+An iterated derivative of order zero is the original ideal, and subtracting zero from the mark leaves it unchanged. The ambient derivative term is therefore the original ideal's controlled transform with the original mark.
 -/
 theorem ambientDerivIdeal_order_zero_eq_controlledTransform (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -265,8 +263,8 @@ structure GoingUpInvariant (hres : FunctorialResolution.Blowup.StrictTransformIs
 
 namespace GoingUpInvariant
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Apply the derivative divisibility clause of the invariant at order zero and the indicated earlier stage. At order zero the derivative ideal is the ordinary controlled transform and the exceptional exponent is the original mark. Its factor is the desired witness.
 -/
 theorem exists_exceptionalIdeal_pow_mul_eq_comap_controlledTransform {hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}}
     {hno : BlowupPreservesNoetherian.{u}} {T : MarkedIdealWithBoundary.{u}}
@@ -287,8 +285,8 @@ theorem exists_exceptionalIdeal_pow_mul_eq_comap_controlledTransform {hres : Fun
   refine ⟨B, ?_⟩
   rw [← ambientDerivIdeal_order_zero_eq_controlledTransform hres hno T j hj I₀ E₀ s hpr i, ← hB, Nat.sub_zero]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The invariant gives the exceptional divisibilities needed at every stage before t, by using derivative order zero. The stagewise comparison of ambient controlled transforms with their divisor restrictions therefore applies. It identifies the restriction at t with the marked lower ideal there.
 -/
 theorem comap_controlledTransform {hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}}
     {hno : BlowupPreservesNoetherian.{u}} {T : MarkedIdealWithBoundary.{u}}
@@ -303,22 +301,16 @@ theorem comap_controlledTransform {hres : FunctorialResolution.Blowup.StrictTran
         (embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr t) = s.ideal t :=
   FunctorialResolution.EmbeddedResolution.DivisorReduction.comap_controlledTransform_embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr t ht hgoingUp.exists_exceptionalIdeal_pow_mul_eq_comap_controlledTransform
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Replace the first morphism by the equal second morphism. Its smoothness is then the given property.
 -/
 private theorem smooth_of_eq {A B : Scheme.{u}} {f g : A ⟶ B} (h : f = g)
     (hg : AlgebraicGeometry.Smooth g) : AlgebraicGeometry.Smooth f := by
   rw [h]
   exact hg
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+An ambient center point is the image of a point of the lower center. The marking puts the lower point in the lower order locus, and the transform comparison identifies the lower ideal with the restricted ambient ideal. The ambient and embedded lower schemes are smooth over the field, with compatible structural maps. The invariant bounds the ambient ordinary derivative of order m−1, where m is the mark by the corresponding logarithmic derivative sum, and derivative balance with the earlier divisibilities supplies the associated power bounds on its terms. The order comparison from the divisor to the ambient scheme therefore sends the lower point to the ambient order locus.
 -/
 theorem support_center_subset_orderAtLeastLocus {hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}}
     {hno : BlowupPreservesNoetherian.{u}} {T : MarkedIdealWithBoundary.{u}}
@@ -379,8 +371,8 @@ theorem support_center_subset_orderAtLeastLocus {hres : FunctorialResolution.Blo
     ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).controlledTransform I₀ T.mult t)
     (fun l => ambientDerivIdeal hres hno T j hj I₀ E₀ s hpr l t) hdom hbal' y hy2
 
-/- English proof (translation)
-Supply the required witnesses or components.
+/- English proof (authored)
+A closed immersion is an isomorphism onto its scheme-theoretic image. That image is the subscheme cut out by its kernel. The isomorphism followed by the image inclusion is the given immersion.
 -/
 private theorem exists_iso_ker_subschemeι {S X : Scheme.{u}} (f : S ⟶ X)
     [AlgebraicGeometry.IsClosedImmersion f] :
@@ -388,24 +380,16 @@ private theorem exists_iso_ker_subschemeι {S X : Scheme.{u}} (f : S ⟶ X)
       e.hom ≫ (Scheme.Hom.ker f).subschemeι = f :=
   ⟨asIso f.toImage, f.toImage_imageι⟩
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Taking the image ideal twice corresponds to taking the kernel of the composite of the two maps with the original subscheme inclusion. This is the image ideal along the composite, by functoriality.
 -/
 private theorem imageIdealSheaf_comp {A B C : Scheme.{u}} (f : A ⟶ B) (g : B ⟶ C)
     (J : A.IdealSheafData) :
     imageIdealSheaf g (imageIdealSheaf f J) = imageIdealSheaf (f ≫ g) J :=
   (Scheme.IdealSheafData.map_comp J f g).symm
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Identify the source with the closed subscheme defined by the kernel of the given immersion. Its structural map and lower boundary agree under this isomorphism with the ambient structural map and boundary restricted to the kernel subscheme, by functoriality. The lower center condition is preserved by this identification. Apply the given normal crossings lifting property to that kernel divisor and the shortened ambient boundary. The image of the transported lower center under the kernel inclusion equals its image under the original immersion, giving the desired ambient condition.
 -/
 private theorem hasStrictNormalCrossingsWith_imageIdealSheaf_of_restriction {k : Type u} [Field k] [CharZero k]
     {P S : Scheme.{u}}
@@ -446,12 +430,8 @@ private theorem hasStrictNormalCrossingsWith_imageIdealSheaf_of_restriction {k :
     rw [← imageIdealSheaf_hom_eq_comap_inv e Zs, imageIdealSheaf_comp e.hom _ Zs, he]
   rwa [himg] at hfin
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Move the selected boundary entry to the front. The ambient boundary remains in strict normal crossings position, and the invariant identifies that entry with the embedding kernel. The remaining entries pull back to the lower boundary, and the structural map restricts to the lower structural map. The lower center has strict normal crossings by its marking. The lifting result gives strict normal crossings for its image, which is the ambient center, with the reordered boundary.
 -/
 theorem hasStrictNormalCrossingsWith_center_ker_cons {hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}}
     {hno : BlowupPreservesNoetherian.{u}} {T : MarkedIdealWithBoundary.{u}}
@@ -499,8 +479,8 @@ theorem hasStrictNormalCrossingsWith_center_ker_cons {hres : FunctorialResolutio
     (s.boundary t) (((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).boundaryFrom E₀ t).eraseIdx j)
     hgoingUp.comap_eraseIdx hsnccons hlow hlift
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The center lifting result gives the condition for the boundary with the selected entry moved to the front, since that entry is the embedding kernel. Reindex the chart assignments back to their original positions to obtain the condition for the original boundary.
 -/
 theorem hasStrictNormalCrossingsWith_center_boundary {hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}}
     {hno : BlowupPreservesNoetherian.{u}} {T : MarkedIdealWithBoundary.{u}}
@@ -522,12 +502,8 @@ theorem hasStrictNormalCrossingsWith_center_boundary {hres : FunctorialResolutio
   rw [moveToFront_eq_cons _ j hgoingUp.idx_lt, hgoingUp.bdry_getElem]
   exact hcons
 
-/- English proof (translation)
-Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+For derivative order l below the mark m, the preceding exceptional divisibilities and derivative balance give the power inequality comparing the derivative term with the ambient controlled ideal. Hence the ambient center, lying in the latter ideal's order-at-least-m locus, lies in the derivative term's order-at-least-m−l locus. Normal crossings give containment in the corresponding center power. After blowing up, this power becomes an invertible exceptional power, so the pulled-back derivative ideal has the claimed factorization. When l equals m the exponent is zero and the pulled-back ideal itself is the factor.
 -/
 theorem exists_pow_mul_eq_comap_ambientDerivIdeal
     {hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}}
@@ -570,10 +546,8 @@ theorem exists_pow_mul_eq_comap_ambientDerivIdeal
       ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).map t), ?_⟩
     rw [h, Nat.sub_self, pow_zero, one_mul]
 
-/- English proof (translation)
-Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+When l is below the mark, the power comparison and the order condition of the ambient center put the center in the order-at-least-m−l locus of the derivative term, where m is the mark. Its strict normal crossings then give containment in the corresponding center power. When l equals m the center power is unit and contains every ideal.
 -/
 theorem ambientDerivIdeal_le_center_pow {hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}}
     {hno : BlowupPreservesNoetherian.{u}} {T : MarkedIdealWithBoundary.{u}}
@@ -608,8 +582,8 @@ theorem ambientDerivIdeal_le_center_pow {hres : FunctorialResolution.Blowup.Stri
 
 end GoingUpInvariant
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
+/- English proof (authored)
+For each entry the two consecutive pullbacks equal pullback along the composite. Applying that equality throughout the list proves the claim.
 -/
 private theorem list_map_comap_map_comap_eq_map_comap_comp {A B C : Scheme.{u}} (f : A ⟶ B) (g : B ⟶ C)
     (L : List C.IdealSheafData) :
@@ -621,16 +595,8 @@ private theorem list_map_comap_map_comap_eq_map_comap_comp {A B C : Scheme.{u}} 
   intro D _
   simp
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The initial ambient structure map, ideal, and boundary are the given ones, because the initial ambient isomorphism is the identity. There are no earlier steps requiring divisibility. For each derivative order n below the mark, the term with index n in the logarithmic sum is the original ordinary derivative of order n, since its remaining logarithmic order is zero. This gives the derivative bound. The selected boundary entry equals the initial embedding kernel, and the boundary with that entry deleted pulls back to the lower initial boundary because the truncation retains all remaining entries and the lower initial isomorphism composes with the divisor inclusion. The original strict normal crossings and smoothness give the remaining conditions.
 -/
 theorem goingUpInvariant_zero (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})

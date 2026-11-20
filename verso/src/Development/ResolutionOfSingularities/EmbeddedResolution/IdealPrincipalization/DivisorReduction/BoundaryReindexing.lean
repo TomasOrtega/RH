@@ -26,8 +26,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately.
+/- English proof (authored)
+Pulling an ideal sheaf back along the identity fixes it. Applying this equality to each entry shows that the mapped list is the original list.
 -/
 theorem map_comap_id (X : Scheme.{u}) (E : List X.IdealSheafData) :
     E.map (fun D => D.comap (𝟙 X)) = E := by
@@ -35,8 +35,8 @@ theorem map_comap_id (X : Scheme.{u}) (E : List X.IdealSheafData) :
   | nil => rfl
   | cons a l ih => rw [List.map_cons, Scheme.IdealSheafData.comap_id, ih]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Pullback along the identity fixes the first selected ideal. The assumed equality of the two selected entries therefore gives the claimed pullback formula.
 -/
 theorem get_eq_comap_id {X : Scheme.{u}} (E₁ E₂ : List X.IdealSheafData) (j₁ j₂ : ℕ)
     (hj₁ : j₁ < E₁.length) (hj₂ : j₂ < E₂.length)
@@ -44,16 +44,16 @@ theorem get_eq_comap_id {X : Scheme.{u}} (E₁ E₂ : List X.IdealSheafData) (j�
     E₂.get ⟨j₂, hj₂⟩ = (E₁.get ⟨j₁, hj₁⟩).comap (𝟙 X) := by
   rw [Scheme.IdealSheafData.comap_id, heq]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The identity pullback of B is B, so the proposed equality is the supplied equality of A and B.
 -/
 private theorem eq_comap_id_of_eq {X : Scheme.{u}} {A B : X.IdealSheafData} (h : A = B) :
     A = B.comap (𝟙 X) := by
   rw [Scheme.IdealSheafData.comap_id]
   exact h
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Pulling all entries of B back along the identity reproduces B. The given comparison of nontrivial entries therefore applies to the mapped list.
 -/
 private theorem sameNontrivialBoundary_map_comap_id {X : Scheme.{u}} {A B : List X.IdealSheafData}
     (h : MarkedIdealWithBoundary.SameNontrivialBoundary A B) :
@@ -61,8 +61,8 @@ private theorem sameNontrivialBoundary_map_comap_id {X : Scheme.{u}} {A B : List
   rw [map_comap_id]
   exact h
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately.
+/- English proof (authored)
+The index is the length of the first list. It skips precisely that prefix of the concatenation, and the first subsequent entry is D.
 -/
 private theorem get_append_cons_length {X : Scheme.{u}} (E₁ : List X.IdealSheafData)
     (D : X.IdealSheafData) (E₂ : List X.IdealSheafData)
@@ -72,8 +72,8 @@ private theorem get_append_cons_length {X : Scheme.{u}} (E₁ : List X.IdealShea
   | nil => rfl
   | cons a l ih => exact ih _
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately.
+/- English proof (authored)
+The index is just after the first list, so it selects D. Deleting it leaves the first and second lists concatenated in their original order.
 -/
 private theorem eraseIdx_append_cons_length {X : Scheme.{u}} (E₁ : List X.IdealSheafData)
     (D : X.IdealSheafData) (E₂ : List X.IdealSheafData) :
@@ -82,14 +82,8 @@ private theorem eraseIdx_append_cons_length {X : Scheme.{u}} (E₁ : List X.Idea
   | nil => rfl
   | cons a l ih => simp [ih]
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
-
-Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
-
-Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+At stage zero the strict comparison is the first initial isomorphism followed by the inverse of the second one. Inductively each next comparison is a pullback of the preceding isomorphism, so is also an isomorphism. The commuting squares give transition compatibility, and the center pullback equalities give the center compatibility. These stage isomorphisms, with the given equal lengths and initial compatibility, give a sequence isomorphism.
 -/
 private theorem isomorphic_of_isStrictPullbackAlongId {X : Scheme.{u}} (A B : SequenceOfBlowups X)
     (h : IsStrictPullbackBlowupSeq (𝟙 X) A B) : A.Isomorphic B := by
@@ -115,8 +109,8 @@ private theorem isomorphic_of_isStrictPullbackAlongId {X : Scheme.{u}} (A B : Se
 
 namespace DivisorReduction
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The selected center is determined by the marked ideal, its multiplicity, and the selected boundary divisor. Boundary replacement leaves the marked ideal and multiplicity fixed, and the selected divisor ideals agree. The resulting selected centers are equal.
 -/
 theorem containedComponentsIdeal_withBoundary_congr (T : MarkedIdealWithBoundary.{u})
     (L₁ L₂ : List T.scheme.IdealSheafData) (j₁ : ℕ) (hj₁ : j₁ < L₁.length) (j₂ : ℕ)
@@ -145,8 +139,8 @@ structure BoundaryReindexingInvariance : Prop where
         (List.take (L₂.length - 1) ((lowerBoundaryAfterBlowup (T.withBoundary L₂) j₂ hj₂).eraseIdx j₂))
         (List.take (L₁.length - 1) ((lowerBoundaryAfterBlowup (T.withBoundary L₁) j₁ hj₁).eraseIdx j₁))
 
-/- English proof (translation)
-Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The given ideal equality identifies the new restricted ideal with the pullback of the old restricted ideal. The boundary assumption identifies the nontrivial part of the prescribed new boundary with that of the pulled-back boundary. Together with the structural map compatibility this makes the new input the smooth surjective pullback with the prescribed boundary replacement. Both inputs are admissible below dimension n, so maximum-order reduction gives the strict comparison.
 -/
 private theorem isStrictPullbackBlowupSeq_restrictToBoundaryDivisor_of_smooth (n : ℕ) (L O : PrincipalizationAssignment.{u})
     (hL : IsMaxOrderReduction (fun d => d < n) L O)
@@ -188,12 +182,8 @@ private theorem isStrictPullbackBlowupSeq_restrictToBoundaryDivisor_of_smooth (n
     (D'.subschemeι ≫ S.structMap) ψ hq (List.map (fun Dd => Dd.comap D'.subschemeι) F)
     hBE' hVp hdp
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The two selected divisor ideals agree after pullback along the ambient identity. Their inclusion square is therefore a pullback of the identity, so the induced divisor map is smooth and surjective. It preserves the structural maps. The lower ideal equality and the commutative square give the restricted ideal equality by composition of pullbacks. The comparison of the shortened boundaries also persists after restriction along that square. The strict smooth comparison for the restricted inputs now applies.
 -/
 theorem isStrictPullbackBlowupSeq_restrictToBoundaryDivisor_of_get_eq
     (hbc : SmoothPullbackCompatibility.{u}) (hsh : BoundaryReindexingInvariance.{u})
@@ -267,16 +257,8 @@ theorem isStrictPullbackBlowupSeq_restrictToBoundaryDivisor_of_get_eq
       (List.take (L₁.length - 1) (E₀.eraseIdx j₁))
       (List.take (L₂.length - 1) (E₀'.eraseIdx j₂)) hE).symm
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Equal selected divisor ideals give equal selected centers, so both centers are unit. In the ordinary restriction the lower ideals are the same under identity pullback. Removing the selected entry leaves a list of the length retained by the truncation, so the given correspondence of shortened nontrivial boundaries is the required comparison. The ordinary restrictions are admissible, and their dimensions drop strictly below n because the order loci are nonempty. Apply the strict comparison for equal selected divisor entries.
 -/
 theorem isStrictPullbackBlowupSeq_restrictToDivisor_of_get_eq_of_eq_top
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
@@ -342,10 +324,8 @@ theorem isStrictPullbackBlowupSeq_restrictToDivisor_of_get_eq_of_eq_top
     (lowerIdealWithoutBlowup (T.withBoundary L₂)) (lowerBoundaryWithoutBlowup (T.withBoundary L₂))
     hI hE hVa hda hVb hdb
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Equal selected divisor ideals give equal selected centers, so both centers are nonunit. The reindexing formulas identify the lower twisted ideals and the nontrivial parts of the shortened twisted boundaries. Identity pullback fixes these ideals and lists. The twisted inputs are admissible and their dimensions strictly decrease below the original bound. Apply the strict comparison for equal selected divisor entries to these lower data.
 -/
 theorem isStrictPullbackBlowupSeq_restrictTwistedToDivisor_of_get_eq
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
@@ -408,10 +388,8 @@ structure StrictBoundaryReindexingInvariance (hres : FunctorialResolution.Blowup
         (((canonicalAlgorithmRules hres).divisorFamily L j₂ (T.withBoundary L₂)).toSequenceOfBlowups)
         (((canonicalAlgorithmRules hres).divisorFamily L j₁ (T.withBoundary L₁)).toSequenceOfBlowups)
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+In each list the distinguished divisor lies at the index given by the length of the preceding list. At those indices the two entries equal that divisor. Deleting the two entries leaves the respective prefixes and suffixes concatenated, so their nontrivial parts agree by the two given comparisons. Strict reindexing invariance gives a strict pullback over the identity. Such a comparison gives an isomorphism of sequences, proving position invariance.
 -/
 theorem isBoundaryPositionInvariant_divisorFamily (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}) (n : ℕ)
     (L : PrincipalizationAssignment.{u}) (hsh : StrictBoundaryReindexingInvariance hres n L) :

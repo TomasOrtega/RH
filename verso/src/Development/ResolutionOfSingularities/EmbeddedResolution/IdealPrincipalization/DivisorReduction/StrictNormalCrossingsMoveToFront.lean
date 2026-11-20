@@ -15,15 +15,15 @@ def moveToFront (E : List α) (j : ℕ) : List α :=
   | some a => a :: E.eraseIdx j
   | none => E
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The index is in range. The move takes the entry at that index as its head and removes it from the original list to form the tail.
 -/
 theorem moveToFront_eq_cons (E : List α) (j : ℕ) (hj : j < E.length) :
     moveToFront E j = (E[j]'hj) :: E.eraseIdx j := by
   simp [moveToFront, List.getElem?_eq_getElem hj]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Deleting the selected in-range entry decreases length by one. Inserting that entry as the head restores the original length.
 -/
 theorem length_moveToFront (E : List α) (j : ℕ) (hj : j < E.length) :
     (moveToFront E j).length = E.length := by
@@ -34,24 +34,18 @@ def indexBeforeMoveToFront (j : ℕ) : ℕ → ℕ
   | 0 => j
   | (i + 1) => if i < j then i else i + 1
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The new index zero represents the entry moved from its original position j, by definition of the index map.
 -/
 theorem indexBeforeMoveToFront_zero (j : ℕ) : indexBeforeMoveToFront j 0 = j := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+At new index i+1, the entry comes from the shortened list at i. Before the deleted position this is old index i. At or after the deleted position it is old index i+1.
 -/
 theorem indexBeforeMoveToFront_succ (j i : ℕ) : indexBeforeMoveToFront j (i + 1) = if i < j then i else i + 1 := rfl
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately.
-
-Treat this case separately. It suffices to derive a contradiction. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
-
-Split into cases according to the possible forms of the given data. Treat this case separately. It suffices to derive a contradiction. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
-
-Treat this case separately. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
+/- English proof (authored)
+The new index zero maps to j. Positive indices of the form i+1 map to i for i below j and to i+1 otherwise. The two positive-index branches have disjoint ranges, strictly below and strictly above j, and each is injective. This makes the whole index map injective.
 -/
 theorem indexBeforeMoveToFront_injective (j : ℕ) : Function.Injective (indexBeforeMoveToFront j) := by
   intro a b hab
@@ -73,8 +67,8 @@ theorem indexBeforeMoveToFront_injective (j : ℕ) : Function.Injective (indexBe
       simp only [indexBeforeMoveToFront] at hab
       split_ifs at hab <;> omega
 
-/- English proof (translation)
-Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
+/- English proof (authored)
+For index zero use the bound on j. For a positive index i+1, the original index is either i or i+1. Both are below the original length by the given index bound.
 -/
 theorem indexBeforeMoveToFront_lt_length (E : List α) (j : ℕ) (hj : j < E.length) (i : ℕ)
     (hi : i < E.length) : indexBeforeMoveToFront j i < E.length := by
@@ -84,14 +78,8 @@ theorem indexBeforeMoveToFront_lt_length (E : List α) (j : ℕ) (hj : j < E.len
     show (if n < j then n else n + 1) < E.length
     split <;> omega
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data.
-
-Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+For index zero, the new head is the original entry at j. For a positive index i+1, take the entry at i in the list with index j removed. Before j it is the old entry at i, and otherwise it is the old entry at i+1. These are the stated index map cases.
 -/
 theorem getElem_moveToFront (E : List α) (j : ℕ) (hj : j < E.length) (i : ℕ)
     (hi : i < (moveToFront E j).length) :
@@ -118,22 +106,22 @@ theorem getElem_moveToFront (E : List α) (j : ℕ) (hj : j < E.length) (i : ℕ
 
 def indexInMoveToFront (j : ℕ) (i : ℕ) : ℕ := if i = j then 0 else if i < j then i + 1 else i
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The selected index is the equality case of the forward index map, so it goes to zero.
 -/
 theorem indexInMoveToFront_self (j : ℕ) : indexInMoveToFront j j = 0 := by
   simp [indexInMoveToFront]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
+/- English proof (authored)
+The selected index alone goes to zero. Lower indices are increased by one and have images from one through j. Higher indices keep their values, which are greater than j. Each branch is injective and their ranges are disjoint.
 -/
 theorem indexInMoveToFront_injective (j : ℕ) : Function.Injective (indexInMoveToFront j) := by
   intro a b hab
   simp only [indexInMoveToFront] at hab
   split_ifs at hab <;> omega
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
+/- English proof (authored)
+The move preserves length. The selected index goes to zero within this nonempty list. An index below the selected one increases to at most j, which is still within range. An index above j keeps its valid value.
 -/
 theorem indexInMoveToFront_lt_length (E : List α) (j : ℕ) (hj : j < E.length) (i : ℕ) (hi : i < E.length) :
     indexInMoveToFront j i < (moveToFront E j).length := by
@@ -141,12 +129,8 @@ theorem indexInMoveToFront_lt_length (E : List α) (j : ℕ) (hj : j < E.length)
   show (if i = j then 0 else if i < j then i + 1 else i) < E.length
   split_ifs <;> omega
 
-/- English proof (translation)
-Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
-
-Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
+/- English proof (authored)
+If the old index is j, its entry becomes the new head. If it is below j, deletion leaves its position in the tail unchanged and insertion of the head shifts it one place. If it is above j, deletion reduces its position by one and insertion increases it by one. Thus the entries agree at the corresponding indices.
 -/
 theorem getElem_eq_getElem_moveToFront (E : List α) (j : ℕ) (hj : j < E.length) (i : ℕ)
     (hi : i < E.length) :
@@ -165,8 +149,8 @@ theorem getElem_eq_getElem_moveToFront (E : List α) (j : ℕ) (hj : j < E.lengt
     have hjk : j ≤ k := by omega
     simp [moveToFront_eq_cons E j hj, hb, List.getElem_eraseIdx_of_ge, hjk]
 
-/- English proof (translation)
-Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+An entry in the moved list is either the selected head, which was in the original list, or an entry of the list after deletion. Every entry surviving deletion also belonged to the original.
 -/
 theorem mem_of_mem_moveToFront (E : List α) (j : ℕ) (hj : j < E.length) (D : α)
     (hD : D ∈ moveToFront E j) : D ∈ E := by
@@ -176,10 +160,8 @@ theorem mem_of_mem_moveToFront (E : List α) (j : ℕ) (hj : j < E.length) (D : 
     simp
   · exact List.mem_of_mem_eraseIdx h2
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Assign each new position the coordinate assignment of its corresponding original position. If two new positions get the same coordinate, distinctness of the original assignment makes their old indices equal, and injectivity makes the new indices equal. Each new boundary entry is the corresponding old one, so the unit and coordinate-ideal descriptions transfer to it.
 -/
 theorem chartAssignment_comp_of_injective {X : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} {U : X.Opens} {m : ℕ}
@@ -210,12 +192,8 @@ theorem chartAssignment_comp_of_injective {X : Scheme.{u}} {k : Type u} [Field k
     rw [hEq i h]
     exact hsome (σ i) (hlt i h) t ht
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+Every entry after the move is an original smooth divisor. At each point use the original adapted chart and reindex its coordinate assignment by the injective map from new positions to old positions. The assignment comparison preserves the unit or coordinate descriptions and the distinctness of those coordinates. This gives strict normal crossings for the moved list.
 -/
 theorem inStrictNormalCrossingPosition_moveToFront {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) (E : List X.IdealSheafData) (j : ℕ)
@@ -239,10 +217,8 @@ theorem inStrictNormalCrossingPosition_moveToFront {X : Scheme.{u}} {k : Type u}
       (indexBeforeMoveToFront_injective j) hlt hEq h1 h2 h3
     exact ⟨U, hxU, m, c, a ∘ indexBeforeMoveToFront j, k1, k2, k3⟩
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Supply the required witnesses or components.
+/- English proof (authored)
+At a point of the center choose the chart adapted to the center and the moved boundary. Keep the chart and its center coordinate set. Reindex the boundary assignment by the injective map from original to moved positions, which selects equal boundary entries. The assignment comparison preserves the required boundary descriptions and coordinate distinctness. The chart then works for the original boundary.
 -/
 theorem hasStrictNormalCrossingsWith_of_moveToFront {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) (Z : X.IdealSheafData)

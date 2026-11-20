@@ -14,4 +14,4 @@ python3 -B build_site.py
 
 The last command checks that removing the proof comments recovers every extracted file byte for byte. It also checks that each identified theorem, lemma, example, and axiom has a note. The static site is in `_out/html-single/`.
 
-To regenerate the comments, run `python3 -B annotate.py`. It reads the original files and the written explanations in `authored.json`. Pass module paths such as `Main.lean` to regenerate only those files.
+To regenerate the comments, run `python3 -B annotate.py`. It reads the original files and the written explanations in `authored.json`. Use a key such as `claimName:42` to identify a declaration by its original source line when names repeat within a module. Pass module paths such as `Main.lean` to regenerate only those files.

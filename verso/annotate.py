@@ -20,14 +20,23 @@ def annotate_module(relative):
     masked = mask_non_code(source)
     claims = list(extract_claims(source, masked))
     authored = AUTHORED.get(relative, {})
-    absent = authored.keys() - {claim.name for claim in claims}
+    written = {}
+    used = set()
+    if authored:
+        for claim in claims:
+            location = f"{claim.name}:{claim.line}"
+            key = location if location in authored else claim.name
+            if key in authored:
+                written[claim.start] = authored[key]
+                used.add(key)
+    absent = authored.keys() - used
     if absent:
         raise ValueError(f"{relative}: authored explanations have no declaration: {sorted(absent)}")
-    cited = dict(citations(EXTRACTED, source, masked, (claim for claim in claims if claim.name not in authored)))
+    cited = dict(citations(EXTRACTED, source, masked, (claim for claim in claims if claim.start not in written)))
     notes = []
     for claim in claims:
-        if claim.name in authored:
-            notes.append(("authored", authored[claim.name]))
+        if claim.start in written:
+            notes.append(("authored", written[claim.start]))
         elif claim.start in cited:
             notes.append(("citation", cited[claim.start]))
         else:

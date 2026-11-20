@@ -50,16 +50,16 @@ def MarkedSequenceOfBlowups.monomialFactor (s : MarkedSequenceOfBlowups p N μ E
       (MarkedSequenceOfBlowups.monomialFactor s M m i).comap (s.transitionMapSucc i) * s.exceptionalDivisor i ^ (μ - m)
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The monomial factor recursion starts by pulling the original factor back through the stage-zero isomorphism.
 -/
 theorem MarkedSequenceOfBlowups.monomialFactor_zero (s : MarkedSequenceOfBlowups p N μ E) (M : X.IdealSheafData)
     (m : ℕ) : MarkedSequenceOfBlowups.monomialFactor s M m 0 = M.comap s.isoZero.hom :=
   rfl
 
 @[simp]
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+At the next stage the recursion pulls the preceding monomial factor back along the blowup and multiplies by the exceptional ideal to the power μ−m. This is the stated successor value.
 -/
 theorem MarkedSequenceOfBlowups.monomialFactor_succ (s : MarkedSequenceOfBlowups p N μ E) (M : X.IdealSheafData)
     (m i : ℕ) :
@@ -74,16 +74,16 @@ def MarkedSequenceOfBlowups.controlledTransform (s : MarkedSequenceOfBlowups p N
       residualByPow ((MarkedSequenceOfBlowups.controlledTransform s I m i).comap (s.transitionMapSucc i)) (s.exceptionalDivisor i) m
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The initial term of the controlled transform is the starting ideal pulled back by the initial isomorphism.
 -/
 theorem MarkedSequenceOfBlowups.controlledTransform_zero (s : MarkedSequenceOfBlowups p N μ E) (I : X.IdealSheafData)
     (m : ℕ) : MarkedSequenceOfBlowups.controlledTransform s I m 0 = I.comap s.isoZero.hom :=
   rfl
 
 @[simp]
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The recursion takes the pullback of the preceding transform and forms its residual by the m-th exceptional power. This is the value at the successor stage.
 -/
 theorem MarkedSequenceOfBlowups.controlledTransform_succ (s : MarkedSequenceOfBlowups p N μ E) (I : X.IdealSheafData)
     (m i : ℕ) :
@@ -97,33 +97,31 @@ section
 
 variable {A B : Scheme.{u}}
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
+/- English proof (authored)
+The support of a pulled back ideal sheaf is the inverse image of the original support. Taking its underlying set gives the stated identity.
 -/
 private theorem support_comap_coe {A' B' : Scheme.{u}} (f : A' ⟶ B') (I : B'.IdealSheafData) :
     (↑(I.comap f).support : Set ↥A') = ⇑f.base ⁻¹' (↑I.support : Set ↥B') := by
   rw [AlgebraicGeometry.Scheme.IdealSheafData.support_comap]
   rfl
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The multiplicative identity is the unit ideal. Extension of the unit ideal along any morphism is still the unit ideal.
 -/
 private theorem comap_one {A' B' : Scheme.{u}} (f : A' ⟶ B') :
     (1 : B'.IdealSheafData).comap f = 1 := by
   simp
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The support of a product of two ideal sheaves is the union of their supports. The claimed inclusion follows from this equality.
 -/
 private theorem support_mul_subset {Y : Scheme.{u}} (P Q : Y.IdealSheafData) :
     (↑(P * Q).support : Set ↥Y) ⊆ (↑P.support : Set ↥Y) ∪ (↑Q.support : Set ↥Y) := by
   rw [Scheme.IdealSheafData.support_mul]
   exact Set.Subset.rfl
 
-/- English proof (translation)
-Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+For a positive exponent the power has the same support as the ideal. For exponent zero the power is the unit ideal, whose support is empty. The inclusion holds in both cases.
 -/
 private theorem support_pow_subset {Y : Scheme.{u}} (P : Y.IdealSheafData) (n : ℕ) :
     (↑(P ^ n).support : Set ↥Y) ⊆ (↑P.support : Set ↥Y) := by
@@ -135,16 +133,16 @@ private theorem support_pow_subset {Y : Scheme.{u}} (P : Y.IdealSheafData) (n : 
   · rw [Scheme.IdealSheafData.support_pow]
     exact hn
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The support of the product is the union of the two supports, which contains the support of its second factor.
 -/
 private theorem support_subset_support_mul_right {Y : Scheme.{u}} (P Q : Y.IdealSheafData) :
     (↑Q.support : Set ↥Y) ⊆ (↑(P * Q).support : Set ↥Y) := by
   rw [Scheme.IdealSheafData.support_mul]
   exact Set.subset_union_right
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Supply the required witnesses or components.
+/- English proof (authored)
+The set C is irreducible and lies in S. Any irreducible subset of S containing C lies in C by the assumed maximality and hence equals C. These are the defining conditions for an irreducible component of S.
 -/
 private theorem isIrreducibleComponentOf_of_maximal {Y : Scheme.{u}} {C S : Set ↥Y} (h1 : IsIrreducible C)
     (h2 : C ⊆ S) (h3 : ∀ C', IsIrreducible C' → C' ⊆ S → C ⊆ C' → C' ⊆ C) :
@@ -152,25 +150,23 @@ private theorem isIrreducibleComponentOf_of_maximal {Y : Scheme.{u}} {C S : Set 
   unfold IsIrreducibleComponentOf
   exact ⟨h1, h2, fun C' hC' hCle hC'S => Set.Subset.antisymm (h3 C' hC' hC'S hCle) hCle⟩
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Supply the required witnesses or components.
+/- English proof (authored)
+A component is an irreducible subset of S. Maximality says that any irreducible subset of S containing it equals it, and hence lies in it. This gives the three stated properties.
 -/
 private theorem isIrreducible_subset_maximal_of_isIrreducibleComponentOf {Y : Scheme.{u}} {C S : Set ↥Y} (h : IsIrreducibleComponentOf C S) :
     IsIrreducible C ∧ C ⊆ S ∧ ∀ C', IsIrreducible C' → C' ⊆ S → C ⊆ C' → C' ⊆ C := by
   unfold IsIrreducibleComponentOf at h
   exact ⟨h.1, h.2.1, fun C' hC' hC'S hCle => (h.2.2 C' hC' hCle hC'S).subset⟩
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The inclusion of U in Y factors through V via the inclusion of U in V. Composition of ideal pullbacks along this factorization gives the asserted equality.
 -/
 private theorem comap_homOfLE {Y : Scheme.{u}} {U V : Y.Opens} (h : U ≤ V)
     (D : Y.IdealSheafData) : (D.comap V.ι).comap (Y.homOfLE h) = D.comap U.ι := by
   rw [← Scheme.IdealSheafData.comap_comp, Scheme.homOfLE_ι]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
-
-Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+A generator on V is a restriction of a boundary entry, so its restriction to U is the corresponding generator on U. The unit restricts to the unit and products restrict to products. Induction on generation by these operations shows every given member restricts to the submonoid generated on U.
 -/
 private theorem comap_homOfLE_mem_closure_comap {Y : Scheme.{u}} {E : List Y.IdealSheafData}
     {U V : Y.Opens} (h : U ≤ V) :
@@ -190,8 +186,8 @@ private theorem comap_homOfLE_mem_closure_comap {Y : Scheme.{u}} {E : List Y.Ide
       rw [Scheme.IdealSheafData.comap_mul]
       exact mul_mem iha ihb
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+On the whole scheme the restriction of D is among the generating boundary ideals. It therefore belongs to their generated submonoid, providing the required neighborhood at every point.
 -/
 private theorem isMonomialIn_of_mem {Y : Scheme.{u}} {E : List Y.IdealSheafData}
     {D : Y.IdealSheafData} (hD : D ∈ E) : IsMonomialIn E D := by
@@ -200,10 +196,8 @@ private theorem isMonomialIn_of_mem {Y : Scheme.{u}} {E : List Y.IdealSheafData}
   refine ⟨⊤, trivial, ?_⟩
   exact Submonoid.subset_closure ⟨D, hD, rfl⟩
 
-/- English proof (translation)
-Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At a point, intersect neighborhoods on which each factor belongs to the submonoid generated by the boundary. Restriction to the intersection preserves membership. The restricted product then belongs to the same submonoid because it is closed under multiplication.
 -/
 private theorem isMonomialIn_mul {Y : Scheme.{u}} (E : List Y.IdealSheafData)
     {P Q : Y.IdealSheafData} (hP : IsMonomialIn E P) (hQ : IsMonomialIn E Q) :
@@ -219,10 +213,8 @@ private theorem isMonomialIn_mul {Y : Scheme.{u}} (E : List Y.IdealSheafData)
   rw [Scheme.IdealSheafData.comap_mul]
   exact mul_mem k1 k2
 
-/- English proof (translation)
-Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Choose a neighborhood where the restriction of P belongs to the generated submonoid. Its power also belongs, and it equals the restriction of the power because pullback preserves powers.
 -/
 private theorem isMonomialIn_pow {Y : Scheme.{u}} (E : List Y.IdealSheafData)
     {P : Y.IdealSheafData} (hP : IsMonomialIn E P) (n : ℕ) : IsMonomialIn E (P ^ n) := by
@@ -233,14 +225,8 @@ private theorem isMonomialIn_pow {Y : Scheme.{u}} (E : List Y.IdealSheafData)
   rw [Scheme.IdealSheafData.comap_pow]
   exact pow_mem h n
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the list. For an empty list use the whole scheme. At the next step take a neighborhood where the head is monomial in the second list and one where every tail entry is monomial, provided by induction. On their intersection each generating-submonoid membership persists by restriction. This supplies one neighborhood for the full list.
 -/
 private theorem exists_opens_forall_comap_mem_closure {Y : Scheme.{u}} (L2 : List Y.IdealSheafData) :
     ∀ (L : List Y.IdealSheafData), (∀ D ∈ L, IsMonomialIn L2 D) → ∀ x : ↥Y,
@@ -266,12 +252,8 @@ private theorem exists_opens_forall_comap_mem_closure {Y : Scheme.{u}} (L2 : Lis
       · have hk := comap_homOfLE_mem_closure_comap (E := L2) (inf_le_left : Vleft ⊓ Vright ≤ Vleft) _ (hV1 D hD')
         rwa [comap_homOfLE] at hk
 
-/- English proof (translation)
-Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+Choose a neighborhood where P is generated by the first list and another where all entries of the first list are generated by the second. On the intersection both properties persist. Thus the submonoid generated by the first entries there lies in that generated by the second. The restriction of P belongs to the second submonoid.
 -/
 private theorem isMonomialIn_of_forall_mem {Y : Scheme.{u}} {L1 L2 : List Y.IdealSheafData}
     (h : ∀ D ∈ L1, IsMonomialIn L2 D) {P : Y.IdealSheafData} (hP : IsMonomialIn L1 P) :
@@ -288,14 +270,8 @@ private theorem isMonomialIn_of_forall_mem {Y : Scheme.{u}} {L1 L2 : List Y.Idea
   have h2 := comap_homOfLE_mem_closure_comap (E := L2) (inf_le_right : U ⊓ Vinter ≤ Vinter) _ (hW D hD)
   rwa [comap_homOfLE] at h2
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At a point outside both indicated supports, choose an open with the given product expression. The two restricted factors have unit stalks there, since restriction preserves the local rings and stalk ideals. So does the product, including the case of exponent zero. The original ideal therefore has unit stalk at the point, proving the support inclusion.
 -/
 private theorem support_subset_union_of_locally_eq_mul_pow {Y : Scheme.{u}} (D' A' B' : Y.IdealSheafData)
     (h : ∀ x : ↥Y, ∃ (U : Y.Opens) (ε : ℕ), x ∈ U ∧
@@ -326,10 +302,8 @@ private theorem support_subset_union_of_locally_eq_mul_pow {Y : Scheme.{u}} (D' 
   rw [orderAt_comap_of_isOpenImmersion U.ι D' (⟨x, hxU⟩ : ↥U)] at hDy
   exact (orderAt_eq_zero_iff_not_mem_support D' x).1 hDy hx
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Choose the given local product expression at each point. The two restricted factors are generators of the submonoid because they are listed boundary entries. Their product with the indicated exponent is therefore in the submonoid.
 -/
 private theorem isMonomialIn_of_locally_eq_mul_pow {Y : Scheme.{u}} (L : List Y.IdealSheafData)
     (D' A' B' : Y.IdealSheafData) (hA : A' ∈ L) (hB : B' ∈ L)
@@ -349,14 +323,8 @@ private theorem isMonomialIn_of_locally_eq_mul_pow {Y : Scheme.{u}} (L : List Y.
   rw [heq]
   exact mul_mem hA2 (pow_mem hB2 ε)
 
-/- English proof (translation)
-Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
-
-Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At a point of the source, choose a neighborhood of its image on which the target ideal belongs to the submonoid generated by the boundary. Pull the neighborhood back to the source. The restriction square identifies the restriction of each pullback with the pullback of the corresponding restriction. Each generator thus maps to one for the pulled back boundary, and products and the unit are preserved. Consequently the pulled back ideal belongs to the required submonoid on this neighborhood.
 -/
 theorem IsMonomialIn.comap (f : A ⟶ B) {E : List B.IdealSheafData} {M : B.IdealSheafData}
     (h : IsMonomialIn E M) :
@@ -390,20 +358,8 @@ theorem IsMonomialIn.comap (f : A ⟶ B) {E : List B.IdealSheafData} {M : B.Idea
   rw [key M]
   exact main _ hmem
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+Pullback preserves the product factorization and local monomiality. The support of the pulled back monomial factor is the inverse image of its original support, so it lies in the union of the pulled back boundary supports. For transversality, the underlying homeomorphism carries each irreducible component of a pulled back boundary support to an irreducible component of the original support. This preserves maximality because the inverse homeomorphism pulls any larger irreducible subset back. Containment in the pulled back nonmonomial support would then give containment of the corresponding original component in the original nonmonomial support, contrary to transversality.
 -/
 theorem IsMonomialSplitting.comap_iso (e : A ≅ B) {E : List B.IdealSheafData}
     {I M N : B.IdealSheafData} (h : IsMonomialSplitting E I M N) :
@@ -459,55 +415,55 @@ def MarkedIdealWithBoundary.withIdealAndMult (T : MarkedIdealWithBoundary.{u}) (
     boundary := T.boundary }
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Changing the marked ideal and marking retains the original base field by definition.
 -/
 theorem MarkedIdealWithBoundary.withIdealAndMult_baseField (T : MarkedIdealWithBoundary.{u}) (N : T.scheme.IdealSheafData)
     (μ : ℕ) : (T.withIdealAndMult N μ).base = T.base :=
   rfl
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The new marked data use the original ambient scheme by construction.
 -/
 theorem MarkedIdealWithBoundary.withIdealAndMult_scheme (T : MarkedIdealWithBoundary.{u}) (N : T.scheme.IdealSheafData)
     (μ : ℕ) : (T.withIdealAndMult N μ).scheme = T.scheme :=
   rfl
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The operation retains the original structure morphism to the ground field.
 -/
 theorem MarkedIdealWithBoundary.withIdealAndMult_structureMorphism (T : MarkedIdealWithBoundary.{u}) (N : T.scheme.IdealSheafData)
     (μ : ℕ) : (T.withIdealAndMult N μ).structMap = T.structMap :=
   rfl
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The operation takes N as the new ideal, which gives the ideal formula.
 -/
 theorem MarkedIdealWithBoundary.withIdealAndMult_ideal (T : MarkedIdealWithBoundary.{u}) (N : T.scheme.IdealSheafData)
     (μ : ℕ) : (T.withIdealAndMult N μ).ideal = N :=
   rfl
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The marking in the new data is the supplied natural number μ.
 -/
 theorem MarkedIdealWithBoundary.withIdealAndMult_mult (T : MarkedIdealWithBoundary.{u}) (N : T.scheme.IdealSheafData)
     (μ : ℕ) : (T.withIdealAndMult N μ).mult = μ :=
   rfl
 
 @[simp]
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The operation retains the original ordered boundary list.
 -/
 theorem MarkedIdealWithBoundary.withIdealAndMult_boundary (T : MarkedIdealWithBoundary.{u}) (N : T.scheme.IdealSheafData)
     (μ : ℕ) : (T.withIdealAndMult N μ).boundary = T.boundary :=
   rfl
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The nonmonomial factor is nonzero on components because the whole ideal is and the splitting puts the factor's support inside the whole support. The new marking is at least the original positive marking. The geometric conditions on the field, scheme, structure map, and boundary persist because those fields are retained. Thus the new marked object is admissible.
 -/
 theorem MarkedIdealWithBoundary.IsAdmissible.withIdealAndMult {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
     {M N : T.scheme.IdealSheafData} (hsplit : IsMonomialSplitting T.boundary T.ideal M N)
@@ -528,23 +484,23 @@ section
 variable {k : Type u} [Field k] {X : Scheme.{u}} {p : X ⟶ Spec (CommRingCat.of k)}
   {N : X.IdealSheafData} {μ : ℕ} {E : List X.IdealSheafData}
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Both descriptions give the center ideal pulled back along the next blowup morphism. Substituting this pullback formula identifies them.
 -/
 private theorem exceptionalDivisor_eq_exceptionalIdeal (s : MarkedSequenceOfBlowups p N μ E) (i : ℕ) :
     s.exceptionalDivisor i = Blowup.exceptionalIdeal (s.transitionMapSucc i) (s.center i) := by
   rw [MarkedSequenceOfBlowups.exceptionalDivisor_eq, Blowup.exceptionalIdeal_eq_comap]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The indicated step is an actual blowup, so its exceptional ideal is locally generated by a nonzero divisor. The exceptional divisor in the marked sequence is defined by that ideal.
 -/
 private theorem isLocallyGeneratedByNonZeroDivisor_exceptionalDivisor (s : MarkedSequenceOfBlowups p N μ E) (i : ℕ)
     (hi : i < s.length) : Blowup.IsLocallyGeneratedByNonZeroDivisor (s.exceptionalDivisor i) := by
   rw [exceptionalDivisor_eq_exceptionalIdeal]
   exact isLocallyGeneratedByNonZeroDivisor_exceptionalIdeal (s.isBlowupAlongIdealSheaf_blowupMorphism i hi)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At every point of S the order of the second factor is at least m. The order of the product is at least the sum of the two factor orders, which is at least the second order. By the product equality the same bound holds for C.
 -/
 private theorem subset_orderAtLeastLocus_of_eq_mul {Y : Scheme.{u}} (Mi Ni Ci : Y.IdealSheafData)
     (h : Ci = Mi * Ni) (m : ℕ) (S : Set ↥Y) (hS : S ⊆ orderAtLeastLocus Ni m) :
@@ -555,10 +511,8 @@ private theorem subset_orderAtLeastLocus_of_eq_mul {Y : Scheme.{u}} (Mi Ni Ci : 
   rw [← h] at h2
   exact (mem_orderAtLeastLocus_iff _ _ _).2 (le_trans h1 (le_trans le_add_self h2))
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
-
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Write F for the exceptional ideal. Since m ≤ μ, the factors Fᵐ and F raised to μ−m multiply to F raised to μ. Multiplying that power by the next nonmonomial ideal gives the pullback of the current nonmonomial ideal by the marked transform formula. After reordering factors, the product is therefore the pullback of the monomial factor times the pullback of the current nonmonomial ideal. This equals the pullback of C.
 -/
 private theorem exceptionalDivisor_pow_mul_comap_mul_eq_comap (s : MarkedSequenceOfBlowups p N μ E) (m : ℕ) (hm : m ≤ μ)
     (i : ℕ) (hi : i < s.length) (Ci Mi : (s.schemeAt i).IdealSheafData)
@@ -579,10 +533,8 @@ private theorem exceptionalDivisor_pow_mul_comap_mul_eq_comap (s : MarkedSequenc
     _ = Mi.comap (s.transitionMapSucc i) * ((s.ideal i).comap (s.transitionMapSucc i)) := by rw [hF, hid]
     _ = Ci.comap (s.transitionMapSucc i) := by rw [h, Scheme.IdealSheafData.comap_mul]
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+At stage zero both recursions pull back the starting ideal through the same isomorphism. At each successor they pull back along the same blowup morphism and take the residual by the same exceptional power. Induction with these recursions gives equality.
 -/
 private theorem controlledTransform_eq_sequenceData (s : MarkedSequenceOfBlowups p N μ E)
     (I : X.IdealSheafData) (m i : ℕ) :
@@ -598,8 +550,8 @@ private theorem controlledTransform_eq_sequenceData (s : MarkedSequenceOfBlowups
         (fun J : (s.schemeAt n).IdealSheafData =>
           residualByPow (J.comap (s.transitionMapSucc n)) (s.exceptionalDivisor n) m) ih
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The two controlled transforms at stage i agree. Pulling this equality back along the same successor morphism gives the stated identity.
 -/
 private theorem comap_controlledTransform_eq_comap_sequenceData (s : MarkedSequenceOfBlowups p N μ E)
     (I : X.IdealSheafData) (m i : ℕ) :
@@ -609,8 +561,8 @@ private theorem comap_controlledTransform_eq_comap_sequenceData (s : MarkedSeque
   congrArg (fun J : (s.schemeAt i).IdealSheafData => J.comap (s.transitionMapSucc i))
     (controlledTransform_eq_sequenceData s I m i)
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Translate the given factorization to the underlying blowup data using equality of the two transforms and transition maps. The power times residual formula for the controlled transform in those data gives the factorization with the successor transform. Translate its terms back to the marked sequence.
 -/
 private theorem exceptionalDivisor_pow_mul_controlledTransform_succ (s : MarkedSequenceOfBlowups p N μ E)
     (I : X.IdealSheafData) (m i : ℕ)
@@ -625,8 +577,8 @@ private theorem exceptionalDivisor_pow_mul_controlledTransform_succ (s : MarkedS
       (controlledTransform_eq_sequenceData s I m (i + 1))).trans
     (hd.trans (comap_controlledTransform_eq_comap_sequenceData s I m i).symm)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+By markedness, a center point has order at least μ. The global bound makes its order at most μ, so it equals μ.
 -/
 private theorem orderAt_eq_of_mem_center_support (s : MarkedSequenceOfBlowups p N μ E)
     (hord : ∀ i ≤ s.length, ∀ x : ↥(s.schemeAt i), orderAt (s.ideal i) x ≤ (μ : ℕ∞))
@@ -638,36 +590,12 @@ end
 
 section
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
+/- English proof (authored)
+At stage zero, pull back the original splitting through the initial isomorphism. For a successor stage, the marked transform formula for the nonmonomial factor and the inequality m ≤ μ give a factorization of the pullback of the whole ideal. After removing the m-th exceptional power, the remaining factors are the new nonmonomial ideal and the pulled back monomial factor times the exceptional power μ−m. The exceptional ideal is Cartier, so cancellation identifies their product with the controlled transform of the whole ideal.
 
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
+The local total-transform formula makes each old boundary pullback monomial in its strict transform and the exceptional divisor. Thus the new monomial factor is monomial in the new boundary and its support is contained in their union. For transversality, a component of a strict-transformed boundary entry has a generic point projecting to the generic point of an old boundary component. If the new nonmonomial support contained the transformed component, the old nonmonomial support would contain the image point, by the product factorization and pullback of supports. Closedness would then force containment of the old component, contrary to the previous splitting. For an exceptional component, the noncontainment estimate applies because the old nonmonomial order is exactly μ on the center. This proves the successor splitting.
 
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
-
-Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
+At each actual step, exact order μ on the center follows from the upper bound and the marked center condition. Since μ ≥ m, the product order bound places the center in the order locus of the whole controlled transform at m. The factorization used in the induction supplies the requested divisibility of its pullback.
 -/
 theorem isMonomialSplitting_controlledTransform_monomialFactor (hG : PrincipalizationGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
     {M N : T.scheme.IdealSheafData} (hsplit : IsMonomialSplitting T.boundary T.ideal M N)
@@ -800,12 +728,8 @@ theorem isMonomialSplitting_controlledTransform_monomialFactor (hG : Principaliz
     exact orderAtLeastLocus_subset_of_le (s.ideal i) hμ (s.center_order i hilt hx)
   · exact ⟨_, exceptionalDivisor_pow_mul_comap_mul_eq_comap s T.mult hμ i hilt _ _ (hsplit_all i hi).eq_mul⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The underlying sequence already has smooth centers in the required normal crossing position. The controlled splitting result gives containment of every center in the order locus of the whole transform at its original marking and divisibility by the required exceptional power. The controlled transform and the successor map agree with those of the underlying data. Hence the two algebraic markedness conditions hold for the original object as well.
 -/
 theorem isMarked_sequenceData_of_orderAt_le (hG : PrincipalizationGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : T.IsAdmissible) {M N : T.scheme.IdealSheafData}
@@ -832,8 +756,8 @@ theorem isMarked_sequenceData_of_orderAt_le (hG : PrincipalizationGeometryHypoth
         (controlledTransform_eq_sequenceData s T.ideal T.mult i)
     exact (mem_orderAtLeastLocus_iff _ _ _).2 (he ▸ h1)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
+/- English proof (authored)
+The controlled splitting writes the whole transform as the product of the current monomial factor and the nonmonomial ideal. The monomial factor is supported in the boundary locus. The nonmonomial ideal has the given order certificate with marking μ, and the center lies in its μ-order locus. Use the certificate comparison for such a splitting and the inequality between the markings. It gives a principalization certificate for the whole transform at the original marking.
 -/
 theorem principalizationCertificate_controlledTransform (hG : PrincipalizationGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
     {M N : T.scheme.IdealSheafData} (hsplit : IsMonomialSplitting T.boundary T.ideal M N)
@@ -853,8 +777,8 @@ theorem principalizationCertificate_controlledTransform (hG : PrincipalizationGe
   exact PrincipalizationCertificate.toOrder (MarkedSequenceOfBlowups.monomialFactor s M T.mult i) (s.ideal i) μ hsp.eq_mul
     hMsub hμ (s.center_order i hi) (hcert i hi)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The order bound along the sequence applies at the final stage. Its order locus at the positive marking is empty, so the maximum-order bound for an empty locus makes the final maximum strictly smaller than that marking.
 -/
 theorem maxOrder_ideal_length_lt_of_orderAtLeastLocus_eq_empty {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {N : X.IdealSheafData} {μ : ℕ}
@@ -868,8 +792,8 @@ end
 
 section
 
-/- English proof (translation)
-Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+If a is infinite it bounds every natural number. Otherwise write it as a natural number n. The hypothesis then gives m ≤ n+s, which implies m−s ≤ n for natural-number subtraction. This remains true in the extended natural numbers.
 -/
 private theorem cast_sub_le_of_cast_le_add {a : ℕ∞} {m s : ℕ}
     (h : (m : ℕ∞) ≤ a + (s : ℕ∞)) : ((m - s : ℕ) : ℕ∞) ≤ a := by
@@ -880,16 +804,8 @@ private theorem cast_sub_le_of_cast_le_add {a : ℕ∞} {m s : ℕ}
     have h'' : m - s ≤ n := by omega
     exact_mod_cast h''
 
-/- English proof (translation)
-Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Write F for the exceptional ideal and r for the order of the nonmonomial factor on the center. If m ≤ r, take the pullback of the monomial factor times F to the power r−m. Multiplication by Fᵐ restores the required total exceptional exponent. If r < m, additivity of order in the original splitting and the order bound on the whole ideal show that the monomial factor has order at least m−r on the center. Normal crossings gives containment in that power of the center ideal. On the blowup the pullback of the monomial factor is therefore divisible by F to the power m−r. Use the residual factor and multiply its factorization by F to the power r. This gives the required factorization by Fᵐ.
 -/
 theorem exists_exceptionalIdeal_pow_mul_eq_comap_mul_pow (_hG : PrincipalizationGeometryHypotheses.{u}) (T : MarkedIdealWithBoundary.{u})
     (hT : T.IsAdmissible) (Z : T.scheme.IdealSheafData)
@@ -935,32 +851,30 @@ theorem exists_exceptionalIdeal_pow_mul_eq_comap_mul_pow (_hG : Principalization
           simp only [mul_assoc, mul_comm]
       _ = Mon.comap π * Blowup.exceptionalIdeal π Z ^ sdeg := by rw [hpow]
 
-/- English proof (translation)
-Unfold both sides to obtain the same proposition, which implies itself.
+/- English proof (authored)
+By definition, the open complement of a closed set contains exactly the points outside that closed set.
 -/
 private theorem mem_closeds_compl_iff {Y : Scheme.{u}} (S : TopologicalSpace.Closeds ↥Y)
     (x : ↥Y) : x ∈ S.compl ↔ x ∉ S := Iff.rfl
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Every point of the open avoids the ideal support. The restricted support is the inverse image of the original support and is therefore empty. The restricted ideal is the unit ideal, which is the multiplicative identity.
 -/
 private theorem comap_eq_one_of_forall_notMem_support {Y : Scheme.{u}} (I : Y.IdealSheafData)
     (U : Y.Opens) (h : ∀ x : ↥Y, x ∈ U → x ∉ (↑I.support : Set ↥Y)) : I.comap U.ι = 1 := by
   rw [Scheme.IdealSheafData.one_eq_top]
   exact Blowup.comap_eq_top_of_notMem_support U.ι I (fun y => h y.1 y.2)
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
+/- English proof (authored)
+An open inclusion identifies the local ring and the ideal stalk at the point with their originals. Thus the order is unchanged on restriction.
 -/
 private theorem orderAt_comap_opens_ι {Y : Scheme.{u}} (U : Y.Opens) (I : Y.IdealSheafData)
     (x : ↥Y) (hx : x ∈ U) : orderAt (I.comap U.ι) ⟨x, hx⟩ = orderAt I x := by
   have h := orderAt_comap_of_isOpenImmersion U.ι I ⟨x, hx⟩
   simpa using h
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The empty product is the unit ideal, preserved by pullback. In the inductive step pullback preserves the product of the first entry and the remaining product. Apply induction to the latter.
 -/
 private theorem comap_list_prod {A B : Scheme.{u}} (f : A ⟶ B) :
     ∀ L : List B.IdealSheafData,
@@ -973,14 +887,8 @@ private theorem comap_list_prod {A B : Scheme.{u}} (f : A ⟶ B) :
   | cons D L ih =>
       rw [List.prod_cons, Scheme.IdealSheafData.comap_mul, ih, List.map_cons, List.prod_cons]
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Induct on membership in the generated submonoid. For a generator use the single boundary entry giving it. For the unit use the empty list. For a product concatenate the lists representing the two factors. Their entries all belong to the boundary, and the product over the concatenated list is the required product.
 -/
 private theorem exists_list_prod_eq_of_mem_closure {A B : Scheme.{u}} (f : A ⟶ B)
     (E : List B.IdealSheafData) {y : A.IdealSheafData}
@@ -1006,10 +914,8 @@ private theorem exists_list_prod_eq_of_mem_closure {A B : Scheme.{u}} (f : A ⟶
         · exact h2 D h
       · rw [e1, e2, List.map_append, List.prod_append]
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Supply the required witnesses or components.
+/- English proof (authored)
+The intersection is nonempty by hypothesis. If two opens each meet it, their intersections with O are opens meeting S. Irreducibility of S gives a common point in S that belongs to both of these opens. That point lies in the intersection with O, proving irreducibility.
 -/
 private theorem isIrreducible_inter_isOpen {α : Type u} [TopologicalSpace α] {S O : Set α}
     (hS : IsIrreducible S) (hO : IsOpen O) (hne : (S ∩ O).Nonempty) :
@@ -1022,16 +928,16 @@ private theorem isIrreducible_inter_isOpen {α : Type u} [TopologicalSpace α] {
     hS.2 (u ∩ O) (v ∩ O) (hu.inter hO) (hv.inter hO) ⟨a, ha.1, hau, ha.2⟩ ⟨b, hb.1, hbv, hb.2⟩
   exact ⟨c, ⟨hcS, hc.1.2⟩, hc.1.1, hc.2.1⟩
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+The closure of an irreducible subset is irreducible and closed. The underlying space of a scheme is sober, so that closure has a generic point whose singleton closure is the whole closure.
 -/
 private theorem exists_closure_singleton_eq_closure (X : Scheme.{u}) {S : Set ↥X}
     (hS : IsIrreducible S) : ∃ η : ↥X, closure ({η} : Set ↥X) = closure S := by
   obtain ⟨η, hη⟩ := QuasiSober.sober hS.closure isClosed_closure
   exact ⟨η, hη⟩
 
-/- English proof (translation)
-Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
+/- English proof (authored)
+If the generic point were outside O, its singleton closure would be contained in the closed complement. That closure is the closure of S, so S would also be disjoint from O. This contradicts the nonempty intersection.
 -/
 private theorem mem_of_isOpen_of_closure_singleton_eq {α : Type u} [TopologicalSpace α] {S : Set α}
     {η : α} (hη : closure ({η} : Set α) = closure S) {O : Set α} (hO : IsOpen O)
@@ -1043,8 +949,8 @@ private theorem mem_of_isOpen_of_closure_singleton_eq {α : Type u} [Topological
   obtain ⟨a, haS, haO⟩ := hne
   exact (h1 (subset_closure haS)) haO
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+A closed subset containing η contains the closure of its singleton. By the given equality it contains the closure of S, hence contains S itself.
 -/
 private theorem subset_of_closure_singleton_eq_closure {α : Type u} [TopologicalSpace α]
     {S : Set α} {η : α} (hη : closure ({η} : Set α) = closure S) {F : Set α} (hF : IsClosed F)
@@ -1053,18 +959,16 @@ private theorem subset_of_closure_singleton_eq_closure {α : Type u} [Topologica
   rw [hη] at h1
   exact fun a ha => h1 (subset_closure ha)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+A field is a Noetherian ring, so its affine spectrum is a Noetherian scheme.
 -/
 private theorem isNoetherian_spec_field (k : Type u) [Field k] :
     AlgebraicGeometry.IsNoetherian (Spec (CommRingCat.of k)) := by
   rw [AlgebraicGeometry.isNoetherian_Spec]
   infer_instance
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The center scheme maps smoothly to the field spectrum, so the map is locally of finite type. The closed immersion and the original quasi-compact structure map make the center's structure map quasi-compact. A quasi-compact locally finite type scheme over the Noetherian field spectrum is Noetherian.
 -/
 private theorem isNoetherian_subscheme_of_smooth (T : MarkedIdealWithBoundary.{u}) (hT : T.IsAdmissible)
     (Z : T.scheme.IdealSheafData)
@@ -1078,22 +982,8 @@ private theorem isNoetherian_subscheme_of_smooth (T : MarkedIdealWithBoundary.{u
   have : AlgebraicGeometry.QuasiCompact (Z.subschemeι ≫ T.structMap) := inferInstance
   exact isNoetherian_of_locallyOfFiniteType (Z.subschemeι ≫ T.structMap)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
-
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+Lift y to the smooth center, where it lies in a unique irreducible component because the components of the smooth scheme are disjoint. The center is Noetherian, so there are finitely many components. The union of the images of the other components is closed in the ambient scheme because the center inclusion is a closed embedding. Its open complement contains y. In this open the center support is the intersection of the image of the component through y with the open. The component image is irreducible and this intersection is nonempty, so the intersection is irreducible.
 -/
 private theorem exists_opens_isIrreducible_support_inter (T : MarkedIdealWithBoundary.{u}) (hT : T.IsAdmissible)
     (Z : T.scheme.IdealSheafData)
@@ -1163,12 +1053,8 @@ private theorem exists_opens_isIrreducible_support_inter (T : MarkedIdealWithBou
       hRclosed.isOpen_compl ⟨y, ⟨y', hy'C, hy'⟩, hyR⟩
   exact ⟨⟨_, hRclosed.isOpen_compl⟩, hyR, hfinal⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Extract witnesses or component facts from the available result. A detailed English derivation is pending.
+/- English proof (authored)
+Pullback makes the starting monomial ideal monomial in the total transforms of the boundary entries. Locally each total transform is its strict transform times a power of the exceptional ideal. Both are entries in the new boundary list, so each total transform is monomial in that list. Substituting these local monomial descriptions gives monomiality of the pulled back ideal in the new boundary.
 -/
 private theorem isMonomialIn_comap_blowup (hG : PrincipalizationGeometryHypotheses.{u}) (T : MarkedIdealWithBoundary.{u})
     (hT : T.IsAdmissible) (Z : T.scheme.IdealSheafData)
@@ -1201,24 +1087,8 @@ private theorem isMonomialIn_comap_blowup (hG : PrincipalizationGeometryHypothes
   obtain ⟨D₀, hD₀, rfl⟩ := List.mem_map.1 hD
   exact hmonD D₀ hD₀
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the list. The empty product uses the whole scheme, the unit monomial, and exceptional exponent zero. For a head entry use its local total-transform factorization and intersect its neighborhood with the neighborhood for the tail. The product of the restricted strict transform of the head and the monomial for the tail is generated by the strict transforms, and the exceptional exponent is the sum of the two exponents. The head exponent is one exactly when the center locally lies in that boundary support. The assumptions about z then give order one there in that case and order zero otherwise. Additivity of order for the product identifies the sum of exponents with the order of the full list product at z.
 -/
 private theorem exists_opens_comap_list_prod_eq_mul_exceptionalIdeal_pow (hG : PrincipalizationGeometryHypotheses.{u}) (T : MarkedIdealWithBoundary.{u})
     (hT : T.IsAdmissible) (Z : T.scheme.IdealSheafData)
@@ -1306,40 +1176,12 @@ private theorem exists_opens_comap_list_prod_eq_mul_exceptionalIdeal_pow (hG : P
       · rw [List.prod_cons, orderAt_mul T.base T.structMap D L.prod z, hordD, hord1,
           Nat.cast_add]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
+/- English proof (authored)
+Off the exceptional support, shrink a neighborhood of monomiality of the total pullback to the complement of the support. The exceptional factor becomes a unit, so the residual agrees with this monomial total pullback there.
 
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
+On the exceptional support, the image point is on the center. Choose an open on which the center support is irreducible and intersect it with a neighborhood where the original monomial ideal is a product of boundary entries. The resulting nonempty irreducible set has a generic point η in its closure, lying on the center and in the chosen open. For a boundary entry, its support contains η exactly when it contains the center on a neighborhood of the image point. One direction uses closedness of the support and the generic point property. The other uses that η belongs to any open meeting the irreducible set.
 
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
+The local total-transform formula for the product gives a strict-transform monomial times an exceptional power with exponent equal to the product order at η. The containment in the d-th power of the center ideal forces this order to be at least d. Restrict to the preimage of the neighborhood where the original product expression holds and cancel the common Cartier exceptional power of degree d. The residual is the strict-transform monomial times a nonnegative exceptional power, so it is monomial in the new boundary there.
 -/
 theorem isMonomialIn_of_exceptionalIdeal_pow_mul_eq_comap (hG : PrincipalizationGeometryHypotheses.{u}) (T : MarkedIdealWithBoundary.{u})
     (hT : T.IsAdmissible) (Z : T.scheme.IdealSheafData)
@@ -1513,30 +1355,12 @@ theorem isMonomialIn_of_exceptionalIdeal_pow_mul_eq_comap (hG : Principalization
       (inf_le_left : U₀ ⊓ (Blowup.exceptionalIdeal π Z).support.compl ≤ U₀) _ hmem0
     rwa [comap_homOfLE] at hfin
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The three given factorizations and the original product splitting show that the transformed whole ideal and the product of the two new factors become equal after multiplication by the m-th exceptional power. Cancel that Cartier power to get the splitting equality. The support of the new monomial factor lies in the support of its product with the exceptional power. The old monomial support and the total-transform formulas put this product support in the union of the new boundary supports.
 
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
+If the nonmonomial center order r is at least m, cancellation writes the new monomial factor as the total monomial pullback times the exceptional power of degree r−m. This is monomial in the new boundary. If r < m, the old monomial ideal is contained in the center power of degree m−r by the order and normal crossing hypotheses. Cancelling the r-th exceptional power gives the corresponding residual expression for the new monomial factor. The monomiality theorem for such a residual applies.
 
-Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis.
-
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. A detailed English derivation is pending.
+For transversality at a strict-transformed boundary component, its generic point projects to a generic point of an original boundary component. Containment in the new nonmonomial support would put this image point and its closure in the old nonmonomial support by the pullback factorization, contradicting the original splitting. For an exceptional component, apply the controlled-transform noncontainment result with the exact center order r. These facts give transversality for every new boundary entry.
 -/
 theorem isMonomialSplitting_of_isBlowupAlongIdealSheaf (hG : PrincipalizationGeometryHypotheses.{u}) (T : MarkedIdealWithBoundary.{u})
     (hT : T.IsAdmissible) (Z : T.scheme.IdealSheafData)

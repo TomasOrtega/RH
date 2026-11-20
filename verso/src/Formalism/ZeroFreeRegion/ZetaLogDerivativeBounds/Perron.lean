@@ -8,19 +8,13 @@ noncomputable section
 
 namespace Formalism.ZF
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+Both expressions sum the same weight against the von Mangoldt function. Substituting that function in the general weighted sum gives the equality.
 -/
 lemma perron_Sz_eq_Sa : Formalism.Sz = Formalism.Sa (fun n => (Λ n : ℝ)) := rfl
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Substitute using the available equality. Simplify using the standard rewrite rules.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+When the upper limit is at most one, the only positive integer that can occur is one. The von Mangoldt function vanishes there, so the sum is zero.
 -/
 lemma perron_Sz_eq_zero_of_le_one {x : ℝ} (hx : x ≤ 1) : Formalism.Sz x = 0 := by
   unfold Formalism.Sz
@@ -40,10 +34,8 @@ lemma perron_Sz_eq_zero_of_le_one {x : ℝ} (hx : x ≤ 1) : Formalism.Sz x = 0 
   subst hn1
   simp [ArithmeticFunction.vonMangoldt_apply_one]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+Write the sum using the weight max(x/n − 1, 0) at positive integers n and assign zero to the term at zero. Every positive integer beyond the summation limit has zero weight. Hence extending the expression to the given finite range leaves it unchanged.
 -/
 lemma perron_Sz_eq_sum_range {N : ℕ} {x : ℝ} (hx : x < N) :
     Formalism.Sz x = ∑ n ∈ Finset.range N, Λ n * Formalism.mxS n x := by
@@ -58,33 +50,15 @@ lemma perron_Sz_eq_sum_range {N : ℕ} {x : ℝ} (hx : x < N) :
   have : (n : ℝ) ≤ x := (Nat.cast_le.mpr h2).trans (Nat.floor_le (by linarith))
   linarith
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+For fixed positive n, the function x ↦ x/n − 1 is continuous. Taking its maximum with the continuous zero function preserves continuity.
 -/
 lemma perron_continuous_mxS (n : ℕ) : Continuous (Formalism.mxS n) := by
   show Continuous (fun x : ℝ => max (x / n - 1) 0)
   exact ((continuous_id.div_const _).sub continuous_const).max continuous_const
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
-
-Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Choose a positive integer N greater than the point of continuity. For x near that point with x < N, express the sum as a fixed finite sum over n < N of the maximum weights. The term at zero is zero, and for x < 0 all positive-index weights are zero. Each term is continuous, so the finite expression is continuous in a neighborhood of the point.
 -/
 lemma perron_Sz_continuousAt (y : ℝ) : ContinuousAt (fun x => (Formalism.Sz x : ℂ)) y := by
   have key : ∀ N : ℕ, ∀ x : ℝ, x < N →
@@ -145,10 +119,8 @@ lemma perron_Sz_continuousAt (y : ℝ) : ContinuousAt (fun x => (Formalism.Sz x 
   filter_upwards [Iio_mem_nhds hyN] with x hx
   rw [key _ x hx]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
-
-Chain the equalities or inequalities of the calculation.
+/- English proof (authored)
+At a point with real part σ₀, each term of the complex Dirichlet series has absolute value equal to the corresponding nonnegative term on the real line at σ₀. That real series converges because σ₀ > 1. Apply the triangle inequality to finite sums and pass to the limit.
 -/
 lemma perron_norm_LSeries_le {σ₀ : ℝ} (hσ : 1 < σ₀) (w : ℂ) (hw : w.re = σ₀) :
     ‖LSeries ↗Λ w‖ ≤ ∑' n, ‖LSeries.term ↗Λ (σ₀ : ℂ) n‖ := by
@@ -162,14 +134,8 @@ lemma perron_norm_LSeries_le {σ₀ : ℝ} (hσ : 1 < σ₀) (w : ℂ) (hw : w.r
         norm_tsum_le_tsum_norm (hs.norm.congr fun n => (heq n).symm)
     _ = ∑' n, ‖LSeries.term ↗Λ (σ₀ : ℂ) n‖ := by simp_rw [heq]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Put m = min((σ₀ − 1)², 1). The squared absolute values of σ₀ + it and σ₀ − 1 + it are both at least m(1 + t²). Multiply these two inequalities and take the positive square root.
 -/
 lemma perron_denom_bound {σ₀ : ℝ} (hσ : 1 < σ₀) (t : ℝ) :
     min ((σ₀ - 1) ^ 2) 1 * (1 + t ^ 2) ≤ ‖((σ₀ : ℂ) + t * I) * ((σ₀ : ℂ) + t * I - 1)‖ := by
@@ -197,8 +163,8 @@ lemma perron_denom_bound {σ₀ : ℝ} (hσ : 1 < σ₀) (t : ℝ) :
   rw [norm_mul]
   exact (pow_le_pow_iff_left₀ a0 (by positivity) two_ne_zero).1 (key.trans e.symm.le)
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+In the half-plane with real part greater than one, the negative logarithmic derivative of zeta equals the Dirichlet series with von Mangoldt coefficients. Substitute this identity at σ₀ + it and retain the remaining power and denominator.
 -/
 lemma perron_Fy_eq_LSeries (y : ℝ) (w : ℂ) (hw : 1 < w.re) :
     Fy y w = LSeries ↗Λ w * (y : ℂ) ^ w / (w * (w - 1)) := by
@@ -206,14 +172,8 @@ lemma perron_Fy_eq_LSeries (y : ℝ) (w : ℂ) (hw : 1 < w.re) :
   rw [ArithmeticFunction.LSeries_vonMangoldt_eq_deriv_riemannZeta_div hw]
   ring
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+On the chosen vertical line, zeta is holomorphic and nonzero, so its logarithmic derivative is continuous. The positive-base complex power is continuous, and neither factor of the denominator vanishes because σ₀ > 1. Products and quotients then give the desired continuity.
 -/
 lemma perron_continuous_Fy {y : ℝ} (hy : 0 < y) {σ₀ : ℝ} (hσ : 1 < σ₀) :
     Continuous (fun t : ℝ => Fy y ((σ₀ : ℂ) + t * I)) := by
@@ -244,12 +204,8 @@ lemma perron_continuous_Fy {y : ℝ} (hy : 0 < y) {σ₀ : ℝ} (hσ : 1 < σ₀
       rw [h] at h1
       simp at h1
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
+/- English proof (authored)
+On the vertical line, the Dirichlet series is uniformly bounded by its value at the real part, and the power of y has constant absolute value y^σ₀. The denominator has absolute value bounded below by a positive constant times 1 + t². The continuous integrand is therefore dominated by an integrable multiple of 1/(1 + t²).
 -/
 lemma perron_integrable_Fy {y : ℝ} (hy : 0 < y) {σ₀ : ℝ} (hσ : 1 < σ₀) :
     Integrable (fun t : ℝ => Fy y ((σ₀ : ℂ) + t * I)) := by
@@ -272,8 +228,8 @@ lemma perron_integrable_Fy {y : ℝ} (hy : 0 < y) {σ₀ : ℝ} (hσ : 1 < σ₀
   exact Integrable.mono' ((integrable_inv_one_add_sq).const_mul _)
     (perron_continuous_Fy hy hσ).aestronglyMeasurable (Filter.Eventually.of_forall hbound)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Apply the Mellin identity for the general weighted sum with the von Mangoldt coefficients. Its coefficient bound holds because those coefficients are nonnegative.
 -/
 lemma perron_mellinSgen_Λ :
     Measurable (Formalism.Sa (fun n => (Λ n : ℝ))) ∧
@@ -284,12 +240,8 @@ lemma perron_mellinSgen_Λ :
         LSeries (fun n => ((Λ n : ℝ) : ℂ)) s / (s * (s - 1)) := Formalism.mellinSgen (fun n => (Λ n : ℝ)) 1 (fun n => by
     rw [one_mul, abs_of_nonneg ArithmeticFunction.vonMangoldt_nonneg])
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+The smoothed sum vanishes up to one, so its Mellin transform comes entirely from the interval above one. There the general Mellin identity gives the Dirichlet series divided by the smoothing denominator. Replace the Dirichlet series with the negative logarithmic derivative of zeta.
 -/
 lemma perron_mellin_Sz {w : ℂ} (hw : 1 < w.re) :
     mellin (fun x : ℝ => (Formalism.Sz x : ℂ)) (-w) =
@@ -307,12 +259,8 @@ lemma perron_mellin_Sz {w : ℂ} (hw : 1 < w.re) :
   rw [h1, ArithmeticFunction.LSeries_vonMangoldt_eq_deriv_riemannZeta_div hw]
   ring
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Split the defining integral at one. The integrand vanishes on the lower interval. On the upper interval its absolute value is bounded by the integrable real weight supplied by the weighted summatory estimate at σ₀.
 -/
 lemma perron_mellinConvergent {σ₀ : ℝ} (hσ : 1 < σ₀) :
     MellinConvergent (fun x : ℝ => (Formalism.Sz x : ℂ)) ((-σ₀ : ℝ) : ℂ) := by
@@ -335,10 +283,8 @@ lemma perron_mellinConvergent {σ₀ : ℝ} (hσ : 1 < σ₀) :
   refine (integrableOn_zero).congr_fun (fun t ht => ?_) measurableSet_Ioc
   simp [perron_Sz_eq_zero_of_le_one ht.2]
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
-
-Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+On the Mellin line with real part −σ₀, the transform identity identifies the transform with the Perron integrand at y = 1 and the opposite height. Reflection of the real integration variable preserves integrability.
 -/
 lemma perron_verticalIntegrable {σ₀ : ℝ} (hσ : 1 < σ₀) :
     VerticalIntegrable (mellin (fun x : ℝ => (Formalism.Sz x : ℂ))) (-σ₀) := by
@@ -355,14 +301,8 @@ lemma perron_verticalIntegrable {σ₀ : ℝ} (hσ : 1 < σ₀) :
   rw [heq]
   exact hF
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Move the embeddings inside the algebraic operations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
-
-Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
-
-Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+The weighted sum is continuous, its Mellin transform converges on the line with real part −σ₀, and the transform is integrable along that line. Mellin inversion now represents the sum as a vertical integral. Substituting the transform formula and reflecting the height gives the Perron integrand with normalization 1/(2π).
 -/
 theorem perron_formula : Perron := by
   intro y hy σ₀ hσ

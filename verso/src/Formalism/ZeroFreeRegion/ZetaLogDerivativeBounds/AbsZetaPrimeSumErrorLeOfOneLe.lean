@@ -7,14 +7,8 @@ noncomputable section
 namespace Formalism.ZF
 
 open ArithmeticFunction in
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
-
-Supply the required witnesses or components. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
+/- English proof (authored)
+Every index lies between one and y, so its weight y/n − 1 is nonnegative and at most y. Its von Mangoldt coefficient is at most log n ≤ log y. Thus every term is between zero and y log y. There are at most y terms, giving both bounds.
 -/
 theorem zetaPrimeSum_nonneg_and_le (y : ℝ) (hy : 1 ≤ y) :
     0 ≤ Formalism.Sz y ∧ Formalism.Sz y ≤ y * y * Real.log y := by
@@ -44,8 +38,8 @@ theorem zetaPrimeSum_nonneg_and_le (y : ℝ) (hy : 1 ≤ y) :
     _ ≤ y * (Real.log y * y) := mul_le_mul_of_nonneg_right (Nat.floor_le hy0) (mul_nonneg hlog hy0)
     _ = y * y * Real.log y := by ring
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Subtract the main term from the weighted sum. The sum is nonnegative and at most y² log y, and the Euler–Mascheroni constant lies between zero and one. Bound the absolute value of the difference by these bounds and the two contributions to the main term. Factoring out y gives the stated expression.
 -/
 theorem abs_zetaPrimeSumError_le_of_one_le (y : ℝ) (hy : 1 ≤ y) :
     |Formalism.Gz y| ≤ y * (y * Real.log y + Real.log y + 2) := by

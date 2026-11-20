@@ -7,14 +7,14 @@ noncomputable section
 
 namespace Formalism.ZF
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The rectangle integral here uses the same four oriented side integrals as the rectangle integral in the residue theorem, so the two expressions agree by definition.
 -/
 theorem rdp_rectInt_eq_fx (g : ℂ → ℂ) (x0 x1 y0 y1 : ℝ) :
     rectInt g x0 x1 y0 y1 = Formalism.FX.rectInt g x0 x1 y0 y1 := rfl
 
-/- English proof (translation)
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+On each of the four sides, linearity of the interval integral splits the sum into its two integrable parts. Combine the side integrals with their original signs and orientation factors to obtain the sum of the two rectangle integrals.
 -/
 theorem rdp_rectInt_add (f1 f2 : ℂ → ℂ) (x0 x1 y0 y1 : ℝ)
     (hB1 : IntervalIntegrable (fun x : ℝ => f1 (x + y0 * I)) MeasureTheory.volume x0 x1)
@@ -32,8 +32,8 @@ theorem rdp_rectInt_add (f1 f2 : ℂ → ℂ) (x0 x1 y0 y1 : ℝ)
     intervalIntegral.integral_add hR1 hR2, intervalIntegral.integral_add hL1 hL2]
   ring
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+Away from p, differentiating 1/(z − p) gives −1/(z − p)². Multiplication by −a turns this into a/(z − p)².
 -/
 theorem rdp_hasDerivAt_prim (a p w : ℂ) (hw : w ≠ p) :
     HasDerivAt (fun z => -a * (z - p)⁻¹) (a / (w - p) ^ 2) w := by
@@ -42,12 +42,8 @@ theorem rdp_hasDerivAt_prim (a p w : ℂ) (hw : w ≠ p) :
   convert h using 1
   all_goals first | rfl | ring | (field_simp; ring) | (simp; ring)
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
-
-Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+The horizontal line avoids p because its height differs from the imaginary part of p. Along the line, the derivative of the primitive −a/(z − p) with respect to the real coordinate is the integrand. This derivative is continuous, so the fundamental theorem of calculus gives the difference of endpoint values.
 -/
 theorem rdp_horiz (a p : ℂ) (y x0 x1 : ℝ) (hy : y ≠ p.im) :
     ∫ x in x0..x1, a / ((x : ℂ) + y * I - p) ^ 2 =
@@ -70,12 +66,8 @@ theorem rdp_horiz (a p : ℂ) (y x0 x1 : ℝ) (hy : y ≠ p.im) :
   exact intervalIntegral.integral_eq_sub_of_hasDerivAt (fun x _ => hder x)
     (hcont.intervalIntegrable _ _)
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The vertical line avoids p because its real coordinate differs from the real part of p. The chain rule gives the derivative of −a/(z − p) along the line as i times the integrand. This function is continuous. Integrate the derivative and pull the constant i outside the integral.
 -/
 theorem rdp_vert (a p : ℂ) (x y0 y1 : ℝ) (hx : x ≠ p.re) :
     I * ∫ y in y0..y1, a / ((x : ℂ) + y * I - p) ^ 2 =
@@ -100,8 +92,8 @@ theorem rdp_vert (a p : ℂ) (x y0 y1 : ℝ) (hx : x ≠ p.re) :
   exact intervalIntegral.integral_eq_sub_of_hasDerivAt (fun y _ => hder y)
     (hcont.intervalIntegrable _ _)
 
-/- English proof (translation)
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+Each side avoids the interior point p. The horizontal and vertical integral formulas express all four oriented side integrals as endpoint differences of the same primitive. Each corner value occurs once with each sign, and the sum is zero.
 -/
 theorem rdp_rectInt_double (a p : ℂ) (x0 x1 y0 y1 : ℝ) (h1 : x0 < p.re) (h2 : p.re < x1)
     (h3 : y0 < p.im) (h4 : p.im < y1) :
@@ -111,10 +103,8 @@ theorem rdp_rectInt_double (a p : ℂ) (x0 x1 y0 y1 : ℝ) (h1 : x0 < p.re) (h2 
     rdp_vert a p x1 y0 y1 (ne_of_gt h2), rdp_vert a p x0 y0 y1 (ne_of_lt h1)]
   ring
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
+/- English proof (authored)
+Along the compact parameter interval, the curve avoids p. Hence the double-pole term is continuous, and the function obtained by subtracting it from g is the sum of the continuous remainder and the continuous simple-pole term. Both functions are integrable on the interval.
 -/
 theorem rdp_seg (g G : ℂ → ℂ) (a b p : ℂ) (γ : ℝ → ℂ) (s t : ℝ) (hγ : Continuous γ)
     (hG : ContinuousOn (fun u => G (γ u)) (Set.uIcc s t)) (hP : ∀ u ∈ Set.uIcc s t, γ u ≠ p)
@@ -131,20 +121,8 @@ theorem rdp_seg (g G : ℂ → ℂ) (a b p : ℂ) (γ : ℝ → ℂ) (s t : ℝ)
   rw [hg _ (hP u hu)]
   ring
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Each side lies in the open set on which the remainder is holomorphic, and each avoids the interior pole. The double-pole term and the function left after subtracting it are therefore integrable on every side. By linearity and the primitive calculation, the double-pole term contributes zero. The remaining integrand has a single simple-pole term with coefficient b, so the rectangle residue formula gives 2πib.
 -/
 theorem rectangle_double_pole : RectDoublePole := by
   intro g G a b p x0 x1 y0 y1 h1 h2 h3 h4 hU hg

@@ -8,8 +8,8 @@ noncomputable section
 
 namespace Formalism.ZF
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The size assumption bounds log y by (8/c)² and y by the exponential of that number. Substitution in the elementary error bound gives a fixed constant times y. The desired decay factor is at least exp(−1) in this range, so multiplying the constant by e absorbs it.
 -/
 private theorem abs_zetaPrimeSumError_le_of_sqrt_log_lt (c : ℝ) (hc : 0 < c) (y : ℝ) (hy : 2 ≤ y)
     (hs : Real.sqrt (Real.log y) < 8 / c) :
@@ -48,20 +48,8 @@ private theorem abs_zetaPrimeSumError_le_of_sqrt_log_lt (c : ℝ) (hc : 0 < c) (
         exact mul_le_mul_of_nonneg_left hexp (by positivity)
     _ = M * Real.exp 1 * y * Real.exp (-(c / 8) * Real.sqrt (Real.log y)) := by ring
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
+/- English proof (authored)
+Choose c as the minimum of the two region constants and one half. Enlarge the logarithmic derivative coefficient to a nonnegative value. If the square root of log y is at least 8/c, apply the large-contour error bound. Below that threshold apply the elementary bounded-range estimate. Both have decay parameter c/8, so the larger of their two constants works for all y.
 -/
 theorem zetaPrimeSumErrorBoundOfBounds : GzPNTOf := by
   intro hZF hLD hRH hP hRS

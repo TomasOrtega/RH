@@ -11,21 +11,19 @@ def laHfun (y : ℝ) (s : ℂ) : ℂ :=
 
 def laU : Set ℂ := {s | riemannZeta₁ s ≠ 0} ∩ {s | s ≠ 0}
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Regularized zeta is continuous, so its nonzero set is open. Intersect that set with the open set of nonzero arguments.
 -/
 theorem laU_open : IsOpen laU :=
   (isOpen_ne_fun differentiable_riemannZeta₁.continuous continuous_const).inter isOpen_ne
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+At one the regularized zeta value is one, and the argument one is nonzero. Both conditions for membership hold.
 -/
 theorem one_mem_laU : (1 : ℂ) ∈ laU := by simp [laU]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+On the given open set the regularized zeta function and the argument are nonzero. Hence the quotient of its derivative by itself and the quotient of the power of y by the argument are holomorphic. The defining products and difference preserve holomorphy.
 -/
 theorem laH_diffOn (y : ℝ) (hy : 0 < y) : DifferentiableOn ℂ (laHfun y) laU := by
   intro s hs
@@ -40,17 +38,13 @@ theorem laH_diffOn (y : ℝ) (hy : 0 < y) : DifferentiableOn ℂ (laHfun y) laU 
   exact ((differentiableAt_const _).sub ((differentiableAt_id.sub_const 1).mul
     (hd.div hz hZ))).mul (hc.div differentiableAt_id h0)
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+At one the factor containing s − 1 vanishes, leaving one in the first bracket. The remaining quotient is y to the first power divided by one.
 -/
 theorem laH_one (y : ℝ) : laHfun y 1 = y := by simp [laHfun]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+Differentiate the product of the first bracket and the power of y divided by s. At one the derivative of the first bracket is minus the logarithmic derivative of regularized zeta, which is minus the Euler–Mascheroni constant. The derivative of the second factor at one is y log y − y. The two product-rule contributions give the formula.
 -/
 theorem laH_deriv_one (y : ℝ) (hy : 0 < y) :
     deriv (laHfun y) 1 = (y : ℂ) * Real.log y - (1 + Real.eulerMascheroniConstant) * y := by
@@ -68,20 +62,8 @@ theorem laH_deriv_one (y : ℝ) (hy : 0 < y) :
   simp
   ring
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
-
-Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
-
-Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
-
-Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
-
-Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
+/- English proof (authored)
+Near one, write the Perron integrand as the holomorphic numerator divided by (s − 1)², using the regularized logarithmic derivative identity. The numerator has value y and derivative equal to the stated coefficient at one. Two successive divided differences give a holomorphic remainder after subtracting the constant and linear terms of the numerator. Dividing by (s − 1)² gives the two Laurent terms and that remainder.
 -/
 theorem laurentExpansionAtOne : LaurentAtOne := by
   intro y hy

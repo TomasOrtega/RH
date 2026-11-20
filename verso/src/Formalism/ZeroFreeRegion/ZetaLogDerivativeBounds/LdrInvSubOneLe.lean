@@ -7,8 +7,8 @@ noncomputable section
 
 namespace Formalism.ZF
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+The imaginary part of s − 1 equals that of s. Its absolute value is at least one and at most the norm of s − 1. Taking reciprocals gives the bound.
 -/
 lemma ldr_inv_sub_one_le {s : ℂ} (h : 1 ≤ |s.im|) : ‖1 / (s - 1)‖ ≤ 1 := by
   have h1 : |(s - 1).im| ≤ ‖s - 1‖ := Complex.abs_im_le_norm _

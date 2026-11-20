@@ -6,8 +6,8 @@ noncomputable section
 
 namespace Formalism.ZF
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The product of zeta and s − 1 tends to the nonzero residue one as s tends to one through the punctured neighborhood. Thus this product stays nonzero nearby, and so does zeta there.
 -/
 lemma rso_zeta_ne_near_one : ∀ᶠ w in 𝓝 (1 : ℂ), w ≠ 1 → riemannZeta w ≠ 0 := by
   have h := riemannZeta_residue_one.eventually (eventually_ne_nhds (one_ne_zero : (1 : ℂ) ≠ 0))
@@ -15,18 +15,16 @@ lemma rso_zeta_ne_near_one : ∀ᶠ w in 𝓝 (1 : ℂ), w ≠ 1 → riemannZeta
   filter_upwards [h] with w hw hw1 hz
   exact hw hw1 (by rw [hz, mul_zero])
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Zeta is holomorphic on the open complement of one. Its derivative is consequently holomorphic on that same open set.
 -/
 lemma rso_deriv_zeta_diff : DifferentiableOn ℂ (deriv riemannZeta) {w : ℂ | w ≠ 1} := by
   have hd : DifferentiableOn ℂ riemannZeta {w : ℂ | w ≠ 1} :=
     fun w hw => (differentiableAt_riemannZeta hw).differentiableWithinAt
   exact hd.deriv isOpen_ne
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Replace the relevant objects with their definitions. A detailed English derivation is pending.
+/- English proof (authored)
+At the specified point zeta and the kernel denominator are nonzero. The zeta derivative, zeta, the power of y, and the kernel factors are holomorphic there. Their products and quotients give holomorphy of the integrand.
 -/
 lemma rso_Fy_diff (y : ℝ) (hy : 0 < y) {w : ℂ} (h0 : w ≠ 0) (h1 : w ≠ 1)
     (hz : riemannZeta w ≠ 0) : DifferentiableAt ℂ (Fy y) w := by
@@ -40,24 +38,8 @@ lemma rso_Fy_diff (y : ℝ) (hy : 0 < y) {w : ℂ} (h0 : w ≠ 0) (h1 : w ≠ 1)
   unfold Fy
   exact (((hd1.div hd2 hz).neg).mul hd3).div (differentiableAt_id.mul (differentiableAt_id.sub_const 1)) hden
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Consider separately whether the proposition holds or fails.
-
-Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
+/- English proof (authored)
+Subtract the two Laurent pole terms from the integrand and fill in the value at one with the holomorphic remainder. This is holomorphic near one by the expansion. At the other points of the zero-free rectangle, zeta is nonzero and the kernel denominators do not vanish, so it is holomorphic on a neighborhood of each point. Apply the rectangle formula for a double pole to this decomposition. Only the simple Laurent coefficient contributes, yielding the asserted main term.
 -/
 theorem rectangleShiftOfResidue : RectShiftOf := by
   intro hRDP hLA y hy σ₁ σ₀ T h1 h2 h3 hT hz

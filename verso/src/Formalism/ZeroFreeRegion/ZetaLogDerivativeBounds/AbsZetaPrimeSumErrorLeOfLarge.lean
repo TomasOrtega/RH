@@ -9,8 +9,8 @@ noncomputable section
 namespace Formalism.ZF
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Let s be the square root of log y and take T = exp(cs/4). Put the right line at 1 + 1/log y and the left line at 1 − c/log(T + 2). The zero-free region excludes zeros from the rectangle, so the contour shift crosses only the pole at one, whose residue is the prescribed main term. Split the Perron integral at heights ±T and apply the rectangle norm estimate. The right tail contributes a constant times y divided by T, with a logarithmic factor. Each horizontal side has bounded length and contributes its integrand bound with denominator T². The left side has length 2T, and the chosen shift makes T times the power of y at its real part at most y/T. The conductor estimates bound all three polynomial factors by constants times s³. Absorb that cubic into one half of the exponential decay to obtain the displayed estimate.
 -/
 theorem abs_zetaPrimeSumError_le_of_large (c₀ c₁ C₁ C₂ : ℝ) (hC₁ : 0 ≤ C₁) (hC₂ : 0 ≤ C₂)
     (hZ : ∀ s : ℂ, s ≠ 1 → 1 - c₀ / Real.log (|s.im| + 2) ≤ s.re → riemannZeta s ≠ 0)

@@ -6,17 +6,15 @@ noncomputable section
 
 namespace Formalism.ZF
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+Take norms in the defining quotient. The negative sign leaves the norm unchanged, products split into products of norms, and the power of positive y has norm equal to the real power with exponent Re(w).
 -/
 theorem norm_perronIntegrand (y : ℝ) (hy : 0 < y) (w : ℂ) :
     ‖Fy y w‖ = ‖deriv riemannZeta w / riemannZeta w‖ * y ^ w.re / (‖w‖ * ‖w - 1‖) := by
   simp only [Fy, norm_div, norm_mul, norm_neg, Complex.norm_cpow_eq_rpow_re_of_pos hy]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+The height logarithm at v is positive and no larger than the one at T. Dividing the positive c by the smaller logarithm increases the shift, and replacing c by c′ increases it again. Subtract from one to obtain the comparison.
 -/
 theorem one_sub_div_log_le (c c' T v : ℝ) (hc : 0 < c) (hcc : c ≤ c') (hT : 0 ≤ T) (hv : |v| ≤ T) :
     1 - c' / Real.log (|v| + 2) ≤ 1 - c / Real.log (T + 2) := by
@@ -32,8 +30,8 @@ theorem one_sub_div_log_le (c c' T v : ℝ) (hc : 0 < c) (hcc : c ≤ c') (hT : 
     div_le_div_of_nonneg_right hcc hpos.le
   linarith
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+At every point of the rectangle, the comparison of height logarithms places its real part above the threshold of the zero-free region. At a point other than the pole, the assumed region theorem then gives nonvanishing.
 -/
 theorem riemannZeta_ne_zero_of_mem_rectangle (c₀ : ℝ)
     (hZ : ∀ s : ℂ, s ≠ 1 → 1 - c₀ / Real.log (|s.im| + 2) ≤ s.re → riemannZeta s ≠ 0)
@@ -43,18 +41,8 @@ theorem riemannZeta_ne_zero_of_mem_rectangle (c₀ : ℝ)
   intro w h1 _ h3 h4
   exact hZ w h4 ((one_sub_div_log_le c c₀ T w.im hc hcc hT h3).trans h1)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+At the given real part the derivative bound is log y + C₂, and the power factor is ey. Both denominator norms dominate |t|, since subtracting one leaves the imaginary part unchanged. Substitute these bounds in the norm formula and divide by the positive t².
 -/
 theorem norm_perronIntegrand_le_right (C₂ : ℝ)
     (hR : ∀ s : ℂ, 1 < s.re → ‖deriv riemannZeta s / riemannZeta s‖ ≤ 1 / (s.re - 1) + C₂)
@@ -91,18 +79,8 @@ theorem norm_perronIntegrand_le_right (C₂ : ℝ)
     _ ≤ (Real.log y + C₂) * (Real.exp 1 * y) / t ^ 2 := by
         apply div_le_div_of_nonneg_left (mul_nonneg hnum (by positivity)) htp hden
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
+/- English proof (authored)
+At height of absolute value T the point lies in the derivative region and is at least T from the pole in norm. Removing the pole correction from the derivative estimate increases it by at most one, since T ≥ 1. The two denominator norms are each at least T, and the power of y is at most its value at the right endpoint. Apply the integrand norm formula.
 -/
 theorem norm_perronIntegrand_le_horizontal (c₁ C₁ : ℝ) (hC₁ : 0 ≤ C₁)
     (hD : ∀ s : ℂ, s ≠ 1 → 1 - c₁ / Real.log (|s.im| + 2) ≤ s.re →
@@ -147,24 +125,8 @@ theorem norm_perronIntegrand_le_horizontal (c₁ C₁ : ℝ) (hC₁ : 0 ≤ C₁
     _ ≤ (C₁ * Real.log (T + 2) ^ 2 + 1) * y ^ σ₀ / T ^ 2 := by
         apply div_le_div_of_nonneg_left (by positivity) htp hden
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
-
-Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
+/- English proof (authored)
+Write L for the logarithm of T + 2. The point lies in the derivative region by the height comparison. Its norm is at least one half and its distance from the pole is at least c/L. The latter bound controls the pole correction by L/c, and the local logarithm is at most L. Insert the derivative bound and the product lower bound c/(2L) in the integrand norm formula.
 -/
 theorem norm_perronIntegrand_le_left (c₁ C₁ : ℝ) (hC₁ : 0 ≤ C₁)
     (hD : ∀ s : ℂ, s ≠ 1 → 1 - c₁ / Real.log (|s.im| + 2) ≤ s.re →

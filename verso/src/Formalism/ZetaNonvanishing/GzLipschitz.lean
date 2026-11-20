@@ -15,24 +15,24 @@ def P (k : ℕ) (x : ℝ) : ℝ :=
 
 def K0 : ℝ := Real.log 4 + 7
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+The constant is log(4) + 7. Its logarithmic term is nonnegative because 4 ≥ 1.
 -/
 lemma lipschitzConst_nonneg : 0 ≤ K0 := by
   unfold K0
   have := Real.log_nonneg (by norm_num : (1:ℝ) ≤ 4)
   linarith
 
-/- English proof (translation)
-By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+/- English proof (authored)
+For a natural number n, being at least 1 is equivalent to being positive. Both intervals also require n ≤ k.
 -/
 lemma Icc_one_eq_Ioc (k : ℕ) : Finset.Icc 1 k = Finset.Ioc 0 k := by
   ext n
   simp only [Finset.mem_Icc, Finset.mem_Ioc]
   omega
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+For k = 0 the sum is empty and the factorial is 1, whose logarithm is zero. Passing from k to k + 1 adds log(k + 1) to the sum. The factorial is multiplied by k + 1, so its logarithm increases by the same amount.
 -/
 lemma sum_log_eq_log_factorial (k : ℕ) :
     ∑ n ∈ Finset.Ioc 0 k, Real.log n = Real.log (k.factorial : ℝ) := by
@@ -43,12 +43,8 @@ lemma sum_log_eq_log_factorial (k : ℕ) :
       Real.log_mul (by positivity) (Nat.cast_ne_zero.2 (Nat.factorial_ne_zero k))]
     ring
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
-
-Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
+/- English proof (authored)
+Replace log(n) by the sum of the von Mangoldt function over the divisors of n. Reorder the finite sum by divisor d. For each d from 1 to k there are ⌊k/d⌋ positive multiples of d up to k, giving the stated weight.
 -/
 lemma sum_log_eq (k : ℕ) :
     ∑ n ∈ Finset.Ioc 0 k, Real.log n = ∑ n ∈ Finset.Ioc 0 k, Λ n * ((k / n : ℕ) : ℝ) := by
@@ -68,16 +64,8 @@ lemma sum_log_eq (k : ℕ) :
     · rintro ⟨⟨⟨h0, hk⟩, hd⟩, -, -⟩
       exact ⟨⟨h0, hk⟩, hd, by omega⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Multiply the weighted sum A(k) by k and bound k/n by ⌊k/n⌋ + 1. The coefficients are nonnegative, so the resulting upper bound is log(k!) plus the sum of the von Mangoldt function up to k. The factorial bound k! ≤ k to the power k and Chebyshev's bound on the latter sum give k times log(k) + log(4) + 4, with all three terms inside the factor. Divide by k > 0.
 -/
 lemma mertens_upper (k : ℕ) (hk : 1 ≤ k) : A k ≤ Real.log k + (Real.log 4 + 4) := by
   have hk0 : (0:ℝ) < k := by exact_mod_cast hk
@@ -110,14 +98,8 @@ lemma mertens_upper (k : ℕ) (hk : 1 ≤ k) : A k ≤ Real.log k + (Real.log 4 
   have h4 : (k:ℝ) * A k ≤ k * (Real.log k + (Real.log 4 + 4)) := by nlinarith
   exact le_of_mul_le_mul_left h4 hk0
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The integer quotient ⌊k/n⌋ is at most k/n, so the divisor form for log(k!) is bounded above by kA(k). The k-th term of the series for exp(k) is k to the power k divided by k!. Taking logarithms of the bound by exp(k) gives k log(k) − k ≤ log(k!). Combine the bounds and divide by k.
 -/
 lemma mertens_lower (k : ℕ) (hk : 1 ≤ k) : Real.log k - 1 ≤ A k := by
   have hk0 : (0:ℝ) < k := by exact_mod_cast hk
@@ -140,12 +122,8 @@ lemma mertens_lower (k : ℕ) (hk : 1 ≤ k) : Real.log k - 1 ≤ A k := by
   have h5 : (k:ℝ) * (Real.log k - 1) ≤ k * A k := by nlinarith
   exact le_of_mul_le_mul_left h5 hk0
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
-
-Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
+/- English proof (authored)
+On k ≤ x < k + 1, the floor is k. Split each summand into x times its von Mangoldt coefficient divided by n minus the coefficient. At the endpoint x = k + 1 the floor adds the index k + 1, whose weight x/(k + 1) − 1 is zero. The formula holds on the closed interval.
 -/
 lemma Sz_eq (k : ℕ) (x : ℝ) (hx1 : (k:ℝ) ≤ x) (hx2 : x ≤ k + 1) :
     Sz x = x * A k - ∑ n ∈ Finset.Ioc 0 k, Λ n := by
@@ -167,15 +145,15 @@ lemma Sz_eq (k : ℕ) (x : ℝ) (hx1 : (k:ℝ) ≤ x) (hx2 : x ≤ k + 1) :
     rw [hf, Finset.sum_Icc_succ_top (by omega : 1 ≤ k + 1), key, hone]
     ring
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The prime-sum error subtracts x log(x) and adds the linear Euler constant correction to the weighted sum. Substituting the closed-interval expression for that sum gives the stated piece.
 -/
 lemma Gz_eq_P (k : ℕ) (x : ℝ) (hx1 : (k:ℝ) ≤ x) (hx2 : x ≤ k + 1) : Gz x = P k x := by
   unfold Gz P
   rw [Sz_eq k x hx1 hx2]
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Differentiate the affine part and the term −x log(x) at x > 0. The latter contributes −log(x) − 1, and the linear correction contributes 1 plus Euler's constant. Their constant terms cancel except for Euler's constant.
 -/
 lemma hasDerivAt_P (k : ℕ) {x : ℝ} (hx : 0 < x) :
     HasDerivAt (P k) (A k - Real.log x + Real.eulerMascheroniConstant) x := by
@@ -185,8 +163,8 @@ lemma hasDerivAt_P (k : ℕ) {x : ℝ} (hx : 0 < x) :
   refine (h1.congr_deriv (by ring)).congr_of_eventuallyEq (Filter.Eventually.of_forall fun y => ?_)
   simp only [P, Pi.add_apply, Pi.sub_apply]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+If k = 0, the weighted sum is zero and x ranges from 1/2 to 1, so log(x) lies between −log(2) and zero. If k ≥ 1, the bounds on the weighted sum apply, and k ≤ x ≤ k + 1 ≤ 2k puts log(x) between log(k) and log(k) + log(2). Combining these inequalities in each case with 1/2 < γ < 2/3 and log(2) < 0.9 gives the absolute bound log(4) + 7.
 -/
 lemma deriv_bound (k : ℕ) (x : ℝ) (hx1 : (k:ℝ) ≤ x) (hx1' : 1 / 2 ≤ x) (hx2 : x ≤ k + 1) :
     |A k - Real.log x + Real.eulerMascheroniConstant| ≤ K0 := by
@@ -214,8 +192,8 @@ lemma deriv_bound (k : ℕ) (x : ℝ) (hx1 : (k:ℝ) ≤ x) (hx1' : 1 / 2 ≤ x)
     rw [Real.log_mul two_ne_zero (by positivity)] at h2
     constructor <;> linarith
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+On the interval from max(k, 1/2) to k + 1 the error agrees with the differentiable piece. Its derivative is bounded in absolute value by the same constant throughout this interval. Apply the mean value inequality between x and y.
 -/
 lemma lip_piece (k : ℕ) (x y : ℝ) (hx1 : (k:ℝ) ≤ x) (hx1' : 1 / 2 ≤ x) (hx2 : x ≤ k + 1)
     (hy1 : (k:ℝ) ≤ y) (hy1' : 1 / 2 ≤ y) (hy2 : y ≤ k + 1) :
@@ -237,8 +215,8 @@ lemma lip_piece (k : ℕ) (x y : ℝ) (hx1 : (k:ℝ) ≤ x) (hx1' : 1 / 2 ≤ x)
   rw [Gz_eq_P k x hx1 hx2, Gz_eq_P k y hy1 hy2]
   simpa [Real.norm_eq_abs] using h
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the upper integer endpoint, starting with the interval from 1/2 to 1. When the interval is extended by one unit, pairs in the old interval satisfy the induction hypothesis, and pairs in the new piece satisfy its derivative bound. For a pair on opposite sides of the joining point, split the difference there and apply the triangle inequality. The two lengths add to the original distance.
 -/
 lemma lip_upto (k : ℕ) : ∀ x y : ℝ, 1 / 2 ≤ x → x ≤ k + 1 → 1 / 2 ≤ y → y ≤ k + 1 →
     |Gz y - Gz x| ≤ K0 * |y - x| := by
@@ -275,12 +253,8 @@ lemma lip_upto (k : ℕ) : ∀ x y : ℝ, 1 / 2 ≤ x → x ≤ k + 1 → 1 / 2 
 end LogFactorialMertensBounds
 
 open LogFactorialMertensBounds in
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Any two points at least 1/2 lie in one of the bounded intervals covered by the preceding estimate, so the same Lipschitz constant works for every pair. Compare each value at t with the value at 1/2. The bound on the difference gives an upper bound of K₀(t − 1/2) plus the absolute value of the error at 1/2. Since t ≥ 1/2, the larger constant K₀ plus twice that absolute value controls both the linear growth and the differences.
 -/
 theorem zetaPrimeSumErrorLipschitz : GzLipschitz := by
   have hK := lipschitzConst_nonneg

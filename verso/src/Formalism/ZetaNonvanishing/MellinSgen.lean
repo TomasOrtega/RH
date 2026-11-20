@@ -10,10 +10,8 @@ namespace Formalism
 section
 variable (a : ℕ → ℝ)
 
-/- English proof (translation)
-Establish an intermediate fact. Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. Treat this case separately.
-
-Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
+/- English proof (authored)
+For each fixed upper index the weighted partial sum is a finite sum of measurable functions of x. The natural numbers are countable, so the joint function of x and the upper index is measurable. Substituting the measurable natural floor of x for the upper index gives the claim.
 -/
 lemma Sa_measurable : Measurable (Sa a) := by
   have hk : ∀ k : ℕ, Measurable fun x : ℝ => ∑ n ∈ Finset.Icc 1 k, a n * (x / n - 1) :=
@@ -32,12 +30,8 @@ lemma Sa_measurable : Measurable (Sa a) := by
           | exact measurable_from_prod_countable_right hk
        exact hg.comp (Nat.measurable_floor.prodMk measurable_id))
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+An index outside the summation interval is either zero or above the natural floor of x. The coefficient at zero vanishes. In the second case n > x and n is positive, so x/n − 1 is nonpositive and the kernel vanishes.
 -/
 lemma a_mxS_eq_zero (ha0 : a 0 = 0) (x : ℝ) (n : ℕ) (hn : n ∉ Finset.Icc 1 ⌊x⌋₊) :
     a n * mxS n x = 0 := by
@@ -54,14 +48,8 @@ lemma a_mxS_eq_zero (ha0 : a 0 = 0) (x : ℝ) (n : ℕ) (hn : n ∉ Finset.Icc 1
       exact hx.le
     rw [max_eq_right hle, mul_zero]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Outside the finite interval from 1 to the natural floor of x, all terms vanish. Inside that interval n is positive and n ≤ x, so the positive-part kernel equals x/n − 1. The infinite sum therefore reduces to the defining finite sum.
 -/
 lemma Sa_eq_tsum (ha0 : a 0 = 0) (x : ℝ) : Sa a x = ∑' n, a n * mxS n x := by
   rw [tsum_eq_sum (s := Finset.Icc 1 ⌊x⌋₊) (fun n hn => a_mxS_eq_zero a ha0 x n hn)]
@@ -82,16 +70,14 @@ lemma Sa_eq_tsum (ha0 : a 0 = 0) (x : ℝ) : Sa a x = ∑' n, a n * mxS n x := b
   unfold mxS
   rw [max_eq_left hnn]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+At each fixed x the terms vanish outside the finite interval from 1 to the natural floor of x. A finitely supported series is summable.
 -/
 lemma summable_a_mxS (ha0 : a 0 = 0) (x : ℝ) : Summable (fun n => a n * mxS n x) :=
   summable_of_ne_finset_zero (s := Finset.Icc 1 ⌊x⌋₊) (fun n hn => a_mxS_eq_zero a ha0 x n hn)
 
-/- English proof (translation)
-Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Use the finite-support expression of the sum and apply the triangle inequality term by term. The kernel is nonnegative, so each absolute value acts only on the coefficient. Extending the resulting finite sum to all natural indices preserves its value because the other terms vanish.
 -/
 lemma abs_Sa_le (ha0 : a 0 = 0) (x : ℝ) : |Sa a x| ≤ ∑' n, |a n| * mxS n x := by
   have hm : ∀ n, 0 ≤ mxS n x := fun n => by
@@ -104,12 +90,8 @@ lemma abs_Sa_le (ha0 : a 0 = 0) (x : ℝ) : |Sa a x| ≤ ∑' n, |a n| * mxS n x
   refine (Finset.abs_sum_le_sum_abs _ _).trans (le_of_eq (Finset.sum_congr rfl fun n _ => ?_))
   rw [abs_mul, abs_of_nonneg (hm n)]
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
+/- English proof (authored)
+For n > 0 the weighted absolute coefficient is bounded by the absolute value of K times the corresponding nonnegative von Mangoldt term divided by n to the power σ. The latter series converges for σ > 1. The zero index contributes zero, so comparison proves summability.
 -/
 lemma summable_abs_a (K : ℝ) (hK : ∀ n : ℕ, |a n| ≤ K * vonMangoldt n) {σ : ℝ} (hσ : 1 < σ) :
     Summable (fun n : ℕ => |a n| * (n : ℝ) ^ (-σ)) := by
@@ -134,32 +116,8 @@ lemma summable_abs_a (K : ℝ) (hK : ∀ n : ℕ, |a n| ≤ K * vonMangoldt n) {
 
 end
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
-
-Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
-
-Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
-
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis.
-
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
+/- English proof (authored)
+The coefficient bound forces the coefficient at zero to vanish, and the finite-sum construction is measurable. For real σ > 1, the weighted absolute sum is bounded by the sum obtained by assigning each kernel the absolute value of its coefficient. The real kernel transform evaluates each term's integral, and the resulting sequence is summable by comparison with the von Mangoldt series. Tonelli's theorem makes the absolute majorant integrable. For complex s with real part above 1, the norm of each complex summand is precisely the corresponding term of that majorant at σ equal to the real part of s. Thus the sum and integral may be interchanged. Using the complex transform term by term produces the Dirichlet series divided by s(s − 1).
 -/
 theorem mellinSgen : MellinSgen := by
   intro a K hK

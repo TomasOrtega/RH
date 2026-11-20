@@ -13,34 +13,8 @@ def e (n : ℕ) (s : ℂ) : ℂ :=
 
 def F (s : ℂ) : ℂ := ∑' n, e n s
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
-
-Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Replace the relevant objects with their definitions.
-
-Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Put x = n + 1, a = 1 − s and L = log((x + 1)/x). Factor x to the power a out of the remainder. The factor in brackets is the negative of the exponential remainder exp(aL) − 1 − aL, plus a times 1/x − L. The logarithm bounds put L between 1/(x + 1) and 1/x, so 0 ≤ 1/x − L ≤ 1/x². Also |aL| ≤ 1 by the hypothesis, so the norm of the exponential remainder is at most |aL|². The bracket is therefore bounded in norm by (|a|² + |a|)/x². The modulus of x to the power a is x to the real part of a, giving the stated estimate.
 -/
 lemma e_bound (n : ℕ) (s : ℂ) (hs : ‖1 - s‖ ≤ (n : ℝ) + 1) :
     ‖e n s‖ ≤ (‖1 - s‖ ^ 2 + ‖1 - s‖) * ((n : ℝ) + 1) ^ (-1 - s.re) := by
@@ -120,20 +94,16 @@ lemma e_bound (n : ℕ) (s : ℂ) (hs : ‖1 - s‖ ≤ (n : ℝ) + 1) :
         congr 1
         ring
 
-/- English proof (translation)
-Establish an intermediate fact. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
+/- English proof (authored)
+The base n + k is positive, so its complex logarithm is the real logarithm. The modulus of its exponential with exponent w is the exponential of the real part of w log(n + k), which is the stated real power.
 -/
 lemma norm_cpow_nat (n : ℕ) (k : ℝ) (hk : 0 < (n : ℝ) + k) (w : ℂ) :
     ‖((n : ℂ) + (k : ℂ)) ^ w‖ = ((n : ℝ) + k) ^ w.re := by
   have := norm_cpow_eq_rpow_re_of_pos hk w
   push_cast at this; exact this
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
-
-Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Apply the triangle inequality to the three defining terms and replace the moduli of the complex powers by real powers at the real parts of their exponents. Because the bases are at least one and the real part of s is positive, the first power is at most one and the other two powers are at most their bases. Adding those three bounds gives the result.
 -/
 lemma e_crude (n : ℕ) (s : ℂ) (hs : 0 < s.re) :
     ‖e n s‖ ≤ ‖1 - s‖ + 2 * ((n : ℝ) + 1) + 1 := by
@@ -164,8 +134,8 @@ lemma e_crude (n : ℕ) (s : ℂ) (hs : 0 < s.re) :
         gcongr
     _ = ‖1 - s‖ + 2 * ((n : ℝ) + 1) + 1 := by ring
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. A detailed English derivation is pending.
+/- English proof (authored)
+Both bases n + 1 and n + 2 are positive. Their powers are exponentials of affine functions of s with constant logarithms of the bases. The three terms are entire, so their sum is differentiable everywhere.
 -/
 lemma e_differentiable (n : ℕ) : Differentiable ℂ (e n) := by
   have h1 : (n : ℂ) + 1 ≠ 0 := by exact_mod_cast Nat.succ_ne_zero n
@@ -174,22 +144,8 @@ lemma e_differentiable (n : ℕ) : Differentiable ℂ (e n) := by
   unfold e
   fun_prop (disch := simp [h1, h2])
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
-
-Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
+/- English proof (authored)
+Set δ to half the real part of the center and R to one plus the distance from the center to 1. On the ball of radius min(δ, 1), the real part of w exceeds δ and |1 − w| ≤ R. For n + 1 ≥ R use the sharp remainder bound and dominate it by (R² + R) times the power of n + 1 with exponent −1 − δ. This sequence is summable. For the finitely many indices with n + 1 < R, add the crude bound with R in place of |1 − w|. The combined sequence is summable and works uniformly on the ball.
 -/
 lemma e_dom (s₀ : ℂ) (h : 0 < s₀.re) : ∃ r > 0, ∃ u : ℕ → ℝ, Summable u ∧
     ∀ n : ℕ, ∀ w ∈ Metric.ball s₀ r, ‖e n w‖ ≤ u n := by
@@ -240,8 +196,8 @@ lemma e_dom (s₀ : ℂ) (h : 0 < s₀.re) : ∃ r > 0, ∃ u : ℕ → ℝ, Sum
         nlinarith
       exact mul_le_mul hq hp (by positivity) (by positivity)
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Each summand is holomorphic and the local domination estimate gives a summable majorant throughout an open ball about the point. The series converges uniformly there by the Weierstrass test, so its sum is holomorphic on the ball and differentiable at its center.
 -/
 lemma F_differentiableAt (s₀ : ℂ) (h : 0 < s₀.re) : DifferentiableAt ℂ F s₀ := by
   obtain ⟨r, hr, u, hu, hb⟩ := e_dom s₀ h
@@ -250,31 +206,15 @@ lemma F_differentiableAt (s₀ : ℂ) (h : 0 < s₀.re) : DifferentiableAt ℂ F
       Metric.isOpen_ball hb
   exact hd.differentiableAt (Metric.ball_mem_nhds s₀ hr)
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. A detailed English derivation is pending.
+/- English proof (authored)
+Apply the local domination estimate at the center of its positive-radius ball. The norms of the terms are bounded by a summable sequence, so the series converges absolutely.
 -/
 lemma summable_e (s : ℂ) (h : 0 < s.re) : Summable (fun n => e n s) := by
   obtain ⟨r, hr, u, hu, hb⟩ := e_dom s h
   exact Summable.of_norm_bounded hu (fun n => hb n s (Metric.mem_ball_self hr))
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
-
-Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
-
-Treat this case separately. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Simplify to obtain the desired conclusion from the available facts.
-
-Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses repeatedly using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
-
-Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+For real part greater than one, the series of terms with coefficient 1 − s converges to (1 − s)ζ(s). The sum of the other two powers over the first N indices telescopes to 1 minus (N + 1) raised to 1 − s. The omitted power tends to zero because its exponent has negative real part. Adding the two series gives the identity.
 -/
 lemma F_eq (s : ℂ) (h : 1 < s.re) : F s = 1 + (1 - s) * riemannZeta s := by
   have hS := summable_e s (by linarith)
@@ -321,12 +261,8 @@ lemma F_eq (s : ℂ) (h : 1 < s.re) : F s = 1 + (1 - s) * riemannZeta s := by
         rw [cpow_neg, one_div]
     _ = 1 + (1 - s) * riemannZeta s := by ring
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
+/- English proof (authored)
+The regularized zeta function and one minus the remainder series are holomorphic on the open right half-plane. On the subregion with real part above one, both equal (s − 1)ζ(s) by the Dirichlet series calculation and the definition of regularization. They therefore agree on a neighborhood of 2. The right half-plane is convex and connected, so the identity theorem extends the equality to the entire domain.
 -/
 lemma riemannZetaOne_eq_one_sub_of_re_pos (s : ℂ) (h : 0 < s.re) : riemannZeta₁ s = 1 - F s := by
   have hU : IsOpen {s : ℂ | 0 < s.re} := isOpen_lt continuous_const continuous_re
@@ -352,8 +288,8 @@ lemma riemannZetaOne_eq_one_sub_of_re_pos (s : ℂ) (h : 0 < s.re) : riemannZeta
 def er (n : ℕ) (σ : ℝ) : ℝ :=
   (1 - σ) * ((n : ℝ) + 1) ^ (-σ) + ((n : ℝ) + 1) ^ (1 - σ) - ((n : ℝ) + 2) ^ (1 - σ)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
+/- English proof (authored)
+All bases are positive, so real powers agree under the real-to-complex embedding with complex powers at the same real exponents. The embedding also preserves each addition and multiplication in the remainder formula.
 -/
 lemma e_ofReal (n : ℕ) (σ : ℝ) : e n σ = (er n σ : ℂ) := by
   have p1 : (0 : ℝ) ≤ (n : ℝ) + 1 := by positivity
@@ -362,12 +298,8 @@ lemma e_ofReal (n : ℕ) (σ : ℝ) : e n σ = (er n σ : ℂ) := by
     Complex.ofReal_cpow p1, Complex.ofReal_cpow p2, Complex.ofReal_neg, Complex.ofReal_natCast,
     Complex.ofReal_ofNat]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
+/- English proof (authored)
+The function x raised to 1 − σ is concave for positive x when 0 < σ < 1. Its increase from n + 1 to n + 2 is at most its derivative at n + 1 times the unit interval length. Subtracting that increase from the derivative at n + 1 gives the remainder, which is therefore nonnegative.
 -/
 lemma er_nonneg (n : ℕ) (σ : ℝ) (h0 : 0 < σ) (h1 : σ < 1) : 0 ≤ er n σ := by
   have hx0 : 0 < (n : ℝ) + 1 := by positivity
@@ -385,12 +317,8 @@ lemma er_nonneg (n : ℕ) (σ : ℝ) (h0 : 0 < σ) (h1 : σ < 1) : 0 ≤ er n σ
   rw [hm, hs]
   nlinarith
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
+/- English proof (authored)
+By concavity, the increase of x raised to 1 − σ over the unit interval is at least its derivative at the right endpoint n + 2. Subtract this lower bound from the derivative at n + 1 to obtain the stated upper bound for the remainder.
 -/
 lemma er_le (n : ℕ) (σ : ℝ) (h0 : 0 < σ) (h1 : σ < 1) :
     er n σ ≤ (1 - σ) * (((n : ℝ) + 1) ^ (-σ) - ((n : ℝ) + 2) ^ (-σ)) := by
@@ -410,14 +338,8 @@ lemma er_le (n : ℕ) (σ : ℝ) (h0 : 0 < σ) (h1 : σ < 1) :
   rw [hm, hs]
   nlinarith
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
-
-Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Sum the upper bounds for the first N nonnegative remainders. The differences of successive negative powers telescope to (1 − σ) times one minus the power of N + 1 with exponent −σ, which is at most 1 − σ. Thus the nonnegative partial sums are bounded and their limit satisfies the same inequality.
 -/
 lemma tsum_er_le (σ : ℝ) (h0 : 0 < σ) (h1 : σ < 1) : ∑' n, er n σ ≤ 1 - σ := by
   refine Real.tsum_le_of_sum_range_le (fun n => er_nonneg n σ h0 h1) (fun N => ?_)
@@ -436,14 +358,8 @@ lemma tsum_er_le (σ : ℝ) (h0 : 0 < σ) (h1 : σ < 1) : ∑' n, er n σ ≤ 1 
 end ZRN
 
 open ZRN in
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+At 0 < σ < 1, the remainder series equals its real counterpart and has sum at most 1 − σ. Thus one minus that sum is at least σ and is positive. This is the value of the regularized zeta function. Dividing by the nonzero factor σ − 1 shows that ζ(σ) cannot vanish.
 -/
 theorem zetaRealNonvanish : ZetaRealNonvanish := by
   intro σ h0 h1

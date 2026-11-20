@@ -6,8 +6,8 @@ noncomputable section
 
 namespace Formalism
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+For x > 1 the integrand is the single power x raised to the exponent a − σ − 1. Since a < σ, this exponent is less than −1, which gives integrability on the positive tail.
 -/
 theorem mellinElem_part1 (a σ : ℝ) (h : a < σ) :
     IntegrableOn (fun x : ℝ => x ^ a * x ^ (-σ - 1)) (Ioi 1) := by
@@ -18,12 +18,8 @@ theorem mellinElem_part1 (a σ : ℝ) (h : a < σ) :
   simp only
   rw [Real.rpow_add hx0]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
+/- English proof (authored)
+Put ε = (σ − 1)/2 > 0. For x > 1 the integrand is log(x) times x to the power −σ. The bound log(x) ≤ x to the power ε divided by ε gives an integrable majorant, since ε − σ < −1. The integrand is measurable, so comparison proves integrability.
 -/
 theorem mellinElem_part2 (σ : ℝ) (h : 1 < σ) :
     IntegrableOn (fun x : ℝ => |x * Real.log x| * x ^ (-σ - 1)) (Ioi 1) := by
@@ -46,10 +42,8 @@ theorem mellinElem_part2 (σ : ℝ) (h : 1 < σ) :
           mul_le_mul_of_nonneg_right hl (by positivity)
       _ = x ^ ε / x ^ σ / ε := by ring
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Put the polynomial expressions in normal form. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+For x > 1 the two powers combine to give x raised to a − s − 1. The real part of the exponent is below −1, so the upper endpoint in the power integral vanishes. Evaluating at the lower endpoint 1 gives 1/(s − a).
 -/
 theorem mellinElem_part3 (a : ℝ) (s : ℂ) (h : a < s.re) :
     ∫ x in Ioi (1:ℝ), ((x ^ a : ℝ) : ℂ) * (x : ℂ) ^ (-s - 1) = 1 / (s - a) := by
@@ -64,32 +58,8 @@ theorem mellinElem_part3 (a : ℝ) (s : ℂ) (h : a < s.re) :
   rw [setIntegral_congr_fun measurableSet_Ioi e, integral_Ioi_cpow_of_lt hre one_pos,
     ofReal_one, one_cpow, show (a : ℂ) - s - 1 + 1 = -(s - a) by ring, neg_div_neg_eq]
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Clear the denominators using the available nonvanishing facts.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
+/- English proof (authored)
+Write w = 1 − s, so its real part is negative. On x ≥ 1 the product of x to the power w and log(x)/w − 1/w² differentiates to log(x) times x to the power −s. The norm of this derivative is the integrand of the preceding logarithmic integrability estimate with σ equal to the real part of s. At infinity the antiderivative tends to zero because a negative power, even multiplied by log(x), tends to zero. At 1 it equals −1/w², so subtracting the endpoint values gives 1/(s − 1)².
 -/
 theorem mellinElem_part4 (s : ℂ) (h : 1 < s.re) :
     ∫ x in Ioi (1:ℝ), ((x * Real.log x : ℝ) : ℂ) * (x : ℂ) ^ (-s - 1) = 1 / (s - 1) ^ 2 := by
@@ -175,8 +145,8 @@ theorem mellinElem_part4 (s : ℂ) (h : 1 < s.re) :
   field_simp
   ring
 
-/- English proof (translation)
-Supply the required witnesses or components.
+/- English proof (authored)
+The two power comparison arguments give the integrability assertions. The evaluations of the pure power and logarithmic integrals give the two transform formulas. These are the four required assertions.
 -/
 theorem mellinElem : MellinElem :=
   ⟨mellinElem_part1, mellinElem_part2, mellinElem_part3, mellinElem_part4⟩

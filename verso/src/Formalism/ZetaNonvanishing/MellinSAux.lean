@@ -8,17 +8,15 @@ namespace Formalism
 
 def mxS (n : ℕ) (x : ℝ) : ℝ := max (x / n - 1) 0
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The positive-part kernel is the maximum of x/n − 1 and zero, so it is nonnegative.
 -/
 lemma mxS_nonneg (n : ℕ) (x : ℝ) : 0 ≤ mxS n x := by
   show 0 ≤ max (x / n - 1) 0
   exact le_max_right _ _
 
-/- English proof (translation)
-Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Since n is positive, x/n − 1 is nonnegative when x > n and nonpositive when x ≤ n. Taking its positive part therefore gives that function on the interval above n and zero elsewhere.
 -/
 lemma mxS_eq_indicator {n : ℕ} (hn : 1 ≤ n) (x : ℝ) :
     mxS n x = (Ioi (n : ℝ)).indicator (fun x => x / n - 1) x := by
@@ -35,26 +33,8 @@ lemma mxS_eq_indicator {n : ℕ} (hn : 1 ≤ n) (x : ℝ) :
     have h1 : x / n ≤ 1 := (div_le_one hn0).mpr (le_of_not_gt (fun h => hx (Set.mem_Ioi.mpr h)))
     exact max_eq_right (sub_nonpos.mpr h1)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
-
-Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
-
-Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
+/- English proof (authored)
+The positive-part kernel vanishes for x ≤ n, so the integral above 1 reduces to the interval above n. There the integrand is x to the power −s divided by n minus x to the power −s − 1. Both exponents have real part below −1, so they are integrable and their upper endpoint contributions vanish. Evaluating them at n gives n to the power −s times the difference 1/(s − 1) − 1/s. Combining the fractions yields the formula.
 -/
 lemma mxS_mellin {n : ℕ} (hn : 1 ≤ n) {s : ℂ} (hs : 1 < s.re) :
     IntegrableOn (fun x : ℝ => (mxS n x : ℂ) * (x : ℂ) ^ (-s - 1)) (Ioi 1) ∧
@@ -118,20 +98,8 @@ lemma mxS_mellin {n : ℕ} (hn : 1 ≤ n) {s : ℂ} (hs : 1 < s.re) :
   field_simp
   ring
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
-
-Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
-
-Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
+/- English proof (authored)
+The kernel restricts the integral to x > n, where the integrand is x to the power −σ divided by n minus x to the power −σ − 1. Both exponents are below −1, giving integrability and zero limits at infinity for the antiderivatives. The lower endpoint terms give the product of n to the power −σ and the difference 1/(σ − 1) − 1/σ. Its simplification gives the stated denominator.
 -/
 lemma mxS_mellin_real {n : ℕ} (hn : 1 ≤ n) {σ : ℝ} (hσ : 1 < σ) :
     IntegrableOn (fun x : ℝ => mxS n x * x ^ (-σ - 1)) (Ioi 1) ∧
@@ -179,10 +147,8 @@ lemma mxS_mellin_real {n : ℕ} (hn : 1 ≤ n) {σ : ℝ} (hσ : 1 < σ) :
   field_simp
   ring
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Countability gives a common full-measure set on which all summands are nonnegative. Regard the terms as extended nonnegative functions. Tonelli's theorem identifies the integral of their sum with the sum of their integrals, which is finite by assumption. On the common full-measure set the real sum is the real value of this extended sum, by pointwise summability. The real sum is therefore integrable.
 -/
 lemma integrable_tsum_of_nonneg {α : Type*} [MeasurableSpace α] {μ : Measure α}
     {φ : ℕ → α → ℝ} (hφ : ∀ n, Integrable (φ n) μ) (h0 : ∀ n, ∀ᵐ x ∂μ, 0 ≤ φ n x)

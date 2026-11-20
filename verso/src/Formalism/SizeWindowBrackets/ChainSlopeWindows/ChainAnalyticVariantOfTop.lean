@@ -93,8 +93,8 @@ def trivR (v : InfinitePlace K) (m f T Mw : ℕ) (hb gE : ℝ) (Q : Finset ℕ) 
   R := stdLat K _
   ψ := ((Pi.basisFun K (Fin (rT f T))).dualBasis.equivFun : Module.Dual K (Fin (rT f T) → K) ≃ₗ[K] (Fin (rT f T) → K)).toLinearMap
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+Choose elements of the ring of integers mapping to a and c. Their product maps to ac because the inclusion is multiplicative. Thus ac also lies in the image.
 -/
 theorem int_mul {a c : K} (ha : a ∈ Set.range (algebraMap (𝓞 K) K)) (hc : c ∈ Set.range (algebraMap (𝓞 K) K)) :
     a * c ∈ Set.range (algebraMap (𝓞 K) K) := by
@@ -174,8 +174,8 @@ def ObjT (k Sc : ℝ) (btH : H → ℝ) (bN : H → Fin m → Fin (PhiSet (H := 
   bt := fun t => btH t
   VV := fun _ _ => ∅
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
+/- English proof (authored)
+Reindex the finite sum along the given embedding. Applying the summand to the selected coordinate of the image returns its original value, so the reindexed sum agrees term by term with the sum over the original set.
 -/
 theorem sum_top (φ : H → ℝ) : ∑ t ∈ TT.map (topPhi H), φ t.1.2 = ∑ t ∈ TT, φ t := by
   rw [Finset.sum_map]; rfl

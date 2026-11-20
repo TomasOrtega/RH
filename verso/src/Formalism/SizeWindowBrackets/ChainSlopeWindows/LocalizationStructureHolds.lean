@@ -72,8 +72,8 @@ end Fam
 
 section More
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+The prime ideal defining a finite place is nonzero and proper. The strict descent of powers of such an ideal in the ring of integers gives an element in its first power outside its second power. The first power is the ideal itself.
 -/
 theorem exists_unif {K : Type} [Field K] [NumberField K] (w : FinPl K) :
     ∃ x : 𝓞 K, x ∈ w.1 ∧ x ∉ w.1 ^ 2 := by

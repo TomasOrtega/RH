@@ -20,8 +20,8 @@ noncomputable def sD (X : ℝ) : Data Unit (fun _ => Unit) Unit 1 1 := {
 
 def sC : Consts := ⟨1, 2, 1, 1, 1, 1, 1, 1, 0, 1⟩
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
+/- English proof (authored)
+The base 10 is positive, so taking the one-hundredth power of the four-hundredth power multiplies the exponents. Their product is 4.
 -/
 lemma xe : ((10 : ℝ) ^ 400) ^ ((1 : ℝ) / 100) = 10 ^ 4 := by
   rw [← Real.rpow_natCast (10 : ℝ) 400, ← Real.rpow_mul (by norm_num), ← Real.rpow_natCast (10 : ℝ) 4]

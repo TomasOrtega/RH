@@ -6,10 +6,8 @@ open Real Filter
 
 namespace Formalism.LFunctionChainParameters.PhiMonotonicityLemmas
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
-
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+The square root of twice 1/131072 is 1/256. Substituting the parameters makes the error equal to (8/7)(4 log(33) + 6). Since 33 ≤ 64, log(33) ≤ 6 log(2). The bound log(2) < 7/10 follows because the first four terms of the exponential series at 7/10 already sum to more than 2. Hence one plus the error is less than 947/35, which is below 32.
 -/
 theorem corollary_model_side_condition :
     (0 + 1 + ErrF (1 / 8) 1 32 (5 * (1 / 32) + 3 * (1 / 192)) (2 * (1 / 131072))) - 0 ≤ (32 : ℝ) := by
@@ -25,14 +23,8 @@ theorem corollary_model_side_condition :
   norm_num at hl ⊢
   linarith
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Evaluate the numerical expressions. A detailed English derivation is pending.
+/- English proof (authored)
+Take μ = 0, the logarithmic term equal to 1, deletion parameter 1/8, both size parameters equal to 1, and height 32. Take x = 2, c = 5 and b = 1, so the height bound is an equality. Use e₀ = 1/131072, e = 2e₀, d = 1/36864 and C₁ = 3. The two square roots are 1/192 and 1/256, and their weighted contributions add to 1/32, which is the reciprocal of 2 to the power five. Set η to 5/32 + 3/192. These values satisfy the positivity and size conditions. Taking s equal to 1 plus the resulting error gives the final equality, while the preceding numerical bound gives s ≤ 32.
 -/
 theorem corollary_final_model : CorFinalModel := by
   have hp : (2 : ℝ) ^ (5 : ℝ) = 32 := by

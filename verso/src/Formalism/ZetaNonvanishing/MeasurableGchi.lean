@@ -9,25 +9,25 @@ namespace Formalism
 
 open ArithmeticFunction
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The two sums have the same bounds and weights when the coefficient sequence is the von Mangoldt function.
 -/
 lemma Sz_eq_Sa : Sz = Sa (fun n => Λ n) := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The character sum is the general weighted sum with coefficients given by the von Mangoldt function times the real part of the character.
 -/
 lemma Schi_eq_Sa {N : ℕ} (χ : DirichletCharacter ℂ N) :
     Schi χ = Sa (fun n => Λ n * (χ n).re) := rfl
 
-/- English proof (translation)
-Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The von Mangoldt function is nonnegative, so its absolute value equals itself.
 -/
 lemma vM_bound : ∀ n : ℕ, |(Λ n : ℝ)| ≤ 1 * Λ n := fun n => by
   rw [one_mul, abs_of_nonneg vonMangoldt_nonneg]
 
-/- English proof (translation)
-Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The absolute real part of a character value is at most its modulus, which is at most one. Multiplying by the nonnegative von Mangoldt factor proves the bound.
 -/
 lemma twist_bound {N : ℕ} (χ : DirichletCharacter ℂ N) :
     ∀ n : ℕ, |Λ n * (χ n).re| ≤ 1 * Λ n := fun n => by
@@ -35,8 +35,8 @@ lemma twist_bound {N : ℕ} (χ : DirichletCharacter ℂ N) :
   have h1 : |(χ n).re| ≤ 1 := (Complex.abs_re_le_norm _).trans (DirichletCharacter.norm_le_one χ _)
   exact mul_le_of_le_one_right vonMangoldt_nonneg h1
 
-/- English proof (translation)
-Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The coefficient bound gives measurability of the weighted von Mangoldt sum. Its logarithmic and linear corrections are measurable as well, so their combination is measurable.
 -/
 lemma measurable_Gz (h3 : MellinSgen) : Measurable Gz := by
   have := (h3 _ 1 vM_bound).1
@@ -44,8 +44,8 @@ lemma measurable_Gz (h3 : MellinSgen) : Measurable Gz := by
   rw [Sz_eq_Sa]
   fun_prop
 
-/- English proof (translation)
-Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The coefficient bound gives measurability of the twisted sum. The remaining correction is a constant times x, so adding it preserves measurability.
 -/
 lemma measurable_Gchi (h3 : MellinSgen) {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) :
     Measurable (Gchi χ) := by
@@ -54,10 +54,8 @@ lemma measurable_Gchi (h3 : MellinSgen) {N : ℕ} [NeZero N] (χ : DirichletChar
   rw [Schi_eq_Sa]
   fun_prop
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Distribute the real Mellin weight over the prime sum, the logarithmic correction, and the linear correction. For the first two terms the absolute-weighted estimates give integrability. The power estimate at exponent one makes the linear term integrable because σ > 1. Integrability is preserved under the resulting addition and subtraction.
 -/
 lemma rint_Gz (h3 : MellinSgen) (h5 : MellinElem) {σ : ℝ} (hσ : 1 < σ) :
     IntegrableOn (fun x : ℝ => Gz x * x ^ (-σ - 1)) (Ioi 1) := by
@@ -74,10 +72,8 @@ lemma rint_Gz (h3 : MellinSgen) (h5 : MellinElem) {σ : ℝ} (hσ : 1 < σ) :
   rw [hfun]
   exact Integrable.add (Integrable.sub a1 a2) (Integrable.const_mul a3 _)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
-
-Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The absolute-weighted bound for the twisted sum gives integrability of its real Mellin integrand. The remaining term is a constant times the Mellin integrand of x, which is integrable for σ > 1.
 -/
 lemma rint_Gchi (h3 : MellinSgen) (h5 : MellinElem) {N : ℕ} [NeZero N]
     (χ : DirichletCharacter ℂ N) {σ : ℝ} (hσ : 1 < σ) :
@@ -95,14 +91,8 @@ lemma rint_Gchi (h3 : MellinSgen) (h5 : MellinElem) {N : ℕ} [NeZero N]
   rw [hfun]
   exact Integrable.add a1 (Integrable.const_mul a3 _)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+Write the error as the weighted von Mangoldt sum minus x log(x) plus (1 + γ)x. Each complex Mellin integrand is integrable because taking its norm gives the corresponding absolute-weighted real integrand at the real part of s. Integrate the three terms separately. The general weighted-sum transform gives the von Mangoldt series divided by s(s − 1), which becomes the negative logarithmic derivative of zeta divided by that denominator. The elementary transforms give the remaining terms −1/(s − 1)² and (1 + γ)/(s − 1).
 -/
 lemma mellin_Gz (h3 : MellinSgen) (h5 : MellinElem) {s : ℂ} (hs : 1 < s.re) :
     IntegrableOn (fun x : ℝ => (Gz x : ℂ) * (x : ℂ) ^ (-s - 1)) (Ioi 1) ∧

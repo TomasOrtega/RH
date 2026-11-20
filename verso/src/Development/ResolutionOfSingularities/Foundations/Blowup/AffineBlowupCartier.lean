@@ -18,16 +18,16 @@ def specIdealSheaf (I : Ideal R) : (Spec (CommRingCat.of R)).IdealSheafData :=
   Scheme.IdealSheafData.ofIdealTop
     (Ideal.map (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom I)
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+Identify the original ring with the global sections of its spectrum. The ideal sheaf is defined by transporting the original ideal to that section ring and applying the affine ideal-sheaf correspondence.
 -/
 theorem specIdealSheaf_eq_ofIdealTop (I : Ideal R) :
     specIdealSheaf I =
       Scheme.IdealSheafData.ofIdealTop
         (Ideal.map (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom I) := rfl
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The affine correspondence recovers an ideal from the global sections of its associated ideal sheaf. Here the corresponding ideal is the original ideal transported to the section ring of its spectrum.
 -/
 theorem specIdealSheaf_ideal_top (I : Ideal R) :
     (specIdealSheaf I).ideal ⟨⊤, isAffineOpen_top (Spec (CommRingCat.of R))⟩ =
@@ -41,8 +41,8 @@ def chartSectionsIso (I : Ideal R) (a : ↥I) :
       (CommRingCat.of (HomogeneousLocalization.Away (reesGrading I) (reesGenerator I a)))).symm ≪≫
     ((affineBlowupChart I a).appIso ⊤).symm
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The chart ring is first identified with the global sections of its spectrum. The inverse of the open-immersion isomorphism on sections then identifies these with the sections on the chart image.
 -/
 theorem chartSectionsIso_hom (I : Ideal R) (a : ↥I) :
     (chartSectionsIso I a).hom =
@@ -51,8 +51,8 @@ theorem chartSectionsIso_hom (I : Ideal R) (a : ↥I) :
             (HomogeneousLocalization.Away (reesGrading I) (reesGenerator I a)))).inv ≫
         ((affineBlowupChart I a).appIso ⊤).inv := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+Apply the defining composite to the chosen element, first using the affine spectrum identification and then the inverse of the open-immersion section isomorphism.
 -/
 theorem chartSectionsIso_hom_apply (I : Ideal R) (a : ↥I)
     (x : HomogeneousLocalization.Away (reesGrading I) (reesGenerator I a)) :
@@ -62,8 +62,8 @@ theorem chartSectionsIso_hom_apply (I : Ideal R) (a : ↥I)
             (CommRingCat.of
               (HomogeneousLocalization.Away (reesGrading I) (reesGenerator I a)))).inv.hom x) := rfl
 
-/- English proof (translation)
-Substitute using the available equality. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Identify the open with the whole scheme and then identify the two section maps. The restriction to the whole scheme is the identity, so the composite gives the given map.
 -/
 private theorem comp_presheaf_map_eq_of_heq {Z : Scheme.{u}} {A : CommRingCat.{u}} (U : Z.Opens) (hU : U = ⊤)
     (φ : A ⟶ Γ(Z, U)) (h : (⊤ : Z.Opens) ≤ U) (ψ : A ⟶ Γ(Z, (⊤ : Z.Opens)))
@@ -73,15 +73,15 @@ private theorem comp_presheaf_map_eq_of_heq {Z : Scheme.{u}} {A : CommRingCat.{u
   rw [show (homOfLE h : (⊤ : Z.Opens) ⟶ ⊤) = 𝟙 (⊤ : Z.Opens) from rfl]
   simp
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The inverse image of the whole target is the whole source. The restriction in the specified section map is therefore the identity, giving the global section map.
 -/
 private theorem appTop_eq_appLE_top_top {Z S : Scheme.{u}} (f : Z ⟶ S)
     (h : (⊤ : Z.Opens) ≤ f ⁻¹ᵁ (⊤ : S.Opens)) : f.appLE ⊤ ⊤ h = f.appTop :=
   comp_presheaf_map_eq_of_heq (f ⁻¹ᵁ (⊤ : S.Opens)) (le_antisymm le_top h) (f.app ⊤) h f.appTop HEq.rfl
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The open-immersion section isomorphism is the section map from the image open to the whole immersed scheme. Compose it with the restriction of the other map and use functoriality of section maps. The resulting composite is between global sections and is the stated global section map.
 -/
 private theorem appLE_image_top_comp_appIso_hom {Z X S : Scheme.{u}} (g : Z ⟶ X)
     [IsOpenImmersion g] (p : X ⟶ S)
@@ -90,8 +90,8 @@ private theorem appLE_image_top_comp_appIso_hom {Z X S : Scheme.{u}} (g : Z ⟶ 
   rw [Scheme.Hom.appIso_hom', Scheme.Hom.appLE_comp_appLE]
   exact appTop_eq_appLE_top_top (g ≫ p) _
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The blowup projection restricted to the chart is the spectrum map induced by the chart ring homomorphism. On global sections this agrees with the original ring homomorphism under the spectrum section isomorphisms. Transport the chart's sections to the image open to get the restricted map in the claim.
 -/
 theorem chartRingHom_comp_chartSectionsIso_hom (I : Ideal R) (a : ↥I) :
     CommRingCat.ofHom (chartRingHom I a) ≫ (chartSectionsIso I a).hom =
@@ -102,10 +102,8 @@ theorem chartRingHom_comp_chartSectionsIso_hom (I : Ideal R) (a : ↥I) :
     appLE_image_top_comp_appIso_hom, affineBlowupChart_comp_toSpec, algebraMap_chart_eq_chartRingHom]
   exact Scheme.ΓSpecIso_inv_naturality _
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+On the affine chart image, the pullback section ideal is extension of the original ideal along the restricted section map. The chart section identity factors this ring map through the chart ring. On the chart ring the extended ideal is generated by the image of the chart generator. Transporting along the chart section isomorphism carries this generator to the stated section.
 -/
 theorem ideal_comap_toSpec_chart_eq_span (I : Ideal R) (a : ↥I)
     (hW : IsAffineOpen (affineBlowupChart I a ''ᵁ ⊤)) :
@@ -125,10 +123,8 @@ theorem ideal_comap_toSpec_chart_eq_span (I : Ideal R) (a : ↥I)
   rw [specIdealSheaf_ideal_top]
   exact key
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
-
-Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+Every blowup point lies on an affine chart. There the pulled-back ideal is generated by the chart generator transported to the section ring of the chart image. This generator is a nonzerodivisor in the chart ring, and the section-ring isomorphism preserves that property.
 -/
 theorem isLocallyGeneratedByNonZeroDivisor_comap_toSpec (I : Ideal R) :
     IsLocallyGeneratedByNonZeroDivisor ((specIdealSheaf I).comap (AffineBlowup.toSpec I)) := by

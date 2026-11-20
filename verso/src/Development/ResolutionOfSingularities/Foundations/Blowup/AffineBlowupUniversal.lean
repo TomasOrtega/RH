@@ -14,14 +14,8 @@ namespace FunctorialResolution.Blowup
 
 universe u
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+The generator of the extended ideal lies in the span of the images of original ideal elements. Write it as a finite linear combination of such images. Each image is a multiple of the generator, since the extension is principal. Substitute these factorizations into the sum and factor out the common generator. It is a nonzerodivisor, so cancellation says that the resulting combination of the multipliers equals one.
 -/
 private theorem exists_sum_mul_eq_one_of_map_eq_span {R A : Type u} [CommRing R] [CommRing A]
     (I : Ideal R) (φ : R →+* A) (s : A) (hmap : Ideal.map φ I = Ideal.span {s})
@@ -52,12 +46,8 @@ private theorem exists_sum_mul_eq_one_of_map_eq_span {R A : Type u} [CommRing R]
   have h2 := mem_nonZeroDivisors_iff_right.mp hs _ h1
   linear_combination h2
 
-/- English proof (translation)
-Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+If the point belonged to none of the basic opens, the germs of all the indicated sections would be nonunits and would lie in the maximal ideal of the local ring. Taking germs in the combination equal to one would then put one in that maximal ideal, a contradiction.
 -/
 private theorem exists_mem_basicOpen_of_sum_mul_eq_one {X : Scheme.{u}} {V : X.Opens} {n : ℕ}
     (c d : Fin n → ↥Γ(X, V)) (hsum : ∑ i, c i * d i = 1) (w : ↥X) (hw : w ∈ V) :
@@ -79,8 +69,8 @@ private theorem exists_mem_basicOpen_of_sum_mul_eq_one {X : Scheme.{u}} {V : X.O
   exact (IsLocalRing.maximalIdeal.isMaximal ↥(X.presheaf.stalk w)).ne_top
     ((Ideal.eq_top_iff_one _).mpr h1)
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+/- English proof (authored)
+For the whole source and target the restriction component is the identity. The restricted section map is therefore the map on global sections.
 -/
 private theorem appLE_top_top_eq_appTop {X Y : Scheme.{u}} (f : X ⟶ Y)
     (h : (⊤ : X.Opens) ≤ f ⁻¹ᵁ (⊤ : Y.Opens)) : f.appLE ⊤ ⊤ h = f.appTop := by
@@ -89,8 +79,8 @@ private theorem appLE_top_top_eq_appTop {X Y : Scheme.{u}} (f : X ⟶ Y)
   simp only [Scheme.Hom.appLE, h2]
   rfl
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The section maps are contravariantly functorial. The specified containments give the compatible restrictions, so composing the two restricted section maps gives the restriction of the composite.
 -/
 private theorem appLE_comp {X Y Z : Scheme.{u}} (f : X ⟶ Y) (g : Y ⟶ Z) (U : Z.Opens)
     (V : Y.Opens) (V' : X.Opens) (e₁ : V ≤ g ⁻¹ᵁ U) (e₂ : V' ≤ f ⁻¹ᵁ V)
@@ -98,8 +88,8 @@ private theorem appLE_comp {X Y Z : Scheme.{u}} (f : X ⟶ Y) (g : Y ⟶ Z) (U :
     (f ≫ g).appLE U V' e = g.appLE U V e₁ ≫ f.appLE V V' e₂ := by
   rw [Scheme.Hom.appLE_comp_appLE]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The image of the whole open subscheme under its inclusion is the open itself. The map from its sections as an ambient open to its global sections as a scheme is thus the open-immersion isomorphism on sections, up to identification of equal opens.
 -/
 private theorem isIso_ι_appLE {W : Scheme.{u}} (U : W.Opens)
     (hle : (⊤ : U.toScheme.Opens) ≤ U.ι ⁻¹ᵁ U) : IsIso (U.ι.appLE U ⊤ hle) := by
@@ -110,8 +100,8 @@ private theorem isIso_ι_appLE {W : Scheme.{u}} (U : W.Opens)
   rw [h2, eqToHom_op, eqToHom_map]
   infer_instance
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Express the global section map as restriction to the whole source and target. Functoriality of restricted section maps along the open inclusion then gives the stated factorization.
 -/
 private theorem appTop_ι_comp_eq_appLE_comp {R : Type u} [CommRing R] {W : Scheme.{u}} (U : W.Opens)
     (g : W ⟶ Spec (CommRingCat.of R)) (hle : (⊤ : U.toScheme.Opens) ≤ U.ι ⁻¹ᵁ U)
@@ -120,10 +110,8 @@ private theorem appTop_ι_comp_eq_appLE_comp {R : Type u} [CommRing R] {W : Sche
   rw [← appLE_top_top_eq_appTop (U.ι ≫ g) (by simp)]
   exact appLE_comp U.ι g ⊤ U ⊤ hle' hle (by simp)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+Take the section isomorphism of the open immersion from the open viewed as a scheme. The factorization for the global section map of the restricted morphism says precisely that this isomorphism transports the ambient section homomorphism to the global one.
 -/
 private theorem exists_sections_iso_globalSectionsRingHom {R : Type u} [CommRing R] {W : Scheme.{u}} (U : W.Opens)
     (g : W ⟶ Spec (CommRingCat.of R)) :
@@ -138,18 +126,8 @@ private theorem exists_sections_iso_globalSectionsRingHom {R : Type u} [CommRing
   simp only [globalSectionsRingHom_eq, hcomp, asIso_hom, CommRingCat.hom_comp, RingHom.comp_apply,
     sectionsRingHom_apply]
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
-
-Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+Around the point choose an affine open where the pulled-back ideal is generated by a nonzerodivisor. This section ideal is the extension of the original ideal along the map to the open's ring. Express its generator as a combination of images of original ideal elements. After factoring out and canceling the generator, the corresponding multipliers generate one. At least one multiplier is invertible at the point. Restrict to its basic open, where the image of that original ideal element generates the localized ideal and remains a nonzerodivisor. Identify the section ring with the global sections of the open subscheme. The affine chart lifting construction now lifts the restricted map to the blowup.
 -/
 theorem exists_local_lift_toSpec_of_isLocallyGeneratedByNonZeroDivisor {R : Type u} [CommRing R] (I : Ideal R)
     {W : Scheme.{u}} (g : W ⟶ Spec (CommRingCat.of R))
@@ -211,12 +189,8 @@ private def openCoverOfForallMem {W : Scheme.{u}} (U : ↥W → W.Opens) (hU : �
   Scheme.Cover.mkOfCovers (↥W) (fun w => (U w).toScheme) (fun w => (U w).ι)
     (fun x => ⟨x, ⟨x, hU x⟩, rfl⟩)
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Choose the local lifts on open neighborhoods of every point. On an overlap their projections to the original spectrum agree, and the pulled-back center remains locally generated by a nonzerodivisor because restriction to opens preserves this property. The affine blowup uniqueness theorem makes the lifts agree there. They glue to a global morphism whose projection is the original map, since that identity holds on the cover.
 -/
 theorem exists_lift_toSpec_of_isLocallyGeneratedByNonZeroDivisor {R : Type u} [CommRing R] (I : Ideal R)
     {W : Scheme.{u}} (g : W ⟶ Spec (CommRingCat.of R))
@@ -245,10 +219,8 @@ theorem exists_lift_toSpec_of_isLocallyGeneratedByNonZeroDivisor {R : Type u} [C
   rw [← Category.assoc, (openCoverOfForallMem U hU).ι_glueMorphisms h (fun x y => hcompat x y) x]
   exact hh x
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+On the affine blowup the pulled-back center is locally generated by a nonzerodivisor by the chart computation. Any morphism with that pullback property lifts by the local construction and gluing argument. Two lifts of the same map agree by the affine blowup uniqueness theorem. These are the blowup conditions.
 -/
 theorem isBlowupAlongIdealSheaf_affineBlowup_toSpec {R : Type u} [CommRing R] (I : Ideal R) :
     IsBlowupAlongIdealSheaf (AffineBlowup.toSpec I) (specIdealSheaf I) := by

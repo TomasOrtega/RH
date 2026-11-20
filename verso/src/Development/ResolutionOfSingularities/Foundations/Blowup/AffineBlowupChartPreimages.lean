@@ -17,8 +17,8 @@ def sectionsRingHom {A : Type u} [CommRing A] {W : Scheme.{u}}
   ((Scheme.ΓSpecIso (CommRingCat.of A)).inv ≫
     g.appLE ⊤ V (le_top.trans (Scheme.Hom.preimage_top g).ge)).hom
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The map to the sections on the chosen open is defined by identifying the ring with the global sections of its spectrum and then applying the morphism's restricted section map.
 -/
 theorem sectionsRingHom_apply {A : Type u} [CommRing A] {W : Scheme.{u}}
     (g : W ⟶ Spec (CommRingCat.of A)) (V : W.Opens) (r : A) :
@@ -26,8 +26,8 @@ theorem sectionsRingHom_apply {A : Type u} [CommRing A] {W : Scheme.{u}}
       (g.appLE ⊤ V (le_top.trans (Scheme.Hom.preimage_top g).ge)).hom
         ((Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom r) := rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The restriction from the whole inverse-image open to the smaller open factors through the larger chosen open. Functoriality of the presheaf identifies the direct restriction with these two successive restrictions. Evaluate their composite with the base section map on the chosen element.
 -/
 theorem sectionsRingHom_restrict {A : Type u} [CommRing A] {W : Scheme.{u}}
     (g : W ⟶ Spec (CommRingCat.of A)) {V V' : W.Opens} (hV : V' ≤ V) (r : A) :
@@ -54,8 +54,8 @@ theorem sectionsRingHom_restrict {A : Type u} [CommRing A] {W : Scheme.{u}}
     (fun φ : Γ(Spec (CommRingCat.of A), (⊤ : (Spec (CommRingCat.of A)).Opens)) ⟶ Γ(W, V') =>
       φ.hom ((Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom r)) key
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The affine formula writes the pulled-back section ideal as extension of the ideal on the whole original spectrum. That global ideal is the original ring ideal transported through the global-sections isomorphism. The two extensions combine into extension along the indicated map to sections.
 -/
 theorem comap_specIdealSheaf_ideal {R : Type u} [CommRing R] (I : Ideal R) {W : Scheme.{u}}
     (g : W ⟶ Spec (CommRingCat.of R)) (V : W.affineOpens) :
@@ -66,16 +66,16 @@ theorem comap_specIdealSheaf_ideal {R : Type u} [CommRing R] (I : Ideal R) {W : 
   rw [specIdealSheaf_ideal_top, Ideal.map_map] at h1
   exact h1
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The fraction with denominator one is the image under the localization homomorphism, which commutes with powers.
 -/
 private theorem localization_mk_one_pow {A : Type u} [CommRing A] (S : Submonoid A) (x : A)
     (n : ℕ) :
     Localization.mk x (1 : S) ^ n = Localization.mk (x ^ n) (1 : S) := by
   rw [Localization.mk_one_eq_algebraMap, Localization.mk_one_eq_algebraMap, map_pow]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
+/- English proof (authored)
+The chart map takes the degree-zero representative of the ring element. Its underlying fraction has that representative as numerator and denominator one.
 -/
 private theorem val_chartRingHom {R : Type u} [CommRing R] (I : Ideal R) (a : ↥I) (r : R) :
     (chartRingHom I a r).val =
@@ -84,18 +84,8 @@ private theorem val_chartRingHom {R : Type u} [CommRing R] (I : Ideal R) (a : �
   rw [chartRingHom_apply]
   rfl
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
-
-Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
-
-Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
+/- English proof (authored)
+Write the homogeneous denominator as a power of the chart Rees generator. If the recorded degree is its exponent, the numerator is a monomial in that degree. Cross multiplication shows that multiplying the chart fraction by the corresponding power of the original generator's image gives the image of the numerator coefficient. If the recorded degree differs, the denominator's coefficient in its monomial degree vanishes, so the denominator is zero. The inverted set then contains zero, the localization is the zero ring, and the required equality holds with zero coefficient and exponent zero.
 -/
 theorem exists_mul_pow_eq_chartRingHom {R : Type u} [CommRing R] (I : Ideal R) (a : ↥I)
     (z : HomogeneousLocalization.Away (reesGrading I) (reesGenerator I a)) :
@@ -142,8 +132,8 @@ def chartSectionsRingHom {R : Type u} [CommRing R] (I : Ideal R) {W : Scheme.{u}
     HomogeneousLocalization.Away (reesGrading I) (reesGenerator I b) →+* ↥Γ(W, V) :=
   ((chartSectionsIso I b).hom ≫ h.appLE (affineBlowupChart I b ''ᵁ ⊤) V hV).hom
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+By definition one first identifies the chart ring with sections on the chart image, then applies the restricted map from those sections to the chosen source open.
 -/
 theorem chartSectionsRingHom_apply {R : Type u} [CommRing R] (I : Ideal R) {W : Scheme.{u}}
     (h : W ⟶ affineBlowup I) (b : ↥I) (V : W.Opens)
@@ -153,8 +143,8 @@ theorem chartSectionsRingHom_apply {R : Type u} [CommRing R] (I : Ideal R) {W : 
       (h.appLE (affineBlowupChart I b ''ᵁ ⊤) V hV).hom ((chartSectionsIso I b).hom.hom z) :=
   rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The original ring mapped to chart sections agrees with the blowup projection restricted to the chart. Compose its section map with that of the source morphism. Functoriality over the specified opens identifies this composite with the map to sections induced by the morphism to the original spectrum.
 -/
 theorem chartSectionsRingHom_chartRingHom {R : Type u} [CommRing R] (I : Ideal R) {W : Scheme.{u}}
     (h : W ⟶ affineBlowup I) (b : ↥I) (V : W.Opens)
@@ -170,10 +160,8 @@ theorem chartSectionsRingHom_chartRingHom {R : Type u} [CommRing R] (I : Ideal R
       Scheme.Hom.appLE_comp_appLE]
   exact congrArg (fun φ : CommRingCat.of R ⟶ Γ(W, V) => φ.hom r) key
 
-/- English proof (translation)
-Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The projection's map to sections of the source open factors through the chart ring. Extension to the chart sends the original ideal to the principal ideal generated by the chart image of the chosen generator. Extending again to the source sections sends this generator to its image in the stated section ring.
 -/
 theorem comap_specIdealSheaf_ideal_eq_span {R : Type u} [CommRing R] (I : Ideal R)
     {W : Scheme.{u}} (h : W ⟶ affineBlowup I) (a : ↥I) (V : W.affineOpens)
@@ -192,14 +180,8 @@ theorem comap_specIdealSheaf_ideal_eq_span {R : Type u} [CommRing R] (I : Ideal 
   rw [comap_specIdealSheaf_ideal I (h ≫ AffineBlowup.toSpec I) V, h2,
     chartSectionsRingHom_chartRingHom I h a (V : W.Opens) hV (a : R)]
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+Each generator is a multiple of the other because their principal ideals agree. Substitute one factorization into the other and cancel the generator known to be a nonzerodivisor. The two multipliers then multiply to one. Thus the other generator is a unit multiple of the first and is also a nonzerodivisor.
 -/
 private theorem mem_nonZeroDivisors_of_span_singleton_eq {B : Type u} [CommRing B] {s t : B}
     (hs : s ∈ nonZeroDivisors B)
@@ -224,8 +206,8 @@ private theorem mem_nonZeroDivisors_of_span_singleton_eq {B : Type u} [CommRing 
   rw [mem_nonZeroDivisors_iff]
   exact ⟨key, fun y hy => key y (by rw [mul_comm]; exact hy)⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The map to sections on the smaller open is the map to sections on the larger open followed by restriction. Extension of ideals along a composite is the composite of the extensions, giving the equality.
 -/
 private theorem map_sectionsRingHom_restrict {R : Type u} [CommRing R] (I : Ideal R)
     {W : Scheme.{u}} (g : W ⟶ Spec (CommRingCat.of R)) {V V' : W.Opens} (hV : V' ≤ V) :
@@ -235,10 +217,8 @@ private theorem map_sectionsRingHom_restrict {R : Type u} [CommRing R] (I : Idea
     RingHom.ext fun x => (sectionsRingHom_restrict g hV x).symm
   rw [Ideal.map_map, e]
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
-
-Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
+/- English proof (authored)
+The chart images are the basic opens of the Rees generators, whose union covers the blowup. Membership in that union gives one chart containing the point.
 -/
 private theorem exists_mem_opensRange_affineBlowupChart {R : Type u} [CommRing R] (I : Ideal R)
     (p : ↥(affineBlowup I)) :
@@ -250,8 +230,8 @@ private theorem exists_mem_opensRange_affineBlowupChart {R : Type u} [CommRing R
     rw [hcov]; trivial
   simpa using hp
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The sections on the basic open are the localization of the affine section ring at powers of the defining section. Localization preserves nonzerodivisors, so the restricted section remains one.
 -/
 private theorem restrict_basicOpen_mem_nonZeroDivisors {W : Scheme.{u}} {U : W.Opens}
     (hU : IsAffineOpen U) (r : ↥Γ(W, U)) {s : ↥Γ(W, U)} (hs : s ∈ nonZeroDivisors ↥Γ(W, U))
@@ -261,8 +241,8 @@ private theorem restrict_basicOpen_mem_nonZeroDivisors {W : Scheme.{u}} {U : W.O
   exact IsLocalization.nonZeroDivisors_le_comap (Submonoid.powers r)
     ↥Γ(W, W.basicOpen r) hs
 
-/- English proof (translation)
-Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The normalized homogeneous localization element and the chart fraction both have the other Rees generator as numerator and the inverted generator to its first power as denominator. Their underlying fractions coincide.
 -/
 private theorem isLocalizationElem_eq_chartFraction {R : Type u} [CommRing R] (I : Ideal R)
     (c a : ↥I) :
@@ -273,12 +253,8 @@ private theorem isLocalizationElem_eq_chartFraction {R : Type u} [CommRing R] (I
   rw [chartFraction_eq_mk]
   simp [HomogeneousLocalization.Away.isLocalizationElem, HomogeneousLocalization.val_mk, pow_one]
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The open immersion pulls the section on the chart image back to the corresponding global section of the affine chart. The basic-open pullback formula therefore identifies the inverse image with the basic open of that section, which is the basic open of the original ring element under the affine identification.
 -/
 private theorem affineBlowupChart_preimage_basicOpen {R : Type u} [CommRing R] (I : Ideal R)
     (c : ↥I) (z : HomogeneousLocalization.Away (reesGrading I) (reesGenerator I c)) :
@@ -324,10 +300,8 @@ private theorem affineBlowupChart_preimage_basicOpen {R : Type u} [CommRing R] (
   rw [happ, hiso, h2, top_inf_eq] at h1
   exact h1.symm
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The basic open of the transported chart fraction lies in the image of the first chart. Lift a point of this basic open back to that chart. The preimage of the basic open is the basic open of the chart fraction, and the projective overlap formula identifies it with the inverse image of the second chart. Thus the point also lies in the second chart image.
 -/
 private theorem basicOpen_chartFraction_le_opensRange {R : Type u} [CommRing R] (I : Ideal R)
     (c a : ↥I) :
@@ -349,8 +323,8 @@ private theorem basicOpen_chartFraction_le_opensRange {R : Type u} [CommRing R] 
   rw [← hq]
   exact hq2
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+For the chosen open, the chart element gives a section on the chart image. Pulling it back by the restricted section map gives a basic open equal to the intersection of the chosen source open with the inverse image of that section's basic open.
 -/
 private theorem basicOpen_chartSectionsRingHom {R : Type u} [CommRing R] (I : Ideal R) {W : Scheme.{u}}
     (h : W ⟶ affineBlowup I) (c : ↥I) (V : W.Opens)
@@ -362,8 +336,8 @@ private theorem basicOpen_chartSectionsRingHom {R : Type u} [CommRing R] (I : Id
   exact Scheme.basicOpen_appLE h V (affineBlowupChart I c ''ᵁ ⊤) hV
     ((chartSectionsIso I c).hom.hom z)
 
-/- English proof (translation)
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The basic-open pullback formula puts the image point in the basic open of the chart fraction on the first chart. That basic open is contained in the image of the chart indexed by the other generator, giving the claim.
 -/
 private theorem mem_opensRange_of_mem_basicOpen_chartSectionsRingHom {R : Type u} [CommRing R]
     (I : Ideal R) {W : Scheme.{u}} (h : W ⟶ affineBlowup I) (c a : ↥I) (V : W.Opens)
@@ -375,20 +349,8 @@ private theorem mem_opensRange_of_mem_basicOpen_chartSectionsRingHom {R : Type u
       (affineBlowup I).basicOpen ((chartSectionsIso I c).hom.hom (chartFraction I c a)) := hw.2
   exact basicOpen_chartFraction_le_opensRange I c a hw2
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Choose a chart containing the image point and an affine neighborhood on which the pulled-back center has a nonzerodivisor generator. Shrink to a basic open in this neighborhood contained in both the chart preimage and the open where the proposed generator spans the center. On the smaller open both chart generator images span the same ideal, also generated by the restricted nonzerodivisor. The image of the first chart generator is therefore a nonzerodivisor. The proposed generator image is the first generator image times the chart fraction. Conversely the first generator is a multiple of the proposed one. Cancel the first generator to see that the chart fraction is a unit. Its basic open contains the point, so the overlap formula puts the image point in the proposed chart.
 -/
 theorem mem_opensRange_affineBlowupChart_of_ideal_eq_span {R : Type u} [CommRing R]
     (I : Ideal R) {W : Scheme.{u}} (h : W ⟶ affineBlowup I)
@@ -462,12 +424,8 @@ theorem mem_opensRange_affineBlowupChart_of_ideal_eq_span {R : Type u} [CommRing
     exact hwr
   exact mem_opensRange_of_mem_basicOpen_chartSectionsRingHom I h c a (W.basicOpen r) hVc hmem
 
-/- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+If the point maps into the chart, take an affine neighborhood in its inverse image. The affine chart computation shows that the proposed generator image spans the pulled-back center there. Conversely, the existence of such an affine neighborhood implies chart membership by the nonzerodivisor generator argument.
 -/
 private theorem mem_preimage_affineBlowupChart_iff {R : Type u} [CommRing R] (I : Ideal R)
     {W : Scheme.{u}} (h : W ⟶ affineBlowup I)
@@ -492,10 +450,8 @@ private theorem mem_preimage_affineBlowupChart_iff {R : Type u} [CommRing R] (I 
     rw [Scheme.Hom.image_top_eq_opensRange]
     exact hmem
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The two maps to the original spectrum agree, so their pulled-back center ideals and maps to sections agree. The criterion for a point to lie in the inverse image of the chart depends only on these data. It gives the same membership condition for both morphisms.
 -/
 theorem preimage_affineBlowupChart_eq_of_toSpec_eq {R : Type u} [CommRing R] {I : Ideal R} {W : Scheme.{u}}
     (h₁ h₂ : W ⟶ affineBlowup I)
@@ -514,18 +470,8 @@ theorem preimage_affineBlowupChart_eq_of_toSpec_eq {R : Type u} [CommRing R] {I 
   rw [he] at e1
   exact e1.trans e2.symm
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Choose a chart containing the image point and an affine neighborhood of the point where the center has a nonzerodivisor generator. Take a basic neighborhood inside both. The affine chart computation and localization show that the chart generator's image and the restricted nonzerodivisor generate the same ideal on it. The chart generator's image is therefore also a nonzerodivisor.
 -/
 theorem exists_chart_affineOpen_mem_nonZeroDivisors {R : Type u} [CommRing R] (I : Ideal R)
     {W : Scheme.{u}} (h : W ⟶ affineBlowup I)
@@ -585,8 +531,8 @@ theorem exists_chart_affineOpen_mem_nonZeroDivisors {R : Type u} [CommRing R] (I
   exact ⟨a, ⟨W.basicOpen t, hUaff.basicOpen t⟩, hwt', htle,
     (mul_mem_nonZeroDivisors.mp hdnzd).2⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Apply the section homomorphism to the given equality in the chart ring. It preserves products and powers. On base-ring elements it agrees with the section map of the composite to the spectrum, yielding the stated equality.
 -/
 private theorem chartSectionsRingHom_mul_pow_eq {R : Type u} [CommRing R] (I : Ideal R) {W : Scheme.{u}}
     (h : W ⟶ affineBlowup I) (a : ↥I) (V : W.Opens)
@@ -614,14 +560,8 @@ private def openCoverBySpecOfIsAffineOpen {W : Scheme.{u}} (VV : ↥W → W.Open
       exact ⟨x, y, hy⟩)
     (fun w => inferInstance)
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The two maps have the same chart preimages because they have the same projection. Compare their section maps on the chosen affine into that chart. For any chart element, multiplying it by a power of the chart generator gives the image of a base-ring element. Both section maps agree on those base images. Their values on the chart element are therefore equal after multiplication by the same generator power. Cancel the power, since the generator image is a nonzerodivisor. The two induced maps on chart sections agree, so the affine morphisms into the chart agree and give the claimed equality after inclusion.
 -/
 private theorem fromSpec_comp_eq_of_toSpec_eq {R : Type u} [CommRing R] {I : Ideal R}
     {W : Scheme.{u}} (h₁ h₂ : W ⟶ affineBlowup I)
@@ -661,8 +601,8 @@ private theorem fromSpec_comp_eq_of_toSpec_eq {R : Type u} [CommRing R] {I : Ide
   have E₂ := IsAffineOpen.SpecMap_appLE_fromSpec h₂ hTaff hVaff hle₂
   rw [← E₁, ← E₂, happ]
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+Choose affine neighborhoods of every source point mapping into a blowup chart under the first morphism and with its chart generator a nonzerodivisor. The second morphism has the same chart preimages because the projections agree. The chart comparison proves equality of the morphisms on each of these affine neighborhoods. They cover the source, so the maps agree globally.
 -/
 theorem affineBlowup_hom_ext {R : Type u} [CommRing R] {I : Ideal R} {W : Scheme.{u}}
     (h₁ h₂ : W ⟶ affineBlowup I)

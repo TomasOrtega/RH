@@ -46,8 +46,8 @@ open CategoryTheory AlgebraicGeometry
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Substitute mark one. The balanced tuning formula at mark one gives the original ideal.
 -/
 private theorem balancedTunedSheaf_eq_self_of_mult_eq_one (k : Type u) [Field k] [CharZero k] {X : Scheme.{u}}
     (pp : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth pp]
@@ -56,8 +56,8 @@ private theorem balancedTunedSheaf_eq_self_of_mult_eq_one (k : Type u) [Field k]
   subst hm
   exact balancedTunedSheaf_one k pp I
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
+/- English proof (authored)
+The two triples have the same base field and scheme. The given equalities identify their maps, ideals, marks, and boundaries, hence the triples.
 -/
 private theorem markedIdealWithBoundary_mk_congr {k : Type u} [Field k] {X : Scheme.{u}}
     {p p' : X ⟶ Spec (CommRingCat.of k)} {I I' : X.IdealSheafData} {m m' : ℕ}
@@ -70,8 +70,8 @@ private theorem markedIdealWithBoundary_mk_congr {k : Type u} [Field k] {X : Sch
   subst hE
   rfl
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The final stage of the empty sequence is the original scheme, and its projection is the identity. Composing it with the original structural map gives that map.
 -/
 private theorem projectionToBase_emptyMarkedBlowupSequenceData_comp (S : MarkedIdealWithBoundary.{u}) :
     (emptyMarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary).proj
@@ -79,8 +79,8 @@ private theorem projectionToBase_emptyMarkedBlowupSequenceData_comp (S : MarkedI
       = S.structMap :=
   Category.id_comp S.structMap
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The derived structural map is the final projection followed by the original structural map. For the empty sequence the projection is the identity, so the map is the original one.
 -/
 private theorem structureMorphism_derivedTriple_emptyMarkedBlowupSequenceData (S : MarkedIdealWithBoundary.{u})
     (hft : AlgebraicGeometry.LocallyOfFiniteType
@@ -94,8 +94,8 @@ private theorem structureMorphism_derivedTriple_emptyMarkedBlowupSequenceData (S
   rw [MaxContactCoverData.derivedTriple_structureMorphism]
   exact projectionToBase_emptyMarkedBlowupSequenceData_comp S
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The derived ideal is the balanced tuning of the final ideal. At mark one tuning gives back that ideal, and the empty sequence's final ideal is the original ideal.
 -/
 private theorem ideal_derivedTriple_emptyMarkedBlowupSequenceData (S : MarkedIdealWithBoundary.{u}) (hcz : CharZero S.base)
     (h1 : S.mult = 1)
@@ -123,8 +123,8 @@ private theorem ideal_derivedTriple_emptyMarkedBlowupSequenceData (S : MarkedIde
     (emptyMarkedBlowupSequenceData_ideal S.structMap S.ideal S.mult S.boundary
       (emptyMarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary).length)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The derived mark is the tuning exponent of the original mark. That exponent is one at the given mark one.
 -/
 private theorem mult_derivedTriple_emptyMarkedBlowupSequenceData (S : MarkedIdealWithBoundary.{u}) (h1 : S.mult = 1)
     (hft : AlgebraicGeometry.LocallyOfFiniteType
@@ -138,10 +138,8 @@ private theorem mult_derivedTriple_emptyMarkedBlowupSequenceData (S : MarkedIdea
   rw [MaxContactCoverData.derivedTriple_mult, h1]
   exact tuningExponent_one
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The final boundary of an empty sequence is the original list. Dropping its full length leaves the empty list. The derived boundary therefore consists exactly of the supplemental entries.
 -/
 private theorem boundary_derivedTriple_emptyMarkedBlowupSequenceData (S : MarkedIdealWithBoundary.{u})
     (hft : AlgebraicGeometry.LocallyOfFiniteType
@@ -163,8 +161,8 @@ private theorem boundary_derivedTriple_emptyMarkedBlowupSequenceData (S : Marked
   rw [MaxContactCoverData.derivedTriple_boundary, hdrop]
   exact List.append_nil extra
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The append identity for an empty initial sequence identifies the resulting marked sequence up to isomorphism with its continuation. Passing to their underlying blowup sequences preserves this isomorphism.
 -/
 private theorem isomorphic_of_emptyMarkedBlowupSequenceData_append {k : Type u} [Field k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData) (m : ℕ)
@@ -181,14 +179,8 @@ private theorem isomorphic_of_emptyMarkedBlowupSequenceData_append {k : Type u} 
   rw [e1, e2] at hmain
   exact hmain
 
-/- English proof (translation)
-Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
-
-Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The bound by one makes the order-at-least-two locus empty. The derivative order-locus identity at derivative index one identifies this locus with the order-at-least-one locus of the first derivative ideal. The latter locus is its support, so the derivative ideal is unit.
 -/
 private theorem derivIdealSheaf_eq_top_of_orderAt_le_one (k : Type u) [Field k] [CharZero k]
     {P : Scheme.{u}} (p : P ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -217,10 +209,8 @@ private theorem derivIdealSheaf_eq_top_of_orderAt_le_one (k : Type u) [Field k] 
   rw [h1] at hy1
   exact hy1
 
-/- English proof (translation)
-Substitute using the available equality. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+At mark one the maximal-contact ideal is the original ideal. The order bound makes its first derivative ideal unit. The product occurring in the invariance condition is therefore the original ideal, giving the required inclusion.
 -/
 private theorem isMaxContactInvariant_of_mult_eq_one (k : Type u) [Field k] [CharZero k]
     {P : Scheme.{u}} (p : P ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -234,8 +224,8 @@ private theorem isMaxContactInvariant_of_mult_eq_one (k : Type u) [Field k] [Cha
   rw [hmc]
   simp
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Both coordinate ideals come from the same coordinate subspace of affine space. Pullback along the composite chart is pullback along the original chart followed by pullback along the precomposed map.
 -/
 private theorem coordIdeal_comp_map_eq_comap {X Y : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} {q : Y ⟶ Spec (CommRingCat.of k)}
@@ -249,14 +239,8 @@ private theorem coordIdeal_comp_map_eq_comap {X Y : Scheme.{u}} {k : Type u} [Fi
       = ((coordSubspaceIdeal k n S).comap c.map).comap φ
   rw [Scheme.IdealSheafData.comap_comp]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+At a point on the divisor choose the indicated chart and restrict it to an affine neighborhood. The divisor ideal stays a single coordinate ideal, and its inclusion in the marked ideal persists by pullback. At mark one this is the maximal-contact coordinate condition. At a point off the divisor, choose an affine open disjoint from its closed support. The divisor ideal is unit there. Inclusion of the divisor ideal in the marked ideal puts the support of the marked ideal inside the divisor support. Thus the open misses the order-at-least-one locus as well.
 -/
 theorem isMaxContactHypersurface_one_of_etaleChart {k : Type u} [Field k] [CharZero k]
     {P : Scheme.{u}} (p : P ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -299,22 +283,8 @@ theorem isMaxContactHypersurface_one_of_etaleChart {k : Type u} [Field k] [CharZ
           (orderAt_le_of_le hDle y))
     exact (Set.disjoint_left.mp hdisj h1) hyV
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Around an upstairs point choose an affine open contained both in a local open-immersion neighborhood and in the inverse image of a downstairs maximal-contact neighborhood. The resulting map to that downstairs open is an open immersion, hence étale. Restrictions of pulled-back ideals are pullbacks along this restricted map. If the downstairs neighborhood is disjoint from the order locus with unit hypersurface ideal, smooth pullback gives the same properties upstairs. In the coordinate case, compose the original chart with the restricted map. The coordinate ideal and its containment in the marked ideal pull back, giving the coordinate condition at mark one.
 -/
 theorem IsMaxContactHypersurface.comap_of_isOpenImmersionAtSource {k : Type u} [Field k] [CharZero k]
     {P P' : Scheme.{u}} (p : P ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -370,8 +340,8 @@ theorem IsMaxContactHypersurface.comap_of_isOpenImmersionAtSource {k : Type u} [
     · rw [isMaxContactCoord_one_iff, coordIdeal_comp_map_eq_comap c φ hcs he, hcomapres A]
       exact Scheme.IdealSheafData.comap_mono _ ((isMaxContactCoord_one_iff k p A c j).1 hmc)
 
-/- English proof (translation)
-Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Identify the given triple with the displayed derived triple. The original admissibility and order bound allow the derived-triple balance theorem, which supplies balance for this triple.
 -/
 private theorem isBalanced_of_eq_derivedTriple_emptyMarkedBlowupSequenceData (hstar : MaxContactCoverProperties.{u})
     (S : MarkedIdealWithBoundary.{u}) (hSV : S.IsAdmissible)
@@ -391,10 +361,8 @@ private theorem isBalanced_of_eq_derivedTriple_emptyMarkedBlowupSequenceData (hs
   exact LowerDimReductionPullback.isBalanced_derivedTriple hstar S hSV hSV.one_le_mult hord
     (emptyMarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary) hft L keep hVD
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The order bound at mark one gives maximal-contact invariance. Both singleton boundaries supply a maximal-contact entry and are admissible. Apply independence of the first-boundary reduction from the choice of maximal-contact hypersurface, with an empty remaining boundary.
 -/
 private theorem isomorphic_of_isMaxContactHypersurface_singleton_boundary (hin : OrderReduction.OrderReductionHypotheses.{u})
     (P : ℕ → Prop) (hmono : ∀ a b : ℕ, a ≤ b → P b → P a) (A0 B : PrincipalizationAssignment.{u})
@@ -422,36 +390,10 @@ private theorem isomorphic_of_isMaxContactHypersurface_singleton_boundary (hin :
 
 namespace MaxContactCoverData
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
+/- English proof (authored)
+At mark one tuning preserves the ideal and the mark, so the cover triple's ideal is the original ideal pulled back along the cover. Its structural map is the original structural map composed with the cover. Adding the divisor to the original empty boundary gives an admissible balanced triple. Étale functoriality of first-boundary reduction identifies the reduction of its pullback to the cover as a strict pullback.
 
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
-
-Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
-
-Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-A detailed English derivation is pending.
+On the cover the initial sequence is empty. The derived triple for its continuation therefore has the same map, ideal, and mark as that pulled-back triple. Its singleton boundary consists of the cover's chosen hypersurface at the initial stage. The pulled-back original divisor and this chosen hypersurface both give maximal contact for the same ideal at mark one. Independence from the choice of maximal contact gives an isomorphism of their first-boundary reductions. The assumed append description identifies the latter reduction with the cover sequence up to isomorphism, since the prefix is empty. Transport the strict pullback relation along these isomorphisms.
 -/
 private theorem isStrictPullbackBlowupSeq_cover_of_eq_append (hstar : MaxContactCoverProperties.{u})
     (hin : OrderReduction.OrderReductionHypotheses.{u})
@@ -848,10 +790,8 @@ private theorem isStrictPullbackBlowupSeq_cover_of_eq_append (hstar : MaxContact
   rw [hcast] at hEq
   exact hpb.2.of_isomorphic_pullback (hAdmEq.trans hEq.symm)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The boundary of the cover is the pullback of the original empty list and is therefore empty. Separating all of it gives the empty sequence. The decomposition of the cover reduction as separation followed by a continuation thus has an empty initial sequence. Apply the mark-one comparison for this append.
 -/
 theorem isStrictPullbackBlowupSeq_coverMarkedBlowupData_of_isMaxContactHypersurface
     (hstar : MaxContactCoverProperties.{u}) (hin : OrderReduction.OrderReductionHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
@@ -886,10 +826,8 @@ theorem isStrictPullbackBlowupSeq_coverMarkedBlowupData_of_isMaxContactHypersurf
   exact isStrictPullbackBlowupSeq_cover_of_eq_append hstar hin hinv P hmono A B hspec T h hbd hmult
     e hadm hV (BoundarySeparationByMaxContact.separateAllBoundary T h.valid hinv A) hs hft hVc hmk heq
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At mark one the given coordinate charts and the inclusion of the divisor ideal in the marked ideal give maximal contact. The cover comparison for a maximal-contact hypersurface now applies.
 -/
 theorem isStrictPullbackBlowupSeq_coverMarkedBlowupData_of_etaleChart
     (hstar : MaxContactCoverProperties.{u}) (hin : OrderReduction.OrderReductionHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
@@ -919,10 +857,8 @@ theorem isStrictPullbackBlowupSeq_coverMarkedBlowupData_of_etaleChart
   exact isMaxContactHypersurface_one_of_etaleChart T.structMap T.ideal
     (AlgebraicGeometry.Scheme.Hom.ker e) hchart hle
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+A smooth divisor admits the required single-coordinate descriptions on étale charts. Its ideal is contained in the ambient marked ideal because the latter is the kernel of the closed subscheme of the given ideal followed by the divisor inclusion. A section vanishing on the divisor also vanishes on that smaller subscheme. Apply the étale-chart version of the cover comparison.
 -/
 theorem isStrictPullbackBlowupSeq_coverMarkedBlowupData_of_isSmoothDivisor
     (hstar : MaxContactCoverProperties.{u}) (hin : OrderReduction.OrderReductionHypotheses.{u}) (hinv : ComapIsoInvariance.{u})

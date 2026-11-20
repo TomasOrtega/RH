@@ -114,23 +114,21 @@ section
 
 variable {Y : Scheme.{u}}
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Filtering the list to its nontrivial entries gives the same list on both sides.
 -/
 theorem sameNontrivialBoundary_refl (L : List Y.IdealSheafData) : MarkedIdealWithBoundary.SameNontrivialBoundary L L :=
   MarkedIdealWithBoundary.SameNontrivialBoundary.refl L
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The relation is equality of the lists of nontrivial entries. Reverse this equality.
 -/
 theorem sameNontrivialBoundary_symm {L L' : List Y.IdealSheafData}
     (h : MarkedIdealWithBoundary.SameNontrivialBoundary L L') : MarkedIdealWithBoundary.SameNontrivialBoundary L' L :=
   h.symm
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Consider separately whether the proposition holds or fails.
-
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Once all unit entries have been removed, every remaining entry is nonunit. Filtering again keeps them all in their existing order, so the full list and its filtered list have the same nontrivial entries.
 -/
 theorem sameNontrivialBoundary_nontrivialPart (L : List Y.IdealSheafData) :
     MarkedIdealWithBoundary.SameNontrivialBoundary (MarkedIdealWithBoundary.nontrivialPart L) L := by
@@ -142,8 +140,8 @@ theorem sameNontrivialBoundary_nontrivialPart (L : List Y.IdealSheafData) :
     · simp [MarkedIdealWithBoundary.nontrivialPart, h]
     · simp [MarkedIdealWithBoundary.nontrivialPart, h]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Filtering nontrivial entries distributes over concatenation. The matching filtered prefixes and suffixes thus give matching concatenated lists.
 -/
 theorem sameNontrivialBoundary_append {L₁ L₂ L₁' L₂' : List Y.IdealSheafData}
     (h₁ : MarkedIdealWithBoundary.SameNontrivialBoundary L₁ L₁')
@@ -151,16 +149,16 @@ theorem sameNontrivialBoundary_append {L₁ L₂ L₁' L₂' : List Y.IdealSheaf
     MarkedIdealWithBoundary.SameNontrivialBoundary (L₁ ++ L₂) (L₁' ++ L₂') :=
   h₁.append h₂
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The two copies of the added entry have the same nontrivial part. Prepend this singleton relation to the given relation between the tails.
 -/
 theorem sameNontrivialBoundary_cons {D : Y.IdealSheafData} {L L' : List Y.IdealSheafData}
     (h : MarkedIdealWithBoundary.SameNontrivialBoundary L L') :
     MarkedIdealWithBoundary.SameNontrivialBoundary (D :: L) (D :: L') :=
   sameNontrivialBoundary_append (sameNontrivialBoundary_refl [D]) h
 
-/- English proof (translation)
-Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Filter both concatenations. Filtering distributes over concatenation, and the two filtered prefixes agree by hypothesis. Cancel this common prefix to equate the filtered suffixes.
 -/
 theorem sameNontrivialBoundary_cancel_left {L₁ L₂ L₁' L₂' : List Y.IdealSheafData}
     (h : MarkedIdealWithBoundary.SameNontrivialBoundary (L₁ ++ L₂) (L₁' ++ L₂'))
@@ -170,15 +168,15 @@ theorem sameNontrivialBoundary_cancel_left {L₁ L₂ L₁' L₂' : List Y.Ideal
   rw [MarkedIdealWithBoundary.nontrivialPart_append, MarkedIdealWithBoundary.nontrivialPart_append, h₁] at h
   exact List.append_cancel_left h
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The singleton's only entry is the unit ideal, so filtering removes it and gives the empty list.
 -/
 private theorem nontrivialPart_top_singleton {Z : Scheme.{u}} :
     MarkedIdealWithBoundary.nontrivialPart [(⊤ : Z.IdealSheafData)] = [] := by
   simp [MarkedIdealWithBoundary.nontrivialPart]
 
-/- English proof (translation)
-Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Filtering the appended singleton of the unit ideal gives the empty list. The filtered part of the extended list is therefore the same as that of the original list.
 -/
 theorem sameNontrivialBoundary_append_top {L L' : List Y.IdealSheafData}
     (h : MarkedIdealWithBoundary.SameNontrivialBoundary L L') :
@@ -195,8 +193,8 @@ end
 
 section
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The recorded final boundary equals the one computed from the underlying blowup data. The boundary concatenation formula writes it as the strict transforms of the original list followed by the boundary computed from an empty initial list.
 -/
 theorem lastBoundary_eq_append (R : MarkedIdealWithBoundary.{u})
     (t : MarkedBlowupSequenceData R.structMap R.ideal R.mult R.boundary) :
@@ -206,8 +204,8 @@ theorem lastBoundary_eq_append (R : MarkedIdealWithBoundary.{u})
   rw [← MarkedBlowupSequenceData.toBlowupSequenceData_boundary_eq t t.length le_rfl, ← BlowupSequenceData.boundary_append,
     List.append_nil]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
+/- English proof (authored)
+The computed final boundary has the original length plus one entry per blowup, and it agrees with the recorded final boundary. This gives the length inequality.
 -/
 theorem length_boundary_le_length_lastBoundary (R : MarkedIdealWithBoundary.{u})
     (t : MarkedBlowupSequenceData R.structMap R.ideal R.mult R.boundary) :
@@ -219,8 +217,8 @@ theorem length_boundary_le_length_lastBoundary (R : MarkedIdealWithBoundary.{u})
     exact BlowupSequenceData.boundary_length _ _ _
   omega
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The final boundary begins with the original list mapped by the final strict-transform operation. The index lies in that prefix, so its entry is the final strict transform of the original entry.
 -/
 theorem getElem_lastBoundary_eq_iteratedStrictTransform (R : MarkedIdealWithBoundary.{u})
     (t : MarkedBlowupSequenceData R.structMap R.ideal R.mult R.boundary)
@@ -240,17 +238,15 @@ noncomputable def survivingBoundaryCount (S : MarkedIdealWithBoundary.{u}) {X' :
     (n : ℕ) : ℕ :=
   (MarkedIdealWithBoundary.nontrivialPart ((S.boundary.take n).map fun D => D.comap q)).length
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The initial segment of length zero is empty. It remains empty under pullback and filtering, so its count is zero.
 -/
 @[simp] theorem survivingBoundaryCount_zero (S : MarkedIdealWithBoundary.{u}) {X' : Scheme.{u}} (q : X' ⟶ S.scheme) :
     survivingBoundaryCount S q 0 = 0 := by
   simp [survivingBoundaryCount, MarkedIdealWithBoundary.nontrivialPart]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The next prefix is the old prefix with one entry appended. After pullback the new entry is the unit ideal, so filtering removes it. The count is unchanged.
 -/
 theorem survivingBoundaryCount_succ_of_eq_top (S : MarkedIdealWithBoundary.{u}) {X' : Scheme.{u}} (q : X' ⟶ S.scheme)
     (i : ℕ) (hi : i < S.boundary.length) (hdead : (S.boundary[i]'hi).comap q = ⊤) :
@@ -264,17 +260,15 @@ theorem survivingBoundaryCount_succ_of_eq_top (S : MarkedIdealWithBoundary.{u}) 
   simp only [List.map_append, List.map_cons, List.map_nil]
   rw [MarkedIdealWithBoundary.nontrivialPart_append, hdead, nontrivialPart_top_singleton, List.append_nil]
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The single entry is nonunit, so the filter retains it.
 -/
 private theorem nontrivialPart_singleton_of_ne_top {Z : Scheme.{u}} (D : Z.IdealSheafData)
     (h : D ≠ ⊤) : MarkedIdealWithBoundary.nontrivialPart [D] = [D] := by
   simp [MarkedIdealWithBoundary.nontrivialPart, h]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Taking one more entry appends the indexed component to the prefix. Its pullback is nonunit and survives filtering, so the filtered length increases by one.
 -/
 theorem survivingBoundaryCount_succ_of_ne_top (S : MarkedIdealWithBoundary.{u}) {X' : Scheme.{u}} (q : X' ⟶ S.scheme)
     (i : ℕ) (hi : i < S.boundary.length) (hlive : (S.boundary[i]'hi).comap q ≠ ⊤) :
@@ -290,8 +284,8 @@ theorem survivingBoundaryCount_succ_of_ne_top (S : MarkedIdealWithBoundary.{u}) 
     List.length_append]
   simp
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Taking the full original length returns the entire boundary. Its entrywise pullback followed by deletion of unit ideals is exactly the boundary used in the pulled-back triple.
 -/
 theorem survivingBoundaryCount_length_eq (S : MarkedIdealWithBoundary.{u}) {X' : Scheme.{u}} (q : X' ⟶ S.scheme) :
     survivingBoundaryCount S q S.boundary.length = (pullbackWithNontrivialBoundary S q).boundary.length := by
@@ -300,10 +294,8 @@ theorem survivingBoundaryCount_length_eq (S : MarkedIdealWithBoundary.{u}) {X' :
       fun D => D.comap q)).length = (pullbackWithNontrivialBoundary S q).boundary.length
   rw [h]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
+/- English proof (authored)
+The prefix through the chosen component has one more surviving entry than the prefix before it. Its surviving entries form an initial segment of the full filtered boundary because both pullback and filtering distribute over concatenation. The original count is therefore strictly below the full filtered length.
 -/
 theorem survivingBoundaryCount_lt_length (S : MarkedIdealWithBoundary.{u}) {X' : Scheme.{u}} (q : X' ⟶ S.scheme)
     (i : ℕ) (hi : i < S.boundary.length) (hlive : (S.boundary[i]'hi).comap q ≠ ⊤) :
@@ -323,8 +315,8 @@ theorem survivingBoundaryCount_lt_length (S : MarkedIdealWithBoundary.{u}) {X' :
       (MarkedIdealWithBoundary.nontrivialPart ((S.boundary.take (i + 1)).map fun D => D.comap q)).length := rfl
   omega
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
+/- English proof (authored)
+Substitute the equalities of lists and indices. Both lookups then select the same entry.
 -/
 private theorem getElem_eq_getElem_of_eq.{v} {α : Type v} (l l' : List α) (n n' : ℕ)
     (hl : l = l') (hn : n = n') (h : n < l.length) (h' : n' < l'.length) :
@@ -333,10 +325,8 @@ private theorem getElem_eq_getElem_of_eq.{v} {α : Type v} (l l' : List α) (n n
   subst hn
   rfl
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
+/- English proof (authored)
+In the concatenated list, skip the entire prefix. The entry at that index is the head of the remaining list. This follows by removing one prefix head at a time, with the empty prefix as the base case.
 -/
 private theorem getElem_append_cons_length.{v} {α : Type v} :
     ∀ (A : List α) (x : α) (B : List α) (h : A.length < (A ++ x :: B).length),
@@ -351,8 +341,8 @@ private theorem getElem_append_cons_length.{v} {α : Type v} :
         omega
       exact ih x B hb
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
+/- English proof (authored)
+View the list as the singleton head concatenated with the tail. Filtering distributes over this concatenation and retains the nonunit head. The new tail is the filtered old tail.
 -/
 private theorem nontrivialPart_cons_of_ne_top {Z : Scheme.{u}} (D : Z.IdealSheafData) (hD : D ≠ ⊤)
     (L : List Z.IdealSheafData) :
@@ -363,14 +353,8 @@ private theorem nontrivialPart_cons_of_ne_top {Z : Scheme.{u}} (D : Z.IdealSheaf
   rw [nontrivialPart_singleton_of_ne_top D hD] at h
   simpa using h
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Split the original boundary into the prefix before the chosen entry, that entry, and the suffix after it. Pullback and filtering distribute over this decomposition. The chosen pullback is nonunit, so it remains immediately after the filtered prefix. The length of this prefix is the surviving count at the original index, giving the claimed entry.
 -/
 theorem pullbackWithNontrivialBoundary_boundary_getElem (S : MarkedIdealWithBoundary.{u}) {X' : Scheme.{u}} (q : X' ⟶ S.scheme)
     (i : ℕ) (hi : i < S.boundary.length) (hlive : (S.boundary[i]'hi).comap q ≠ ⊤) :
@@ -425,8 +409,8 @@ variable (S : MarkedIdealWithBoundary.{u}) {X' : Scheme.{u}} (q : X' ⟶ S.schem
       (pullbackWithNontrivialBoundary S q).mult (pullbackWithNontrivialBoundary S q).boundary)
   (D : SequenceOfBlowupsPullback q s'.toMarkedSequenceOfBlowups.toSequenceOfBlowups s.toMarkedSequenceOfBlowups.toSequenceOfBlowups)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The final comparison and projections form a commutative pullback square. The projections of the underlying sequences agree with the marked projections, so its commutativity is the required identity.
 -/
 theorem lastMap_comp_projectionToBase :
     D.lastMap ≫ s.proj s.length = s'.proj s'.length ≫ q := by
@@ -438,8 +422,8 @@ theorem lastMap_comp_projectionToBase :
   rw [e1, e2] at h
   exact h
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Postcompose the identity for projections to the original schemes with the original structural morphism. Reassociate to express the result as equality of the two structural composites.
 -/
 theorem lastMap_comp_structureMorphism :
     D.lastMap ≫ (s.proj s.length ≫ S.structMap) =
@@ -451,10 +435,8 @@ theorem lastMap_comp_structureMorphism :
   exact (Category.assoc D.lastMap (s.proj s.length) S.structMap).symm.trans
     (h2.trans (Category.assoc (s'.proj s'.length) q S.structMap))
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The stages on both sides are Noetherian by admissibility, and the smooth base map is flat. The original upstairs ideal is the pullback of the downstairs ideal. Its boundary has the same nontrivial entries as the pulled-back list by construction. The final pullback comparison for marked sequences now gives equality of ideals and agreement of the nontrivial boundaries.
 -/
 theorem ideal_and_boundary_comap_lastMap [AlgebraicGeometry.Smooth q] (_hMaxContact : MaxContactCoverProperties.{u})
     (hV : S.IsAdmissible) (hV' : (pullbackWithNontrivialBoundary S q).IsAdmissible) :
@@ -471,8 +453,8 @@ theorem ideal_and_boundary_comap_lastMap [AlgebraicGeometry.Smooth q] (_hMaxCont
   exact SequenceOfBlowupsPullback.ideal_boundary_last_eq_comap_lastMap s s' D rfl
     (sameNontrivialBoundary_nontrivialPart (S.boundary.map fun A => A.comap q)) hN hN'
 
-/- English proof (translation)
-Substitute using the available equality. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Two successive ideal pullbacks are pullback along the composite. Substitute the given equality of that composite with the direct map.
 -/
 private theorem comap_eq_comap_comap_of_comp_eq {A B C : Scheme.{u}} (e : A ⟶ B) (f : A ⟶ C)
     (g : B ⟶ C) (h : e ≫ g = f) (M : C.IdealSheafData) :
@@ -480,14 +462,8 @@ private theorem comap_eq_comap_comap_of_comp_eq {A B C : Scheme.{u}} (e : A ⟶ 
   subst h
   simp [Scheme.IdealSheafData.comap_comp]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
-
-Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+At stage zero the ideal transforms are pullbacks along their initial isomorphisms. The projection compatibility to the original schemes makes the upstairs stage-zero transform the pullback of the downstairs one along the comparison to stage zero. Both families then follow the strict-transform recurrence, and admissibility gives the required Noetherian stages. Apply the final strict-transform comparison for the pullback of sequences.
 -/
 theorem iteratedStrictTransform_comap_lastMap [AlgebraicGeometry.Flat q] (_hMaxContact : MaxContactCoverProperties.{u})
     (hV : S.IsAdmissible) (hV' : (pullbackWithNontrivialBoundary S q).IsAdmissible) (M : S.scheme.IdealSheafData) :
@@ -527,8 +503,8 @@ theorem iteratedStrictTransform_comap_lastMap [AlgebraicGeometry.Flat q] (_hMaxC
   · intro j _
     exact BlowupSequenceData.iteratedStrictTransform_succ _ j (M.comap q)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
+/- English proof (authored)
+The given final entry is the strict transform of the original entry. Its pullback to the final upstairs stage is the iterated strict transform of the pulled-back original entry. That entry is unit, and strict transforms of the unit ideal are unit.
 -/
 theorem lastBoundary_comap_lastMap_eq_top [AlgebraicGeometry.Flat q] (hstar : MaxContactCoverProperties.{u})
     (hV : S.IsAdmissible) (hV' : (pullbackWithNontrivialBoundary S q).IsAdmissible)
@@ -541,8 +517,8 @@ theorem lastBoundary_comap_lastMap_eq_top [AlgebraicGeometry.Flat q] (hstar : Ma
   rw [h1, h2, hdead, BlowupSequenceData.iteratedStrictTransform_top]
   rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The two final entries are the strict transforms of their respective starting entries. The surviving-count formula identifies the upstairs starting entry with the pullback of the chosen downstairs entry. The final strict-transform comparison therefore identifies the stated ideals.
 -/
 theorem getElem_lastBoundary_comap_lastMap [AlgebraicGeometry.Flat q] (hstar : MaxContactCoverProperties.{u})
     (hV : S.IsAdmissible) (hV' : (pullbackWithNontrivialBoundary S q).IsAdmissible)
@@ -557,8 +533,8 @@ theorem getElem_lastBoundary_comap_lastMap [AlgebraicGeometry.Flat q] (hstar : M
   rw [h1, h2, h3]
   exact iteratedStrictTransform_comap_lastMap S q s s' D hstar hV hV' (S.boundary[i]'hi)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The extended prefix is the old prefix with the next entry appended. After pullback the appended entry is unit. Removing it preserves the nontrivial boundary relation.
 -/
 private theorem sameNontrivialBoundary_take_succ_of_eq_top {Y Z : Scheme.{u}}
     (f : Y.IdealSheafData → Z.IdealSheafData) (L : List Y.IdealSheafData) (n : ℕ)
@@ -568,8 +544,8 @@ private theorem sameNontrivialBoundary_take_succ_of_eq_top {Y Z : Scheme.{u}}
   rw [List.take_succ_eq_append_getElem hn, List.map_append, List.map_cons, List.map_nil, hf]
   exact sameNontrivialBoundary_append_top h
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Both successor prefixes append the indicated next entry. The two new entries agree after the downstairs one is pulled back. Their singleton lists have the same nontrivial part, so the relation persists after appending.
 -/
 private theorem sameNontrivialBoundary_take_succ_of_getElem_eq {Y Z : Scheme.{u}}
     (f : Y.IdealSheafData → Z.IdealSheafData) (L : List Y.IdealSheafData) (n : ℕ)
@@ -581,14 +557,8 @@ private theorem sameNontrivialBoundary_take_succ_of_getElem_eq {Y Z : Scheme.{u}
     List.map_cons, List.map_nil, hf]
   exact sameNontrivialBoundary_append h (sameNontrivialBoundary_refl _)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the original prefix length. At zero both prefixes are empty. At a successor, if the original entry pulls back to the unit ideal, the surviving count stays fixed and the final transform of that entry also pulls back to the unit ideal. Appending it preserves the relation. If the entry survives, the count increases by one, and the final transform comparison matches the two new entries. Apply preservation of the relation under appending these matching entries.
 -/
 theorem sameNontrivialBoundary_lastBoundary_take [AlgebraicGeometry.Flat q] (hstar : MaxContactCoverProperties.{u})
     (hV : S.IsAdmissible) (hV' : (pullbackWithNontrivialBoundary S q).IsAdmissible) :
@@ -629,8 +599,8 @@ theorem sameNontrivialBoundary_lastBoundary_take [AlgebraicGeometry.Flat q] (hst
         exact sameNontrivialBoundary_take_succ_of_getElem_eq (fun A => A.comap D.lastMap)
           (s.boundary s.length) n hnlt (s'.boundary s'.length) (survivingBoundaryCount S q n) hclt hgp ihn
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Replace each list by the equal list for which the relation holds.
 -/
 private theorem sameNontrivialBoundary_congr {Z : Scheme.{u}}
     {L L' M M' : List Z.IdealSheafData}
@@ -640,12 +610,8 @@ private theorem sameNontrivialBoundary_congr {Z : Scheme.{u}}
   subst hM
   exact h
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+The full final boundaries agree after pullback and removal of unit entries. Their prefixes corresponding to the full original boundary also agree in this sense, by the prefix comparison and the formula for the total surviving count. Decompose each boundary into this prefix and its suffix. Pullback distributes over concatenation, so cancellation of the matching filtered prefixes gives the relation for the suffixes.
 -/
 theorem sameNontrivialBoundary_lastBoundary_drop [AlgebraicGeometry.Flat q] (hstar : MaxContactCoverProperties.{u})
     (hV : S.IsAdmissible) (hV' : (pullbackWithNontrivialBoundary S q).IsAdmissible) :
@@ -674,8 +640,8 @@ theorem sameNontrivialBoundary_lastBoundary_drop [AlgebraicGeometry.Flat q] (hst
   refine sameNontrivialBoundary_cancel_left ?_ htake.symm
   exact sameNontrivialBoundary_congr hfull hsplit' hsplit
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The structural morphism and its smooth pullback satisfy the stated local finite-type conditions. The smooth pullback formula for balanced tuning identifies the pulled-back tuned ideal with the tuning of the pulled-back ideal.
 -/
 private theorem balancedTunedSheaf_comap_of_smooth (k : Type u) [Field k] [IsNoetherianRing k]
     {X Y : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) (h : Y ⟶ X)
@@ -690,8 +656,8 @@ private theorem balancedTunedSheaf_comap_of_smooth (k : Type u) [Field k] [IsNoe
   have := hfc
   exact FunctorialResolution.EmbeddedResolution.balancedTunedSheaf_comap k p h I m
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
+/- English proof (authored)
+Identify the structural maps and the ideals. The mark is common, so the two tuning constructions have identical inputs. The local finite-type certificates do not change the result.
 -/
 private theorem balancedTunedSheaf_congr (k : Type u) [Field k] [IsNoetherianRing k]
     {X : Scheme.{u}} (p p' : X ⟶ Spec (CommRingCat.of k))
@@ -703,12 +669,8 @@ private theorem balancedTunedSheaf_congr (k : Type u) [Field k] [IsNoetherianRin
   subst hp
   rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The final comparison is smooth. Its composite structural map is the final upstairs structural map and is therefore locally of finite type. Apply the smooth pullback formula for balanced tuning to the downstairs final ideal. The ordinary final ideal pulls back to the upstairs final ideal by the sequence comparison. The structural maps agree and the mark is preserved, so the resulting tuned ideal is the upstairs one.
 -/
 theorem tunedIdealAtLength_comap_lastMap [AlgebraicGeometry.Smooth q] (hstar : MaxContactCoverProperties.{u})
     (hV : S.IsAdmissible) (hV' : (pullbackWithNontrivialBoundary S q).IsAdmissible)
@@ -743,8 +705,8 @@ theorem tunedIdealAtLength_comap_lastMap [AlgebraicGeometry.Smooth q] (hstar : M
       (s'.ideal s'.length) S.mult = LowerDimReductionPullback.tunedIdealAtLength (pullbackWithNontrivialBoundary S q) s' hftT := e2.symm
   exact h1.trans (h2.symm.trans (h3.trans h4))
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
+/- English proof (authored)
+The equalities identify the two structural maps, ideals, marks, and boundary lists on the common scheme over the common field. Thus the triples coincide.
 -/
 private theorem markedIdealWithBoundary_mk_congr {k : Type u} [inst : Field k] {X : Scheme.{u}}
     {p p' : X ⟶ Spec (CommRingCat.of k)} {I I' : X.IdealSheafData} {m m' : ℕ}
@@ -757,10 +719,8 @@ private theorem markedIdealWithBoundary_mk_congr {k : Type u} [inst : Field k] {
   subst hE
   rfl
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Both sides reduce to the same expression.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Both triples use the final upstairs scheme over the original field. Their structural maps agree by the final comparison, and their tuned ideals agree by the tuning formula for that map. The marks are both the tuning exponent of the original mark. The specified replacement boundary is the pulled-back supplemental list followed by the prescribed suffix of the final upstairs boundary, which is the boundary of the derived triple upstairs.
 -/
 theorem pullbackAlong_derivedTriple_eq [AlgebraicGeometry.Smooth q] (hstar : MaxContactCoverProperties.{u})
     (hV : S.IsAdmissible) (hV' : (pullbackWithNontrivialBoundary S q).IsAdmissible)

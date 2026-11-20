@@ -49,8 +49,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. A detailed English derivation is pending.
+/- English proof (authored)
+The maximal-contact ideal is the iterated derivative ideal at index one less than the mark. The smooth-pullback theorem for iterated derivative ideals gives the equality at this index.
 -/
 theorem maxContactIdeal_comap (k : Type u) [Field k] {P Y : Scheme.{u}}
     (p : P ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -79,8 +79,8 @@ def MaxContactHypersurfaceSmoothPullback : Prop :=
       ∀ H : P.IdealSheafData, IsMaxContactHypersurface k p A μ H →
         IsMaxContactHypersurface k (g ≫ p) (A.comap g) μ (H.comap g)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Admissibility of the starting triple and the marked stage theorem give a Noetherian scheme at the chosen index. Passing between the marked data and marked sequence preserves the stage, and a Noetherian scheme is locally Noetherian.
 -/
 theorem isLocallyNoetherian_schemeAt (_hMaxContact : MaxContactCoverProperties.{u}) (S : MarkedIdealWithBoundary.{u}) (hV : S.IsAdmissible)
     (s : MarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary) :
@@ -92,8 +92,8 @@ theorem isLocallyNoetherian_schemeAt (_hMaxContact : MaxContactCoverProperties.{
   show AlgebraicGeometry.IsLocallyNoetherian (s.toMarkedSequenceOfBlowups.schemeAt i)
   infer_instance
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Admissibility of the original triple gives admissibility of its marked transform at the final stage. In particular the final boundary has strict normal crossings for the final structural map. With no entries added or dropped, this is the boundary of the derived triple. Apply the derived-triple admissibility theorem.
 -/
 theorem isAdmissible_derivedTriple_nil (hstar : MaxContactCoverProperties.{u}) (S : MarkedIdealWithBoundary.{u}) (hV : S.IsAdmissible)
     (s : MarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary)
@@ -108,8 +108,8 @@ theorem isAdmissible_derivedTriple_nil (hstar : MaxContactCoverProperties.{u}) (
     MarkedSequenceOfBlowups.projectionToSpec_eq, MarkedBlowupSequenceData.toMarkedSequence_projectionToBase] at h
   exact h
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Taking zero entries gives the empty list. There is no boundary component satisfying the membership hypothesis.
 -/
 theorem orderAtLeastLocus_inter_support_eq_empty_of_mem_take_zero (S : MarkedIdealWithBoundary.{u})
     (s : MarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary) :
@@ -118,12 +118,8 @@ theorem orderAtLeastLocus_inter_support_eq_empty_of_mem_take_zero (S : MarkedIde
   intro D hD
   simp at hD
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
-
-Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+Induct on the original list. Membership is impossible when the list or the number of entries taken is zero. Otherwise an entry in the retained prefix is either its head, with index zero, or belongs to the retained prefix of the tail. Shift the tail index from the induction hypothesis by one. The shifted index is within both the original length and the requested prefix.
 -/
 private theorem exists_index_of_mem_take {α : Type*} :
     ∀ (L : List α) (n : ℕ) (D : α), D ∈ L.take n →
@@ -144,8 +140,8 @@ private theorem exists_index_of_mem_take {α : Type*} :
       · obtain ⟨i, hi, hin, hget⟩ := ih m D hD''
         exact ⟨i + 1, Nat.succ_lt_succ hi, Nat.succ_lt_succ hin, hget⟩
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+A member of the retained initial segment has an index below the segment length in the final boundary. The boundary separation hypothesis gives disjointness at that index. Replace the indexed entry by the given member.
 -/
 theorem orderAtLeastLocus_inter_support_eq_empty_of_boundarySeparated (S : MarkedIdealWithBoundary.{u})
     (s : MarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary) (n : ℕ)
@@ -158,10 +154,8 @@ theorem orderAtLeastLocus_inter_support_eq_empty_of_boundarySeparated (S : Marke
   rw [hget] at key
   exact key
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+/- English proof (authored)
+The final boundary begins with the strict transforms of the full original boundary and then has the exceptional entries. Its length is at least the original length. Prepending an empty list and dropping zero entries do not change it, so the index remains in range.
 -/
 theorem lt_length_nil_append_boundary_drop_zero (S : MarkedIdealWithBoundary.{u})
     (s : MarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary) (j : ℕ)
@@ -180,8 +174,8 @@ theorem lt_length_nil_append_boundary_drop_zero (S : MarkedIdealWithBoundary.{u}
   simp only [List.nil_append, List.drop_zero]
   omega
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Smooth pullback preserves the order at every point, equating it with the original order at the image. Apply the original pointwise bound. The mark is the same in the pulled-back triple.
 -/
 theorem orderAt_pullbackTriple_le_mult (S : MarkedIdealWithBoundary.{u}) {X' : Scheme.{u}} (q : X' ⟶ S.scheme)
     [AlgebraicGeometry.Smooth q] (hV : S.IsAdmissible)
@@ -200,14 +194,8 @@ abbrev separateBoundaryOfFamily (hinv : ComapIsoInvariance.{u}) (T : MarkedIdeal
     MarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary :=
   MaxContactReduction.separateBoundary hinv T (fun S' _ i => A i S') S n
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the number of boundary components processed. At zero the sequence is empty, so there are no separated entries or centers to check. The initial strict normal crossing condition survives the initial isomorphism. At a successor the recursive definition appends the lower-dimensional boundary reduction at the preceding index. That index is in range, and the append theorem preserves the invariant for the earlier entries while separating the new one.
 -/
 theorem separateBoundaryInvariant_separateBoundaryOfFamily (hstar : MaxContactCoverProperties.{u}) (hinv : ComapIsoInvariance.{u})
     (P : ℕ → Prop) (hmono : ∀ a b : ℕ, a ≤ b → P b → P a) (A : ℕ → PrincipalizationAssignment.{u})
@@ -255,8 +243,8 @@ theorem separateBoundaryInvariant_separateBoundaryOfFamily (hstar : MaxContactCo
       rw [hstep]
       exact key
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+For the only stage, compose the upstairs initial isomorphism, the base map, and the inverse downstairs initial isomorphism. The initial square commutes. Both lengths are zero, so there are no center or transition conditions.
 -/
 private theorem isStrictPullback_of_length_eq_zero {X' X : Scheme.{u}} (g : X' ⟶ X)
     (t : SequenceOfBlowups X') (s : SequenceOfBlowups X) (ht : t.length = 0) (hs : s.length = 0) :
@@ -270,8 +258,8 @@ private theorem isStrictPullback_of_length_eq_zero {X' X : Scheme.{u}} (g : X' �
       length_eq := by rw [ht, hs]
       center_eq := fun i hi => absurd hi (by omega) }
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Boundary separation at index zero is defined as the empty marked data. Its underlying blowup data are empty, with length zero.
 -/
 private theorem length_separateBoundaryOfFamily_zero (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u})
     (A : ℕ → PrincipalizationAssignment.{u}) (S : MarkedIdealWithBoundary.{u}) :
@@ -288,8 +276,8 @@ private theorem length_separateBoundaryOfFamily_zero (hinv : ComapIsoInvariance.
       (BlowupSequenceData.empty_length S.scheme)
   exact hlen
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The derived triple uses the final stage as its scheme. The dimension bound for stages of a marked sequence makes its successor dimension at most the original successor dimension.
 -/
 private theorem dim_derivedTriple_le_dim (hstar : MaxContactCoverProperties.{u}) (S : MarkedIdealWithBoundary.{u})
     (hV : S.IsAdmissible) (s : MarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary)
@@ -303,8 +291,8 @@ private theorem dim_derivedTriple_le_dim (hstar : MaxContactCoverProperties.{u})
   rw [MaxContactCoverData.derivedTriple_scheme]
   exact h
 
-/- English proof (translation)
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The pulled-back boundary is obtained by pulling back each entry once. Entrywise pullback preserves the length.
 -/
 private theorem boundary_length_pullbackTriple (S : MarkedIdealWithBoundary.{u}) {X' : Scheme.{u}}
     (g : X' ⟶ S.scheme) : (LowerDimReductionPullback.pullbackTriple S g).boundary.length = S.boundary.length := by
@@ -312,8 +300,8 @@ private theorem boundary_length_pullbackTriple (S : MarkedIdealWithBoundary.{u})
       = S.boundary.length
   simp
 
-/- English proof (translation)
-Substitute using the available equality. Both sides reduce to the same expression.
+/- English proof (authored)
+By definition, pullback of the triple takes entrywise pullback of its boundary. Substitute the given expression for that boundary.
 -/
 private theorem boundary_pullbackAlong_eq_map_comap (U : MarkedIdealWithBoundary.{u}) {Y : Scheme.{u}}
     (qq : Y ⟶ Spec (CommRingCat.of U.base)) (h : Y ⟶ U.scheme)
@@ -322,30 +310,30 @@ private theorem boundary_pullbackAlong_eq_map_comap (U : MarkedIdealWithBoundary
   subst hL
   rfl
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Replacing the boundary by an equal list gives the same marked triple. The existing admissibility certificate applies.
 -/
 private theorem isAdmissible_withBoundary_of_eq (U : MarkedIdealWithBoundary.{u}) (hU : U.IsAdmissible)
     (L : List U.scheme.IdealSheafData) (hL : U.boundary = L) : (U.withBoundary L).IsAdmissible := by
   subst hL
   exact hU
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Equipping the underlying data with markings preserves the number of steps. The given zero length is therefore also the length of the marked sequence.
 -/
 private theorem length_toMarkedSequence_eq_zero {k : Type u} [Field k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData) (m : ℕ) (E : List X.IdealSheafData)
     (b : SequenceOfBlowups X) (h : (BlowupSequenceData.ofSequenceOfBlowups b).IsMarked p I m E) (hb : b.length = 0) :
     ((BlowupSequenceData.ofSequenceOfBlowups b).toMarkedBlowupSequenceData p I m E h).length = 0 := hb
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The order-bounded condition is the pointwise bound by the mark, so evaluate it at the specified point.
 -/
 private theorem orderAt_le_mult_of_isOrderBoundedByMult (T : MarkedIdealWithBoundary.{u}) (h : T.IsOrderBoundedByMult) :
     ∀ x : ↥T.scheme, orderAt T.ideal x ≤ (T.mult : ℕ∞) := h
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The derived triple uses the final structural map with the tuned final ideal and its tuned mark. The given maximal-contact condition is expressed in exactly these data.
 -/
 private theorem isMaxContactHypersurface_derivedTriple (S : MarkedIdealWithBoundary.{u})
     (s : MarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary)
@@ -363,10 +351,8 @@ private theorem isMaxContactHypersurface_derivedTriple (S : MarkedIdealWithBound
       (MaxContactCoverData.derivedTriple S s hft added nDrop).ideal
       (MaxContactCoverData.derivedTriple S s hft added nDrop).mult E := h
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The strict transform of the original hypersurface remains of maximal contact at the final stage. The final ideal is still order bounded by the original mark. Apply preservation of maximal contact under balanced tuning at this stage to obtain the condition at the tuned mark.
 -/
 private theorem isMaxContactHypersurface_strictTransformAtLength (hstar : MaxContactCoverProperties.{u})
     (S : MarkedIdealWithBoundary.{u})
@@ -393,10 +379,8 @@ private theorem isMaxContactHypersurface_strictTransformAtLength (hstar : MaxCon
     (fun x => LowerDimReductionPullback.orderAt_ideal_length_le hstar S hV hO s x)
     (MaxContactReduction.iteratedStrictTransform s Hs s.length) h1
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The final comparison map is smooth, and the composite structural map is locally of finite type because it equals the upstairs final structural map. Smooth compatibility of maximal contact therefore gives the condition for the pulled-back hypersurface and pulled-back tuned ideal. The tuned-ideal pullback identity identifies this ideal with the final tuned ideal upstairs. Substitute that identity and the equality of structural maps.
 -/
 private theorem isMaxContactHypersurface_comap_lastMap (hAdm : MaxContactHypersurfaceSmoothPullback.{u})
     (hstar : MaxContactCoverProperties.{u}) (S : MarkedIdealWithBoundary.{u}) (hV : S.IsAdmissible)
@@ -439,12 +423,8 @@ private theorem isMaxContactHypersurface_comap_lastMap (hAdm : MaxContactHypersu
     (LowerDimReductionPullback.pullbackMapAtLength_comp_eq_pullbackTriple_structureMorphism S g s t D)
     (LowerDimReductionPullback.tunedIdealAtLength_comap_pullbackMapAtLength S g s t D hftS hftT added nDrop hVc) rfl key
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The final comparison map is smooth. Its composite to the base is quasi-compact by admissibility of the final upstairs transform and the identity of structural maps. Pullback of the admissible derived triple downstairs is therefore admissible. Its boundary is the pullback of the supplemental list followed by the truncated final boundary, because pullback preserves concatenation and positions. The boundary comparison identifies this with the list used in the derived triple upstairs. The derived-triple pullback identity then transfers admissibility.
 -/
 private theorem isAdmissible_derivedTriple_pullbackTriple (hin : OrderReduction.OrderReductionHypotheses.{u})
     (S : MarkedIdealWithBoundary.{u}) {X' : Scheme.{u}} (g : X' ⟶ S.scheme) [AlgebraicGeometry.Smooth g]
@@ -494,18 +474,8 @@ private theorem isAdmissible_derivedTriple_pullbackTriple (hin : OrderReduction.
   rw [← LowerDimReductionPullback.pullbackAlong_derivedTriple_eq S g s t D hftS hftT added nDrop hVc]
   exact isAdmissible_withBoundary_of_eq _ hpb _ (hbd1.trans hbd2)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The two derived triples have admissible boundaries with a distinguished first entry, and their dimensions fit the reference bound. The append theorem writes each reduction as the same initial sequence followed by its marked continuation. If the final order locus is nonempty, the original mark is the maximum order. The tuned ideal has maximal-contact invariance, and both distinguished hypersurfaces give maximal contact for it. Independence of the first-boundary reduction from the chosen maximal-contact hypersurface gives isomorphic continuations, after identifying the underlying data. Appending to the common sequence preserves the isomorphism. If the locus is empty, both continuations have length zero, and each append is isomorphic to the initial sequence.
 -/
 private theorem isomorphic_appendLowerDimReduction_of_isMaxContactHypersurface (hstar : MaxContactCoverProperties.{u})
     (hin : OrderReduction.OrderReductionHypotheses.{u}) (hMC : IsMaxContactInvariantBalancedTuned.{u})
@@ -610,24 +580,10 @@ private theorem isomorphic_appendLowerDimReduction_of_isMaxContactHypersurface (
         hmk2 hl2)
     exact SequenceOfBlowups.Isomorphic.trans e1 (SequenceOfBlowups.Isomorphic.symm e2)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
+/- English proof (authored)
+Smooth pullback preserves the order bound and the boundary length. Compare boundary separation by induction on the number of processed components. At zero both sequences are empty. At each successor their derived triples with the full final boundary are admissible, their dimensions fit the reference bound, and the next index is valid on both sides. Smooth-surjective compatibility of the appended reduction then extends the strict pullback relation.
 
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-A detailed English derivation is pending.
+After processing the entire original boundary, its transforms are disjoint from the final order loci. The distinguished hypersurface transforms give admissible derived triples with the remaining boundary. Appending with the pullback of the downstairs transformed hypersurface gives a strict pullback by the append comparison. That pulled-back hypersurface is of maximal contact for the tuned final upstairs ideal, as is the strict transform of the separately chosen upstairs hypersurface. Independence of the appended reduction from the choice of maximal contact identifies the two upstairs sequences up to isomorphism. Transport the strict pullback relation along that isomorphism to obtain the result.
 -/
 theorem isStrictPullbackBlowupSeq_reduceAlongHypersurface (hstar : MaxContactCoverProperties.{u}) (hin : OrderReduction.OrderReductionHypotheses.{u})
     (hMC : IsMaxContactInvariantBalancedTuned.{u}) (hAdm : MaxContactHypersurfaceSmoothPullback.{u})

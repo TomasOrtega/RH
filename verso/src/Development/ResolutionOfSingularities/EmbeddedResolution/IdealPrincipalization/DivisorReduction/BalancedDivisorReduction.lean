@@ -39,22 +39,22 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Without a preliminary blowup the lower ideal on the ambient scheme is the original ideal pulled back along the identity, which fixes it.
 -/
 private theorem lowerIdealWithoutBlowup_eq_ideal (T : MarkedIdealWithBoundary.{u}) :
     DivisorReduction.lowerIdealWithoutBlowup T = T.ideal := by
   show T.ideal.comap (CategoryTheory.CategoryStruct.id T.scheme) = T.ideal
   exact Scheme.IdealSheafData.comap_id _
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The order bound by the mark is the pointwise requirement that every stalk order is at most the multiplicity. Applying it at an arbitrary point gives the stated inequality.
 -/
 private theorem orderAt_le_mult_of_isOrderBoundedByMult (T : MarkedIdealWithBoundary.{u}) (hOB : T.IsOrderBoundedByMult) :
     ∀ x : ↥T.scheme, orderAt T.ideal x ≤ (T.mult : ℕ∞) := hOB
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The balanced condition for the marked input is precisely derivative balance for its ideal at its marking. The property uses the given finite-type structure and therefore applies with the indicated instance of that structure.
 -/
 private theorem isDerivBalanced_of_isBalanced (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible)
     (hbal : T.IsBalanced hV.locallyOfFiniteType) :
@@ -63,12 +63,8 @@ private theorem isDerivBalanced_of_isBalanced (T : MarkedIdealWithBoundary.{u}) 
   intro _
   exact hbal
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The lower ideal before any preliminary blowup equals the original balanced ideal, and the lower boundary is the original strict normal crossings boundary. The chosen divisor is therefore the same entry in both descriptions. Removing that entry leaves a list of length one less than the original length, so truncation at that length keeps the whole list. Apply the going-up induction with these initial data, the positive mark, the admissible restriction, and the lifting property for normal crossings. Evaluate it at the last stage.
 -/
 private theorem goingUpInvariant_length_of_isBalanced (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (hlift : StrictNormalCrossingsLiftFromDivisor.{u})
@@ -104,22 +100,8 @@ private theorem goingUpInvariant_length_of_isBalanced (hres : FunctorialResoluti
     (DivisorReduction.lowerBoundaryWithoutBlowup T) s hpr hbalLower hV.one_le_mult hVlow hlift hE₀ hjE hget
     htrunc s.length le_rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Use the normal crossings lifting theorem to mark the ambient sequence from the ordinary restriction. For the twisted restriction, the preliminary center is smooth, has strict normal crossings with the boundary, and lies in the order locus. Its marked power divides the ideal, and its preimage in the chosen divisor is open. These facts give the marking after prepending its blowup. The twisted lower input is admissible by the restriction theorem. In each case the marked controlled-transform theorem preserves the order bound, and the corresponding going-up invariant gives the exceptional factors comparing the ambient and lower ideals. Thus emptiness of the final lower cosupport forces the final ambient order locus to miss the last embedded divisor. In the prepended case this comparison uses the clopen neighborhood supporting the going-up invariant and the controlled-transform formula for the first step. Flat base change gives both ambient tower comparisons. The controlled ideal pullback formulas and the selected center comparisons under field and smooth base change give the remaining properties, including the unit selected center for a marked image ideal on the divisor.
 -/
 theorem divisorReductionProperties_of_blowupPreservesNoetherian (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) : DivisorReductionProperties hres hno := by

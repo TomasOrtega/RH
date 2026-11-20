@@ -54,16 +54,16 @@ structure DivisorReductionHypotheses (hres : FunctorialResolution.Blowup.StrictT
   divisorReduction : DivisorReductionStepProperties hres blowupPreservesNoetherian
   pushedBlowupSequenceProperties : PushedBlowupSequenceProperties hres blowupPreservesNoetherian
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Take the divisor step properties from the hypotheses and use the construction of termination properties from those step properties.
 -/
 theorem DivisorReductionHypotheses.divisorReductionTerminationProperties {hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}}
     (hin : DivisorReductionHypotheses hres) :
     DivisorReductionTerminationProperties hres blowupPreservesNoetherian :=
   hin.divisorReduction.toDivisorReductionTerminationProperties
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The hypotheses give a pullback comparison for a zero-length pulled-back sequence when its order locus is empty. Apply the characterization of pullbacks of empty sequences to this comparison, for each allowed input and divisor index.
 -/
 theorem DivisorReductionHypotheses.trivialPullbackBlowupSequence {hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}}
     (hin : DivisorReductionHypotheses hres) (L : PrincipalizationAssignment.{u}) (j : ℕ) :
@@ -72,10 +72,8 @@ theorem DivisorReductionHypotheses.trivialPullbackBlowupSequence {hres : Functor
     (fun T hV hj Y q h _ hq E' hV' hcs hcs' B' hB' =>
       hin.trivial_of_coSupport_empty L j T hV hj Y q h hq E' hV' hcs hcs' B' hB')
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
-
-Prove the second alternative.
+/- English proof (authored)
+Admissibility gives the Noetherian ambient scheme needed for the ambient sequence construction. The formula for a nonempty order locus has two cases. If the selected center is empty it gives the ambient sequence of the ordinary restriction, and if the center is nonempty it gives a preliminary blowup followed by the ambient sequence of the twisted restriction. In each case use the supplied marking of that sequence to obtain the comparison as a marked blowup sequence.
 -/
 theorem DivisorReductionHypotheses.divisorReductionSeqEqAmbient {hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}}
     (hin : DivisorReductionHypotheses hres) (n : ℕ) (L O : PrincipalizationAssignment.{u})
@@ -92,8 +90,8 @@ theorem DivisorReductionHypotheses.divisorReductionSeqEqAmbient {hres : Functori
 
 end DivisorReduction
 
-/- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+For a unit selected ideal on both sides, use strict smooth pullback compatibility of the ordinary divisor restriction of the lower-dimensional reduction. For a nonunit selected ideal, use the corresponding theorem for the twisted restriction. These provide the two cases of strict pullback on the divisor.
 -/
 private theorem strictPullbackOfSmoothBaseChangeOnDivisor_of_isMaxOrderReduction
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
@@ -109,16 +107,8 @@ private theorem strictPullbackOfSmoothBaseChangeOnDivisor_of_isMaxOrderReduction
     exact DivisorReduction.isStrictPullbackBlowupSeq_restrictTwistedToDivisor hres hfacts n L O hL j hbc T hV hdim hO hbal
       hj hcs Y q h hq E' hBE htake hV' hdim' hO' hDB' hjE hcs' hZ hZ'
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
-
-Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+For a nonempty order locus use the construction's formula as an ambient divisor sequence, with the preliminary step exactly when the selected center is nonempty. Apply the two field-extension comparisons and the two smooth-pullback comparisons to that formula and to lower-dimensional maximum-order reduction. Use the empty-center comparison in the smooth case where steps disappear. The controlled transforms satisfy the marked order bound, and each step has nonempty center, by the corresponding canonical sequence properties. The pushforward and smooth-divisor sequence results give the required closed immersion and boundary comparisons. When the order locus is empty the canonical sequence has length zero. These properties are exactly the boundary divisor reduction conditions at the given dimension level.
 -/
 theorem isBoundaryDivisorReduction_divisorFamily_canonicalAlgorithmRules
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
@@ -181,8 +171,8 @@ theorem isBoundaryDivisorReduction_divisorFamily_canonicalAlgorithmRules
   · intro T hV hdim hO hbal hj hcs
     exact divisorFamily_canonicalAlgorithmRules_length_eq_zero hres n L j T hV hdim hO hbal hj hcs
 
-/- English proof (translation)
-Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The canonical divisor sequence has the ambient description supplied by the divisor hypotheses. The boundary reindexing theorem for sequences with this description uses smooth pullback compatibility and the given reindexing invariance of the divisor data. Applying it with the lower-dimensional maximum-order reduction proves the required invariance.
 -/
 theorem isBoundaryPositionInvariant_divisorFamily_canonicalAlgorithmRules
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})

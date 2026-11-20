@@ -46,8 +46,8 @@ open CategoryTheory AlgebraicGeometry
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+The factorization theorem for the selected center gives an ideal whose product with the selected center raised to the mark is the original ideal. Ideal multiplication is commutative, so the same factorization has the order of factors asserted here.
 -/
 private theorem exists_mul_containedComponentsIdeal_pow_eq_ideal_of_orderAt_le : ∀ (T : MarkedIdealWithBoundary.{u}), T.IsAdmissible →
     (∀ x : ↥T.scheme, orderAt T.ideal x ≤ (T.mult : ℕ∞)) →
@@ -57,16 +57,16 @@ private theorem exists_mul_containedComponentsIdeal_pow_eq_ideal_of_orderAt_le :
   obtain ⟨J, hJ⟩ := exists_mul_pow_containedComponentsIdeal_eq_ideal T hV j hj
   exact ⟨J, by rw [mul_comm]; exact hJ⟩
 
-/- English proof (translation)
-Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
+/- English proof (authored)
+For any admissible marked input and blowup, apply the order comparison off the exceptional support. At such a point the pullback ideal has the same order as the original ideal at its image. This supplies the stated comparison for all allowed inputs.
 -/
 private theorem orderAtComapOffExceptionalLocus : OrderAtComapOffExceptionalLocus.{u} := by
   delta OrderAtComapOffExceptionalLocus
   exact fun T hT X' π Z hπ x' hx' A =>
     orderAt_comap_eq_of_notMem_exceptionalIdeal T hT Z X' π hπ x' hx' A
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Under smooth pullback, surjectivity detects nonunit ideals and the order locus pulls back to its inverse image. The maps of the defining subschemes form pullback squares, and smoothness is preserved by those squares. Use the factorization of the selected center power and its identity blowup to transport the post-blowup lower ideal and the list of nontrivial boundary entries. Finally the smooth comparison for selected connected components identifies the selected center ideals. These give all the stated smooth pullback properties.
 -/
 private theorem smoothPullbackCompatibility_of_divisorReductionTermination (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hfacts : DivisorReductionTerminationProperties hres blowupPreservesNoetherian) :
@@ -82,8 +82,8 @@ private theorem smoothPullbackCompatibility_of_divisorReductionTermination (hres
       isBlowupAlongIdealSheaf_id_containedComponentsIdeal
   · exact DivisorReduction.containedComponentsIdeal_pullbackAlong_of_smooth hfacts
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The order locus after field extension is the inverse image of the original order locus. The field extension projection is flat and surjective. The field-extension comparison for selected components identifies the selected center, with admissibility transported across the specified correspondence of nontrivial boundary lists. This supplies the field base-change compatibility.
 -/
 private theorem fieldBaseChangeCompatibility_of_divisorReductionTermination (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hfacts : DivisorReductionTerminationProperties hres blowupPreservesNoetherian) :
@@ -95,10 +95,8 @@ private theorem fieldBaseChangeCompatibility_of_divisorReductionTermination (hre
   · exact surjective_fieldBaseChangeProjection
   · exact containedComponentsIdeal_withBoundary_baseChange hfacts MarkedIdealWithBoundary.validOfSameNontrivialBoundary
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
-
-Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Use functoriality of ideal pullback and the fact that the field-extension projection detects whether an ideal is unit. The lower-dimensional comparison for restriction to a divisor provides a smooth surjective map and the required ideal and boundary identifications. The untwisted lower ideal and boundary comparisons hold by their base-change formulas. In the twisted case, use the factorization by the selected center power and its identity blowup to transport the lower ideal and boundary. These results give the stated field base-change properties of restriction.
 -/
 private theorem divisorRestrictionFieldBaseChange : DivisorReduction.DivisorRestrictionFieldBaseChange.{u} := by
   refine ⟨comap_comap, comap_fieldBaseChangeProjection_ne_top, ?_, ?_, ?_, ?_, ?_⟩
@@ -117,8 +115,8 @@ private theorem divisorRestrictionFieldBaseChange : DivisorReduction.DivisorRest
     exact DivisorReduction.lowerBoundaryAfterBlowup_fieldBaseChange exists_mul_containedComponentsIdeal_pow_eq_ideal_of_orderAt_le isBlowupAlongIdealSheaf_id_containedComponentsIdeal T hV hO
       j hj K f E' hBE.symm hjE htake hV' hpre
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+If the selected center pulls back to the unit ideal, its exceptional ideal contributes a unit after pullback. The comparison for the lower ideal identifies the pulled-back twisted and untwisted ideals in this case. The boundary comparison identifies their pulled-back nontrivial boundary entries, giving both required conclusions.
 -/
 private theorem emptyPulledBackCenterCompatibility : DivisorReduction.EmptyPulledBackCenterCompatibility.{u} := by
   refine ⟨?_, ?_⟩
@@ -129,12 +127,8 @@ private theorem emptyPulledBackCenterCompatibility : DivisorReduction.EmptyPulle
     exact DivisorReduction.comap_lowerBoundaryAfterBlowup_sameNontrivialBoundary_of_eq_top exists_mul_containedComponentsIdeal_pow_eq_ideal_of_orderAt_le
       isBlowupAlongIdealSheaf_id_containedComponentsIdeal T hV j hj Y h htop
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
-
-Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
-
-Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The preimage of the selected center in the boundary divisor is the open union of its selected connected components. The kernel formulas identify the starting embeddings with the pullbacks of the boundary ideal, using the original initial identification in one case and the prepended transition in the other. The boundary-locus comparisons and the smooth divisor results apply to these same ambient embeddings. For the prepended sequence the smooth divisor argument uses order comparison off the exceptional support together with compatibility of the embedding and projection to the original base. The projections to the field agree with the ambient marked projections in both constructions. Admissibility gives positive multiplicity, and the general support containments for a composite kernel and the selected center supply the remaining conditions.
 -/
 private theorem pushedBlowupSequenceProperties_canonicalAlgorithmRules (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}) :
     PushedBlowupSequenceProperties hres blowupPreservesNoetherian := by
@@ -175,15 +169,15 @@ private theorem pushedBlowupSequenceProperties_canonicalAlgorithmRules (hres : F
   · intro T hV j hj
     exact DivisorReduction.support_containedComponentsIdeal_subset_support_boundary T j hj
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The geometric divisor reduction properties apply with the chosen strict-transform result and the Noetherianity of blowups. The theorem converting those geometric properties to step properties then gives the required package.
 -/
 private theorem divisorReductionStepProperties_canonicalAlgorithmRules (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}) :
     DivisorReductionStepProperties hres blowupPreservesNoetherian :=
   (divisorReductionProperties_of_blowupPreservesNoetherian hres blowupPreservesNoetherian).toDivisorReductionStepProperties
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Begin with the canonical step properties and extract the termination properties. These supply the smooth and field-extension comparisons, and smooth morphisms are flat. Use the separate results for a pulled-back empty center, reindexing the boundary, comparing lower-dimensional data under field extension, and verifying the ambient pushed sequence. Finally, if the order locus becomes empty after pullback, the empty-order-locus theorem identifies any length-zero sequence with the required pullback of the canonical divisor sequence. This gives the remaining clause.
 -/
 theorem divisorReductionHypotheses_canonicalAlgorithmRules (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}) :
     DivisorReduction.DivisorReductionHypotheses hres := by

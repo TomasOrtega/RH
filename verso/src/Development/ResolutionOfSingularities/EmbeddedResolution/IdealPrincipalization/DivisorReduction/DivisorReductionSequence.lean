@@ -40,10 +40,8 @@ def prependCenter {X : Scheme.{u}} (d : BlowupSequenceData X) (Z : X.IdealSheafD
   | 0 => Z
   | (n + 1) => d.center n
 
-/- English proof (translation)
-Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+At index zero the new map is the original initial isomorphism. The given blowup property of the identity along $Z$ is preserved by precomposing it with this isomorphism, so the new first map is a blowup along $Z$. At index $n+1$, the new map and center are the original ones at $n$. The length bound ensures that this original index is a genuine step.
 -/
 theorem isBlowupAlongIdealSheaf_prependMap {X : Scheme.{u}} (Z : X.IdealSheafData)
     (hZ : Blowup.IsBlowupAlongIdealSheaf (𝟙 X) Z) (d : BlowupSequenceData X) (i : ℕ) (hi : i < d.length + 1) :
@@ -69,43 +67,43 @@ section
 
 variable {X : Scheme.{u}} (Z : X.IdealSheafData) (hZ : Blowup.IsBlowupAlongIdealSheaf (𝟙 X) Z) (d : BlowupSequenceData X)
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The new sequence keeps all original steps and adds one initial step, so its specified length is the original length plus one.
 -/
 @[simp] theorem prepend_length : (prepend Z hZ d).length = d.length + 1 := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+By construction, the newly inserted initial stage is the base scheme $X$.
 -/
 @[simp] theorem prepend_schemeAt_zero : (prepend Z hZ d).obj 0 = X := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The old stage $n$ is placed at the new stage $n+1$, giving the stage equality.
 -/
 @[simp] theorem prepend_schemeAt_succ (n : ℕ) : (prepend Z hZ d).obj (n + 1) = d.obj n := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The new first transition goes from the original initial stage to the base scheme. It is defined to be the forward map of the original initial isomorphism.
 -/
 @[simp] theorem prepend_blowupMorphism_zero : (prepend Z hZ d).map 0 = d.isoZero.hom := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+At successor index $n+1$, the transition in the prepended sequence is defined to be the original transition at $n$.
 -/
 @[simp] theorem prepend_blowupMorphism_succ (n : ℕ) : (prepend Z hZ d).map (n + 1) = d.map n := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The new initial stage is the base itself, and its specified isomorphism to the base is the identity.
 -/
 @[simp] theorem prepend_isoObjZero : (prepend Z hZ d).isoZero = Iso.refl X := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The inserted first step uses the supplied center ideal $Z$ on the base scheme.
 -/
 @[simp] theorem prepend_center_zero : (prepend Z hZ d).center 0 = Z := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+After the inserted center, the center at the new index $n+1$ is the original center at $n$.
 -/
 @[simp] theorem prepend_center_succ (n : ℕ) : (prepend Z hZ d).center (n + 1) = d.center n := rfl
 
@@ -132,8 +130,8 @@ noncomputable def containedComponentsIdeal (T : MarkedIdealWithBoundary.{u}) (j 
         (T.boundary.get ⟨j, hj⟩).subschemeι)
   else ⊤
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The chosen boundary components form an open subset by assumption. The definition then takes the kernel of its inclusion into the boundary followed by the boundary inclusion into the ambient scheme.
 -/
 theorem containedComponentsIdeal_eq_ker (T : MarkedIdealWithBoundary.{u}) (j : ℕ) (hj : j < T.boundary.length)
     (h : IsOpen {x : ↥(T.boundary.get ⟨j, hj⟩).subscheme |
@@ -147,8 +145,8 @@ theorem containedComponentsIdeal_eq_ker (T : MarkedIdealWithBoundary.{u}) (j : �
                   ⇑(T.boundary.get ⟨j, hj⟩).subschemeι ⁻¹' orderAtLeastLocus T.ideal T.mult}, h⟩ ≫
           (T.boundary.get ⟨j, hj⟩).subschemeι) := dif_pos h
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The selected union fails the openness condition in the definition. The other branch assigns the unit ideal.
 -/
 theorem containedComponentsIdeal_eq_top_of_not_isOpen (T : MarkedIdealWithBoundary.{u}) (j : ℕ) (hj : j < T.boundary.length)
     (h : ¬ IsOpen {x : ↥(T.boundary.get ⟨j, hj⟩).subscheme |
@@ -185,8 +183,8 @@ noncomputable def liftSeqFromDivisor (hres : FunctorialResolution.Blowup.StrictT
     else emptyMarkedSequenceOfBlowups T.structMap T.ideal T.mult T.boundary
   else emptyMarkedSequenceOfBlowups T.structMap T.ideal T.mult T.boundary
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The strict dimension inequality and Noetherianity allow the construction to apply the lower-dimensional algorithm. The lower sequence has proper centers, so its ambient lift exists. The transformed ambient sequence satisfies the required marking, so the last test also succeeds. The construction therefore returns that marked sequence.
 -/
 theorem liftSeqFromDivisor_eq_toMarkedSequence (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -230,8 +228,8 @@ noncomputable def divisorReductionSeq (hres : FunctorialResolution.Blowup.Strict
         else emptyMarkedSequenceOfBlowups T.structMap T.ideal T.mult T.boundary
   else emptyMarkedSequenceOfBlowups T.structMap T.ideal T.mult T.boundary
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The divisor index is valid, so the construction reaches the order-locus test. That locus is empty by hypothesis, and the definition returns the empty marked sequence in this case.
 -/
 theorem divisorReductionSeq_eq_empty_of_orderAtLeastLocus_eq_empty (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -241,8 +239,8 @@ theorem divisorReductionSeq_eq_empty_of_orderAtLeastLocus_eq_empty (hres : Funct
   unfold divisorReductionSeq
   rw [dif_pos hj, if_pos hcs]
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The index is valid and the order locus is nonempty. The selected center is unit, so the construction lifts the divisor sequence from the ideal and boundary pulled back along the identity, with no initial step inserted.
 -/
 theorem divisorReductionSeq_eq_liftSeqFromDivisor_of_eq_top (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -255,8 +253,8 @@ theorem divisorReductionSeq_eq_liftSeqFromDivisor_of_eq_top (hres : FunctorialRe
   unfold divisorReductionSeq
   rw [dif_pos hj, if_neg hcs, if_pos hZ]
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The valid index and nonempty order locus allow the reduction to proceed. The selected center is nonunit and its identity blowup property is given. Thus the construction uses the residual ideal obtained by dividing off the marked exceptional power and the boundary given by strict transforms with the exceptional ideal appended. The lifted sequence is preceded by the blowup of the selected center.
 -/
 theorem divisorReductionSeq_eq_liftSeqFromDivisor_prepend (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -279,8 +277,8 @@ noncomputable def divisorReductionSeqFromLowerDim (hres : FunctorialResolution.B
     (alg : ∀ S : MarkedIdealWithBoundary.{u}, S.krullDimSucc < T.krullDimSucc → S.SequenceOfBlowups) (j : ℕ) : T.SequenceOfBlowups :=
   divisorReductionSeq hres hno T alg j
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The lower-dimensional form is defined by applying the divisor reduction construction with the same algorithm, marked input, and divisor index.
 -/
 theorem divisorReductionSeqFromLowerDim_eq (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})

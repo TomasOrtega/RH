@@ -37,14 +37,8 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace DivisorReductionEmptyOrderLocus
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Write the positive mark as $n+1$. The center lies in the order-at-least-$n$ locus and has strict normal crossings, so the stage ideal is contained in the $n$th power of the center ideal. The transform of mark $n$ therefore exists. The marked product formula identifies it with the product of the exceptional ideal and the given transform of mark $n+1$. At the chosen point this product still has order at least $n+1$, since multiplying by an ideal cannot decrease order. The order estimate for the controlled transform of mark $n$ sends this locus into the preceding order-at-least-$n+1$ locus.
 -/
 private theorem blowupMorphism_mem_orderAtLeastLocus {k : Type u} [Field k] [CharZero k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ}
@@ -86,12 +80,8 @@ private theorem blowupMorphism_mem_orderAtLeastLocus {k : Type u} [Field k] [Cha
   rw [heq] at hz'
   exact key hz'
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+At zero the ideal and order locus are obtained from the original ideal and locus by the initial isomorphism. At a later stage, the single-step order comparison sends a point in the order locus to the preceding order locus. The stages are smooth and Noetherian by the admissible sequence results, so this comparison applies at each step. Induction along the composite projection gives the result.
 -/
 private theorem projectionToBase_mem_orderAtLeastLocus {T : MarkedIdealWithBoundary.{u}} (hV : T.IsAdmissible) (s : T.SequenceOfBlowups) :
     ∀ i, i ≤ s.length → ∀ z : s.schemeAt i,
@@ -113,10 +103,8 @@ private theorem projectionToBase_mem_orderAtLeastLocus {T : MarkedIdealWithBound
         (fun j hj => MarkedSequenceOfBlowups.isNoetherian_schemeAt effectiveCartierSupportContainsNoComponent hV s j hj)
         i (Nat.lt_of_succ_le hi) z hz
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Every center point lies in the current order locus, and its projection lies in the original order locus by the iterated comparison. If that projection were the image of a point of $Y$, that point would lie in the inverse image of the original order locus. The hypothesis says that inverse image is empty.
 -/
 theorem center_disjoint_range_of_preimage_orderAtLeastLocus_eq_empty
     {T : MarkedIdealWithBoundary.{u}} (hV : T.IsAdmissible) {Y : Scheme.{u}} (h : Y ⟶ T.scheme)
@@ -132,8 +120,8 @@ theorem center_disjoint_range_of_preimage_orderAtLeastLocus_eq_empty
   rw [hempty] at hmem
   simp at hmem
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The center projections all miss the image of $Y$ by the disjointness result. Under flat base change every center is consequently empty and its blowup is omitted. The comparison for sequences whose centers miss the base-change image therefore gives the pullback relation with the arbitrary length-zero sequence on $Y$.
 -/
 theorem isPullbackSequenceOfBlowups_of_preimage_orderAtLeastLocus_empty
     {T : MarkedIdealWithBoundary.{u}} (hV : T.IsAdmissible) {Y : Scheme.{u}} (h : Y ⟶ T.scheme)
@@ -150,10 +138,8 @@ theorem isPullbackSequenceOfBlowups_of_preimage_orderAtLeastLocus_empty
     exact hdisj i hi z hz y
   · exact hB'
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Smooth pullback identifies the pulled-back order locus with the inverse image of the original order locus. Replacing the boundary leaves the ideal used for that locus fixed, so the assumed empty locus makes this inverse image empty. The smooth map is flat. Apply the comparison for disjoint centers to the canonical divisor sequence and the given length-zero sequence.
 -/
 theorem divisorFamily_isPullbackSequenceOfBlowups_of_orderAtLeastLocus_empty
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})

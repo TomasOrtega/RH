@@ -21,8 +21,8 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace DivisorReduction
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The kernel of the boundary inclusion is its defining ideal $D$. Every function vanishing under that inclusion also vanishes after precomposing with the given map into the boundary, so $D$ is contained in the composite kernel.
 -/
 private theorem le_ker_comp_subschemeι {X : Scheme.{u}} (D : X.IdealSheafData) {W : Scheme.{u}}
     (g : W ⟶ D.subscheme) : D ≤ AlgebraicGeometry.Scheme.Hom.ker (g ≫ D.subschemeι) :=
@@ -39,14 +39,14 @@ abbrev boundaryComponentsInOrderLocusOpens (T : MarkedIdealWithBoundary.{u}) (j 
     (T.boundary.get ⟨j, hj⟩).subscheme.Opens :=
   ⟨boundaryComponentsInOrderLocus T j hj, h⟩
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Admissibility requires the marking to be a positive natural number. This is the asserted lower bound.
 -/
 theorem one_le_mult_of_isAdmissible (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) : 1 ≤ T.mult :=
   hV.one_le_mult
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The selected boundary entry is a smooth divisor by the strict normal crossings condition. The structural map at stage zero is the original structural map after the stage-zero isomorphism. Smooth divisors are preserved by pullback along this isomorphism.
 -/
 theorem isSmoothDivisor_boundary_comap_isoObjZero (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (j : ℕ)
     (hj : j < T.boundary.length) (s : T.SequenceOfBlowups) :
@@ -59,8 +59,8 @@ theorem isSmoothDivisor_boundary_comap_isoObjZero (T : MarkedIdealWithBoundary.{
   rw [MarkedSequenceOfBlowups.projectionToSpec_zero]
   exact PrincipalizationIsoTransport.isSmoothDivisor_comap_iso T.structMap s.toSequenceOfBlowups.isoZero _ hD
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The component locus in this formulation is the same open locus used in the definition of the selected center ideal. Under its openness hypothesis that definition gives the kernel of the composite inclusion.
 -/
 theorem containedComponentsIdeal_eq_ker_of_isOpen (T : MarkedIdealWithBoundary.{u}) (j : ℕ)
     (hj : j < T.boundary.length) (h : IsOpen (boundaryComponentsInOrderLocus T j hj)) :
@@ -69,16 +69,16 @@ theorem containedComponentsIdeal_eq_ker_of_isOpen (T : MarkedIdealWithBoundary.{
         ((boundaryComponentsInOrderLocusOpens T j hj h).ι ≫ (T.boundary.get ⟨j, hj⟩).subschemeι) :=
   containedComponentsIdeal_eq_ker_ι_comp_subschemeι_of_isOpen T j hj h
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The indicated component locus is the one tested for openness when forming the selected center ideal. If it is not open, the definition yields the unit ideal.
 -/
 theorem containedComponentsIdeal_eq_top_of_not_isOpen_locus (T : MarkedIdealWithBoundary.{u}) (j : ℕ)
     (hj : j < T.boundary.length) (h : ¬ IsOpen (boundaryComponentsInOrderLocus T j hj)) :
     containedComponentsIdeal T j hj = ⊤ :=
   containedComponentsIdeal_eq_top_of_not_isOpen_setOf_connectedComponent T j hj h
 
-/- English proof (translation)
-Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+If the component locus is open, its composite inclusion into the base factors through the boundary inclusion. The kernel therefore contains the boundary ideal, so its support is contained in the boundary support. If the component locus is not open, the selected ideal is unit and its support is empty.
 -/
 theorem support_containedComponentsIdeal_subset_support_boundary (T : MarkedIdealWithBoundary.{u}) (j : ℕ)
     (hj : j < T.boundary.length) :
@@ -101,8 +101,8 @@ def PreimageSupportEqComponentsInOrderLocus (T : MarkedIdealWithBoundary.{u}) (j
               (T.boundary.get ⟨j, hj⟩).subschemeι)).support : Set ↥T.scheme) =
       boundaryComponentsInOrderLocus T j hj
 
-/- English proof (translation)
-Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+In the open branch the selected center ideal is the kernel of the composite inclusion. By hypothesis its support pulls back on the divisor to the chosen open component locus. In the other branch the ideal is unit, so its support and the inverse image of the support are both empty and open.
 -/
 theorem isOpen_preimage_support_containedComponentsIdeal (T : MarkedIdealWithBoundary.{u}) (j : ℕ)
     (hj : j < T.boundary.length) (hc : PreimageSupportEqComponentsInOrderLocus T j hj) :

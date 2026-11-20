@@ -24,8 +24,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
+/- English proof (authored)
+Evaluating the canonical rules' divisor family uses the divisor reduction construction with blowups that preserve Noetherianity. Its lower-dimensional algorithm is the given assignment evaluated on the restricted input. Expanding the rule gives the stated equality.
 -/
 theorem divisorFamily_canonicalAlgorithmRules_eq_divisorReductionSeq (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (L : PrincipalizationAssignment.{u}) (j : ℕ) (T : MarkedIdealWithBoundary.{u}) :
@@ -34,10 +34,8 @@ theorem divisorFamily_canonicalAlgorithmRules_eq_divisorReductionSeq (hres : Fun
   rw [PrincipalizationRules.divisorFamily_apply]
   rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Choose a point of the support of $J$. It comes from a point of the closed subscheme defined by $J$. The image of this point under the composite to the target lies in the support of the composite kernel, since that support contains the image. The composite kernel is the image ideal, so its support is nonempty.
 -/
 private theorem support_imageIdealSheaf_nonempty {X Y : Scheme.{u}} (f : X ⟶ Y)
     (hf : IsClosedImmersion f) (J : X.IdealSheafData)
@@ -53,12 +51,8 @@ private theorem support_imageIdealSheaf_nonempty {X Y : Scheme.{u}} (f : X ⟶ Y
   rw [imageIdealSheaf_eq_ker, Scheme.Hom.support_ker]
   exact subset_closure (Set.mem_range_self z)
 
-/- English proof (translation)
-Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The nonempty order locus gives the strict dimension drop for restricting to the chosen divisor. If the selected center is unit, the ordinary lower input is admissible. Its sequence has centers containing no component, and the ambient lift carries the original marking. The unit-center branch of the construction therefore returns this marked lift. If the center is nonunit, its identity blowup exists and the twisted lower input is admissible. The resulting lower sequence again has centers containing no component, and the lift after prepending the first blowup is marked. The nonunit branch returns that prepended marked lift. The corresponding equality holds for any witness of the given marking.
 -/
 theorem DivisorReduction.divisorReductionSeq_eq_ambientBlowupSeq_or_prepend (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hfacts : DivisorReductionTerminationProperties hres blowupPreservesNoetherian)
@@ -134,24 +128,8 @@ theorem DivisorReduction.divisorReductionSeq_eq_ambientBlowupSeq_or_prepend (hre
       ⟨hfacts.lowerTriple_dim_lt T hV hcsne j hj (DivisorReduction.lowerIdealAfterBlowup T j hj)
         (DivisorReduction.lowerBoundaryAfterBlowup T j hj), inferInstance⟩ hpr hmk
 
-/- English proof (translation)
-Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Split into cases according to the possible forms of the given data. Treat this case separately.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+If the order locus is empty, the sequence has zero length and there are no genuine steps. Otherwise use the two ambient descriptions. In the ordinary case, a step index is a step of the lower sequence because the lengths agree. The lower input is admissible and has dimension below the reduction bound. Its center is nonempty by lower-dimensional correctness, and the ambient center is the image of that center under the stage closed immersion, so it is nonempty. In the prepended case, the first center is nonempty because its ideal is nonunit. Every later center is an image of a genuine center of the lower twisted sequence and is nonempty by the same lower-dimensional result.
 -/
 theorem DivisorReduction.divisorReductionSeq_center_nonempty (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hfacts : DivisorReductionTerminationProperties hres blowupPreservesNoetherian)
@@ -267,18 +245,8 @@ theorem DivisorReduction.divisorReductionSeq_center_nonempty (hres : FunctorialR
             hres blowupPreservesNoetherian hpr k) _
           (hL.center_nonempty (DivisorReduction.restrictTwistedToDivisor T j hj) hvalid hdlt k hk)
 
-/- English proof (translation)
-Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+When the order locus is empty the sequence has only its initial stage, with the original ideal and the assumed order bound. For a nonempty locus, use the appropriate ambient description according to whether a preliminary blowup is inserted. In each case the stage ideals are precisely the controlled transforms of the original ideal in the ambient sequence, and the length formulas give the matching index range. The order bounds for controlled transforms in the ordinary and prepended cases give the result.
 -/
 theorem DivisorReduction.divisorReductionSeq_orderAt_le_mult (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hfacts : DivisorReductionTerminationProperties hres blowupPreservesNoetherian)
@@ -350,8 +318,8 @@ theorem DivisorReduction.divisorReductionSeq_orderAt_le_mult (hres : FunctorialR
       exact hfacts.orderAt_ctrlIdeal_le_pre T hV hO hD j hj hZ hb hvalid
         (L (DivisorReduction.restrictTwistedToDivisor T j hj)) hpr i hi x
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The canonical divisor family evaluates to the divisor reduction sequence for the chosen divisor. With an empty order locus this construction gives the empty marked sequence, whose length is zero.
 -/
 theorem divisorFamily_canonicalAlgorithmRules_length_eq_zero (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (n : ℕ) (L : PrincipalizationAssignment.{u}) (j : ℕ) (T : MarkedIdealWithBoundary.{u})
@@ -364,8 +332,8 @@ theorem divisorFamily_canonicalAlgorithmRules_length_eq_zero (hres : FunctorialR
       (fun S _ => L S) j hj hcs]
   exact emptyMarkedSequenceOfBlowups_length T.structMap T.ideal T.mult T.boundary
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Replace the canonical divisor family by its equivalent divisor reduction construction. Lower-dimensional correctness and the divisor-reduction hypotheses then give nonempty center support at each genuine step.
 -/
 theorem divisorFamily_canonicalAlgorithmRules_center_nonempty (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hfacts : DivisorReductionTerminationProperties hres blowupPreservesNoetherian)
@@ -379,8 +347,8 @@ theorem divisorFamily_canonicalAlgorithmRules_center_nonempty (hres : Functorial
   rw [divisorFamily_canonicalAlgorithmRules_eq_divisorReductionSeq]
   exact DivisorReduction.divisorReductionSeq_center_nonempty hres hfacts n L O hL j T hV hdim hO hD hj
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The canonical sequence is the divisor reduction sequence for the same assignment. Apply the stagewise order bound for the latter sequence to each of its transformed ideals.
 -/
 theorem divisorFamily_canonicalAlgorithmRules_orderAt_le_mult (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hfacts : DivisorReductionTerminationProperties hres blowupPreservesNoetherian)

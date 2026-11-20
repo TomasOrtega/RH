@@ -12,25 +12,23 @@ open CategoryTheory AlgebraicGeometry CategoryTheory.Limits
 
 namespace FunctorialResolution.Blowup
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+On an affine scheme, an ideal sheaf is determined by its global section ideal. The sheaf built from the given global ideal has that same global ideal, so it equals the original sheaf.
 -/
 private theorem ofIdealTop_ideal_top_eq_self {X : Scheme.{u}} [IsAffine X] (I : X.IdealSheafData) :
     AlgebraicGeometry.Scheme.IdealSheafData.ofIdealTop
       (I.ideal ⟨⊤, isAffineOpen_top X⟩) = I :=
   Scheme.IdealSheafData.ext_of_isAffine (by simp)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Extending an ideal along the isomorphism and then its inverse equals extending it along the identity. Identity extension fixes the ideal.
 -/
 private theorem map_inv_map_hom_eq_self {A B : CommRingCat.{u}} (e : A ≅ B) (K : Ideal ↑A) :
     Ideal.map (CommRingCat.Hom.hom e.inv) (Ideal.map (CommRingCat.Hom.hom e.hom) K) = K := by
   rw [Ideal.map_map, ← CommRingCat.hom_comp, e.hom_inv_id, CommRingCat.hom_id, Ideal.map_id]
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Transport the given ideal of global sections to the original ring by the affine spectrum isomorphism. The associated ideal sheaf is the given sheaf by the affine correspondence. The affine Rees blowup of this ring ideal has the required blowup property and is proper because the ring is Noetherian.
 -/
 private theorem exists_isBlowupAlongIdealSheaf_isProper_spec_of_isNoetherianRing (A : Type u) [CommRing A]
     [IsNoetherianRing A] (I : (Spec (CommRingCat.of A)).IdealSheafData) :
@@ -46,22 +44,16 @@ private theorem exists_isBlowupAlongIdealSheaf_isProper_spec_of_isNoetherianRing
   rw [← hJ]
   exact FunctorialResolution.Blowup.isBlowupAlongIdealSheaf_affineBlowup_toSpec J
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Apply the affine existence and properness result to the commutative ring represented by the given spectrum.
 -/
 theorem exists_isBlowupAlongIdealSheaf_isProper_spec (R : CommRingCat.{u}) [IsNoetherianRing ↑R]
     (I : (Spec R).IdealSheafData) :
     ∃ (Y : Scheme.{u}) (π : Y ⟶ Spec R), IsBlowupAlongIdealSheaf π I ∧ AlgebraicGeometry.IsProper π :=
   exists_isBlowupAlongIdealSheaf_isProper_spec_of_isNoetherianRing (↑R) I
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Identify the base with the spectrum of its global section ring and transport the center along that isomorphism. There is a proper affine blowup for the transported center. The universal properties of it and the given blowup give mutually inverse maps over the spectrum, so the given projection is a composite of the proper affine blowup with isomorphisms. It is therefore proper.
 -/
 theorem isProper_of_isBlowupAlongIdealSheaf_of_isAffine {Y B : Scheme.{u}} [IsAffine Y]
     [IsNoetherianRing Γ(Y, ⊤)] (J : Y.IdealSheafData) {p : B ⟶ Y} (h : IsBlowupAlongIdealSheaf p J) :
@@ -86,8 +78,8 @@ theorem isProper_of_isBlowupAlongIdealSheaf_of_isAffine {Y B : Scheme.{u}} [IsAf
   rw [← hp]
   infer_instance
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The pullback scheme along the open inclusion is canonically isomorphic to the inverse-image open. Under this isomorphism its second projection is the restriction of the original map. Properness is invariant under an isomorphism of the source and hence transfers.
 -/
 private theorem isProper_morphismRestrict_of_isProper_pullbackSnd {X X' : Scheme.{u}} (f : X' ⟶ X)
     (U : X.Opens) (h : AlgebraicGeometry.IsProper (pullback.snd f U.ι)) :
@@ -103,8 +95,8 @@ private theorem isProper_morphismRestrict_of_isProper_pullbackSnd {X X' : Scheme
     (AlgebraicGeometry.pullbackRestrictIsoRestrict f U).hom
     (AlgebraicGeometry.morphismRestrict f U)).mp h2
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Sections on the affine open are Noetherian because the ambient scheme is locally Noetherian. They identify with global sections of that open as a scheme, and Noetherianity is preserved by ring isomorphism.
 -/
 private theorem isNoetherianRing_sections_top_of_affineOpen {X : Scheme.{u}}
     [AlgebraicGeometry.IsLocallyNoetherian X] (U : X.affineOpens) :
@@ -114,10 +106,8 @@ private theorem isNoetherianRing_sections_top_of_affineOpen {X : Scheme.{u}}
   exact isNoetherianRing_of_ringEquiv _
     (CategoryTheory.Iso.commRingCatIsoToRingEquiv ((U : X.Opens).topIso)).symm
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Cover the locally Noetherian base by its affine opens. Each affine open has a Noetherian global section ring. The pullback over it is a blowup of the restricted center, so it is proper by the affine result. Identifying these pullbacks with restrictions gives properness on the target cover. Properness is local on the target, proving the assertion.
 -/
 theorem blowupIsProper : BlowupIsProper.{u} := by
   intro X X' hX π Z hZ
@@ -131,16 +121,16 @@ theorem blowupIsProper : BlowupIsProper.{u} := by
     (isProper_of_isBlowupAlongIdealSheaf_of_isAffine (Z.comap (U : X.Opens).ι)
       (hZ.pullback_snd_of_isOpenImmersion (U : X.Opens).ι))
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The properness theorem for blowups over locally Noetherian schemes applies to the given projection and ideal.
 -/
 theorem isProper_of_isBlowupAlongIdealSheaf {X X' : Scheme.{u}}
     [AlgebraicGeometry.IsLocallyNoetherian X] {π : X' ⟶ X} {I : X.IdealSheafData}
     (h : IsBlowupAlongIdealSheaf π I) : AlgebraicGeometry.IsProper π :=
   blowupIsProper X X' π I h
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The blowup projection is proper over the locally Noetherian base. Properness implies that it is locally of finite type.
 -/
 theorem locallyOfFiniteType_of_isBlowupAlongIdealSheaf {X X' : Scheme.{u}}
     [AlgebraicGeometry.IsLocallyNoetherian X] {π : X' ⟶ X} {I : X.IdealSheafData}
@@ -148,8 +138,8 @@ theorem locallyOfFiniteType_of_isBlowupAlongIdealSheaf {X X' : Scheme.{u}}
   have := isProper_of_isBlowupAlongIdealSheaf h
   infer_instance
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The blowup projection is proper by the locally Noetherian result, and proper morphisms are quasi-compact.
 -/
 theorem quasiCompact_of_isBlowupAlongIdealSheaf {X X' : Scheme.{u}}
     [AlgebraicGeometry.IsLocallyNoetherian X] {π : X' ⟶ X} {I : X.IdealSheafData}

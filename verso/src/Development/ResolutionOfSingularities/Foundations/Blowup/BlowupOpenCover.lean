@@ -8,10 +8,8 @@ open CategoryTheory AlgebraicGeometry CategoryTheory.Limits Opposite
 
 namespace FunctorialResolution.Blowup
 
-/- English proof (translation)
-Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Extend the given equality of ideals along the inverse ring isomorphism. The composite extension along the isomorphism and its inverse fixes the original ideal. The principal ideal extends to the ideal of the inverse image of its generator.
 -/
 private theorem eq_span_inv_of_map_eq_span {R S : CommRingCat.{u}} (φ : R ⟶ S) [IsIso φ]
     (J : Ideal R) (s : S) (h : J.map φ.hom = Ideal.span {s}) :
@@ -24,8 +22,8 @@ private theorem eq_span_inv_of_map_eq_span {R S : CommRingCat.{u}} (φ : R ⟶ S
     _ = (Ideal.span {s}).map (CategoryTheory.inv φ).hom := by rw [h]
     _ = Ideal.span {(CategoryTheory.inv φ).hom s} := by rw [Ideal.map_span, Set.image_singleton]
 
-/- English proof (translation)
-Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Identify the target open with the image of the source open. The restricted map on sections is then the section-ring isomorphism of the open immersion.
 -/
 private theorem isIso_appLE_of_image_eq {X Y : Scheme.{u}} (f : X ⟶ Y) [IsOpenImmersion f]
     {W : X.Opens} {V : Y.Opens} (hV : f ''ᵁ W = V) (e : W ≤ f ⁻¹ᵁ V) :
@@ -34,8 +32,8 @@ private theorem isIso_appLE_of_image_eq {X Y : Scheme.{u}} (f : X ⟶ Y) [IsOpen
   rw [← Scheme.Hom.appIso_hom']
   infer_instance
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+The affine opens are a basis, so the given open neighborhood contains an affine open containing the point.
 -/
 private theorem exists_affineOpen_mem_le {X : Scheme.{u}} (x : X) (W : X.Opens) (hx : x ∈ W) :
     ∃ V : X.affineOpens, x ∈ (V : X.Opens) ∧ (V : X.Opens) ≤ W := by
@@ -45,18 +43,8 @@ private theorem exists_affineOpen_mem_le {X : Scheme.{u}} (x : X) (W : X.Opens) 
   obtain ⟨V, hVmem, rfl⟩ := hVs
   exact ⟨⟨V, hVmem⟩, hxV, fun y hy => hVW hy⟩
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At the image point choose a target affine neighborhood where the ideal has a nonzerodivisor generator. Inside it choose a basic open about the point lying in the immersion image. The basic open's inverse image is affine, and the open immersion identifies the section rings on these opens. Localization preserves the original generator and its nonzerodivisor property under restriction. Transport the localized ideal and generator by the section-ring isomorphism to obtain the required local generator upstairs.
 -/
 theorem IsLocallyGeneratedByNonZeroDivisor.comap_of_isOpenImmersion {X U : Scheme.{u}}
     {I : X.IdealSheafData} (hI : IsLocallyGeneratedByNonZeroDivisor I) (f : U ⟶ X) [IsOpenImmersion f] :
@@ -103,12 +91,8 @@ theorem IsLocallyGeneratedByNonZeroDivisor.comap_of_isOpenImmersion {X U : Schem
     rw [← e1, Ideal.map_span, Set.image_singleton] at hmap
     exact hmap
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+Lift the point to a member of the open cover and choose an affine neighborhood there with a nonzerodivisor generator. Its image is an affine open of the original scheme. The section-ring isomorphism for the immersion identifies the pulled-back ideal with the original ideal on this image. Transport the generator back along the isomorphism, which preserves the nonzerodivisor property.
 -/
 theorem IsLocallyGeneratedByNonZeroDivisor.of_isOpenImmersion_cover {X : Scheme.{u}} (I : X.IdealSheafData)
     {ι : Type v} (U : ι → Scheme.{u}) (f : ∀ i, U i ⟶ X) [∀ i, IsOpenImmersion (f i)]
@@ -136,16 +120,8 @@ theorem IsLocallyGeneratedByNonZeroDivisor.of_isOpenImmersion_cover {X : Scheme.
         ((f i).appLE (f i ''ᵁ (W : (U i).Opens)) (W : (U i).Opens) e))) hs
   · exact eq_span_inv_of_map_eq_span _ _ _ key.symm
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The center pulled back to the restricted blowup is the restriction of the original pulled-back center, by commutation of the restriction square. Its local nonzerodivisor generators persist under open pullback. Given an eligible map to the chosen open, compose with the inclusion and lift it to the original blowup. The lift has image in the inverse image of the open, so it factors through the restricted blowup. The factorization lies over the given map by cancellation of the target open inclusion. Any other lift gives the same original lift by uniqueness and hence the same restricted lift.
 -/
 theorem IsBlowupAlongIdealSheaf.restrict {X X' : Scheme.{u}} {π : X' ⟶ X} {I : X.IdealSheafData}
     (h : IsBlowupAlongIdealSheaf π I) (U : X.Opens) :
@@ -180,10 +156,8 @@ theorem IsBlowupAlongIdealSheaf.restrict {X X' : Scheme.{u}} {π : X' ⟶ X} {I 
       show (y ≫ (π ⁻¹ᵁ U).ι) ≫ π = g ≫ U.ι
       rw [Category.assoc, ← morphismRestrict_ι, ← Category.assoc, hy']
 
-/- English proof (translation)
-Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The given point lies in the inverse image of the open immersion's image. On this inverse image the map to the base factors through the immersion. These maps define a map to the fiber product whose first projection is the inclusion of the inverse image. Apply it to the chosen point to get the preimage.
 -/
 private theorem exists_pullback_fst_base_eq {W U X : Scheme.{u}} (g : W ⟶ X) (f : U ⟶ X)
     [IsOpenImmersion f] (w : W) (hw : g.base w ∈ Set.range ⇑f.base) :
@@ -212,8 +186,8 @@ private noncomputable def pullbackOpenCoverOfCovers {X W : Scheme.{u}} {ι : Typ
       exact ⟨i, z, hz⟩)
     (fun i => inferInstance)
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+Pull the open-immersion cover back along the given base map. It covers the source, and the two maps agree on each member by hypothesis. Equality follows from the sheaf property for morphisms on an open cover.
 -/
 private theorem hom_ext_of_isOpenImmersion_cover {X W T : Scheme.{u}} {ι : Type v}
     (U : ι → Scheme.{u}) (f : ∀ i, U i ⟶ X) [∀ i, IsOpenImmersion (f i)]
@@ -222,8 +196,8 @@ private theorem hom_ext_of_isOpenImmersion_cover {X W T : Scheme.{u}} {ι : Type
   refine Scheme.Cover.hom_ext (pullbackOpenCoverOfCovers U f hcover g) a b (fun i => ?_)
   exact h i
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+The open-immersion cover pulls back to an open cover of the source. The overlap equations say that the local maps agree on intersections. Glue them to a morphism whose restrictions are the given local maps.
 -/
 private theorem exists_hom_of_isOpenImmersion_cover {X W T : Scheme.{u}} {ι : Type v}
     (U : ι → Scheme.{u}) (f : ∀ i, U i ⟶ X) [∀ i, IsOpenImmersion (f i)]
@@ -240,12 +214,8 @@ private theorem exists_hom_of_isOpenImmersion_cover {X W T : Scheme.{u}} {ι : T
   refine ⟨Scheme.Cover.glueMorphisms (pullbackOpenCoverOfCovers U f hcover g) k hk', fun i => ?_⟩
   exact Scheme.Cover.ι_glueMorphisms (pullbackOpenCoverOfCovers U f hcover g) k hk' i
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Pull the base cover back along the common projection of the two maps. On each cover member both maps lift to the local blowup because their composites into the base agree with the map through that member. The center retains its local nonzerodivisor property there because the cover inclusions are open. The local blowup's universal property identifies the lifts. Projecting back gives equality of the two maps on the pulled-back cover, hence globally.
 -/
 private theorem eq_of_comp_eq_of_isBlowupAlongIdealSheaf_openCover {X X' T : Scheme.{u}} (π : X' ⟶ X)
     (I : X.IdealSheafData)
@@ -271,20 +241,8 @@ private theorem eq_of_comp_eq_of_isBlowupAlongIdealSheaf_openCover {X X' T : Sch
   have h2 := pullback.lift_fst (pullback.fst (a ≫ π) (f i) ≫ b) (pullback.snd (a ≫ π) (f i)) hb'
   rw [← h1, ← h2, hAB]
 
-/- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The pulled-back cover of the proposed blowup is an open cover. On each member the pulled-back center agrees with the center of the local blowup by the commutative square. Its local nonzerodivisor property therefore descends from the cover. Given an eligible morphism, pull the cover back to its source. The center retains its local generators there, so the local blowup properties yield lifts on each member. They agree on overlaps by the local uniqueness criterion, since their projections agree and the generator condition persists on overlaps. Glue the lifts. The result projects to the given morphism by equality on the cover. The same uniqueness criterion identifies any other lift with it.
 -/
 theorem IsBlowupAlongIdealSheaf.of_comap_of_isOpenImmersion_cover {X X' : Scheme.{u}} (π : X' ⟶ X)
     (I : X.IdealSheafData) {ι : Type v} (U : ι → Scheme.{u}) (f : ∀ i, U i ⟶ X)

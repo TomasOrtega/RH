@@ -32,8 +32,8 @@ noncomputable def maxContactPrincipalization (hinv : ComapIsoInvariance.{u}) (A 
     PrincipalizationAssignment.{u} :=
   fun T => MaxContactReduction.reduceOrder hinv T (lowerDimensionalFamily A T)
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The maximal-contact assignment applies order reduction to the given triple, with the lower-dimensional family supplied by the indexed reductions. Evaluating the assignment gives the expression on the right.
 -/
 @[simp] theorem maxContactPrincipalization_apply (hinv : ComapIsoInvariance.{u}) (A : ℕ → PrincipalizationAssignment.{u})
     (T : MarkedIdealWithBoundary.{u}) :
@@ -45,8 +45,8 @@ structure OrderReductionHypotheses (P : ℕ → Prop) (T : MarkedIdealWithBounda
   coSupport_nonempty : (orderAtLeastLocus T.ideal T.mult).Nonempty
   valid : T.IsAdmissible
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Nonempty cosupport is one of the order-reduction hypotheses. A point witnessing it excludes equality of the marked order locus with the empty set.
 -/
 theorem OrderReductionHypotheses.orderAtLeastLocus_ne_empty {P : ℕ → Prop} {T : MarkedIdealWithBoundary.{u}} (h : OrderReductionHypotheses P T) :
     orderAtLeastLocus T.ideal T.mult ≠ ∅ :=

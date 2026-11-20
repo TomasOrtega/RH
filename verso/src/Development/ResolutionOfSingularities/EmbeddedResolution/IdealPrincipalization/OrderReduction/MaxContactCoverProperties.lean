@@ -94,16 +94,16 @@ structure MaxContactCoverProperties : Prop where
         [MaxContactCoverData.coverMaxContactIdeal T hv]
   tuning : TunedSheafProperties.{u}
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Reconstruction preserves the length and each stage scheme. The dimension bound in the cover properties therefore applies to the reconstructed marked sequence at the same index and gives the desired bound on the scheme in the data.
 -/
 theorem MaxContactCoverProperties.krullDimSucc_schemeAt_le_dim (hf : MaxContactCoverProperties.{u}) {S : MarkedIdealWithBoundary.{u}} (hv : S.IsAdmissible)
     (s : MarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary) (i : ℕ) (hi : i ≤ s.length) :
     krullDimSucc (s.obj i) ≤ S.krullDimSucc :=
   hf.schemeDim_level_le S hv s.toMarkedSequenceOfBlowups i (by simpa using hi)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The derived triple is on the last scheme of the given sequence. Its dimension successor is at most that of the triple from which the sequence starts, by the stagewise bound. That dimension successor is at most the reference bound by hypothesis. Compose the inequalities.
 -/
 theorem MaxContactCoverProperties.derivedTriple_dim_le (hf : MaxContactCoverProperties.{u}) {T S : MarkedIdealWithBoundary.{u}} (hv : S.IsAdmissible)
     (s : MarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary)
@@ -112,8 +112,8 @@ theorem MaxContactCoverProperties.derivedTriple_dim_le (hf : MaxContactCoverProp
     (MaxContactCoverData.derivedTriple S s hft extra keep).krullDimSucc ≤ T.krullDimSucc :=
   le_trans (hf.krullDimSucc_schemeAt_le_dim hv s s.length le_rfl) hdim
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Substitute the equality of the two structural morphisms. The marked ideal, mark and hypersurface are the same, so the supplied maximal-contact property applies.
 -/
 private theorem isMaxContactHypersurface_of_eq {k : Type u} [Field k] {X : Scheme.{u}}
     {p q : X ⟶ Spec (CommRingCat.of k)} [AlgebraicGeometry.LocallyOfFiniteType p]
@@ -123,12 +123,8 @@ private theorem isMaxContactHypersurface_of_eq {k : Type u} [Field k] {X : Schem
   subst h
   exact hH
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Both consecutive stages are admissible by the stage property. The earlier one has a smooth structural map and the successor is locally Noetherian. The order bound holds on the earlier stage, its center lies in the corresponding marked order locus and has strict normal crossings, and the successor ideal satisfies the controlled-transform identity. Apply the one-step maximal-contact property to this blowup. The structural map at the successor is the blowup map followed by the previous structural map, so that result is the claimed one for the successor data.
 -/
 theorem MaxContactCoverProperties.isMaxContactHypersurface_strictTransform_succ (hf : MaxContactCoverProperties.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hv : T.IsAdmissible) (hord : ∀ x : ↥T.scheme, orderAt T.ideal x ≤ (T.mult : ℕ∞))
@@ -160,8 +156,8 @@ theorem MaxContactCoverProperties.isMaxContactHypersurface_strictTransform_succ 
     (s.ideal_succ i hi) H hH
   exact isMaxContactHypersurface_of_eq (MarkedSequenceOfBlowups.projectionToSpec_succ s i).symm key
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At the specified step the center is smooth over the field under the stage structural map. The combined list has strict normal crossings, the center has strict normal crossings with its tail and the hypersurface ideal is contained in the center ideal. Apply the cover property for adding such a hypersurface to the tail.
 -/
 theorem MaxContactCoverProperties.hasStrictNormalCrossingsWith_cons_of_le_center (hf : MaxContactCoverProperties.{u}) {T : MarkedIdealWithBoundary.{u}}
     (s : T.SequenceOfBlowups) (i : ℕ) (hi : i < s.toSequenceOfBlowups.length)

@@ -38,8 +38,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Substitute the equal structural morphisms, marked ideals and centers. The certificate then has the same data as the one supplied.
 -/
 private theorem orderCertificate_congr_morphism_ideal_center {k : Type u} [Field k] {W : Scheme.{u}}
     {p p' : W ⟶ Spec (CommRingCat.of k)} {N N' : W.IdealSheafData} {μ : ℕ} {Mem : Set ↥W}
@@ -50,8 +50,8 @@ private theorem orderCertificate_congr_morphism_ideal_center {k : Type u} [Field
   subst hZ
   exact h
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Replace the original mark with its equal value. The given principalization certificate now has the requested mark.
 -/
 private theorem principalizationCertificate_congr_mult {k : Type u} [Field k] {W : Scheme.{u}}
     {p : W ⟶ Spec (CommRingCat.of k)} {I : W.IdealSheafData} {m m' : ℕ} {Mem : Set ↥W}
@@ -60,8 +60,8 @@ private theorem principalizationCertificate_congr_mult {k : Type u} [Field k] {W
   subst hm
   exact h
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The boundary list of the stage data is the given sequence boundary at that stage. The specified member and its support point witness membership in the union of the boundary supports.
 -/
 private theorem mem_boundarySupport_of_mem_support_of_mem_boundary {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
@@ -72,18 +72,16 @@ private theorem mem_boundarySupport_of_mem_support_of_mem_boundary {k : Type u} 
   rw [MarkedBlowupSequenceData.dataAt_boundary]
   exact hJ
 
-/- English proof (translation)
-Substitute using the available equality. Both sides reduce to the same expression.
+/- English proof (authored)
+Replace the list by its description as the head followed by the tail. The zeroth entry is the head.
 -/
 private theorem get_zero_of_eq_cons {α : Type _} (l : List α) (a : α) (L : List α)
     (hl : l = a :: L) (h0 : 0 < l.length) : l.get ⟨0, h0⟩ = a := by
   subst hl
   rfl
 
-/- English proof (translation)
-Substitute using the available equality. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The index is positive, so it is one more than the index of the corresponding entry in the tail. The bound on the original index puts the predecessor within the tail. The retrieved entry therefore belongs to the tail.
 -/
 private theorem get_mem_of_eq_cons_of_ne_zero {α : Type _} (l : List α) (a : α) (L : List α)
     (hl : l = a :: L) (idx : Fin l.length) (hidx : (idx : ℕ) ≠ 0) : l.get idx ∈ L := by
@@ -96,8 +94,8 @@ private theorem get_mem_of_eq_cons_of_ne_zero {α : Type _} (l : List α) (a : �
       show L.get ⟨m, hm⟩ ∈ L
       simp
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Use the equalities of the starting ideals and marks. Through the given stage, the controlled transforms reconstructed from the underlying blowups are the ideals of the marked sequence. This gives the claimed stage identity.
 -/
 private theorem controlledTransform_eq_ideal_of_eq {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
@@ -108,8 +106,8 @@ private theorem controlledTransform_eq_ideal_of_eq {k : Type u} [Field k] {X : S
   subst hm
   exact MarkedBlowupSequenceData.ofMarkedSequence_controlledTransform s i hi
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Identify the two structural maps, marked ideals, hypersurface ideals and marks by the given equalities. Local finite type is a property of the same map on both sides. The supplied maximal-contact condition now refers to the requested data.
 -/
 private theorem isMaxContactHypersurface_congr {k : Type u} [Field k] {X : Scheme.{u}}
     (p p' : X ⟶ Spec (CommRingCat.of k))
@@ -124,8 +122,8 @@ private theorem isMaxContactHypersurface_congr {k : Type u} [Field k] {X : Schem
   subst hμ
   exact hyp
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Replace the mark by one. At mark one the balanced tuning construction returns the original ideal, giving the equality.
 -/
 private theorem balancedTunedSheaf_eq_of_mult_eq_one {k : Type u} [Field k] [IsNoetherianRing k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) (hfp : LocallyOfFiniteType p)
@@ -134,12 +132,8 @@ private theorem balancedTunedSheaf_eq_of_mult_eq_one {k : Type u} [Field k] [IsN
   subst hm
   exact FunctorialResolution.EmbeddedResolution.balancedTunedSheaf_one k p I
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The iterated strict transform remains a maximal-contact hypersurface through the stated stage. Its support therefore contains the stage marked order locus. At mark one this locus is the support of the ideal itself. The transforms computed on the marked and underlying blowup data agree, giving the stated inclusion.
 -/
 private theorem support_ideal_subset_iteratedStrictTransform (hstar : MaxContactCoverProperties.{u}) (S : MarkedIdealWithBoundary.{u})
     (hv : S.IsAdmissible) [LocallyOfFiniteType S.structMap]
@@ -165,28 +159,10 @@ private theorem support_ideal_subset_iteratedStrictTransform (hstar : MaxContact
   rw [hcoe]
   exact (FunctorialResolution.EmbeddedResolution.one_le_orderAt_iff_mem_support (u.ideal t) x).2 hx
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
+/- English proof (authored)
+Use the smooth divisor on the whole ambient open in the descent form of a mark-one order certificate. Its pulled-back divisor stays smooth, and the two support containments persist under pullback. The closed-subscheme comparison for this open is an open immersion, and it commutes with the inclusions into the ambient schemes.
 
-Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+If the center support pulls back to an open of the divisor, use the certificate branch with no auxiliary ideal. The required openness on the restricted divisor follows by inverse image under the subscheme comparison. Otherwise take the given auxiliary ideal on the divisor and pull it back by that comparison. Stability under open immersions preserves nonvanishing on components and its principalization certificate. Away from the pulled-back boundary set, pull back the given neighborhoods where the auxiliary ideal agrees with the restriction of the original ideal. The commutative subscheme square carries this local equality to the restricted divisor and identifies the structural map, center ideal and boundary set of the pulled-back certificate. These are the conditions for descent with the auxiliary ideal.
 -/
 private theorem orderCertificate_one_of_isSmoothDivisor {k : Type u} [Field k] {W : Scheme.{u}}
     (hin : OpenImmersionStability k) (p : W ⟶ Spec (CommRingCat.of k))
@@ -318,40 +294,10 @@ private theorem orderCertificate_one_of_isSmoothDivisor {k : Type u} [Field k] {
 
 namespace BoundarySeparationByMaxContact
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
+/- English proof (authored)
+The cover triple and the derived triple for its continuation both have mark one, since tuning preserves that mark. At the end of separation the transformed hypersurface still has maximal contact, and the tuning property carries this to the derived triple. The derived triple is admissible, within the dimension condition, order-bounded and balanced, and its boundary begins with the transformed hypersurface. The reduction at index zero supplies a chain of smooth divisors that contain the centers in their supports. The chain begins with the hypersurface pulled back to the initial stage and proceeds by strict transforms, except that the possible first special step uses a total transform. Therefore the strict transform of the hypersurface at the given stage has support contained in that of the chain divisor. Because the mark is one, maximal contact puts the stage ideal support inside that strict-transform support. Both the stage ideal and center thus have support in the smooth chain divisor.
 
-Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Substitute using the available equality. Prove the second alternative. Prove the first alternative.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Substitute using the available equality.
-
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+The continuation marked for the original last-stage data has the same ideal as the derived sequence because tuning at mark one leaves the ideal unchanged. It has the same center and structural map as well. Its boundary support contains the derived sequence's other-boundary locus, because each entry after the distinguished hypersurface is the transform of a retained old entry or a newly exceptional ideal. If the shape gives an open center in the divisor at the initial special step, use the open case of the smooth-divisor certificate. At every other step the shape gives an auxiliary ideal with local agreement off the other-boundary locus and a lower principalization certificate. Enlarging that locus to the continuation boundary support preserves local agreement where required and transfers the principalization certificate by monotonicity. The smooth-divisor result now gives the order certificate, which transports to the original continuation data by the identified ideal, center and structural map.
 -/
 theorem continuationOrderCertificate_of_mult_eq_one (hstar : MaxContactCoverProperties.{u})
     (hopen : ∀ (k : Type u) [Field k], OpenImmersionStability k)
@@ -774,8 +720,8 @@ theorem continuationOrderCertificate_of_mult_eq_one (hstar : MaxContactCoverProp
           (principalizationCertificate_congr_mult hMultOne hJc)
   exact orderCertificate_congr_morphism_ideal_center hstm.symm hid.symm hce.symm hmain
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+At mark one the continuation certificate holds by the smooth-divisor argument. Supply it to the cover certificate theorem, which combines the boundary separation certificates with those for the continuation. Apply the resulting certificate at the given cover stage.
 -/
 theorem orderCertificate_coverMarkedBlowupData_of_mult_eq_one (hstar : MaxContactCoverProperties.{u})
     (hopen : ∀ (k : Type u) [Field k], OpenImmersionStability k)

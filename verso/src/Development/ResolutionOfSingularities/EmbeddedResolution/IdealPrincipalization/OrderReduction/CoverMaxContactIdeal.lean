@@ -41,8 +41,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The old chart map followed by the affine-space structural map is the original open inclusion followed by the structural map. Precompose with the restricted étale map. Its restriction square identifies the resulting composite with the inclusion of the inverse-image open followed by the new structural map.
 -/
 private theorem comapEtale_map_comp_affineSpaceFinToSpec {k : Type u} [Field k] {X Y : Scheme.{u}}
     {q : Y ⟶ Spec (CommRingCat.of k)} (g : X ⟶ Y) {U : Y.Opens} {n : ℕ}
@@ -51,8 +51,8 @@ private theorem comapEtale_map_comp_affineSpaceFinToSpec {k : Type u} [Field k] 
       AlgebraicGeometry.Scheme.Opens.ι ((TopologicalSpace.Opens.map g.base).obj U) ≫ (g ≫ q) := by
   rw [Category.assoc, c.comp_struct, ← Category.assoc, morphismRestrict_ι, Category.assoc]
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The restriction of the given étale map to the inverse-image open is étale by base change along the open immersion. The chart map is étale. Their composite is therefore étale.
 -/
 private theorem etale_comapEtale_map {k : Type u} [Field k] {X Y : Scheme.{u}}
     {q : Y ⟶ Spec (CommRingCat.of k)} (g : X ⟶ Y) [AlgebraicGeometry.Etale g]
@@ -69,23 +69,23 @@ def EtaleChart.comapEtale {k : Type u} [Field k] {X Y : Scheme.{u}}
   comp_struct := comapEtale_map_comp_affineSpaceFinToSpec g c
   isEtale := etale_comapEtale_map g c
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The pulled-back chart is defined by the restricted morphism to the original open followed by the original chart map. This composite is its map to affine space.
 -/
 @[simp] theorem EtaleChart.comapEtale_map {k : Type u} [Field k] {X Y : Scheme.{u}}
     {q : Y ⟶ Spec (CommRingCat.of k)} (g : X ⟶ Y) [AlgebraicGeometry.Etale g]
     {U : Y.Opens} {n : ℕ} (c : EtaleChart q U n) :
     (EtaleChart.comapEtale g c).map = morphismRestrict g U ≫ c.map := rfl
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The inclusion of the open has image the open itself. In particular, the image is contained in the open.
 -/
 private theorem range_ι_base_subset {X : Scheme.{u}} (U : X.Opens) :
     Set.range U.ι.base ⊆ (U : Set ↥X) :=
   (Scheme.Opens.range_ι U).subset
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Each successive pullback equals pullback along the corresponding composite. The two composites agree, so the pulled-back ideals agree.
 -/
 private theorem comap_comap_eq_of_comp_eq {W X Y Z : Scheme.{u}} (a : W ⟶ X) (b : X ⟶ Z) (a' : W ⟶ Y)
     (b' : Y ⟶ Z) (hsq : a ≫ b = a' ≫ b') (I : Z.IdealSheafData) :
@@ -96,8 +96,8 @@ private theorem comap_comap_eq_of_comp_eq {W X Y Z : Scheme.{u}} (a : W ⟶ X) (
     simp [Scheme.IdealSheafData.comap_comp]
   rw [h1, h2, hsq]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The open associated to this cover piece is isomorphic to the piece. Restricting the global ideal to the open equals first pulling it back to the piece and then transporting it along the inverse isomorphism. The assumed identification on the piece gives exactly the transported local ideal.
 -/
 private theorem restrictIdeal_coverTripleOpen_coverMaxContactIdeal (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible)
     (hres : ∀ i : (MaxContactCoverData.chosenCoverData T hv).idx,
@@ -111,20 +111,10 @@ private theorem restrictIdeal_coverTripleOpen_coverMaxContactIdeal (T : MarkedId
     (congrArg (fun J : (MaxContactOpenCover.coverPiece T hv i).IdealSheafData =>
       J.comap (MaxContactOpenCover.coverPieceIso T hv i).inv) (hres i))
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
+/- English proof (authored)
+Choose a cover piece containing the given point in the cover. Its image open is affine, since the piece is affine and identifies with that open. Its points map into the original open corresponding to the piece. If the original open misses the tuned order locus, the cover open misses its pullback, since smooth pullback preserves the order locus. The local ideal is the unit ideal there and its transported ideal on the cover open is the unit ideal as well.
 
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+Otherwise the original open has an étale chart whose chosen coordinate ideal is the local hypersurface and lies in the restricted maximal-contact ideal. Transport this chart to the cover open. Its coordinate ideal is the transported local ideal and hence is the restriction of the cover hypersurface. The maximal-contact ideal for the cover is the pullback of the original maximal-contact ideal by the smooth derivative formula. The cover piece square identifies the restriction of this pullback with transport of the original restriction. Pulling back the coordinate inclusion therefore proves maximal contact on the cover open.
 -/
 theorem isMaxContactHypersurface_coverMaxContactIdeal_of_comap_eq (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible)
     [AlgebraicGeometry.LocallyOfFiniteType (MaxContactCoverData.coverTriple T hv).structMap]
@@ -219,22 +209,8 @@ theorem isMaxContactHypersurface_coverMaxContactIdeal_of_comap_eq (T : MarkedIde
       rw [hmax]
       exact (le_of_eq h1).trans (le_of_le_of_eq h3 h2.symm)
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
-
-Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
-
-Extract witnesses or component facts from the available result. A detailed English derivation is pending.
+/- English proof (authored)
+Choose the cover open containing the point and use the restriction equality with its local ideal. If that local ideal is the unit ideal, it stays the unit ideal after transport. The cover structural map is smooth, so take an étale chart around the point inside this open and assign no coordinate to the singleton ideal. If the local ideal is a coordinate ideal, transport its chart to the cover open. The singleton ideal restricts to its designated coordinate ideal there. Each case gives the required local normal-crossing chart.
 -/
 theorem inStrictNormalCrossingPositionAt_coverMaxContactIdeal (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible)
     (hgood : MaxContactReduction.IsMaxContactCover T (MaxContactCoverData.chosenCoverData T hv) hv.locallyOfFiniteType
@@ -293,8 +269,8 @@ theorem inStrictNormalCrossingPositionAt_coverMaxContactIdeal (T : MarkedIdealWi
       obtain rfl : j = t := Option.some.inj hrt
       exact key
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+The sole boundary entry is a smooth divisor by hypothesis. At every point the cover chart argument gives strict normal-crossing position for this entry locally. The smooth-divisor condition and the local charts together give the global singleton condition.
 -/
 theorem inStrictNormalCrossingPosition_coverMaxContactIdeal (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible)
     (hgood : MaxContactReduction.IsMaxContactCover T (MaxContactCoverData.chosenCoverData T hv) hv.locallyOfFiniteType

@@ -42,8 +42,8 @@ namespace MaxContactFunctoriality
 variable (hinv : ComapIsoInvariance) (A : ℕ → PrincipalizationAssignment.{u})
 variable {P : ℕ → Prop}
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The balanced tuned ideal is the tuned ideal at the tuning exponent. At mark one that exponent is one, and the tuned ideal with both parameters one is the original ideal. The admissibility hypotheses supply the structural conditions for these identities.
 -/
 theorem balancedTunedIdeal_eq_of_mult_eq_one (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible) (hm : T.mult = 1) :
     MaxContactCoverData.balancedTunedIdeal T hv = T.ideal := by
@@ -53,19 +53,15 @@ theorem balancedTunedIdeal_eq_of_mult_eq_one (T : MarkedIdealWithBoundary.{u}) (
   simp only [MaxContactCoverData.balancedTunedIdeal, hm, FunctorialResolution.EmbeddedResolution.balancedTunedSheaf_eq, FunctorialResolution.EmbeddedResolution.tuningExponent_one,
     FunctorialResolution.EmbeddedResolution.tunedSheaf_one_one]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The cover map of an admissible triple is smooth, since it is induced from the open inclusions of the cover pieces. Smoothness implies flatness.
 -/
 theorem coverMap_flat (T : MarkedIdealWithBoundary.{u}) (h : OrderReductionHypotheses P T) :
     AlgebraicGeometry.Flat (MaxContactCoverData.coverMap T h.valid) :=
   MaxContactCoverData.flat_coverMap_of_isAdmissible T h.valid
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The pointwise upper bound and nonempty marked order locus say that the original ideal has maximal order equal to the mark. The tuning property bounds the order of the tuned ideal by the chosen positive tuning exponent everywhere. The balanced tuned ideal is the tuned ideal at this exponent, and the tuned mark is that exponent. Thus the bound is exactly the one stated.
 -/
 private theorem orderAt_balancedTunedIdeal_le_tunedMult_of_nonempty (htune : TunedSheafProperties.{u})
     (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible)
@@ -89,8 +85,8 @@ private theorem orderAt_balancedTunedIdeal_le_tunedMult_of_nonempty (htune : Tun
   rw [he, hm]
   exact (orderLE_iff _ _).mp hkey x
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The bound on the balanced tuned ideal follows from the upper order bound and nonempty marked order locus. With this bound a maximal-contact cover exists. The cover map for the chosen maximal-contact cover is surjective because the selected opens cover the scheme.
 -/
 theorem coverMap_surjective (htune : TunedSheafProperties.{u}) (T : MarkedIdealWithBoundary.{u}) (h : OrderReductionHypotheses P T) :
     AlgebraicGeometry.Surjective (MaxContactCoverData.coverMap T h.valid) :=
@@ -98,10 +94,8 @@ theorem coverMap_surjective (htune : TunedSheafProperties.{u}) (T : MarkedIdealW
     (MaxContactOpenCover.exists_isMaxContactCover T h.valid
       (orderAt_balancedTunedIdeal_le_tunedMult_of_nonempty htune T h.valid h.orderLE h.coSupport_nonempty))
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Around a point of the source, choose an open on which the first morphism is an open immersion. Postcomposing this restriction with the isomorphism gives another open immersion. The same source neighborhoods therefore exhibit the composite as a local isomorphism.
 -/
 theorem IsLocalIsomorphism.comp_isIso {X Y Z : Scheme.{u}} (f : X ⟶ Y) (g : Y ⟶ Z)
     [CategoryTheory.IsIso g] (hf : IsLocalIsomorphism f) :
@@ -113,14 +107,8 @@ theorem IsLocalIsomorphism.comp_isIso {X Y Z : Scheme.{u}} (f : X ⟶ Y) (g : Y 
   rw [← Category.assoc]
   infer_instance
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+At the image of a source point under the isomorphism, choose an open where the second map is an open immersion. The inverse-image open around the source point is isomorphic to that chosen open. The composite restricted to it is this isomorphism followed by the open immersion, so it is again an open immersion.
 -/
 theorem IsLocalIsomorphism.isIso_comp {X Y Z : Scheme.{u}} (f : X ⟶ Y) [CategoryTheory.IsIso f]
     (g : Y ⟶ Z) (hg : IsLocalIsomorphism g) :
@@ -149,18 +137,16 @@ theorem IsLocalIsomorphism.isIso_comp {X Y Z : Scheme.{u}} (f : X ⟶ Y) [Catego
   have := hU
   infer_instance
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Substitute the equality of morphisms. The property requested is the given local isomorphism property.
 -/
 private theorem isLocalIsomorphism_of_eq {W' W : Scheme.{u}} {f f' : W' ⟶ W}
     (h : f = f') (hf : IsLocalIsomorphism f') : IsLocalIsomorphism f := by
   subst h
   exact hf
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+At zero the comparison is the original base map conjugated by the two initial isomorphisms. Composition with an isomorphism on either side preserves the local isomorphism property. At a successor the comparison is a pullback of the preceding comparison. A local isomorphism stays a local isomorphism after base change, since its open-immersion neighborhoods pull back to open-immersion neighborhoods. Induction gives the result at every allowed index.
 -/
 theorem isLocalIsomorphism_map_of_isLocalIsomorphism {X' X : Scheme.{u}} {g : X' ⟶ X}
     (hg : IsLocalIsomorphism g) {t : SequenceOfBlowups X'} {s : SequenceOfBlowups X}
@@ -178,8 +164,8 @@ theorem isLocalIsomorphism_map_of_isLocalIsomorphism {X' X : Scheme.{u}} {g : X'
     have hn : n < t.length := hi
     exact MaxContactOpenCover.isLocalIsomorphism_fst_of_isPullback (D.pullback n hn) (ih hn.le)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The original cover map is a local isomorphism because each piece maps by an open inclusion. Apply the stagewise preservation result to the strict pullback of the cover sequence along this map, using the stage bound in the reconstructed sequence.
 -/
 theorem isLocalIsomorphism_map_coverBlowupSequence (T : MarkedIdealWithBoundary.{u}) (h : OrderReductionHypotheses P T)
     (d : BlowupSequenceData T.scheme)
@@ -192,8 +178,8 @@ theorem isLocalIsomorphism_map_coverBlowupSequence (T : MarkedIdealWithBoundary.
     (MaxContactOpenCover.isLocalIsomorphism_coverMap T h.valid) D i
     ((coverBlowupSequence hinv A T h.valid).le_toSequenceOfBlowups_length hi)
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
+/- English proof (authored)
+Reconstruct the sequence of blowups. Reconstruction preserves its length and stage schemes. Blowups of a Noetherian scheme remain Noetherian, so the known stage Noetherianity theorem applies at the given index and transfers to the stage in the data.
 -/
 theorem isNoetherian_blowupSequenceData_schemeAt (X : Scheme.{u}) [AlgebraicGeometry.IsNoetherian X]
     (d : BlowupSequenceData X) (i : ℕ) (hi : i ≤ d.length) :
@@ -205,14 +191,8 @@ theorem isNoetherian_blowupSequenceData_schemeAt (X : Scheme.{u}) [AlgebraicGeom
     isNoetherian_schemeAt d.toSequenceOfBlowups i hi'
   rwa [BlowupSequenceData.toSequenceOfBlowups_schemeAt] at h
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The original triple is admissible. Its structural map is locally of finite type and quasi-compact over a Noetherian field spectrum, so its scheme is Noetherian. The order bound gives a good cover and the cover properties make its triple admissible. Its scheme is Noetherian by the same finite-type and quasi-compactness argument. Apply stage Noetherianity to the lower and cover sequences over these starting schemes. In each case Noetherianity implies the required local property at each stage.
 -/
 theorem isLocallyNoetherian_schemeAt_coverBlowupSequence (hstar : _root_.FunctorialResolution.EmbeddedResolution.MaxContactCoverProperties.{u}) (T : MarkedIdealWithBoundary.{u})
     (h : OrderReductionHypotheses P T) (d : BlowupSequenceData T.scheme)
@@ -248,8 +228,8 @@ theorem isLocallyNoetherian_schemeAt_coverBlowupSequence (hstar : _root_.Functor
       (coverBlowupSequence hinv A T h.valid).toBlowupSequenceData i hi
     infer_instance
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The cover properties include preservation of the initial bound by the mark at every stage of an admissible marked sequence. Apply that property at the specified stage and point.
 -/
 theorem orderAt_sequenceOfBlowups_ideal_le_mult (hstar : _root_.FunctorialResolution.EmbeddedResolution.MaxContactCoverProperties.{u}) (T : MarkedIdealWithBoundary.{u})
     (hv : T.IsAdmissible) (hord : ∀ x : ↥T.scheme, orderAt T.ideal x ≤ (T.mult : ℕ∞))
@@ -257,8 +237,8 @@ theorem orderAt_sequenceOfBlowups_ideal_le_mult (hstar : _root_.FunctorialResolu
     orderAt (s.ideal i) x ≤ (T.mult : ℕ∞) :=
   hstar.orderAt_level_le T hv hord s i hi x
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
+/- English proof (authored)
+Pull back the image ideal under the inverse isomorphism used to form it. Because this map is a closed immersion, the pullback recovers the original ideal. Now pull back along the forward isomorphism. The two successive pullbacks on the image side cancel, leaving that image ideal equal to the pullback of the original ideal along the forward isomorphism.
 -/
 private theorem imageIdealSheaf_inv_eq_comap {X Y : Scheme.{u}} (φ : X ≅ Y)
     (J : Y.IdealSheafData) :
@@ -270,20 +250,8 @@ private theorem imageIdealSheaf_inv_eq_comap {X Y : Scheme.{u}} (φ : X ≅ Y)
   calc imageIdealSheaf φ.inv J = ((imageIdealSheaf φ.inv J).comap φ.inv).comap φ.hom := h2.symm
     _ = J.comap φ.hom := by rw [h1]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+A closed immersion identifies its source with the closed subscheme of its kernel. The given factorization equals the canonical map from the source to that subscheme, because the subscheme inclusion is a monomorphism. Under this isomorphism the structural map on the kernel subscheme is the original structural map of the given source composed with the isomorphism. Smoothness, local finite type and quasi-compactness therefore carry across. The image ideal is the pullback along the inverse identification, so nonvanishing on components also carries across. The field has characteristic zero, the mark is positive and the empty boundary satisfies strict normal crossings. These give admissibility. Finally, the isomorphism of schemes induces a homeomorphism of the underlying spaces, which preserves Krull dimension and hence its dimension successor.
 -/
 theorem isAdmissible_and_dim_eq_withSchemeIdealBoundary_ker (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible) (Y : Scheme.{u})
     (q : Y ⟶ Spec (CommRingCat.of T.base)) (e : Y ⟶ T.scheme)

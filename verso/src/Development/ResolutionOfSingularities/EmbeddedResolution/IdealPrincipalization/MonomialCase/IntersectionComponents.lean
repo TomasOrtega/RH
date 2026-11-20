@@ -22,8 +22,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Supply the required witnesses or components.
+/- English proof (authored)
+An irreducible component is a maximal irreducible subset. In terms of inclusion, maximality requires that any irreducible set containing the given subset be contained in it as well. These are exactly the two conditions on the right.
 -/
 private theorem mem_irreducibleComponents_iff_isIrreducible_and_maximal {α : Type*}
     [TopologicalSpace α] (s : Set α) :
@@ -31,18 +31,8 @@ private theorem mem_irreducibleComponents_iff_isIrreducible_and_maximal {α : Ty
       IsIrreducible s ∧ ∀ t : Set α, IsIrreducible t → s ⊆ t → t ⊆ s :=
   ⟨fun h => ⟨h.1, fun _ ht hst => h.2 ht hst⟩, fun h => ⟨h.1, fun t ht hst => h.2 t ht hst⟩⟩
 
-/- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
-
-Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The closed embedding identifies its source with its image. For a maximal irreducible subset of the image, the inverse image is irreducible. A larger irreducible subset of the source would map to a larger irreducible subset of the image, which maximality excludes. Conversely, the image of an irreducible component is irreducible. Any irreducible extension of it inside the image has an irreducible inverse image containing the component and so equals it. Taking images proves maximality in the range.
 -/
 private theorem maximal_irreducible_subset_range_iff {α β : Type*} [TopologicalSpace α]
     [TopologicalSpace β] {f : α → β} (hf : Topology.IsClosedEmbedding f) {S : Set β}
@@ -85,8 +75,8 @@ private theorem maximal_irreducible_subset_range_iff {α β : Type*} [Topologica
         exact Set.image_mono h1
       · exact hsub'
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The intersection subscheme embeds as a closed subset whose range is the support of the intersection ideal. Maximal irreducible subsets of this range correspond to irreducible components of the intersection subscheme under the embedding.
 -/
 theorem mem_intersectionComponents_iff_exists_irreducibleComponent {Y : Scheme.{u}}
     (L : List Y.IdealSheafData) (J : Finset (Fin L.length)) (C : Set ↥Y) :
@@ -100,8 +90,8 @@ theorem mem_intersectionComponents_iff_exists_irreducibleComponent {Y : Scheme.{
     Scheme.IdealSheafData.range_subschemeι _
   exact maximal_irreducible_subset_range_iff hemb hrange C
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. A detailed English derivation is pending.
+/- English proof (authored)
+Take the irreducible component of the intersection subscheme whose image is the given set. Irreducible components are closed in their spaces, and the closed embedding of the subscheme sends closed sets to closed sets in the ambient scheme.
 -/
 theorem isClosed_of_mem_intersectionComponents {Y : Scheme.{u}} (L : List Y.IdealSheafData)
     (J : Finset (Fin L.length)) (C : Set ↥Y) (hC : C ∈ intersectionComponents L J) : IsClosed C := by
@@ -109,10 +99,8 @@ theorem isClosed_of_mem_intersectionComponents {Y : Scheme.{u}} (L : List Y.Idea
   exact (Scheme.Hom.isClosedEmbedding (intersectionIdeal L J).subschemeι).isClosedMap _
     (isClosed_of_mem_irreducibleComponents _ hD)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
-
-Unfold both sides to obtain the same proposition, which implies itself. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The admissible ambient scheme is Noetherian, as is its closed intersection subscheme. The latter has finitely many irreducible components. Their images are exactly the members of the desired family, so that family is finite.
 -/
 theorem intersectionComponents_finite (T : MarkedIdealWithBoundary.{u}) (hT : T.IsAdmissible)
     (J : Finset (Fin T.boundary.length)) : (intersectionComponents T.boundary J).Finite := by
@@ -127,8 +115,8 @@ theorem intersectionComponents_finite (T : MarkedIdealWithBoundary.{u}) (hT : T.
   rw [h]
   exact Set.Finite.image _ (TopologicalSpace.NoetherianSpace.finite_irreducibleComponents ..)
 
-/- English proof (translation)
-Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
+/- English proof (authored)
+Choose a point common to the two components. Smoothness over the base field gives a regular local ring at the point, hence a domain. A domain has a unique minimal prime, so the two irreducible components through the point coincide.
 -/
 private theorem irreducibleComponents_eq_of_inter_nonempty_of_smooth (T : MarkedIdealWithBoundary.{u})
     (J : Finset (Fin T.boundary.length))
@@ -142,10 +130,8 @@ private theorem irreducibleComponents_eq_of_inter_nonempty_of_smooth (T : Marked
     (fun z => isDomain_stalk_of_smooth ((intersectionIdeal T.boundary J).subschemeι ≫ T.structMap) z)
     h₁ h₂ hx₁ hx₂
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
-
-Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Lift both sets to irreducible components of the intersection subscheme. A point of their intersection would lift to points in both components. The embedding is injective, so these are the same point. Smoothness forces the two components through that point to agree, contrary to the distinct images.
 -/
 theorem intersectionComponents_disjoint_of_smooth (T : MarkedIdealWithBoundary.{u})
     (J : Finset (Fin T.boundary.length))
@@ -164,14 +150,8 @@ theorem intersectionComponents_disjoint_of_smooth (T : MarkedIdealWithBoundary.{
     irreducibleComponents_eq_of_inter_nonempty_of_smooth T J hsm D hD D' hD' ⟨d', hd, hd'⟩
   exact hne (by rw [hDD])
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
-
-Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Substitute using the available equality. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+By the component correspondence and injectivity of the embedding, the inverse image is the union of precisely the irreducible components whose images were selected. In the Noetherian intersection subscheme there are finitely many irreducible components, each closed, and smoothness makes them pairwise disjoint. The complement is the finite union of the unselected components, hence is closed.
 -/
 theorem isOpen_preimage_sUnion_intersectionComponents (T : MarkedIdealWithBoundary.{u}) (hT : T.IsAdmissible)
     (J : Finset (Fin T.boundary.length))
@@ -200,14 +180,8 @@ theorem isOpen_preimage_sUnion_intersectionComponents (T : MarkedIdealWithBounda
   exact isOpen_sUnion_of_subset_irreducibleComponents
     (irreducibleComponents_eq_of_inter_nonempty_of_smooth T J hsm) (fun D hD => hD.1)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
-
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The composite inclusion of the chosen open part of the intersection into the ambient scheme has image the selected union, because the union is contained in the range of the intersection embedding. The composite is quasi-compact on the Noetherian schemes in question, so the support of its kernel is the closure of its image. The selected union is a finite union of closed components and hence already closed. This gives the claimed support.
 -/
 theorem componentUnionIdeal_support_eq_sUnion (T : MarkedIdealWithBoundary.{u}) (hT : T.IsAdmissible)
     (J : Finset (Fin T.boundary.length)) (𝒞 : Set (Set ↥T.scheme))

@@ -13,22 +13,8 @@ open AlgebraicGeometry CategoryTheory TopologicalSpace
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
-
-Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
-
-Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+At a point where the stalk ideal is zero, choose an affine neighborhood. Its ring is Noetherian, so the section ideal has finitely many generators. Each generator has zero germ and therefore restricts to zero on some smaller open neighborhood of the point. Intersect those finitely many neighborhoods. At every point of the intersection all generator germs vanish, and they generate the stalk ideal. The vanishing locus of the stalk ideal is therefore open.
 -/
 theorem isOpen_setOf_stalkIdeal_eq_bot {X : Scheme.{u}} [AlgebraicGeometry.IsLocallyNoetherian X]
     (J : X.IdealSheafData) :
@@ -88,8 +74,8 @@ theorem isOpen_setOf_stalkIdeal_eq_bot {X : Scheme.{u}} [AlgebraicGeometry.IsLoc
         (fun g _ => TopologicalSpace.Opens.isOpen (W g)))
   · exact ⟨hxU, Set.mem_iInter₂.mpr (fun g _ => hxW g)⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The base is a field, hence Noetherian, and the structural morphism of an admissible object is locally of finite type. Thus the section ring of any affine open in the scheme is Noetherian, which is the required local property.
 -/
 private theorem isLocallyNoetherian_of_isAdmissible (T : MarkedIdealWithBoundary.{u}) (hT : T.IsAdmissible) :
     AlgebraicGeometry.IsLocallyNoetherian T.scheme := by
@@ -101,12 +87,8 @@ private theorem isLocallyNoetherian_of_isAdmissible (T : MarkedIdealWithBoundary
     (sectionsAlgebra T.base T.structMap U.1)
     (algebraMap_sectionsAlgebra T.base T.structMap U.1)
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Suppose the stalk ideal vanishes at x. Its vanishing locus is open by local Noetherianity. Choose an irreducible component through x. Since the ideal is nonzero on components, this component also meets the open complement of the support. The two nonempty opens of the component have a common point by irreducibility. There the stalk ideal is both zero and the unit ideal, which is impossible in a local ring of a scheme point.
 -/
 private theorem stalkIdeal_ne_bot_of_isAdmissible_of_nonzeroOnComponents (T : MarkedIdealWithBoundary.{u}) (hT : T.IsAdmissible)
     (J : T.scheme.IdealSheafData) (hJ : NonzeroOnComponents J) (x : ↥T.scheme) :
@@ -131,20 +113,8 @@ private theorem stalkIdeal_ne_bot_of_isAdmissible_of_nonzeroOnComponents (T : Ma
   rw [Ideal.mem_bot] at h1
   exact one_ne_zero h1
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
-
-Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The stalk ideals are nonzero, so the order at each point is finite. The loci where the order is at least a given natural number are closed under the admissibility hypotheses. They form a decreasing family with empty intersection, since no finite order exceeds every natural number. The scheme is quasi-compact because its structural morphism is quasi-compact and the base is the spectrum of a field. Finitely many of these closed loci already have empty intersection. At the largest of the chosen thresholds, taking zero if the family is empty, the order is bounded above by that threshold everywhere.
 -/
 theorem exists_orderAt_le (T : MarkedIdealWithBoundary.{u}) (hT : T.IsAdmissible)
     (J : T.scheme.IdealSheafData) (hJ : NonzeroOnComponents J) :

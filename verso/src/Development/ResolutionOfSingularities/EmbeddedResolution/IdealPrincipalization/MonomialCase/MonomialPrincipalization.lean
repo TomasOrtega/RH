@@ -25,8 +25,8 @@ def intersectionIdeal (L : List Y.IdealSheafData) (J : Finset (Fin L.length)) : 
   ⨆ j ∈ J, L.get j
 
 @[simp]
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The ideal defining the common intersection is defined as the sum of the boundary ideals with the selected indices. The supremum of these ideals is their sum.
 -/
 theorem intersectionIdeal_eq_iSup (L : List Y.IdealSheafData) (J : Finset (Fin L.length)) :
     intersectionIdeal L J = ⨆ j ∈ J, L.get j := rfl
@@ -118,14 +118,14 @@ def monomialBlowupIterate (hinv : ComapIsoInvariance.{u}) (d : MarkedBlowupSeque
   | 0 => d
   | (n + 1) => blowupAtCenter hinv (monomialBlowupIterate hinv d n)
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The recursion starts with the given sequence. Thus the iterate with zero additional steps is that sequence itself.
 -/
 theorem monomialBlowupIterate_zero (hinv : ComapIsoInvariance.{u}) (d : MarkedBlowupSequenceData p I m E) :
     monomialBlowupIterate hinv d 0 = d := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The recursion takes the next iterate by applying one center-selection and blowup step to the preceding iterate. This is exactly the successor formula.
 -/
 theorem monomialBlowupIterate_succ (hinv : ComapIsoInvariance.{u}) (d : MarkedBlowupSequenceData p I m E) (n : ℕ) :
     monomialBlowupIterate hinv d (n + 1) = blowupAtCenter hinv (monomialBlowupIterate hinv d n) := rfl
@@ -151,8 +151,8 @@ end
 def monomialPrincipalization (hinv : ComapIsoInvariance.{u}) : PrincipalizationAssignment.{u} :=
   fun T => (monomialBlowupSeq hinv T.structMap T.ideal T.mult T.boundary).toMarkedSequenceOfBlowups
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+Evaluate the assignment at the marked ideal. It takes the structural morphism, ideal, mark and boundary as inputs to the monomial blowup sequence and then forms the associated marked sequence. This is the expression on the right.
 -/
 theorem monomialPrincipalization_apply (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u}) :
     monomialPrincipalization hinv T =

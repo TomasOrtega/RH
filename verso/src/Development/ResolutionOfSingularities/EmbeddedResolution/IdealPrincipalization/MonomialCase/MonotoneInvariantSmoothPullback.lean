@@ -20,8 +20,8 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace MonomialCenter
 
-/- English proof (translation)
-Supply the required witnesses or components.
+/- English proof (authored)
+Apply the geometry hypotheses to the given flat map and the two admissible objects. They identify pullbacks of the chosen component-union centers and give both directions of the correspondence between downstairs and upstairs intersection components. The remaining compatibility, preservation of order, is the assumed equality at each point.
 -/
 theorem IsComponentCompatiblePullback.of_flat (hGeom : MonomialGeometryHypotheses.{u}) (T : MarkedIdealWithBoundary.{u})
     (hT : T.IsAdmissible) (Y : Scheme.{u}) (k' : Type u) [Field k']

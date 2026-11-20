@@ -68,8 +68,8 @@ instance instSurjectivePullbackFstSpecMapField (k L : Type u) [Field k] [Field L
     AlgebraicGeometry.Surjective (pullback.fst p (specMapOfFieldHom k L f)) :=
   inferInstance
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The projection from the extension of the base field is flat, by base change of the flat map between spectra of fields. The assumed order invariance for field extension supplies the pointwise preservation of order on each compatible pullback square required by the flat pullback theorem. The given relation between the pulled-back and replacement boundaries can be read in either direction. Apply the flat pullback theorem to these data to obtain the comparison of the two principalizations.
 -/
 private theorem isPullbackBlowupSequence_monomialPrincipalization_baseChange (hGeom : MonomialGeometryHypotheses.{u})
     (hinv : ComapIsoInvariance.{u})
@@ -97,10 +97,8 @@ private theorem isPullbackBlowupSequence_monomialPrincipalization_baseChange (hG
     (pullback.snd T.structMap (specMapOfFieldHom T.base L f))
     (pullback.fst T.structMap (specMapOfFieldHom T.base L f)) E' hT hE.symm hT' hord'
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
-
-Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Use the monomial principalization theorem for the center, invariant, local monomiality, resolution and empty-locus properties. The flat comparison for a field extension gives the field-base-change property, and the smooth comparison theorem gives compatibility with smooth pullback. For a surjective comparison map these comparisons are strict because each lower blowup center has nonempty support. Field extension supplies a surjective projection, and surjectivity is assumed in the strict smooth comparison. These are the required properties for every permitted marking.
 -/
 theorem isLocallyMonomialPrincipalization_monomialPrincipalization
     (hGeom : MonomialGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})

@@ -23,14 +23,8 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace MonomialCodimension
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
-
-Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
+/- English proof (authored)
+The Krull dimension of the stalk is bounded by the topological Krull dimension of the scheme. The latter is at least the given natural number, so it cannot be the dimension of the empty space. By the finiteness assumption it is also below infinity. Write it as a natural number d. The given number is at most d and therefore strictly below d + 1, the dimension successor of the scheme.
 -/
 theorem lt_krullDimSucc_of_le_ringKrullDim_stalk (X : Scheme.{u}) (x : ↥X) (n : ℕ)
     (hn : (n : WithBot ℕ∞) ≤ ringKrullDim (X.presheaf.stalk x))
@@ -56,26 +50,8 @@ theorem lt_krullDimSucc_of_le_ringKrullDim_stalk (X : Scheme.{u}) (x : ↥X) (n 
     have hnm : n ≤ m := by exact_mod_cast hle
     omega
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Choose a point of the given irreducible component. It lies in the support of the sum of the selected boundary ideals and hence in the support of each summand, since a unit summand would make the sum the unit ideal. Take an étale boundary chart at the point and an affine open inside it containing the point. Each selected divisor is defined there by a coordinate vanishing at the point, and distinct divisors have distinct coordinates. Thus the point's prime contains as many distinct chart coordinates as there are selected divisors. The coordinate dimension bound gives at least that many dimensions in the stalk. The stalk dimension bound then puts this cardinality strictly below the dimension successor of the ambient scheme.
 -/
 theorem card_lt_krullDimSucc_of_mem_intersectionComponents : ∀ (T : MarkedIdealWithBoundary.{u}), T.IsAdmissible →
     ∀ (J : Finset (Fin T.boundary.length)) (C : Set ↥T.scheme),
@@ -146,8 +122,8 @@ theorem card_lt_krullDimSucc_of_mem_intersectionComponents : ∀ (T : MarkedIdea
   have hlt := lt_krullDimSucc_of_le_ringKrullDim_stalk T.scheme x _ hle2 hfin
   rwa [hcard] at hlt
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. A detailed English derivation is pending.
+/- English proof (authored)
+Choose one component from the nonempty intersection-component set. The cardinality bound for a selected family admitting such a component applies to it.
 -/
 theorem card_lt_krullDimSucc_of_nonempty (T : MarkedIdealWithBoundary.{u}) (hT : T.IsAdmissible)
     (J : Finset (Fin T.boundary.length)) (hJ : (intersectionComponents T.boundary J).Nonempty) :

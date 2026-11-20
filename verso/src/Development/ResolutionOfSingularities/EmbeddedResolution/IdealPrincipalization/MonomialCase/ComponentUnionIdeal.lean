@@ -23,8 +23,8 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace MonomialCenterGeometry
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Admissibility ensures that the intersection has finitely many irreducible components. The selected family is a subset of this finite set, and every selected component is closed in the ambient scheme. Its union is a finite union of closed sets.
 -/
 theorem isClosed_sUnion_intersectionComponents (T : MarkedIdealWithBoundary.{u}) (hT : T.IsAdmissible)
     (J : Finset (Fin T.boundary.length)) (𝒞 : Set (Set ↥T.scheme))
@@ -36,8 +36,8 @@ theorem isClosed_sUnion_intersectionComponents (T : MarkedIdealWithBoundary.{u})
   exact hfin.isClosed_biUnion
     (fun C hC => isClosed_of_mem_intersectionComponents T.boundary J C (h𝒞 hC))
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The union of selected components is closed in the ambient scheme. Its preimage under the continuous inclusion of the intersection subscheme is closed, and that preimage is the underlying set of the indicated open subscheme.
 -/
 theorem isClosed_componentUnionOpens (T : MarkedIdealWithBoundary.{u}) (hT : T.IsAdmissible)
     (J : Finset (Fin T.boundary.length)) (𝒞 : Set (Set ↥T.scheme))
@@ -50,8 +50,8 @@ theorem isClosed_componentUnionOpens (T : MarkedIdealWithBoundary.{u}) (hT : T.I
     exact ((intersectionIdeal T.boundary J).subschemeι ⁻¹ᵁ ⟨(⋃₀ 𝒞)ᶜ, hK.isOpen_compl⟩).isOpen
   exact isOpen_compl_iff.mp h1
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Both ideals are the kernel of the morphism obtained by including the chosen open into the intersection subscheme and then including the intersection into the ambient scheme. Their descriptions therefore agree.
 -/
 theorem componentUnionIdeal_eq_openSubschemeKer (T : MarkedIdealWithBoundary.{u})
     (J : Finset (Fin T.boundary.length)) (𝒞 : Set (Set ↥T.scheme))
@@ -60,8 +60,8 @@ theorem componentUnionIdeal_eq_openSubschemeKer (T : MarkedIdealWithBoundary.{u}
       = openSubschemeKer (intersectionIdeal T.boundary J) (componentUnionOpens T.boundary J 𝒞 hop) := by
   rw [componentUnionIdeal_eq_ker, openSubschemeKer_eq_ker]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The intersection subscheme of the selected boundary divisors is smooth over the base by the étale chart description. The chosen union defines an open and closed part of that intersection. The kernel of its inclusion into the ambient scheme defines the same part as a closed subscheme. Its map to the base is smooth by restriction to the open.
 -/
 theorem smooth_componentUnionIdeal : ∀ (T : MarkedIdealWithBoundary.{u}), T.IsAdmissible →
     ∀ (J : Finset (Fin T.boundary.length)),
@@ -77,26 +77,8 @@ theorem smooth_componentUnionIdeal : ∀ (T : MarkedIdealWithBoundary.{u}), T.Is
     (componentUnionOpens T.boundary J 𝒞 hop)
     (isClosed_componentUnionOpens T hT J 𝒞 h𝒞 hop) T.structMap
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
-
-It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Let x lie in the support of the component union. Choose an ambient open around x whose inverse image in the intersection subscheme lies in the selected open and closed part. On this ambient open the union ideal and the intersection ideal agree. Intersect the open with an étale coordinate chart for the boundary around x. Every selected divisor meets x, since x lies in their intersection. Each is therefore given by a coordinate equation on the chart, and the coordinate indices are distinct by the normal-crossings assumption. The intersection ideal is the sum of these coordinate ideals, which defines their common coordinate subspace. The chart thus exhibits the union ideal and the boundary in strict normal-crossings position near x.
 -/
 theorem hasStrictNormalCrossingsWith_componentUnionIdeal : ∀ (T : MarkedIdealWithBoundary.{u}), T.IsAdmissible →
     ∀ (J : Finset (Fin T.boundary.length)),

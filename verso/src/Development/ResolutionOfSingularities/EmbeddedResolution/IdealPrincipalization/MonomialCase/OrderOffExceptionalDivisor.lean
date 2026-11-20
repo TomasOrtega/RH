@@ -19,8 +19,8 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The exceptional ideal is the pullback of the center ideal, so their supports are related by inverse image. Thus a point off the exceptional support maps outside the center. The blowup is an isomorphism there, and its map on stalk rings at the given point is an isomorphism. It identifies the two ideal stalks and the powers of the maximal ideals, so the orders agree.
 -/
 theorem orderAt_comap_eq_of_notMem_exceptionalIdeal
     (T : MarkedIdealWithBoundary.{u}) (_hT : T.IsAdmissible) (Z : T.scheme.IdealSheafData)

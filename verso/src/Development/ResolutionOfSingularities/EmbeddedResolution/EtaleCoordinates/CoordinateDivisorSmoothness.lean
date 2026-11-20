@@ -17,8 +17,8 @@ namespace FunctorialResolution.EmbeddedResolution
 
 variable {X : Scheme.{u}} {k : Type u} [Field k] {p : X ⟶ Spec (CommRingCat.of k)} {m : ℕ}
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The supremum condition means that the opens cover the source. Smoothness is local on the source in the Zariski topology. Since the restriction to each member of this cover is smooth, the map is smooth.
 -/
 theorem smooth_of_iSup_eq_top {W Y : Scheme.{u}} (f : W ⟶ Y) {ι : Sort*} (U : ι → W.Opens)
     (hU : iSup U = ⊤) (h : ∀ i, Smooth ((U i).ι ≫ f)) : Smooth f := by
@@ -33,8 +33,8 @@ theorem smooth_of_iSup_eq_top {W Y : Scheme.{u}} (f : W ⟶ Y) {ι : Sort*} (U :
   exact (IsZariskiLocalAtSource.iff_of_iSup_eq_top (fun i : PLift ι => U i.down) hVtop).mpr
     fun i => h i.down
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Restriction of Z to V is obtained by pulling its restriction to U back along the inclusion of V in U. On U that ideal is itself the pullback of the coordinate subspace ideal along the chart. Thus the restriction to V is the pullback along the composite defining the restricted chart.
 -/
 theorem restrictIdeal_eq_restrict_coordIdeal_of_le {U V : X.Opens} (hVU : V ≤ U) (c : EtaleChart p U m)
     (Z : X.IdealSheafData) (S : Finset (Fin m)) (h : restrictIdeal Z U = c.coordIdeal S) :
@@ -45,17 +45,15 @@ theorem restrictIdeal_eq_restrict_coordIdeal_of_le {U V : X.Opens} (hVU : V ≤ 
     Scheme.IdealSheafData.comap_comp, ← h', ← Scheme.IdealSheafData.comap_comp,
     Scheme.homOfLE_ι]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Pull back the restriction of Z on U along the inclusion of V. By hypothesis it is the unit ideal, and pullback of the unit ideal is again the unit ideal.
 -/
 theorem restrictIdeal_eq_top_of_le {Y : Scheme.{u}} (Z : Y.IdealSheafData) {U V : Y.Opens}
     (hVU : V ≤ U) (h : restrictIdeal Z U = ⊤) : restrictIdeal Z V = ⊤ := by
   rw [restrictIdeal_eq_comap_homOfLE_restrictIdeal Z hVU, h, Scheme.IdealSheafData.comap_top]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The chart restricts to an étale chart on the part of the closed subscheme over U. Setting the coordinates indexed by S to zero reduces the target to affine space of dimension m minus the number of those coordinates. The structure map of the closed subscheme on this open is the composite of that étale map with the smooth affine-space projection. Both maps are smooth, so the composite is smooth.
 -/
 theorem smooth_ι_comp_subschemeι_comp_of_eq_coordIdeal (Z : X.IdealSheafData) {U : X.Opens}
     (hU : IsAffineOpen U) (c : EtaleChart p U m) (S : Finset (Fin m))
@@ -71,12 +69,8 @@ theorem smooth_ι_comp_subschemeι_comp_of_eq_coordIdeal (Z : X.IdealSheafData) 
   rw [← hc]
   infer_instance
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Each point of the closed subscheme maps into the support of Z. At its image choose the neighbourhood and chart supplied by the hypothesis. Shrink the neighbourhood to an affine open containing that image. The equality of ideals persists for the restricted chart. The preceding chart result gives smoothness on the inverse image of this affine open in the closed subscheme. These inverse images cover the subscheme, so smoothness holds globally by locality.
 -/
 theorem smooth_subschemeι_comp_of_locally_eq_coordIdeal (Z : X.IdealSheafData)
     (h : ∀ x : X, x ∈ Z.support →
@@ -108,8 +102,8 @@ theorem smooth_subschemeι_comp_of_locally_eq_coordIdeal (Z : X.IdealSheafData)
     exact Opens.mem_iSup.mpr ⟨y, hyW y⟩
   exact (IsZariskiLocalAtSource.iff_of_iSup_eq_top W hsup).mpr hWsm
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+At each point of the support, the strict normal crossing hypothesis provides a chart in which Z is a coordinate subspace. This is exactly the hypothesis of the local smoothness criterion for the closed subscheme.
 -/
 theorem smooth_subschemeι_comp_of_hasStrictNormalCrossingsWith (Z : X.IdealSheafData) (E : List X.IdealSheafData)
     (h : HasStrictNormalCrossingsWith p Z E) : Smooth (Z.subschemeι ≫ p) := by
@@ -119,10 +113,8 @@ theorem smooth_subschemeι_comp_of_hasStrictNormalCrossingsWith (Z : X.IdealShea
   obtain ⟨U, hxU, n, c, a, S, -, -, -, hS⟩ := h x hx
   exact ⟨U, hxU, n, c, S, hS⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+Because r is a non-zero-divisor, multiplication by r is injective on R. Tensoring that injection with the flat R-algebra A gives an injective multiplication map on A. This map is multiplication by the image of r. By commutativity the image is a non-zero-divisor.
 -/
 private theorem algebraMap_mem_nonZeroDivisors_of_flat {R A : Type u} [CommRing R]
     [CommRing A] [Algebra R A] [Module.Flat R A] {r : R} (hr : r ∈ nonZeroDivisors R) :
@@ -137,10 +129,8 @@ private theorem algebraMap_mem_nonZeroDivisors_of_flat {R A : Type u} [CommRing 
   rw [mem_nonZeroDivisors_iff]
   exact ⟨key, fun x hx => key x (by rw [mul_comm]; exact hx)⟩
 
-/- English proof (translation)
-Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+The relevant polynomial variable is nonzero in the polynomial ring over the field, which is a domain. It is therefore a non-zero-divisor. The chart algebra is étale and hence flat, so its image remains a non-zero-divisor. That image is the chart coordinate.
 -/
 theorem coord_mem_nonZeroDivisors {U : X.Opens} (hU : IsAffineOpen U) (c : EtaleChart p U m)
     (j : Fin m) : c.coord j ∈ nonZeroDivisors ↑(X.presheaf.obj (op U)) := by
@@ -162,18 +152,8 @@ theorem coord_mem_nonZeroDivisors {U : X.Opens} (hU : IsAffineOpen U) (c : Etale
   rw [halg] at key
   rwa [c.coordRingHom_X j] at key
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
-
-Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
-
-Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Evaluate polynomials by setting the j-th variable to zero. The product of the s-th variable with r then evaluates to zero because it was a multiple of the j-th variable. The s-th variable is fixed by the evaluation and is nonzero in the polynomial domain. Thus r evaluates to zero. Passing to the quotient by the j-th variable is unchanged by the evaluation, as can be checked on constants and variables. It follows that r is zero in that quotient, so it belongs to the principal ideal.
 -/
 private theorem mem_span_X_of_X_mul_mem {σ : Type u} {k : Type u} [Field k]
     {j s : σ} (hjs : j ≠ s) (r : MvPolynomial σ k)
@@ -218,8 +198,8 @@ private theorem mem_span_X_of_X_mul_mem {σ : Type u} {k : Type u} [Field k]
   rw [RingHom.comp_apply, hψr, map_zero] at h3
   exact Ideal.Quotient.eq_zero_iff_mem.mp h3.symm
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Choose polynomial representatives of a and b. The equality of the products says that the s-th variable times the difference of the representatives lies in the principal ideal of the j-th variable. The preceding divisibility result puts the difference itself in that ideal. Hence the two quotient classes agree.
 -/
 private theorem eq_of_mk_X_mul_eq_quotient_span_X {σ : Type u} {k : Type u} [Field k]
     {j s : σ} (hjs : j ≠ s)
@@ -233,12 +213,8 @@ private theorem eq_of_mk_X_mul_eq_quotient_span_X {σ : Type u} {k : Type u} [Fi
   rw [← map_mul, ← map_mul, Ideal.Quotient.eq, ← mul_sub] at h
   exact Ideal.Quotient.eq.mpr (mem_span_X_of_X_mul_mem hjs (a' - b') h)
 
-/- English proof (translation)
-Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Form the quotient of A by the extension of I. The induced map from the quotient of P is a base change of f, so it is étale and in particular flat. Multiplication by the class of w is injective on the source quotient by hypothesis and stays injective after this flat base change. The given product is zero in the target quotient, so the class of x is zero there. This is membership in the extended ideal.
 -/
 private theorem mem_map_of_mul_mem_of_etale {P A : Type u} [CommRing P] [CommRing A]
     {f : P →+* A} (hf : f.Etale) (I : Ideal P) (w : P)
@@ -264,10 +240,8 @@ private theorem mem_map_of_mul_mem_of_etale {P A : Type u} [CommRing P] [CommRin
     exact Ideal.Quotient.eq_zero_iff_mem.mpr hx
   exact Ideal.Quotient.eq_zero_iff_mem.mp (hregB hy)
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Extension along the chart map sends the ideal of the j-th variable to the ideal of the j-th coordinate and sends the s-th variable to the s-th coordinate. Multiplication by the s-th variable is injective in the polynomial quotient by the j-th variable because the indices differ. Apply the étale quotient argument to transfer this injectivity to the chart quotient. The product hypothesis now gives that the class of x in the chart quotient is zero.
 -/
 theorem mem_span_coord_of_coord_mul_mem {U : X.Opens} (hU : IsAffineOpen U) (c : EtaleChart p U m)
     {j s : Fin m} (hjs : j ≠ s) (x : ↑(X.presheaf.obj (op U)))
@@ -300,14 +274,8 @@ theorem mem_span_coord_of_coord_mul_mem {U : X.Opens} (hU : IsAffineOpen U) (c :
   rw [hmapspan] at hfin
   exact hfin
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the exponent n. Divisibility by the zeroth power is automatic. For the successor step, divisibility of the product by the higher power implies divisibility by the j-th variable. The distinct-variable result then shows that this variable divides r. Write r as that variable times a polynomial. Cancel one copy of the nonzero variable in the domain. The induction hypothesis says the remaining polynomial is divisible by the n-th power, which recovers the required higher power in r.
 -/
 private theorem X_pow_dvd_of_X_pow_dvd_X_mul {σ : Type u} {k : Type u} [Field k]
     {j s : σ} (hjs : j ≠ s) :
@@ -345,8 +313,8 @@ private theorem X_pow_dvd_of_X_pow_dvd_X_mul {σ : Type u} {k : Type u} [Field k
     rw [e3]
     exact mul_dvd_mul_left _ h5
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Choose representatives in the polynomial ring. The product equality means the s-th variable times their difference is divisible by the n-th power of the j-th variable. The power divisibility result shows that the difference itself is divisible by this power, so the classes coincide.
 -/
 private theorem eq_of_mk_X_mul_eq_quotient_span_X_pow {σ : Type u} {k : Type u} [Field k]
     {j s : σ} (hjs : j ≠ s) (n : ℕ)
@@ -361,10 +329,8 @@ private theorem eq_of_mk_X_mul_eq_quotient_span_X_pow {σ : Type u} {k : Type u}
   exact Ideal.Quotient.eq.mpr (Ideal.mem_span_singleton.mpr
     (X_pow_dvd_of_X_pow_dvd_X_mul hjs n (a' - b') (Ideal.mem_span_singleton.mp h)))
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The ideal of the variable power extends to the ideal of the same power of the chart coordinate. The polynomial quotient by that power has injective multiplication by the s-th variable by the preceding result for distinct indices. The étale map on the quotients is flat, so multiplication by the s-th chart coordinate is also injective on the chart quotient. The product hypothesis therefore forces x to vanish in that quotient.
 -/
 theorem mem_span_coord_pow_of_mul_mem {U : X.Opens} (hU : IsAffineOpen U) (c : EtaleChart p U m)
     {j s : Fin m} (hjs : j ≠ s) (n : ℕ) (x : ↑(X.presheaf.obj (op U)))
@@ -399,8 +365,8 @@ theorem mem_span_coord_pow_of_mul_mem {U : X.Opens} (hU : IsAffineOpen U) (c : E
   rw [hmapspan] at hfin
   exact hfin
 
-/- English proof (translation)
-Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+/- English proof (authored)
+The inclusion of V identifies a section on V with a global section of the open subscheme V. The map on sections is the inverse of the canonical identification from global sections back to sections on V.
 -/
 private theorem appLE_ι_top_eq_topIso_inv {Y : Scheme.{u}} (V : Y.Opens)
     (hle : (⊤ : V.toScheme.Opens) ≤ V.ι ⁻¹ᵁ V) :
@@ -408,8 +374,8 @@ private theorem appLE_ι_top_eq_topIso_inv {Y : Scheme.{u}} (V : Y.Opens)
   simp
   rfl
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The indicated section map is the inverse of the canonical ring isomorphism. It is therefore bijective.
 -/
 private theorem bijective_appLE_ι_top {Y : Scheme.{u}} (V : Y.Opens)
     (hle : (⊤ : V.toScheme.Opens) ≤ V.ι ⁻¹ᵁ V) :
@@ -417,12 +383,8 @@ private theorem bijective_appLE_ι_top {Y : Scheme.{u}} (V : Y.Opens)
   rw [appLE_ι_top_eq_topIso_inv V hle]
   exact V.topIso.commRingCatIsoToRingEquiv.symm.bijective
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The ideal of the restricted sheaf on the affine scheme V is the extension of the original section ideal along the canonical section-ring isomorphism. By hypothesis the extension is the whole ring. Contracting it back along the isomorphism gives the whole original ring, which is the asserted section ideal.
 -/
 private theorem ideal_eq_top_of_restrictIdeal_eq_top {Y : Scheme.{u}} (D : Y.IdealSheafData)
     {V : Y.Opens} (hV : IsAffineOpen V) (htop : restrictIdeal D V = ⊤) :
@@ -444,10 +406,8 @@ private theorem ideal_eq_top_of_restrictIdeal_eq_top {Y : Scheme.{u}} (D : Y.Ide
     exact bijective_appLE_ι_top V hle
   rw [← hcomap, key2, Ideal.comap_top]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
+/- English proof (authored)
+At x, choose the chart supplied by the hypothesis and shrink it to an affine neighbourhood. If D restricts to the unit ideal, its section ideal is generated by 1. Otherwise the restricted chart identifies its section ideal with the principal ideal of the chosen coordinate. That coordinate is a non-zero-divisor. In both cases this gives the required affine neighbourhood and generator.
 -/
 theorem isLocallyGeneratedByNonZeroDivisor_of_locally_coordIdeal (D : X.IdealSheafData)
     (h : ∀ x : X, ∃ (U : X.Opens) (_ : x ∈ U) (n : ℕ) (c : EtaleChart p U n),
@@ -469,10 +429,8 @@ theorem isLocallyGeneratedByNonZeroDivisor_of_locally_coordIdeal (D : X.IdealShe
         Set.image_singleton]
   exact ⟨⟨V, hV⟩, f, hxV, hf, hfspan⟩
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The support of the restriction is the inverse image of the original support. By hypothesis the restriction is the unit ideal, which has empty support. Therefore x, a point of U, is outside the original support.
 -/
 private theorem notMem_support_of_mem_of_restrictIdeal_eq_top {Y : Scheme.{u}}
     (I : Y.IdealSheafData) {U : Y.Opens} (h : restrictIdeal I U = ⊤) {x : Y} (hxU : x ∈ U) :
@@ -485,10 +443,8 @@ private theorem notMem_support_of_mem_of_restrictIdeal_eq_top {Y : Scheme.{u}}
   have h2 : (⟨x, hxU⟩ : ↥U) ∈ ((⊥ : TopologicalSpace.Closeds ↥U) : Set ↥U) := h1
   simp at h2
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
-
-Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+The local chart descriptions give a non-zero-divisor generator at each point by the preceding criterion. At a point of the support, the unit-ideal alternative cannot occur because the unit ideal has empty support on the chart. Thus at such a point the ideal is a coordinate hyperplane ideal. The smoothness result for closed subschemes that are locally coordinate subspaces applies, proving the second condition for a smooth divisor.
 -/
 theorem isSmoothDivisor_of_locally_coordIdeal (D : X.IdealSheafData)
     (h : ∀ x : X, ∃ (U : X.Opens) (_ : x ∈ U) (n : ℕ) (c : EtaleChart p U n),

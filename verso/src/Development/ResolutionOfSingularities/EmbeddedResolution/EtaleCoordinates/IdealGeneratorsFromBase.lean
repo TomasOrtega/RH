@@ -6,10 +6,8 @@ import Development.ResolutionOfSingularities.EmbeddedResolution.AlgebraicPrelimi
 namespace FunctorialResolution.EmbeddedResolution
 namespace EtaleCoordinates
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The image of G is a unit after localizing at its powers. Since G is a product with factor g, the image of g is also a unit in the commutative localized ring. The image of gx belongs to the extended ideal, so multiplying it by the inverse of the image of g gives the image of x in that ideal.
 -/
 private theorem algebraMap_mem_map_of_mul_mem {S : Type*} [CommRing S] (G : S) (T : Type*)
     [CommRing T] [Algebra S T] [IsLocalization (Submonoid.powers G) T] (J : Ideal S) (g r x : S)
@@ -24,22 +22,10 @@ private theorem algebraMap_mem_map_of_mul_mem {S : Type*} [CommRing S] (G : S) (
   rw [hx]
   exact Ideal.mul_mem_left _ _ (Ideal.mem_map_of_mem _ hgx)
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
+/- English proof (authored)
+Choose finite generating sets for I and J. For every generator of I, equality at q places its image in the extended ideal of J. Clearing denominators gives a factor outside q whose product with that generator lies in J. Likewise choose such a factor for each generator of J using the extended ideal of I. Let G be the product of all the factors. It lies outside q because q is prime.
 
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
-
-Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
-
-Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
+After inverting G, each factor becomes a unit. Thus each generator of I maps into the extended ideal of J, and each generator of J maps into the extended ideal of I. The two inclusions give equality on the indicated localization.
 -/
 theorem exists_away_map_ideal_eq {S : Type*} [CommRing S] (q : Ideal S) [q.IsPrime]
     (A : Type*) [CommRing A] [Algebra S A] [IsLocalization q.primeCompl A]

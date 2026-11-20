@@ -11,22 +11,22 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
+/- English proof (authored)
+An arrow between two opens just expresses an inclusion, so there is at most one arrow with the given endpoints. The same holds after reversing the arrows.
 -/
 private theorem opens_op_hom_ext {X : Scheme.{u}} {A B : (X.Opens)ᵒᵖ} (f g : A ⟶ B) : f = g := by
   apply Quiver.Hom.unop_inj
   apply Subsingleton.elim
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The two arrows agree because they have the same endpoints in the category of opens. Applying the presheaf sends them to equal ring maps.
 -/
 private theorem presheaf_map_eq {X : Scheme.{u}} {A B : (X.Opens)ᵒᵖ} (f g : A ⟶ B) :
     X.presheaf.map f = X.presheaf.map g := by
   rw [opens_op_hom_ext f g]
 
-/- English proof (translation)
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Identify the global sections of the open subschemes with the sections over the corresponding opens of X. Under these identifications, pullback along the inclusion is restriction from V to W. The two composites of restriction maps agree by functoriality, since they come from the same inclusion of opens.
 -/
 private theorem appTop_homOfLE_comp_topIso_hom {X : Scheme.{u}} {V W : X.Opens} (h : W ≤ V) :
     Scheme.Hom.appTop (X.homOfLE h) ≫ W.topIso.hom =
@@ -35,10 +35,8 @@ private theorem appTop_homOfLE_comp_topIso_hom {X : Scheme.{u}} {V W : X.Opens} 
   exact (X.presheaf.map_comp _ _).symm.trans
     ((presheaf_map_eq _ _).trans (X.presheaf.map_comp _ _))
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The inclusion of V is an open immersion, so its composite with p is smooth. Because V is affine, identify it with the spectrum of its global section ring. Under this identification the structure map is induced by the map from k to those sections. Smoothness of a map between affine schemes is equivalent to smoothness of the corresponding ring map, giving the claim.
 -/
 private theorem smooth_ΓSpecIso_inv_comp_appTop {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] (V : X.Opens)
@@ -60,12 +58,8 @@ private theorem smooth_ΓSpecIso_inv_comp_appTop {X : Scheme.{u}} {k : Type u} [
     infer_instance
   exact AlgebraicGeometry.HasRingHomProperty.Spec_iff.mp h2
 
-/- English proof (translation)
-Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Suppose x belongs to none of the basic opens defined by the sections in s. Then the germ of every such section is a nonunit and lies in the maximal ideal of the local ring at x. The contraction of that ideal to the section ring would contain s and hence the ideal it generates. Since s generates the unit ideal, the contraction would contain 1, which is impossible.
 -/
 private theorem exists_mem_basicOpen_of_span_eq_top {X : Scheme.{u}} {U : X.Opens}
     (x : X) (hx : x ∈ U) (s : Set Γ(X, U)) (hs : Ideal.span s = ⊤) :
@@ -87,50 +81,12 @@ private theorem exists_mem_basicOpen_of_span_eq_top {X : Scheme.{u}} {U : X.Open
   exact (IsLocalRing.maximalIdeal.isMaximal (X.presheaf.stalk x)).ne_top
     ((Ideal.eq_top_iff_one _).mpr h1)
 
-/- English proof (translation)
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
+/- English proof (authored)
+The presentation chooses a distinct generator for each relation, and the Jacobian in those generators is invertible after evaluation in S. Use the complementary generators as variables of a polynomial base ring over k. The original polynomial ring can now be written in two blocks, with the chosen generators as variables and the complementary variables in the coefficient ring.
 
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+Rewrite the relations in this two-block presentation. The map from the original polynomial ring to the new presentation ring is surjective because every scalar and every variable in either block has a preimage. Evaluation of the rewritten polynomials in S agrees with the original evaluation on all generators. Hence the rewritten relations still generate the kernel: the new evaluation pulls back to the old evaluation, and extending the old kernel along the surjection gives the new one.
 
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
-
-Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
-
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
-
-Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
-
-Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
-
-A detailed English derivation is pending.
+Differentiation in a chosen generator commutes with the change of presentation. On variables this holds because complementary generators are now coefficients and have derivative zero in the chosen directions, and it extends by linearity and the product rule. Thus the new Jacobian matrix comes from the old one by applying the rewrite entrywise. Its determinant evaluates to the old unit in S. The new presentation has equally many variables and equations over the polynomial base and has invertible Jacobian, so it is standard smooth of relative dimension zero and hence étale. Its base map sends the complementary variables to their given values in S, as required.
 -/
 private theorem exists_etale_eval₂Hom_of_submersivePresentation {k S : Type u} [CommRing k] [CommRing S] [Algebra k S]
     {ι σ : Type} [Finite ι] [Finite σ] (P : Algebra.SubmersivePresentation k S ι σ) :
@@ -287,8 +243,8 @@ private theorem exists_etale_eval₂Hom_of_submersivePresentation {k S : Type u}
   show Algebra.Etale (MvPolynomial (ULift.{u} (Fin n)) k) S
   infer_instance
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The original chart composed with the projection to the spectrum of k is the restriction of p to U. Precompose with the inclusion from V to U. The two successive open inclusions give the inclusion of V in X, so the resulting structure map is the restriction of p to V.
 -/
 private theorem homOfLE_comp_map_comp_affineSpaceFinToSpec {X : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} {U : X.Opens} {m : ℕ} (c : EtaleChart p U m)
@@ -296,8 +252,8 @@ private theorem homOfLE_comp_map_comp_affineSpaceFinToSpec {X : Scheme.{u}} {k :
     (X.homOfLE hVU ≫ c.map) ≫ affineSpaceFinToSpec k m = V.ι ≫ p := by
   rw [Category.assoc, c.comp_struct, ← Category.assoc, Scheme.homOfLE_ι]
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The inclusion of V into U is an open immersion and is therefore étale. Its composite with the étale chart map is étale.
 -/
 private theorem etale_homOfLE_comp_map {X : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} {U : X.Opens} {m : ℕ} (c : EtaleChart p U m)
@@ -314,16 +270,16 @@ def EtaleChart.restrict {X : Scheme.{u}} {k : Type u} [Field k]
   isEtale := etale_homOfLE_comp_map c hVU
 
 @[simp]
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+Restriction of a chart is defined by precomposing its map with the inclusion of the smaller open. This yields the stated map.
 -/
 theorem EtaleChart.restrict_map {X : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} {U : X.Opens} {m : ℕ} (c : EtaleChart p U m)
     {V : X.Opens} (hVU : V ≤ U) :
     (c.restrict hVU).map = X.homOfLE hVU ≫ c.map := rfl
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The morphism associated to the vector of sections is constructed over the given structure map of U. Composing with the affine-space projection therefore recovers that structure map.
 -/
 private theorem homOfVector_comp_affineSpaceFinToSpec {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) (U : X.Opens) {m : ℕ}
@@ -341,8 +297,8 @@ def EtaleChart.ofCoords {X : Scheme.{u}} {k : Type u} [Field k]
   isEtale := he
 
 @[simp]
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The chart built from the vector of sections uses the affine-space morphism associated to that vector as its underlying map.
 -/
 theorem EtaleChart.ofCoords_map {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) (U : X.Opens) {m : ℕ}
@@ -350,26 +306,10 @@ theorem EtaleChart.ofCoords_map {X : Scheme.{u}} {k : Type u} [Field k]
     (he : AlgebraicGeometry.Etale (AffineSpace.homOfVector (U.ι ≫ p) v)) :
     (EtaleChart.ofCoords p U v he).map = AffineSpace.homOfVector (U.ι ≫ p) v := rfl
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
+/- English proof (authored)
+Choose an affine open V containing x. The structure map on its section ring is smooth over k. Standard smoothness holds after localizing at a family of elements that generates the unit ideal. The basic opens of this family cover V, so one of them, U, contains x. Its section ring is the indicated localization, and the scalar map there is the restriction of the scalar map on V. Hence U has a standard smooth presentation over k.
 
-Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
+Use the presentation result to choose polynomial coordinates whose evaluation in the global section ring of U is étale. Taking spectra gives an étale map from U to affine space under the canonical affine identifications. The evaluation sends constants to the structure map on U. On spectra this says that the affine-space projection composed with the chart is the restriction of p, completing the chart.
 -/
 theorem exists_etaleChart {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] (x : X) :
@@ -460,8 +400,8 @@ theorem exists_etaleChart {X : Scheme.{u}} {k : Type u} [Field k]
     ⟨⟨(X.basicOpen t).toScheme.isoSpec.hom ≫ Spec.map φ ≫
       (AffineSpace.SpecIso (ULift.{u} (Fin n)) (CommRingCat.of k)).inv, hcs, inferInstance⟩⟩⟩
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
+/- English proof (authored)
+Take an affine chart neighbourhood of x. Inside its intersection with W, choose a basic open containing x using the basic-open basis of the affine chart domain. This smaller open is affine and contained in W. Restrict the chart along its inclusion.
 -/
 theorem exists_etaleChart_le {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] (x : X)

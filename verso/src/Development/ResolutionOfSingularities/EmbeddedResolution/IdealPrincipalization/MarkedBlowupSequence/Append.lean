@@ -16,8 +16,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
+/- English proof (authored)
+Identify the source and target with the equal schemes. The inserted maps are identities, and pulling the center back along the target identity leaves it unchanged. The asserted blowup property reduces to the original one.
 -/
 theorem _root_.FunctorialResolution.Blowup.IsBlowupAlongIdealSheaf.of_eq {A A' B B' : Scheme.{u}} {π : A ⟶ B} {J : B.IdealSheafData}
     (h : FunctorialResolution.Blowup.IsBlowupAlongIdealSheaf π J) (hA : A = A') (hB : B = B') :
@@ -31,8 +31,8 @@ namespace BlowupSequenceData
 
 variable {X : Scheme.{u}}
 
-/- English proof (translation)
-Substitute using the available equality. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Replace $n'$ by the equal index $n$. Then the source identification is the identity on stage $n$, and the composite is the original projection.
 -/
 theorem projectionToBase_congr (d : BlowupSequenceData X) {n n' : ℕ} (h : n = n') :
     projectionToBase d n = eqToHom (congrArg d.obj h) ≫ projectionToBase d n' := by
@@ -44,38 +44,38 @@ variable (s : BlowupSequenceData X) (t : BlowupSequenceData (s.obj s.length))
 def appendSchemeAt (i : ℕ) : Scheme.{u} :=
   if i ≤ s.length then s.obj i else t.obj (i - s.length)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+At or before the length of the first sequence, the stage definition selects the stage of that sequence at the given index.
 -/
 theorem appendSchemeAt_of_le_length {i : ℕ} (h : i ≤ s.length) : appendSchemeAt s t i = s.obj i := if_pos h
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Strictly after the first length, the stage definition selects the second sequence at the index obtained by subtracting the first length.
 -/
 theorem appendSchemeAt_of_length_lt {i : ℕ} (h : s.length < i) :
     appendSchemeAt s t i = t.obj (i - s.length) := if_neg (not_le.2 h)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Zero is at most the first length, so the first branch of the stage definition gives the original initial stage.
 -/
 theorem appendSchemeAt_zero : appendSchemeAt s t 0 = s.obj 0 := appendSchemeAt_of_le_length s t (Nat.zero_le _)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+If $i$ is strictly below the first length, $i+1$ is at most that length. Thus the new successor stage is the first sequence's stage $i+1$.
 -/
 theorem appendSchemeAt_succ_of_lt_length {i : ℕ} (h : i < s.length) :
     appendSchemeAt s t (i + 1) = s.obj (i + 1) :=
   appendSchemeAt_of_le_length s t (by omega)
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Substitute the first length for $i$. The first branch includes equality, so the join stage is the final stage of the first sequence.
 -/
 theorem appendSchemeAt_of_eq_length {i : ℕ} (h : i = s.length) : appendSchemeAt s t i = s.obj s.length := by
   subst h
   exact appendSchemeAt_of_le_length s t le_rfl
 
-/- English proof (translation)
-Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+At one more than the first length, use the second branch of the stage definition. Subtracting the first length leaves one, so this is stage one of the second sequence.
 -/
 theorem appendSchemeAt_succ_of_eq_length {i : ℕ} (h : i = s.length) :
     appendSchemeAt s t (i + 1) = t.obj 1 := by
@@ -83,8 +83,8 @@ theorem appendSchemeAt_succ_of_eq_length {i : ℕ} (h : i = s.length) :
   have h2 : s.length + 1 - s.length = 1 := by omega
   rw [appendSchemeAt_of_length_lt s t (by omega), h2]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The next index is still beyond the first length. Since subtraction of the first length from $i$ is exact, subtracting it from $i+1$ gives one more than the offset for $i$.
 -/
 theorem appendSchemeAt_succ_of_length_lt {i : ℕ} (h : s.length < i) :
     appendSchemeAt s t (i + 1) = t.obj (i - s.length + 1) := by
@@ -106,12 +106,8 @@ def appendCenter (i : ℕ) : (appendSchemeAt s t i).IdealSheafData :=
   else if h2 : s.length < i then (t.center (i - s.length)).comap (eqToHom (appendSchemeAt_of_length_lt s t h2))
   else ((t.center 0).comap t.isoZero.inv).comap (eqToHom (appendSchemeAt_of_eq_length s t (by omega)))
 
-/- English proof (translation)
-Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Before the join, the appended transition and center come from the first sequence. After the join, subtract the first length and use the indexed transition and center of the second sequence. In each case, the length bound makes this a genuine step and the stage identifications preserve the blowup property. At the join, the second sequence has positive length. Its initial transition is followed by its initial isomorphism, with the center pulled back along the inverse isomorphism. Transport of a blowup by this target isomorphism gives the property at the join.
 -/
 theorem isBlowupAlongIdealSheaf_appendBlowupMorphism (i : ℕ) (hi : i < s.length + t.length) :
     Blowup.IsBlowupAlongIdealSheaf (appendBlowupMorphism s t i) (appendCenter s t i) := by
@@ -160,51 +156,51 @@ def append : BlowupSequenceData X where
   isBlowup := fun i hi => isBlowupAlongIdealSheaf_appendBlowupMorphism s t i hi
 
 @[simp]
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The length assigned to the append construction is the sum of the lengths of the two sequences.
 -/
 theorem append_length : (s.append t).length = s.length + t.length := rfl
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The appended data take their stage objects from the piecewise stage definition. Up to and including the first length this is the stage of the first sequence.
 -/
 theorem append_schemeAt_of_le_length {i : ℕ} (h : i ≤ s.length) : (s.append t).obj i = s.obj i :=
   appendSchemeAt_of_le_length s t h
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Strictly beyond the first length, the appended stage is the second-sequence stage with the first length subtracted from the index.
 -/
 theorem append_schemeAt_of_length_lt {i : ℕ} (h : s.length < i) :
     (s.append t).obj i = t.obj (i - s.length) :=
   appendSchemeAt_of_length_lt s t h
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The appended stage at zero lies in the first part, so it is the original initial stage of the first sequence.
 -/
 theorem append_schemeAt_zero : (s.append t).obj 0 = s.obj 0 := appendSchemeAt_zero s t
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Adding one to an index strictly below the first length stays at or below that length. The next stage of the appended sequence is therefore the corresponding stage of the first sequence.
 -/
 theorem append_schemeAt_succ_of_lt_length {i : ℕ} (h : i < s.length) :
     (s.append t).obj (i + 1) = s.obj (i + 1) :=
   appendSchemeAt_succ_of_lt_length s t h
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Both the given index and its successor lie beyond the first length. Subtracting that length from the successor gives the successor of the old offset, which is the index of the stage in the second sequence.
 -/
 theorem append_schemeAt_succ_of_length_lt {i : ℕ} (h : s.length < i) :
     (s.append t).obj (i + 1) = t.obj (i - s.length + 1) :=
   appendSchemeAt_succ_of_length_lt s t h
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Just after the join, the second-sequence offset is one, hence the appended object there is the second sequence's first successor stage.
 -/
 theorem append_schemeAt_length_succ : (s.append t).obj (s.length + 1) = t.obj 1 :=
   appendSchemeAt_succ_of_eq_length s t rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The positive second length makes the total length strictly larger than the first. The piecewise definition therefore uses the second sequence, and subtracting the first length leaves exactly the second length.
 -/
 theorem append_schemeAt_length_add_length (h : 0 < t.length) :
     (s.append t).obj (s.length + t.length) = t.obj t.length := by
@@ -212,14 +208,14 @@ theorem append_schemeAt_length_add_length (h : 0 < t.length) :
   show appendSchemeAt s t (s.length + t.length) = t.obj t.length
   rw [appendSchemeAt_of_length_lt s t (by omega), h2]
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The appended initial isomorphism first identifies its stage zero with the first sequence's stage zero and then uses the first sequence's initial isomorphism. The forward map is the composite of those two forward maps.
 -/
 theorem append_isoObjZero_hom :
     (s.append t).isoZero.hom = eqToHom (append_schemeAt_zero s t) ≫ s.isoZero.hom := rfl
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+For an index strictly below the join, both stages come from the first sequence. The transition definition uses its adjacent map between the two stage identifications.
 -/
 theorem append_blowupMorphism_of_lt_length {i : ℕ} (h : i < s.length) :
     (s.append t).map i =
@@ -227,8 +223,8 @@ theorem append_blowupMorphism_of_lt_length {i : ℕ} (h : i < s.length) :
         eqToHom (append_schemeAt_of_le_length s t (le_of_lt h)).symm := by
   exact dif_pos h
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+For an index strictly above the join, the transition definition uses the second sequence's adjacent map at the offset index. Its source and target are identified with the corresponding appended stages.
 -/
 theorem append_blowupMorphism_of_length_lt {i : ℕ} (h : s.length < i) :
     (s.append t).map i =
@@ -236,8 +232,8 @@ theorem append_blowupMorphism_of_length_lt {i : ℕ} (h : s.length < i) :
         eqToHom (append_schemeAt_of_length_lt s t h).symm := by
   exact (dif_neg (not_lt.2 (le_of_lt h))).trans (dif_pos h)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+At the join both strict inequalities in the piecewise definition fail. The remaining transition goes through stage one of the second sequence, then its first transition and initial isomorphism, and finally identifies the target with the join stage.
 -/
 theorem append_blowupMorphism_length :
     (s.append t).map s.length =
@@ -245,23 +241,23 @@ theorem append_blowupMorphism_length :
         eqToHom (append_schemeAt_of_le_length s t (le_refl s.length)).symm := by
   exact (dif_neg (lt_irrefl s.length)).trans (dif_neg (lt_irrefl s.length))
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Before the join the center definition chooses the first sequence's center at the given index and pulls it back through the identification of the appended stage.
 -/
 theorem append_center_of_lt_length {i : ℕ} (h : i < s.length) :
     (s.append t).center i = (s.center i).comap (eqToHom (append_schemeAt_of_le_length s t (le_of_lt h))) := by
   exact dif_pos h
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+After the join the center definition chooses the second sequence's center at the offset index and pulls it back through the appended stage identification.
 -/
 theorem append_center_of_length_lt {i : ℕ} (h : s.length < i) :
     (s.append t).center i =
       (t.center (i - s.length)).comap (eqToHom (append_schemeAt_of_length_lt s t h)) := by
   exact (dif_neg (not_lt.2 (le_of_lt h))).trans (dif_pos h)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+At the join the center is the second sequence's initial center pulled back through its inverse initial isomorphism and then through the appended stage's identification with the first sequence's final stage.
 -/
 theorem append_center_length :
     (s.append t).center s.length =
@@ -269,10 +265,8 @@ theorem append_center_length :
         (eqToHom (append_schemeAt_of_le_length s t (le_refl s.length))) := by
   exact (dif_neg (lt_irrefl s.length)).trans (dif_neg (lt_irrefl s.length))
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+At zero the projection is the initial isomorphism of the appended data, which is the first projection after identifying the two initial stages. For a successor stage at most the first length, the adjacent transition is from the first sequence. Combine it with the preceding projection by induction, cancel the intermediate stage identifications, and use the first sequence's projection recursion.
 -/
 theorem projectionToBase_append_of_le_length {i : ℕ} (h : i ≤ s.length) :
     projectionToBase (s.append t) i = eqToHom (append_schemeAt_of_le_length s t h) ≫ projectionToBase s i := by
@@ -287,8 +281,8 @@ theorem projectionToBase_append_of_le_length {i : ℕ} (h : i ≤ s.length) :
     rw [projectionToBase_succ, ih (le_of_lt hn), append_blowupMorphism_of_lt_length s t hn, projectionToBase_succ]
     simp
 
-/- English proof (translation)
-Substitute using the available equality. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Substitute the equality of the two indices. The source and target identifications are identities, so the composite is the adjacent map at that common index.
 -/
 private theorem blowupMorphism_eq_eqToHom_comp_of_eq {Y : Scheme.{u}} (d : BlowupSequenceData Y) {n n' : ℕ} (h : n = n')
     (e1 : d.obj (n + 1) = d.obj (n' + 1)) (e2 : d.obj n' = d.obj n) :
@@ -296,8 +290,8 @@ private theorem blowupMorphism_eq_eqToHom_comp_of_eq {Y : Scheme.{u}} (d : Blowu
   subst h
   simp
 
-/- English proof (translation)
-Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+At index equal to the first length plus $j+1$, the index is strictly beyond the join. Its offset from the join is $j+1$, so the second-stage formula gives the assertion.
 -/
 private theorem append_schemeAt_of_eq_length_add_succ {Y : Scheme.{u}} (a : BlowupSequenceData Y)
     (b : BlowupSequenceData (a.obj a.length)) (i j : ℕ) (h : i = a.length + j + 1) :
@@ -307,8 +301,8 @@ private theorem append_schemeAt_of_eq_length_add_succ {Y : Scheme.{u}} (a : Blow
   have hsub : a.length + j + 1 - a.length = j + 1 := by omega
   rw [append_schemeAt_of_length_lt a b hgt, hsub]
 
-/- English proof (translation)
-Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The given index is past the first length, with offset $j+1$. Use the second branch for the adjacent map, replace the offset by $j+1$, and carry the resulting source and target identifications into the stated ones.
 -/
 private theorem append_blowupMorphism_of_eq_length_add_succ {Y : Scheme.{u}} (a : BlowupSequenceData Y)
     (b : BlowupSequenceData (a.obj a.length)) (i j : ℕ) (h : i = a.length + j + 1)
@@ -321,12 +315,8 @@ private theorem append_blowupMorphism_of_eq_length_add_succ {Y : Scheme.{u}} (a 
   rw [append_blowupMorphism_of_length_lt a b hgt, blowupMorphism_eq_eqToHom_comp_of_eq b hsub (by rw [hsub]) (by rw [hsub])]
   simp
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Induct on $j$. At offset one the appended transition goes through the second sequence's first map and its initial isomorphism, then the first sequence's final projection. This is the second projection at one followed by the first final projection. At a later offset, use the second sequence's adjacent map and the induction hypothesis for the previous projection. The intermediate stage identifications cancel and the second projection recursion gives the required formula.
 -/
 private theorem projectionToBase_append_of_eq_length_add_succ {Y : Scheme.{u}} (a : BlowupSequenceData Y)
     (b : BlowupSequenceData (a.obj a.length)) :
@@ -353,8 +343,8 @@ private theorem projectionToBase_append_of_eq_length_add_succ {Y : Scheme.{u}} (
         projectionToBase_succ b (n + 1)]
       simp
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Write any index strictly past the first length as that length plus $j+1$. The positive-offset projection formula expresses it as the second projection at $j+1$ followed by the first final projection. Since $j+1$ is the original index minus the first length, this is the desired expression.
 -/
 theorem projectionToBase_append_of_length_lt {i : ℕ} (h : s.length < i) :
     projectionToBase (s.append t) i =
@@ -395,71 +385,71 @@ variable (s : MarkedBlowupSequenceData p I m E)
 def appendToBlowupSequenceData : BlowupSequenceData X := s.toBlowupSequenceData.append t.toBlowupSequenceData
 
 @[simp]
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The underlying unmarked data are formed by appending the two unmarked sequences. Their length is the sum of those lengths.
 -/
 theorem appendToBlowupSequenceData_length :
     (s.appendToBlowupSequenceData t).length = s.toBlowupSequenceData.length + t.toBlowupSequenceData.length := rfl
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The underlying append uses the first sequence's stage at any index at most its length.
 -/
 theorem appendToBlowupSequenceData_schemeAt_of_le_length {i : ℕ} (h : i ≤ s.toBlowupSequenceData.length) :
     (s.appendToBlowupSequenceData t).obj i = s.toBlowupSequenceData.obj i :=
   BlowupSequenceData.append_schemeAt_of_le_length s.toBlowupSequenceData t.toBlowupSequenceData h
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+For the underlying append, any index strictly beyond the first length uses the stage of the second sequence indexed by the offset.
 -/
 theorem appendToBlowupSequenceData_schemeAt_of_length_lt {i : ℕ} (h : s.toBlowupSequenceData.length < i) :
     (s.appendToBlowupSequenceData t).obj i = t.toBlowupSequenceData.obj (i - s.toBlowupSequenceData.length) :=
   BlowupSequenceData.append_schemeAt_of_length_lt s.toBlowupSequenceData t.toBlowupSequenceData h
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The underlying append starts with the first sequence's stage zero, since zero lies in the first part of the stage definition.
 -/
 theorem appendToBlowupSequenceData_schemeAt_zero : (s.appendToBlowupSequenceData t).obj 0 = s.toBlowupSequenceData.obj 0 :=
   BlowupSequenceData.append_schemeAt_zero s.toBlowupSequenceData t.toBlowupSequenceData
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+At a successor of an index strictly below the first length, the underlying append is still at or before the join. Its stage is the first sequence's corresponding successor stage.
 -/
 theorem appendToBlowupSequenceData_schemeAt_succ_of_lt_length {i : ℕ} (h : i < s.toBlowupSequenceData.length) :
     (s.appendToBlowupSequenceData t).obj (i + 1) = s.toBlowupSequenceData.obj (i + 1) :=
   BlowupSequenceData.append_schemeAt_succ_of_lt_length s.toBlowupSequenceData t.toBlowupSequenceData h
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+After the join the underlying append uses the second sequence, with indices measured from the first length. Advancing one stage advances this offset by one.
 -/
 theorem appendToBlowupSequenceData_schemeAt_succ_of_length_lt {i : ℕ} (h : s.toBlowupSequenceData.length < i) :
     (s.appendToBlowupSequenceData t).obj (i + 1) =
       t.toBlowupSequenceData.obj (i - s.toBlowupSequenceData.length + 1) :=
   BlowupSequenceData.append_schemeAt_succ_of_length_lt s.toBlowupSequenceData t.toBlowupSequenceData h
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+In the underlying append, the stage just beyond the first length has second-sequence offset one.
 -/
 theorem appendToBlowupSequenceData_schemeAt_length_succ :
     (s.appendToBlowupSequenceData t).obj (s.toBlowupSequenceData.length + 1) = t.toBlowupSequenceData.obj 1 :=
   BlowupSequenceData.append_schemeAt_length_succ s.toBlowupSequenceData t.toBlowupSequenceData
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Because the second length is positive, the final stage falls in the second part. Its offset is precisely the second length, so the stage is the final object of the second sequence.
 -/
 theorem appendToBlowupSequenceData_schemeAt_length_add_length (h : 0 < t.toBlowupSequenceData.length) :
     (s.appendToBlowupSequenceData t).obj (s.toBlowupSequenceData.length + t.toBlowupSequenceData.length) =
       t.toBlowupSequenceData.obj t.toBlowupSequenceData.length :=
   BlowupSequenceData.append_schemeAt_length_add_length s.toBlowupSequenceData t.toBlowupSequenceData h
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The initial isomorphism of the underlying append is assembled from the stage-zero identification and the first sequence's initial isomorphism. Taking its forward map composes the corresponding forward maps.
 -/
 theorem appendToBlowupSequenceData_isoObjZero_hom :
     (s.appendToBlowupSequenceData t).isoZero.hom =
       eqToHom (appendToBlowupSequenceData_schemeAt_zero s t) ≫ s.toBlowupSequenceData.isoZero.hom := rfl
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Before the join the underlying adjacent map is the first sequence's adjacent map, preceded and followed by the identifications with the appended stages.
 -/
 theorem appendToBlowupSequenceData_blowupMorphism_of_lt_length {i : ℕ} (h : i < s.toBlowupSequenceData.length) :
     (s.appendToBlowupSequenceData t).map i =
@@ -467,8 +457,8 @@ theorem appendToBlowupSequenceData_blowupMorphism_of_lt_length {i : ℕ} (h : i 
         eqToHom (appendToBlowupSequenceData_schemeAt_of_le_length s t (le_of_lt h)).symm :=
   BlowupSequenceData.append_blowupMorphism_of_lt_length s.toBlowupSequenceData t.toBlowupSequenceData h
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+After the join the underlying adjacent map is the second sequence's map at the offset index, transported by the source and target stage identifications.
 -/
 theorem appendToBlowupSequenceData_blowupMorphism_of_length_lt {i : ℕ} (h : s.toBlowupSequenceData.length < i) :
     (s.appendToBlowupSequenceData t).map i =
@@ -477,8 +467,8 @@ theorem appendToBlowupSequenceData_blowupMorphism_of_length_lt {i : ℕ} (h : s.
         eqToHom (appendToBlowupSequenceData_schemeAt_of_length_lt s t h).symm :=
   BlowupSequenceData.append_blowupMorphism_of_length_lt s.toBlowupSequenceData t.toBlowupSequenceData h
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The join transition in the underlying data is the second sequence's first transition followed by its initial isomorphism to the first final stage. Identify the source and target with the corresponding appended objects to obtain the stated map.
 -/
 theorem appendToBlowupSequenceData_blowupMorphism_length :
     (s.appendToBlowupSequenceData t).map s.toBlowupSequenceData.length =
@@ -487,16 +477,16 @@ theorem appendToBlowupSequenceData_blowupMorphism_length :
         eqToHom (appendToBlowupSequenceData_schemeAt_of_le_length s t (le_refl s.toBlowupSequenceData.length)).symm :=
   BlowupSequenceData.append_blowupMorphism_length s.toBlowupSequenceData t.toBlowupSequenceData
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The unmarked center formula before the join pulls the first sequence's center back along the stage identification. Forgetting the markings leaves this formula intact.
 -/
 theorem appendToBlowupSequenceData_center_of_lt_length {i : ℕ} (h : i < s.toBlowupSequenceData.length) :
     (s.appendToBlowupSequenceData t).center i =
       (s.toBlowupSequenceData.center i).comap (eqToHom (appendToBlowupSequenceData_schemeAt_of_le_length s t (le_of_lt h))) :=
   BlowupSequenceData.append_center_of_lt_length s.toBlowupSequenceData t.toBlowupSequenceData h
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The underlying append after the join uses the second sequence's center at the offset index, pulled back through the identification with the appended stage.
 -/
 theorem appendToBlowupSequenceData_center_of_length_lt {i : ℕ} (h : s.toBlowupSequenceData.length < i) :
     (s.appendToBlowupSequenceData t).center i =
@@ -504,8 +494,8 @@ theorem appendToBlowupSequenceData_center_of_length_lt {i : ℕ} (h : s.toBlowup
         (eqToHom (appendToBlowupSequenceData_schemeAt_of_length_lt s t h)) :=
   BlowupSequenceData.append_center_of_length_lt s.toBlowupSequenceData t.toBlowupSequenceData h
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The underlying center at the join is the initial center of the second sequence transported to the first sequence's final stage by the inverse initial isomorphism, then pulled back to the join object.
 -/
 theorem appendToBlowupSequenceData_center_length :
     (s.appendToBlowupSequenceData t).center s.toBlowupSequenceData.length =
@@ -520,15 +510,15 @@ def appendProjectionToBase (i : ℕ) : (s.appendToBlowupSequenceData t).obj i �
     eqToHom (appendToBlowupSequenceData_schemeAt_of_length_lt s t (not_le.1 h)) ≫ t.proj (i - s.toBlowupSequenceData.length) ≫
       s.proj s.toBlowupSequenceData.length
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The projection definition at or before the join uses the first sequence's projection, preceded by the identification of the appended stage with that stage.
 -/
 theorem appendProjectionToBase_of_le_length {i : ℕ} (h : i ≤ s.toBlowupSequenceData.length) :
     s.appendProjectionToBase t i = eqToHom (appendToBlowupSequenceData_schemeAt_of_le_length s t h) ≫ s.proj i :=
   dif_pos h
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Beyond the join the projection uses the stage identification, the second sequence's projection from the offset stage to its base, and the first sequence's final projection to the original base.
 -/
 theorem appendProjectionToBase_of_length_lt {i : ℕ} (h : s.toBlowupSequenceData.length < i) :
     s.appendProjectionToBase t i =
@@ -542,23 +532,23 @@ def appendIdeal (i : ℕ) : ((s.appendToBlowupSequenceData t).obj i).IdealSheafD
   else
     (t.ideal (i - s.toBlowupSequenceData.length)).comap (eqToHom (appendToBlowupSequenceData_schemeAt_of_length_lt s t (not_le.1 h)))
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+At or before the join, the appended ideal is defined as the first sequence's ideal pulled back through the stage identification.
 -/
 theorem appendIdeal_of_le_length {i : ℕ} (h : i ≤ s.toBlowupSequenceData.length) :
     s.appendIdeal t i = (s.ideal i).comap (eqToHom (appendToBlowupSequenceData_schemeAt_of_le_length s t h)) :=
   dif_pos h
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Past the join, the appended ideal is defined as the second sequence's ideal at the offset, pulled back through the corresponding stage identification.
 -/
 theorem appendIdeal_of_length_lt {i : ℕ} (h : s.toBlowupSequenceData.length < i) :
     s.appendIdeal t i =
       (t.ideal (i - s.toBlowupSequenceData.length)).comap (eqToHom (appendToBlowupSequenceData_schemeAt_of_length_lt s t h)) :=
   dif_neg (not_le.2 h)
 
-/- English proof (translation)
-Substitute using the available equality. Both sides reduce to the same expression.
+/- English proof (authored)
+Substitute one equal index for the other. The selected ideal sheaf is then the same and both maps arise from the same identification of schemes, so their pullbacks agree.
 -/
 private theorem comap_eqToHom_congr {A : Scheme.{u}} (F : ℕ → Scheme.{u})
     (G : ∀ n : ℕ, (F n).IdealSheafData) {i j : ℕ} (hij : i = j)
@@ -567,8 +557,8 @@ private theorem comap_eqToHom_congr {A : Scheme.{u}} (F : ℕ → Scheme.{u})
   subst hij
   rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+Use the second branch for the stage just past the join. Its offset is one. Replacing the offset by one and the corresponding stage identification by the one to stage one yields the claimed ideal.
 -/
 theorem appendIdeal_length_succ :
     s.appendIdeal t (s.toBlowupSequenceData.length + 1) =
@@ -586,16 +576,16 @@ def appendBoundary (i : ℕ) : List ((s.appendToBlowupSequenceData t).obj i).Ide
     (t.boundary (i - s.toBlowupSequenceData.length)).map
       (fun D => D.comap (eqToHom (appendToBlowupSequenceData_schemeAt_of_length_lt s t (not_le.1 h))))
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+At or before the join the boundary definition takes the first list at that stage and pulls back every entry along the stage identification.
 -/
 theorem appendBoundary_of_le_length {i : ℕ} (h : i ≤ s.toBlowupSequenceData.length) :
     s.appendBoundary t i =
       (s.boundary i).map (fun D => D.comap (eqToHom (appendToBlowupSequenceData_schemeAt_of_le_length s t h))) :=
   dif_pos h
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Beyond the join the boundary definition selects the second list at the offset and pulls its entries back through the second-stage identification.
 -/
 theorem appendBoundary_of_length_lt {i : ℕ} (h : s.toBlowupSequenceData.length < i) :
     s.appendBoundary t i =
@@ -603,8 +593,8 @@ theorem appendBoundary_of_length_lt {i : ℕ} (h : s.toBlowupSequenceData.length
         (fun D => D.comap (eqToHom (appendToBlowupSequenceData_schemeAt_of_length_lt s t h))) :=
   dif_neg (not_le.2 h)
 
-/- English proof (translation)
-Substitute using the available equality. Both sides reduce to the same expression.
+/- English proof (authored)
+Identify the two equal indices. They give the same list and the same map identifying its scheme with the source, so the entrywise pullbacks agree.
 -/
 private theorem map_comap_eqToHom_congr {A : Scheme.{u}}
     {F : ℕ → Scheme.{u}} (B : ∀ n : ℕ, List (F n).IdealSheafData) (i j : ℕ) (hij : i = j)
@@ -613,8 +603,8 @@ private theorem map_comap_eqToHom_congr {A : Scheme.{u}}
   subst hij
   rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+Choose the second branch for the appended boundary at one step after the join. The second sequence's offset there is one, so the formula is precisely the entrywise pullback of its stage-one boundary.
 -/
 theorem appendBoundary_length_succ :
     s.appendBoundary t (s.toBlowupSequenceData.length + 1) =
@@ -627,26 +617,22 @@ theorem appendBoundary_length_succ :
     (s.toBlowupSequenceData.length + 1 - s.toBlowupSequenceData.length) 1 (by omega)
     (appendToBlowupSequenceData_schemeAt_of_length_lt s t hlt) (appendToBlowupSequenceData_schemeAt_length_succ s t)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+At zero the projection is formed from the first sequence's projection and the initial stage identification. The first projection at zero is the forward initial isomorphism, giving the forward map of the appended initial isomorphism.
 -/
 theorem appendProjectionToBase_zero : s.appendProjectionToBase t 0 = (s.appendToBlowupSequenceData t).isoZero.hom := by
   rw [appendProjectionToBase_of_le_length s t (Nat.zero_le _), appendToBlowupSequenceData_isoObjZero_hom, s.proj_zero]
 
-/- English proof (translation)
-Substitute using the available equality. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Use the equality of the indices to identify the two stage schemes. The identification map is then the identity, and composing it with the prescribed projection gives the original projection.
 -/
 private theorem projectionToBase_congr (d : MarkedBlowupSequenceData p I m E) {i j : ℕ} (h : i = j) :
     d.proj i = eqToHom (congrArg d.toBlowupSequenceData.obj h) ≫ d.proj j := by
   subst h
   simp
 
-/- English proof (translation)
-Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Before the join apply the first sequence's projection recursion and cancel the intermediate stage identification. At the join the second projection at one is its first transition followed by its initial isomorphism, which is the appended transition after identifying the stages. It is followed by the first final projection. After the join the second projection recursion applies at the offset index, and the first final projection is the same in both composites.
 -/
 theorem appendProjectionToBase_succ (i : ℕ) :
     s.appendProjectionToBase t (i + 1) = (s.appendToBlowupSequenceData t).map i ≫ s.appendProjectionToBase t i := by
@@ -672,15 +658,15 @@ theorem appendProjectionToBase_succ (i : ℕ) :
       projectionToBase_congr t hsub, hp1]
     simp
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At zero the ideal is the first initial ideal pulled back through the appended stage identification. The first initial ideal is the original ideal pulled back by the first initial isomorphism. Compose the two pullbacks to obtain the pullback along the appended initial isomorphism.
 -/
 theorem appendIdeal_zero : s.appendIdeal t 0 = I.comap (s.appendToBlowupSequenceData t).isoZero.hom := by
   rw [appendIdeal_of_le_length s t (Nat.zero_le _), s.ideal_zero, appendToBlowupSequenceData_isoObjZero_hom]
   exact (AlgebraicGeometry.Scheme.IdealSheafData.comap_comp ..).symm
 
-/- English proof (translation)
-Substitute using the available equality. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Identify the equal schemes. The equality-induced map is the identity and its pullback fixes each ideal. Both lists then consist of the pullbacks along the given morphism, in the same order.
 -/
 private theorem map_comap_eqToHom_comp {A B C : Scheme.{u}} (h : A = B) (g : B ⟶ C)
     (L : List C.IdealSheafData) :
@@ -689,8 +675,8 @@ private theorem map_comap_eqToHom_comp {A B C : Scheme.{u}} (h : A = B) (g : B �
   subst h
   simp [AlgebraicGeometry.Scheme.IdealSheafData.comap_id]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The stage-zero boundary comes from the first initial boundary pulled back along the appended stage identification. That first boundary pulls the given initial list back along the first initial isomorphism. Combine these pullbacks entrywise to get the list pulled back along the appended initial isomorphism.
 -/
 theorem appendBoundary_zero :
     s.appendBoundary t 0 = E.map (fun D => D.comap (s.appendToBlowupSequenceData t).isoZero.hom) := by
@@ -698,18 +684,8 @@ theorem appendBoundary_zero :
   exact map_comap_eqToHom_comp (appendToBlowupSequenceData_schemeAt_of_le_length s t (Nat.zero_le _))
     s.toBlowupSequenceData.isoZero.hom E
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Before and after the join, use the center-order property of the corresponding sequence and transport it by the stage identification. At the join, the second sequence has a first step and its initial ideal is the pullback of the first final ideal. Pull the inclusion for its initial center back along the inverse initial isomorphism. Support and the order locus both pull back under that isomorphism, and the two consecutive pulls of the initial ideal cancel. Transporting this inclusion to the join stage proves the result.
 -/
 theorem center_support_subset_orderAtLeastLocus_appendIdeal (hinv : ComapIsoInvariance.{u}) (i : ℕ)
     (hi : i < (s.appendToBlowupSequenceData t).length) :
@@ -762,14 +738,8 @@ theorem center_support_subset_orderAtLeastLocus_appendIdeal (hinv : ComapIsoInva
       (t.ideal (i - s.toBlowupSequenceData.length))
       (t.center_order (i - s.toBlowupSequenceData.length) hsub)
 
-/- English proof (translation)
-Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
-
-Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
+/- English proof (authored)
+Away from the join the center and its structural map to the field come from the corresponding step of one sequence, transported through a stage identification. Smoothness is preserved by this isomorphism. At the join take the second sequence's smooth initial center and pull it back along the inverse initial isomorphism. Its map to the field becomes the first final projection followed by the original structure map, since the inverse cancels the initial isomorphism. Transport once more to the appended join object.
 -/
 private theorem smooth_center_comp_appendProjectionToBase (hinv : ComapIsoInvariance.{u}) (i : ℕ)
     (hi : i < (s.appendToBlowupSequenceData t).length) :
@@ -803,16 +773,16 @@ private theorem smooth_center_comp_appendProjectionToBase (hinv : ComapIsoInvari
       (t.center_smooth (i - s.toBlowupSequenceData.length) (by omega))
     simpa only [eqToIso.hom, Category.assoc] using hC
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Pulling back along the forward isomorphism and then its inverse is pulling back along their composite on the original scheme. That composite is the identity, whose pullback fixes the ideal.
 -/
 private theorem comap_comap_hom_inv {A B : Scheme.{u}} (e : A ≅ B)
     (D : B.IdealSheafData) : (D.comap e.hom).comap e.inv = D := by
   rw [← AlgebraicGeometry.Scheme.IdealSheafData.comap_comp, e.inv_hom_id,
     AlgebraicGeometry.Scheme.IdealSheafData.comap_id]
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately.
+/- English proof (authored)
+Each entry is pulled back along the forward isomorphism and then along the inverse. This composite is the identity on the original scheme, so every entry returns to its original value and list order is preserved.
 -/
 private theorem map_comap_hom_map_comap_inv {A B : Scheme.{u}} (e : A ≅ B)
     (F : List B.IdealSheafData) :
@@ -821,8 +791,8 @@ private theorem map_comap_hom_map_comap_inv {A B : Scheme.{u}} (e : A ≅ B)
   | nil => rfl
   | cons D L ih => simp only [List.map_cons, ih, comap_comap_hom_inv]
 
-/- English proof (translation)
-Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
+/- English proof (authored)
+Substitute the given equality of schemes. The induced map is the identity, so it preserves the structural map, the center ideal, and every entry of the boundary. The required condition is the given strict normal crossings condition.
 -/
 private theorem hasStrictNormalCrossingsWith_comap_eqToHom {K : Type u} [Field K] {A B : Scheme.{u}}
     (h : A = B) (q : B ⟶ Spec (CommRingCat.of K)) (Z : B.IdealSheafData)
@@ -832,8 +802,8 @@ private theorem hasStrictNormalCrossingsWith_comap_eqToHom {K : Type u} [Field K
   subst h
   simpa [AlgebraicGeometry.Scheme.IdealSheafData.comap_id] using hZ
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Pull the given strict normal crossings condition back along the inverse isomorphism. The structural map simplifies to $q$ because the two isomorphisms cancel. Each boundary entry also returns to its original value by functoriality of pullback. The resulting center is the pullback of the given center along the inverse, as asserted.
 -/
 private theorem hasStrictNormalCrossingsWith_comap_iso_inv {K : Type u} [Field K] {A B : Scheme.{u}}
     (hinv : ComapIsoInvariance.{u}) (e : A ≅ B) (q : B ⟶ Spec (CommRingCat.of K))
@@ -844,12 +814,8 @@ private theorem hasStrictNormalCrossingsWith_comap_iso_inv {K : Type u} [Field K
   rw [Iso.symm_hom, Iso.inv_hom_id_assoc, map_comap_hom_map_comap_inv e F] at h2
   exact h2
 
-/- English proof (translation)
-Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Away from the join, the center, boundary, and structural map come from one sequence and the given strict normal crossings condition transports through the stage identification. At the join use the second sequence's initial center and its initial boundary, which is the pullback of the first final boundary. Pull its condition back along the inverse initial isomorphism. This restores the first final boundary and its structural map, and transports the center to the join. The appended stage identification gives the stated condition.
 -/
 private theorem hasStrictNormalCrossingsWith_appendBoundary (hinv : ComapIsoInvariance.{u}) (i : ℕ)
     (hi : i < (s.appendToBlowupSequenceData t).length) :
@@ -886,16 +852,16 @@ private theorem hasStrictNormalCrossingsWith_appendBoundary (hinv : ComapIsoInva
       (t.boundary (i - s.toBlowupSequenceData.length))
       (t.center_snc (i - s.toBlowupSequenceData.length) hsub)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Pullback first by the inverse and then by the forward isomorphism equals pullback by their composite on the original scheme. It is the identity, so the ideal is recovered.
 -/
 private theorem comap_comap_inv_hom {A B : Scheme.{u}} (e : A ≅ B) (D : A.IdealSheafData) :
     (D.comap e.inv).comap e.hom = D := by
   rw [← AlgebraicGeometry.Scheme.IdealSheafData.comap_comp, e.hom_inv_id,
     AlgebraicGeometry.Scheme.IdealSheafData.comap_id]
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Replace the source and target schemes by their equal counterparts. The identifying maps become identities and the transported ideals become the given ideals. The displayed relation is then the original exceptional-ideal product equality.
 -/
 private theorem exceptionalIdeal_pow_mul_comap_eqToHom {A A' B B' : Scheme.{u}} (eA : A = A')
     (eB : B = B') (g : A' ⟶ B') (Z J : B'.IdealSheafData) (J' : A'.IdealSheafData) (n : ℕ)
@@ -909,14 +875,8 @@ private theorem exceptionalIdeal_pow_mul_comap_eqToHom {A A' B B' : Scheme.{u}} 
     AlgebraicGeometry.Scheme.IdealSheafData.comap_id]
   exact h
 
-/- English proof (translation)
-Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Before and after the join, use the exceptional-ideal product equality of the relevant sequence and transport it along the stage identifications. At the join, express the exceptional ideal as the pullback of the center. Pulling the transported center back through the second initial isomorphism recovers the second initial center, so the exceptional ideal agrees with that of the second first blowup. The first final ideal pulls back to the second initial ideal along the same isomorphism. The successor relation for the second sequence's first step now gives the desired formula at the join.
 -/
 theorem exceptionalIdeal_pow_mul_appendIdeal_succ (_hinv : ComapIsoInvariance.{u}) (i : ℕ)
     (hi : i < (s.appendToBlowupSequenceData t).length) :
@@ -969,8 +929,8 @@ theorem exceptionalIdeal_pow_mul_appendIdeal_succ (_hinv : ComapIsoInvariance.{u
       (t.ideal (i - s.toBlowupSequenceData.length + 1)) m
       (t.ideal_succ (i - s.toBlowupSequenceData.length) hsub)
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Identify the two equal source schemes and the two equal target schemes. All inserted identifications are identity maps and leave the ideals unchanged. The transported boundary formula becomes the given list of strict transforms followed by the exceptional ideal.
 -/
 private theorem map_strictTransform_comap_eqToHom {A A' B B' : Scheme.{u}}
     (hA : A = A') (hB : B = B') (f : A' ⟶ B') (Z : B'.IdealSheafData)
@@ -985,10 +945,8 @@ private theorem map_strictTransform_comap_eqToHom {A A' B B' : Scheme.{u}}
   subst hL
   simp [AlgebraicGeometry.Scheme.IdealSheafData.comap_id]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Transport the center through the inverse target isomorphism. Its pullback through the forward map recovers the original center. By compatibility of strict transform with target isomorphisms, taking the strict transform after pulling back each boundary entry equals taking its strict transform along the composite blowup map with the transported center. The exceptional ideals also agree, since each is the pullback of the corresponding center. This gives the equality of the two boundary lists.
 -/
 private theorem map_strictTransform_comp_iso_hom (hinv : ComapIsoInvariance.{u}) {A B C : Scheme.{u}}
     (f : A ⟶ B) (e : B ≅ C) (Z : B.IdealSheafData) (Lst : List C.IdealSheafData)
@@ -1011,14 +969,8 @@ private theorem map_strictTransform_comp_iso_hom (hinv : ComapIsoInvariance.{u})
       AlgebraicGeometry.Scheme.IdealSheafData.comap_comp, hZ]
   rw [hL1, List.map_map, hfun, hexc]
 
-/- English proof (translation)
-Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Before or after the join use the boundary update of the corresponding sequence, transported through the adjacent stage identifications. At the join the second initial boundary is the pullback of the first final boundary. Its first update is therefore the list of strict transforms along the first transition of the second sequence, applied to that pulled-back list, followed by the exceptional ideal. Compatibility with the initial target isomorphism rewrites these as the strict transforms and exceptional ideal for the appended join transition.
 -/
 private theorem appendBoundary_succ (hinv : ComapIsoInvariance.{u}) (i : ℕ)
     (hi : i < (s.appendToBlowupSequenceData t).length) :
@@ -1090,63 +1042,63 @@ def append (hinv : ComapIsoInvariance.{u}) : MarkedBlowupSequenceData p I m E wh
   boundary_succ := fun i hi => appendBoundary_succ s t hinv i hi
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The marked append is built on the already constructed unmarked append, which is its underlying blowup data.
 -/
 theorem append_toBlowupSequenceData (hinv : ComapIsoInvariance.{u}) :
     (s.append t hinv).toBlowupSequenceData = s.appendToBlowupSequenceData t := rfl
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The marked append has the length of its underlying unmarked data, obtained by adding the two original lengths.
 -/
 theorem append_length (hinv : ComapIsoInvariance.{u}) :
     (s.append t hinv).toBlowupSequenceData.length =
       s.toBlowupSequenceData.length + t.toBlowupSequenceData.length := rfl
 
 @[simp]
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+Converting marked data to a marked sequence retains the underlying length. The append data have length equal to the sum of the original lengths.
 -/
 theorem append_toMarkedSequence_length (hinv : ComapIsoInvariance.{u}) :
     (s.append t hinv).toMarkedSequenceOfBlowups.toSequenceOfBlowups.length =
       s.toBlowupSequenceData.length + t.toBlowupSequenceData.length := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The appended marked data use the piecewise appended projection as their prescribed projection at every stage.
 -/
 theorem append_projectionToBase (hinv : ComapIsoInvariance.{u}) (i : ℕ) :
     (s.append t hinv).proj i = s.appendProjectionToBase t i := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The appended marked data use the piecewise appended ideal in their ideal field at every stage.
 -/
 theorem append_ideal (hinv : ComapIsoInvariance.{u}) (i : ℕ) :
     (s.append t hinv).ideal i = s.appendIdeal t i := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The boundary field of the marked append is the piecewise list that was defined for the append construction.
 -/
 theorem append_boundary (hinv : ComapIsoInvariance.{u}) (i : ℕ) :
     (s.append t hinv).boundary i = s.appendBoundary t i := rfl
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The underlying data of the marked append select the first sequence's stage at every index up to and including its length.
 -/
 theorem append_schemeAt_of_le_length (hinv : ComapIsoInvariance.{u}) {i : ℕ} (h : i ≤ s.toBlowupSequenceData.length) :
     (s.append t hinv).toBlowupSequenceData.obj i = s.toBlowupSequenceData.obj i :=
   appendToBlowupSequenceData_schemeAt_of_le_length s t h
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The underlying data of the marked append select the second sequence's stage beyond the join, at the index obtained by subtracting the first length.
 -/
 theorem append_schemeAt_of_length_lt (hinv : ComapIsoInvariance.{u}) {i : ℕ} (h : s.toBlowupSequenceData.length < i) :
     (s.append t hinv).toBlowupSequenceData.obj i =
       t.toBlowupSequenceData.obj (i - s.toBlowupSequenceData.length) :=
   appendToBlowupSequenceData_schemeAt_of_length_lt s t h
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+A positive second length puts the final stage strictly beyond the join. Its offset is the second length. The second branch of the ideal formula therefore gives the second final ideal pulled back through the identification with the appended final stage.
 -/
 theorem append_ideal_length_add_length (hinv : ComapIsoInvariance.{u}) (h : 0 < t.toBlowupSequenceData.length) :
     (s.append t hinv).ideal (s.toBlowupSequenceData.length + t.toBlowupSequenceData.length) =
@@ -1160,8 +1112,8 @@ theorem append_ideal_length_add_length (hinv : ComapIsoInvariance.{u}) (h : 0 < 
       (appendToBlowupSequenceData_schemeAt_length_add_length s t h)
   exact key
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+Since the second sequence has positive length, the total length lies past the join and its offset is the second length. Apply the second branch of the boundary definition at that offset to get the second final boundary pulled back entry by entry through the final stage identification.
 -/
 theorem append_boundary_length_add_length (hinv : ComapIsoInvariance.{u}) (h : 0 < t.toBlowupSequenceData.length) :
     (s.append t hinv).boundary (s.toBlowupSequenceData.length + t.toBlowupSequenceData.length) =

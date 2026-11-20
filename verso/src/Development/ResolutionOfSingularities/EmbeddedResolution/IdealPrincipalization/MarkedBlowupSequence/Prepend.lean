@@ -26,33 +26,33 @@ def prependIndex (f : ℕ → ℕ) : ℕ → ℕ
   | 0 => 0
   | (n + 1) => f n + 1
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The shifted index function is defined to send the newly inserted initial stage to zero.
 -/
 @[simp] theorem prependIndex_zero (f : ℕ → ℕ) : prependIndex f 0 = 0 := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+After the inserted initial stage, the shifted index function applies the original function at the preceding index and adds one.
 -/
 @[simp] theorem prependIndex_succ (f : ℕ → ℕ) (n : ℕ) : prependIndex f (n + 1) = f n + 1 := rfl
 
 def succIndex (f : ℕ → ℕ) : ℕ → ℕ := fun j => f j + 1
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The successor shift adds one to the original index value at every argument.
 -/
 @[simp] theorem succIndex_apply (f : ℕ → ℕ) (j : ℕ) : succIndex f j = f j + 1 := rfl
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Converting the prepended data to a sequence preserves all stage objects. The data at the new stage zero use the base scheme.
 -/
 private theorem prepend_schemeAt_zero (Z : X.IdealSheafData) (hZ : Blowup.IsBlowupAlongIdealSheaf (𝟙 X) Z)
     (d : BlowupSequenceData X) : (BlowupSequenceData.prepend Z hZ d).toSequenceOfBlowups.schemeAt 0 = X :=
   (BlowupSequenceData.toSequenceOfBlowups_schemeAt (BlowupSequenceData.prepend Z hZ d) 0).trans
     (BlowupSequenceData.prepend_schemeAt_zero Z hZ d)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Stage $n+1$ of the prepended data is stage $n$ of the original data. Both conversions to sequences preserve the stage objects, giving the claimed identification.
 -/
 private theorem prepend_schemeAt_succ (Z : X.IdealSheafData) (hZ : Blowup.IsBlowupAlongIdealSheaf (𝟙 X) Z)
     (d : BlowupSequenceData X) (n : ℕ) :
@@ -60,16 +60,16 @@ private theorem prepend_schemeAt_succ (Z : X.IdealSheafData) (hZ : Blowup.IsBlow
   (BlowupSequenceData.toSequenceOfBlowups_schemeAt (BlowupSequenceData.prepend Z hZ d) (n + 1)).trans
     ((BlowupSequenceData.prepend_schemeAt_succ Z hZ d n).trans (BlowupSequenceData.toSequenceOfBlowups_schemeAt d n).symm)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Both conversions to sequences retain the lengths of their input data. Prepending adds one transition to the original data, so it also adds one to the sequence length.
 -/
 private theorem prepend_length (Z : X.IdealSheafData) (hZ : Blowup.IsBlowupAlongIdealSheaf (𝟙 X) Z)
     (d : BlowupSequenceData X) :
     (BlowupSequenceData.prepend Z hZ d).toSequenceOfBlowups.length = d.toSequenceOfBlowups.length + 1 := by
   rw [BlowupSequenceData.toSequenceOfBlowups_length, BlowupSequenceData.prepend_length, BlowupSequenceData.toSequenceOfBlowups_length]
 
-/- English proof (translation)
-Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
+/- English proof (authored)
+Express the new length as the old length plus one. Cancel one from the two sides of the assumed inequality.
 -/
 private theorem le_length_of_succ_le_prepend_length (Z : X.IdealSheafData) (hZ : Blowup.IsBlowupAlongIdealSheaf (𝟙 X) Z)
     (d : BlowupSequenceData X) (n : ℕ)
@@ -91,8 +91,8 @@ private def prependMapOfLELength {φ : X' ⟶ X} {d' : BlowupSequenceData X'} {d
         c.map n (le_length_of_succ_le_prepend_length (Z.comap φ) hZ' d' n h) ≫
         eqToHom (prepend_schemeAt_succ Z hZ d (c.idx n)).symm
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The new source length is the old source length plus one. The shifted index evaluated there takes the old index at the old source length and adds one. This is the old target length plus one, which is the new target length.
 -/
 private theorem prependIndex_length_eq_prepend_length {φ : X' ⟶ X} {d' : BlowupSequenceData X'} {d : BlowupSequenceData X}
     (c : SequenceOfBlowupsPullback φ d'.toSequenceOfBlowups d.toSequenceOfBlowups) (Z : X.IdealSheafData)
@@ -101,12 +101,8 @@ private theorem prependIndex_length_eq_prepend_length {φ : X' ⟶ X} {d' : Blow
       (BlowupSequenceData.prepend Z hZ d).toSequenceOfBlowups.length := by
   rw [prepend_length, prepend_length, prependIndex_succ, c.idx_length]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data.
-
-Treat this case separately. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Treat this case separately. Establish an intermediate fact.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+/- English proof (authored)
+The new index is zero at stage zero, and the new target length is positive. At stage $n+1$ below the new source length, $n$ is below the old source length. Its original image is below the old target length, and adding one gives the claim.
 -/
 private theorem prependIndex_lt_prepend_length {φ : X' ⟶ X} {d' : BlowupSequenceData X'} {d : BlowupSequenceData X}
     (c : SequenceOfBlowupsPullback φ d'.toSequenceOfBlowups d.toSequenceOfBlowups) (Z : X.IdealSheafData)
@@ -127,12 +123,8 @@ private theorem prependIndex_lt_prepend_length {φ : X' ⟶ X} {d' : BlowupSeque
       simp only [prependIndex_succ]
       omega
 
-/- English proof (translation)
-Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Treat this case separately.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-Use linear arithmetic over natural numbers and integers.
+/- English proof (authored)
+The shifted value at zero is zero, while the next value is positive. At a later stage $n+1$ below the new source length, $n$ is below the old source length. The original comparison strictly increases from $n$ to $n+1$. Adding one to both values keeps that inequality.
 -/
 private theorem prependIndex_lt_prependIndex_succ {φ : X' ⟶ X} {d' : BlowupSequenceData X'} {d : BlowupSequenceData X}
     (c : SequenceOfBlowupsPullback φ d'.toSequenceOfBlowups d.toSequenceOfBlowups) (Z : X.IdealSheafData)
@@ -151,10 +143,8 @@ private theorem prependIndex_lt_prependIndex_succ {φ : X' ⟶ X} {d' : BlowupSe
       simp only [prependIndex_succ]
       omega
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+For the first shifted stage, the new first transition is the old initial isomorphism and the new projection from stage zero is the identity. This gives the old projection at zero. Inductively, the next shifted transition is the corresponding old transition, and composing with the preceding projection preserves the equality.
 -/
 private theorem prepend_projectionToBase_succ {Y : Scheme.{u}} (Z : Y.IdealSheafData)
     (hZ : Blowup.IsBlowupAlongIdealSheaf (𝟙 Y) Z) (d : BlowupSequenceData Y) (n : ℕ) :
@@ -170,8 +160,8 @@ private theorem prepend_projectionToBase_succ {Y : Scheme.{u}} (Z : Y.IdealSheaf
         BlowupSequenceData.prepend_blowupMorphism_succ Z hZ d m, ih]
       exact (BlowupSequenceData.projectionToBase_succ d m).symm
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The conversion from data to a blowup sequence keeps the projection to the base. At the new stage zero that projection is the forward map of the identity isomorphism, hence is the identity.
 -/
 private theorem prepend_toSequenceOfBlowups_projectionToBase_zero {Y : Scheme.{u}} (Z : Y.IdealSheafData)
     (hZ : Blowup.IsBlowupAlongIdealSheaf (𝟙 Y) Z) (d : BlowupSequenceData Y) :
@@ -179,8 +169,8 @@ private theorem prepend_toSequenceOfBlowups_projectionToBase_zero {Y : Scheme.{u
   (BlowupSequenceData.toSequenceOfBlowups_projectionToBase (BlowupSequenceData.prepend Z hZ d) 0).trans
     ((BlowupSequenceData.projectionToBase_zero (BlowupSequenceData.prepend Z hZ d)).trans rfl)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Convert both projections to the projections of their respective data. For the prepended data the projection from stage $n+1$ is the old projection from stage $n$, as shown by their common recursion.
 -/
 private theorem prepend_toSequenceOfBlowups_projectionToBase_succ {Y : Scheme.{u}} (Z : Y.IdealSheafData)
     (hZ : Blowup.IsBlowupAlongIdealSheaf (𝟙 Y) Z) (d : BlowupSequenceData Y) (n : ℕ) :
@@ -188,15 +178,15 @@ private theorem prepend_toSequenceOfBlowups_projectionToBase_succ {Y : Scheme.{u
   (BlowupSequenceData.toSequenceOfBlowups_projectionToBase (BlowupSequenceData.prepend Z hZ d) (n + 1)).trans
     ((prepend_projectionToBase_succ Z hZ d n).trans (BlowupSequenceData.toSequenceOfBlowups_projectionToBase d n).symm)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+An identification from an object to itself induced by equality is its identity morphism. Remove the identity on each side of the given morphism.
 -/
 private theorem eqToHom_comp_comp_eqToHom_refl {A B : Scheme.{u}} (f : A ⟶ B) (h1 : A = A)
     (h2 : B = B) : eqToHom h1 ≫ f ≫ eqToHom h2 = f := by
   rw [eqToHom_refl, eqToHom_refl, Category.id_comp, Category.comp_id]
 
-/- English proof (translation)
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The maps identifying the two new initial stages with their base schemes are identities. The stage-zero comparison is therefore the base-change morphism with an identity on either side.
 -/
 private theorem prependComparisonMap_zero {φ : X' ⟶ X} {d' : BlowupSequenceData X'} {d : BlowupSequenceData X}
     (c : SequenceOfBlowupsPullback φ d'.toSequenceOfBlowups d.toSequenceOfBlowups) (Z : X.IdealSheafData)
@@ -206,8 +196,8 @@ private theorem prependComparisonMap_zero {φ : X' ⟶ X} {d' : BlowupSequenceDa
   show 𝟙 X' ≫ φ ≫ 𝟙 X = φ
   simp
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The stage $n+1$ on the source identifies with old stage $n$, and its target identifies with the original image of $n$. The new comparison is the original comparison there composed with these identifications, which are identity maps on the identified objects.
 -/
 private theorem prependComparisonMap_succ {φ : X' ⟶ X} {d' : BlowupSequenceData X'} {d : BlowupSequenceData X}
     (c : SequenceOfBlowupsPullback φ d'.toSequenceOfBlowups d.toSequenceOfBlowups) (Z : X.IdealSheafData)
@@ -221,10 +211,8 @@ private theorem prependComparisonMap_succ {φ : X' ⟶ X} {d' : BlowupSequenceDa
   exact eqToHom_comp_comp_eqToHom_refl (c.map n hn) (prepend_schemeAt_succ (Z.comap φ) hZ' d' n)
     (prepend_schemeAt_succ Z hZ d (c.idx n)).symm
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The top and bottom of the new initial square are the base-change morphism, and both vertical maps are identities. This is a pullback, since any compatible pair of maps factors uniquely through the upper left object by its given map to the lower left object.
 -/
 private theorem isPullback_prependComparisonMap_zero {φ : X' ⟶ X} {d' : BlowupSequenceData X'} {d : BlowupSequenceData X}
     (c : SequenceOfBlowupsPullback φ d'.toSequenceOfBlowups d.toSequenceOfBlowups) (Z : X.IdealSheafData)
@@ -242,8 +230,8 @@ private theorem isPullback_prependComparisonMap_zero {φ : X' ⟶ X} {d' : Blowu
   rw [h1, h2, h3]
   exact key
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At shifted stage $n+1$, the comparison is the old comparison at $n$. The projections on its source and target are the two original projections from the corresponding stages. Hence the new square is the old pullback square at $n$.
 -/
 private theorem isPullback_prependComparisonMap_succ {φ : X' ⟶ X} {d' : BlowupSequenceData X'} {d : BlowupSequenceData X}
     (c : SequenceOfBlowupsPullback φ d'.toSequenceOfBlowups d.toSequenceOfBlowups) (Z : X.IdealSheafData)
@@ -262,8 +250,8 @@ private theorem isPullback_prependComparisonMap_succ {φ : X' ⟶ X} {d' : Blowu
   rw [h1, h2, h3]
   exact c.isPullback n (le_length_of_succ_le_prepend_length (Z.comap φ) hZ' d' n hj)
 
-/- English proof (translation)
-Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
+/- English proof (authored)
+Split the index into zero and a successor. At zero the comparison square is the identity square for the base-change morphism. At a successor it is the square of the corresponding original comparison. Both squares are pullbacks.
 -/
 private theorem isPullback_prependComparisonMap {φ : X' ⟶ X} {d' : BlowupSequenceData X'} {d : BlowupSequenceData X}
     (c : SequenceOfBlowupsPullback φ d'.toSequenceOfBlowups d.toSequenceOfBlowups) (Z : X.IdealSheafData)
@@ -276,10 +264,8 @@ private theorem isPullback_prependComparisonMap {φ : X' ⟶ X} {d' : BlowupSequ
   | zero => exact isPullback_prependComparisonMap_zero c Z hZ hZ' _
   | succ n => exact isPullback_prependComparisonMap_succ c Z hZ hZ' n _
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Identify the four objects using the given equalities. The four equalities between arrows with initially different types are now ordinary arrow equalities. Substituting them identifies the two composites with the two routes in the prescribed commuting square.
 -/
 private theorem comp_eq_comp_of_heq {A' B' A B Y' Y V' V : Scheme.{u}}
     (e0' : A' = Y') (e1' : B' = V') (e0 : A = Y) (e1 : B = V)
@@ -298,16 +284,16 @@ private theorem comp_eq_comp_of_heq {A' B' A B Y' Y V' V : Scheme.{u}}
   have h4 : R2 = s := eq_of_heq hR2
   rw [h1, h2, h3, h4, hw]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Conversion to sequences represents adjacent transitions by their stored maps. At index $n+1$, the prepended data store the same map as the original data at $n$, so the two sequence transitions agree.
 -/
 private theorem prepend_blowupMorphism_succ {Y : Scheme.{u}} (Z : Y.IdealSheafData)
     (hZ : Blowup.IsBlowupAlongIdealSheaf (𝟙 Y) Z) (d : BlowupSequenceData Y) (n : ℕ) :
     (BlowupSequenceData.prepend Z hZ d).toSequenceOfBlowups.transitionMapSucc (n + 1) = d.toSequenceOfBlowups.transitionMapSucc n := by
   rw [BlowupSequenceData.toSequenceOfBlowups_blowupMorphism, BlowupSequenceData.toSequenceOfBlowups_blowupMorphism, BlowupSequenceData.prepend_blowupMorphism_succ]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The new initial adjacent map is the original initial isomorphism to the base. The old projection at zero is also that isomorphism, since its stage-zero transition is the identity.
 -/
 private theorem prepend_blowupMorphism_zero_eq_projectionToBase {Y : Scheme.{u}} (Z : Y.IdealSheafData)
     (hZ : Blowup.IsBlowupAlongIdealSheaf (𝟙 Y) Z) (d : BlowupSequenceData Y) :
@@ -315,8 +301,8 @@ private theorem prepend_blowupMorphism_zero_eq_projectionToBase {Y : Scheme.{u}}
   rw [BlowupSequenceData.toSequenceOfBlowups_blowupMorphism, BlowupSequenceData.prepend_blowupMorphism_zero, SequenceOfBlowups.projectionToBase_zero,
     BlowupSequenceData.toSequenceOfBlowups_isoObjZero]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The projection to the base is the transition to stage zero followed by the new initial isomorphism. That isomorphism is the identity, so the transition and projection are equal.
 -/
 private theorem prepend_transitionMap_zero {Y : Scheme.{u}} (Z : Y.IdealSheafData)
     (hZ : Blowup.IsBlowupAlongIdealSheaf (𝟙 Y) Z) (d : BlowupSequenceData Y) (m : ℕ) (h : 0 ≤ m) :
@@ -326,8 +312,8 @@ private theorem prepend_transitionMap_zero {Y : Scheme.{u}} (Z : Y.IdealSheafDat
     Iso.refl_hom]
   exact (Category.comp_id _).symm
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+For consecutive indices the general transition is the adjacent blowup transition. The adjacent transitions after the new initial step are the old adjacent transitions shifted by one, which proves the equality.
 -/
 private theorem prepend_transitionMap_succ_self {Y : Scheme.{u}} (Z : Y.IdealSheafData)
     (hZ : Blowup.IsBlowupAlongIdealSheaf (𝟙 Y) Z) (d : BlowupSequenceData Y) (n : ℕ) (h : n + 1 ≤ n + 1 + 1)
@@ -337,10 +323,8 @@ private theorem prepend_transitionMap_succ_self {Y : Scheme.{u}} (Z : Y.IdealShe
       (prepend_blowupMorphism_succ Z hZ d n)).trans
     (SequenceOfBlowups.blowupMorphism_eq_transitionMap d.toSequenceOfBlowups n)
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the distance from $a$ to $b$. At distance zero both transitions are identities. At the successor, factor each transition through its penultimate stage. The first factors agree by the result for adjacent steps, and the remaining factors agree by induction. Composing gives the result.
 -/
 private theorem prepend_transitionMap_succ_succ {Y : Scheme.{u}} (Z : Y.IdealSheafData)
     (hZ : Blowup.IsBlowupAlongIdealSheaf (𝟙 Y) Z) (d : BlowupSequenceData Y) {a b : ℕ} (hab : a ≤ b)
@@ -367,10 +351,8 @@ private theorem prepend_transitionMap_succ_succ {Y : Scheme.{u}} (Z : Y.IdealShe
       rw [e3, e1, e2]
       exact SequenceOfBlowups.transitionMap_trans d.toSequenceOfBlowups hm (Nat.le_succ m)
 
-/- English proof (translation)
-Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
-
-Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+At the new initial step, the two transitions down to zero identify with projections from the relevant old stages. The square commutes because the old comparison at stage zero commutes with those projections and the base-change map. At each later step, remove the shift by one from both sets of indices. The resulting square is an original comparison square for a source transition, which commutes by assumption.
 -/
 private theorem blowupMorphism_comp_prependComparisonMap {φ : X' ⟶ X} {d' : BlowupSequenceData X'} {d : BlowupSequenceData X}
     (c : SequenceOfBlowupsPullback φ d'.toSequenceOfBlowups d.toSequenceOfBlowups) (Z : X.IdealSheafData)
@@ -409,10 +391,8 @@ private theorem blowupMorphism_comp_prependComparisonMap {φ : X' ⟶ X} {d' : B
       · exact heq_of_eq (prepend_transitionMap_succ_succ Z hZ d (le_of_lt (c.idx_strictMono n hn))
           (Nat.add_le_add_right (le_of_lt (c.idx_strictMono n hn)) 1))
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+Use the specified identifications of the source and target schemes. Under these identifications the two transported ideal sheaves are the originally given ideal sheaves, and the extra maps on either side of the pullback morphism are identities. The equality is then the assumed pullback equality.
 -/
 private theorem comap_eq_comap_eqToHom_comp_comp_eqToHom_of_heq {A A' B B' : Scheme.{u}} (hA : A' = A) (hB : B = B')
     (g : A ⟶ B) (J : B.IdealSheafData) (K : A.IdealSheafData) (hK : K = J.comap g)
@@ -426,10 +406,8 @@ private theorem comap_eq_comap_eqToHom_comp_comp_eqToHom_of_heq {A A' B B' : Sch
   rw [e1, e2, hK]
   simp
 
-/- English proof (translation)
-Split into cases according to the possible forms of the given data. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+At stage zero the two new centers are the chosen ideal and its pullback under the base-change morphism, which is the initial comparison map. At stage $n+1$ the two centers and the comparison map identify with those of the original comparison at $n$. Its center pullback equality supplies the assertion.
 -/
 private theorem prepend_center_eq_comap_prependIndex {φ : X' ⟶ X} {d' : BlowupSequenceData X'} {d : BlowupSequenceData X}
     (c : SequenceOfBlowupsPullback φ d'.toSequenceOfBlowups d.toSequenceOfBlowups) (Z : X.IdealSheafData)
@@ -467,10 +445,8 @@ private theorem prepend_center_eq_comap_prependIndex {φ : X' ⟶ X} {d' : Blowu
             ((BlowupSequenceData.prepend_center_succ (Z.comap φ) hZ' d' n).trans
               (BlowupSequenceData.toSequenceOfBlowups_center d' n).symm))
 
-/- English proof (translation)
-Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+At the new stage zero, the center is the assumed nonunit pullback ideal. At each later index below the new length, the center is an old center at an index below the old length. Its ideal is nonunit by the original comparison property.
 -/
 private theorem prepend_center_ne_top {φ : X' ⟶ X} {d' : BlowupSequenceData X'} {d : BlowupSequenceData X}
     (c : SequenceOfBlowupsPullback φ d'.toSequenceOfBlowups d.toSequenceOfBlowups) (Z : X.IdealSheafData)
@@ -496,8 +472,8 @@ private theorem prepend_center_ne_top {φ : X' ⟶ X} {d' : BlowupSequenceData X
       intro htop
       exact c.center_ne_top n hn (h1.symm.trans htop)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The prepended data at stage $n+1$ use the old center at stage $n$. Conversion to sequences preserves both centers.
 -/
 private theorem prepend_center_succ {Y : Scheme.{u}} (Z : Y.IdealSheafData)
     (hZ : Blowup.IsBlowupAlongIdealSheaf (𝟙 Y) Z) (d : BlowupSequenceData Y) (n : ℕ) :
@@ -505,12 +481,8 @@ private theorem prepend_center_succ {Y : Scheme.{u}} (Z : Y.IdealSheafData)
   (BlowupSequenceData.toSequenceOfBlowups_center (BlowupSequenceData.prepend Z hZ d) (n + 1)).trans
     ((BlowupSequenceData.prepend_center_succ Z hZ d n).trans (BlowupSequenceData.toSequenceOfBlowups_center d n).symm)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The inserted target index zero is used by the inserted source index zero, so an omitted target index must have the form $n+1$. If old index $n$ occurred in the original comparison, its matching shifted source index would hit $n+1$. Thus $n$ was omitted originally. The center and projection at the shifted stage agree with those at old stage $n$, so the original omission condition excludes any equality with a base-change point.
 -/
 private theorem ne_projectionToBase_of_forall_prependIndex_ne {φ : X' ⟶ X} {d' : BlowupSequenceData X'} {d : BlowupSequenceData X}
     (c : SequenceOfBlowupsPullback φ d'.toSequenceOfBlowups d.toSequenceOfBlowups) (Z : X.IdealSheafData)
@@ -563,8 +535,8 @@ private def mapToPrependSuccIndex {φ : X' ⟶ X} {d' : BlowupSequenceData X'} {
     d'.toSequenceOfBlowups.schemeAt j ⟶ (BlowupSequenceData.prepend Z hZ d).toSequenceOfBlowups.schemeAt (succIndex c.idx j) :=
   c.map j hj ≫ eqToHom (prepend_schemeAt_succ Z hZ d (c.idx j)).symm
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The original index function sends the original source length to the original target length. Adding one gives the new target length since only the target was prepended.
 -/
 private theorem succIndex_length_eq_prepend_length {φ : X' ⟶ X} {d' : BlowupSequenceData X'} {d : BlowupSequenceData X}
     (c : SequenceOfBlowupsPullback φ d'.toSequenceOfBlowups d.toSequenceOfBlowups) (Z : X.IdealSheafData)
@@ -572,8 +544,8 @@ private theorem succIndex_length_eq_prepend_length {φ : X' ⟶ X} {d' : BlowupS
     succIndex c.idx d'.toSequenceOfBlowups.length = (BlowupSequenceData.prepend Z hZ d).toSequenceOfBlowups.length := by
   rw [succIndex_apply, prepend_length, c.idx_length]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
+/- English proof (authored)
+An index below the original source length has image below the original target length. Add one to both sides and identify the new target length as the original length plus one.
 -/
 private theorem succIndex_lt_prepend_length {φ : X' ⟶ X} {d' : BlowupSequenceData X'} {d : BlowupSequenceData X}
     (c : SequenceOfBlowupsPullback φ d'.toSequenceOfBlowups d.toSequenceOfBlowups) (Z : X.IdealSheafData)
@@ -585,8 +557,8 @@ private theorem succIndex_lt_prepend_length {φ : X' ⟶ X} {d' : BlowupSequence
   rw [hlen, succIndex_apply]
   omega
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+/- English proof (authored)
+The original comparison indices strictly increase at this step. Adding one to each of the two successive values preserves the strict inequality.
 -/
 private theorem succIndex_lt_succIndex_succ {φ : X' ⟶ X} {d' : BlowupSequenceData X'} {d : BlowupSequenceData X}
     (c : SequenceOfBlowupsPullback φ d'.toSequenceOfBlowups d.toSequenceOfBlowups) (Z : X.IdealSheafData)
@@ -596,8 +568,8 @@ private theorem succIndex_lt_succIndex_succ {φ : X' ⟶ X} {d' : BlowupSequence
   simp only [succIndex_apply]
   omega
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The new comparison map is the original map with its target identified with the shifted stage. The projection of that shifted stage is the old projection. Under these identifications the square is the original pullback square.
 -/
 private theorem isPullback_comparisonMapOfComapEqTop {φ : X' ⟶ X} {d' : BlowupSequenceData X'} {d : BlowupSequenceData X}
     (c : SequenceOfBlowupsPullback φ d'.toSequenceOfBlowups d.toSequenceOfBlowups) (Z : X.IdealSheafData)
@@ -612,15 +584,15 @@ private theorem isPullback_comparisonMapOfComapEqTop {φ : X' ⟶ X} {d' : Blowu
   rw [h1, h2]
   exact c.isPullback j hj
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The equality-induced map from the target to itself is its identity. The right identity law then leaves the original morphism.
 -/
 private theorem comp_eqToHom_refl {A B : Scheme.{u}} (f : A ⟶ B) (h : B = B) :
     f ≫ eqToHom h = f := by
   rw [eqToHom_refl, Category.comp_id]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The two target stage descriptions identify the same scheme. Consequently the new comparison is the old comparison followed by the identity of its target.
 -/
 private theorem comparisonMapOfComapEqTop_eq_map {φ : X' ⟶ X} {d' : BlowupSequenceData X'} {d : BlowupSequenceData X}
     (c : SequenceOfBlowupsPullback φ d'.toSequenceOfBlowups d.toSequenceOfBlowups) (Z : X.IdealSheafData)
@@ -628,8 +600,8 @@ private theorem comparisonMapOfComapEqTop_eq_map {φ : X' ⟶ X} {d' : BlowupSeq
     mapToPrependSuccIndex c Z hZ j hj = c.map j hj :=
   comp_eqToHom_refl (c.map j hj) (prepend_schemeAt_succ Z hZ d (c.idx j)).symm
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At the two consecutive source indices the comparison maps agree with the old ones. The target transition between their shifted images equals the old transition between the unshifted images. The desired commutativity is then the old step commutativity.
 -/
 private theorem blowupMorphism_comp_comparisonMapOfComapEqTop {φ : X' ⟶ X} {d' : BlowupSequenceData X'} {d : BlowupSequenceData X}
     (c : SequenceOfBlowupsPullback φ d'.toSequenceOfBlowups d.toSequenceOfBlowups) (Z : X.IdealSheafData)
@@ -650,8 +622,8 @@ private theorem blowupMorphism_comp_comparisonMapOfComapEqTop {φ : X' ⟶ X} {d
   rw [h1, h2, hdown]
   exact c.step j hj
 
-/- English proof (translation)
-Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Identify the two target schemes by their specified equality. The two target ideals then become equal, and the equality-induced map in the composite is an identity. The resulting pullback equality is the assumed one.
 -/
 private theorem comap_eq_comap_comp_eqToHom_of_heq {A B B' : Scheme.{u}} (hB : B = B') (g : A ⟶ B)
     (J : B.IdealSheafData) (J' : B'.IdealSheafData) (K : A.IdealSheafData)
@@ -663,8 +635,8 @@ private theorem comap_eq_comap_comp_eqToHom_of_heq {A B B' : Scheme.{u}} (hB : B
   rw [hK]
   simp
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+At the new target index the center is the old target center, because that index was shifted up by one. The new comparison uses the old comparison under the same target identification. Transport the original equality that pulls this center back to the source center.
 -/
 private theorem center_eq_comap_prepend_center_succIndex {φ : X' ⟶ X} {d' : BlowupSequenceData X'} {d : BlowupSequenceData X}
     (c : SequenceOfBlowupsPullback φ d'.toSequenceOfBlowups d.toSequenceOfBlowups) (Z : X.IdealSheafData)
@@ -687,24 +659,16 @@ private theorem center_eq_comap_prepend_center_succIndex {φ : X' ⟶ X} {d' : B
     ((BlowupSequenceData.prepend Z hZ d).toSequenceOfBlowups.center (c.idx j + 1))
     (d'.toSequenceOfBlowups.center j) hc (heq_of_eq hJ)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The source sequence stays at its original stages in this construction. At each genuine source step the nonunit condition is already part of the original pullback comparison.
 -/
 private theorem center_ne_top_of_prepend_comap_eq_top {φ : X' ⟶ X} {d' : BlowupSequenceData X'} {d : BlowupSequenceData X}
     (c : SequenceOfBlowupsPullback φ d'.toSequenceOfBlowups d.toSequenceOfBlowups) (_Z : X.IdealSheafData)
     (_hZ : Blowup.IsBlowupAlongIdealSheaf (𝟙 X) _Z) (j : ℕ) (hj : j < d'.toSequenceOfBlowups.length) :
     d'.toSequenceOfBlowups.center j ≠ ⊤ := c.center_ne_top j hj
 
-/- English proof (translation)
-Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+If the omitted target stage is zero, its center is the new ideal and its projection is the identity. A point of the source mapping to its support would belong to the support of the pulled-back ideal, impossible because that ideal is the unit ideal. If the omitted stage is $n+1$, the old index $n$ was omitted, since all original comparison indices are shifted by one. The shifted center and projection are the old ones, so the old omission condition applies.
 -/
 private theorem ne_projectionToBase_of_forall_succIndex_ne {φ : X' ⟶ X} {d' : BlowupSequenceData X'} {d : BlowupSequenceData X}
     (c : SequenceOfBlowupsPullback φ d'.toSequenceOfBlowups d.toSequenceOfBlowups) (Z : X.IdealSheafData)
@@ -765,8 +729,8 @@ def prependOfComapEqTop {φ : X' ⟶ X} {d' : BlowupSequenceData X'} {d : Blowup
 
 end SequenceOfBlowupsPullback
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. A detailed English derivation is pending.
+/- English proof (authored)
+Choose a comparison witnessing the original pullback relation. Extend it by matching the new initial stages and shifting the old matching indices by one. The given blowup identifications and nonunit pullback ideal supply the new first step, and the established stage comparisons verify the pullback relation for the extended sequences.
 -/
 theorem IsPullbackBlowupSequence.prepend_of_comap_ne_top {X X' : Scheme.{u}} {φ : X' ⟶ X} {d' : BlowupSequenceData X'}
     {d : BlowupSequenceData X} (h : IsPullbackBlowupSequence φ d'.toSequenceOfBlowups d.toSequenceOfBlowups) (Z : X.IdealSheafData)
@@ -776,8 +740,8 @@ theorem IsPullbackBlowupSequence.prepend_of_comap_ne_top {X X' : Scheme.{u}} {φ
   obtain ⟨c⟩ := h.nonempty_sequenceOfBlowupsPullback
   exact (c.prepend Z hZ hZ' hne).isPullbackSequenceOfBlowups
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. A detailed English derivation is pending.
+/- English proof (authored)
+Choose a comparison for the original pullback relation. The new target center pulls back to the unit ideal, so the target's initial stage is omitted by the comparison. Shift its old matching indices by one, retaining the source sequence and its maps. The constructed comparison then witnesses the claimed pullback relation.
 -/
 theorem IsPullbackBlowupSequence.prepend_of_comap_eq_top {X X' : Scheme.{u}} {φ : X' ⟶ X} {d' : BlowupSequenceData X'}
     {d : BlowupSequenceData X} (h : IsPullbackBlowupSequence φ d'.toSequenceOfBlowups d.toSequenceOfBlowups) (Z : X.IdealSheafData)
@@ -801,8 +765,8 @@ private def prependMapOfLevelwise {X X' : Scheme.{u}} (φ : X' ⟶ X) {d' : Blow
         σ n (SequenceOfBlowupsPullback.le_length_of_succ_le_prepend_length (Z.comap φ) hZ' d' n h) ≫
         eqToHom (SequenceOfBlowupsPullback.prepend_schemeAt_succ Z hZ d n).symm
 
-/- English proof (translation)
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The newly inserted stages are the two base schemes. Their identifications with those bases are identities, leaving the base-change morphism as the levelwise map at stage zero.
 -/
 private theorem strictPrependComparisonMap_zero {X X' : Scheme.{u}} (φ : X' ⟶ X) {d' : BlowupSequenceData X'}
     {d : BlowupSequenceData X} (Z : X.IdealSheafData) (hZ : Blowup.IsBlowupAlongIdealSheaf (𝟙 X) Z)
@@ -813,8 +777,8 @@ private theorem strictPrependComparisonMap_zero {X X' : Scheme.{u}} (φ : X' ⟶
   show 𝟙 X' ≫ φ ≫ 𝟙 X = φ
   simp
 
-/- English proof (translation)
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+After the inserted initial stage, stage $n+1$ identifies with old stage $n$ in both sequences. The new map is the old levelwise map at $n$ composed with the identity on each of those identified stages.
 -/
 private theorem strictPrependComparisonMap_succ {X X' : Scheme.{u}} (φ : X' ⟶ X) {d' : BlowupSequenceData X'}
     {d : BlowupSequenceData X} (Z : X.IdealSheafData) (hZ : Blowup.IsBlowupAlongIdealSheaf (𝟙 X) Z)
@@ -826,18 +790,16 @@ private theorem strictPrependComparisonMap_succ {X X' : Scheme.{u}} (φ : X' ⟶
   show 𝟙 (d'.toSequenceOfBlowups.schemeAt n) ≫ σ n hn ≫ 𝟙 (d.toSequenceOfBlowups.schemeAt n) = σ n hn
   simp
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Conversion keeps the chosen initial isomorphism of the data. In prepended data it is the identity isomorphism of the base, so its forward map is the identity.
 -/
 private theorem prepend_isoObjZero_hom {Y : Scheme.{u}} (Z : Y.IdealSheafData)
     (hZ : Blowup.IsBlowupAlongIdealSheaf (𝟙 Y) Z) (d : BlowupSequenceData Y) :
     (BlowupSequenceData.prepend Z hZ d).toSequenceOfBlowups.isoZero.hom = 𝟙 Y := by
   rw [BlowupSequenceData.toSequenceOfBlowups_isoObjZero, BlowupSequenceData.prepend_isoObjZero, Iso.refl_hom]
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+Substitute the two object identifications. Each of the given arrows then equals the identity of its corresponding scheme, and the identification maps also become identities. Both composites reduce to the given morphism.
 -/
 private theorem eqToHom_conj_comp_eq_comp_of_heq_id {A B P Q : Scheme.{u}} (eP : P = A) (eQ : Q = B)
     (ψ : A ⟶ B) (I : Q ⟶ B) (J : P ⟶ A) (hI : HEq I (𝟙 B)) (hJ : HEq J (𝟙 A)) :
@@ -849,16 +811,16 @@ private theorem eqToHom_conj_comp_eq_comp_of_heq_id {A B P Q : Scheme.{u}} (eP :
   rw [h1, h2]
   simp
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Conversion preserves adjacent maps and the initial isomorphism. The stored first transition of the prepended data is the old initial isomorphism's forward map, which gives the asserted transition.
 -/
 private theorem prepend_blowupMorphism_zero {Y : Scheme.{u}} (Z : Y.IdealSheafData)
     (hZ : Blowup.IsBlowupAlongIdealSheaf (𝟙 Y) Z) (d : BlowupSequenceData Y) :
     (BlowupSequenceData.prepend Z hZ d).toSequenceOfBlowups.transitionMapSucc 0 = d.toSequenceOfBlowups.isoZero.hom := by
   rw [BlowupSequenceData.toSequenceOfBlowups_blowupMorphism, BlowupSequenceData.prepend_blowupMorphism_zero, BlowupSequenceData.toSequenceOfBlowups_isoObjZero]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The prepended data place the chosen ideal at the new initial center. Conversion to a sequence retains that center.
 -/
 private theorem prepend_center_zero {Y : Scheme.{u}} (Z : Y.IdealSheafData)
     (hZ : Blowup.IsBlowupAlongIdealSheaf (𝟙 Y) Z) (d : BlowupSequenceData Y) :
@@ -866,8 +828,8 @@ private theorem prepend_center_zero {Y : Scheme.{u}} (Z : Y.IdealSheafData)
   (BlowupSequenceData.toSequenceOfBlowups_center (BlowupSequenceData.prepend Z hZ d) 0).trans
     (BlowupSequenceData.prepend_center_zero Z hZ d)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Replace all four morphisms by their specified equals. The resulting square is the given pullback square.
 -/
 private theorem isPullback_congr {P Q R S : Scheme.{u}} {f f' : P ⟶ Q} {g g' : P ⟶ R}
     {h h' : Q ⟶ S} {k k' : R ⟶ S} (hf : f = f') (hg : g = g') (hh : h = h') (hk : k = k')
@@ -875,14 +837,8 @@ private theorem isPullback_congr {P Q R S : Scheme.{u}} {f f' : P ⟶ Q} {g g' :
   rw [hf, hg, hh, hk]
   exact H
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
-
-Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
-
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The two sequences originally have equal lengths, so their lengths remain equal after adding one step to each. Use the base-change morphism at the new initial stage and the old levelwise map at each later stage. The initial compatibility holds because the new base identifications are identities. The first step square is the old initial compatibility square, whose vertical maps are the old initial isomorphisms, hence it is a pullback. Each later step is an old pullback square. The first centers are related by pullback by their choice, and the later centers inherit the given center relation.
 -/
 theorem IsStrictPullbackBlowupSeq.prepend {X X' : Scheme.{u}} {φ : X' ⟶ X} {d' : BlowupSequenceData X'}
     {d : BlowupSequenceData X} (h : IsStrictPullbackBlowupSeq φ d'.toSequenceOfBlowups d.toSequenceOfBlowups) (Z : X.IdealSheafData)

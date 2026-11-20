@@ -22,8 +22,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The closure of the subset is irreducible and contained in the closed ambient set. Since it contains the original subset, maximality makes the closure equal to that subset, which is therefore closed.
 -/
 theorem isClosed_of_maximal_isIrreducible_subset {X : Scheme.{u}} {C S : Set X}
     (hC : IsIrreducible C) (hCS : C ⊆ S)
@@ -33,8 +33,8 @@ theorem isClosed_of_maximal_isIrreducible_subset {X : Scheme.{u}} {C S : Set X}
     hmax (closure C) hC.closure (hS.closure_subset_iff.mpr hCS) subset_closure
   exact closure_eq_iff_isClosed.mp h
 
-/- English proof (translation)
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+The maximal irreducible subset is closed because taking its closure preserves irreducibility and containment in the given closed set. Schemes have a generic point for every irreducible closed subset, giving a point whose closure is the required subset.
 -/
 theorem exists_closure_singleton_eq_of_maximal_irreducible {X : Scheme.{u}} {C S : Set X}
     (hC : IsIrreducible C) (hCS : C ⊆ S)
@@ -44,10 +44,8 @@ theorem exists_closure_singleton_eq_of_maximal_irreducible {X : Scheme.{u}} {C S
   obtain ⟨ξ, hξ⟩ := QuasiSober.sober hC hCclosed
   exact ⟨ξ, hξ⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The closure of the second point is irreducible and lies in the closed set. It contains the first point and hence contains its closure, which is the given maximal irreducible subset. Maximality identifies the two closures. In a scheme points with equal closures are equal.
 -/
 theorem eq_of_mem_closure_singleton_of_maximal_irreducible {X : Scheme.{u}} {C S : Set X}
     (_hC : IsIrreducible C) (_hCS : C ⊆ S)
@@ -67,21 +65,21 @@ theorem eq_of_mem_closure_singleton_of_maximal_irreducible {X : Scheme.{u}} {C S
 
 def totalDegree {T : Type*} (f : T →₀ ℕ) : ℕ := f.sum fun _ n => n
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The zero exponent vector has empty support. The sum of its exponent entries is the empty sum, which is zero.
 -/
 theorem totalDegree_zero {T : Type*} : totalDegree (0 : T →₀ ℕ) = 0 := by
   simp [totalDegree]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Total degree sums the entries of the exponent vector. Every entry of the sum of the vectors is the sum of the corresponding entries. Summing over the union of their finite supports gives the sum of the two total degrees.
 -/
 theorem totalDegree_add {T : Type*} (f g : T →₀ ℕ) : totalDegree (f + g) = totalDegree f + totalDegree g := by
   show (f + g).sum (fun _ n => n) = f.sum (fun _ n => n) + g.sum (fun _ n => n)
   exact Finsupp.sum_add_index' (fun _ => rfl) (fun _ _ _ => rfl)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+All exponent entries outside the indicated index are zero. Summing the entries therefore gives the specified exponent, including the case when that exponent is zero.
 -/
 theorem totalDegree_single {T : Type*} [DecidableEq T] (t : T) (n : ℕ) :
     totalDegree (Finsupp.single t n) = n := by
@@ -91,15 +89,15 @@ theorem totalDegree_single {T : Type*} [DecidableEq T] (t : T) (n : ℕ) :
 def powProd {A : Type*} [CommRing A] {T : Type*} (x : T → A) (f : T →₀ ℕ) : A :=
   f.prod fun t n => x t ^ n
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The exponent vector has empty support, so the product of powers is the empty product, which is one.
 -/
 theorem powProd_zero {A : Type*} [CommRing A] {T : Type*} (x : T → A) :
     powProd x (0 : T →₀ ℕ) = 1 := by
   simp [powProd]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+For each variable, a power with the sum of two exponents is the product of the two individual powers. Multiply these identities over the union of the supports, using a factor of one for each zero exponent. Commutativity groups the factors into the separate products.
 -/
 theorem powProd_add {A : Type*} [CommRing A] {T : Type*} (x : T → A) (f g : T →₀ ℕ) :
     powProd x (f + g) = powProd x f * powProd x g := by
@@ -107,24 +105,24 @@ theorem powProd_add {A : Type*} [CommRing A] {T : Type*} (x : T → A) (f g : T 
       = f.prod (fun t n => x t ^ n) * g.prod (fun t n => x t ^ n)
   exact Finsupp.prod_add_index' (fun a => pow_zero (x a)) (fun a b₁ b₂ => pow_add (x a) b₁ b₂)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Only the indicated index can have a nonzero exponent. All other factors are one, so the product is the single specified power.
 -/
 theorem powProd_single {A : Type*} [CommRing A] {T : Type*} [DecidableEq T] (x : T → A)
     (t : T) (n : ℕ) : powProd x (Finsupp.single t n) = x t ^ n := by
   show (Finsupp.single t n).prod (fun t m => x t ^ m) = x t ^ n
   exact Finsupp.prod_single_index (pow_zero (x t))
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+A ring homomorphism preserves finite products and nonnegative powers. Apply it to each factor in the product to obtain the corresponding power of the image.
 -/
 theorem map_powProd {A B : Type*} [CommRing A] [CommRing B] {T : Type*} (φ : A →+* B)
     (x : T → A) (f : T →₀ ℕ) : φ (powProd x f) = powProd (fun t => φ (x t)) f := by
   classical
   simp [powProd, Finsupp.prod, map_prod, map_pow]
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+For each index, the given element’s specified power belongs to the same power of the ideal. Successively multiply these memberships, using that multiplication of ideal powers adds their exponents. The empty product belongs to the zeroth power. This proves membership for the entire finite product.
 -/
 private theorem prod_pow_mem_pow_sum {A : Type*} [CommRing A] {T : Type*}
     (x : T → A) (I : Ideal A) (hx : ∀ t : T, x t ∈ I) (g : T → ℕ) (s : Finset T) :
@@ -136,8 +134,8 @@ private theorem prod_pow_mem_pow_sum {A : Type*} [CommRing A] {T : Type*}
     rw [Finset.prod_insert ha, Finset.sum_insert ha, pow_add]
     exact Ideal.mul_mem_mul (Ideal.pow_mem_pow (hx a) (g a)) ih
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The product of powers and the total degree are taken over the support of the exponent vector. Each base element belongs to the ideal, so the finite product lies in the ideal power whose exponent is the sum of those exponents.
 -/
 theorem powProd_mem_pow_totalDegree {A : Type*} [CommRing A] {T : Type*} (x : T → A) (I : Ideal A)
     (hx : ∀ t : T, x t ∈ I) (f : T →₀ ℕ) : powProd x f ∈ I ^ totalDegree f := by
@@ -150,10 +148,8 @@ def chartMonomial {A : Type*} [CommRing A] {m : ℕ} (x : Fin m → A) (S : Fins
     (s : Fin m) (c : ℕ) (f : ↥(S.erase s) →₀ ℕ) : A :=
   x s ^ (c - totalDegree f) * powProd (fun t : ↥(S.erase s) => x t.1) f
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
-
-Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Apply the homomorphism to each factor. Each image is a power of the product of the assigned target element and the same common factor. Commutativity lets us collect all powers of the common factor into one power with exponent equal to the total degree. The remaining factors give the product of powers of the target elements.
 -/
 private theorem map_powProd_eq_powProd_mul_pow_totalDegree {A B : Type*} [CommRing A] [CommRing B]
     {T : Type*} (φ : A →+* B) (u : T → A) (v : T → B) (b : B)
@@ -168,12 +164,8 @@ private theorem map_powProd_eq_powProd_mul_pow_totalDegree {A B : Type*} [CommRi
   · intro t n
     simp only [powProd_single, totalDegree_single, map_pow, h, mul_pow]
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Each nondistinguished center factor pulls back to the corresponding chart factor times the distinguished coordinate. Their total degree contributes that many distinguished factors. The initial distinguished power pulls back unchanged. Its exponent is the difference between the requested degree and the total degree of the other factors, so the exponents add to exactly the requested degree.
 -/
 theorem map_chartMonomial {A B : Type*} [CommRing A] [CommRing B] (φ : A →+* B) {m : ℕ}
     (x : Fin m → A) (y : Fin m → B) (S : Finset (Fin m)) (s : Fin m)
@@ -200,8 +192,8 @@ def chartMonomialIdeal {A : Type*} [CommRing A] {m : ℕ} (x : Fin m → A) (S :
     (s : Fin m) (c : ℕ) : Ideal A :=
   Ideal.span {a : A | ∃ f : ↥(S.erase s) →₀ ℕ, totalDegree f ≤ c ∧ a = chartMonomial x S s c f}
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The chart monomial ideal is defined as the ideal spanned by the chart monomials whose nondistinguished degree is at most the indicated total degree. This is the generating set in the equality.
 -/
 private theorem chartMonomialIdeal_eq_span {A : Type*} [CommRing A] {m : ℕ} (x : Fin m → A)
     (S : Finset (Fin m)) (s : Fin m) (c : ℕ) :
@@ -209,8 +201,8 @@ private theorem chartMonomialIdeal_eq_span {A : Type*} [CommRing A] {m : ℕ} (x
       Ideal.span {a : A | ∃ f : ↥(S.erase s) →₀ ℕ, totalDegree f ≤ c ∧
         a = chartMonomial x S s c f} := rfl
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The exponent vector satisfies the degree bound, so its chart monomial is in the specified generating set. It therefore belongs to the ideal spanned by that set.
 -/
 private theorem chartMonomial_mem_chartMonomialIdeal {A : Type*} [CommRing A] {m : ℕ}
     (x : Fin m → A) (S : Finset (Fin m)) (s : Fin m) (c : ℕ) (f : ↥(S.erase s) →₀ ℕ)
@@ -219,10 +211,8 @@ private theorem chartMonomial_mem_chartMonomialIdeal {A : Type*} [CommRing A] {m
   rw [chartMonomialIdeal_eq_span x S s c]
   exact Ideal.subset_span ⟨f, hf, rfl⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Multiplying by the distinguished coordinate increases its exponent by one and leaves the nondistinguished exponents fixed. As those exponents had total degree at most the original degree, the resulting monomial is an allowed generator at the next total degree.
 -/
 private theorem chartMonomial_mul_coord_self_mem_chartMonomialIdeal_succ {A : Type*} [CommRing A] {m : ℕ} (x : Fin m → A)
     (S : Finset (Fin m)) (s : Fin m) (c : ℕ) (f : ↥(S.erase s) →₀ ℕ) (hf : totalDegree f ≤ c) :
@@ -234,10 +224,8 @@ private theorem chartMonomial_mul_coord_self_mem_chartMonomialIdeal_succ {A : Ty
   rw [h2]
   exact chartMonomial_mem_chartMonomialIdeal x S s (c + 1) f (hf.trans (Nat.le_succ c))
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
+/- English proof (authored)
+Increase the exponent at the chosen nondistinguished index by one. Its total degree increases by one, so when the requested degree also increases by one, the distinguished exponent stays unchanged. The product is the chart monomial for this new vector and satisfies the new degree bound.
 -/
 private theorem chartMonomial_mul_coord_mem_chartMonomialIdeal_succ {A : Type*} [CommRing A] {m : ℕ} (x : Fin m → A)
     (S : Finset (Fin m)) (s : Fin m) (c : ℕ) (f : ↥(S.erase s) →₀ ℕ) (hf : totalDegree f ≤ c)
@@ -255,12 +243,8 @@ private theorem chartMonomial_mul_coord_mem_chartMonomialIdeal_succ {A : Type*} 
   rw [hdeg]
   omega
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
-
-Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Multiplication by the chosen coordinate is linear. On each generating chart monomial it gives a generator at the next degree, using the distinguished-coordinate rule or the nondistinguished rule according to the index. The same containment therefore holds for the entire generated ideal.
 -/
 private theorem mul_coord_mem_chartMonomialIdeal_succ {A : Type*} [CommRing A] {m : ℕ}
     (x : Fin m → A) (S : Finset (Fin m)) (s : Fin m) (c : ℕ) (i : Fin m) (hi : i ∈ S) (r : A)
@@ -281,10 +265,8 @@ private theorem mul_coord_mem_chartMonomialIdeal_succ {A : Type*} [CommRing A] {
   rw [Submodule.mem_comap, LinearMap.mulRight_apply] at h
   exact h
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Fix an element of the chart monomial ideal. Multiplying it by any of the center coordinates lands in the next chart monomial ideal by the coordinate multiplication result. Multiplication by the fixed element is linear, so the result extends to the ideal generated by these coordinates.
 -/
 private theorem mul_mem_chartMonomialIdeal_succ {A : Type*} [CommRing A] {m : ℕ} (x : Fin m → A)
     (S : Finset (Fin m)) (s : Fin m) (c : ℕ) (r : A) (hr : r ∈ chartMonomialIdeal x S s c)
@@ -302,12 +284,8 @@ private theorem mul_mem_chartMonomialIdeal_succ {A : Type*} [CommRing A] {m : �
   rw [mul_comm r y]
   exact h
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+At degree zero the chart monomial with zero exponents is one, so the degree-zero chart monomial ideal contains the unit ideal. Induct on the exponent. Products of an element of the previous power and an element of the coordinate ideal generate the next power. By induction and the multiplication result each such product belongs to the next chart monomial ideal.
 -/
 theorem pow_span_image_le_chartMonomialIdeal {A : Type*} [CommRing A] {m : ℕ} (x : Fin m → A)
     (S : Finset (Fin m)) (s : Fin m) (_hs : s ∈ S) (c : ℕ) :
@@ -325,8 +303,8 @@ theorem pow_span_image_le_chartMonomialIdeal {A : Type*} [CommRing A] {m : ℕ} 
       intro r hr y hy
       exact mul_mem_chartMonomialIdeal_succ x S s c r (ih hr) y hy
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The coefficientwise quotient map kills a polynomial exactly when every coefficient belongs to the original ideal. Such polynomials form the ideal generated by the constant polynomials coming from that ideal. This identifies the kernel with the stated extension.
 -/
 private theorem map_C_eq_ker_map_quotientMk {R : Type*} [CommRing R] (P : Ideal R)
     (σ : Type*) :
@@ -335,14 +313,8 @@ private theorem map_C_eq_ker_map_quotientMk {R : Type*} [CommRing R] (P : Ideal 
         MvPolynomial σ R →+* MvPolynomial σ (R ⧸ P)) := by
   rw [MvPolynomial.ker_map, Ideal.mk_ker]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The quotient of the coefficient ring by the prime is a domain. The polynomial ring over that quotient is also a domain. The extension of the prime to the polynomial ring is the kernel of coefficientwise reduction to this domain. It is therefore prime.
 -/
 theorem isPrime_map_C {R : Type*} [CommRing R] (P : Ideal R) [P.IsPrime] (σ : Type*) :
     (Ideal.map (MvPolynomial.C : R →+* MvPolynomial σ R) P).IsPrime := by
@@ -364,8 +336,8 @@ theorem isPrime_map_C {R : Type*} [CommRing R] (P : Ideal R) [P.IsPrime] (σ : T
     · exact Or.inl (RingHom.mem_ker.mpr h)
     · exact Or.inr (RingHom.mem_ker.mpr h)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Contract the minimal prime to the coefficient ring and extend it back to the polynomial ring. The contraction is prime and its extension is prime by the polynomial-domain argument. The extension is contained in the original prime, so minimality makes them equal. Consequently every coefficient of a polynomial in the prime belongs to the contraction, and its constant polynomial belongs to the original prime.
 -/
 private theorem C_coeff_mem_of_minimal_prime {R : Type*} [CommRing R] {σ : Type*}
     (Pp : Ideal (MvPolynomial σ R)) [Pp.IsPrime]
@@ -381,8 +353,8 @@ private theorem C_coeff_mem_of_minimal_prime {R : Type*} [CommRing R] {σ : Type
     (isPrime_map_C (Ideal.comap (MvPolynomial.C : R →+* MvPolynomial σ R) Pp) σ) hle
   exact Ideal.mem_comap.mp ((MvPolynomial.mem_map_C_iff.mp (hge hp)) d)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The product of variable powers is the monomial of the indicated exponent vector with coefficient one. Multiplying it by the constant polynomial changes its coefficient to the specified scalar, giving the stated monomial.
 -/
 private theorem C_mul_powProd_X_eq_monomial {R : Type*} [CommRing R] {σ : Type*}
     (f : σ →₀ ℕ) (r : R) :
@@ -390,58 +362,8 @@ private theorem C_mul_powProd_X_eq_monomial {R : Type*} [CommRing R] {σ : Type*
       = MvPolynomial.monomial f r :=
   MvPolynomial.monomial_eq.symm
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Reduce the chart ring modulo the distinguished coordinate and use the given presentation as a polynomial ring over the center quotient. The chosen prime contains the kernel of this quotient map, so its image is prime and its contraction recovers the chosen prime. It is a minimal prime of the polynomial ring, since any smaller prime contracts to a smaller chart prime containing the distinguished coordinate. Now express an element of the original ideal as a finite linear combination of degree-bound chart monomials, using containment in the prescribed power of the center ideal. Under pullback each summand contains the same distinguished-coordinate power. The assumed containment in that power times the upstairs ideal, and cancellation of the nonzerodivisor power, put the remaining sum in the upstairs ideal and hence in the chosen prime. In the polynomial quotient this sum has one monomial for each selected exponent vector, with coefficients given by the original coefficients modulo the center. Distinct chosen monomials give distinct exponent vectors. The coefficient property for a minimal prime puts each constant coefficient in the image prime, so the original coefficients belong to the contracted prime downstairs. All center coordinates also belong to that contraction, by the chart formulas. Thus each original monomial contributes the designated power of the contracted prime, and each coefficient contributes one more factor. Summing yields containment in the next power.
 -/
 theorem ideal_le_comap_pow_succ_of_map_le_span_pow_mul {A B : Type*} [CommRing A] [CommRing B] (φ : A →+* B)
     {m : ℕ} (x : Fin m → A) (y : Fin m → B) (S : Finset (Fin m)) (s : Fin m) (hs : s ∈ S)
@@ -646,8 +568,8 @@ theorem ideal_le_comap_pow_succ_of_map_le_span_pow_mul {A B : Type*} [CommRing A
   rw [h3]
   exact Ideal.mul_mem_mul (hcfQ i hi) (hmonQ (fsel i) (hfdeg i hi))
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The stalk is the localization at the point’s prime. Every element of that prime maps into the maximal ideal of the localization. Hence the ideal generated by their images is contained in the maximal ideal.
 -/
 private theorem map_germ_primeIdealOf_le_maximalIdeal {X : Scheme.{u}} {U : X.Opens}
     (hU : IsAffineOpen U) (x : ↥U) :
@@ -658,8 +580,8 @@ private theorem map_germ_primeIdealOf_le_maximalIdeal {X : Scheme.{u}} {U : X.Op
   rw [Ideal.mem_comap]
   exact (IsLocalization.AtPrime.to_map_mem_maximal_iff _ (hU.primeIdealOf x).asIdeal a).mpr ha
 
-/- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+On an affine open, a point of the support has prime containing the section ideal. Conversely, if its prime contains the section ideal, then extending to the stalk puts the stalk ideal inside the maximal ideal. This is the condition for membership in the support.
 -/
 private theorem mem_support_iff_ideal_le_primeIdealOf {X : Scheme.{u}} (I : X.IdealSheafData)
     {U : X.Opens} (hU : IsAffineOpen U) (x : ↥U) :
@@ -671,8 +593,8 @@ private theorem mem_support_iff_ideal_le_primeIdealOf {X : Scheme.{u}} (I : X.Id
     rw [mem_support_iff_stalkIdeal_le_maximalIdeal, stalkIdeal_eq_map_germ I (x : X) ⟨U, hU⟩ x.2]
     exact le_trans (Ideal.map_mono hx) (map_germ_primeIdealOf_le_maximalIdeal hU x)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
+/- English proof (authored)
+Extend the section-ideal containment to the stalk along the germ map. Extension preserves powers, and the extended point prime lies in the maximal ideal. Thus the stalk ideal is contained in the stated power of the maximal ideal, giving the lower bound for its order.
 -/
 private theorem le_orderAt_of_ideal_le_pow {X : Scheme.{u}} (J : X.IdealSheafData) {U : X.Opens}
     (hU : IsAffineOpen U) (x : ↥U) (n : ℕ)
@@ -687,8 +609,8 @@ private theorem le_orderAt_of_ideal_le_pow {X : Scheme.{u}} (J : X.IdealSheafDat
     _ ≤ IsLocalRing.maximalIdeal ↑(X.presheaf.stalk x.1) ^ n :=
         Ideal.pow_right_mono (map_germ_primeIdealOf_le_maximalIdeal hU x) n
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The affine open is isomorphic to the spectrum of its section ring. Take the point of the open corresponding under the inverse isomorphism to the given prime. Its associated prime is the original prime by the inverse identity.
 -/
 private theorem exists_primeIdealOf_eq {X : Scheme.{u}} {U : X.Opens}
     (hU : IsAffineOpen U) (q : PrimeSpectrum Γ(X, U)) :
@@ -697,42 +619,8 @@ private theorem exists_primeIdealOf_eq {X : Scheme.{u}} {U : X.Opens}
   have h0 := congrArg (fun f : Spec Γ(X, U) ⟶ Spec Γ(X, U) => f.base q) hU.isoSpec.inv_hom_id
   exact h0
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
-
-Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
+/- English proof (authored)
+Suppose the controlled transform contains an entire irreducible component of the exceptional support. Choose the generic point of that component. Its image lies in the center. Use affine étale center coordinates downstairs and an affine blowup chart containing the generic point. The prime of this point is minimal among primes containing the exceptional coordinate. Indeed, a smaller such prime gives a point of the exceptional support whose closure contains the component, and maximality and uniqueness of the generic point force equality. The controlled-transform section ideal is contained in this prime by the support assumption. The chart identifies the exceptional quotient with a polynomial ring over the center quotient and gives the required coordinate substitution. The order bound on the center puts the original section ideal inside the prescribed center power, and the total-transform identity gives the appropriate factor of the exceptional coordinate. Apply the monomial calculation to put the original ideal in the next power of the contraction of the generic prime. That contraction corresponds to a point of the center because every center coordinate maps into the generic prime. Passing to its stalk gives an order at least one larger than the assumed constant order on the center, a contradiction.
 -/
 theorem controlledTransform_not_subset_support {k : Type u} [Field k] [CharZero k]
     {X X₁ : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]

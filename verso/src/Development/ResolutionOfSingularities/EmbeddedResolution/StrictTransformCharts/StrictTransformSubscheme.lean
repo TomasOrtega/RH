@@ -24,8 +24,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Given an element of the source of the isomorphism, take its image under the forward map. The inverse sends this image back to the original element, so it is surjective.
 -/
 private theorem surjective_hom_iso_inv {A B : CommRingCat.{u}} (e : A ≅ B) :
     Function.Surjective (CommRingCat.Hom.hom e.inv) := by
@@ -33,8 +33,8 @@ private theorem surjective_hom_iso_inv {A B : CommRingCat.{u}} (e : A ≅ B) :
   refine ⟨CommRingCat.Hom.hom e.hom a, ?_⟩
   simp
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+On the affine open, the section map of the subscheme inclusion is the quotient map by its ideal followed by the isomorphism with sections on the inverse-image open. The quotient map and the isomorphism are both surjective.
 -/
 private theorem surjective_subschemeι_app {Y : Scheme.{u}} (I : Y.IdealSheafData)
     (U : Y.affineOpens) :
@@ -43,10 +43,8 @@ private theorem surjective_subschemeι_app {Y : Scheme.{u}} (I : Y.IdealSheafDat
     RingHom.coe_comp]
   exact (surjective_hom_iso_inv (I.subschemeObjIso U)).comp Ideal.Quotient.mk_surjective
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The inverse images of affine opens of the ambient scheme are affine and cover the closed subscheme. Their section rings are quotients of the ambient affine section rings, which are Noetherian. Quotients of Noetherian rings are Noetherian, so this affine cover proves that the subscheme is locally Noetherian.
 -/
 theorem isLocallyNoetherian_subscheme {Y : Scheme.{u}} [IsLocallyNoetherian Y]
     (I : Y.IdealSheafData) : IsLocallyNoetherian I.subscheme := by
@@ -65,15 +63,15 @@ theorem isLocallyNoetherian_subscheme {Y : Scheme.{u}} [IsLocallyNoetherian Y]
     have := IsLocallyNoetherian.component_noetherian U
     exact isNoetherianRing_of_surjective _ _ _ (surjective_subschemeι_app I U)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The support of the restricted ideal is the inverse image of the original support. Since the restricted ideal is the unit ideal, its support is empty. Thus a point in the open cannot belong to the original support.
 -/
 theorem notMem_support_of_restrictIdeal_eq_top {Y : Scheme.{u}} (D : Y.IdealSheafData)
     (U : Y.Opens) (x : Y) (hx : x ∈ U) (h : restrictIdeal D U = ⊤) : x ∉ D.support :=
   Scheme.IdealSheafData.notMem_support_of_comap_ι_eq_top D h hx
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Extend each of the equal image ideals along the second homomorphism. Successive extensions agree with extension along the composite, which is the identity. This recovers the original ideals on both sides, giving equality.
 -/
 private theorem ideal_eq_of_map_eq_of_comp_eq_id {R S : CommRingCat.{u}} (f : R ⟶ S) (g : S ⟶ R)
     (hfg : f ≫ g = 𝟙 R) {I J : Ideal R}
@@ -84,16 +82,16 @@ private theorem ideal_eq_of_map_eq_of_comp_eq_id {R S : CommRingCat.{u}} (f : R 
     rw [Ideal.map_map, ← CommRingCat.hom_comp, hfg, CommRingCat.hom_id, Ideal.map_id]
   rw [← key I, hIJ, key J]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Any endomorphism of an open in the opposite of the poset of opens is the identity. The presheaf sends it to the identity on sections.
 -/
 private theorem presheaf_map_eq_id {Y : Scheme.{u}} {P : (Y.Opens)ᵒᵖ} (f : P ⟶ P) :
     Y.presheaf.map f = 𝟙 (Y.presheaf.obj P) := by
   have hf : f = 𝟙 P := Quiver.Hom.unop_inj (Subsingleton.elim _ _)
   rw [hf, CategoryTheory.Functor.map_id]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Functoriality gives the map of the composite of the three arrows. This composite is an endomorphism of an open, hence the identity. Its map on sections is therefore the identity.
 -/
 private theorem presheaf_map_comp_comp_eq_id {Y : Scheme.{u}} {P Q R : (Y.Opens)ᵒᵖ}
     (f : P ⟶ Q) (g : Q ⟶ R) (h : R ⟶ P) :
@@ -101,12 +99,8 @@ private theorem presheaf_map_comp_comp_eq_id {Y : Scheme.{u}} {P Q R : (Y.Opens)
   rw [← Y.presheaf.map_comp, ← Y.presheaf.map_comp]
   exact presheaf_map_eq_id _
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The equal restrictions have equal ideals of global sections on the affine open subscheme. Those ideals are extensions of the original section ideals along the canonical isomorphism from ambient sections on the open. Extending back along the inverse isomorphism gives equality of the original ideals.
 -/
 theorem ideal_eq_of_restrictIdeal_eq {Y : Scheme.{u}} (A B : Y.IdealSheafData)
     (V : Y.affineOpens) (h : restrictIdeal A (V : Y.Opens) = restrictIdeal B (V : Y.Opens)) :
@@ -144,18 +138,14 @@ private def colonSpanSingleton {R : Type*} [CommRing R] (J : Ideal R) (x : R) : 
     rw [smul_eq_mul, mul_assoc]
     exact J.mul_mem_left c ha
 
-/- English proof (translation)
-Unfold both sides to obtain the same proposition, which implies itself.
+/- English proof (authored)
+The ideal quotient by the chosen element is defined to consist of the multipliers whose product with that element belongs to the original ideal. This definition gives the stated equivalence.
 -/
 private theorem mem_colonSpanSingleton {R : Type*} [CommRing R] (J : Ideal R) (x r : R) :
     r ∈ colonSpanSingleton J x ↔ r * x ∈ J := Iff.rfl
 
-/- English proof (translation)
-Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Write the localized element as a fraction with numerator in the ideal and denominator a power of the inverted element. Cross-multiply and then multiply by a further power to make the resulting equality hold in the original ring. The product of the powers times the original element is in the ideal.
 -/
 private theorem exists_pow_mul_mem_of_algebraMap_mem_map_of_isLocalizationAway {R S : Type*} [CommRing R] [CommRing S]
     [Algebra R S] (f : R) [IsLocalization.Away f S] (J : Ideal R) (x : R)
@@ -172,18 +162,8 @@ private theorem exists_pow_mul_mem_of_algebraMap_mem_map_of_isLocalizationAway {
   rw [key, hcx]
   exact J.mul_mem_left _ a.2
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
+/- English proof (authored)
+Take a section of the first ideal on an affine open. For each point of that open choose a basic neighborhood inside a member of the given cover. The two section ideals agree on this basic open because their restrictions agree on the cover member. Clearing denominators shows that a positive power of the basic-open section sends the original section into the second ideal. The basic opens of those powers still cover the affine open, so the powers generate the unit ideal. A linear combination giving one shows that the original section belongs to the second ideal there.
 -/
 private theorem ideal_le_of_restrictIdeal_eq_of_iSup_eq_top {Y : Scheme.{u}} {ι : Type*}
     (A B : Y.IdealSheafData) (U : ι → Y.Opens) (hU : (⨆ i, U i) = ⊤)
@@ -236,8 +216,8 @@ private theorem ideal_le_of_restrictIdeal_eq_of_iSup_eq_top {Y : Scheme.{u}} {ι
   have h2 := (hT 1).mp h1
   rwa [one_mul] at h2
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Equality on the cover implies on each affine open that the first section ideal is contained in the second, by the basic-open argument. Reversing the equality on the cover gives the opposite containment. The affine section ideals determine the sheaves.
 -/
 theorem eq_of_restrictIdeal_eq_of_iSup_eq_top {Y : Scheme.{u}} {ι : Type*}
     (A B : Y.IdealSheafData) (U : ι → Y.Opens) (hU : (⨆ i, U i) = ⊤)
@@ -247,8 +227,8 @@ theorem eq_of_restrictIdeal_eq_of_iSup_eq_top {Y : Scheme.{u}} {ι : Type*}
       le_antisymm (ideal_le_of_restrictIdeal_eq_of_iSup_eq_top A B U hU h V)
         (ideal_le_of_restrictIdeal_eq_of_iSup_eq_top B A U hU (fun i => (h i).symm) V))
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+Choose one neighborhood with equal restrictions for each point. These neighborhoods cover the whole scheme, so the equality criterion on an open cover gives equality of the ideal sheaves.
 -/
 theorem eq_of_locally_restrictIdeal_eq {Y : Scheme.{u}} (A B : Y.IdealSheafData)
     (h : ∀ x : Y, ∃ U : Y.Opens, x ∈ U ∧ restrictIdeal A U = restrictIdeal B U) : A = B := by
@@ -258,8 +238,8 @@ theorem eq_of_locally_restrictIdeal_eq {Y : Scheme.{u}} (A B : Y.IdealSheafData)
   refine ⟨fun _ => trivial, fun _ => ?_⟩
   exact Opens.mem_iSup.mpr ⟨x, hxU x⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The section of the ambient ideal maps to zero under the quotient describing sections on the inverse image of the affine open. The map to the smaller open further restricts that zero section, so it also sends the original section to zero.
 -/
 private theorem appLE_subschemeι_apply_eq_zero_of_mem {Y : Scheme.{u}} (I : Y.IdealSheafData)
     (U : Y.affineOpens) (V : I.subscheme.Opens)
@@ -273,10 +253,8 @@ private theorem appLE_subschemeι_apply_eq_zero_of_mem {Y : Scheme.{u}} (I : Y.I
       I.subschemeι.app (U : Y.Opens) ≫ I.subscheme.presheaf.map (homOfLE e).op := rfl
   rw [hcomp, CommRingCat.hom_comp, RingHom.comp_apply, happ, map_zero]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The section ring of the inverse image is isomorphic to the quotient by the given section ideal. If one equals zero in that ring, then the quotient class of one is zero. Thus one belongs to the original ideal and the ideal is the unit ideal.
 -/
 private theorem ideal_eq_top_of_one_eq_zero {Y : Scheme.{u}} (I : Y.IdealSheafData)
     (U : Y.affineOpens)
@@ -297,12 +275,8 @@ private theorem ideal_eq_top_of_one_eq_zero {Y : Scheme.{u}} (I : Y.IdealSheafDa
     h5.symm.trans (h2.trans h4)
   exact (Ideal.eq_top_iff_one _).mpr (Ideal.Quotient.eq_zero_iff_mem.mp h3)
 
-/- English proof (translation)
-Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Suppose the hypersurface coordinate is outside the center index set. Its image in the quotient by the center is then a coordinate of the induced étale chart, so it is a nonzerodivisor. On the other hand, the hypersurface ideal is contained in the center ideal, so that coordinate maps to zero in the quotient. Since zero is a nonzerodivisor there, one equals zero. This makes the center ideal the unit ideal on the affine chart, contradicting the presence of the given center point. Therefore the hypersurface index lies in the center set.
 -/
 theorem mem_of_restrictIdeal_eq_coordIdeal_of_le {X : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} {U : X.Opens} {m : ℕ} (hU : IsAffineOpen U)
@@ -329,8 +303,8 @@ theorem mem_of_restrictIdeal_eq_coordIdeal_of_le {X : Scheme.{u}} {k : Type u} [
   exact notMem_support_of_restrictIdeal_eq_top Z U x hxU
     ((Scheme.IdealSheafData.comap_ι_eq_top_iff_ideal_eq_top Z hU).mpr htop) hxZ
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Identify the ideal with the kernel ideal of the closed immersion. The composite from the strict transform to the original scheme kills that kernel ideal and hence factors through the closed immersion. This gives the required map.
 -/
 private theorem exists_strictTransform_lift_of_ker_eq {X X₁ S : Scheme.{u}} (π : X₁ ⟶ X) (Z : X.IdealSheafData)
     (j : S ⟶ X) [AlgebraicGeometry.IsClosedImmersion j] (H : X.IdealSheafData)
@@ -340,8 +314,8 @@ private theorem exists_strictTransform_lift_of_ker_eq {X X₁ S : Scheme.{u}} (�
   subst hker
   exact exists_comp_eq_strictTransform_subschemeι_comp j π Z
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The kernel ideal of the closed subscheme inclusion is the ideal defining it. Apply the lift for a closed immersion with that kernel to obtain a map from the strict transform into the original closed subscheme.
 -/
 theorem exists_strictTransformSubschemeLift {X X₁ : Scheme.{u}} (π : X₁ ⟶ X) (Z H : X.IdealSheafData) :
     ∃ q : (Blowup.strictTransform π Z H).subscheme ⟶ H.subscheme,
@@ -353,17 +327,15 @@ def strictTransformSubschemeLift {X X₁ : Scheme.{u}} (π : X₁ ⟶ X) (Z H : 
     (Blowup.strictTransform π Z H).subscheme ⟶ H.subscheme :=
   (exists_strictTransformSubschemeLift π Z H).choose
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The chosen lift is the factorization of the composite from the strict transform to the ambient scheme through the closed subscheme inclusion. Composing the lift with that inclusion gives the original composite by construction.
 -/
 theorem strictTransformSubschemeLift_comp_subschemeι {X X₁ : Scheme.{u}} (π : X₁ ⟶ X) (Z H : X.IdealSheafData) :
     strictTransformSubschemeLift π Z H ≫ H.subschemeι = (Blowup.strictTransform π Z H).subschemeι ≫ π :=
   (exists_strictTransformSubschemeLift π Z H).choose_spec
 
-/- English proof (translation)
-Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Identify the ideal with the kernel of the closed immersion. The given map and the canonical strict-transform lift have the same composite with that immersion. Since the immersion is a monomorphism, the maps agree. The canonical lift has the blowup property for the restricted center, so the given map does too.
 -/
 private theorem isBlowupAlongIdealSheaf_comap_of_ker_eq {X X₁ S : Scheme.{u}} [IsLocallyNoetherian X₁]
     (π : X₁ ⟶ X) (Z : X.IdealSheafData) (j : S ⟶ X)
@@ -378,8 +350,8 @@ private theorem isBlowupAlongIdealSheaf_comap_of_ker_eq {X X₁ S : Scheme.{u}} 
   rw [hqq]
   exact isBlowupAlongIdealSheaf_strictTransformLiftOfClosedImmersion j π Z hπ
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The original closed subscheme inclusion has the required kernel ideal, and the chosen lift factors the strict-transform inclusion followed by the ambient blowup. Apply the blowup property for such a lift along a closed immersion.
 -/
 theorem isBlowupAlongIdealSheaf_strictTransformSubschemeLift {X X₁ : Scheme.{u}} [IsLocallyNoetherian X₁]
     (π : X₁ ⟶ X) (Z H : X.IdealSheafData) (hπ : Blowup.IsBlowupAlongIdealSheaf π Z) :
@@ -388,16 +360,16 @@ theorem isBlowupAlongIdealSheaf_strictTransformSubschemeLift {X X₁ : Scheme.{u
     (AlgebraicGeometry.Scheme.IdealSheafData.ker_subschemeι H) hπ
     (strictTransformSubschemeLift π Z H) (strictTransformSubschemeLift_comp_subschemeι π Z H)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The range of the closed subscheme inclusion on points is the support of its ideal. The image of the given point belongs to that range.
 -/
 private theorem subschemeι_base_mem_support {X : Scheme.{u}} (I : X.IdealSheafData)
     (x : I.subscheme) : I.subschemeι.base x ∈ (I.support : Set X) := by
   rw [← AlgebraicGeometry.Scheme.IdealSheafData.range_subschemeι]
   exact Set.mem_range_self x
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Each coordinate ideal is obtained by pulling back the same coordinate-subspace ideal on affine space. The chart maps agree, so the two pulled-back ideals agree.
 -/
 private theorem coordIdeal_eq_of_map_eq {X : Scheme.{u}} {k : Type u} [Field k]
     {p₁ p₂ : X ⟶ Spec (CommRingCat.of k)} {U : X.Opens} {m : ℕ}
@@ -406,22 +378,8 @@ private theorem coordIdeal_eq_of_map_eq {X : Scheme.{u}} {k : Type u} [Field k]
   rw [EtaleChart.coordIdeal_eq_comap_coordSubspaceIdeal, EtaleChart.coordIdeal_eq_comap_coordSubspaceIdeal]
   exact congrArg (fun f => (coordSubspaceIdeal k m T).comap f) h
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data.
-
-Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately.
-
-Treat this case separately. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact.
-
-Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
+/- English proof (authored)
+Use the normal crossings chart at the center point and shrink its domain to an affine open. The selected hypersurface is the first list entry, and the indicated boundary member occurs in the tail. The chart assigns each either no coordinate, giving the unit ideal, or one coordinate. If both have coordinates, those indices differ because the two positions in the list are distinct and the assignment is injective on present entries. Shrinking preserves these descriptions and the center coordinate ideal.
 -/
 private theorem exists_etaleChart_of_hasStrictNormalCrossingsWith {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) (Z H : X.IdealSheafData) (E : List X.IdealSheafData)
@@ -473,8 +431,8 @@ private theorem exists_etaleChart_of_hasStrictNormalCrossingsWith {X : Scheme.{u
           have hz := hinj 0 hlt0 (i + 1) hlti t' h0 h1
           omega
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Choose a blowup chart above the downstairs open containing the image of the point. The hypersurface has unit ideal downstairs, so its strict transform has unit ideal on the chart. Its support is empty there. This contradicts the fact that the point maps into that support by the strict-transform inclusion.
 -/
 private theorem false_of_mem_preimage_of_restrictIdeal_eq_top {X X₁ : Scheme.{u}} {k : Type u}
     [Field k] {p : X ⟶ Spec (CommRingCat.of k)} (π : X₁ ⟶ X)
@@ -493,14 +451,8 @@ private theorem false_of_mem_preimage_of_restrictIdeal_eq_top {X X₁ : Scheme.{
     ((Blowup.strictTransform π Z H).subschemeι.base x) hmem htop
     (subschemeι_base_mem_support (Blowup.strictTransform π Z H) x)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Take the open of the strict transform lying over the complement of the center. On this open the ambient strict transform of the other divisor agrees with its total transform. The point also lies off the restricted center for the map to the hypersurface, since the two pullbacks of the center agree by the factorization. The strict transform along the hypersurface map therefore agrees locally with its total transform as well. The two total transforms are pullbacks along equal composites, giving the desired equality on this open.
 -/
 private theorem exists_restrictIdeal_eq_of_notMem_support {X X₁ : Scheme.{u}} (π : X₁ ⟶ X)
     [IsLocallyNoetherian X₁] (Z H : X.IdealSheafData)
@@ -547,26 +499,8 @@ private theorem exists_restrictIdeal_eq_of_notMem_support {X X₁ : Scheme.{u}} 
     ← AlgebraicGeometry.Scheme.IdealSheafData.comap_comp,
     ← AlgebraicGeometry.Scheme.IdealSheafData.comap_comp, hq]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
-
-Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The hypersurface is a center coordinate distinct from the exceptional index. Restricting the chart to its strict transform removes that coordinate and identifies the smaller center with the remaining center coordinates. The distinguished index remains and determines the restricted blowup chart. If the other divisor has unit ideal downstairs, both restrictions are unit ideals. Otherwise it is a distinct coordinate, so it has a corresponding retained index on the hypersurface. If this index corresponds to the exceptional one, both strict transforms are empty on the chart. Otherwise both ideals are generated by the retained chart coordinate for that divisor. The chart induced by restriction and the chart for the hypersurface blowup use the same map, so their coordinate ideals agree.
 -/
 private theorem restrictIdeal_comap_strictTransform_eq_of_blowupChart {X X₁ : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} {π : X₁ ⟶ X} [IsLocallyNoetherian X₁]
@@ -665,12 +599,8 @@ private theorem restrictIdeal_comap_strictTransform_eq_of_blowupChart {X X₁ : 
         (B.restrictToStrictTransform hU hB Z H hs hZ a ha has hH s' hs' q hq).chart
         hBmap.symm {b'}
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+Choose a blowup chart containing the image of the point. The hypersurface index differs from the distinguished index, because if they agreed its strict transform would be empty on this chart. Shrink the chart to an affine neighborhood of the image and pull that open back to the strict transform. The affine chart comparison gives the required equality on that neighborhood.
 -/
 private theorem exists_restrictIdeal_eq_of_mem_preimage {X X₁ : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} (π : X₁ ⟶ X) [IsLocallyNoetherian X₁]
@@ -707,8 +637,8 @@ private theorem exists_restrictIdeal_eq_of_mem_preimage {X X₁ : Scheme.{u}} {k
   exact restrictIdeal_comap_strictTransform_eq_of_blowupChart ((blowupChartOfIsBlowup π c S hπ hZ s hs).restrict V hVle)
     hU hVaff Z H hs hZ a ha has hH D hDd q hq
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
+/- English proof (authored)
+The equality can be checked near every point of the strict transform of the hypersurface. Over the center, take a normal crossings chart. The hypersurface must be present since its strict transform contains the point upstairs. Its coordinate belongs to the center set by the ideal containment. The other divisor is absent or a distinct coordinate, so the affine blowup-chart comparison gives the local equality. Away from the center both strict transforms are total transforms and agree by the factorization. The local equalities give the sheaf equality.
 -/
 theorem comap_strictTransform_eq_strictTransform_of_comp_eq {X X₁ : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) (π : X₁ ⟶ X) [IsLocallyNoetherian X₁]
@@ -731,8 +661,8 @@ theorem comap_strictTransform_eq_strictTransform_of_comp_eq {X X₁ : Scheme.{u}
           (π.base ((Blowup.strictTransform π Z H).subschemeι.base x)) hyU hx) hH hDd x hyU
   · exact exists_restrictIdeal_eq_of_notMem_support π Z H q hq D x hx
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The chosen strict-transform lift has the required factorization through the original hypersurface. Apply the strict-transform comparison for any map with that factorization to this chosen lift.
 -/
 theorem comap_strictTransform_eq_strictTransformSubschemeLift {X X₁ : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) (π : X₁ ⟶ X) [IsLocallyNoetherian X₁]

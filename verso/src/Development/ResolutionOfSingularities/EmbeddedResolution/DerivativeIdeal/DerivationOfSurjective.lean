@@ -5,10 +5,8 @@ namespace FunctorialResolution.EmbeddedResolution
 variable {k S T : Type*} [CommRing k] [CommRing S] [CommRing T]
   [Algebra k S] [Algebra k T]
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+If s and s′ have the same image, their difference lies in the kernel. The derivation preserves this kernel, so the derivative of their difference has zero image. Additivity gives equality of the images of their derivatives.
 -/
 theorem map_derivation_eq_of_map_eq (f : S →ₐ[k] T) (D : Derivation k S S)
     (hD : ∀ s ∈ RingHom.ker f.toRingHom, D s ∈ RingHom.ker f.toRingHom)
@@ -26,8 +24,8 @@ noncomputable def derivationOfSurjectiveFun (f : S →ₐ[k] T) (hf : Function.S
     (D : Derivation k S S) : T → T :=
   fun t => f (D (Function.surjInv hf t))
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The chosen lift of f(s) has the same image as s. Since the derivation preserves the kernel, the images of the derivatives of the two lifts agree. This gives the formula for the descended function.
 -/
 theorem derivationOfSurjectiveFun_apply (f : S →ₐ[k] T) (hf : Function.Surjective f)
     (D : Derivation k S S)
@@ -36,10 +34,8 @@ theorem derivationOfSurjectiveFun_apply (f : S →ₐ[k] T) (hf : Function.Surje
   have h : f (Function.surjInv hf (f s)) = f s := Function.surjInv_eq hf (f s)
   exact map_derivation_eq_of_map_eq f D hD h
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Lift the two target elements to a and b in the source. Their sum lifts to a + b. The formula for the descended function reduces additivity to additivity of D and of f.
 -/
 theorem derivationOfSurjectiveFun_add (f : S →ₐ[k] T) (hf : Function.Surjective f)
     (D : Derivation k S S)
@@ -53,10 +49,8 @@ theorem derivationOfSurjectiveFun_add (f : S →ₐ[k] T) (hf : Function.Surject
   simp only [derivationOfSurjectiveFun_apply f hf D hD]
   rw [map_add D a b, map_add f (D a) (D b)]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Lift t to a in S. The scalar multiple of a lifts the corresponding scalar multiple of t because f is a k-algebra map. Apply k-linearity of D and of f to the formula for the descended function at this lift.
 -/
 theorem derivationOfSurjectiveFun_smul (f : S →ₐ[k] T) (hf : Function.Surjective f)
     (D : Derivation k S S)
@@ -80,8 +74,8 @@ noncomputable def derivationOfSurjectiveLinearMap (f : S →ₐ[k] T) (hf : Func
   map_add' := derivationOfSurjectiveFun_add f hf D hD
   map_smul' := derivationOfSurjectiveFun_smul f hf D hD
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Lift the target unit element to one in S. A derivation sends one to zero, so the descended function also sends one to zero.
 -/
 theorem derivationOfSurjectiveFun_one (f : S →ₐ[k] T) (hf : Function.Surjective f)
     (D : Derivation k S S)
@@ -91,10 +85,8 @@ theorem derivationOfSurjectiveFun_one (f : S →ₐ[k] T) (hf : Function.Surject
   rw [h]
   rw [derivationOfSurjectiveFun_apply f hf D hD, D.map_one_eq_zero, map_zero]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Lift the two elements to x and y. Their product lifts to xy. Apply the Leibniz rule in S and map it to T. The images of the derivatives of the lifts are the descended values, giving the Leibniz rule on T.
 -/
 theorem derivationOfSurjectiveFun_mul (f : S →ₐ[k] T) (hf : Function.Surjective f)
     (D : Derivation k S S)
@@ -118,8 +110,8 @@ noncomputable def derivationOfSurjective (f : S →ₐ[k] T) (hf : Function.Surj
   leibniz' := derivationOfSurjectiveFun_mul f hf D hD
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The descended derivation has the same underlying function used in its construction. Its value at f(s) is the image of D(s) by the formula for evaluating that function on a lift.
 -/
 theorem derivationOfSurjective_apply (f : S →ₐ[k] T) (hf : Function.Surjective f)
     (D : Derivation k S S)

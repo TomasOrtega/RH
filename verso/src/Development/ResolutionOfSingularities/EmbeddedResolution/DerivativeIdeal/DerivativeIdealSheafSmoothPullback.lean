@@ -15,8 +15,8 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Sending a scalar first to W via p and then to V via h pulls the same base global section back along the composite morphism. Functoriality of pullback and restriction identifies this with the structure map for the composite on V.
 -/
 theorem sectionsAlgebraMap_comp_appLE (k : Type u) [CommRing k] {X Y : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) (h : Y ⟶ X) (W : X.Opens) (V : Y.Opens)
@@ -25,8 +25,8 @@ theorem sectionsAlgebraMap_comp_appLE (k : Type u) [CommRing k] {X Y : Scheme.{u
   rw [sectionsAlgebraMap_eq, sectionsAlgebraMap_eq, ← CommRingCat.hom_comp, Category.assoc,
     Scheme.Hom.appLE_comp_appLE]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Evaluate the compatibility of scalar maps with pullback at a.
 -/
 theorem sectionsAlgebraMap_appLE_apply (k : Type u) [CommRing k] {X Y : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) (h : Y ⟶ X) (W : X.Opens) (V : Y.Opens)
@@ -34,12 +34,8 @@ theorem sectionsAlgebraMap_appLE_apply (k : Type u) [CommRing k] {X Y : Scheme.{
     (h.appLE W V e).hom (sectionsAlgebraMap k p W a) = sectionsAlgebraMap k (h ≫ p) V a :=
   DFunLike.congr_fun (sectionsAlgebraMap_comp_appLE k p h W V e) a
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Represent the image of x as a fraction with numerator in N and denominator a power of f. Equality in the localization implies equality after multiplying the cross-multiplied expressions by a further power of f. The resulting product of powers times x belongs to N.
 -/
 private theorem exists_pow_mul_mem_of_mem_map {R S : Type*} [CommRing R] [CommRing S]
     [Algebra R S] (f : R) [IsLocalization.Away f S] (N : Ideal R) (x : R)
@@ -60,8 +56,8 @@ private theorem exists_pow_mul_mem_of_mem_map {R S : Type*} [CommRing R] [CommRi
   rw [key, hi', hj', hceq]
   exact N.mul_mem_left _ a.2
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Identify the affine opens by the given equality. The two section rings and their ideal values then coincide, and the stated inclusion transfers.
 -/
 private theorem idealSheafData_ideal_le_congr {Y : Scheme.{u}} (J₁ J₂ : Y.IdealSheafData)
     {A B : Y.affineOpens} (hAB : A = B) (h : J₁.ideal B ≤ J₂.ideal B) :
@@ -69,16 +65,8 @@ private theorem idealSheafData_ideal_le_congr {Y : Scheme.{u}} (J₁ J₂ : Y.Id
   subst hAB
   exact h
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
-
-Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+Fix an element x of the ideal of the first sheaf on U. At every point of U choose an affine neighborhood where the local containment holds, then shrink to a common neighborhood principal in both affines. Ideal extension along the restriction preserves that local containment. Thus on the principal open in U the image of x lies in the localized ideal of the second sheaf. Clearing a power of the defining section puts a multiple of x in the second ideal on U. The defining sections of these principal opens generate the unit ideal because the opens cover U. The powers that kill the class of x modulo the second ideal also generate the unit ideal, so that class is zero.
 -/
 private theorem idealSheafData_ideal_le_of_locally_le {Y : Scheme.{u}} (J₁ J₂ : Y.IdealSheafData)
     (H : ∀ y : Y, ∃ (V : Y.Opens) (hV : IsAffineOpen V), y ∈ V ∧
@@ -113,10 +101,8 @@ private theorem idealSheafData_ideal_le_of_locally_le {Y : Scheme.{u}} (J₁ J�
   obtain ⟨n, hn⟩ := hf
   exact ⟨n, by rw [smul_eq_mul]; exact hn⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+The local equalities give local containments in both directions. Apply the result that local affine containments imply containment on each affine open. The two ideals thus agree on every affine open, which gives equality of the ideal sheaves.
 -/
 private theorem idealSheafData_eq_of_locally_eq {Y : Scheme.{u}} (J₁ J₂ : Y.IdealSheafData)
     (H : ∀ y : Y, ∃ (V : Y.Opens) (hV : IsAffineOpen V), y ∈ V ∧
@@ -134,18 +120,8 @@ private theorem idealSheafData_eq_of_locally_eq {Y : Scheme.{u}} (J₁ J₂ : Y.
   exact Scheme.IdealSheafData.ext (funext key)
 
 attribute [local instance] EtaleCoordinates.sumEvalAlgebra in
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression.
-
-Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
-
-Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
-
-Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Choose an étale chart around the image of y in X. Smoothness of h gives affine neighborhoods W of that image and V of y where h admits an étale chart over relative affine space over W. Shrink W inside the original chart and restrict it. The section ring of W is formally étale over the polynomial ring in its original coordinates. The section ring of V is formally étale over the polynomial ring over the sections of W in the relative coordinates. Composing gives formal étaleness over the polynomial ring over k in both sets of coordinates, where the original coordinates map to the corresponding first set. On V, pullback of each ideal sheaf extends its ideal on W along the section map. The ring-level equality for compatible old and new coordinates identifies the derivative ideal of the extended ideal with the extension of its original derivative ideal. This is the required equality on V.
 -/
 private theorem exists_affineOpen_derivIdealSheaf_comap_ideal_eq (k : Type u) [Field k] [IsNoetherianRing k]
     {X Y : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [Smooth p] [LocallyOfFiniteType p]
@@ -217,8 +193,8 @@ private theorem exists_affineOpen_derivIdealSheaf_comap_ideal_eq (k : Type u) [F
   exact (EtaleCoordinates.map_derivIdeal_sum k (ULift.{u} (Fin m)) (ULift.{u} (Fin d))
     Γ(X, W) Γ(Y, V) hcoord (I.ideal ⟨W, hW⟩)).symm
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+At every point of Y the local smooth charts give an affine neighborhood where the two section ideals agree. Equality of ideal sheaves is local, so these affine equalities give the claimed equality.
 -/
 theorem derivIdealSheaf_comap (k : Type u) [Field k] [IsNoetherianRing k] {X Y : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [Smooth p] [LocallyOfFiniteType p]
@@ -226,8 +202,8 @@ theorem derivIdealSheaf_comap (k : Type u) [Field k] [IsNoetherianRing k] {X Y :
     derivIdealSheaf k (h ≫ p) (I.comap h) = (derivIdealSheaf k p I).comap h :=
   idealSheafData_eq_of_locally_eq _ _ fun y => exists_affineOpen_derivIdealSheaf_comap_ideal_eq k p h I y
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+At zero both sides are the pullback of I. At each successor, apply the induction equality for the preceding iterate and then use the one-step result that the derivative ideal sheaf commutes with smooth pullback.
 -/
 theorem derivIdealSheafIterate_comap (k : Type u) [Field k] [IsNoetherianRing k] {X Y : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [Smooth p] [LocallyOfFiniteType p]

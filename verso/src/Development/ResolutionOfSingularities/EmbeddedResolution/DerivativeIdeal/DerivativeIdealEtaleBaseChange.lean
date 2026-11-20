@@ -12,8 +12,8 @@ private def derivationCompAlgebraMap (k : Type*) [CommRing k] (S : Type*) [CommR
     show D (algebraMap S T (a * b)) = a • D (algebraMap S T b) + b • D (algebraMap S T a)
     rw [map_mul, D.leibniz, smul_eq_mul, smul_eq_mul, Algebra.smul_def, Algebra.smul_def])
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The restricted derivation is constructed by precomposing the given derivation with the structure map from S to T. Evaluating this composite on s gives the asserted value.
 -/
 private theorem derivation_comp_algebraMap_apply (k : Type*) [CommRing k] (S : Type*) [CommRing S]
     (T : Type*) [CommRing T] [Algebra k S] [Algebra k T] [Algebra S T] [IsScalarTower k S T]
@@ -29,18 +29,16 @@ private def algebraMapCompDerivation (k : Type*) [CommRing k] (S : Type*) [CommR
     rw [D.leibniz, map_add, smul_eq_mul, smul_eq_mul, map_mul, map_mul, Algebra.smul_def,
       Algebra.smul_def])
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The derivation with values in T is constructed by applying the structure map to every value of the original derivation. Its value at s is the image of the original value at s.
 -/
 private theorem algebraMap_comp_derivation_apply (k : Type*) [CommRing k] (S : Type*) [CommRing S]
     (T : Type*) [CommRing T] [Algebra k S] [Algebra k T] [Algebra S T] [IsScalarTower k S T]
     (D : Derivation k S S) (s : S) :
     algebraMapCompDerivation k S T D s = algebraMap S T (D s) := rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Each derivation factors through a linear map on the differential module. The coordinate differentials form a basis by formal étaleness. The hypothesis gives equality of the two linear maps on every basis vector, hence on the whole module. Composing with the universal differential gives equality of the derivations.
 -/
 theorem derivation_ext_of_coord (k : Type*) [CommRing k] (ι : Type*) (S : Type*) [CommRing S]
     [Algebra (MvPolynomial ι k) S] [Algebra k S] [IsScalarTower k (MvPolynomial ι k) S]
@@ -58,12 +56,8 @@ theorem derivation_ext_of_coord (k : Type*) [CommRing k] (ι : Type*) (S : Type*
   rw [← Derivation.liftKaehlerDifferential_comp_D D₁ x,
     ← Derivation.liftKaehlerDifferential_comp_D D₂ x, key]
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Restrict the partial derivation for the extra coordinate j to S. On each coordinate of S it vanishes, since that coordinate maps to a coordinate in the first block. Derivations on S are determined by the coordinate values, so the restricted derivation is zero.
 -/
 theorem partialDeriv_inr_algebraMap (k : Type*) [CommRing k] (ι : Type*) (κ : Type*)
     (S : Type*) [CommRing S] (T : Type*) [CommRing T]
@@ -89,12 +83,8 @@ theorem partialDeriv_inr_algebraMap (k : Type*) [CommRing k] (ι : Type*) (κ : 
   rw [h0] at h2
   exact h2
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
-
-Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Compare the partial derivation for the old coordinate in T restricted to S with the corresponding partial derivation in S followed by the structure map on its values. Both take one on the indicated coordinate and zero on all the other coordinates of S. Since coordinate values determine a derivation, these maps agree on every s.
 -/
 theorem partialDeriv_inl_algebraMap (k : Type*) [CommRing k] (ι : Type*) (κ : Type*)
     [DecidableEq ι] [DecidableEq κ]
@@ -123,28 +113,8 @@ theorem partialDeriv_inl_algebraMap (k : Type*) [CommRing k] (ι : Type*) (κ : 
   rw [derivation_comp_algebraMap_apply, algebraMap_comp_derivation_apply] at h2
   exact h2
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction.
-
-Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data.
-
-Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Assume the hypotheses and unpack their components. A detailed English derivation is pending.
+/- English proof (authored)
+The old partial derivations span all derivations of S. After applying the structure map, each of their values on J is a value of the corresponding partial derivation in T on the extended ideal. This gives containment of the extended derivative ideal in the new derivative ideal. Conversely the partial derivations in T span all derivations there. The partials for old coordinates give images of original derivatives on elements from J, and partials for extra coordinates give zero on those images. Thus all derivatives of the generators of the extended J lie in the extended derivative ideal. The Leibniz rule extends this to the ideal they generate, because that ideal is itself contained in the extended derivative ideal. This gives the other containment.
 -/
 theorem map_derivIdeal_sum (k : Type*) [CommRing k] (ι : Type*) (κ : Type*)
     [Fintype ι] [Fintype κ] [DecidableEq ι] [DecidableEq κ]

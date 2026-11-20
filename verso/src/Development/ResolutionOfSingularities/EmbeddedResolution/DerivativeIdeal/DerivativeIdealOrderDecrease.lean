@@ -9,8 +9,8 @@ noncomputable def eulerDerivation (k : Type*) [CommRing k] {R : Type*} [CommRing
     {ι : Type*} [Fintype ι] (x : ι → R) (D : ι → Derivation k R R) : Derivation k R R :=
   ∑ i, x i • D i
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Evaluation at a commutes with finite sums of derivations because their addition is pointwise. Evaluating a scalar multiple multiplies the value by the same ring element, giving the stated sum.
 -/
 private theorem sum_smul_derivation_apply (k : Type*) [CommRing k] {R : Type*} [CommRing R]
     [Algebra k R] {ι : Type*} (s : Finset ι) (x : ι → R) (D : ι → Derivation k R R) (a : R) :
@@ -22,8 +22,8 @@ private theorem sum_smul_derivation_apply (k : Type*) [CommRing k] {R : Type*} [
       rw [Finset.sum_insert hi, Finset.sum_insert hi, Derivation.add_apply,
         Derivation.smul_apply, smul_eq_mul, ih]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The Euler derivation is the sum of the coordinate derivations with the given coefficients. Apply the finite-sum evaluation formula over the full index set.
 -/
 theorem eulerDerivation_apply (k : Type*) [CommRing k] {R : Type*} [CommRing R] [Algebra k R]
     {ι : Type*} [Fintype ι] (x : ι → R) (D : ι → Derivation k R R) (a : R) :
@@ -31,8 +31,8 @@ theorem eulerDerivation_apply (k : Type*) [CommRing k] {R : Type*} [CommRing R] 
   show (∑ i, x i • D i) a = ∑ i, x i * D i a
   exact sum_smul_derivation_apply k Finset.univ x D a
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+In the Euler sum each term has a coordinate generator as a factor and therefore belongs to the coordinate ideal. The sum belongs to the ideal as well.
 -/
 theorem eulerDerivation_apply_mem_span (k : Type*) [CommRing k] {R : Type*} [CommRing R] [Algebra k R]
     {ι : Type*} [Fintype ι] (x : ι → R) (D : ι → Derivation k R R) (a : R) :
@@ -40,8 +40,8 @@ theorem eulerDerivation_apply_mem_span (k : Type*) [CommRing k] {R : Type*} [Com
   rw [eulerDerivation_apply]
   exact Ideal.sum_mem _ fun i _ => Ideal.mul_mem_right _ _ (Ideal.subset_span ⟨i, rfl⟩)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+On the chosen generator the duality hypothesis makes every summand vanish except the one at the matching index. That term is the generator itself multiplied by one.
 -/
 theorem eulerDerivation_apply_generator (k : Type*) [CommRing k] {R : Type*} [CommRing R] [Algebra k R]
     {ι : Type*} [Fintype ι] [DecidableEq ι] (x : ι → R) (D : ι → Derivation k R R)
@@ -50,14 +50,8 @@ theorem eulerDerivation_apply_generator (k : Type*) [CommRing k] {R : Type*} [Co
   rw [eulerDerivation_apply]
   simp [hD]
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
-
-Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
+/- English proof (authored)
+Let J be the coordinate ideal. On each generator, the Euler derivation gives the generator itself. The difference between the Euler value and the input is additive. For a multiple ca of an element of J, this difference is c times the difference for a plus a times the Euler value of c, by the Leibniz rule. The latter term lies in J² because every Euler value lies in J. Induction on expressions in the ideal span gives the result.
 -/
 private theorem eulerDerivation_sub_self_mem_sq (k : Type*) [CommRing k] {R : Type*} [CommRing R]
     [Algebra k R] {ι : Type*} [Fintype ι] [DecidableEq ι] (x : ι → R) (D : ι → Derivation k R R)
@@ -87,20 +81,8 @@ private theorem eulerDerivation_sub_self_mem_sq (k : Type*) [CommRing k] {R : Ty
       have h2 := Ideal.mul_mem_mul ha (eulerDerivation_apply_mem_span k x D c)
       rwa [← pow_two] at h2
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Let J be the coordinate ideal and induct on r. At zero every Euler value lies in J. At the successor, use sums of products ab with a in the r-th power and b in J. Write E for the Euler derivation. By the Leibniz rule, E(ab) − (r + 1)ab equals a(E(b) − b) + b(E(a) − ra). The first difference lies in J² and the second lies in the (r + 1)-st power by induction. Both products lie in the (r + 2)-nd power, and additivity gives the claim for all sums.
 -/
 private theorem forall_eulerDerivation_sub_natCast_mul_mem (k : Type*) [CommRing k] {R : Type*} [CommRing R]
     [Algebra k R] {ι : Type*} [Fintype ι] [DecidableEq ι] (x : ι → R) (D : ι → Derivation k R R)
@@ -150,8 +132,8 @@ private theorem forall_eulerDerivation_sub_natCast_mul_mem (k : Type*) [CommRing
           exact Submodule.add_mem _ hy hz
         exact hres
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Apply the Euler congruence for the r-th power of the coordinate ideal to the given element f.
 -/
 theorem eulerDerivation_sub_natCast_mul_mem_pow_succ (k : Type*) [CommRing k] {R : Type*} [CommRing R]
     [Algebra k R] {ι : Type*} [Fintype ι] [DecidableEq ι] (x : ι → R) (D : ι → Derivation k R R)
@@ -160,14 +142,8 @@ theorem eulerDerivation_sub_natCast_mul_mem_pow_succ (k : Type*) [CommRing k] {R
     eulerDerivation k x D f - (r : R) * f ∈ Ideal.span (Set.range x) ^ (r + 1) :=
   forall_eulerDerivation_sub_natCast_mul_mem k x D hD r f hf
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Each term in the Euler value of f is a generator times a derivative lying in the r-th power. Thus the Euler value lies in the next power. By the Euler congruence it differs from r times f by another element of that next power. Subtract to put r times f in the next power, then multiply by the inverse of r to obtain f there.
 -/
 theorem mem_pow_succ_of_deriv_mem_pow (k : Type*) [CommRing k] {R : Type*} [CommRing R]
     [Algebra k R] {ι : Type*} [Fintype ι] [DecidableEq ι] (x : ι → R) (D : ι → Derivation k R R)
@@ -196,8 +172,8 @@ theorem mem_pow_succ_of_deriv_mem_pow (k : Type*) [CommRing k] {R : Type*} [Comm
   rw [← key]
   exact Ideal.mul_mem_left _ _ h3
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+If the entire derivative ideal lay in the r-th power, then each dual derivation of every element of I would take values in that power. Since the elements of I already lie in that power and r is a unit, the Euler criterion puts every one of them in the next power. This contradicts the failure of that containment.
 -/
 theorem not_derivIdeal_le_pow (k : Type*) [CommRing k] {R : Type*} [CommRing R] [Algebra k R]
     {ι : Type*} [Fintype ι] [DecidableEq ι] (x : ι → R) (D : ι → Derivation k R R)
@@ -211,10 +187,8 @@ theorem not_derivIdeal_le_pow (k : Type*) [CommRing k] {R : Type*} [CommRing R] 
   exact mem_pow_succ_of_deriv_mem_pow k x D hD hr (h1 hf)
     (fun i => h (derivation_apply_mem_derivIdeal k I (D i) hf))
 
-/- English proof (translation)
-Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The upper condition excludes infinity. For the resulting ordinary natural number, being at least n and strictly below n + 1 forces equality with n.
 -/
 private theorem eq_natCast_of_le_of_not_succ_le (n : ℕ) (a : ℕ∞) (h1 : (n : ℕ∞) ≤ a)
     (h2 : ¬ ((n + 1 : ℕ) : ℕ∞) ≤ a) : a = (n : ℕ∞) := by
@@ -228,14 +202,8 @@ private theorem eq_natCast_of_le_of_not_succ_le (n : ℕ) (a : ℕ∞) (h1 : (n 
     have ha : a = n := by omega
     exact_mod_cast ha
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
+/- English proof (authored)
+Order r means I lies in the r-th power of the maximal ideal and fails to lie in the next power. The general derivative estimate puts the derivative ideal in the (r − 1)-st power. The Euler argument with r a unit shows that the derivative ideal cannot lie in the r-th power, because the parameters generate the maximal ideal. These two facts give order exactly r − 1.
 -/
 theorem idealOrder_derivIdeal_of_isUnit_natCast (k : Type*) [CommRing k] {R : Type*} [CommRing R] [IsLocalRing R]
     [Algebra k R] {ι : Type*} [Fintype ι] [DecidableEq ι] (x : ι → R) (D : ι → Derivation k R R)
@@ -267,12 +235,8 @@ theorem idealOrder_derivIdeal_of_isUnit_natCast (k : Type*) [CommRing k] {R : Ty
     rwa [hrr] at h
   exact eq_natCast_of_le_of_not_succ_le (r - 1) _ h1 h2
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on j. At zero the iterate is I and the order is r. For a successor within the bound j + 1 ≤ r, the preceding iterate has order r − j, which is positive. Applying the one-step decrease gives order r − j − 1, the required order at the successor.
 -/
 theorem idealOrder_derivIdealIterate_of_isUnit_natCast (k : Type*) [CommRing k] {R : Type*} [CommRing R]
     [IsLocalRing R] [Algebra k R] {ι : Type*} [Fintype ι] [DecidableEq ι] (x : ι → R)

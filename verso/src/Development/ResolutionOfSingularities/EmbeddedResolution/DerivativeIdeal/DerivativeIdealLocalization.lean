@@ -8,10 +8,8 @@ namespace FunctorialResolution.EmbeddedResolution
 
 variable {k : Type u} {S : Type v} {S' : Type w}
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
+/- English proof (authored)
+The extension of J is contained in its derivative ideal. Each original derivation extends to the localization and agrees there on the images of elements of S. Thus the image of every derivative generator for J is a derivative of an element of the extended ideal. This proves containment for all the generators of the extended derivative ideal.
 -/
 theorem map_derivIdeal_le [CommRing k] [CommRing S] [CommRing S'] [Algebra k S] [Algebra S S']
     [Algebra k S'] [IsScalarTower k S S'] (M : Submonoid S) [IsLocalization M S']
@@ -29,8 +27,8 @@ theorem map_derivIdeal_le [CommRing k] [CommRing S] [CommRing S'] [Algebra k S] 
       (D.mapToLocalization (S' := S') M) (Ideal.mem_map_of_mem (algebraMap S S') hx)
     rwa [Derivation.mapToLocalization_algebraMap] at h
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Since the differential module is finitely presented, clear a common denominator of the restricted derivation to obtain a derivation of S with values in S. The cleared derivative of a is then the image of a derivative of an element of J, so it lies in the extended derivative ideal. The denominator acts by a unit in the localization, and canceling it proves membership of the original derivative.
 -/
 private theorem derivation_algebraMap_mem_map_derivIdeal [CommRing k] [CommRing S] [CommRing S'] [Algebra k S]
     [Algebra S S'] [Algebra k S'] [IsScalarTower k S S'] (M : Submonoid S) [IsLocalization M S']
@@ -42,12 +40,8 @@ private theorem derivation_algebraMap_mem_map_derivIdeal [CommRing k] [CommRing 
   rw [hm a]
   exact Ideal.mem_map_of_mem _ (derivation_apply_mem_derivIdeal k J D₀ ha)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The extended ideal itself lies in the extension of the derivative ideal. Any element x of the extended ideal is a fraction with numerator a from J and a denominator m that becomes a unit. For a derivation of the localization, the Leibniz rule on mx = a gives m² times the derivative of x as m times the derivative of a minus a times the derivative of m, with all elements read in the localization. The first term is in the extended derivative ideal by the cleared-derivation lemma, and the second belongs there because a lies in the extended original ideal. Cancel the unit m twice. The derivative ideal containment criterion gives the result.
 -/
 theorem derivIdeal_map_le [CommRing k] [CommRing S] [CommRing S'] [Algebra k S] [Algebra S S']
     [Algebra k S'] [IsScalarTower k S S'] (M : Submonoid S) [IsLocalization M S']
@@ -79,8 +73,8 @@ theorem derivIdeal_map_le [CommRing k] [CommRing S] [CommRing S'] [Algebra k S] 
   exact (Ideal.unit_mul_mem_iff_mem _ (IsLocalization.map_units S' m)).mp
     ((Ideal.unit_mul_mem_iff_mem _ (IsLocalization.map_units S' m)).mp h3)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The extension of the original derivative ideal is contained in the derivative ideal of the extension by extending derivations. Finite presentation of the differential module gives the reverse containment by clearing denominators. Therefore the two ideals agree.
 -/
 theorem map_derivIdeal [CommRing k] [CommRing S] [CommRing S'] [Algebra k S] [Algebra S S']
     [Algebra k S'] [IsScalarTower k S S'] (M : Submonoid S) [IsLocalization M S']
@@ -88,8 +82,8 @@ theorem map_derivIdeal [CommRing k] [CommRing S] [CommRing S'] [Algebra k S] [Al
     Ideal.map (algebraMap S S') (derivIdeal k J) = derivIdeal k (Ideal.map (algebraMap S S') J) :=
   le_antisymm (map_derivIdeal_le M J) (derivIdeal_map_le M J)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Localization away from g is localization at the multiplicative set of its powers. Apply the equality for a general localization to that set.
 -/
 theorem map_derivIdeal_away [CommRing k] [CommRing S] [CommRing S'] [Algebra k S] [Algebra S S']
     [Algebra k S'] [IsScalarTower k S S'] (g : S) [IsLocalization.Away g S']

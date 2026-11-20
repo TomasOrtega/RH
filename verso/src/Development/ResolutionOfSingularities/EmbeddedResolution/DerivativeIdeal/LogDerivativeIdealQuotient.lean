@@ -8,12 +8,8 @@ namespace FunctorialResolution.EmbeddedResolution
 variable (k : Type*) [CommRing k] {S T : Type*} [CommRing S] [CommRing T]
   [Algebra k S] [Algebra k T]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The images of the elements of J belong to the ordinary derivative ideal of its extension. A derivation preserving the kernel of f descends through the surjection. Thus the image of its derivative of an element of J is the derivative of the corresponding image under the descended derivation. It belongs to the target derivative ideal as well. This gives the containment on all generators.
 -/
 theorem map_logDerivIdeal_ker_le_derivIdeal_map (f : S →ₐ[k] T)
     (hf : Function.Surjective f) (J : Ideal S) :
@@ -34,8 +30,8 @@ theorem map_logDerivIdeal_ker_le_derivIdeal_map (f : S →ₐ[k] T)
     rw [Ideal.mem_comap]
     exact h2
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At the zero-th iterate both sides give the extended J. At a successor apply the one-step quotient containment to the preceding logarithmic iterate. The induction hypothesis and monotonicity of the target derivative ideal bound the result by the next ordinary iterate of the extended J.
 -/
 theorem map_logDerivIdealIterate_ker_le_derivIdealIterate_map (f : S →ₐ[k] T)
     (hf : Function.Surjective f) (r : ℕ) (J : Ideal S) :
@@ -47,8 +43,8 @@ theorem map_logDerivIdealIterate_ker_le_derivIdealIterate_map (f : S →ₐ[k] T
       rw [logDerivIdealIterate_succ, derivIdealIterate_succ]
       exact (map_logDerivIdeal_ker_le_derivIdeal_map k f hf _).trans (derivIdeal_mono k ih)
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Replace P by the kernel of f using the assumed equality. The iterative quotient containment then gives exactly the stated result.
 -/
 theorem map_logDerivIdealIterate_le_derivIdealIterate_map_of_eq_ker (f : S →ₐ[k] T)
     (hf : Function.Surjective f) {P : Ideal S} (hP : P = RingHom.ker f.toRingHom)

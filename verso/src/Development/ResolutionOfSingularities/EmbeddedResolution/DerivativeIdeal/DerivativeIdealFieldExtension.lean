@@ -7,14 +7,8 @@ namespace DerivIdealBaseChange
 
 open FunctorialResolution.EmbeddedResolution.EtaleCoordinates
 
-/- English proof (translation)
-Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
-
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The derivations whose values on X lie in K form a submodule because evaluation is linear and K is an ideal. By hypothesis each partial derivation belongs to this submodule. The partial derivations span the module of derivations, so all derivations belong to it, including D.
 -/
 private theorem apply_mem_of_forall_partialDeriv_mem {k : Type*} [CommRing k] {ι : Type*} [Finite ι]
     {S : Type*} [CommRing S] [Algebra k S] [Algebra (MvPolynomial ι k) S]
@@ -62,22 +56,8 @@ variable (k : Type*) [CommRing k] (L : Type*) [CommRing L] [Algebra k L]
   [IsScalarTower L (MvPolynomial ι L) S'] [Algebra.FormallyEtale (MvPolynomial ι L) S']
   [Algebra k S'] [IsScalarTower k L S']
 
-/- English proof (translation)
-Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+View each side as the value at f of a k-derivation from S to S′. On the left, the partial derivation over L is restricted to S through φ and is k-linear because the scalar map from k factors through L. On the right, apply φ to the values of the partial derivation over k. Since φ sends coordinates to the corresponding coordinates, both derivations have the same dual values on every coordinate of S. The coordinate differentials are a basis, so these derivations coincide.
 -/
 theorem partialDeriv_algHom_apply (φ : S →ₐ[k] S')
     (hφ : ∀ i : ι, φ (coord k ι S i) = coord L ι S' i) (i : ι) (f : S) :
@@ -149,10 +129,8 @@ theorem partialDeriv_algHom_apply (φ : S →ₐ[k] S')
   have hD : D₁ = D₂ := derivation_ext_of_coord k ι S S' D₁ D₂ hcoords
   exact DFunLike.congr_fun hD f
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Each element of J maps into the extended J and hence into its derivative ideal over L. For each source coordinate partial derivation, its value on J maps to the value of the corresponding partial derivation over L on the image of that element. These images therefore belong to the desired ideal. Since coordinate partial derivations span all source derivations, this holds for every derivative generator. The extended derivative ideal is generated by these images together with the images of J.
 -/
 theorem map_derivIdeal_le [Fintype ι] (φ : S →ₐ[k] S')
     (hφ : ∀ i : ι, φ (coord k ι S i) = coord L ι S' i) (J : Ideal S) :
@@ -173,12 +151,8 @@ theorem map_derivIdeal_le [Fintype ι] (φ : S →ₐ[k] S')
     exact apply_mem_of_forall_partialDeriv_mem (ι := ι) (J : Set S)
       (Ideal.comap φ (derivIdeal L (Ideal.map φ J))) key D (show x ∈ (J : Set S) from hx)
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The extended J is generated by the images of elements of J, and all those images lie in the extended derivative ideal. The chosen target partial derivative of any such generator is the image of the corresponding source partial derivative and so belongs to the extended derivative ideal. The Leibniz rule and additivity extend this membership from the generators to every element of the extended J.
 -/
 theorem partialDeriv_mem_map_derivIdeal (φ : S →ₐ[k] S')
     (hφ : ∀ i : ι, φ (coord k ι S i) = coord L ι S' i) (i : ι) (J : Ideal S)
@@ -201,10 +175,8 @@ theorem partialDeriv_mem_map_derivIdeal (φ : S →ₐ[k] S')
       (derivation_apply_mem_derivIdeal k J (partialDeriv k ι S i) (show y ∈ J from hy))
   exact derivation_apply_mem_of_mem_span (partialDeriv L ι S' i) hGT hD (hle hg)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The extension of J lies in the extension of its derivative ideal. All coordinate partial derivatives on the extended J belong to the latter ideal by the generator argument. They span all derivations over L, so the same containment holds for every derivative of every element of the extended J. Apply the derivative ideal containment criterion.
 -/
 theorem derivIdeal_map_le [Fintype ι] (φ : S →ₐ[k] S')
     (hφ : ∀ i : ι, φ (coord k ι S i) = coord L ι S' i) (J : Ideal S) :
@@ -221,8 +193,8 @@ theorem derivIdeal_map_le [Fintype ι] (φ : S →ₐ[k] S')
     (Ideal.map φ (derivIdeal k J)) key D
     (show g ∈ ((Ideal.map φ J : Ideal S') : Set S') from hg)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The coordinate compatibility gives one inclusion by transporting the source partial derivatives. It gives the reverse by applying the target partial derivatives to generators of the extended ideal and then extending to all derivatives. The two containments give equality.
 -/
 theorem map_derivIdeal [Fintype ι] (φ : S →ₐ[k] S')
     (hφ : ∀ i : ι, φ (coord k ι S i) = coord L ι S' i) (J : Ideal S) :

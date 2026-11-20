@@ -9,16 +9,8 @@ variable {R S : Type*} [CommRing R] [IsLocalRing R] [CommRing S] [IsLocalRing S]
 noncomputable def idealOrder (I : Ideal R) : ℕ∞ :=
   sSup ((fun n : ℕ => (n : ℕ∞)) '' {n : ℕ | I ≤ IsLocalRing.maximalIdeal R ^ n})
 
-/- English proof (translation)
-Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
-
-Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+If I is contained in the n-th power of the maximal ideal, then n occurs in the set defining its order and hence is at most the supremum. Conversely, if that containment fails, n is positive because the zeroth power is the unit ideal. The powers are decreasing, so every exponent for which containment holds is less than n. Their supremum is at most n − 1, contradicting the assumed lower bound.
 -/
 theorem le_idealOrder_iff (I : Ideal R) (n : ℕ) :
     (n : ℕ∞) ≤ idealOrder I ↔ I ≤ IsLocalRing.maximalIdeal R ^ n := by
@@ -51,10 +43,8 @@ theorem le_idealOrder_iff (I : Ideal R) (n : ℕ) :
     rw [hdef]
     exact le_sSup ⟨n, h, rfl⟩
 
-/- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+An extended natural number is infinite exactly when it is at least every natural number. Apply the finite-exponent criterion to each such lower bound to get the equivalent ideal containments.
 -/
 theorem idealOrder_eq_top_iff (I : Ideal R) :
     idealOrder I = ⊤ ↔ ∀ n : ℕ, I ≤ IsLocalRing.maximalIdeal R ^ n := by
@@ -67,8 +57,8 @@ theorem idealOrder_eq_top_iff (I : Ideal R) :
     intro n
     exact (le_idealOrder_iff I n).mpr (h n)
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Apply the finite-exponent criterion at one. The first power of the maximal ideal is the maximal ideal itself.
 -/
 theorem one_le_idealOrder_iff (I : Ideal R) :
     1 ≤ idealOrder I ↔ I ≤ IsLocalRing.maximalIdeal R := by
@@ -76,10 +66,8 @@ theorem one_le_idealOrder_iff (I : Ideal R) :
   rw [Nat.cast_one, pow_one] at h
   exact h
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Order at least one is equivalent to containment in the maximal ideal. Every proper ideal of a local ring lies in the maximal ideal, and any ideal contained there is proper. This gives the equivalence.
 -/
 theorem one_le_idealOrder_iff_ne_top (I : Ideal R) :
     1 ≤ idealOrder I ↔ I ≠ ⊤ := by
@@ -91,15 +79,15 @@ theorem one_le_idealOrder_iff_ne_top (I : Ideal R) :
   · intro h
     exact IsLocalRing.le_maximalIdeal h
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+An extended natural number is zero exactly when it is less than one. By the order-one criterion, failure of order at least one is equivalent to failure of containment in the maximal ideal.
 -/
 theorem idealOrder_eq_zero_iff (I : Ideal R) :
     idealOrder I = 0 ↔ ¬ I ≤ IsLocalRing.maximalIdeal R := by
   rw [← one_le_idealOrder_iff, not_le, Order.lt_one_iff]
 
-/- English proof (translation)
-Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The unit ideal is not contained in the proper maximal ideal, so the order-zero criterion gives order zero.
 -/
 theorem idealOrder_top : idealOrder (⊤ : Ideal R) = 0 := by
   by_contra h
@@ -109,18 +97,16 @@ theorem idealOrder_top : idealOrder (⊤ : Ideal R) = 0 := by
   rw [one_le_idealOrder_iff_ne_top] at h1
   exact h1 rfl
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The zero ideal is contained in every power of the maximal ideal. The criterion for infinite order therefore applies.
 -/
 theorem idealOrder_bot : idealOrder (⊥ : Ideal R) = ⊤ := by
   rw [idealOrder_eq_top_iff]
   intro n
   exact bot_le
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+If the order were infinite, the ideal would lie in every power of the maximal ideal. Their intersection is zero by the Krull intersection theorem for Noetherian local rings. This would make the ideal zero, contrary to the hypothesis.
 -/
 theorem idealOrder_ne_top_of_ne_bot [IsNoetherianRing R] {I : Ideal R} (hI : I ≠ ⊥) :
     idealOrder I ≠ ⊤ := by
@@ -134,18 +120,16 @@ theorem idealOrder_ne_top_of_ne_bot [IsNoetherianRing R] {I : Ideal R} (hI : I �
     exact le_iInf h
   exact hI (le_bot_iff.mp hle)
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+A nonzero ideal of a Noetherian local ring has order different from infinity by the Krull intersection argument. Every finite extended natural number is represented by an ordinary natural number.
 -/
 theorem exists_idealOrder_eq_coe [IsNoetherianRing R] {I : Ideal R} (hI : I ≠ ⊥) :
     ∃ n : ℕ, idealOrder I = (n : ℕ∞) := by
   obtain ⟨n, hn⟩ := ENat.ne_top_iff_exists.mp (idealOrder_ne_top_of_ne_bot hI)
   exact ⟨n, hn.symm⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
-
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+If a power of the maximal ideal contains J, it also contains I because I is contained in J. The set of exponents defining the order of J is therefore contained in the set defining the order of I. Taking suprema gives the inequality.
 -/
 theorem idealOrder_le_of_le {I J : Ideal R} (h : I ≤ J) : idealOrder J ≤ idealOrder I := by
   have hI : idealOrder I
@@ -158,10 +142,8 @@ theorem idealOrder_le_of_le {I J : Ideal R} (h : I ≤ J) : idealOrder J ≤ ide
   have hn' : I ≤ IsLocalRing.maximalIdeal R ^ n := le_trans h hn
   exact le_sSup ⟨n, hn', rfl⟩
 
-/- English proof (translation)
-Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The sum of the ideals is contained in a given power of the maximal ideal exactly when both summands are contained in that power. Thus an ordinary exponent is at most the order of the sum precisely when it is at most both individual orders. These finite lower bounds determine the extended order, so it is the minimum.
 -/
 theorem idealOrder_sup (I J : Ideal R) :
     idealOrder (I ⊔ J) = min (idealOrder I) (idealOrder J) := by
@@ -174,14 +156,8 @@ theorem idealOrder_sup (I J : Ideal R) :
     rw [le_idealOrder_iff]
     exact sup_le ((le_idealOrder_iff I n).mp hn.1) ((le_idealOrder_iff J n).mp hn.2)
 
-/- English proof (translation)
-Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
+/- English proof (authored)
+If either a or b is infinite, take the finite bound on that argument arbitrarily large and take zero on the other. The hypothesis then makes c infinite, giving the inequality. If both are finite, take their actual values as m and n and apply the hypothesis.
 -/
 private theorem enat_add_le_of_forall_natCast_add_le {a b c : ℕ∞}
     (h : ∀ m n : ℕ, (m : ℕ∞) ≤ a → (n : ℕ∞) ≤ b → ((m + n : ℕ) : ℕ∞) ≤ c) : a + b ≤ c := by
@@ -206,8 +182,8 @@ private theorem enat_add_le_of_forall_natCast_add_le {a b c : ℕ∞}
   have hab := h a b le_rfl le_rfl
   simpa using hab
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+For any finite m and n bounded by the orders of I and J, the two ideals lie in the corresponding powers of the maximal ideal. Their product therefore lies in the power with exponent m + n. Hence every such sum is bounded by the order of the product. The extended-natural addition criterion gives the inequality.
 -/
 theorem add_idealOrder_le_idealOrder_mul (I J : Ideal R) :
     idealOrder I + idealOrder J ≤ idealOrder (I * J) := by
@@ -216,14 +192,8 @@ theorem add_idealOrder_le_idealOrder_mul (I J : Ideal R) :
   rw [pow_add]
   exact Ideal.mul_mono hm hn
 
-/- English proof (translation)
-Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+For exponent zero the lower bound is zero. For a positive exponent, if I has infinite order then its power is contained in I and also has infinite order. If the order of I is finite, say n, then I lies in the n-th power of the maximal ideal. Taking c-th powers yields containment in the power with exponent cn, which gives the bound.
 -/
 theorem mul_idealOrder_le_idealOrder_pow (I : Ideal R) (c : ℕ) :
     (c : ℕ∞) * idealOrder I ≤ idealOrder (I ^ c) := by
@@ -249,10 +219,8 @@ theorem mul_idealOrder_le_idealOrder_pow (I : Ideal R) (c : ℕ) :
             Ideal.pow_right_mono hIk c
         _ = IsLocalRing.maximalIdeal R ^ (c * k) := by rw [← pow_mul, mul_comm k c]
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Extension of ideals commutes with ideal products. For exponent zero the inequality is automatic because the target is the unit ideal. At a successor use the product formula, the previous inequality for the lower power, and the assumed containment for the image of the maximal ideal.
 -/
 private theorem map_maximalIdeal_pow_le_pow (f : R →+* S)
     (hf : (IsLocalRing.maximalIdeal R).map f ≤ IsLocalRing.maximalIdeal S) (n : ℕ) :
@@ -267,8 +235,8 @@ private theorem map_maximalIdeal_pow_le_pow (f : R →+* S)
       rw [pow_succ, pow_succ, Ideal.map_mul]
       exact Ideal.mul_mono ih hf
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Take any finite exponent bounded by the order of I. Extend the containment of I in that power of the source maximal ideal. The image of this power lies in the corresponding power of the target maximal ideal, so the same exponent is bounded by the order of the extended ideal. Comparing all finite lower bounds gives the claim.
 -/
 theorem idealOrder_le_idealOrder_map (f : R →+* S)
     (hf : (IsLocalRing.maximalIdeal R).map f ≤ IsLocalRing.maximalIdeal S) (I : Ideal R) :

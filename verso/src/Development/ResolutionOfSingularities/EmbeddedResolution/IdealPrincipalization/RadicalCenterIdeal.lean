@@ -9,8 +9,8 @@ open CategoryTheory AlgebraicGeometry
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+If a power of an element belongs to the kernel, the same power of its image is zero. In a reduced target this forces the image itself to be zero. Thus the element belongs to the kernel.
 -/
 private theorem radical_ker_le_ker_of_isReduced {R S : Type*} [CommRing R] [CommRing S] [IsReduced S]
     (f : R →+* S) : (RingHom.ker f).radical ≤ RingHom.ker f := by
@@ -20,14 +20,10 @@ private theorem radical_ker_le_ker_of_isReduced {R S : Type*} [CommRing R] [Comm
   rw [RingHom.mem_ker]
   exact IsNilpotent.eq_zero ⟨n, hn⟩
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
+/- English proof (authored)
+The smooth closed subscheme has local rings that are domains, so it is reduced and its rings of sections on opens are reduced. On each affine ambient open the defining ideal is the kernel of the restriction to the subscheme. The reduced-target kernel criterion makes each such ideal radical, so the defining ideal sheaf is radical.
 
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+The support of the smooth center is contained in the support of the given ideal. The order relation between supports and vanishing ideals then places the given ideal inside the vanishing ideal of the center's support. This vanishing ideal is the radical of the defining ideal, which equals the defining ideal by the preceding argument.
 -/
 theorem smoothSubschemeIdealIsRadical : SmoothSubschemeIdealIsRadical.{u} := by
   intro k ik X p Z ism J hsub

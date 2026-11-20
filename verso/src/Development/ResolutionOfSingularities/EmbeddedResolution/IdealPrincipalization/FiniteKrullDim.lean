@@ -10,8 +10,8 @@ open TopologicalSpace AlgebraicGeometry
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+A homeomorphism identifies the posets of irreducible closed sets and preserves the lengths of their strict chains. The two topological Krull dimensions are therefore equal, so finiteness transfers.
 -/
 private theorem topologicalKrullDim_lt_top_of_homeomorph {A : Type u} {B : Type v}
     [TopologicalSpace A] [TopologicalSpace B] (e : A ≃ₜ B) (h : topologicalKrullDim B < ⊤) :
@@ -19,8 +19,8 @@ private theorem topologicalKrullDim_lt_top_of_homeomorph {A : Type u} {B : Type 
   rw [topologicalKrullDim_eq_of_homeomorph e]
   exact h
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+Take a point of the preirreducible set and any open neighborhood of it. That neighborhood meets the set, and so does the given open by hypothesis. Preirreducibility gives a point of the set in both opens. Thus every such neighborhood meets the intersection with the given open, proving the closure assertion.
 -/
 private theorem subset_closure_inter_of_isPreirreducible {X : Type u} [TopologicalSpace X]
     {S V : Set X} (hS : IsPreirreducible S) (hV : IsOpen V) (hne : (S ∩ V).Nonempty) :
@@ -31,10 +31,8 @@ private theorem subset_closure_inter_of_isPreirreducible {X : Type u} [Topologic
   obtain ⟨y, hyS, hyW, hyV⟩ := hS W V hW hV ⟨s, hs, hsW⟩ hne
   exact ⟨y, hyW, hyS, hyV⟩
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
+/- English proof (authored)
+The two closed sets have equal intersections with the open. The intersection with the larger irreducible set is nonempty because the smaller set meets it. This intersection is dense in the larger set and is contained in the smaller closed set. Thus the larger set lies in the smaller one, giving equality.
 -/
 private theorem eq_of_preimage_val_eq {X : Type u} [TopologicalSpace X] {W : Set X}
     (hW : IsOpen W) {C D : Set X} (hC : IsClosed C) (hD : IsIrreducible D) (hCsubD : C ⊆ D)
@@ -52,16 +50,8 @@ private theorem eq_of_preimage_val_eq {X : Type u} [TopologicalSpace X] {W : Set
     _ ⊆ closure C := closure_mono h1
     _ = C := hC.closure_eq
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
-
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Take any finite strict chain of irreducible closed subsets. A point of its smallest member lies in some covering open, and this same point lies in every member. Intersect the chain with that open. Each intersection is nonempty, irreducible and closed in the open. The inclusions remain strict because equality of consecutive intersections would, by density in the irreducible sets, identify the two original closed subsets. Thus there is a chain of the same length in that covering open, whose dimension is bounded by the given bound. Taking the supremum over all original chains gives the result.
 -/
 private theorem topologicalKrullDim_le_of_iUnion_eq_univ {X : Type u} [TopologicalSpace X] {ι : Type v}
     (U : ι → Set X) (hU : ∀ i, IsOpen (U i)) (hcov : ⋃ i, U i = Set.univ)
@@ -105,8 +95,8 @@ private theorem topologicalKrullDim_le_of_iUnion_eq_univ {X : Type u} [Topologic
     Order.LTSeries.length_le_krullDim q
   exact le_trans hq (h i)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Apply the open-cover chain bound with the embedded natural number as the common bound for the dimensions of the open sets.
 -/
 theorem topologicalKrullDim_le_natCast_of_isOpenCover {X : Type u} [TopologicalSpace X] {ι : Type v}
     (U : ι → Set X) (hU : ∀ i, IsOpen (U i)) (hcov : ⋃ i, U i = Set.univ) (n : ℕ)
@@ -114,10 +104,8 @@ theorem topologicalKrullDim_le_natCast_of_isOpenCover {X : Type u} [TopologicalS
     topologicalKrullDim X ≤ (n : WithBot ℕ∞) :=
   topologicalKrullDim_le_of_iUnion_eq_univ U hU hcov _ h
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+A natural number is finite in the extended natural numbers. Adjoining a bottom element preserves the distinction between that finite number and the top element.
 -/
 private theorem natCast_withBot_ne_top (n : ℕ) : ((n : ℕ) : WithBot ℕ∞) ≠ ⊤ := by
   intro hcontra
@@ -127,16 +115,14 @@ private theorem natCast_withBot_ne_top (n : ℕ) : ((n : ℕ) : WithBot ℕ∞) 
   have h3 : (n : ℕ∞) = ⊤ := WithBot.coe_injective h2
   simp at h3
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The embedded natural number is below top and distinct from it, so it is strictly below top.
 -/
 private theorem natCast_withBot_lt_top (n : ℕ) : ((n : ℕ) : WithBot ℕ∞) < ⊤ :=
   lt_top_iff_ne_top.mpr (natCast_withBot_ne_top n)
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
-
-Treat this case separately.
+/- English proof (authored)
+An element below top in this ordered set is either bottom or an embedded natural number. In the first case zero bounds it, and in the second the corresponding natural number bounds it by equality.
 -/
 private theorem exists_le_natCast_of_lt_top {a : WithBot ℕ∞} (h : a < ⊤) :
     ∃ n : ℕ, a ≤ ((n : ℕ) : WithBot ℕ∞) := by
@@ -147,8 +133,8 @@ private theorem exists_le_natCast_of_lt_top {a : WithBot ℕ∞} (h : a < ⊤) :
     | top => exact absurd h (lt_irrefl _)
     | coe n => exact ⟨n, le_rfl⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Choose a natural upper bound for the dimension of each covering open. Their finite supremum is still a natural number and bounds every open's dimension. By the chain bound for open covers it bounds the dimension of the whole space. It lies strictly below top, as required.
 -/
 theorem topologicalKrullDim_lt_top_of_finite_isOpenCover {X : Type u} [TopologicalSpace X]
     {ι : Type v} [Finite ι] (U : ι → Set X) (hU : ∀ i, IsOpen (U i))
@@ -163,8 +149,8 @@ theorem topologicalKrullDim_lt_top_of_finite_isOpenCover {X : Type u} [Topologic
     exact le_trans (hN i) (Nat.mono_cast (Finset.le_sup (Finset.mem_univ i)))
   exact lt_of_le_of_lt hle (natCast_withBot_lt_top _)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Two and zero are distinct natural numbers. Both embeddings into the extended naturals and then into the order with a bottom element are injective, so their images remain distinct.
 -/
 private theorem two_ne_zero_withBotENat : (2 : WithBot ℕ∞) ≠ 0 := by
   intro h
@@ -172,8 +158,8 @@ private theorem two_ne_zero_withBotENat : (2 : WithBot ℕ∞) ≠ 0 := by
   have h2 : (2 : ℕ∞) = 0 := WithBot.coe_injective h'
   simp at h2
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
+/- English proof (authored)
+For embedded finite numbers, multiplication and addition agree with multiplication and addition of natural numbers before embedding. This gives the equality for twice the given number plus one.
 -/
 private theorem two_mul_natCast_add_one (m : ℕ) :
     (2 : WithBot ℕ∞) * ((m : ℕ∞) : WithBot ℕ∞) + 1 = (((2 * m + 1 : ℕ) : ℕ∞) : WithBot ℕ∞) := by
@@ -182,10 +168,8 @@ private theorem two_mul_natCast_add_one (m : ℕ) :
   rw [e2, e1, ← WithBot.coe_mul, ← WithBot.coe_add]
   congr 1
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Proceed by induction.
-
-Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+Since the element is distinct from top, it is bottom or an embedded natural number. In the bottom case multiplying by the nonzero element two and adding one still gives bottom. In the finite case the result is the embedded natural number given by twice the number plus one. Both are strictly below top.
 -/
 private theorem two_mul_add_one_lt_top {a : WithBot ℕ∞} (h : a ≠ ⊤) : 2 * a + 1 < ⊤ := by
   induction a using WithBot.recBotCoe with
@@ -199,10 +183,8 @@ private theorem two_mul_add_one_lt_top {a : WithBot ℕ∞} (h : a ≠ ⊤) : 2 
       refine lt_of_eq_of_lt ?_ (natCast_withBot_lt_top (2 * m + 1))
       exact two_mul_natCast_add_one m
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the number of variables. With no variables the polynomial ring is the coefficient field and has dimension zero. With one more variable it is a univariate polynomial ring over the preceding multivariate polynomial ring. The polynomial-ring dimension bound is twice the preceding dimension plus one. By induction the preceding dimension is below top, so this bound is still below top.
 -/
 private theorem ringKrullDim_mvPolynomial_lt_top (k : Type u) [Field k] (n : ℕ) :
     ringKrullDim (MvPolynomial (Fin n) k) < ⊤ := by
@@ -216,8 +198,8 @@ private theorem ringKrullDim_mvPolynomial_lt_top (k : Type u) [Field k] (n : ℕ
     rw [ringKrullDim_eq_of_ringEquiv (MvPolynomial.finSuccEquiv k m).toRingEquiv]
     exact lt_of_le_of_lt Polynomial.ringKrullDim_le (two_mul_add_one_lt_top (ne_of_lt ih))
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+A finite-type algebra over the field is a quotient of a polynomial ring in finitely many variables. A surjection does not increase Krull dimension, since it identifies prime ideals of the quotient with prime ideals containing the kernel. The polynomial ring has finite dimension by the preceding result, so the quotient does as well.
 -/
 theorem ringKrullDim_lt_top_of_finiteType (k : Type u) [Field k] (A : Type v) [CommRing A]
     [Algebra k A] [Algebra.FiniteType k A] : ringKrullDim A < ⊤ := by
@@ -226,25 +208,23 @@ theorem ringKrullDim_lt_top_of_finiteType (k : Type u) [Field k] (A : Type v) [C
   refine lt_of_le_of_lt (ringKrullDim_le_of_surjective φ.toRingHom hφ) ?_
   exact ringKrullDim_mvPolynomial_lt_top k n
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Topological Krull dimension of a prime spectrum equals the ring's Krull dimension. Apply the finite-type algebra bound.
 -/
 theorem topologicalKrullDim_primeSpectrum_lt_top (k : Type u) [Field k] (A : Type v) [CommRing A]
     [Algebra k A] [Algebra.FiniteType k A] : topologicalKrullDim (PrimeSpectrum A) < ⊤ := by
   rw [PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim]
   exact ringKrullDim_lt_top_of_finiteType k A
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The underlying space of the affine scheme is the prime spectrum of its coordinate ring. The dimension bound for spectra of finite-type algebras therefore applies.
 -/
 theorem topologicalKrullDim_spec_lt_top (k : Type u) [Field k] (R : CommRingCat.{v})
     [Algebra k R] [Algebra.FiniteType k R] : topologicalKrullDim ↥(Spec R) < ⊤ :=
   topologicalKrullDim_primeSpectrum_lt_top k R
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Local finite type of the structural map gives a finite-type map from the sections on the field spectrum to the sections on the affine open. The former ring identifies with the field, so the affine open's coordinate ring is a finite-type algebra over that field. The affine open is homeomorphic to the spectrum of this coordinate ring, whose dimension is finite.
 -/
 private theorem topologicalKrullDim_affineOpen_lt_top {k : Type u} [Field k] {X : Scheme.{u}}
     (f : X ⟶ Spec (CommRingCat.of k)) (hft : LocallyOfFiniteType f) {U : X.Opens}
@@ -266,12 +246,8 @@ private theorem topologicalKrullDim_affineOpen_lt_top {k : Type u} [Field k] {X 
   have e : ↥((U : Set ↥X)) ≃ₜ ↥(Spec Γ(X, U)) := Scheme.homeoOfIso hU.isoSpec
   exact topologicalKrullDim_lt_top_of_homeomorph e (topologicalKrullDim_spec_lt_top k Γ(X, U))
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
-
-Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The field spectrum is quasi-compact, and the inverse image of its whole space is quasi-compact by the given property of the structural map. Hence the affine opens admit a finite subcover of the scheme. Every member has finite dimension by local finite type and the affine-open result. The finite-cover dimension bound then gives finite dimension of the whole scheme.
 -/
 theorem topologicalKrullDim_lt_top_of_finiteType {k : Type u} [Field k] {X : Scheme.{u}}
     (f : X ⟶ Spec (CommRingCat.of k)) (hft : LocallyOfFiniteType f) (hqc : QuasiCompact f) :
@@ -298,8 +274,8 @@ theorem topologicalKrullDim_lt_top_of_finiteType {k : Type u} [Field k] {X : Sch
   · intro i
     exact topologicalKrullDim_affineOpen_lt_top f hft i.1.2
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Admissibility gives a locally finite-type and quasi-compact structural map to the base field. The finite-dimension result for schemes with those properties applies to the marked ideal's ambient scheme.
 -/
 theorem MarkedIdealWithBoundary.IsAdmissible.topologicalKrullDim_lt_top {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible) :
     topologicalKrullDim ↥T.scheme < ⊤ :=

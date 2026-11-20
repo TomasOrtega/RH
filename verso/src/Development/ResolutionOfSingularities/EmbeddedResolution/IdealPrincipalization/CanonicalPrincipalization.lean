@@ -18,8 +18,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+A blowup along an ideal sheaf on a Noetherian scheme is Noetherian by the blowup theorem for Noetherian schemes. Apply that theorem to the stated witness of the blowup property.
 -/
 theorem blowupPreservesNoetherian : BlowupPreservesNoetherian.{u} := by
   repeat intro _
@@ -36,8 +36,8 @@ def canonicalPrincipalization (hres : FunctorialResolution.Blowup.StrictTransfor
     (hrad : SmoothSubschemeIdealIsRadical.{u}) : PrincipalizationAlgorithm.{u} :=
   (canonicalAlgorithmRules hres).principalization hrad
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The canonical principalization is the principalization constructed from the canonical reduction rules. Those rules satisfy dimension reduction and commute with the specified closed immersions by hypothesis, and smooth center ideals satisfy the required radical condition. The functoriality theorem for principalization from such rules gives the claim.
 -/
 theorem isFunctorialPrincipalization_canonicalPrincipalization (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hB : (canonicalAlgorithmRules hres).ReducesInductivelyOnDimension) (hrad : SmoothSubschemeIdealIsRadical.{u})

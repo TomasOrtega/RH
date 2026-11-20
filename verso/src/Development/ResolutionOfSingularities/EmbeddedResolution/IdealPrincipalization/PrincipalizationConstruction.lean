@@ -23,64 +23,64 @@ def markedTripleOrderOne (k : Type u) [Field k] (X : Scheme.{u})
     (E : List X.IdealSheafData) : MarkedIdealWithBoundary.{u} :=
   MarkedIdealWithBoundary.mk k X p I 1 E
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The marked triple uses the supplied field as its base field.
 -/
 @[simp] theorem markedTripleOrderOne_baseField (k : Type u) [Field k] (X : Scheme.{u})
     (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData)
     (E : List X.IdealSheafData) :
     (markedTripleOrderOne k X p I E).base = k := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The marked triple is formed on the supplied ambient scheme, so its scheme is that input.
 -/
 @[simp] theorem markedTripleOrderOne_scheme (k : Type u) [Field k] (X : Scheme.{u})
     (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData)
     (E : List X.IdealSheafData) :
     (markedTripleOrderOne k X p I E).scheme = X := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+Construction of the marked triple retains the supplied structural morphism to the field spectrum.
 -/
 @[simp] theorem markedTripleOrderOne_structureMorphism (k : Type u) [Field k] (X : Scheme.{u})
     (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData)
     (E : List X.IdealSheafData) :
     (markedTripleOrderOne k X p I E).structMap = p := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The ideal of the marked triple is the ideal supplied to its construction.
 -/
 @[simp] theorem markedTripleOrderOne_ideal (k : Type u) [Field k] (X : Scheme.{u})
     (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData)
     (E : List X.IdealSheafData) :
     (markedTripleOrderOne k X p I E).ideal = I := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The marked triple is defined with marking one.
 -/
 @[simp] theorem markedTripleOrderOne_mult (k : Type u) [Field k] (X : Scheme.{u})
     (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData)
     (E : List X.IdealSheafData) :
     (markedTripleOrderOne k X p I E).mult = 1 := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The construction uses the supplied ordered list as the boundary of the marked triple.
 -/
 @[simp] theorem markedTripleOrderOne_boundary (k : Type u) [Field k] (X : Scheme.{u})
     (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData)
     (E : List X.IdealSheafData) :
     (markedTripleOrderOne k X p I E).boundary = E := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The dimension index of a marked triple is computed from its ambient scheme. Here that scheme is the original one, so their dimension indices agree.
 -/
 @[simp] theorem markedTripleOrderOne_dim (k : Type u) [Field k] (X : Scheme.{u})
     (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData)
     (E : List X.IdealSheafData) :
     (markedTripleOrderOne k X p I E).krullDimSucc = krullDimSucc X := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+Pullback replaces the ambient scheme and structure map by the specified ones, pulls back the ideal, and pulls back each boundary ideal in order. The field and the marking one are retained. These are precisely the data of the marked triple on the new scheme.
 -/
 theorem markedTripleOrderOne_pullbackAlong (k : Type u) [Field k] (X : Scheme.{u})
     (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData)
@@ -89,8 +89,8 @@ theorem markedTripleOrderOne_pullbackAlong (k : Type u) [Field k] (X : Scheme.{u
     (markedTripleOrderOne k X p I E).pullbackAlong Y q h
       = markedTripleOrderOne k Y q (I.comap h) (E.map fun D => D.comap h) := rfl
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The field has characteristic zero and the structural map is smooth, locally of finite type and quasi-compact by hypothesis. The ideal is nonzero on components and the boundary has strict normal crossings by the remaining hypotheses. The marking equals one and is therefore positive. Thus every admissibility condition is satisfied.
 -/
 theorem markedTripleOrderOne_isAdmissible (k : Type u) [Field k] [CharZero k] (X : Scheme.{u})
     (p : X ⟶ Spec (CommRingCat.of k))
@@ -120,8 +120,8 @@ def markedBlowupSeq (B : PrincipalizationRules.{u}) (k : Type u) [Field k] (X : 
     (E : List X.IdealSheafData) : MarkedSequenceOfBlowups p I 1 E :=
   (B.outputLevelData (krullDimSucc X)).maxOrderRed (markedTripleOrderOne k X p I E)
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The marked blowup sequence is defined by applying maximal-order reduction at the dimension index of the ambient scheme to its marked triple of order one.
 -/
 theorem sequence_eq_maxOrderReduction (B : PrincipalizationRules.{u}) (k : Type u) [Field k] (X : Scheme.{u})
     (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData)
@@ -151,8 +151,8 @@ def CommutesWithClosedImmersion (B : PrincipalizationRules.{u}) : Prop :=
 
 namespace PrincipalizationRules
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The marked triple has the dimension index of its ambient scheme. Coherence of the successive reduction levels says that maximal-order reduction at any larger bound agrees with its value at that index. Apply the operation that forgets the markings to this equality.
 -/
 private theorem markedBlowupSeq_toSequenceOfBlowups_eq_of_le (B : PrincipalizationRules.{u}) (k : Type u) [Field k] (X : Scheme.{u})
     (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData)
@@ -165,8 +165,8 @@ private theorem markedBlowupSeq_toSequenceOfBlowups_eq_of_le (B : Principalizati
       (le_of_eq (markedTripleOrderOne_dim k X p I E))).symm
   exact congrArg (fun s : (markedTripleOrderOne k X p I E).SequenceOfBlowups => s.toSequenceOfBlowups) hs
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At any actual stage, the marked sequence gives a center smooth over the field. Its structure map is the center inclusion followed by the stage's projection to the field. Apply the smooth-center ideal criterion to this center and the given ideal whose support contains it. The resulting ideal containment is precisely the required reduced-center condition at this stage.
 -/
 theorem hasReducedCenters_markedBlowupSeq (B : PrincipalizationRules.{u}) (hrad : SmoothSubschemeIdealIsRadical.{u})
     (k : Type u) [Field k] [CharZero k] (X : Scheme.{u})
@@ -198,8 +198,8 @@ def principalization (B : PrincipalizationRules.{u}) (hrad : SmoothSubschemeIdea
   fun k ik icz X p ism ift iqc I hI E hE =>
     @principalizationSeq B hrad k ik icz X p ism ift iqc I hI E hE
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The output of principalization is obtained by viewing the marked sequence of order one as an ideal blowup sequence using the reduced centers. This conversion retains the underlying sequence of blowups, so forgetting the additional data on either side gives the same sequence.
 -/
 theorem principalization_toSequenceOfBlowups (B : PrincipalizationRules.{u}) (hrad : SmoothSubschemeIdealIsRadical.{u})
     (k : Type u) [Field k] [CharZero k] (X : Scheme.{u})
@@ -213,8 +213,8 @@ theorem principalization_toSequenceOfBlowups (B : PrincipalizationRules.{u}) (hr
   MarkedSequenceOfBlowups.toMarkedSequence_toSequenceOfBlowups (B.markedBlowupSeq k X p I E)
     (B.hasReducedCenters_markedBlowupSeq hrad k X p I hI E hE)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The conversion from the marked sequence of order one to an ideal blowup sequence retains its ideals, including the final ideal. Hence the two final ideals agree.
 -/
 theorem principalization_lastIdeal (B : PrincipalizationRules.{u}) (hrad : SmoothSubschemeIdealIsRadical.{u})
     (k : Type u) [Field k] [CharZero k] (X : Scheme.{u})
@@ -228,10 +228,8 @@ theorem principalization_lastIdeal (B : PrincipalizationRules.{u}) (hrad : Smoot
   MarkedSequenceOfBlowups.toMarkedSequence_lastIdeal (B.markedBlowupSeq k X p I E)
     (B.hasReducedCenters_markedBlowupSeq hrad k X p I hI E hE)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Form the admissible marked triples of order one on the original and new schemes, pulling back the ideal and boundary for the latter. Take the maximum of the two dimension indices. Coherence of the reduction levels lets both marked blowup sequences be computed at this one bound. At that bound the maximal-order rule satisfies its specification by dimension reduction. Apply its smooth pullback property to the two admissible triples to obtain the comparison.
 -/
 private theorem markedBlowupSeq_smoothPullback_isPullback (B : PrincipalizationRules.{u}) (hB : B.ReducesInductivelyOnDimension)
     (k : Type u) [Field k] [CharZero k] (X : Scheme.{u})
@@ -266,10 +264,8 @@ private theorem markedBlowupSeq_smoothPullback_isPullback (B : PrincipalizationR
     (markedTripleOrderOne k X p I E) hV hdimLe X' p' φ
     (inferInstanceAs (AlgebraicGeometry.Smooth φ)) hφ hV' hPY
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Use a common dimension bound equal to the maximum of the two dimension indices. The two admissible inputs of marking one give the same outputs at that bound as at their original levels by coherence. At the common level the maximal-order reduction specification gives strict pullback along a smooth surjection. Apply it to the given map and pulled-back input.
 -/
 private theorem markedBlowupSeq_smoothPullback_isStrictPullback (B : PrincipalizationRules.{u}) (hB : B.ReducesInductivelyOnDimension)
     (k : Type u) [Field k] [CharZero k] (X : Scheme.{u})
@@ -306,10 +302,8 @@ private theorem markedBlowupSeq_smoothPullback_isStrictPullback (B : Principaliz
     (inferInstanceAs (AlgebraicGeometry.Smooth φ))
     (inferInstanceAs (AlgebraicGeometry.Surjective φ)) hφ hV' hPY
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The original and field-extended data both define admissible marked triples of order one. Use the maximum of their dimension indices as a common bound, which leaves both outputs unchanged by coherence. The maximal-order specification at that bound provides compatibility with field base change. Its comparison is the stated pullback along the projection to the original scheme.
 -/
 private theorem markedBlowupSeq_baseChange_isPullback (B : PrincipalizationRules.{u}) (hB : B.ReducesInductivelyOnDimension)
     (k : Type u) [Field k] [CharZero k] (X : Scheme.{u})
@@ -367,10 +361,8 @@ private theorem markedBlowupSeq_baseChange_isPullback (B : PrincipalizationRules
         (krullDimSucc (CategoryTheory.Limits.pullback p (specMapOfFieldHom k K f))))).isPullbackBlowupSequence_baseChange
     (markedTripleOrderOne k X p I E) hV hdimLe K f hV' hPY
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Form the two admissible order-one inputs over the original and extended fields. Both sequences can be computed at the maximum of their dimension indices by coherence of the reduction levels. At this common level the maximal-order reduction has the strict field base-change property, which gives the strict comparison of the two sequences.
 -/
 private theorem markedBlowupSeq_baseChange_isStrictPullback (B : PrincipalizationRules.{u}) (hB : B.ReducesInductivelyOnDimension)
     (k : Type u) [Field k] [CharZero k] (X : Scheme.{u})
@@ -429,10 +421,8 @@ private theorem markedBlowupSeq_baseChange_isStrictPullback (B : Principalizatio
           (specMapOfFieldHom k K f))))).isStrictPullbackBlowupSeq_baseChange
     (markedTripleOrderOne k X p I E) hV hdimLe K f hV' hPY
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
-
-Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At the ambient dimension index, the maximal-order specification resolves the admissible marked triple. Resolution at marking one means that the final ideal has empty locus of order at least one. That locus is the support of the final ideal. An ideal sheaf with empty support is the unit ideal.
 -/
 private theorem markedBlowupSeq_lastIdeal_eq_top (B : PrincipalizationRules.{u}) (hB : B.ReducesInductivelyOnDimension)
     (k : Type u) [Field k] [CharZero k] (X : Scheme.{u})
@@ -456,12 +446,8 @@ private theorem markedBlowupSeq_lastIdeal_eq_top (B : PrincipalizationRules.{u})
   rw [h1] at hx'
   exact hx'
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The conversion to a principalization sequence preserves both the underlying blowups and the final ideal. Pushforward along the given closed immersions therefore follows from the assumed pushforward comparison for the marked sequences. Field base change and smooth pullback follow from the corresponding marked-sequence comparisons, including their strict forms for field extensions and smooth surjections. Finally the marked sequence resolves the order-one ideal, so its final ideal and hence the principalization's final ideal are the unit ideal.
 -/
 theorem isFunctorialPrincipalization_principalization (B : PrincipalizationRules.{u}) (hB : B.ReducesInductivelyOnDimension)
     (hrad : SmoothSubschemeIdealIsRadical.{u}) (hemb : CommutesWithClosedImmersion.{u} B) :

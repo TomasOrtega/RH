@@ -7,14 +7,10 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
+/- English proof (authored)
+Use simultaneous induction on the principalization and order certificates. In the memory cases, compose the old containment with the enlargement of the memory set. Large-marking certificates have no memory condition. In the passage from principalization to order reduction, enlarge the required containment and apply induction to its order certificate. Localization uses that inverse images preserve containments, so the induction hypothesis applies on every chosen open.
 
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+For descent to a hypersurface, keep the opens, hypersurfaces and ideals. Any point outside the enlarged memory was outside the old memory, so the required local condition remains valid. The inverse image of the old memory under the hypersurface inclusion into the original scheme is contained in the inverse image of the new memory. Apply induction to each descended order certificate with those inverse images. This covers every constructor and gives the enlarged principalization certificate.
 -/
 private theorem forall_principalizationCertificate_of_subset {k : Type u} [Field k]
     {W : Scheme.{u}} {p : W ⟶ Spec (CommRingCat.of k)} {I : W.IdealSheafData} {m : ℕ}
@@ -52,8 +48,8 @@ private theorem forall_principalizationCertificate_of_subset {k : Type u} [Field
       exact ih z hz Jz hJz (((H z hz).subschemeι ≫ (U z hz).ι).base ⁻¹' Mem')
         (Set.preimage_mono hsub)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Apply the simultaneous induction result for principalization certificates to the given certificate and the stated enlargement of its memory set.
 -/
 theorem principalizationCertificate_mono_of_subset {k : Type u} [Field k] {W : Scheme.{u}}
     {p : W ⟶ Spec (CommRingCat.of k)} {I : W.IdealSheafData} {m : ℕ}
@@ -62,12 +58,10 @@ theorem principalizationCertificate_mono_of_subset {k : Type u} [Field k] {W : S
     PrincipalizationCertificate W p I m Mem' Z :=
   forall_principalizationCertificate_of_subset h Mem' hsub
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
+/- English proof (authored)
+Induct simultaneously on order and principalization certificates. Memory witnesses remain valid by transitivity of containment, and large markings use the same witnesses regardless of memory. In a principalization step that passes to an order certificate, enlarge the recorded containment and apply induction to that order certificate. For either localization case, the old and new memory sets remain nested after taking inverse images in each open.
 
-Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+In a descent step, a point outside the new memory also lies outside the old one, so keep the same local ideal conditions. On every chosen hypersurface the two pulled-back memory sets are nested, so induction gives the descended order certificates for the new memory. All defining cases are preserved, yielding the order certificate with enlarged memory.
 -/
 private theorem forall_orderCertificate_of_subset {k : Type u} [Field k] {W : Scheme.{u}}
     {p : W ⟶ Spec (CommRingCat.of k)} {N : W.IdealSheafData} {μ : ℕ}
@@ -101,8 +95,8 @@ private theorem forall_orderCertificate_of_subset {k : Type u} [Field k] {W : Sc
       exact ih z hz Jz hJ (((H z hz).subschemeι ≫ (U z hz).ι).base ⁻¹' Mem')
         (Set.preimage_mono hs)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Use the order certificate induction result with the enlarged memory set and its given containment.
 -/
 theorem orderCertificate_mono_of_subset {k : Type u} [Field k] {W : Scheme.{u}}
     {p : W ⟶ Spec (CommRingCat.of k)} {N : W.IdealSheafData} {μ : ℕ}

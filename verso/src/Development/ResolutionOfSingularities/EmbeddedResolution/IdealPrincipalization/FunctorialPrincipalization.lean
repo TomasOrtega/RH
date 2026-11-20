@@ -25,8 +25,8 @@ abbrev specMapOfFieldHom (k K : Type u) [Field k] [Field K] (f : k →+* K) :
     Spec (CommRingCat.of K) ⟶ Spec (CommRingCat.of k) :=
   Spec.map (CommRingCat.ofHom f)
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The map of field spectra is defined by taking the spectrum morphism induced by the given field homomorphism.
 -/
 theorem specMapOfFieldHom_eq (k K : Type u) [Field k] [Field K] (f : k →+* K) :
     specMapOfFieldHom k K f = Spec.map (CommRingCat.ofHom f) := rfl

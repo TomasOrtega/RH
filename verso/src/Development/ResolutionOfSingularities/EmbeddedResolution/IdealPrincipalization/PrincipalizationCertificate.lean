@@ -92,8 +92,8 @@ inductive OrderCertificate {k : Type u} [Field k] :
 
 end
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+A marking of at least two satisfies the large-marking case in the definition of a principalization certificate. That case supplies the required certificate directly.
 -/
 theorem PrincipalizationCertificate.of_two_le {k : Type u} [Field k] (W : Scheme.{u})
     (p : W ⟶ Spec (CommRingCat.of k)) (I : W.IdealSheafData) (m : ℕ) (Mem : Set ↥W)
@@ -101,8 +101,8 @@ theorem PrincipalizationCertificate.of_two_le {k : Type u} [Field k] (W : Scheme
     PrincipalizationCertificate W p I m Mem Z :=
   PrincipalizationCertificate.large hm
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The large-marking case of an order certificate applies as soon as the marking is at least two. The hypothesis gives this bound.
 -/
 theorem OrderCertificate.of_two_le {k : Type u} [Field k] (W : Scheme.{u})
     (p : W ⟶ Spec (CommRingCat.of k)) (N : W.IdealSheafData) (μ : ℕ) (Mem : Set ↥W)

@@ -17,8 +17,8 @@ open CategoryTheory AlgebraicGeometry
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The dimension reduction specification requires a divisor reduction, invariance of that reduction under the stated change of boundary position, and the two order reduction specifications. The divisor reduction hypotheses give the first two properties for the canonical divisor rule. The geometric hypotheses give the maximal-order reduction property for any supplied lower-dimensional procedure satisfying its specification. The strict-transform blowup hypothesis gives the ordinary order reduction property. Together these establish the specification of the rules.
 -/
 theorem isCorrect_canonicalAlgorithmRules_of_hypotheses
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
@@ -31,8 +31,8 @@ theorem isCorrect_canonicalAlgorithmRules_of_hypotheses
     MaxOrderReduction.isMaxOrderReduction_canonicalAlgorithmRules hG hres n A L hspec
   orderSpec := OrderReductionProperties.isOrderReduction_orderFamily_of_strictTransformIsBlowup hres
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The canonical divisor rules satisfy the divisor reduction hypotheses, and the geometric principalization results supply the general geometric hypotheses. Insert these two results into the conditional correctness theorem for the canonical rules.
 -/
 theorem isCorrect_canonicalAlgorithmRules
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}) :

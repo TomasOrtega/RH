@@ -29,15 +29,15 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The inclusion of the closed subscheme defined by an ideal sheaf identifies its underlying space with the support of that ideal. Its range is therefore that support.
 -/
 theorem range_base_subschemeι {X : Scheme.{u}} (I : X.IdealSheafData) :
     Set.range ⇑I.subschemeι.base = ((I.support : TopologicalSpace.Closeds ↥X) : Set ↥X) := by
   rw [Scheme.IdealSheafData.range_subschemeι]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The vanishing ideal of the given closed set has that set as its support. Replace the support in the membership assumption by the closed set.
 -/
 private theorem mem_of_mem_support_vanishingIdeal {W : Scheme.{u}} (Z : TopologicalSpace.Closeds ↥W)
     (x : ↥W) (hx : x ∈ (Scheme.IdealSheafData.vanishingIdeal Z).support) : x ∈ (Z : Set ↥W) := by
@@ -46,18 +46,8 @@ private theorem mem_of_mem_support_vanishingIdeal {W : Scheme.{u}} (Z : Topologi
   rw [Scheme.IdealSheafData.coe_support_vanishingIdeal] at h2
   exact h2
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
-
-Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+The kernel containment gives a factorization of the reduced vanishing subscheme through the given closed immersion. Its image in the ambient scheme is the specified closure, which contains every point of the original immersion’s image. Injectivity of the original immersion therefore makes the factorization surjective on points. The factorization is an immersion and its range is the entire target, so it is a surjective closed immersion. Its kernel has full support and the target is reduced, hence the kernel is zero. This makes the factorization an isomorphism with the stated ambient compatibility.
 -/
 private theorem exists_iso_subscheme_vanishingIdeal_of_closure_range {A W : Scheme.{u}} (f : A ⟶ W)
     [AlgebraicGeometry.IsClosedImmersion f] [AlgebraicGeometry.IsReduced A]
@@ -104,10 +94,8 @@ private theorem exists_iso_subscheme_vanishingIdeal_of_closure_range {A W : Sche
   have : IsIso ψ := IsClosedImmersion.isIso_iff_ker_eq_bot.mpr hker
   exact ⟨asIso ψ, hψ⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The two reduced closed immersions have the same closed image. For each immersion its kernel is contained in the vanishing ideal of this image, since that ideal is the radical of the kernel. The reduced subscheme given by the common vanishing ideal is therefore isomorphic over the ambient scheme to each source. Compose one inverse with the other isomorphism to obtain the required identification.
 -/
 theorem exists_iso_of_range_base_eq {A B W : Scheme.{u}} (f : A ⟶ W) (g : B ⟶ W)
     [AlgebraicGeometry.IsClosedImmersion f] [AlgebraicGeometry.IsClosedImmersion g]
@@ -130,8 +118,8 @@ theorem exists_iso_of_range_base_eq {A B W : Scheme.{u}} (f : A ⟶ W) (g : B �
   have hcomp : (e₁.symm ≪≫ e₂).hom = e₁.inv ≫ e₂.hom := rfl
   rw [hcomp, Category.assoc, he₂, ← he₁, ← Category.assoc, Iso.inv_hom_id, Category.id_comp]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Convert the affine principalization data to their embedded blowup sequence. The ambient stage of this sequence is Noetherian by the finite-stage theorem and is the affine ambient level in question.
 -/
 theorem isNoetherian_ambientLevel_ofAffine (A : PrincipalizationAlgorithm.{u})
     (hemb : AffineEmbedsIntoAffineSpace.{u}) (hsnc : NilIsStrictNormalCrossingsOnAffineSpace.{u})
@@ -146,18 +134,16 @@ theorem isNoetherian_ambientLevel_ofAffine (A : PrincipalizationAlgorithm.{u})
   rw [AffineSpacePrincipalizationData.toEmbeddedBlowupSequence_schemeAt] at h
   exact h
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Support reverses inclusion of ideals. Any point of the support of the larger ideal is therefore a point of the support of the smaller ideal.
 -/
 private theorem mem_support_of_le {X : Scheme.{u}} {I J : X.IdealSheafData} (h : I ≤ J)
     (x : ↥X) (hx : x ∈ J.support) : x ∈ I.support :=
   (mem_orderAtLeastLocus_one_iff I x).mp
     (orderAtLeastLocus_subset_of_le_ideal h 1 ((mem_orderAtLeastLocus_one_iff J x).mpr hx))
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+On an affine neighborhood, a point is in the support of the product if its prime ideal contains the product of the two section ideals. Primality makes this equivalent to containing at least one of the factors. That is membership in one of the two supports.
 -/
 private theorem mem_support_mul {X : Scheme.{u}} (I J : X.IdealSheafData) (x : ↥X) :
     x ∈ (I * J).support ↔ x ∈ I.support ∨ x ∈ J.support := by
@@ -176,10 +162,8 @@ private theorem mem_support_mul {X : Scheme.{u}} (I J : X.IdealSheafData) (x : �
       exact hx
     exact h2
 
-/- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The support of a pulled-back ideal sheaf is the inverse image of the support along the underlying map. Evaluating this formula at the point gives the stated equivalence.
 -/
 private theorem mem_support_comap {X Z : Scheme.{u}} (f : X ⟶ Z) (I : Z.IdealSheafData) (x : ↥X) :
     x ∈ (I.comap f).support ↔ ⇑f.base x ∈ I.support := by
@@ -194,16 +178,8 @@ private theorem mem_support_comap {X Z : Scheme.{u}} (f : X ⟶ Z) (I : Z.IdealS
       exact hx
     exact h
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
-
-Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
-
-Supply the required witnesses or components.
+/- English proof (authored)
+Induct on the list of closed sets. The empty union cannot contain the nonempty irreducible set. For a nonempty list, the first set and the finite union of the tail are both closed. Irreducibility forces the given set to lie entirely in one of the two. In the tail case use induction to choose the desired member.
 -/
 private theorem exists_mem_list_subset_of_isIrreducible {α : Type*} [TopologicalSpace α] {ι : Type*}
     {s : Set α} (hs : IsIrreducible s) (g : ι → Set α) :
@@ -232,8 +208,8 @@ private theorem exists_mem_list_subset_of_isIrreducible {α : Type*} [Topologica
       · obtain ⟨t, ht, hts⟩ := ih (fun t ht => hcl t (List.mem_cons.mpr (Or.inr ht))) h
         exact ⟨t, List.mem_cons.mpr (Or.inr ht), hts⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+The strict-transform immersion is an embedding on underlying spaces. The image of the inverse image of any quasi-compact open is a subset of the Noetherian ambient space, hence quasi-compact. The embedding reflects this property to the inverse image, proving quasi-compactness.
 -/
 private theorem quasiCompact_strictTransformImmersion {X' X : Scheme.{u}}
     [TopologicalSpace.NoetherianSpace ↥X'] (π : X' ⟶ X) (Z J : X.IdealSheafData) :
@@ -245,16 +221,8 @@ private theorem quasiCompact_strictTransformImmersion {X' X : Scheme.{u}}
   refine ((Blowup.strictTransformImmersion π Z J).isEmbedding.isInducing.isCompact_iff).mpr ?_
   exact TopologicalSpace.NoetherianSpace.isCompact _
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The point lies in the support of the pulled-back subscheme ideal, so it lifts to that closed subscheme. Its image in the previous scheme avoids the center, so this lift lies in the open used to form the strict transform. Hence the point belongs to the image of the strict-transform immersion. The support of its kernel ideal is the closure of that image and contains the point.
 -/
 private theorem mem_support_strictTransform {X' X : Scheme.{u}} (π : X' ⟶ X)
     (Z J : X.IdealSheafData)
@@ -299,8 +267,8 @@ private def principalizationSequenceIdeal {k : Type u} [Field k] [CharZero k] {Y
     (S.ambientLevel j).IdealSheafData :=
   S.principalizationSequence.ideal j
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The order-one principalization sequence defines the successor ideal by requiring that its product with the exceptional ideal equal the pullback of the preceding ideal. This is the transform equation at the indicated stage.
 -/
 private theorem exceptionalIdeal_mul_weakTransform_succ {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}}
     [AlgebraicGeometry.IsAffine Y] {pY : Y ⟶ Spec (CommRingCat.of k)}
@@ -310,8 +278,8 @@ private theorem exceptionalIdeal_mul_weakTransform_succ {k : Type u} [Field k] [
       = (principalizationSequenceIdeal S j).comap (S.ambientBlowupMorphism j) :=
   S.principalizationSequence.ideal_succ j hj
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The principalization data require the current ideal to vanish on the current center. This vanishing means exactly containment of the ideal in the center ideal.
 -/
 private theorem weakTransform_le_ambientCenter {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}}
     [AlgebraicGeometry.IsAffine Y] {pY : Y ⟶ Spec (CommRingCat.of k)}
@@ -319,8 +287,8 @@ private theorem weakTransform_le_ambientCenter {k : Type u} [Field k] [CharZero 
     (hj : j < S.ambientLength) : principalizationSequenceIdeal S j ≤ S.ambientCenter j :=
   (vanishesAlong_iff_le _ _).mp (S.principalizationSequence.ideal_vanishes j hj)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The boundary update sends each previous boundary member to its strict transform, in the same order, and appends the exceptional divisor from the current blowup.
 -/
 private theorem boundary_succ_eq {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}}
     [AlgebraicGeometry.IsAffine Y] {pY : Y ⟶ Spec (CommRingCat.of k)}
@@ -331,10 +299,8 @@ private theorem boundary_succ_eq {k : Type u} [Field k] [CharZero k] {Y : Scheme
         ++ [Blowup.exceptionalIdeal (S.ambientBlowupMorphism j) (S.ambientCenter j)] :=
   S.principalizationSequence.boundary_succ j hj
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The strict-transform inclusion is the inclusion of the closed subscheme defined by the strict-transform ideal. Its range is therefore the support of that ideal, which gives the equivalence.
 -/
 private theorem mem_range_strictTransformι_iff {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}}
     [AlgebraicGeometry.IsAffine Y] {pY : Y ⟶ Spec (CommRingCat.of k)}
@@ -357,22 +323,8 @@ private theorem mem_range_strictTransformι_iff {k : Type u} [Field k] [CharZero
     rw [← h] at h2
     exact h2
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Prove the first alternative.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the second alternative. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the first alternative. Establish an intermediate fact. Prove the second alternative.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+At stage zero use the assumed support containment. At a successor, membership in the new ideal support gives membership in the support of its product with the exceptional ideal. The transform equation shows that the image point downstairs belongs to the previous ideal support. If the point lies on the new exceptional divisor, it lies in the new boundary. Otherwise its image avoids the center. The induction hypothesis puts that image in the preceding strict transform or in a preceding boundary member. Away from the center the strict transform contains every inverse-image point of the corresponding support. Thus the original point belongs to the new strict transform or to the transformed boundary member.
 -/
 private theorem support_weakTransform_subset_range_or_boundary {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}}
     [AlgebraicGeometry.IsAffine Y] {pY : Y ⟶ Spec (CommRingCat.of k)}
@@ -431,44 +383,8 @@ private theorem support_weakTransform_subset_range_or_boundary {k : Type u} [Fie
             (quasiCompact_strictTransformImmersion (S.ambientBlowupMorphism j) (S.ambientCenter j) E) x hxE hnc
           exact Or.inr ⟨_, hmem1, hmem2⟩
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Work at a fixed stage. The center support lies in the support of the principalization ideal and hence in the union of the strict-transform image and the boundary supports. Each discarded strict-transform component lies in the center. To see that its inverse image in the center is a component, enlarge it to an irreducible set in the center and take the closure of that set’s ambient image. This irreducible closure lies in the finite closed union just described. It cannot lie in a single boundary support, since it contains the original discarded component and that component lies in no boundary member. It therefore lies in the strict-transform image. Maximality of the original component within that image forces equality. Thus the discarded locus in the center is a union of its irreducible components. The center is smooth, so its local rings are domains and distinct components are disjoint. The Noetherian space has finitely many components, making this union open and closed. Its reduced subscheme and the discarded subscheme give closed immersions into the ambient scheme with the same support. They are isomorphic over the ambient scheme by uniqueness of the reduced closed structure.
 -/
 private theorem detachedClopenInCenter_of_isNoetherian_of_support {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}}
     [AlgebraicGeometry.IsAffine Y] {pY : Y ⟶ Spec (CommRingCat.of k)}
@@ -646,10 +562,8 @@ private theorem detachedClopenInCenter_of_isNoetherian_of_support {k : Type u} [
     (U.ι ≫ (S.ambientCenter i).subschemeι) (hrf.trans hrg.symm)
   exact ⟨U, hUcl, e, he⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The ambient stages are Noetherian. At stage zero the principalization ideal is the vanishing ideal of the strict-transform image, so its support is that image. The inductive support theorem then puts the later ideal supports in the union of the strict transform and boundary. Generic-point avoidance shows that no strict-transform component image lies in a boundary member. These facts meet the hypotheses of the result identifying the discarded scheme with an open and closed subscheme of the center.
 -/
 private theorem detachedClopenInCenter_ofAffine (A : PrincipalizationAlgorithm.{u})
     (hemb : AffineEmbedsIntoAffineSpace.{u}) (hsnc : NilIsStrictNormalCrossingsOnAffineSpace.{u})
@@ -680,10 +594,8 @@ private theorem detachedClopenInCenter_ofAffine (A : PrincipalizationAlgorithm.{
   exact OpenImmersionRestriction.not_image_irreducibleComponent_subset_boundary_support
     (affineSpaceEmbeddingDatum hemb hsnc hsm k Y pY) A j hj C hC E hE
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The discarded scheme is isomorphic over the ambient scheme to an open and closed subscheme of the current center. The center is smooth over the field, so this open subscheme is smooth. The ambient compatibility of the isomorphism identifies its structural morphism with the one from the discarded scheme and transfers smoothness.
 -/
 theorem affineDetachedSmooth (A : PrincipalizationAlgorithm.{u})
     (hemb : AffineEmbedsIntoAffineSpace.{u}) (hsnc : NilIsStrictNormalCrossingsOnAffineSpace.{u})
@@ -703,8 +615,8 @@ theorem affineDetachedSmooth (A : PrincipalizationAlgorithm.{u})
   rw [← key]
   infer_instance
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+For the arbitrary affine input, apply the result identifying the discarded subscheme with an open and closed subscheme of the current center. That identification at every stage provides the required affine condition.
 -/
 theorem affineDetachedClopenInCenter (A : PrincipalizationAlgorithm.{u})
     (hemb : AffineEmbedsIntoAffineSpace.{u}) (hsnc : NilIsStrictNormalCrossingsOnAffineSpace.{u})

@@ -38,8 +38,8 @@ structure EtaleMaxContactComparison (k : Type u) [Field k] {P : Scheme.{u}}
     (@maxContactIdeal k _ _ W (f₁ ≫ p) lft_f₁ (A.comap f₁) μ).subschemeι ≫ f₁ =
       (@maxContactIdeal k _ _ W (f₁ ≫ p) lft_f₁ (A.comap f₁) μ).subschemeι ≫ f₂
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+Extend each side of the equality along the left inverse. Successive extensions equal extension along their composite, which is the identity on the original ring. This recovers the original ideals on both sides.
 -/
 private theorem ideal_eq_of_map_eq_of_leftInverse {R S : Type*} [CommRing R] [CommRing S]
     (σ : R →+* S) (τ : S →+* R) (hτσ : τ.comp σ = RingHom.id R)
@@ -47,12 +47,8 @@ private theorem ideal_eq_of_map_eq_of_leftInverse {R S : Type*} [CommRing R] [Co
   have h2 := congrArg (Ideal.map τ) hmap
   rwa [Ideal.map_map, Ideal.map_map, hτσ, Ideal.map_id, Ideal.map_id] at h2
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+For each point choose a preimage in one of the open immersions. Its stalk map is an isomorphism. The equal pulled-back ideals give equal extensions of the original stalk ideals along that isomorphism. Transporting back gives equality at the original point. Equality of all stalk ideals gives equality of the ideal sheaves.
 -/
 theorem idealSheafData_eq_of_forall_comap_eq {X : Scheme.{u}} {ι : Type u} (Y : ι → Scheme.{u})
     (f : ∀ i, Y i ⟶ X) [∀ i, IsOpenImmersion (f i)]
@@ -78,15 +74,15 @@ theorem idealSheafData_eq_of_forall_comap_eq {X : Scheme.{u}} {ι : Type u} (Y :
   · exact (le_iff_forall_stalkIdeal_le I J).mpr fun x => le_of_eq (key x)
   · exact (le_iff_forall_stalkIdeal_le J I).mpr fun x => le_of_eq (key x).symm
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The pullback ideal is defined by the base change of the closed subscheme inclusion. Its ideal is the kernel of the projection from that pullback to the source, giving the identity.
 -/
 private theorem comap_eq_ker_pullback_fst {X Y : Scheme.{u}} (f : X ⟶ Y) (I : Y.IdealSheafData) :
     I.comap f = Scheme.Hom.ker (Limits.pullback.fst f I.subschemeι) := rfl
 
 open CategoryTheory.Limits in
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Every point of a coproduct of schemes comes from a point of one of the summands. Thus it lies in the range of that summand’s inclusion, and the union of the ranges is the whole space.
 -/
 private theorem iUnion_range_sigmaι_base_eq_univ {ι : Type u} (X : ι → Scheme.{u}) :
     (⋃ i, Set.range ⇑(Sigma.ι X i).base) = Set.univ := by
@@ -95,8 +91,8 @@ private theorem iUnion_range_sigmaι_base_eq_univ {ι : Type u} (X : ι → Sche
   have hx' : (Sigma.ι X i).base y = x := by simpa using hx
   exact Set.mem_iUnion.mpr ⟨i, ⟨y, hx'⟩⟩
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
+/- English proof (authored)
+Identify the two equal structural morphisms and the two equal ideals. The resulting derivative iterates are formed with the same base algebra and input on every affine open, so they agree.
 -/
 private theorem derivIdealSheafIterate_congr_of_eq_of_eq (k : Type u) [CommRing k] [IsNoetherianRing k]
     {X : Scheme.{u}} (p q : X ⟶ Spec (CommRingCat.of k))
@@ -107,8 +103,8 @@ private theorem derivIdealSheafIterate_congr_of_eq_of_eq (k : Type u) [CommRing 
   subst hIJ
   rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+The open inclusions form a cover because every point lies in one of the given opens. Scheme morphisms are determined locally on the source, and the two morphisms agree when restricted to each member of the cover. They therefore agree globally.
 -/
 private theorem hom_ext_of_opens_cover {X : Scheme.{u}} {ι : Type u} (U : ι → X.Opens)
     (hcov : ∀ x : ↥X, ∃ i, x ∈ U i) {Q : Scheme.{u}} (a b : X ⟶ Q)
@@ -122,16 +118,8 @@ private theorem hom_ext_of_opens_cover {X : Scheme.{u}} {ι : Type u} (U : ι �
     (fun i => hab i)
 
 open CategoryTheory.Limits in
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
-
-Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components.
-
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
+/- English proof (authored)
+The inverse images in the closed subscheme of the summand opens cover it. On one such inverse image, the map to the ambient coproduct factors through the corresponding summand by the open immersion property. Together with the map to the closed subscheme, this gives a map to their fiber product. That fiber product maps to the closed subscheme defined by the pulled-back ideal, since its projection kills that ideal. Thus the two morphisms agree on this open by the equality assumed on the pulled-back closed subscheme. The local equalities give the equality on the whole closed subscheme.
 -/
 private theorem subschemeι_comp_eq_of_forall_sigmaι_comap {ι : Type u} (Wf : ι → Scheme.{u})
     {Q : Scheme.{u}} (M : (∐ Wf).IdealSheafData) (a b : (∐ Wf) ⟶ Q)
@@ -181,24 +169,8 @@ private theorem subschemeι_comp_eq_of_forall_sigmaι_comap {ι : Type u} (Wf : 
     simpa only [Category.assoc] using e1
 
 open CategoryTheory.Limits in
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
-
-Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Take the finite disjoint union of the affine comparison schemes and define each global map by its specified restriction on every summand. The union is affine, and both maps are étale because this holds on the summands. Its structure map to the field is locally of finite type and quasi-compact. The assumed cover by common ranges gives both range containments. The maps to the field agree on each summand, and the pullbacks of the given ideals, hypersurfaces, and boundary agree on each summand, hence globally. Pullback of the maximal-contact ideal to each summand commutes with its derivative iterate, so the maximal-contact closed subscheme restricts to the corresponding local one. The two maps agree there by the local comparisons, which proves equality on the whole maximal-contact subscheme.
 -/
 private theorem exists_etale_maxContactIdeal_comparison_of_finite_cover {k : Type u} [Field k] [CharZero k]
     {P : Scheme.{u}}
@@ -283,14 +255,8 @@ private theorem exists_etale_maxContactIdeal_comparison_of_finite_cover {k : Typ
     rw [hMc i, Sigma.ι_desc, Sigma.ι_desc]
     exact (c i).maxContact_comp
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
+/- English proof (authored)
+The order locus is closed in a scheme quasi-compact over the field, so it is quasi-compact. For each point choose a local comparison. The two images of its étale maps are open, and their intersection contains the point. These intersections cover the order locus, so finitely many suffice. Apply the finite-cover construction to their comparison schemes.
 -/
 theorem exists_etale_maxContactIdeal_comparison (k : Type u) [Field k] [CharZero k]
     {P : Scheme.{u}} (p : P ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]

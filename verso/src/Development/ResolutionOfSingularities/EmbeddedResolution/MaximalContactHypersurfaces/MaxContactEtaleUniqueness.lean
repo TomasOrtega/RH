@@ -19,10 +19,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Pullback along a composite is successive pullback along its two maps. Rewrite each side this way and apply the given equality of successive pullbacks.
 -/
 private theorem comap_comp_eq_of_comap_comap_eq {A B C : Scheme.{u}} (ι : A ⟶ B) (F G : B ⟶ C)
     (I J : C.IdealSheafData) (h : (I.comap F).comap ι = (J.comap G).comap ι) :
@@ -34,16 +32,16 @@ private theorem comap_comp_eq_of_comap_comap_eq {A B C : Scheme.{u}} (ι : A ⟶
   rw [hF, hG]
   exact h
 
-/- English proof (translation)
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Restriction to the open is pullback along its inclusion. Pulling this restriction back along the given map is therefore pullback along the composite with the inclusion.
 -/
 private theorem comap_comp_ι_eq_comap_restrictIdeal {Y Z : Scheme.{u}} (J : Y.IdealSheafData)
     (U : Y.Opens) (g : Z ⟶ U.toScheme) : J.comap (g ≫ U.ι) = (restrictIdeal J U).comap g := by
   show J.comap (g ≫ U.ι) = (J.comap U.ι).comap g
   simp [Scheme.IdealSheafData.comap_comp]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+The composite from the subscheme of the pulled-back ideal to the original target kills the original ideal, because its pullback vanishes on the subscheme by construction. It therefore factors through the closed subscheme defined by the original ideal. The factorization gives the asserted morphism.
 -/
 private theorem exists_subscheme_comap_lift {A B : Scheme.{u}} (f : A ⟶ B) (I : B.IdealSheafData) :
     ∃ θ : (I.comap f).subscheme ⟶ I.subscheme,
@@ -56,10 +54,8 @@ private theorem exists_subscheme_comap_lift {A B : Scheme.{u}} (f : A ⟶ B) (I 
   exact ⟨AlgebraicGeometry.IsClosedImmersion.lift I.subschemeι _ h2,
     AlgebraicGeometry.IsClosedImmersion.lift_fac I.subschemeι _ h2⟩
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+At any point of the source, the image under the map to the closed subscheme has ambient image equal to the image through the map with range contained in the given open. Thus the point lies in the inverse image of that open. This is the range of its open inclusion.
 -/
 private theorem range_base_subset_range_preimage_ι {T W Z S : Scheme.{u}} (tι : T ⟶ W) (ιZ : W ⟶ Z)
     (θ : T ⟶ S) (σ : S ⟶ Z) (hθ : θ ≫ σ = tι ≫ ιZ) (Wop : Z.Opens)
@@ -73,10 +69,8 @@ private theorem range_base_subset_range_preimage_ι {T W Z S : Scheme.{u}} (tι 
   rw [hb2]
   exact hsub ⟨tι.base y, rfl⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Use the two factorization identities to rewrite each composite out of the source through the further lift, followed by the same two inclusions. The given equality after those inclusions identifies the two rewritten composites.
 -/
 private theorem comp_eq_of_lift_comp_eq {T W Z S S' Q : Scheme.{u}}
     (tι : T ⟶ W) (ιZ : W ⟶ Z) (σ : S ⟶ Z) (j : S' ⟶ S) (θ : T ⟶ S) (δ : T ⟶ S')
@@ -91,30 +85,8 @@ private theorem comp_eq_of_lift_comp_eq {T W Z S S' Q : Scheme.{u}}
     simp only [Category.assoc]
   rw [h1, h2, heq]
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
-
-Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Choose a common affine neighborhood with two étale charts for the two hypersurfaces. They agree on all coordinates except the distinguished one, and the boundary ideals use only the other coordinates or are unit ideals. Form the fiber product of the chart maps over affine space. The local comparison for maximal-contact coordinates gives a point above the original point and a neighborhood where the two pulled-back ideals have equal stalks. It also identifies the two hypersurface pullbacks and shows that the projections agree on the maximal-contact subscheme there. Shrink this neighborhood to an affine basic open containing the point. The projections followed by the original open inclusion are étale and have the same structure map to the field. Equality of the pulled-back ideals on the smaller open follows from stalk equality. The boundary pullbacks agree by the shared coordinate descriptions and the fiber-product equations. Smooth pullback identifies the maximal-contact ideal of the common pulled-back input with the pullback of the original maximal-contact ideal. The corresponding smaller closed subscheme factors through the open part of the original comparison subscheme where the projections agree, so they still agree on it. These data give the required comparison.
 -/
 theorem nonempty_etaleMaxContactComparison (k : Type u) [Field k] [CharZero k] {P : Scheme.{u}}
     (p : P ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] [LocallyOfFiniteType p]
@@ -259,8 +231,8 @@ theorem nonempty_etaleMaxContactComparison (k : Type u) [Field k] [CharZero k] {
       θ (IsOpenImmersion.lift _ θ hrange) (chartPullbackFst c₁ c₂) (chartPullbackSnd c₁ c₂)
       hθ (IsOpenImmersion.lift_fac _ θ hrange) heqmor
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+At each point of the order locus, the local uniqueness result provides an affine étale comparison with both marked ideals, the boundary, and the maps on the maximal-contact subscheme identified. The globalization result combines such pointwise comparisons into the stated pair of étale maps covering the entire order locus.
 -/
 theorem exists_etale_equalizing_isMaxContactHypersurface (k : Type u) [Field k] [CharZero k]
     {P : Scheme.{u}} (p : P ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]

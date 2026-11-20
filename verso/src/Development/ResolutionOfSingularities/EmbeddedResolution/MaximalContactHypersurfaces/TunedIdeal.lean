@@ -5,35 +5,35 @@ namespace FunctorialResolution.EmbeddedResolution
 
 def tuningWeight (m : ℕ) (c : ℕ → ℕ) : ℕ := ∑ j ∈ Finset.range m, (m - j) * c j
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The tuning weight is defined by summing each exponent below the mark multiplied by the mark minus its index. This is the displayed sum.
 -/
 theorem tuningWeight_eq_sum (m : ℕ) (c : ℕ → ℕ) :
     tuningWeight m c = ∑ j ∈ Finset.range m, (m - j) * c j := rfl
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+Distribute multiplication by each weight over the sum of the two exponents. Summing and grouping the contributions of the two exponent functions gives the two separate weights.
 -/
 theorem tuningWeight_fun_add (m : ℕ) (c d : ℕ → ℕ) :
     tuningWeight m (fun j => c j + d j) = tuningWeight m c + tuningWeight m d := by
   simp [tuningWeight, Nat.mul_add, Finset.sum_add_distrib]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Addition of exponent functions is pointwise. The weight of their sum is therefore the sum of their weights by the weighted-sum addition rule.
 -/
 theorem tuningWeight_add (m : ℕ) (c d : ℕ → ℕ) :
     tuningWeight m (c + d) = tuningWeight m c + tuningWeight m d :=
   tuningWeight_fun_add m c d
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+Each exponent is multiplied by the same scalar. Move that scalar outside each weighted term and then outside the finite sum, giving the corresponding multiple of the original weight.
 -/
 theorem tuningWeight_mul_left (m n : ℕ) (c : ℕ → ℕ) :
     tuningWeight m (fun j => n * c j) = n * tuningWeight m c := by
   simp [tuningWeight, Finset.mul_sum, Nat.mul_left_comm]
 
-/- English proof (translation)
-Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Natural-number scalar multiplication of exponent functions multiplies every exponent by that number. Apply the rule for pulling a common scalar out of the weighted sum.
 -/
 theorem tuningWeight_nsmul (m n : ℕ) (c : ℕ → ℕ) :
     tuningWeight m (n • c) = n * tuningWeight m c := by
@@ -42,10 +42,8 @@ theorem tuningWeight_nsmul (m n : ℕ) (c : ℕ → ℕ) :
     simp [Pi.smul_apply, smul_eq_mul]
   rw [this, tuningWeight_mul_left]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Only the chosen index has a nonzero exponent, namely one. Its contribution to the weighted sum is the mark minus that index.
 -/
 theorem tuningWeight_single (m i : ℕ) (hi : i ∈ Finset.range m) :
     tuningWeight m (Pi.single i 1) = m - i := by
@@ -56,8 +54,8 @@ theorem tuningWeight_single (m i : ℕ) (hi : i ∈ Finset.range m) :
   · intro hni
     exact absurd hi hni
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The empty range gives the identity for both products. Increasing the range by one appends the same factor to the list product and to the finite-set product, so induction gives equality.
 -/
 theorem listProd_map_range_eq_prod {M : Type*} [CommMonoid M] (f : ℕ → M) (m : ℕ) :
     (List.map f (List.range m)).prod = ∏ j ∈ Finset.range m, f j := by
@@ -74,36 +72,36 @@ variable (k : Type*) [CommRing k] {S : Type*} [CommRing S] [Algebra k S]
 def tuningMonomial (J : Ideal S) (m : ℕ) (c : ℕ → ℕ) : Ideal S :=
   ∏ j ∈ Finset.range m, derivIdealIterate k j J ^ c j
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The tuning monomial is defined as the product of the indicated powers of the derivative iterates. This gives the stated formula.
 -/
 theorem tuningMonomial_eq_prod (J : Ideal S) (m : ℕ) (c : ℕ → ℕ) :
     tuningMonomial k J m c = ∏ j ∈ Finset.range m, derivIdealIterate k j J ^ c j := rfl
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+Every exponent is zero, so each factor is the unit ideal. Their product is the unit ideal.
 -/
 theorem tuningMonomial_zero (J : Ideal S) (m : ℕ) :
     tuningMonomial k J m (fun _ => 0) = ⊤ := by
   simp [tuningMonomial_eq_prod, Ideal.one_eq_top]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Group factors with the same derivative index from the two products. Commutativity allows the grouping, and multiplying the corresponding powers adds their exponents. This gives the product for the pointwise sum.
 -/
 theorem tuningMonomial_mul_fun_add (J : Ideal S) (m : ℕ) (c d : ℕ → ℕ) :
     tuningMonomial k J m c * tuningMonomial k J m d = tuningMonomial k J m (fun j => c j + d j) := by
   rw [tuningMonomial_eq_prod, tuningMonomial_eq_prod, tuningMonomial_eq_prod, ← Finset.prod_mul_distrib]
   exact Finset.prod_congr rfl fun j _ => (pow_add _ _ _).symm
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The sum of the two exponent functions adds their values at each index. The product formula therefore gives the monomial for that sum.
 -/
 theorem tuningMonomial_mul (J : Ideal S) (m : ℕ) (c d : ℕ → ℕ) :
     tuningMonomial k J m c * tuningMonomial k J m d = tuningMonomial k J m (c + d) :=
   tuningMonomial_mul_fun_add k J m c d
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Powers of a finite product in a commutative monoid distribute over its factors. A power of each individual ideal power multiplies the exponents. Reorder the two integer factors of the exponent to obtain the formula.
 -/
 private theorem prod_derivIdealIterate_pow_pow (J : Ideal S) (m n : ℕ) (c : ℕ → ℕ) :
     (∏ j ∈ Finset.range m, derivIdealIterate k j J ^ c j) ^ n
@@ -114,16 +112,16 @@ private theorem prod_derivIdealIterate_pow_pow (J : Ideal S) (m n : ℕ) (c : �
       rw [Finset.prod_range_succ, mul_pow, ih, Finset.prod_range_succ, ← pow_mul,
         Nat.mul_comm (c m) n]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Expand the monomial as its product of derivative powers. Taking a power distributes over this finite product and multiplies each exponent by the power, giving the monomial for the scaled function.
 -/
 theorem tuningMonomial_pow_fun_mul (J : Ideal S) (m n : ℕ) (c : ℕ → ℕ) :
     tuningMonomial k J m c ^ n = tuningMonomial k J m (fun j => n * c j) := by
   rw [tuningMonomial_eq_prod, tuningMonomial_eq_prod]
   exact prod_derivIdealIterate_pow_pow k J m n c
 
-/- English proof (translation)
-Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Natural-number scalar multiplication scales the exponent function at each index. The monomial for this function is the stated power by the product-of-powers formula.
 -/
 theorem tuningMonomial_pow (J : Ideal S) (m n : ℕ) (c : ℕ → ℕ) :
     tuningMonomial k J m c ^ n = tuningMonomial k J m (n • c) := by
@@ -132,10 +130,8 @@ theorem tuningMonomial_pow (J : Ideal S) (m n : ℕ) (c : ℕ → ℕ) :
     simp [Pi.smul_apply, smul_eq_mul]
   rw [h, tuningMonomial_pow_fun_mul]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Each factor away from the selected index has exponent zero and equals the unit ideal. At the selected index the exponent is one, so the product gives that derivative iterate.
 -/
 theorem tuningMonomial_single (J : Ideal S) (m i : ℕ) (hi : i ∈ Finset.range m) :
     tuningMonomial k J m (Pi.single i 1) = derivIdealIterate k i J := by
@@ -149,21 +145,21 @@ theorem tuningMonomial_single (J : Ideal S) (m i : ℕ) (hi : i ∈ Finset.range
 def tunedIdeal (J : Ideal S) (m s : ℕ) : Ideal S :=
   ⨆ c : ℕ → ℕ, ⨆ _ : s ≤ tuningWeight m c, tuningMonomial k J m c
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+By definition the tuned ideal is the supremum of all tuning monomial ideals whose weights reach the stated threshold. The displayed supremum enumerates precisely those terms.
 -/
 theorem tunedIdeal_eq_iSup (J : Ideal S) (m s : ℕ) :
     tunedIdeal k J m s = ⨆ c : ℕ → ℕ, ⨆ _ : s ≤ tuningWeight m c, tuningMonomial k J m c := rfl
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Since the exponent function meets the weight threshold, its monomial ideal occurs among the ideals defining the tuned ideal. Each such ideal is contained in their supremum.
 -/
 theorem tuningMonomial_le_tunedIdeal (J : Ideal S) (m s : ℕ) (c : ℕ → ℕ)
     (hc : s ≤ tuningWeight m c) : tuningMonomial k J m c ≤ tunedIdeal k J m s :=
   le_iSup_of_le c (le_iSup_of_le hc le_rfl)
 
-/- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Containment of the supremum implies containment of each contributing ideal. Conversely, if all ideals with qualifying weight lie in the target, their supremum lies there as well.
 -/
 theorem tunedIdeal_le_iff (J : Ideal S) (m s : ℕ) (K : Ideal S) :
     tunedIdeal k J m s ≤ K ↔ ∀ c : ℕ → ℕ, s ≤ tuningWeight m c → tuningMonomial k J m c ≤ K := by
@@ -173,16 +169,16 @@ theorem tunedIdeal_le_iff (J : Ideal S) (m s : ℕ) (K : Ideal S) :
   · intro h
     exact iSup_le fun c => iSup_le fun hc => h c hc
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The zero exponent function qualifies at threshold zero. Its product is the unit ideal, so the tuned ideal contains the unit ideal and is therefore equal to it.
 -/
 theorem tunedIdeal_zero (J : Ideal S) (m : ℕ) : tunedIdeal k J m 0 = ⊤ := by
   refine eq_top_iff.mpr ?_
   rw [← tuningMonomial_zero k J m]
   exact tuningMonomial_le_tunedIdeal k J m 0 (fun _ => 0) (Nat.zero_le _)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Every exponent function admitted by the higher threshold also satisfies the lower threshold. The corresponding monomial is contained in the tuned ideal for the lower threshold. Take the supremum over the higher threshold.
 -/
 theorem tunedIdeal_antitone (J : Ideal S) (m : ℕ) {s t : ℕ} (h : s ≤ t) :
     tunedIdeal k J m t ≤ tunedIdeal k J m s := by
@@ -190,12 +186,8 @@ theorem tunedIdeal_antitone (J : Ideal S) (m : ℕ) {s t : ℕ} (h : s ≤ t) :
   intro c hc
   exact tuningMonomial_le_tunedIdeal k J m s c (le_trans h hc)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Multiplication of ideals distributes over suprema, so it suffices to multiply one contributing monomial from each tuned ideal. Their product is the monomial with the pointwise sum of exponents. Its weight is the sum of their weights, hence at least the sum of the thresholds. The product is therefore contained in the target tuned ideal.
 -/
 theorem tunedIdeal_mul_le (J : Ideal S) (m s t : ℕ) :
     tunedIdeal k J m s * tunedIdeal k J m t ≤ tunedIdeal k J m (s + t) := by
@@ -212,8 +204,8 @@ theorem tunedIdeal_mul_le (J : Ideal S) (m s t : ℕ) :
   rw [tuningWeight_fun_add]
   exact Nat.add_le_add hc hd
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+An element of the sum of the two ideals is a sum of one element from each. Multiplying by an element of the common factor distributes over this sum. Both products belong to the target ideal by hypothesis, so their sum also belongs. Such products generate the left-hand ideal.
 -/
 private theorem mul_sup_le {R : Type*} [CommRing R] (B X Y T : Ideal R)
     (hX : B * X ≤ T) (hY : B * Y ≤ T) : B * (X ⊔ Y) ≤ T := by
@@ -223,18 +215,16 @@ private theorem mul_sup_le {R : Type*} [CommRing R] (B X Y T : Ideal R)
   rw [mul_add]
   exact Submodule.add_mem T (hX (Ideal.mul_mem_mul hb hx)) (hY (Ideal.mul_mem_mul hb hy))
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The multiplicative identity for ideals is the unit ideal. The derivative ideal contains its input, so the derivative of the unit ideal is still the unit ideal.
 -/
 private theorem derivIdeal_one {A : Type*} [CommRing A] {R : Type*} [CommRing R]
     [Algebra A R] : derivIdeal A (1 : Ideal R) = 1 := by
   rw [Ideal.one_eq_top]
   exact derivIdeal_top A
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
+/- English proof (authored)
+Separate the contribution at the chosen index from each weighted sum. The remaining terms are unchanged. The exponent at the chosen index is larger by one in the first function, so its contribution is larger by exactly the weight of that index.
 -/
 private theorem tuningWeight_eq_add_sub_of_succ (m i : ℕ) (hi : i < m) (c d : ℕ → ℕ)
     (hne : ∀ j, j ≠ i → d j = c j) (hdi : d i + 1 = c i) :
@@ -254,10 +244,8 @@ private theorem tuningWeight_eq_add_sub_of_succ (m i : ℕ) (hi : i < m) (c d : 
   rw [keyc, keyd, h3, ← hdi]
   ring
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Separate the factor at the chosen index in each monomial. All other factors agree. The exponent at that index increases by one, so the changed factor is the original factor multiplied by the corresponding derivative iterate.
 -/
 private theorem tuningMonomial_eq_derivIdealIterate_mul_of_succ {A : Type*} [CommRing A] {R : Type*} [CommRing R]
     [Algebra A R] (J : Ideal R) (m i : ℕ) (hi : i < m) (c d : ℕ → ℕ)
@@ -280,10 +268,8 @@ private theorem tuningMonomial_eq_derivIdealIterate_mul_of_succ {A : Type*} [Com
   rw [keyd, keyc, h3, hdi, pow_succ]
   simp only [mul_comm, mul_assoc]
 
-/- English proof (translation)
-Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers.
+/- English proof (authored)
+Removing a copy of the factor at the chosen index reduces the total weight by its weight. If the next derivative index is still below the mark, adding one factor there raises the total by one less than the removed weight, so the new monomial loses exactly one unit of weight and qualifies at the desired threshold. If the next index is at least the mark, the removed weight was one. The remaining monomial already qualifies, and multiplying it by any ideal stays inside it.
 -/
 private theorem derivIdealIterate_succ_mul_tuningMonomial_le {A : Type*} [CommRing A] {R : Type*}
     [CommRing R] [Algebra A R] (J : Ideal R) (m s i : ℕ) (hi : i < m) (c d : ℕ → ℕ)
@@ -308,22 +294,8 @@ private theorem derivIdealIterate_succ_mul_tuningMonomial_le {A : Type*} [CommRi
     refine le_trans hle (tuningMonomial_le_tunedIdeal A J m s d ?_)
     omega
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the number of factors in the product. The empty product has unit derivative ideal, giving the first hypothesis directly. For a nonempty product, the Leibniz estimate bounds its derivative by the sum of the terms from differentiating the last factor and from differentiating the earlier product. In the last-factor term, exponent zero leaves the product unchanged and the first hypothesis applies. A positive exponent is reduced by one and accompanied by the next derivative ideal, by the power derivative estimate. This is one of the terms covered by the second hypothesis. For the earlier-product term, absorb the last factor into the fixed multiplier and apply induction. The hypotheses for the shorter product follow from the original ones because changes at earlier indices leave the last exponent unchanged. Adding the two containments gives the result.
 -/
 private theorem mul_derivIdeal_prod_le {A : Type*} [CommRing A] {R : Type*} [CommRing R]
     [Algebra A R] (J T : Ideal R) (c : ℕ → ℕ) :
@@ -390,12 +362,8 @@ private theorem mul_derivIdeal_prod_le {A : Type*} [CommRing A] {R : Type*} [Com
           refine le_trans (le_of_eq ?_) hd
           simp only [mul_comm, mul_left_comm, mul_assoc]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The derivative of the supremum lies in the supremum of the derivatives of its contributing terms. For each qualifying monomial, the unchanged product qualifies at the preceding threshold. The Leibniz terms replace one factor by its next derivative, which lowers the weight by at most one under the monomial estimate. Thus all required terms are contained in the tuned ideal at the preceding threshold.
 -/
 theorem derivIdeal_tunedIdeal_succ_le (J : Ideal S) (m s : ℕ) :
     derivIdeal k (tunedIdeal k J m (s + 1)) ≤ tunedIdeal k J m s := by
@@ -413,12 +381,8 @@ theorem derivIdeal_tunedIdeal_succ_le (J : Ideal S) (m s : ℕ) :
     rw [one_mul]
     exact derivIdealIterate_succ_mul_tuningMonomial_le J m s i hi c d hne hdi hc
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the derivative count. Zero steps leave the ideal unchanged. At the next step, use monotonicity to differentiate the induction bound. If the threshold remaining in that bound is positive, the one-step estimate reduces it by one. If it is zero, the new target is still the unit ideal. Both cases give the bound with truncated subtraction.
 -/
 theorem derivIdealIterate_tunedIdeal_le (J : Ideal S) (m s j : ℕ) :
     derivIdealIterate k j (tunedIdeal k J m s) ≤ tunedIdeal k J m (s - j) := by
@@ -438,12 +402,8 @@ theorem derivIdealIterate_tunedIdeal_le (J : Ideal S) (m s j : ℕ) :
         rw [ht, hsj]
         exact derivIdeal_tunedIdeal_succ_le k J m t
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+One fewer derivative step than the positive threshold is bounded by the tuned ideal at threshold one. A single derivative step is bounded by the tuned ideal at the threshold decreased by one. Multiplying these two bounds and applying the product rule adds the thresholds back to the original threshold.
 -/
 theorem derivIdealIterate_mul_derivIdeal_tunedIdeal_le (J : Ideal S) (m s : ℕ) (hs : 1 ≤ s) :
     derivIdealIterate k (s - 1) (tunedIdeal k J m s) * derivIdeal k (tunedIdeal k J m s) ≤
@@ -460,8 +420,8 @@ theorem derivIdealIterate_mul_derivIdeal_tunedIdeal_le (J : Ideal S) (m s : ℕ)
   have h3 := tunedIdeal_mul_le k J m 1 (s - 1)
   rwa [hsum] at h3
 
-/- English proof (translation)
-Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+If every exponent in the range were zero, all weighted contributions would vanish and the total weight would be zero. This contradicts the positive lower bound.
 -/
 private theorem exists_ne_zero_of_one_le_tuningWeight {m : ℕ} {c : ℕ → ℕ}
     (hc : 1 ≤ tuningWeight m c) : ∃ j ∈ Finset.range m, c j ≠ 0 := by
@@ -473,10 +433,8 @@ private theorem exists_ne_zero_of_one_le_tuningWeight {m : ℕ} {c : ℕ → ℕ
   rw [hz] at hc
   exact Nat.not_succ_le_zero 0 hc
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Every monomial qualifying at threshold one has a nonzero exponent at some index in the range. The product is contained in that factor, and its positive power is contained in the corresponding derivative iterate. This derivative index is at most one below the mark. Monotonicity of derivative iterations puts the factor in the iterate one below the mark. Hence every contributing monomial lies in that iterate.
 -/
 theorem tunedIdeal_one_le_derivIdealIterate (J : Ideal S) (m : ℕ) (_hm : 1 ≤ m) :
     tunedIdeal k J m 1 ≤ derivIdealIterate k (m - 1) J := by
@@ -492,10 +450,8 @@ theorem tunedIdeal_one_le_derivIdealIterate (J : Ideal S) (m : ℕ) (_hm : 1 ≤
   rw [tuningMonomial_eq_prod, ← hsplit]
   exact le_trans Ideal.mul_le_left (Ideal.pow_le_self hcj)
 
-/- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The tuned ideal is the supremum of its qualifying monomial ideals. Multiplication by the fixed ideal distributes over this supremum. The resulting supremum is contained in the target exactly when every product term is contained there.
 -/
 theorem mul_tunedIdeal_le_iff (I J : Ideal S) (m s : ℕ) (K : Ideal S) :
     I * tunedIdeal k J m s ≤ K ↔
@@ -509,12 +465,8 @@ theorem mul_tunedIdeal_le_iff (I J : Ideal S) (m s : ℕ) (K : Ideal S) :
     rw [Submodule.mul_iSup]
     exact iSup_le fun hc => h c hc
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The given element belongs to the derivative ideal one below the mark. Its specified power therefore generates an ideal contained in the same power of that derivative ideal, which is a tuning monomial supported at this single index. That index has weight one. Multiplying by the original monomial adds the power to its weight, so the product is contained in the tuned ideal at the increased threshold.
 -/
 theorem span_pow_mul_tuningMonomial_le (J : Ideal S) (m : ℕ) (hm : 1 ≤ m) {x : S}
     (hx : x ∈ derivIdealIterate k (m - 1) J) (n : ℕ) (c : ℕ → ℕ) :
@@ -532,8 +484,8 @@ theorem span_pow_mul_tuningMonomial_le (J : Ideal S) (m : ℕ) (hm : 1 ≤ m) {x
   rw [hmm]
   omega
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+Distribute the product with the principal power over the monomials qualifying for the original tuned ideal. The monomial estimate bounds each product by the tuned ideal at its weight plus the power. This threshold is at least the original threshold plus the power, so monotonicity gives the required bound.
 -/
 theorem span_pow_mul_tunedIdeal_le (J : Ideal S) (m : ℕ) (hm : 1 ≤ m) {x : S}
     (hx : x ∈ derivIdealIterate k (m - 1) J) (n t : ℕ) :
@@ -547,10 +499,8 @@ section
 
 variable [Algebra ℚ S]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The positive integer coefficient is nonzero in the rationals, so its image in the rational algebra is a unit with inverse the image of its rational reciprocal. Multiplying the given ideal element by this inverse shows the original element belongs to the ideal.
 -/
 private theorem mem_of_natCast_add_one_mul_mem {A : Type*} [CommRing A] [Algebra ℚ A] (n : ℕ)
     (I : Ideal A) (y : A) (h : ((n : A) + 1) * y ∈ I) : y ∈ I := by
@@ -563,8 +513,8 @@ private theorem mem_of_natCast_add_one_mul_mem {A : Type*} [CommRing A] [Algebra
   rw [← hmap, ← mul_assoc, ← map_mul, inv_mul_cancel₀ hq, map_one, one_mul] at h1
   exact h1
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The derivative iterate of the tuned ideal lies in the tuned ideal with threshold reduced by the derivative count. Multiplying by the specified power of the maximal-contact element raises that threshold by the exponent, by the principal-power product bound.
 -/
 private theorem pow_mul_mem_tunedIdeal (R : Type*) [CommRing R] {A : Type*} [CommRing A]
     [Algebra R A] (J : Ideal A) (m : ℕ) (hm : 1 ≤ m) {x : A}
@@ -575,18 +525,8 @@ private theorem pow_mul_mem_tunedIdeal (R : Type*) [CommRing R] {A : Type*} [Com
   exact span_pow_mul_tunedIdeal_le R J m hm hx p (s - n)
     (Ideal.mul_mem_mul (Ideal.mem_span_singleton_self (x ^ p)) hg')
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the additional index in the bound. If it is zero, the derivative count already reaches the successor threshold. The principal-power product bound puts the element in that successor-threshold ideal and hence in its derivative ideal. In the inductive case, the product with one extra power of the contact element lies in the successor-threshold ideal. Its derivative therefore lies in the desired derivative ideal. The Leibniz rule expresses this derivative as the requested product times the positive integer one above the derivative count, plus the extra-power product of the derivative of the given element. The latter product lies in the target by induction, since the differentiated element belongs to the next derivative iterate and the increased count preserves the required bound. Subtract it and divide by the positive integer, which is a unit in the rational algebra.
 -/
 private theorem pow_mul_mem_derivIdeal_tunedIdeal_succ (R : Type*) [CommRing R] {A : Type*}
     [CommRing A] [Algebra R A] [Algebra ℚ A] (J : Ideal A) (m : ℕ) (hm : 1 ≤ m) {x : A}
@@ -629,8 +569,8 @@ private theorem pow_mul_mem_derivIdeal_tunedIdeal_succ (R : Type*) [CommRing R] 
       rw [hkey]
       exact Submodule.sub_mem _ h4 h6
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+Take an element of the tuned ideal as an element of its zeroth derivative iterate. Apply the principal-power induction with derivative count zero and additional index equal to the successor threshold. The resulting zeroth power is one, so the given element belongs to the derivative of the successor-threshold tuned ideal.
 -/
 theorem tunedIdeal_le_derivIdeal_tunedIdeal_succ (J : Ideal S) (m : ℕ) (hm : 1 ≤ m) {x : S}
     (hx : x ∈ derivIdealIterate k (m - 1) J) (δ : Derivation k S S) (hδ : δ x = 1) (s : ℕ) :

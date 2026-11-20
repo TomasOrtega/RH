@@ -23,8 +23,8 @@ open CategoryTheory AlgebraicGeometry
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+Affine opens cover a scheme, so the given point lies in at least one of them.
 -/
 private theorem exists_affineOpen_mem {X : Scheme.{u}} (x : X) :
     ∃ U : X.affineOpens, x ∈ U.1.1 := by
@@ -34,10 +34,8 @@ private theorem exists_affineOpen_mem {X : Scheme.{u}} (x : X) :
   obtain ⟨U, hU⟩ := TopologicalSpace.Opens.mem_iSup.mp hx
   exact ⟨U, hU⟩
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Choose an affine open containing the point. Evaluation of the supremum on this open takes the supremum of the section ideals. Extension to the stalk also preserves suprema, so the stalk of the supremum is the supremum of the individual stalk ideals. Since each lies in the stated ideal, their supremum does as well.
 -/
 private theorem stalkIdeal_iSup_le_of_forall {X : Scheme.{u}} {ι : Type}
     (F : ι → X.IdealSheafData) (x : X) (Jd : Ideal (X.presheaf.stalk x))
@@ -51,8 +49,8 @@ private theorem stalkIdeal_iSup_le_of_forall {X : Scheme.{u}} {ι : Type}
   rw [← stalkIdeal_eq_map_germ (F i) x U hxU]
   exact h i
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Both sums are zero for the empty range. Increasing the range by one adds the same last term to the list sum and to the finite-set sum. Induction gives equality.
 -/
 private theorem sum_map_range_eq_sum_range (w : ℕ → ℕ) (n : ℕ) :
     ((List.range n).map w).sum = ∑ j ∈ Finset.range n, w j := by
@@ -62,8 +60,8 @@ private theorem sum_map_range_eq_sum_range (w : ℕ → ℕ) (n : ℕ) :
       rw [List.range_succ, List.map_append, List.sum_append, ih, Finset.sum_range_succ]
       simp
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The range contains zero because it has positive length. The zero index supplies the indicated power, and at every other index the exponent is zero, giving the unit ideal. The product is therefore the single nontrivial factor.
 -/
 private theorem prod_map_range_pow_ite_eq {X : Scheme.{u}} (f : ℕ → X.IdealSheafData) (s n : ℕ) :
     ((List.range (n + 1)).map (fun j => f j ^ (if j = 0 then s else 0))).prod = f 0 ^ s := by
@@ -73,10 +71,8 @@ private theorem prod_map_range_pow_ite_eq {X : Scheme.{u}} (f : ℕ → X.IdealS
       rw [List.range_succ, List.map_append, List.prod_append, ih]
       simp
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
-
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+At an empty list the sum threshold is zero, so every point belongs to the order locus. For a nonempty list, the order lower bounds for the first factor and for the product of the tail add to a lower bound for their product, since multiplication of stalk ideal powers adds exponents. Induction gives the result.
 -/
 private theorem mem_orderAtLeastLocus_prod_map_of_forall {X : Scheme.{u}} (x : X)
     (g : ℕ → X.IdealSheafData) (w : ℕ → ℕ) (h : ∀ j, x ∈ orderAtLeastLocus (g j) (w j)) (l : List ℕ) :
@@ -90,10 +86,8 @@ private theorem mem_orderAtLeastLocus_prod_map_of_forall {X : Scheme.{u}} (x : X
       simp only [List.map_cons, List.prod_cons, List.sum_cons]
       exact inter_orderAtLeastLocus_subset_orderAtLeastLocus_mul _ _ _ _ ⟨h a, ih⟩
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+At a point of the original order locus, the derivative of each index has order at least the mark minus that index. Raising each derivative ideal to the chosen exponent multiplies its order lower bound by that exponent. Taking their product adds these lower bounds, giving the tuning weight. Each qualifying weight is at least the target threshold, so every contributing product has its stalk in the requisite maximal-ideal power. Their supremum does too.
 -/
 theorem orderAtLeastLocus_subset_orderAtLeastLocus_tunedSheaf (k : Type u) [Field k] [IsNoetherianRing k]
     {Y : Scheme.{u}} (p : Y ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p]
@@ -114,8 +108,8 @@ theorem orderAtLeastLocus_subset_orderAtLeastLocus_tunedSheaf (k : Type u) [Fiel
     exact Finset.sum_congr rfl fun j _ => Nat.mul_comm _ _
   exact orderAtLeastLocus_subset_of_le _ hn key
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+On a smooth scheme over the field the order of the given positive ideal power is the power exponent times the original order, with infinity allowed. The order-locus formula for powers at a multiplied threshold therefore identifies the two loci, using commutativity of multiplication of the threshold and exponent.
 -/
 theorem orderAtLeastLocus_pow_mul_eq_orderAtLeastLocus (k : Type u) [Field k] [CharZero k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] (A : X.IdealSheafData)
@@ -124,8 +118,8 @@ theorem orderAtLeastLocus_pow_mul_eq_orderAtLeastLocus (k : Type u) [Field k] [C
   rw [mul_comm]
   exact orderAtLeastLocus_pow_mul k p A hs m
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
+/- English proof (authored)
+Order loci reverse inclusion of ideals. Thus the inclusions placing the intermediate ideal between the input power and the tuned ideal put its order locus between theirs at the multiplied threshold. The order locus of the input power equals the original locus. The tuned ideal’s locus contains the original locus by the derivative weight bound. Together these give both desired inclusions.
 -/
 theorem orderAtLeastLocus_eq_of_pow_le_of_le_tunedSheaf (k : Type u) [Field k] [CharZero k]
     [IsNoetherianRing k] {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k))
@@ -138,12 +132,8 @@ theorem orderAtLeastLocus_eq_of_pow_le_of_le_tunedSheaf (k : Type u) [Field k] [
   · exact fun x hx => orderAtLeastLocus_subset_of_le_ideal h2 (m * s)
       (orderAtLeastLocus_subset_orderAtLeastLocus_tunedSheaf k p I m (m * s) hx)
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+Use the exponent function supported at derivative index zero with value equal to the power exponent. Its weight is the mark times that exponent. Its product is the original ideal to the given power, since all other factors are unit ideals. It occurs in the supremum at the multiplied threshold.
 -/
 theorem pow_le_tunedSheaf (k : Type u) [Field k] [IsNoetherianRing k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p] (I : X.IdealSheafData)
@@ -168,14 +158,8 @@ theorem pow_le_tunedSheaf (k : Type u) [Field k] [IsNoetherianRing k] {X : Schem
   rw [this]
   simp
 
-/- English proof (translation)
-Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
-
-Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
+/- English proof (authored)
+At mark one, take both multipliers to be one. For a mark of at least two, the tuning exponent is one less than the mark times the least common multiple up to that mark. Use one less than the mark as the first multiplier. Since the mark divides that positive common multiple, the quotient is positive. Multiplying that quotient by one less than the mark gives the second positive multiplier.
 -/
 theorem exists_tuningExponent_eq {m : ℕ} (hm : 1 ≤ m) :
     ∃ r s : ℕ, m - 1 ≤ r ∧ tuningExponent m = r * lcmUpTo m ∧ 1 ≤ s ∧ tuningExponent m = m * s := by
@@ -198,12 +182,8 @@ theorem exists_tuningExponent_eq {m : ℕ} (hm : 1 ≤ m) :
     · rw [tuningExponent_of_two_le h, ht]
       ring
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At stage zero the structural morphism is the original smooth morphism composed with the given smooth identification. At a successor stage the structural morphism is the blowup followed by the preceding structural morphism. The center has strict normal crossings, so the blowup is smooth over the field when the preceding stage is. Induction gives smoothness at every stage.
 -/
 private theorem smooth_projectionToBase_comp_of_snc (k : Type u) [Field k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -225,8 +205,8 @@ private theorem smooth_projectionToBase_comp_of_snc (k : Type u) [Field k] {X : 
       rw [BlowupSequenceData.projectionToBase_succ, Category.assoc]
       exact hb
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The structural morphism at each stage is smooth by induction along the blowups with strict normal crossings. Every smooth morphism is locally of finite type.
 -/
 private theorem locallyOfFiniteType_projectionToBase_comp_of_snc (k : Type u) [Field k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -238,12 +218,8 @@ private theorem locallyOfFiniteType_projectionToBase_comp_of_snc (k : Type u) [F
   have := smooth_projectionToBase_comp_of_snc k p E d hiso hsnc i hi
   infer_instance
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
+/- English proof (authored)
+Pull back the first containment and use the two exceptional-factor identities. The power of the first identity has exceptional exponent equal to the mark times the power exponent, which is the same exceptional exponent as in the second identity. Cancel that common power to get the lower containment. For the upper one, the first transformed ideal is the controlled transform by uniqueness of the exceptional factorization. Pull back the original upper bound and apply the tuned-sheaf blowup estimate. Its right side is the tuned sheaf of the controlled transform times the common exceptional power. Cancel this power again to get the desired upper containment.
 -/
 private theorem pow_le_and_le_tunedSheaf_of_isBlowupAlongIdealSheaf (k : Type u) [Field k] [CharZero k]
     [IsNoetherianRing k] {P P₁ : Scheme.{u}} (p : P ⟶ Spec (CommRingCat.of k))
@@ -281,32 +257,8 @@ private theorem pow_le_and_le_tunedSheaf_of_isBlowupAlongIdealSheaf (k : Type u)
           comap_tunedSheaf_le_exceptionalIdeal_pow_mul k p π p₁ hp₁ Z E hZ hπ A m hA (m * s)
       _ = Blowup.exceptionalIdeal π Z ^ (m * s) * tunedSheaf k p₁ A' m (m * s) := by rw [hct]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the stage to preserve the two containments between the transforms and the tuned bound. At stage zero they follow by pullback along the initial isomorphism, with tuning commuting with this pullback. At the current stage the containments identify the two order loci. The center hypothesis puts its support in this common locus. The strict normal crossings power criterion then puts both ideals in the respective powers of the center ideal. The total transforms thus have the required exceptional factorizations, and uniqueness identifies their quotients with the next controlled transforms of the sequence. The one-step blowup comparison carries both containments to the next stage. This proves equality of the order loci at every stage. Applying the center criterion at each step also gives the two families of exceptional divisibilities.
 -/
 private theorem orderAtLeastLocus_eq_and_exceptionalIdeal_dvd_of_blowupSequence (k : Type u) [Field k] [CharZero k]
     [IsNoetherianRing k] {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k))
@@ -427,14 +379,8 @@ private theorem orderAtLeastLocus_eq_and_exceptionalIdeal_dvd_of_blowupSequence 
       (d.controlledTransform J (m * s) i) (m * s) (d.isBlowup i hi) (hdiv i hi).2
     exact ⟨B, hB⟩
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. A detailed English derivation is pending.
+/- English proof (authored)
+Assume the sequence is marked for the first ideal. Its smooth centers and strict normal crossings condition give the hypotheses of the induction for comparing transforms. The marked center condition of the first ideal supplies the center inclusion at each stage. Equality of the order loci and the exceptional factorizations from that induction then give the marking conditions for the second ideal. Conversely, assume it is marked for the second ideal. The same induction uses equality of the order loci at the current stage to transfer the center inclusion from the second ideal to the first. It gives the required divisibility and center condition for the first ideal. In either case the smoothness and normal crossings of the centers are inherited from the same sequence. The stagewise equality of the order loci is the corresponding conclusion of the induction.
 -/
 theorem isMarked_iff_of_pow_le_of_le_tunedSheaf : IsMarkedIffOfPowLeOfLeTunedSheaf.{u} := by
   intro k hk1 hk2 hk3 X p hp1 hp2 I m _hm _hmax s hs J h1 h2 E d
@@ -470,14 +416,8 @@ theorem isMarked_iff_of_pow_le_of_le_tunedSheaf : IsMarkedIffOfPowLeOfLeTunedShe
       hiso hft hI.center_snc (fun i hi _ => hI.center_order i hi)
     exact hc i hi
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Write the tuning exponent both as a positive multiple of the mark and as an appropriate multiple of the least common multiple up to the mark. The first expression puts the balanced ideal between the corresponding power of the input and the tuned bound, by the power containment and the definition of the balanced ideal. Applying the marked-sequence comparison gives the marking equivalence and equality of order loci along the sequence. The tuning exponent is positive, so maximal-contact invariance follows from the invariance theorem. The second expression meets the hypotheses of the derivative-balance bound, giving the remaining inequalities.
 -/
 theorem isMarked_iff_balanced_tunedSheaf : IsMarkedIffBalancedTunedSheaf.{u} := by
   intro k hk1 hk2 hk3 X p hp1 hp2 I m hm hmax E d
@@ -503,8 +443,8 @@ theorem isMarked_iff_balanced_tunedSheaf : IsMarkedIffBalancedTunedSheaf.{u} := 
     rw [balancedTunedSheaf_eq]
     exact h8
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Use the supplied monotonicity and product containment for their two fields. The other fields are the marking equivalences, the derivative and maximal-contact identities, invariance, the exact product and power rules, derivative balance, and the order-locus comparison established by the preceding results. These provide every stated property.
 -/
 theorem tunedSheafProperties_of_succ_le_of_mul_le (h1 : TunedSheafSuccLe.{u}) (h2 : TunedSheafMulLeAdd.{u}) :
     TunedSheafProperties.{u} where

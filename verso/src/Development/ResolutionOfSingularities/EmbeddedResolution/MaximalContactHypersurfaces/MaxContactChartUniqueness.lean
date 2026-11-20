@@ -31,15 +31,15 @@ section
 variable {X : Scheme.{u}} {k : Type u} [Field k] {p : X ⟶ Spec (CommRingCat.of k)}
   {U : X.Opens} {m : ℕ}
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The ambient section called the chart coordinate is defined by transporting the chart’s global section along the canonical identification of sections of the open. Applying that identification gives the stated coordinate.
 -/
 theorem coordTop_topIso_eq_coord (c : EtaleChart p U m) (j : Fin m) :
     U.topIso.hom.hom (c.coordTop j) = c.coord j :=
   rfl
 
-/- English proof (translation)
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The section map from the ambient open to its entire open subscheme is the inverse of the canonical section identification. Both descriptions use restriction maps between the same opens, and parallel arrows of opens are equal.
 -/
 private theorem opensι_appLE_self_top_eq_topIso_inv {X₁ : Scheme.{u}} (V : X₁.Opens)
     (e : (⊤ : (V.toScheme).Opens) ≤ V.ι ⁻¹ᵁ V) :
@@ -47,12 +47,8 @@ private theorem opensι_appLE_self_top_eq_topIso_inv {X₁ : Scheme.{u}} (V : X�
   simp
   exact AlgebraicGeometry.Scheme.presheaf_map_eq_of_parallel ..
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The ambient section and its transported section on the open subscheme have corresponding germs. Indeed the inclusion pullback and the inverse section identification agree, and germ formation commutes with restriction. If the transported germ were a unit, the point would belong to its basic open. This is the inverse image of the original basic open and would make the original germ a unit. The given maximal-ideal membership rules this out.
 -/
 private theorem germ_topIso_inv_mem_maximalIdeal {X₁ : Scheme.{u}} (V : X₁.Opens) (y : ↥X₁)
     (hy : y ∈ V) (htop : pointOfMem V y hy ∈ (⊤ : (V.toScheme).Opens)) (s : Γ(X₁, V))
@@ -84,14 +80,8 @@ private theorem germ_topIso_inv_mem_maximalIdeal {X₁ : Scheme.{u}} (V : X₁.O
     exact (V.toScheme.mem_basicOpen ((V.ι.app V).hom s) (pointOfMem V y hy) hy').2 hu
   exact (X₁.mem_basicOpen s y hy).1 hmem
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Agreement at the point can be checked by requiring the differences of coordinate germs to lie in the maximal ideal. At all unaltered indices the coordinates agree, so the difference is zero. At the distinguished index both germs lie in the maximal ideal, and so does their difference. The same memberships hold on the open subscheme under the canonical section identifications, giving the agreement condition.
 -/
 theorem chartsAgreeAt_of_coord_eq_of_germ_mem {n : ℕ} (c₁ c₂ : EtaleChart p U n) (j : Fin n)
     (x : X) (hx : x ∈ U)
@@ -125,10 +115,8 @@ theorem chartsAgreeAt_of_coord_eq_of_germ_mem {n : ℕ} (c₁ c₂ : EtaleChart 
     rw [h'', sub_self, map_zero]
     exact Submodule.zero_mem _
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
+/- English proof (authored)
+Use the canonical section identification to regard the selected coordinates as global sections of the affine chart domain. All corresponding coordinates agree there. The two coordinate ideals are generated by these same global sections, so they agree.
 -/
 theorem coordIdeal_eq_of_coord_eq {n : ℕ} (hU : IsAffineOpen U) (c₁ c₂ : EtaleChart p U n)
     (S : Finset (Fin n)) (h : ∀ i ∈ S, c₁.coord i = c₂.coord i) :
@@ -155,8 +143,8 @@ theorem coordIdeal_eq_of_coord_eq {n : ℕ} (hU : IsAffineOpen U) (c₁ c₂ : E
 
 end
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+A ring homomorphism sends units to units. The given element maps to zero in a nonzero ring, where zero cannot be a unit. Hence it was a nonunit in the local source ring and belongs to its maximal ideal.
 -/
 private theorem mem_maximalIdeal_of_map_eq_zero {A C : Type*} [CommRing A] [CommRing C]
     [IsLocalRing A] [Nontrivial C] (σ : A →+* C) {a : A} (ha : σ a = 0) :
@@ -167,8 +155,8 @@ private theorem mem_maximalIdeal_of_map_eq_zero {A C : Type*} [CommRing A] [Comm
   rw [ha] at h1
   exact zero_ne_one (isUnit_zero_iff.mp h1)
 
-/- English proof (translation)
-Substitute using the available equality. Both sides reduce to the same expression.
+/- English proof (authored)
+Identify the two equal morphisms. They induce the same maps on stalks, and the given identifications of the image point transport the same source stalk to the same ring. The two resulting composites agree.
 -/
 private theorem eqToHom_comp_stalkMap_congr {X W : Scheme.{u}} (f g : W ⟶ X) (hfg : f = g)
     (z : ↥W) (x : ↥X) (hf : f.base z = x) (hg : g.base z = x) :
@@ -177,8 +165,8 @@ private theorem eqToHom_comp_stalkMap_congr {X W : Scheme.{u}} (f g : W ⟶ X) (
   subst hfg
   rfl
 
-/- English proof (translation)
-Substitute using the available equality. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Identify the image point with the specified point. Their stalk rings and stalk ideals then coincide, and transport along the point equality becomes the identity. Both sides extend the same ideal along the same stalk map.
 -/
 private theorem map_stalkMap_stalkIdeal_eq {X W : Scheme.{u}} (f : W ⟶ X) (I : X.IdealSheafData)
     (z : ↥W) (x : ↥X) (hfz : f.base z = x) :
@@ -188,10 +176,8 @@ private theorem map_stalkMap_stalkIdeal_eq {X W : Scheme.{u}} (f : W ⟶ X) (I :
   subst hfz
   rw [eqToHom_refl, Category.id_comp]
 
-/- English proof (translation)
-Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
+/- English proof (authored)
+Identify the target point with the image of the source point. Pulling back the germ of a section along the stalk map is the germ of its pulled-back section. Restricting to the indicated source open does not change this germ, which gives the formula.
 -/
 private theorem eqToHom_comp_stalkMap_germ {X W : Scheme.{u}} (f : W ⟶ X) (z : ↥W) (x : ↥X)
     (hfz : f.base z = x) (U : X.Opens) (hxU : x ∈ U) (V : W.Opens) (hzV : z ∈ V)
@@ -208,8 +194,8 @@ private theorem eqToHom_comp_stalkMap_germ {X W : Scheme.{u}} (f : W ⟶ X) (z :
   rw [eqToHom_refl, Category.id_comp]
   simpa only [CommRingCat.hom_comp, RingHom.comp_apply] using h2
 
-/- English proof (translation)
-Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+After identifying the target point with the image point, the map is the stalk map of a scheme morphism. It is local and reflects units. A nonunit in the target stalk thus maps to a nonunit in the source stalk, which is the desired maximal-ideal membership.
 -/
 private theorem eqToHom_comp_stalkMap_mem_maximalIdeal {X W : Scheme.{u}} (f : W ⟶ X) (z : ↥W)
     (x : ↥X) (hfz : f.base z = x) {a : ↥(X.presheaf.stalk x)}
@@ -222,12 +208,8 @@ private theorem eqToHom_comp_stalkMap_mem_maximalIdeal {X W : Scheme.{u}} (f : W
   intro hu
   exact ha (isUnit_of_map_unit ((f.stalkMap z).hom) a hu)
 
-/- English proof (translation)
-Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Factor the section map through the open subscheme using the given factorization of the morphism. The section map of the open inclusion is the inverse of the stated section identification. These two maps cancel. The remaining map on the whole source and target opens is the global sections map of the factor through the open subscheme.
 -/
 private theorem appLE_topIso_hom_eq_appTop {X W : Scheme.{u}} (U : X.Opens) (f : W ⟶ X)
     (g : W ⟶ U.toScheme) (hfg : f = g ≫ U.ι) (e : (⊤ : W.Opens) ≤ f ⁻¹ᵁ U)
@@ -251,18 +233,8 @@ private theorem appLE_topIso_hom_eq_appTop {X W : Scheme.{u}} (U : X.Opens) (f :
   simp only [CommRingCat.hom_comp, RingHom.comp_apply]
   exact congrArg ((g.appTop).hom) (Iso.hom_inv_id_apply U.topIso t)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
-
-Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+Use the partial derivation in the shifted coordinate direction. It sends that coordinate to one and the other coordinates and field constants to zero. The Taylor expansion in the image of the shift agrees with the second map modulo every power of the maximal ideal on the polynomial generators. At truncation length one this follows from the shift lying in the maximal ideal. For longer truncations the expansion on each variable has only its constant and linear terms, which give the stated coordinates exactly. Formal unramifiedness and agreement modulo the maximal ideal extend this comparison to the full algebra. If the shift belongs to an ideal whose product with the derivative ideal of the input is contained in the input, induction puts each shift power times the corresponding iterated derivative back in the input. The Taylor ideal-containment result gives the first conclusion. The Taylor difference criterion gives the second, since every positive-order term contains the image of the shift.
 -/
 private theorem map_le_map_and_sub_mem_of_etaleCoordinates_shift (kk : Type u) [Field kk] {ι : Type u} {R : Type u}
     [CommRing R] {B : Type u} [CommRing B] [IsLocalRing B] [IsNoetherianRing B] [Algebra ℚ B]
@@ -333,18 +305,8 @@ private theorem map_le_map_and_sub_mem_of_etaleCoordinates_shift (kk : Type u) [
   · exact sub_mem_of_isTaylorExpansionOn (MvPolynomial ι kk) φ φ'
       (EtaleCoordinates.partialDeriv kk ι R j) (φ b) hcong hβ hrep Iid hbI f
 
-/- English proof (translation)
-Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The chart’s affine section ring is formally étale over its polynomial coordinate ring. The stalk is a localization of that section ring and is again formally étale over the polynomial ring by composition. Its coordinate functions are the germs of the chart coordinates and its constants are the structural field elements. Thus the hypotheses on the stalk maps are exactly those of the algebraic coordinate-shift result, which gives both conclusions.
 -/
 private theorem map_le_map_and_sub_mem_of_etaleChart_coord_shift (k : Type u) [Field k] [CharZero k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] [LocallyOfFiniteType p]
@@ -420,22 +382,8 @@ private theorem map_le_map_and_sub_mem_of_etaleChart_coord_shift (k : Type u) [F
     exact hj
   exact map_le_map_and_sub_mem_of_etaleCoordinates_shift k φ φ' (ULift.up j) b hcong hβ hconst' hne' hj'
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Check the elementary cases of the proposition. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Check the elementary cases of the proposition. Check the elementary cases of the proposition. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The fiber-product equation makes the pullbacks of corresponding chart coordinates equal on global sections. Taking germs gives the coordinate equalities at the chosen point. The two projections have the same structural map to the field, so they also agree on the structural scalars. The lift from the spectrum of the residue field has the same composite with both projections. Thus the two stalk images of any element become equal after the induced map to the stalk of the residue field spectrum. Their difference maps to zero in a nonzero ring, so it lies in the maximal ideal of the fiber-product stalk.
 -/
 private theorem chartPullbackStalkMap_compat (k : Type u) [Field k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] [LocallyOfFiniteType p]
@@ -530,22 +478,8 @@ private theorem chartPullbackStalkMap_compat (k : Type u) [Field k] {X : Scheme.
   refine mem_maximalIdeal_of_map_eq_zero σ.hom ?_
   rw [map_sub, ← h0, sub_self]
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
-
-Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Each pulled-back ideal at the fiber-product point is the extension of the original stalk ideal along the corresponding stalk map. The two maps agree on scalars and modulo the maximal ideal. The fiber-product equations show that, in the coordinates of either chart, the maps differ only by shifting the distinguished coordinate by the difference of the two distinguished germs, with the sign chosen for that direction. This difference lies in both the maximal ideal and the maximal-contact stalk ideal. Maximal-contact invariance gives the required product containment with the derivative ideal on the stalk. Apply the coordinate-shift ideal comparison in both directions to get the two inclusions, hence equality.
 -/
 theorem stalkIdeal_comap_chartPullbackPoint_eq
     (k : Type u) [Field k] [CharZero k] {X : Scheme.{u}}
@@ -668,8 +602,8 @@ theorem stalkIdeal_comap_chartPullbackPoint_eq
     map_stalkMap_stalkIdeal_eq (chartPullbackSnd c₁ c₂) I (chartPullbackPoint c₁ c₂ x hx h) x hsb]
   exact key
 
-/- English proof (translation)
-Substitute using the available equality. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Identify the two points and hence their stalk rings. The given transport becomes the identity and the ring maps agree. Applying spectra and composing with the canonical map from that stalk gives the same morphism on both sides.
 -/
 private theorem spec_map_comp_fromSpecStalk_eq {X Z : Scheme.{u}} (z : ↥Z) {x₁ x₂ : ↥X}
     (hx : x₁ = x₂) (α : X.presheaf.stalk x₁ ⟶ Z.presheaf.stalk z)
@@ -679,12 +613,8 @@ private theorem spec_map_comp_fromSpecStalk_eq {X Z : Scheme.{u}} (z : ↥Z) {x�
   subst hx
   rw [hαβ, eqToHom_refl, Category.id_comp]
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The point equalities identify the target stalks of the two composites with the same stalk. The hypothesis then says their induced ring maps are equal on every element, so the maps agree. Functoriality of the canonical morphism from the spectrum of a stalk rewrites each scheme composite as the spectrum of its stalk map followed by the same canonical morphism. These are equal.
 -/
 private theorem fromSpecStalk_comp_eq_of_stalkMap_eq {X Y Z : Scheme.{u}} (ιm : Z ⟶ Y) (f g : Y ⟶ X) (z : ↥Z)
     (w : ↥Y) (hw : ιm.base z = w) (x : ↥X) (hf : f.base w = x) (hg : g.base w = x)
@@ -720,8 +650,8 @@ private theorem fromSpecStalk_comp_eq_of_stalkMap_eq {X Y Z : Scheme.{u}} (ιm :
   rw [L f, L g]
   exact key
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The closed subscheme inclusion has the defining ideal as its kernel ideal. The section in that ideal therefore maps to zero on the inverse-image open. The section map on the indicated opens is this map followed by restriction, which preserves zero.
 -/
 private theorem subschemeι_appLE_eq_zero {Y : Scheme.{u}} (J : Y.IdealSheafData)
     (V : Y.affineOpens) {s : Γ(Y, V.1)} (hs : s ∈ J.ideal V) :
@@ -733,10 +663,8 @@ private theorem subschemeι_appLE_eq_zero {Y : Scheme.{u}} (J : Y.IdealSheafData
   rw [Scheme.Hom.appLE]
   simp only [CommRingCat.hom_comp, RingHom.comp_apply, h3, map_zero]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Pull the section back to the affine open upstairs. It belongs to the pulled-back ideal by extension of section ideals. The closed subscheme defined by that ideal sends this section to zero. Passage to germs commutes with both section maps, so the composite on the original germ is also zero.
 -/
 private theorem stalkMap_germ_eq_zero_of_mem_ideal {X Y : Scheme.{u}} (f : Y ⟶ X) (M : X.IdealSheafData)
     (z : ↥((M.comap f).subscheme)) (w : ↥Y)
@@ -759,16 +687,8 @@ private theorem stalkMap_germ_eq_zero_of_mem_ideal {X Y : Scheme.{u}} (f : Y ⟶
     Scheme.IdealSheafData.appLE_mem_comap_ideal M f ⟨U, hU⟩ ⟨V, hV⟩ eV hs
   rw [subschemeι_appLE_eq_zero (M.comap f) ⟨V, hV⟩ h3, map_zero]
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
-
-Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The fiber-product compatibility says that both maps agree modulo the maximal ideal and on the field, and that the difference in one chart is confined to its distinguished coordinate. The shift is the first image of the difference of the two distinguished germs. It lies in the maximal ideal by locality, and the given homomorphism kills it because it kills both of those germs after the first map. Apply the coordinate-shift difference result to its kernel ideal. The difference of the two maps on every element lies in that kernel, which gives equality after the homomorphism.
 -/
 private theorem chartPullbackFstStalkMap_eq_snd_of_coord_eq_zero
     (k : Type u) [Field k] [CharZero k] {X : Scheme.{u}}
@@ -847,10 +767,8 @@ private theorem chartPullbackFstStalkMap_eq_snd_of_coord_eq_zero
   rw [RingHom.mem_ker, map_sub, sub_eq_zero] at ha
   exact ha
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+Choose an affine neighborhood of the fiber-product point inside the inverse image of the original chart. Both distinguished coordinate germs map to zero under the first projection followed by the stalk map to the maximal-contact subscheme because both sections belong to its defining maximal-contact ideal. The coordinate-shift comparison then identifies the two composites on every element of the original stalk. The correspondence with morphisms from the spectrum of the stalk gives the claimed equality of scheme maps.
 -/
 theorem fromSpecStalk_comp_subschemeι_chartPullback_eq
     (k : Type u) [Field k] [CharZero k] {X : Scheme.{u}}
@@ -906,8 +824,8 @@ theorem fromSpecStalk_comp_subschemeι_chartPullback_eq
       (chartPullbackPoint c₁ c₂ x hx h) hz x (chartPullbackFst_base_chartPullbackPoint c₁ c₂ x hx h) U hU hx
       ((chartPullback c₁ c₂).basicOpen t) hVaff hwt hVle (c₂.coord j) hmem₂
 
-/- English proof (translation)
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+A closed immersion gives its source the subspace topology of its image. Every open of the source is therefore the inverse image of an open of the ambient scheme. Choose that ambient open.
 -/
 private theorem exists_preimage_eq_of_isClosedImmersion {Y Z : Scheme.{u}} (f : Z ⟶ Y) [IsClosedImmersion f]
     (W : Z.Opens) : ∃ V : Y.Opens, f ⁻¹ᵁ V = W := by
@@ -915,25 +833,15 @@ private theorem exists_preimage_eq_of_isClosedImmersion {Y Z : Scheme.{u}} (f : 
   obtain ⟨t, ht, hteq⟩ := hind.isOpen_iff.mp W.2
   exact ⟨⟨t, ht⟩, TopologicalSpace.Opens.ext hteq⟩
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The inclusion of the smaller open factors through the inclusion of the larger one. Precompose the equality on the larger open with this factor map to obtain equality on the smaller open.
 -/
 private theorem ι_comp_eq_of_le {Z Y : Scheme.{u}} {W₀ W' : Z.Opens} (hle : W₀ ≤ W')
     {f g : Z ⟶ Y} (hfg : W'.ι ≫ f = W'.ι ≫ g) : W₀.ι ≫ f = W₀.ι ≫ g := by
   rw [← Scheme.homOfLE_ι _ hle, Category.assoc, hfg, Category.assoc]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
-
-Assume the hypotheses and unpack their components. A detailed English derivation is pending.
+/- English proof (authored)
+The coordinates give agreement of the charts at the point and hence a point of their fiber product. Maximal-contact invariance and the shift calculation give equality of the two pulled-back stalk ideals there. This stalk equality extends to an open neighborhood by finite generation. The fiber-product point also lies in the support of the pulled-back maximal-contact ideal. Choose its point in that closed subscheme. The two projections restricted to the spectrum of its stalk agree because both distinguished coordinates vanish on the subscheme. Spread this morphism equality to an open neighborhood in the subscheme. Lift that neighborhood to an ambient open by the closed immersion and intersect it with the neighborhood of stalk equality. On the intersection the restrictions of the input ideals agree by their stalks, and the projections agree on the maximal-contact subscheme. The two distinguished coordinate ideals have equal pullbacks by the fiber-product equations. For any set of indices omitting the distinguished one, the charts already share the corresponding sections and therefore give equal coordinate ideals downstairs.
 -/
 theorem exists_opens_chartPullback_eq_of_mem_maxContactIdeal
     (k : Type u) [Field k] [CharZero k] {X : Scheme.{u}}

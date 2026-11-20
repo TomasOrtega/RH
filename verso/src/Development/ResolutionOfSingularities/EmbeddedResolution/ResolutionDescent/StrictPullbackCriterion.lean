@@ -13,20 +13,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
-
-Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
-
-Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Substitute using the available equality. Use linear arithmetic over natural numbers and integers.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Strict growth gives the lower bound that every value is at least its index, by induction from zero. For the other inequality use strong induction on the index. If a value exceeded its index, that index would be below the target endpoint, since all values are at most that endpoint. By surjectivity it would have a preimage before the source endpoint. The lower bound puts this preimage at or before the index. An earlier preimage is impossible because the induction hypothesis makes all earlier values at most their indices, and the current index is impossible because its value is assumed larger. Hence every value equals its index.
 -/
 private theorem apply_eq_self_of_strictMono_of_surjective (L L' : ℕ) (r : ℕ → ℕ)
     (h1 : ∀ i, i < L' → r i < L)
@@ -73,8 +61,8 @@ private theorem apply_eq_self_of_strictMono_of_surjective (L L' : ℕ) (r : ℕ 
   intro i hi
   exact le_antisymm (hB' i i le_rfl hi) (hA i hi)
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Identify the two indices with the specified consecutive stages. The extra transitions in the comparison maps become identities, leaving the usual pullback square for the consecutive pulled-back transition.
 -/
 private theorem isPullback_pullbackTransitionMap_comp_transitionMap {X X' : Scheme.{u}} (s : SequenceOfBlowups X)
     (φ : X' ⟶ X) (i j j' : ℕ) (hj : j = i) (hj' : j' = i + 1) (hjj' : j ≤ j')
@@ -87,8 +75,8 @@ private theorem isPullback_pullbackTransitionMap_comp_transitionMap {X X' : Sche
   simp only [SequenceOfBlowups.transitionMap_self_eq_id, Category.comp_id]
   exact s.isPullback_pullbackTransitionMap φ _
 
-/- English proof (translation)
-Substitute using the available equality. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+With the indices identified, the center ideals are the same and the intervening transition is the identity. Both expressions pull that center back along the same composite.
 -/
 private theorem center_comap_eq_comap_comp_transitionMap_of_eq {X W V : Scheme.{u}} (s : SequenceOfBlowups X) {i j : ℕ}
     (hij : i ≤ j) (hji : j = i) (f : W ⟶ V) (g : V ⟶ s.schemeAt j) :
@@ -96,8 +84,8 @@ private theorem center_comap_eq_comap_comp_transitionMap_of_eq {X W V : Scheme.{
   subst hji
   rw [SequenceOfBlowups.transitionMap_self_eq_id, Category.comp_id]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+An ideal sheaf with empty support is the unit ideal. Since the given ideal is nonunit, its support is nonempty.
 -/
 private theorem support_nonempty_of_ne_top {Y : Scheme.{u}} (I : Y.IdealSheafData) (h : I ≠ ⊤) :
     ((I.support : Set ↥Y)).Nonempty := by
@@ -107,10 +95,8 @@ private theorem support_nonempty_of_ne_top {Y : Scheme.{u}} (I : Y.IdealSheafDat
   have hbot : I.support = ⊥ := SetLike.ext' (by rw [he]; rfl)
   exact (Scheme.IdealSheafData.support_eq_bot_iff I).mp hbot
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At the given step take a point on the center support. Its image in the base has a preimage in the new base by hypothesis. Together these points give a point of the scheme pullback. Its second projection lies in the original center support, so it belongs to the pulled-back center support.
 -/
 theorem support_comap_center_nonempty_of_mem_range {X X' : Scheme.{u}} (φ : X' ⟶ X) (s : SequenceOfBlowups X)
     (hne : ∀ i : ℕ, i < s.length → (((s.center i).support : Set ↥(s.schemeAt i))).Nonempty)
@@ -130,16 +116,8 @@ theorem support_comap_center_nonempty_of_mem_range {X X' : Scheme.{u}} (φ : X' 
   rw [Scheme.IdealSheafData.support_comap]
   exact hmem
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Every original center has nonempty pulled-back support, so the retention condition makes every original step appear among the reindexed steps. The reindexing is strictly increasing and sends the final index to the original final index. The ordered-index argument now makes it the identity through the final stage, and the lengths agree. Use the stage isomorphisms followed by the second projections as the strict comparison maps. The initial comparison follows from the projection equations. For every successor, the transition square is obtained by composing the comparison isomorphisms with the ordinary consecutive base-change pullback square. The center equations become exactly the strict pullback equations because the indices agree.
 -/
 theorem IsPullbackBlowupSequence.isStrictPullback_of_support_comap_center_nonempty {X X' : Scheme.{u}} {φ : X' ⟶ X} {s' : SequenceOfBlowups X'}
     {s : SequenceOfBlowups X} (h : IsPullbackBlowupSequence φ s' s)
@@ -184,8 +162,8 @@ theorem IsPullbackBlowupSequence.isStrictPullback_of_support_comap_center_nonemp
     exact center_comap_eq_comap_comp_transitionMap_of_eq s (le_of_eq (hid i hile).symm) (hid i hile) (e i hile).hom
       (pullback.snd φ (s.projectionToBase (r i)))
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Every original center is nonunit and therefore has nonempty support. Surjectivity of the base map ensures that the projection of any point of that support lies in its range. Thus every pulled-back center has nonempty support. Apply the criterion for a pullback with no missing centers.
 -/
 theorem IsPullbackBlowupSequence.isStrictPullback_of_surjective {X X' : Scheme.{u}} {φ : X' ⟶ X}
     [AlgebraicGeometry.Surjective φ] {s' : SequenceOfBlowups X'} {s : SequenceOfBlowups X}

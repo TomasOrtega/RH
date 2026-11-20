@@ -16,8 +16,8 @@ namespace SequenceOfBlowups
 
 variable {X : Scheme.{u}}
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Compare first and second projections. The first projection is preserved by definition. The second is followed by the original identity transition, so it too is unchanged. The pullback universal property makes the pulled-back transition the identity.
 -/
 theorem pullbackTransitionMap_self_eq_id (s : SequenceOfBlowups X) {X' : Scheme.{u}} (φ : X' ⟶ X) {i : ℕ} (h : i ≤ i) :
     s.pullbackTransitionMap φ h = 𝟙 (pullback φ (s.projectionToBase i)) := by
@@ -25,8 +25,8 @@ theorem pullbackTransitionMap_self_eq_id (s : SequenceOfBlowups X) {X' : Scheme.
   · rw [s.pullbackTransitionMap_fst, Category.id_comp]
   · rw [s.pullbackTransitionMap_snd, s.transitionMap_self_eq_id, Category.comp_id, Category.id_comp]
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The two composites agree on the first projection because all pullback transitions preserve it. On the second projection their maps reduce to the corresponding original transitions, and functoriality identifies their composite with the direct original transition. Pullback extensionality gives equality.
 -/
 theorem pullbackTransitionMap_trans (s : SequenceOfBlowups X) {X' : Scheme.{u}} (φ : X' ⟶ X) {i j l : ℕ}
     (hij : i ≤ j) (hjl : j ≤ l) :
@@ -36,12 +36,8 @@ theorem pullbackTransitionMap_trans (s : SequenceOfBlowups X) {X' : Scheme.{u}} 
   · rw [Category.assoc, s.pullbackTransitionMap_snd, ← Category.assoc, s.pullbackTransitionMap_snd, Category.assoc,
       s.transitionMap_trans, s.pullbackTransitionMap_snd]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the number of steps. For zero steps the transition is the identity. At a successor the direct transition factors through the preceding endpoint. The preceding transition is an isomorphism by induction and the last step is an isomorphism by hypothesis. Their composite is an isomorphism.
 -/
 private theorem isIso_pullbackTransitionMap_add (s : SequenceOfBlowups X) {X' : Scheme.{u}} (φ : X' ⟶ X) (n : ℕ) :
     ∀ (k : ℕ) (h : n ≤ n + k),
@@ -65,8 +61,8 @@ private theorem isIso_pullbackTransitionMap_add (s : SequenceOfBlowups X) {X' : 
       rw [s.pullbackTransitionMap_trans φ (Nat.le_add_right n k) (Nat.le_succ (n + k))] at key
       exact key
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. A detailed English derivation is pending.
+/- English proof (authored)
+Express the later index as the earlier index plus the number of intervening steps. The inductive result for a chain of isomorphic one-step transitions then applies.
 -/
 theorem isIso_pullbackTransitionMap (s : SequenceOfBlowups X) {X' : Scheme.{u}} (φ : X' ⟶ X) {n n' : ℕ}
     (h : n ≤ n') (hstep : ∀ m, n ≤ m → m < n' → IsIso (s.pullbackTransitionMap φ (Nat.le_succ m))) :
@@ -76,8 +72,8 @@ theorem isIso_pullbackTransitionMap (s : SequenceOfBlowups X) {X' : Scheme.{u}} 
 
 end SequenceOfBlowups
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The hypothesis says that the support contains no points. The ideal with empty support is the unit ideal, so the given ideal is the unit ideal.
 -/
 private theorem idealSheafData_eq_top_of_support_empty {X : Scheme.{u}} (I : X.IdealSheafData)
     (h : ∀ x : X, x ∉ I.support) : I = ⊤ := by
@@ -85,8 +81,8 @@ private theorem idealSheafData_eq_top_of_support_empty {X : Scheme.{u}} (I : X.I
   ext x
   simp [h x]
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The stated equations identify the two given morphisms with the projections of the canonical pullback under an isomorphism of the source. Transport its pullback universal property across that isomorphism, with the factors in the stated order.
 -/
 private theorem isPullback_of_iso_pullback {P Z A A' : Scheme.{u}} (f : A' ⟶ A) (h : Z ⟶ A)
     (ε : P ≅ pullback f h) {a : P ⟶ Z} {b : P ⟶ A'}
@@ -95,28 +91,8 @@ private theorem isPullback_of_iso_pullback {P Z A A' : Scheme.{u}} (f : A' ⟶ A
   refine (IsPullback.of_iso_pullback ⟨?_⟩ ε hb ha).flip
   rw [← ha, ← hb, Category.assoc, Category.assoc, pullback.condition]
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
-
-Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Use the given reindexing and the comparison isomorphisms followed by projection to the corresponding original stages. The comparison equations give a pullback square at each retained stage. If a step was omitted, its pulled-back center support is empty by the retention criterion, so its ideal is the unit ideal. The corresponding pulled-back blowup is therefore an isomorphism. Over any interval of omitted steps the composed pullback transition is an isomorphism, allowing the same stage to be compared with any original index in that interval. Between successive retained indices, apply this identification to the steps after the retained blowup. Pasting with the pullback square at the earlier retained stage, and then cancelling that square, gives the consecutive blowup comparison. The center equations at retained steps are the given ones. On any model of the pullback at an omitted step, the center is unit because it is pulled back from the unit center of the canonical pullback.
 -/
 theorem IsPullbackBlowupSequence.exists_reindexing_of_flat {A A' : Scheme.{u}} (f : A' ⟶ A)
     [AlgebraicGeometry.Flat f] {t' : SequenceOfBlowups A'} {t : SequenceOfBlowups A}

@@ -14,10 +14,8 @@ open CategoryTheory AlgebraicGeometry
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The support is empty exactly for the unit ideal. Negating this equality is precisely the equivalence between nonempty support and being nonunit.
 -/
 private theorem support_nonempty_iff_ne_top {A : Scheme.{u}} (I : A.IdealSheafData) :
     (∃ x, x ∈ I.support) ↔ I ≠ ⊤ := by
@@ -31,10 +29,8 @@ private theorem support_nonempty_iff_ne_top {A : Scheme.{u}} (I : A.IdealSheafDa
     exact hne ((Scheme.IdealSheafData.support_eq_bot_iff I).mp
       (SetLike.ext fun x => iff_of_false (hc x) (fun hmem => hmem)))
 
-/- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Pullback of the unit ideal is unit. Conversely, if the pullback is unit, pull it back along the inverse isomorphism. This leaves the unit ideal on that side, while the two successive pullbacks of the original ideal compose to pullback along the identity. Thus the original ideal is unit.
 -/
 private theorem comap_isoHom_eq_top_iff {A B : Scheme.{u}} (e : A ≅ B) (J : B.IdealSheafData) :
     J.comap e.hom = ⊤ ↔ J = ⊤ := by
@@ -51,8 +47,8 @@ namespace SequenceOfBlowups
 
 variable {X : Scheme.{u}}
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The shortened projection goes from the retained stage to the first retained stage and then to the base by the projection from that first stage. The original tower’s projection compatibility identifies this composite with the original projection from the specified retained stage.
 -/
 theorem withoutIsoBlowups_projectionToBase (s : SequenceOfBlowups X) (j : ℕ) :
     s.withoutIsoBlowups.projectionToBase j = s.projectionToBase (s.nontrivialIndex j) := by
@@ -60,10 +56,8 @@ theorem withoutIsoBlowups_projectionToBase (s : SequenceOfBlowups X) (j : ℕ) :
   rw [projectionToBase_def, withoutIsoBlowups_transitionMap, h0]
   exact s.transitionMap_comp_projectionToBase (s.nontrivialIndex_monotone (Nat.zero_le j))
 
-/- English proof (translation)
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
+/- English proof (authored)
+The final retained index is the length and is greater than the given index. Take the first retained value strictly greater than it. This cannot be the first retained value, since all indices before that value have unit centers. The previous retained value is at most the given index by minimality. If it were smaller, the given index would lie in the gap between two successive retained values, where all centers are unit. Thus the previous retained value equals the given index, and its enumeration position is strictly before the shortened length.
 -/
 theorem exists_nontrivialIndex_eq_of_center_ne_top (s : SequenceOfBlowups X) {i : ℕ} (hi : i < s.length)
     (h : s.center i ≠ ⊤) :
@@ -87,22 +81,8 @@ end SequenceOfBlowups
 
 namespace IsStrictPullbackBlowupSeq
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Use the retained indices of the upstairs sequence and the original stagewise pullback comparisons at those indices. These indices strictly increase, and the final one is the common original length. In each original stage the upstairs center is identified with the pullback center under the comparison isomorphism. Its being nonunit is therefore equivalent to nonempty support on the canonical pullback. The retained-index result says exactly that these steps are kept. The first projection of each stage comparison is the shortened projection to the base. For consecutive shortened stages, compare the two transition composites on both pullback projections. On the first, the projection to the base is preserved. On the second, the pasted strict pullback squares for the old interval give the needed equation. The center condition is the old one at the retained index, so all pullback conditions hold.
 -/
 theorem isPullbackSequenceOfBlowups_withoutIsoBlowups {X' X : Scheme.{u}} {φ : X' ⟶ X}
     {t : SequenceOfBlowups X'} {s : SequenceOfBlowups X}

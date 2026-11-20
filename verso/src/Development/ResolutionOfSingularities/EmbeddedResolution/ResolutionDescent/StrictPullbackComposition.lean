@@ -12,24 +12,16 @@ open CategoryTheory AlgebraicGeometry
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
+/- English proof (authored)
+The support of a pullback ideal is the inverse image of its support. The given point belongs to it exactly when its image belongs to the original support.
 -/
 private theorem mem_support_comap {A B : Scheme.{u}} (f : A ⟶ B) (I : B.IdealSheafData)
     (x : ↥A) : x ∈ (I.comap f).support ↔ f.base x ∈ I.support := by
   rw [AlgebraicGeometry.Scheme.IdealSheafData.support_comap]
   exact Iff.rfl
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The map from the pullback along the composite to the pullback along the intermediate map commutes with projection to the stage. It is a base change of the given surjection and is surjective. A point on the pulled-back support upstairs therefore gives one downstairs, and every point on the support downstairs lifts to one upstairs. This proves equivalence of nonemptiness.
 -/
 private theorem support_comap_pullback_snd_nonempty_iff {W V Y T : Scheme.{u}} (u : V ⟶ Y) (c : W ⟶ V)
     [AlgebraicGeometry.Surjective c] (g : T ⟶ Y) (I : T.IdealSheafData) :
@@ -71,24 +63,8 @@ private theorem support_comap_pullback_snd_nonempty_iff {W V Y T : Scheme.{u}} (
 
 namespace IsPullbackBlowupSequence
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
-
-Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
-
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+A strict pullback preserves the intermediate sequence length, so keep the reindexing of the given pullback up to empty centers. The strict comparison gives pullback squares for the maps of all stages to their bases. Paste each with the corresponding square for the intermediate sequence to obtain the stage comparison over the composite base map. The further base map is surjective, so the support of each pulled-back center is nonempty exactly when it was nonempty on the intermediate base. Thus the retained indices are unchanged. Projection to the new base gives the first compatibility of the stage comparisons. Comparison after the other projection follows from the commuting transition squares for the two given sequences, so the new transitions agree by the pullback property. Finally each center is obtained by two successive pullbacks, which equal pullback along the composite comparison. These are all the conditions for the composite pullback.
 -/
 theorem comp_isStrictPullbackSequenceOfBlowups {W V Y : Scheme.{u}} {u : V ⟶ Y} {c : W ⟶ V}
     [AlgebraicGeometry.Surjective c]

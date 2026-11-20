@@ -15,10 +15,8 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace SequenceOfBlowups
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative.
-
-Prove the second alternative.
+/- English proof (authored)
+The index chosen by the search in the second sequence is at least the starting index. If it reaches the common length it is an admissible endpoint in the first sequence. Otherwise its center is nonunit in the second sequence and hence also in the first. It is therefore an admissible search result for the first sequence, whose least result is at most this index.
 -/
 private theorem nextNontrivialIndex_le_of_center_eq_top_iff {X' X : Scheme.{u}} (t : SequenceOfBlowups X')
     (s : SequenceOfBlowups X) (hlen : t.length = s.length)
@@ -31,8 +29,8 @@ private theorem nextNontrivialIndex_le_of_center_eq_top_iff {X' X : Scheme.{u}} 
     · exact Or.inr (by omega)
   · exact Or.inr (by omega)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The two sequences have the same length and the same unit center positions. Apply the comparison inequality in each direction to get equality of the two search results.
 -/
 theorem nextNontrivialIndex_congr {X' X : Scheme.{u}} (t : SequenceOfBlowups X') (s : SequenceOfBlowups X)
     (hlen : t.length = s.length)
@@ -41,10 +39,8 @@ theorem nextNontrivialIndex_congr {X' X : Scheme.{u}} (t : SequenceOfBlowups X')
   le_antisymm (nextNontrivialIndex_le_of_center_eq_top_iff t s hlen hcen a)
     (nextNontrivialIndex_le_of_center_eq_top_iff s t hlen.symm (fun i hi => (hcen i (by omega)).symm) a)
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Both first retained indices are the results of equal searches from zero. If the current retained indices agree, the searches for the next ones start at the same successor and again agree. Induction proves equality of the retained-index functions.
 -/
 theorem nontrivialIndex_congr {X' X : Scheme.{u}} (t : SequenceOfBlowups X') (s : SequenceOfBlowups X)
     (hlen : t.length = s.length)
@@ -58,10 +54,8 @@ theorem nontrivialIndex_congr {X' X : Scheme.{u}} (t : SequenceOfBlowups X') (s 
       rw [nontrivialIndex_succ, nontrivialIndex_succ, ih]
       exact nextNontrivialIndex_congr t s hlen hcen _
 
-/- English proof (translation)
-Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Use linear arithmetic over natural numbers and integers.
+/- English proof (authored)
+The retained-index functions agree. If the first shortened length were greater than the second, at the second shortened length the first retained value would still lie below the common original length. But the second retained value there has reached the original length, contradicting equality of the functions.
 -/
 private theorem lengthWithoutIsoBlowups_le_of_center_eq_top_iff {X' X : Scheme.{u}} (t : SequenceOfBlowups X')
     (s : SequenceOfBlowups X) (hlen : t.length = s.length)
@@ -74,8 +68,8 @@ private theorem lengthWithoutIsoBlowups_le_of_center_eq_top_iff {X' X : Scheme.{
   have h3 := nontrivialIndex_congr t s hlen hcen s.lengthWithoutIsoBlowups
   omega
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Apply the length comparison in each direction, reversing the hypotheses on equal lengths and corresponding unit centers for the reverse comparison.
 -/
 theorem lengthWithoutIsoBlowups_congr {X' X : Scheme.{u}} (t : SequenceOfBlowups X') (s : SequenceOfBlowups X)
     (hlen : t.length = s.length)
@@ -84,16 +78,16 @@ theorem lengthWithoutIsoBlowups_congr {X' X : Scheme.{u}} (t : SequenceOfBlowups
   le_antisymm (lengthWithoutIsoBlowups_le_of_center_eq_top_iff t s hlen hcen)
     (lengthWithoutIsoBlowups_le_of_center_eq_top_iff s t hlen.symm (fun i hi => (hcen i (by omega)).symm))
 
-/- English proof (translation)
-Substitute using the available equality. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+After identifying the two stage indices, the sequence transition is the identity. Transport along this stage equality is the identity as well.
 -/
 private theorem transitionMap_eq_eqToHom {X : Scheme.{u}} (s : SequenceOfBlowups X) {a b : ℕ} (h : a ≤ b)
     (h' : a = b) : s.transitionMap h = eqToHom (congrArg s.schemeAt h'.symm) := by
   subst h'
   rw [s.transitionMap_self h, eqToHom_refl]
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Identify both pairs of equal indices. The two transport maps are identities and the underlying transitions are the same, so the composites agree.
 -/
 private theorem eqToHom_comp_transitionMap {X : Scheme.{u}} (s : SequenceOfBlowups X) {a b a' b' : ℕ}
     (ha : a = a') (hb : b = b') (h : a ≤ b) (h' : a' ≤ b') :
@@ -102,32 +96,24 @@ private theorem eqToHom_comp_transitionMap {X : Scheme.{u}} (s : SequenceOfBlowu
   subst hb
   rw [eqToHom_refl, eqToHom_refl, Category.id_comp, Category.comp_id]
 
-/- English proof (translation)
-Substitute using the available equality. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Once the equal indices are identified, the transport map is the identity at that stage. Composing the identity with the projection gives the same projection.
 -/
 private theorem eqToHom_comp_projectionToBase {X : Scheme.{u}} (s : SequenceOfBlowups X) {a b : ℕ} (h : a = b) :
     eqToHom (congrArg s.schemeAt h) ≫ s.projectionToBase b = s.projectionToBase a := by
   subst h
   rw [eqToHom_refl, Category.id_comp]
 
-/- English proof (translation)
-Substitute using the available equality. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Identify the two equal indices. The centers now coincide and the transport is the identity, whose pullback leaves the ideal unchanged.
 -/
 private theorem center_comap_eqToHom {X : Scheme.{u}} (s : SequenceOfBlowups X) {a b : ℕ} (h : a = b) :
     (s.center b).comap (eqToHom (congrArg s.schemeAt h)) = s.center a := by
   subst h
   simp
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Prove the first alternative.
-
-Prove the second alternative. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
-
-Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+Every index is an admissible result for the search starting there, because it either precedes the end and has a nonunit center or is at least the length. The least result is therefore exactly the starting index. Induction makes the retained-index function the identity, and the shortened length equals the original one. Use the resulting stage identifications as isomorphisms. The formulas for the shortened initial map, transitions, and centers then reduce to those of the original sequence under the same stage identifications.
 -/
 theorem withoutIsoBlowups_isomorphic_self {X : Scheme.{u}} (t : SequenceOfBlowups X)
     (h : ∀ i : ℕ, i < t.length → t.center i ≠ ⊤) : t.withoutIsoBlowups.Isomorphic t := by
@@ -165,8 +151,8 @@ theorem withoutIsoBlowups_isomorphic_self {X : Scheme.{u}} (t : SequenceOfBlowup
 
 end SequenceOfBlowups
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Identify the equal objects on the right. The transport maps become identities, and the given equation identifies the two right-hand morphisms. The resulting square is the original pullback square.
 -/
 private theorem isPullback_eqToHom_right {P Y X Z X' Z' : Scheme.{u}}
     {fst : P ⟶ X} {snd : P ⟶ Y} {f : X ⟶ Z} {g : Y ⟶ Z}
@@ -179,8 +165,8 @@ private theorem isPullback_eqToHom_right {P Y X Z X' Z' : Scheme.{u}}
   rw [hf]
   exact h
 
-/- English proof (translation)
-Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Identify the equal stage indices. The transport map is then the identity, so the pullback along the indicated composite reduces to the assumed center equality.
 -/
 private theorem center_eq_comap_comp_eqToHom {X' X : Scheme.{u}} (t : SequenceOfBlowups X')
     (s : SequenceOfBlowups X) {a b : ℕ} (hab : a = b) (f : t.schemeAt a ⟶ s.schemeAt a)
@@ -190,14 +176,8 @@ private theorem center_eq_comap_comp_eqToHom {X' X : Scheme.{u}} (t : SequenceOf
   simp only [eqToHom_refl, Category.comp_id]
   exact hf
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+Surjectivity of the base map makes every stage comparison surjective, so a center is unit upstairs exactly when it is unit downstairs. The two shortening procedures keep the same indices and give equal lengths. At a retained index use the old comparison followed by the identification with the corresponding retained index downstairs. Compatibility at zero follows from the old comparison square for projection to the base. Each shortened transition is an old transition across the corresponding interval. Its comparison square is a pullback by pasting old successor squares and identifying stages. The shortened center equation is the original equation at the retained index. These give a strict pullback of the shortened sequences.
 -/
 theorem IsStrictPullbackBlowupSeq.withoutIsoBlowups {X' X : Scheme.{u}} {g : X' ⟶ X}
     [AlgebraicGeometry.Surjective g] {t : SequenceOfBlowups X'} {s : SequenceOfBlowups X}
@@ -244,10 +224,8 @@ theorem IsStrictPullbackBlowupSeq.withoutIsoBlowups {X' X : Scheme.{u}} {g : X' 
   exact ⟨hplen, fun j hj => σ (t.nontrivialIndex j) (t.nontrivialIndex_le_length hj) ≫
     eqToHom (congrArg s.schemeAt (hret j)), h1, h2, h3⟩
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Use the stage isomorphisms as comparison morphisms. The initial equation gives compatibility over the identity of the common base, and every commuting transition square with the two horizontal isomorphisms is a pullback. The center equations are exactly those already known for the isomorphism.
 -/
 private theorem isStrictPullbackSequenceOfBlowups_id_of_isomorphic {X : Scheme.{u}} {B B' : SequenceOfBlowups X}
     (h : B.Isomorphic B') : IsStrictPullbackBlowupSeq (𝟙 X) B B' := by
@@ -262,8 +240,8 @@ private theorem isStrictPullbackSequenceOfBlowups_id_of_isomorphic {X : Scheme.{
   · intro i hi
     exact (hcen i hi).symm
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+View the original isomorphism as a strict pullback comparison over the identity of the base. The identity is surjective, so removing unit-center steps preserves the strict comparison. Compare this shortened sequence with the identity strict pullback of the second shortened sequence. Uniqueness of strict pullbacks gives the isomorphism.
 -/
 theorem SequenceOfBlowups.Isomorphic.withoutIsoBlowups {X : Scheme.{u}} {t₁ t₂ : SequenceOfBlowups X}
     (h : t₁.Isomorphic t₂) : t₁.withoutIsoBlowups.Isomorphic t₂.withoutIsoBlowups :=

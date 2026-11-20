@@ -9,22 +9,8 @@ namespace FunctorialResolution.EmbeddedResolution.FlatDescentIdealSheaf
 
 variable {W Y : Scheme.{u}}
 
-/- English proof (translation)
-Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The colon ideal is the kernel of multiplication by the given element followed by the quotient by the ideal. Tensor this exact kernel sequence with the flat target algebra. The tensor of the two units lies in the kernel of the resulting multiplication and quotient map, since the image of the given element belongs to the extended ideal and annihilates the tensor of the quotient unit. Thus the tensor of the units is in the image of the extended colon ideal. Under the identification of the tensor product of the target algebra with the base ring with the target algebra itself, that image lies in the extended colon ideal. The tensor of the units corresponds to one, proving the claim.
 -/
 private theorem one_mem_map_colon_of_mem_map {R S : Type u} [CommRing R] [CommRing S] (φ : R →+* S)
     (hφ : RingHom.Flat φ) (L : Ideal R) (a : R) (h : φ a ∈ L.map φ) :
@@ -83,10 +69,8 @@ private theorem one_mem_map_colon_of_mem_map {R S : Type u} [CommRing R] [CommRi
   rw [hv, TensorProduct.rid_tmul, one_smul] at hfin
   exact hfin
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+A proper ideal of the affine coordinate ring is contained in a maximal ideal. Take the corresponding prime point of the affine open. Every element of the original ideal belongs to this prime, so the point lies in none of their basic opens.
 -/
 private theorem exists_not_mem_basicOpen_of_ne_top {X : Scheme.{u}} {U : X.Opens} (hU : IsAffineOpen U)
     (C : Ideal Γ(X, U)) (hC : C ≠ ⊤) :
@@ -103,12 +87,8 @@ private theorem exists_not_mem_basicOpen_of_ne_top {X : Scheme.{u}} {U : X.Opens
     have h2 : c ∉ m := h1
     exact h2 (hCm hc)
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Assume the negation of the conclusion and derive a contradiction. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The chosen point of the affine open corresponds to a proper prime of its section ring. If the point lay in none of the basic opens of the given sections, that prime would contain all the sections and therefore the ideal they generate. This would make it contain the unit ideal, a contradiction.
 -/
 private theorem exists_mem_basicOpen_of_span_eq_top {X : Scheme.{u}} {U : X.Opens} (hU : IsAffineOpen U)
     (s : Set Γ(X, U)) (hs : Ideal.span s = ⊤) (x : X) (hx : x ∈ U) :
@@ -132,8 +112,8 @@ private theorem exists_mem_basicOpen_of_span_eq_top {X : Scheme.{u}} {U : X.Open
   rw [hs] at hle
   exact p.2.ne_top (top_le_iff.mp hle)
 
-/- English proof (translation)
-Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
+/- English proof (authored)
+A flat scheme morphism is characterized on affine charts by flatness of the corresponding ring maps. Apply that affine criterion to the given source chart lying over the given target chart.
 -/
 private theorem flat_appLE (g : W ⟶ Y) [AlgebraicGeometry.Flat g] (U : Y.affineOpens)
     (V : W.affineOpens) (e : (V : W.Opens) ≤ g ⁻¹ᵁ (U : Y.Opens)) :
@@ -141,16 +121,8 @@ private theorem flat_appLE (g : W ⟶ Y) [AlgebraicGeometry.Flat g] (U : Y.affin
   apply AlgebraicGeometry.HasRingHomProperty.appLE (P := @AlgebraicGeometry.Flat)
   all_goals assumption
 
-/- English proof (translation)
-Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+If the colon ideal were proper, choose a point of the target affine chart lying in none of its basic opens. Lift that point by surjectivity and choose an affine neighborhood of the lift inside the inverse image of the target chart. The induced ring map is flat. The assumed containment of pulled-back ideals means that the image of the chosen element belongs to the extension of the second ideal. By the flat colon calculation, the extension of the colon ideal contains one. Its generators’ basic opens therefore cover the source chart, including the lifted point. The corresponding original basic open then contains the target point, contrary to its choice. Thus the colon ideal is the unit ideal.
 -/
 private theorem colon_eq_top_of_comap_le (g : W ⟶ Y) [AlgebraicGeometry.Flat g]
     [AlgebraicGeometry.Surjective g] (I J : Y.IdealSheafData)
@@ -193,10 +165,8 @@ private theorem colon_eq_top_of_comap_le (g : W ⟶ Y) [AlgebraicGeometry.Flat g
   have hmem := hbeta hwb
   exact hx c hc (by rw [← hw]; exact hmem)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
+/- English proof (authored)
+On an affine target chart take an element of the first ideal. The colon ideal consisting of its multipliers into the second ideal is the unit ideal by the flat surjective calculation. In particular one is such a multiplier, so the element already belongs to the second ideal. This gives inclusion on every affine chart.
 -/
 theorem le_of_comap_le (g : W ⟶ Y) [AlgebraicGeometry.Flat g]
     [AlgebraicGeometry.Surjective g] (I J : Y.IdealSheafData)
@@ -210,8 +180,8 @@ theorem le_of_comap_le (g : W ⟶ Y) [AlgebraicGeometry.Flat g]
   have h2 : a * (1 : Γ(Y, (U : Y.Opens))) ∈ J.ideal U := h1
   simpa using h2
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Equality of the pulled-back ideals gives inclusion in each direction after pullback. Flat surjective pullback reflects these inclusions, so the original ideal sheaves are equal.
 -/
 theorem eq_of_comap_eq (g : W ⟶ Y) [AlgebraicGeometry.Flat g]
     [AlgebraicGeometry.Surjective g] (I J : Y.IdealSheafData)

@@ -22,8 +22,8 @@ abbrev pullbackFstSchemeAt {W Y : Scheme.{u}} (g : W ⟶ Y) (t : SequenceOfBlowu
 abbrev pullbackSndSchemeAt {W Y : Scheme.{u}} (g : W ⟶ Y) (t : SequenceOfBlowups W) (i : ℕ) : Scheme.{u} :=
   pullback (pullback.snd g g) (t.projectionToBase i)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The first projection in the pullback is obtained by base change of the given flat morphism. Flatness is preserved by base change.
 -/
 private theorem flat_fst_of_isPullback {A B C D : Scheme.{u}} {p : A ⟶ B} {q : A ⟶ C}
     {f : B ⟶ D} {h : C ⟶ D} (H : IsPullback p q f h) [AlgebraicGeometry.Flat h] :
@@ -31,8 +31,8 @@ private theorem flat_fst_of_isPullback {A B C D : Scheme.{u}} {p : A ⟶ B} {q :
   MorphismProperty.IsStableUnderBaseChange.of_isPullback
     (P := @AlgebraicGeometry.Flat) H.flip inferInstance
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+Precompose both projections with the given isomorphism of their source. This identifies the new square with the original pullback square, so it still satisfies the same universal property.
 -/
 private theorem isPullback_iso_hom_comp {P P' A B C : Scheme.{u}} {pf : P' ⟶ A} {ps : P' ⟶ B}
     {f : A ⟶ C} {g : B ⟶ C} (H : IsPullback pf ps f g) (e : P ≅ P') :
@@ -42,12 +42,8 @@ private theorem isPullback_iso_hom_comp {P P' A B C : Scheme.{u}} {pf : P' ⟶ A
   have h := E.paste_horiz H
   rwa [Category.id_comp] at h
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Use the overlap isomorphism to write the second overlap pullback on the first overlap object. Its compatibility with the overlap base maps allows pasting with the self-pullback square of the cover. The stage comparison square is a pullback, and the comparison maps agree on the overlap by hypothesis. Cancelling the stage square gives a self-pullback square for the stage comparison map. The center pulls back to the same ideal along the two projections of this square by the center compatibility. Flat ideal descent now shows that the pullback of its image along the stage comparison is exactly the original center.
 -/
 theorem comap_map_center_eq_center_of_isPullback {W Y : Scheme.{u}} (g : W ⟶ Y) [AlgebraicGeometry.Flat g]
     [AlgebraicGeometry.QuasiCompact g] (t : SequenceOfBlowups W) (n : ℕ) {X : Scheme.{u}} (π : X ⟶ Y)
@@ -81,8 +77,8 @@ theorem comap_map_center_eq_center_of_isPullback {W Y : Scheme.{u}} (g : W ⟶ Y
   rw [Scheme.IdealSheafData.comap_comp]
   exact hcenter
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The original stage transition blows up the original center, which is the pullback of the image center by hypothesis. The canonical blowup of the image center pulls back along the flat comparison map to a blowup of that same original center. By the universal property, the two blowups are isomorphic over the stage. The comparison map furnished by this identification has the stated commuting equation and pullback square.
 -/
 theorem exists_isPullback_blowup_proj_map_center {W X : Scheme.{u}} {t : SequenceOfBlowups W} {n : ℕ}
     (hn : n < t.length) {γ : t.schemeAt n ⟶ X} (hflat : AlgebraicGeometry.Flat γ)
@@ -102,8 +98,8 @@ def toBlowupOfMapCenter {W X : Scheme.{u}} {t : SequenceOfBlowups W} {n : ℕ}
     t.schemeAt (n + 1) ⟶ Blowup.blowup ((t.center n).map γ) :=
   (exists_isPullback_blowup_proj_map_center hn hflat hc).choose
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The comparison was chosen with a commuting square over the original stage. Its composite with the descended blowup projection is the original blowup transition followed by the stage comparison.
 -/
 theorem toBlowupOfMapCenter_comp_proj {W X : Scheme.{u}} {t : SequenceOfBlowups W} {n : ℕ}
     (hn : n < t.length) {γ : t.schemeAt n ⟶ X} (hflat : AlgebraicGeometry.Flat γ)
@@ -111,8 +107,8 @@ theorem toBlowupOfMapCenter_comp_proj {W X : Scheme.{u}} {t : SequenceOfBlowups 
     toBlowupOfMapCenter hn hflat hc ≫ Blowup.blowup.proj ((t.center n).map γ) = t.transitionMapSucc n ≫ γ :=
   (exists_isPullback_blowup_proj_map_center hn hflat hc).choose_spec.1
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The comparison map was chosen to exhibit the original blowup as the pullback of the image-center blowup along the stage comparison. The asserted pullback square is that property.
 -/
 theorem isPullback_toBlowupOfMapCenter {W X : Scheme.{u}} {t : SequenceOfBlowups W} {n : ℕ}
     (hn : n < t.length) {γ : t.schemeAt n ⟶ X} (hflat : AlgebraicGeometry.Flat γ)
@@ -121,8 +117,8 @@ theorem isPullback_toBlowupOfMapCenter {W X : Scheme.{u}} {t : SequenceOfBlowups
       (Blowup.blowup.proj ((t.center n).map γ)) γ :=
   (exists_isPullback_blowup_proj_map_center hn hflat hc).choose_spec.2
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+Paste the pullback square comparing the blowups with the earlier pullback square comparing their bases. The resulting maps to the original and new bases are the successor projections, because each transition followed by the preceding projection equals the successor projection. Hence the pasted square is the asserted one.
 -/
 theorem isPullback_toBlowupOfMapCenter_projectionToBase {W Y X : Scheme.{u}} (g : W ⟶ Y) (t : SequenceOfBlowups W)
     {n : ℕ} (hn : n < t.length) (π : X ⟶ Y) {γ : t.schemeAt n ⟶ X}
@@ -133,14 +129,8 @@ theorem isPullback_toBlowupOfMapCenter_projectionToBase {W Y X : Scheme.{u}} (g 
   have h := (isPullback_toBlowupOfMapCenter hn hflat hc).paste_vert hsq
   rwa [← t.projectionToBase_succ n] at h
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Compare the two overlap maps to the blowup of the descended center. Their composites with its projection coincide, since the overlap comparisons commute with the successor transitions and the preceding comparisons agree as maps to the descended stage. The descended center becomes locally generated by a non-zero-divisor on the blowup. It remains so after pulling back through the flat comparison to the local successor and then through the flat overlap projection. The uniqueness part of the blowup universal property therefore makes the two maps to the descended blowup equal.
 -/
 theorem toBlowupOfMapCenter_cocycle {W Y X : Scheme.{u}} (g : W ⟶ Y) [AlgebraicGeometry.Flat g]
     [AlgebraicGeometry.QuasiCompact g] (t : SequenceOfBlowups W) {n : ℕ} (hn : n < t.length) (π : X ⟶ Y)

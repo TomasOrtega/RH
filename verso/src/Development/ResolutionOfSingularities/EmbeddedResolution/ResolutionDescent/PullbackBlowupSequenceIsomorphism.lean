@@ -12,10 +12,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At stage zero compatibility with the projection is the initial compatibility. At a successor factor each projection through the preceding stage, use the commuting transition square, and apply the preceding projection equality. Induction proves compatibility with all projections.
 -/
 private theorem iso_hom_comp_projectionToBase {X' : Scheme.{u}} {s' s'' : SequenceOfBlowups X'}
     (ε : ∀ i : ℕ, i ≤ s'.length → (s'.schemeAt i ≅ s''.schemeAt i))
@@ -39,8 +37,8 @@ private def pullbackProjectionToBaseIsoOfEq {X X' : Scheme.{u}} (φ : X' ⟶ X) 
     Limits.pullback φ (s.projectionToBase a) ≅ Limits.pullback φ (s.projectionToBase b) :=
   eqToIso (by rw [h])
 
-/- English proof (translation)
-Substitute using the available equality. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Identify the equal stage indices. The resulting pullbacks coincide and the comparison isomorphism is the identity, so it preserves the first projection.
 -/
 private theorem pullbackIsoOfEq_hom_fst {X X' : Scheme.{u}} (φ : X' ⟶ X) (s : SequenceOfBlowups X)
     {a b : ℕ} (h : a = b) :
@@ -49,8 +47,8 @@ private theorem pullbackIsoOfEq_hom_fst {X X' : Scheme.{u}} (φ : X' ⟶ X) (s :
   subst h
   simp [pullbackProjectionToBaseIsoOfEq]
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Identify each pair of equal stage indices. The comparison isomorphisms become identities, and the two order proofs determine the same transition. Both sides reduce to that transition.
 -/
 private theorem pullbackIsoOfEq_hom_comp_pullbackTransitionMap {X X' : Scheme.{u}} (φ : X' ⟶ X)
     (s : SequenceOfBlowups X) {a b a' b' : ℕ} (ha : a = a') (hb : b = b') (hab : a ≤ b) (hab' : a' ≤ b') :
@@ -62,8 +60,8 @@ private theorem pullbackIsoOfEq_hom_comp_pullbackTransitionMap {X X' : Scheme.{u
   subst hpr
   simp [pullbackProjectionToBaseIsoOfEq]
 
-/- English proof (translation)
-Substitute using the available equality. Simplify using the standard rewrite rules.
+/- English proof (authored)
+After identifying the stage indices, the centers and second projections coincide and the comparison isomorphism is the identity. Both sides pull back the same center along the same map.
 -/
 private theorem comap_pullbackIsoOfEq {X X' : Scheme.{u}} (φ : X' ⟶ X) (s : SequenceOfBlowups X) {a b : ℕ}
     (h : a = b) {W : Scheme.{u}} (g : W ⟶ Limits.pullback φ (s.projectionToBase a)) :
@@ -72,16 +70,8 @@ private theorem comap_pullbackIsoOfEq {X X' : Scheme.{u}} (φ : X' ⟶ X) (s : S
   subst h
   simp [pullbackProjectionToBaseIsoOfEq]
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
-
-Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Induct strongly on the common index. If the first value were greater than the second value, the second value would occur in the first enumeration at a strictly earlier index by strict growth and equality of the enumerated subsets. At that earlier index the induction hypothesis bounds the first value by the second enumeration’s value there. Strict growth of the second enumeration makes this earlier value smaller than its present value, a contradiction.
 -/
 private theorem strictMono_enumeration_le {n m L : ℕ} {r q : ℕ → ℕ} {P : ℕ → Prop}
     (hr2 : ∀ i j : ℕ, j ≤ n → i < j → r i < r j)
@@ -114,16 +104,8 @@ private theorem strictMono_enumeration_le {n m L : ℕ} {r q : ℕ → ℕ} {P :
   intro i hin him
   exact main (i + 1) i (Nat.lt_succ_self i) hin him
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
-
-It suffices to derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Use linear arithmetic over natural numbers and integers. It suffices to derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The comparison inequality in both directions makes the enumerations equal at every index before both endpoints. If the endpoints differed, the longer enumeration would have a value at the shorter endpoint that must occur at an earlier index of the shorter enumeration. Equality on earlier indices and strict growth would make it strictly smaller than itself. Thus the lengths agree. At their common final index both values equal the prescribed endpoint, giving full equality.
 -/
 private theorem strictMono_enumeration_unique {n m L : ℕ} {r q : ℕ → ℕ} {P : ℕ → Prop}
     (hr1 : ∀ i, i < n → r i < L)
@@ -162,18 +144,8 @@ private theorem strictMono_enumeration_unique {n m L : ℕ} {r q : ℕ → ℕ} 
 
 namespace IsPullbackBlowupSequence
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Keep the retained indices and compose the old pullback comparisons with the inverse of the stage isomorphisms to the new sequence. The lengths are equal, so the indexing and retention statements still hold. The inverse isomorphisms commute with projections to the base and with the transitions, giving the new comparison equations. The center identity follows by pulling the original center equality back along the inverse isomorphism and using the original isomorphism’s center compatibility.
 -/
 theorem of_isomorphic {X X' : Scheme.{u}} {φ : X' ⟶ X} {s : SequenceOfBlowups X} {s' s'' : SequenceOfBlowups X'}
     (h : IsPullbackBlowupSequence φ s' s) (e : s'.Isomorphic s'') : IsPullbackBlowupSequence φ s'' s := by
@@ -208,18 +180,8 @@ theorem of_isomorphic {X X' : Scheme.{u}} {φ : X' ⟶ X} {s : SequenceOfBlowups
     rw [Scheme.IdealSheafData.comap_comp, ← h1, ← h2, ← Scheme.IdealSheafData.comap_comp,
       Iso.inv_hom_id, Scheme.IdealSheafData.comap_id]
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The retained-index functions are strictly increasing enumerations of the same indices with nonempty pulled-back centers and have the same terminal value. Hence the lengths and all the retained indices agree. At each stage map the first sequence to the canonical pullback, identify the pullbacks for the equal indices, and then use the inverse comparison to the second sequence. The first projection equations give compatibility at zero. The transition equations agree because the transport between equal stage indices commutes with pullback transitions. The center pullback formulas similarly identify the centers under the stage isomorphisms. These facts give an isomorphism of sequences.
 -/
 theorem isomorphic {X X' : Scheme.{u}} {φ : X' ⟶ X} {s : SequenceOfBlowups X} {s' s'' : SequenceOfBlowups X'}
     (h : IsPullbackBlowupSequence φ s' s) (h' : IsPullbackBlowupSequence φ s'' s) : s'.Isomorphic s'' := by

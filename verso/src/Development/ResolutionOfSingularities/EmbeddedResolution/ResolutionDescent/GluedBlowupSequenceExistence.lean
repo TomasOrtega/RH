@@ -18,10 +18,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Base change the sequence along each projection from the self-overlap, then to the covering scheme of that overlap. Each of the resulting sequences is a strict pullback along the corresponding composite. The given comparison sequence is also such a strict pullback in both cases, so uniqueness identifies the two sequences on the cover. Faithfully flat descent of sequence isomorphisms gives an isomorphism on the overlap itself. The descent construction for that overlap isomorphism then gives a sequence over the base.
 -/
 private theorem exists_isStrictPullback_of_pullback_cover {Y W V : Scheme.{u}} (g : W ⟶ Y) [AlgebraicGeometry.Flat g]
     [AlgebraicGeometry.QuasiCompact g] (r : V ⟶ pullback g g) [AlgebraicGeometry.Flat r]
@@ -46,8 +44,8 @@ private theorem exists_isStrictPullback_of_pullback_cover {Y W V : Scheme.{u}} (
   exact exists_isStrictPullback_of_isomorphic_baseChange g t
     (IsStrictPullbackBlowupSeq.isomorphic_of_isomorphic hAr hCr (e1.symm.trans e2))
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Form the base change of the target sequence first along the given flat map and then to the flat surjective cover. Over the cover this is a strict pullback of the target sequence, as is the given comparison sequence. Uniqueness identifies these two sequences over the cover. Since the comparison sequence is also a strict pullback of the proposed intermediate sequence, descent of isomorphisms identifies that intermediate sequence with the base-changed target sequence. Transfer the strict pullback comparison across this isomorphism.
 -/
 private theorem isStrictPullback_of_comp_flat_surjective {X X' V : Scheme.{u}} (φ : X' ⟶ X)
     [AlgebraicGeometry.Flat φ] (α : V ⟶ X') [AlgebraicGeometry.Flat α]
@@ -60,24 +58,8 @@ private theorem isStrictPullback_of_comp_flat_surjective {X X' V : Scheme.{u}} (
   have e : u.Isomorphic ((B.baseChange φ).baseChange α) := h2.isomorphic (hbcα.comp hbc)
   exact hbc.of_isomorphic_pullback (IsStrictPullbackBlowupSeq.isomorphic_of_isomorphic h1 hbcα e).symm
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Choose a finite affine open cover and take its disjoint union as a surjective affine étale cover. Take a surjective affine étale cover of the self-overlap. Both composite maps from this overlap cover to the first cover are surjective and étale, so the affine rule gives strict pullback comparisons for both. The overlap descent theorem therefore constructs a sequence on the original scheme. Its centers are nonunit because the centers on the original affine cover are nonunit. For any other surjective affine étale cover, choose a surjective affine étale cover of its overlap with the first cover. The affine rule on this common cover is the strict pullback of the rule on each cover. Along the first route it is therefore the strict pullback of the descended sequence. The two maps to the original scheme agree by the pullback square. Descending along the cover of the other chart shows that its sequence is the strict pullback of the descended sequence as well.
 -/
 theorem existsGluedBlowupSequence_of_center_ne_top (R : AffineResolutionRule.{u})
     (hR : ∀ (k : Type u) [Field k] [CharZero k] (Y : Scheme.{u})

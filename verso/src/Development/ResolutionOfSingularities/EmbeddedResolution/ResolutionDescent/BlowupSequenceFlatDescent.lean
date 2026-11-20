@@ -16,8 +16,8 @@ namespace FunctorialResolution.EmbeddedResolution
 
 variable {W Y : Scheme.{u}}
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The projection in the pullback is the base change of the opposite flat morphism. Flatness is preserved by base change.
 -/
 private theorem flat_of_isPullback_of_flat {X₁ X₂ X₃ X₄ : Scheme.{u}} {p : X₁ ⟶ X₂} {q : X₁ ⟶ X₃}
     {f : X₂ ⟶ X₄} {h : X₃ ⟶ X₄} (sq : IsPullback p q f h)
@@ -25,8 +25,8 @@ private theorem flat_of_isPullback_of_flat {X₁ X₂ X₃ X₄ : Scheme.{u}} {p
   MorphismProperty.IsStableUnderBaseChange.of_isPullback
     (P := @AlgebraicGeometry.Flat) sq.flip hh
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The projection is a base change of the given surjective morphism. For any point in its target, choose a point of the other scheme with the same image in the common base. The two points lift to the scheme pullback, proving surjectivity.
 -/
 private theorem surjective_of_isPullback {X₁ X₂ X₃ X₄ : Scheme.{u}} {p : X₁ ⟶ X₂} {q : X₁ ⟶ X₃}
     {f : X₂ ⟶ X₄} {h : X₃ ⟶ X₄} (sq : IsPullback p q f h)
@@ -34,12 +34,8 @@ private theorem surjective_of_isPullback {X₁ X₂ X₃ X₄ : Scheme.{u}} {p :
   MorphismProperty.IsStableUnderBaseChange.of_isPullback
     (P := @AlgebraicGeometry.Surjective) sq.flip hh
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Supply the required witnesses or components.
+/- English proof (authored)
+At zero the comparison square is a pullback because the two stage-zero structure maps are isomorphisms and the square commutes. The comparison is thus a base change of the flat surjective cover. At a successor the stage comparison is a base change of the previous comparison by the given pullback square. Induction transfers flatness and surjectivity at each step.
 -/
 theorem flat_and_surjective_of_isPullback_blowupMorphism (g : W ⟶ Y) [AlgebraicGeometry.Flat g]
     [AlgebraicGeometry.Surjective g] (t : SequenceOfBlowups W) (s : SequenceOfBlowups Y) (L : ℕ)
@@ -91,10 +87,8 @@ structure BlowupDescentData (g : W ⟶ Y) (t₁ t₂ : SequenceOfBlowups W) (s�
   step_φ : ∀ i : ℕ, ∀ hi : i < L,
     (φ (i + 1) hi).hom ≫ t₂.transitionMapSucc i = t₁.transitionMapSucc i ≫ (φ i hi.le).hom
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The proposed stage-zero isomorphism passes through the common base using the two initial identifications. After composing both sides with the second initial isomorphism, the two base-comparison equations give maps that agree by the initial local isomorphism’s compatibility. Cancelling the second initial isomorphism gives the claim.
 -/
 theorem comp_isoObjZero_trans_symm_eq {g : W ⟶ Y} {t₁ t₂ : SequenceOfBlowups W} {s₁ s₂ : SequenceOfBlowups Y} {L : ℕ}
     {γ₁ : ∀ i : ℕ, i ≤ L → (t₁.schemeAt i ⟶ s₁.schemeAt i)}
@@ -113,8 +107,8 @@ theorem comp_isoObjZero_trans_symm_eq {g : W ⟶ Y} {t₁ t₂ : SequenceOfBlowu
     rw [h1, h2, ← Category.assoc, h3]
   exact (cancel_mono s₂.isoZero.hom).mp key
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Pull the two ambient center ideals back along the first stage comparison. The commuting comparison square identifies the pullback through the proposed base isomorphism with the pullback through the second stage comparison and local isomorphism. Each local center is the pullback of its base center, and the local isomorphism identifies them. The resulting equality after pullback descends because the first comparison is flat and surjective.
 -/
 theorem CompatibleBaseIsoAt.center_comap_eq {g : W ⟶ Y} {t₁ t₂ : SequenceOfBlowups W} {s₁ s₂ : SequenceOfBlowups Y}
     {L : ℕ}
@@ -131,8 +125,8 @@ theorem CompatibleBaseIsoAt.center_comap_eq {g : W ⟶ Y} {t₁ t₂ : SequenceO
     ← hd.center_t₂ i hi, hd.center_φ i hi]
   exact hd.center_t₁ i hi
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Compose the second blowup with the inverse of the current base isomorphism. This presents it as a blowup over the first base stage, along the pullback of its center. That pulled-back center is the first center by the descended equality. The uniqueness of the blowup along a given center yields an isomorphism of the two successor schemes over the first stage.
 -/
 theorem CompatibleBaseIsoAt.exists_iso_succ_blowupMorphism_comm {g : W ⟶ Y} {t₁ t₂ : SequenceOfBlowups W} {s₁ s₂ : SequenceOfBlowups Y}
     {L : ℕ}
@@ -148,8 +142,8 @@ theorem CompatibleBaseIsoAt.exists_iso_succ_blowupMorphism_comm {g : W ⟶ Y} {t
   rw [CompatibleBaseIsoAt.center_comap_eq hd hi st] at h2
   exact (hd.isBlowup_s₁ i hi).exists_iso h2
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Compose the given equation with the forward base isomorphism. It cancels the inverse base isomorphism on the left and gives the desired commuting square.
 -/
 theorem CompatibleBaseIsoAt.blowupMorphism_square_comm {t₁ t₂ : SequenceOfBlowups W} {s₁ s₂ : SequenceOfBlowups Y}
     {L : ℕ}
@@ -166,8 +160,8 @@ theorem CompatibleBaseIsoAt.blowupMorphism_square_comm {t₁ t₂ : SequenceOfBl
 private def isoFamilyOfZero {A B : ℕ → Scheme.{u}} (x : A 0 ≅ B 0) (i : ℕ) (hi : i ≤ 0) : A i ≅ B i :=
   Eq.mpr (congrArg (fun j : ℕ => (A j ≅ B j)) (Nat.le_zero.mp hi)) x
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The initial isomorphism family is defined by transporting the given isomorphism along the index equality with zero. At index zero that transport is the identity.
 -/
 private theorem isoFamilyOfZero_zero {A B : ℕ → Scheme.{u}} (x : A 0 ≅ B 0) {hi : (0 : ℕ) ≤ 0} :
     isoFamilyOfZero x 0 hi = x := rfl
@@ -178,36 +172,22 @@ private def extendIsoFamilySucc {A B : ℕ → Scheme.{u}} (N : ℕ) (e : ∀ i 
   else Eq.mpr (congrArg (fun j : ℕ => (A j ≅ B j))
     (Nat.le_antisymm hi (Nat.not_le.mp h))) x
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The enlarged family uses the previous family at any index at or below the previous endpoint, by the first case of its definition.
 -/
 private theorem extendIsoFamilySucc_of_le {A B : ℕ → Scheme.{u}} (N : ℕ)
     (e : ∀ i : ℕ, i ≤ N → (A i ≅ B i)) (x : A (N + 1) ≅ B (N + 1)) {i : ℕ} {hi : i ≤ N + 1}
     (h : i ≤ N) : extendIsoFamilySucc N e x i hi = e i h := dif_pos h
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The new endpoint is strictly greater than the previous endpoint. The definition therefore assigns it the newly specified isomorphism, with identity transport at that index.
 -/
 private theorem extendIsoFamilySucc_self {A B : ℕ → Scheme.{u}} (N : ℕ)
     (e : ∀ i : ℕ, i ≤ N → (A i ≅ B i)) (x : A (N + 1) ≅ B (N + 1)) {hi : N + 1 ≤ N + 1} :
     extendIsoFamilySucc N e x (N + 1) hi = x := dif_neg (Nat.not_succ_le_self N)
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the length of the initial segment. At zero, the base-stage isomorphism passes through the common base and satisfies the chart comparison by the stage-zero equation. For a successor, the previous stage isomorphism already agrees with the local one. Faithfully flat ideal descent identifies the two center ideals there. The two blowups along these corresponding centers then have a successor isomorphism commuting with the transition maps. Keep all earlier isomorphisms. To check the new chart compatibility, compare the two maps from the local successor to the second base successor after projecting to the preceding base stage. The transition squares and the local isomorphism show these composites agree. The pulled-back center along their common composite is the local center pulled back to its blowup, so it is locally generated by a non-zero-divisor. Uniqueness of the blowup lift gives equality of the two maps, completing the induction.
 -/
 private theorem exists_compatible_isos_of_le {g : W ⟶ Y} {t₁ t₂ : SequenceOfBlowups W} {s₁ s₂ : SequenceOfBlowups Y} {L : ℕ}
     {γ₁ : ∀ i : ℕ, i ≤ L → (t₁.schemeAt i ⟶ s₁.schemeAt i)}
@@ -283,12 +263,8 @@ private theorem exists_compatible_isos_of_le {g : W ⟶ Y} {t₁ t₂ : Sequence
           exact (hd.isBlowup_t₁ N hNlt).1
         exact (hd.isBlowup_s₂ N hNlt).hom_ext_of_comp_eq hcart ha hb
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Strict pullback preserves lengths, and the local isomorphism matches the two local lengths, so the original lengths agree. The stagewise pullback squares make the comparisons flat and surjective. Together with the local isomorphism and its center compatibility, these supply the descent data for constructing compatible base-stage isomorphisms through the final stage. The construction gives the initial and transition equations. At each stage faithful flatness descends the center equation. These facts make the base sequences isomorphic.
 -/
 theorem IsStrictPullbackBlowupSeq.isomorphic_of_isomorphic {g : W ⟶ Y} [AlgebraicGeometry.Flat g]
     [AlgebraicGeometry.Surjective g] {t₁ t₂ : SequenceOfBlowups W} {s₁ s₂ : SequenceOfBlowups Y}

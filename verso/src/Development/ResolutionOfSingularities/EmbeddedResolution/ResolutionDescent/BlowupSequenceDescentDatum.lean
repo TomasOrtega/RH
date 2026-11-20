@@ -16,10 +16,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At stage zero the base-changed initial isomorphism is the first pullback projection. At a successor, the projection to the new base factors through the previous stage. By induction the preceding projection is the first pullback projection, and the pullback transition preserves that projection. This gives the formula at every stage.
 -/
 private theorem baseChange_projectionToBase_eq_fst {X X' : Scheme.{u}} (s : SequenceOfBlowups X)
     (φ : X' ⟶ X) [AlgebraicGeometry.Flat φ] (i : ℕ) :
@@ -157,10 +155,8 @@ private def descendedSequenceOfBlowups {W Y : Scheme.{u}} (g : W ⟶ Y) [Algebra
     rw [hmap]
     exact (descendedBlowupAt g t D i (descendedSchemeDataAt g t D i)).hblow hi
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Construct the descended sequence recursively from the given overlap data. It has the same length as the local sequence. At zero the descended object is the original base and the comparison is the local initial projection followed by the cover. At each successor the recursive blowup construction gives a pullback square with the local successor and identifies the local center with the pullback of the descended center. The tower uses exactly these successor maps. These facts are the required strict pullback comparison.
 -/
 private theorem exists_isStrictPullbackSequenceOfBlowups_of_descentDatum {W Y : Scheme.{u}} (g : W ⟶ Y)
     [AlgebraicGeometry.Flat g] [AlgebraicGeometry.QuasiCompact g] (t : SequenceOfBlowups W)
@@ -179,12 +175,8 @@ private theorem exists_isStrictPullbackSequenceOfBlowups_of_descentDatum {W Y : 
   · intro i hi
     exact (descendedBlowupAt g t D i (descendedSchemeDataAt g t D i)).hcen hi
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The two sequences over the self-overlap have the same stage objects as the two pullbacks used in the descent datum. The sequence isomorphism identifies their centers and commutes with all successor maps. It also commutes with projections to the overlap base, since it commutes at stage zero and with the transitions. Those projections are the first pullback projections. Thus the isomorphisms and their equations give the descent datum, from which the descended blowup sequence exists.
 -/
 theorem exists_isStrictPullback_of_isomorphic_baseChange {W Y : Scheme.{u}}
     (g : W ⟶ Y) [AlgebraicGeometry.Flat g] [AlgebraicGeometry.QuasiCompact g] (t : SequenceOfBlowups W)

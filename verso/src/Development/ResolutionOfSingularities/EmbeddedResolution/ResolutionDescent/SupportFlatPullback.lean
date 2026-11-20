@@ -8,31 +8,15 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+A flat ring map satisfies going down for prime ideals. On affine neighborhoods this lifts any generization of an image point to a generization of the given source point, so the scheme map is generalizing.
 -/
 private theorem generalizingMap_of_flat {X Y : Scheme.{u}} (f : X ⟶ Y) [AlgebraicGeometry.Flat f] :
     GeneralizingMap (fun x : ↥X => f x) :=
   AlgebraicGeometry.Flat.generalizingMap f
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Choose the generic point of the given component. The closure of the component’s image is the closure of the image generic point, by continuity and the presence of that point in the image. Every generization of the image generic point lifts to a generization of the original generic point. A component generic point has no distinct generization, since the closure of a generization is an irreducible set containing that component, which must coincide with it. Thus the image generic point has no distinct generization either. In a scheme an irreducible closed set has a generic point. Applying this to the closure of any irreducible set containing the image point’s closure proves maximality of that closure, making it a component.
 -/
 theorem closure_image_mem_irreducibleComponents_of_generalizingMap
     {X Y : Scheme.{u}} (f : X ⟶ Y) (hf : GeneralizingMap (fun x : ↥X => f x))
@@ -87,8 +71,8 @@ theorem closure_image_mem_irreducibleComponents_of_generalizingMap
   rw [← h2, hz']
   exact subset_closure hw
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
+/- English proof (authored)
+An ideal sheaf pulled back to a source point is proper in the local ring exactly when the original ideal is proper at its image. Accordingly its support is the inverse image of the original support.
 -/
 theorem support_comap {X Y : Scheme.{u}} (f : X ⟶ Y) (I : Y.IdealSheafData) :
     ((I.comap f).support : Set ↥X) = (fun x : ↥X => f x) ⁻¹' (I.support : Set ↥Y) := by
@@ -97,10 +81,8 @@ theorem support_comap {X Y : Scheme.{u}} (f : X ⟶ Y) (I : Y.IdealSheafData) :
 
 namespace NonzeroOnComponents
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+If a source component were contained in the pullback support, its image would lie in the original support. This support is closed, so it would contain the closure of the image. The generalizing-map result makes that closure an irreducible component of the target, contradicting nonvanishing on components.
 -/
 theorem comap_of_generalizingMap {X Y : Scheme.{u}} {I : Y.IdealSheafData}
     (hI : NonzeroOnComponents I) (f : X ⟶ Y)
@@ -115,16 +97,16 @@ theorem comap_of_generalizingMap {X Y : Scheme.{u}} {I : Y.IdealSheafData}
     exact hx
   exact hI _ (closure_image_mem_irreducibleComponents_of_generalizingMap f hf hT) hsub'
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+A flat morphism is generalizing. The result for generalizing maps therefore applies to the given ideal under this flat pullback.
 -/
 theorem comap_of_flat {X Y : Scheme.{u}} {I : Y.IdealSheafData}
     (hI : NonzeroOnComponents I) (f : X ⟶ Y) [AlgebraicGeometry.Flat f] :
     NonzeroOnComponents (I.comap f) :=
   hI.comap_of_generalizingMap f (generalizingMap_of_flat f)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+An open immersion is generalizing because every generization of a point of an open set still lies in the open. Apply the nonvanishing result for generalizing maps to this immersion.
 -/
 theorem comap_of_isOpenImmersion {X Y : Scheme.{u}} {I : Y.IdealSheafData}
     (hI : NonzeroOnComponents I) (f : X ⟶ Y) [AlgebraicGeometry.IsOpenImmersion f] :
@@ -133,8 +115,8 @@ theorem comap_of_isOpenImmersion {X Y : Scheme.{u}} {I : Y.IdealSheafData}
 
 end NonzeroOnComponents
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Flatness makes the map generalizing. The closure of the image of a component under such a map is a target component by the component-tracking theorem.
 -/
 theorem closure_image_mem_irreducibleComponents_of_flat
     {X Y : Scheme.{u}} (f : X ⟶ Y) [AlgebraicGeometry.Flat f]

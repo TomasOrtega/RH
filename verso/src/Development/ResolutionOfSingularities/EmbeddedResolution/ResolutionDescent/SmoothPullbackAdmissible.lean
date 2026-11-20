@@ -17,10 +17,8 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace MarkedIdealWithBoundary
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+The new structural map is the composite of the smooth pullback map with the original smooth structural map. It is smooth and locally of finite type and is quasi-compact by hypothesis. The pullback map is flat, so the ideal remains nonzero on every component. Smooth pullback preserves strict normal crossings for the boundary, and the original positive marking and characteristic-zero field remain the same. Hence the new marked ideal is admissible.
 -/
 theorem isAdmissible_pullbackAlong_of_smooth (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (Y : Scheme.{u})
     (q : Y ⟶ Spec (CommRingCat.of T.base)) (h : Y ⟶ T.scheme)

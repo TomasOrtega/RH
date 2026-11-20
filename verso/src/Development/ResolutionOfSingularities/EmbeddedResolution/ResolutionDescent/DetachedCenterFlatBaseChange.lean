@@ -20,16 +20,14 @@ variable {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}} [AlgebraicGeometry
   {pY' : Y' ⟶ Spec (CommRingCat.of k')} [AlgebraicGeometry.LocallyOfFiniteType pY']
   {S : EmbeddedBlowupSequence k Y pY} {S' : EmbeddedBlowupSequence k' Y' pY'}
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The image ideal is defined as the kernel of the map from the closed subscheme of the ideal to the target.
 -/
 private theorem map_eq_ker_subschemeι_comp {X Y : Scheme.{u}} (f : X ⟶ Y) (I : X.IdealSheafData) :
     I.map f = Scheme.Hom.ker (I.subschemeι ≫ f) := rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The new ambient center is the pullback of the old one. Pull it back again to the new strict transform. The square of strict-transform inclusions and comparison maps commutes, so this composite pullback equals pulling the old center first to the old strict transform and then along the strict-transform comparison.
 -/
 theorem comapAmbientCenter_eq_comap (F : ChartFlatBaseChange S S') (j : ℕ) (hj : j < S'.length) :
     S'.comapAmbientCenter j =
@@ -49,10 +47,8 @@ theorem comapAmbientCenter_eq_comap (F : ChartFlatBaseChange S S') (j : ℕ) (hj
           (F.strictTransformComparison j hj.le) := by simp [Scheme.IdealSheafData.comap_comp]
     _ = (S.comapAmbientCenter (F.reindex j)).comap (F.strictTransformComparison j hj.le) := rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The center off the detached locus is the image ideal of the ambient center restricted to the complement of that locus. The new complement is the inverse image of the old one. In the resulting open-restriction pullback square, the old open inclusion is quasi-compact and the strict-transform comparison is flat. Hence image of the restricted ideal commutes with this pullback. The commuting square of ambient and strict-transform comparisons identifies the new restricted ideal with the pullback of the old restricted ideal. Substituting gives equality of the centers off the detached loci.
 -/
 theorem centerOffDetached_eq_comap (F : ChartFlatBaseChange S S') (j : ℕ) (hj : j < S'.length) :
     S'.centerOffDetached j =

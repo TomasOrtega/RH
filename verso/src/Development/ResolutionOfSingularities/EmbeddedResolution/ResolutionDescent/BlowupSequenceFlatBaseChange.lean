@@ -20,8 +20,8 @@ namespace SequenceOfBlowups
 variable {X : Scheme.{u}}
 
 @[simp]
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The order arrow from a stage to itself is an identity. Taking its opposite and applying the tower functor preserves the identity, so the stage transition is the identity.
 -/
 theorem transitionMap_self_eq_id (s : SequenceOfBlowups X) {i : ℕ} (h : i ≤ i) :
     s.transitionMap h = 𝟙 (s.schemeAt i) := by
@@ -32,8 +32,8 @@ instance instIsIsoStructMapZero (s : SequenceOfBlowups X) : IsIso (s.projectionT
   infer_instance
 
 @[reassoc, simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+By the defining projection equation of the pullback transition, its first projection equals the first projection of the later pullback. This expresses that the new base is held fixed.
 -/
 theorem pullbackTransitionMap_comp_fst (s : SequenceOfBlowups X) {X' : Scheme.{u}} (φ : X' ⟶ X) {i i' : ℕ}
     (h : i ≤ i') :
@@ -41,8 +41,8 @@ theorem pullbackTransitionMap_comp_fst (s : SequenceOfBlowups X) {X' : Scheme.{u
   s.pullbackTransitionMap_fst φ h
 
 @[reassoc, simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The second projection of the pullback transition is the projection to the original later stage followed by the original transition to the earlier stage. This is its other defining projection equation.
 -/
 theorem pullbackTransitionMap_comp_snd (s : SequenceOfBlowups X) {X' : Scheme.{u}} (φ : X' ⟶ X) {i i' : ℕ}
     (h : i ≤ i') :
@@ -50,8 +50,8 @@ theorem pullbackTransitionMap_comp_snd (s : SequenceOfBlowups X) {X' : Scheme.{u
       pullback.snd φ (s.projectionToBase i') ≫ s.transitionMap h :=
   s.pullbackTransitionMap_snd φ h
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Compare the two maps by their projections from the pullback. On the new base they give the same projection. On the original stage the transition from that stage to itself is the identity, so the second projections also agree. Uniqueness of pullback maps gives the identity.
 -/
 private theorem pullbackTransitionMap_refl (s : SequenceOfBlowups X) {X' : Scheme.{u}} (φ : X' ⟶ X)
     {a : ℕ} (h : a ≤ a) :
@@ -60,8 +60,8 @@ private theorem pullbackTransitionMap_refl (s : SequenceOfBlowups X) {X' : Schem
   · rw [s.pullbackTransitionMap_fst, Category.id_comp]
   · rw [s.pullbackTransitionMap_snd, s.transitionMap_self_eq_id, Category.comp_id, Category.id_comp]
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Both the direct map and the composite preserve the projection to the new base. Along the other projection, the composite is the later projection followed by the two original transitions. By functoriality their composite is the direct original transition, so the second projections agree as well. Pullback extensionality gives equality.
 -/
 private theorem pullbackTransitionMap_eq_comp (s : SequenceOfBlowups X) {X' : Scheme.{u}} (φ : X' ⟶ X)
     {a b c : ℕ} (hba : b ≤ a) (hcb : c ≤ b) (hca : c ≤ a) :
@@ -79,24 +79,22 @@ def baseChangeTower (s : SequenceOfBlowups X) {X' : Scheme.{u}} (φ : X' ⟶ X) 
     pullbackTransitionMap_eq_comp s φ (leOfHom f.unop) (leOfHom g.unop) (leOfHom (f ≫ g).unop)
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The base-changed tower is defined at each stage by pulling the original projection to the base back along the given base map.
 -/
 theorem baseChangeTower_obj (s : SequenceOfBlowups X) {X' : Scheme.{u}} (φ : X' ⟶ X) (i : ℕ) :
     (s.baseChangeTower φ).obj (op i) = pullback φ (s.projectionToBase i) := rfl
 
 @[simp]
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The base-changed tower assigns the induced pullback transition to the opposite of the order arrow between the two stages. This is the stated map by definition.
 -/
 theorem baseChangeTower_map (s : SequenceOfBlowups X) {X' : Scheme.{u}} (φ : X' ⟶ X) {i i' : ℕ}
     (h : i ≤ i') :
     (s.baseChangeTower φ).map (homOfLE h).op = s.pullbackTransitionMap φ h := rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The original projection at stage zero is an isomorphism. Construct an inverse to the first projection by lifting the identity on the new base and the new base map followed by the inverse initial projection. The pulled-back square commutes, so the lift exists. Its composite with the first projection is the identity, and the other composite is the identity because both its pullback projections agree with those of the identity.
 -/
 theorem isIso_pullback_fst_projectionToBase_zero (s : SequenceOfBlowups X) {X' : Scheme.{u}} (φ : X' ⟶ X) :
     IsIso (pullback.fst φ (s.projectionToBase 0)) := by
@@ -118,16 +116,14 @@ def baseChangeTowerObjZeroIso (s : SequenceOfBlowups X) {X' : Scheme.{u}} (φ : 
   @asIso Scheme.{u} _ _ _ (pullback.fst φ (s.projectionToBase 0)) (s.isIso_pullback_fst_projectionToBase_zero φ)
 
 @[simp]
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The initial isomorphism of the base-changed tower is the isomorphism given by the first projection from the pullback at stage zero. Its forward map is that projection.
 -/
 theorem baseChangeTowerObjZeroIso_hom (s : SequenceOfBlowups X) {X' : Scheme.{u}} (φ : X' ⟶ X) :
     (s.baseChangeTowerObjZeroIso φ).hom = pullback.fst φ (s.projectionToBase 0) := rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The pullbacks at both stages are formed over the same new base. The square formed by the pulled-back transition and the two projections to the original stages commutes by the second projection equation. Pasting it with the pullback square at the earlier stage gives the pullback square at the later stage, because the projection from the successor factors through the earlier one. The outer square and the earlier square are pullbacks, so the transition square is a pullback.
 -/
 theorem isPullback_pullbackTransitionMap (s : SequenceOfBlowups X) {X' : Scheme.{u}} (φ : X' ⟶ X) (i : ℕ) :
     IsPullback (pullback.snd φ (s.projectionToBase (i + 1))) (s.pullbackTransitionMap φ (Nat.le_succ i))
@@ -148,8 +144,8 @@ theorem isPullback_pullbackTransitionMap (s : SequenceOfBlowups X) {X' : Scheme.
     exact (IsPullback.of_hasPullback φ (s.projectionToBase (i + 1))).flip
   exact sq.of_bot hsnd t
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The original successor map is the blowup of the original center. Its pulled-back successor square is a pullback, and the projection to the original earlier stage is flat as a base change of the given flat map. Flat base change of blowups gives the claim for the pulled-back center.
 -/
 private theorem isBlowupAlongIdealSheaf_baseChangeTower_map (s : SequenceOfBlowups X) {X' : Scheme.{u}} (φ : X' ⟶ X)
     [AlgebraicGeometry.Flat φ] (i : ℕ) (hi : i < s.length) :
@@ -167,39 +163,39 @@ def baseChange (s : SequenceOfBlowups X) {X' : Scheme.{u}} (φ : X' ⟶ X) [Alge
   isBlowup i hi := isBlowupAlongIdealSheaf_baseChangeTower_map s φ i hi
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The base-changed sequence is assigned the original length when it is constructed.
 -/
 theorem baseChange_length (s : SequenceOfBlowups X) {X' : Scheme.{u}} (φ : X' ⟶ X)
     [AlgebraicGeometry.Flat φ] : (s.baseChange φ).length = s.length := rfl
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The scheme at this stage is the corresponding object of the base-changed tower, which is the pullback of the original projection to the base.
 -/
 theorem baseChange_schemeAt (s : SequenceOfBlowups X) {X' : Scheme.{u}} (φ : X' ⟶ X)
     [AlgebraicGeometry.Flat φ] (i : ℕ) :
     (s.baseChange φ).schemeAt i = pullback φ (s.projectionToBase i) := rfl
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+For the successor arrow the base-changed tower uses the induced pullback transition between the two consecutive stages.
 -/
 theorem baseChange_blowupMorphism (s : SequenceOfBlowups X) {X' : Scheme.{u}} (φ : X' ⟶ X)
     [AlgebraicGeometry.Flat φ] (i : ℕ) :
     (s.baseChange φ).transitionMapSucc i = s.pullbackTransitionMap φ (Nat.le_succ i) := rfl
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The initial isomorphism is the first projection from the base-changed stage zero, which is a pullback of the original initial isomorphism.
 -/
 theorem baseChange_isoObjZero_hom (s : SequenceOfBlowups X) {X' : Scheme.{u}} (φ : X' ⟶ X)
     [AlgebraicGeometry.Flat φ] :
     (s.baseChange φ).isoZero.hom = pullback.fst φ (s.projectionToBase 0) := rfl
 
 @[simp]
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The new center is defined by pulling the original center back along the second projection to the original stage.
 -/
 theorem baseChange_center (s : SequenceOfBlowups X) {X' : Scheme.{u}} (φ : X' ⟶ X)
     [AlgebraicGeometry.Flat φ] (i : ℕ) :
@@ -207,10 +203,8 @@ theorem baseChange_center (s : SequenceOfBlowups X) {X' : Scheme.{u}} (φ : X' �
 
 end SequenceOfBlowups
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The two lengths agree by construction. Take the second pullback projection to the original scheme as the comparison at every stage. At zero its compatibility with the initial maps is the pullback square. Every consecutive transition square is a pullback by the tower comparison, and every center is the pullback along the corresponding stage projection. These are exactly the strict pullback conditions.
 -/
 theorem isStrictPullbackSequenceOfBlowups_baseChange {X X' : Scheme.{u}} (s : SequenceOfBlowups X) (φ : X' ⟶ X)
     [AlgebraicGeometry.Flat φ] : IsStrictPullbackBlowupSeq φ (s.baseChange φ) s := by

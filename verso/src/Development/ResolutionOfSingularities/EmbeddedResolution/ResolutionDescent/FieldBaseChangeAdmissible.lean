@@ -17,10 +17,8 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace MarkedIdealWithBoundary
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+After extending the field, the ambient structural morphism is the base change of the original one. Smoothness, local finite type, and quasi-compactness are preserved by base change. The map back to the original scheme is flat, since it is pulled back from a field extension. Flat pullback preserves nonvanishing on components. The new field has characteristic zero, the marking is unchanged and remains positive, and the pulled-back boundary has strict normal crossings by the field base-change result. These are the admissibility conditions.
 -/
 theorem isAdmissible_baseChange (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (L : Type u) [Field L]
     [CharZero L] (f : T.base →+* L) : (T.baseChange L f).IsAdmissible := by

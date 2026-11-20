@@ -19,8 +19,8 @@ def pullbackIsoLastObj (d : LocalResolutionData k f s) (i : d.cover.I₀) :
     ((pullback s.lastStructMap (d.cover.f i) : Scheme.{u}) ≅ (d.seq i).lastObj) :=
   (pullbackSymmetry s.lastStructMap (d.cover.f i)).trans (d.lastObjIsoPullback i).symm
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The comparison isomorphism exchanges the pullback factors and then uses the inverse of the local chart’s identification with the pullback. Under that chart identification the local structural map is the first projection. After the exchange of factors this becomes the second projection of the stated pullback.
 -/
 theorem pullbackIsoLastObj_hom_lastStructMap (d : LocalResolutionData k f s) (i : d.cover.I₀) :
     (d.pullbackIsoLastObj i).hom ≫ (d.seq i).lastStructMap = pullback.snd s.lastStructMap (d.cover.f i) := by
@@ -29,10 +29,8 @@ theorem pullbackIsoLastObj_hom_lastStructMap (d : LocalResolutionData k f s) (i 
   rw [← d.lastObjIsoPullback_hom_fst i, Iso.inv_hom_id_assoc]
   exact pullbackSymmetry_hom_comp_fst _ _
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Properness can be checked on an open cover of the target. Over each chart the base-changed final morphism identifies with the local final structural map, up to the comparison isomorphism of sources. The local resolution makes that map proper. Properness on all charts gives global properness.
 -/
 theorem isProper_lastStructMap (d : LocalResolutionData k f s) : IsProper s.lastStructMap := by
   have key : ∀ i : d.cover.I₀, IsProper (d.seq i).lastStructMap := by

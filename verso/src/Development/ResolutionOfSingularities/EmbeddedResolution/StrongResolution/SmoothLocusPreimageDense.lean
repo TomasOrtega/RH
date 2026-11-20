@@ -21,10 +21,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Every point belongs to an irreducible component with a generic point. The generic point lies in the prescribed set by hypothesis, so the closure of that set contains the whole component and in particular the original point. Thus the set is dense.
 -/
 theorem dense_of_forall_mem_of_isGenericPoint {X : Type*} [TopologicalSpace X] [QuasiSober X]
     {V : Set X} (h : ∀ C ∈ irreducibleComponents X, ∀ η : X, IsGenericPoint η C → η ∈ V) :
@@ -39,10 +37,8 @@ theorem dense_of_forall_mem_of_isGenericPoint {X : Type*} [TopologicalSpace X] [
     exact mem_irreducibleComponent
   exact closure_mono (Set.singleton_subset_iff.mpr hmem) hx
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
-
-Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+In a Noetherian space a dense set meets each irreducible component. Choose a point of the chosen component in the dense open. This point lies in the closure of the component’s generic point. Since the open contains the point, it must also contain the generic point.
 -/
 theorem mem_of_isGenericPoint_of_isOpen_of_dense {X : Type*} [TopologicalSpace X]
     [TopologicalSpace.NoetherianSpace X] {U : Set X} (hUo : IsOpen U) (hUd : Dense U)
@@ -57,10 +53,8 @@ theorem mem_of_isGenericPoint_of_isOpen_of_dense {X : Type*} [TopologicalSpace X
   rw [Set.mem_singleton_iff] at hz
   exact hz ▸ hzU
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The image of the generic point lies in the closed image of the component, so its closure is contained there. Conversely, continuity sends the closure of the original generic point into the closure of its image. This gives the reverse containment and identifies the new generic point.
 -/
 theorem isGenericPoint_image_of_isClosed {X W : Type*} [TopologicalSpace X] [TopologicalSpace W]
     {f : X → W} (hf : Continuous f) {C : Set X} {η : X} (hη : IsGenericPoint η C)
@@ -79,16 +73,8 @@ theorem isGenericPoint_image_of_isClosed {X W : Type*} [TopologicalSpace X] [Top
     rw [← hη']
     exact hcont
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Choose one of the ambient components in the specified family containing the image of the given generic point. It lies in the range of the embedding, so its inverse image is closed and irreducible and contains the closure of the given generic point. Maximality of the source component makes this inverse image equal to it. Its image is consequently the chosen ambient component. By continuity and closedness, the image of the generic point is generic for that component.
 -/
 theorem exists_isGenericPoint_image_of_isClosedEmbedding {X W : Type*} [TopologicalSpace X]
     [TopologicalSpace W] {f : X → W} (hf : Topology.IsClosedEmbedding f) {F : Set (Set W)}
@@ -120,16 +106,8 @@ theorem exists_isGenericPoint_image_of_isClosedEmbedding {X W : Type*} [Topologi
     isGenericPoint_image_of_isClosed hf.continuous hη (by rw [himg]; exact hZcl)
   rwa [himg] at hgen
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
-
-Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+Take the closure of the image of the generic point. It is irreducible. If an irreducible set contains this closure, it meets the open image of the embedding. Its intersection with the open image is therefore dense in it. In the source, the closure of its inverse image is irreducible and contains the original component, so maximality makes that closure the original component. The intersection upstairs is consequently contained in the image of the original component, which by continuity lies in the closure of the image generic point. Density then forces the larger irreducible set into that same closure, proving maximality.
 -/
 theorem exists_isGenericPoint_image_of_isOpenEmbedding {X W : Type*} [TopologicalSpace X]
     [TopologicalSpace W] {f : X → W} (hf : Topology.IsOpenEmbedding f)
@@ -167,8 +145,8 @@ theorem exists_isGenericPoint_image_of_isOpenEmbedding {X W : Type*} [Topologica
   exact ⟨closure ({f η} : Set W),
     ⟨isIrreducible_singleton.closure, fun E hE hsub => hmax E hE hsub⟩, rfl⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At stage zero the discarded summand is empty, so inclusion of the strict-transform summand into the total space is an isomorphism. The total space is isomorphic to the original base at this stage. Their composite is the strict-transform map and is an isomorphism, hence an open immersion.
 -/
 theorem isOpenImmersion_strictTransformZeroToBase {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}}
     [AlgebraicGeometry.IsAffine Y] {pY : Y ⟶ Spec (CommRingCat.of k)}
@@ -182,10 +160,8 @@ theorem isOpenImmersion_strictTransformZeroToBase {k : Type u} [Field k] [CharZe
     infer_instance
   infer_instance
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+At stage zero the map to stage zero is the identity. At a successor, component tracking sends the given generic point to a generic point of a component at the previous stage. Induction sends that point to a generic point of a stage-zero component. The recursive projection agrees with this composite.
 -/
 private theorem exists_isGenericPoint_strictTransformToZero {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}}
     [AlgebraicGeometry.IsAffine Y] {pY : Y ⟶ Spec (CommRingCat.of k)}
@@ -209,12 +185,8 @@ private theorem exists_isGenericPoint_strictTransformToZero {k : Type u} [Field 
     obtain ⟨D, hD, hDgen⟩ := ih (le_of_lt hm) C' hC' ((S.strictTransformMap m).base η) hgen'
     exact ⟨D, hD, hDgen⟩
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+It suffices to show that every generic point of a discarded component maps to the smooth locus. The discarded scheme embeds as a closed union of strict-transform components, so the image of a discarded generic point is generic in a strict-transform component. Tracking the strict transforms back to zero gives a generic point there, and the stage-zero open immersion takes it to an ambient generic point of the original affine scheme. The smooth locus of this reduced scheme over a characteristic-zero field is dense and open, so it contains that generic point. The composite used here is the discarded scheme’s projection to the base. Hence the smooth-locus preimage contains all discarded generic points and is dense.
 -/
 theorem affineSmoothLocusPreimageDenseInDetached (A : PrincipalizationAlgorithm.{u}) (hemb : AffineEmbedsIntoAffineSpace.{u})
     (hsnc : NilIsStrictNormalCrossingsOnAffineSpace.{u}) (hsm : AffineSpaceIsSmooth.{u}) :

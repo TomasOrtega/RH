@@ -20,20 +20,16 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+At every stage before the end, the principalization sequence includes a proof that its center has strict normal crossings with the existing boundary. These are exactly the center conditions for the affine ambient sequence.
 -/
 private theorem centersHaveStrictNormalCrossingsWithBoundary {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}}
     [AlgebraicGeometry.IsAffine Y] {pY : Y ⟶ Spec (CommRingCat.of k)}
     [AlgebraicGeometry.LocallyOfFiniteType pY] (S : AffineSpacePrincipalizationData k Y pY) :
     S.CentersHaveStrictNormalCrossingsWithBoundary := fun i hi => S.principalizationSequence.center_snc i hi
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the stage. At zero the structure map factors through an isomorphism to the smooth ambient scheme. For the successor, the preceding ambient map is smooth by induction and the current center has strict normal crossings with the boundary. The blowup smoothness result therefore gives smoothness after this blowup. The structural map at the successor is precisely this composite.
 -/
 private theorem smooth_schemeAtToSpec {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}}
     [AlgebraicGeometry.IsAffine Y] {pY : Y ⟶ Spec (CommRingCat.of k)}
@@ -59,14 +55,8 @@ private theorem smooth_schemeAtToSpec {k : Type u} [Field k] [CharZero k] {Y : S
       rw [AffineSpacePrincipalizationData.schemeAtToSpec_def, SequenceOfBlowups.projectionToBase_succ, Category.assoc]
       exact hres
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At stage zero the boundary is empty and the ambient scheme is smooth, so it is in strict normal crossings position. At a successor the previous boundary has this property by induction, and the current center has strict normal crossings with it. On the Noetherian successor scheme the blowup result gives strict normal crossings for the strict transforms of the old boundary followed by the new exceptional divisor. This is the boundary list defined at that stage.
 -/
 private theorem boundaryInStrictNormalCrossingPosition {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}}
     [AlgebraicGeometry.IsAffine Y] {pY : Y ⟶ Spec (CommRingCat.of k)}
@@ -102,8 +92,8 @@ private theorem boundaryInStrictNormalCrossingPosition {k : Type u} [Field k] [C
         AffineSpacePrincipalizationData.boundary_def, S.principalizationSequence.boundary_succ n hlt]
       exact hres
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Construct the principalization data for the given affine scheme using the specified embedding and ambient hypotheses. Every center of these data has strict normal crossings with its boundary by the stagewise center condition.
 -/
 theorem affineCentersHaveStrictNormalCrossingsWithBoundary (A : PrincipalizationAlgorithm.{u}) (hemb : AffineEmbedsIntoAffineSpace.{u})
     (hsnc : NilIsStrictNormalCrossingsOnAffineSpace.{u}) (hsm : AffineSpaceIsSmooth.{u}) :
@@ -111,8 +101,8 @@ theorem affineCentersHaveStrictNormalCrossingsWithBoundary (A : Principalization
   intro k _ _ Y pY _ _ _ _
   exact centersHaveStrictNormalCrossingsWithBoundary (AffineSpacePrincipalizationData.ofAffine A hemb hsnc hsm k Y pY)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Use the chosen affine embedding and principalization data. The inductive smoothness result applies to their ambient structure maps at every stage within the sequence.
 -/
 theorem affineAllLevelsSmooth (A : PrincipalizationAlgorithm.{u}) (hemb : AffineEmbedsIntoAffineSpace.{u})
     (hsnc : NilIsStrictNormalCrossingsOnAffineSpace.{u}) (hsm : AffineSpaceIsSmooth.{u}) :
@@ -120,8 +110,8 @@ theorem affineAllLevelsSmooth (A : PrincipalizationAlgorithm.{u}) (hemb : Affine
   intro k _ _ Y pY _ _ _ _
   exact smooth_schemeAtToSpec (AffineSpacePrincipalizationData.ofAffine A hemb hsnc hsm k Y pY)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Construct the affine-space principalization data from the algorithm and the ambient hypotheses. The stagewise boundary result applies at every level of these data.
 -/
 theorem affineBoundaryInStrictNormalCrossingPosition (A : PrincipalizationAlgorithm.{u}) (hemb : AffineEmbedsIntoAffineSpace.{u})
     (hsnc : NilIsStrictNormalCrossingsOnAffineSpace.{u}) (hsm : AffineSpaceIsSmooth.{u}) :

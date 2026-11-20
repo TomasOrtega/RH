@@ -20,8 +20,8 @@ def IsStrongResolution (k : Type u) [Field k] (X : Scheme.{u})
   s.CentersLieOver ((smoothLocusComplement f : TopologicalSpace.Closeds X) : Set X) ∧
   IsStrictNormalCrossingsDivisor (reducedInverseImage s.lastStructMap (smoothLocusComplement f))
 
-/- English proof (translation)
-Unfold both sides to obtain the same proposition, which implies itself.
+/- English proof (authored)
+A strong resolution rule is defined by requiring its sequence on each quasi-compact reduced input over a characteristic-zero field to satisfy the six strong resolution conditions. Expanding the definition of a strong resolution at that input gives exactly the same conditions in the same order.
 -/
 theorem isStrongResolutionRule_iff (R : ResolutionRule.{u}) :
     IsStrongResolutionRule R ↔

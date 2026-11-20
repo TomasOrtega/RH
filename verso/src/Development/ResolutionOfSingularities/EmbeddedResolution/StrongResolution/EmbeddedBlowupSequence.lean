@@ -67,14 +67,14 @@ def strictTransformIdeal (i : ℕ) : (T.schemeAt i).IdealSheafData :=
     (Scheme.Hom.ker (T.emb ≫ T.ambientSeq.isoZero.inv))
     (fun j ih => Blowup.strictTransform (T.blowdown j) (T.ambientCenter j) ih) i
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The recursive strict-transform construction starts from the ideal of the original closed immersion transported into stage zero. This is the kernel of the original embedding followed by the inverse of the initial ambient isomorphism.
 -/
 @[simp] theorem strictTransformIdeal_zero :
     T.strictTransformIdeal 0 = Scheme.Hom.ker (T.emb ≫ T.ambientSeq.isoZero.inv) := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The recursive successor step takes the strict transform of the preceding ideal under the current blowdown, using the current center.
 -/
 @[simp] theorem strictTransformIdeal_succ (i : ℕ) :
     T.strictTransformIdeal (i + 1) =
@@ -84,15 +84,15 @@ abbrev strictTransform (i : ℕ) : Scheme.{u} := (T.strictTransformIdeal i).subs
 
 abbrev strictTransformι (i : ℕ) : T.strictTransform i ⟶ T.schemeAt i := (T.strictTransformIdeal i).subschemeι
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The total transform is cut out by the pulled-back ideal on the new ambient stage. Its open part away from the center defines the strict transform by scheme-theoretic closure. A section vanishing on the whole total transform vanishes on that open part, giving inclusion in the strict-transform ideal.
 -/
 theorem comap_strictTransformIdeal_le (i : ℕ) :
     (T.strictTransformIdeal i).comap (T.blowdown i) ≤ T.strictTransformIdeal (i + 1) :=
   Blowup.comap_le_strictTransform _ _ _
 
-/- English proof (translation)
-Establish an intermediate fact. Supply the required witnesses or components.
+/- English proof (authored)
+The strict-transform ideal contains the pullback of the preceding ideal. Thus the ambient blowdown restricted to the successor strict transform kills the preceding defining ideal. It factors through the preceding strict transform by the universal property of a closed immersion, giving the commuting square.
 -/
 theorem exists_strictTransformMap (i : ℕ) :
     ∃ f : T.strictTransform (i + 1) ⟶ T.strictTransform i,
@@ -105,8 +105,8 @@ theorem exists_strictTransformMap (i : ℕ) :
 
 def strictTransformMap (i : ℕ) : T.strictTransform (i + 1) ⟶ T.strictTransform i := (T.exists_strictTransformMap i).choose
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The strict-transform map was chosen as a factorization of the restriction of blowdown through the preceding strict-transform immersion. Its factorization equation is the asserted equality.
 -/
 theorem strictTransformMap_comp_strictTransformι (i : ℕ) :
     T.strictTransformMap i ≫ T.strictTransformι i = T.strictTransformι (i + 1) ≫ T.blowdown i :=
@@ -116,8 +116,8 @@ def detachedComponents (i : ℕ) : Set (Set ↥(T.strictTransform i)) :=
   {C | C ∈ irreducibleComponents ↥(T.strictTransform i) ∧
     (T.strictTransformι i).base '' C ⊆ ((T.ambientCenter i).support : Set ↥(T.schemeAt i))}
 
-/- English proof (translation)
-Unfold both sides to obtain the same proposition, which implies itself.
+/- English proof (authored)
+A detached component is defined to be an irreducible component of the strict transform whose entire ambient image lies in the support of the current center. Membership is exactly the conjunction of these conditions.
 -/
 theorem mem_detachedComponents (i : ℕ) (C : Set ↥(T.strictTransform i)) :
     C ∈ T.detachedComponents i ↔
@@ -126,13 +126,13 @@ theorem mem_detachedComponents (i : ℕ) (C : Set ↥(T.strictTransform i)) :
 
 def detachedLocus (i : ℕ) : Set ↥(T.strictTransform i) := ⋃₀ (T.detachedComponents i)
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The detached locus is defined as the union of all the detached components.
 -/
 theorem detachedLocus_eq_sUnion (i : ℕ) : T.detachedLocus i = ⋃₀ (T.detachedComponents i) := rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The Noetherian strict transform has finitely many irreducible components. Each of them is closed, so the union of the subfamily of detached components is a finite union of closed sets and is closed.
 -/
 theorem isClosed_detachedLocus (i : ℕ)
     [TopologicalSpace.NoetherianSpace ↥(T.strictTransform i)] :
@@ -148,8 +148,8 @@ theorem isClosed_detachedLocus (i : ℕ)
 def detachedClosure (i : ℕ) : TopologicalSpace.Closeds ↥(T.strictTransform i) :=
   ⟨closure (T.detachedLocus i), isClosed_closure⟩
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The detached locus is already closed by Noetherianity and finiteness of the component family. Its closure therefore equals the locus itself.
 -/
 theorem detachedClosure_coe (i : ℕ)
     [TopologicalSpace.NoetherianSpace ↥(T.strictTransform i)] :
@@ -160,8 +160,8 @@ theorem detachedClosure_coe (i : ℕ)
 def detachedIdeal (i : ℕ) : (T.strictTransform i).IdealSheafData :=
   Scheme.IdealSheafData.vanishingIdeal (T.detachedClosure i)
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The detached ideal is the reduced vanishing ideal of the closure of the detached locus by definition.
 -/
 theorem detachedIdeal_eq (i : ℕ) :
     T.detachedIdeal i = Scheme.IdealSheafData.vanishingIdeal (T.detachedClosure i) := rfl
@@ -172,8 +172,8 @@ abbrev detachedι (i : ℕ) : T.detachedScheme i ⟶ T.strictTransform i := (T.d
 
 def detachedClosureCompl (i : ℕ) : (T.strictTransform i).Opens := (T.detachedClosure i).compl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The open complement of the detached closure consists of all points outside the underlying closed set. This is exactly the set-theoretic complement on the right.
 -/
 theorem detachedClosureCompl_coe (i : ℕ) :
     ((T.detachedClosureCompl i : (T.strictTransform i).Opens) : Set ↥(T.strictTransform i)) =
@@ -182,8 +182,8 @@ theorem detachedClosureCompl_coe (i : ℕ) :
 def comapAmbientCenter (i : ℕ) : (T.strictTransform i).IdealSheafData :=
   (T.ambientCenter i).comap (T.strictTransformι i)
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The center on the strict transform is defined by pulling the ambient center ideal back along the strict-transform inclusion.
 -/
 theorem comapAmbientCenter_eq (i : ℕ) :
     T.comapAmbientCenter i = (T.ambientCenter i).comap (T.strictTransformι i) := rfl
@@ -192,8 +192,8 @@ def centerOffDetached (i : ℕ) : (T.strictTransform i).IdealSheafData :=
   Scheme.Hom.ker
     (((T.comapAmbientCenter i).comap (T.detachedClosureCompl i).ι).subschemeι ≫ (T.detachedClosureCompl i).ι)
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+Restrict the pulled-back center ideal to the open complement of the detached closure. Take the inclusion of the resulting closed subscheme into that open, then include the open into the strict transform. The center off the detached locus is defined as the kernel ideal of this composite.
 -/
 theorem centerOffDetached_eq (i : ℕ) :
     T.centerOffDetached i =
@@ -205,13 +205,13 @@ def detachedCoprod (i : ℕ) : Scheme.{u} :=
   Nat.rec (motive := fun _ => Scheme.{u}) (⊥_ Scheme.{u})
     (fun j ih => ih ⨿ T.detachedScheme j) i
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+At the initial stage there are no detached schemes from earlier stages, so their coproduct is the initial, empty scheme.
 -/
 @[simp] theorem detachedCoprod_zero : T.detachedCoprod 0 = ⊥_ Scheme.{u} := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+At the successor, the recursive coproduct adds the scheme detached at the preceding stage to the coproduct of all schemes already detached.
 -/
 @[simp] theorem detachedCoprod_succ (i : ℕ) :
     T.detachedCoprod (i + 1) = (T.detachedCoprod i ⨿ T.detachedScheme i) := rfl
@@ -224,8 +224,8 @@ def totalTransition (i : ℕ) : T.totalSpace (i + 1) ⟶ T.totalSpace i :=
         (T.detachedι i ≫ coprod.inl) :
       T.detachedCoprod i ⨿ T.detachedScheme i ⟶ T.totalSpace i)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The total transition is defined on the new strict-transform summand as the strict-transform transition followed by inclusion of the preceding strict-transform summand. The coproduct projection rule gives exactly this restriction of the total map.
 -/
 theorem inl_totalTransition_eq_strictTransformMap_inl (i : ℕ) :
     (coprod.inl : T.strictTransform (i + 1) ⟶ T.totalSpace (i + 1)) ≫ T.totalTransition i =
@@ -235,8 +235,8 @@ theorem inl_totalTransition_eq_strictTransformMap_inl (i : ℕ) :
       (T.detachedι i ≫ (coprod.inl : T.strictTransform i ⟶ T.totalSpace i)) :
       T.detachedCoprod i ⨿ T.detachedScheme i ⟶ T.totalSpace i)
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The old detached coproduct is the first summand of the enlarged detached coproduct, which is the second summand of the new total space. Restrict the new transition first to the enlarged detached coproduct and then to its first summand. The two coproduct identities give inclusion of the old detached coproduct in the preceding total space.
 -/
 theorem inl_inr_totalTransition (i : ℕ) :
     (coprod.inl : T.detachedCoprod i ⟶ T.detachedCoprod (i + 1)) ≫
@@ -254,8 +254,8 @@ theorem inl_inr_totalTransition (i : ℕ) :
     (coprod.inl_desc (coprod.inr : T.detachedCoprod i ⟶ T.totalSpace i)
       (T.detachedι i ≫ (coprod.inl : T.strictTransform i ⟶ T.totalSpace i)))
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The newly detached scheme is the second summand of the enlarged detached coproduct. Restrict the total transition to that coproduct and then to its second summand. By the defining coproduct identities the map goes through the newly detached scheme’s inclusion into the preceding strict transform and then into the preceding total space.
 -/
 theorem inr_inr_totalTransition (i : ℕ) :
     (coprod.inr : T.detachedScheme i ⟶ T.detachedCoprod (i + 1)) ≫
@@ -282,8 +282,8 @@ def totalCenter (i : ℕ) : (T.totalSpace i).IdealSheafData :=
   Scheme.Hom.ker
     ((T.centerOffDetached i).subschemeι ≫ (coprod.inl : T.strictTransform i ⟶ T.totalSpace i))
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The total-space center is the closed subscheme given by the center off the detached locus in the strict-transform summand. Its ideal is defined as the kernel of the closed subscheme inclusion followed by that summand inclusion.
 -/
 theorem totalCenter_eq (i : ℕ) :
     T.totalCenter i =
@@ -291,8 +291,8 @@ theorem totalCenter_eq (i : ℕ) :
         ((T.centerOffDetached i).subschemeι ≫
           (coprod.inl : T.strictTransform i ⟶ T.totalSpace i)) := rfl
 
-/- English proof (translation)
-Supply the required witnesses or components.
+/- English proof (authored)
+For a closed immersion, the induced morphism from the source to its scheme-theoretic image is an isomorphism. The image is the closed subscheme of the kernel ideal. Take the inverse isomorphism and use the image factorization to obtain the stated equation.
 -/
 private theorem exists_kerSubschemeIso_of_isClosedImmersion {X Z : Scheme.{u}} (g : Z ⟶ X)
     [AlgebraicGeometry.IsClosedImmersion g] :
@@ -300,8 +300,8 @@ private theorem exists_kerSubschemeIso_of_isClosedImmersion {X Z : Scheme.{u}} (
   ⟨(asIso g.toImage).symm, by
     rw [Iso.symm_hom, asIso_inv, IsIso.inv_comp_eq, Scheme.Hom.toImage_imageι]⟩
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
+/- English proof (authored)
+Define the forward map on the first summand by the given isomorphism and on the initial summand by its unique map. The inverse is the inverse of the given isomorphism followed by the first inclusion. Their composite on the target is the identity by cancellation. In the other order the composite is the identity on the first summand by the same cancellation, and on the initial summand by uniqueness. The coproduct property gives the identity on the whole source.
 -/
 private theorem exists_coprodIso_of_isInitial {A B Z : Scheme.{u}}
     (hB : IsInitial B) (u : A ≅ Z) :
@@ -325,10 +325,8 @@ private theorem exists_coprodIso_of_isInitial {A B Z : Scheme.{u}}
       _ = u.inv ≫ u.hom := congrArg (fun t => u.inv ≫ t) (coprod.inl_desc _ _)
       _ = 𝟙 Z := u.inv_hom_id
 
-/- English proof (translation)
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+The stage-zero strict transform is the kernel subscheme of the original closed immersion transported into the initial ambient stage. Its identification with the original scheme commutes with that immersion. The stage-zero detached coproduct is initial, so taking its coproduct with the strict transform preserves this identification and yields the required isomorphism of total spaces.
 -/
 theorem exists_totalSpaceZeroIso :
     ∃ e : T.totalSpace 0 ≅ Y,
@@ -347,8 +345,8 @@ theorem exists_totalSpaceZeroIso :
 
 def totalSpaceZeroIso : T.totalSpace 0 ≅ Y := T.exists_totalSpaceZeroIso.choose
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The chosen stage-zero isomorphism satisfies the compatibility equation from its construction. Restricting it to the strict-transform summand and then applying the original embedding transported to the initial ambient stage gives the stage-zero strict-transform inclusion.
 -/
 theorem totalSpaceZeroIso_spec :
     (coprod.inl : T.strictTransform 0 ⟶ T.totalSpace 0) ≫ T.totalSpaceZeroIso.hom ≫
@@ -358,13 +356,13 @@ theorem totalSpaceZeroIso_spec :
 def totalTower : ℕᵒᵖ ⥤ Scheme.{u} :=
   (Functor.ofSequence (fun i => (T.totalTransition i).op)).leftOp
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The tower is built from the sequence of total transitions. Its object at the given index is the total space from which those transitions are formed.
 -/
 theorem totalTower_obj (i : ℕ) : T.totalTower.obj (Opposite.op i) = T.totalSpace i := rfl
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
+/- English proof (authored)
+The functor constructed from consecutive transitions sends each successor order arrow to its specified consecutive map in the opposite category. Passing back to the original category gives the given total transition.
 -/
 theorem totalTower_map_succ (i : ℕ) :
     T.totalTower.map (homOfLE (Nat.le_succ i)).op = T.totalTransition i := by
@@ -383,23 +381,23 @@ def inducedBlowups (h : T.TransitionsAreBlowups) : SequenceOfBlowups Y where
   center := T.totalCenter
   isBlowup := h
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The induced sequence is constructed with one step per ambient stage before the end, so its length is assigned the ambient sequence length.
 -/
 @[simp] theorem inducedBlowups_length (h : T.TransitionsAreBlowups) : (T.inducedBlowups h).length = T.length := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The induced sequence is built with the tower of total spaces and total transitions as its underlying functor.
 -/
 @[simp] theorem inducedBlowups_tower (h : T.TransitionsAreBlowups) : (T.inducedBlowups h).tower = T.totalTower := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The initial object of the induced blowup sequence is identified with the original scheme using the chosen stage-zero isomorphism of total spaces.
 -/
 theorem inducedBlowups_isoObjZero (h : T.TransitionsAreBlowups) : (T.inducedBlowups h).isoZero = T.totalSpaceZeroIso := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+At every stage the induced sequence is assigned the total-space center, which is supported on the strict-transform summand.
 -/
 @[simp] theorem inducedBlowups_center (h : T.TransitionsAreBlowups) (i : ℕ) :
     (T.inducedBlowups h).center i = T.totalCenter i := rfl
@@ -408,16 +406,16 @@ def inducedBlowupsWithoutIso (h : T.TransitionsAreBlowups) : SequenceOfBlowups Y
 
 end EmbeddedBlowupSequence
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. A detailed English derivation is pending.
+/- English proof (authored)
+The structure map of finite-dimensional affine space is induced by the inclusion of the field in a finitely generated polynomial algebra. It is therefore locally of finite type.
 -/
 private theorem locallyOfFiniteType_affineSpaceIndexedByToSpec_ulift (k : Type u) [Field k] (n : ℕ) :
     AlgebraicGeometry.LocallyOfFiniteType (affineSpaceIndexedByToSpec k (ULift.{u} (Fin n))) := by
   unfold affineSpaceIndexedByToSpec
   infer_instance
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. A detailed English derivation is pending.
+/- English proof (authored)
+Finite-dimensional affine space is affine and its morphism to the field spectrum is an affine morphism. Such a morphism is quasi-compact.
 -/
 private theorem quasiCompact_affineSpaceIndexedByToSpec_ulift (k : Type u) [Field k] (n : ℕ) :
     AlgebraicGeometry.QuasiCompact (affineSpaceIndexedByToSpec k (ULift.{u} (Fin n))) := by
@@ -441,50 +439,50 @@ def toEmbeddedBlowupSequence (S : AffineSpacePrincipalizationData k Y pY) : Embe
   emb_comp := S.emb_comp
   ambientSeq := S.ambientBlowups
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+When the affine-space principalization data are viewed as an embedded blowup sequence, the original affine ambient scheme is assigned directly as its ambient scheme.
 -/
 theorem toEmbeddedBlowupSequence_ambient (S : AffineSpacePrincipalizationData k Y pY) :
     S.toEmbeddedBlowupSequence.ambient = S.ambient := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The conversion from affine-space principalization data uses the original closed immersion into the chosen affine ambient space as the embedding of the sequence.
 -/
 theorem toEmbeddedBlowupSequence_emb (S : AffineSpacePrincipalizationData k Y pY) :
     S.toEmbeddedBlowupSequence.emb = S.emb := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The ambient tower of the converted sequence is the ambient blowup sequence supplied by the affine-space principalization data.
 -/
 theorem embeddedAmbientBlowups_eq (S : AffineSpacePrincipalizationData k Y pY) :
     S.toEmbeddedBlowupSequence.ambientSeq = S.ambientBlowups := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The ambient blowup sequence is unchanged in the construction from affine-space data. Its scheme at the given stage is the ambient level of those data.
 -/
 theorem toEmbeddedBlowupSequence_schemeAt (S : AffineSpacePrincipalizationData k Y pY) (i : ℕ) :
     S.toEmbeddedBlowupSequence.schemeAt i = S.ambientLevel i := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+Both constructions begin with the same embedding kernel transported to stage zero and take strict transforms under the same ambient blowdowns and centers. The recursive strict-transform ideals therefore agree at the specified stage.
 -/
 theorem toEmbeddedBlowupSequence_strictTransformIdeal (S : AffineSpacePrincipalizationData k Y pY) (i : ℕ) :
     S.toEmbeddedBlowupSequence.strictTransformIdeal i = S.strictTransformIdeal i := rfl
 
-/- English proof (translation)
-Unfold both sides to obtain the same proposition, which implies itself.
+/- English proof (authored)
+The two descriptions use the same total-space transition maps and the same total-space center ideals at each stage. Thus the assertion that each transition is the blowup along its center is identical in both.
 -/
 theorem toEmbeddedBlowupSequence_transitionsAreBlowups_iff (S : AffineSpacePrincipalizationData k Y pY) :
     S.toEmbeddedBlowupSequence.TransitionsAreBlowups ↔ S.TransitionsAreBlowups := Iff.rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The two induced sequences use the same length, total-space tower, initial isomorphism, and centers. Their blowup certificates establish the same propositions and do not affect the sequence data. Hence the sequences agree.
 -/
 theorem embeddedInducedBlowups_eq (S : AffineSpacePrincipalizationData k Y pY) (h : S.TransitionsAreBlowups) :
     S.toEmbeddedBlowupSequence.inducedBlowups ((toEmbeddedBlowupSequence_transitionsAreBlowups_iff S).mpr h) = S.blowupSequence h := rfl
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The unshortened induced sequences agree by the preceding comparison. Apply the operation that removes unit-center blowups to both sequences to obtain equality after shortening.
 -/
 theorem embeddedInducedBlowupsWithoutIso_eq (S : AffineSpacePrincipalizationData k Y pY) (h : S.TransitionsAreBlowups) :
     S.toEmbeddedBlowupSequence.inducedBlowupsWithoutIso ((toEmbeddedBlowupSequence_transitionsAreBlowups_iff S).mpr h) = S.blowupSequenceWithoutIsos h := by
@@ -513,20 +511,20 @@ def toEmbeddedBlowupSequence (D : EmbeddingDatum k Y pY) (A : PrincipalizationAl
     (A k D.ambient D.ambientStruct (Scheme.Hom.ker D.emb) D.nonzeroOnComponents_ker
       ([] : List D.ambient.IdealSheafData) D.sncEmpty).toSequenceOfBlowups
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The construction from an embedding datum takes the smooth ambient scheme specified by that datum and uses it as the ambient scheme of the embedded blowup sequence.
 -/
 theorem toEmbeddedBlowupSequence_ambient (D : EmbeddingDatum k Y pY) (A : PrincipalizationAlgorithm.{u}) :
     (D.toEmbeddedBlowupSequence A).ambient = D.ambient := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The construction retains the given closed immersion from the original affine scheme into the ambient scheme as its embedding.
 -/
 theorem toEmbeddedBlowupSequence_emb (D : EmbeddingDatum k Y pY) (A : PrincipalizationAlgorithm.{u}) :
     (D.toEmbeddedBlowupSequence A).emb = D.emb := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The construction assigns the ambient sequence by running principalization on the kernel ideal of the given embedding, with the empty boundary and the specified nonvanishing condition. Its underlying blowup sequence is the stated ambient tower.
 -/
 theorem ambientBlowups_eq_toSequenceOfBlowups (D : EmbeddingDatum k Y pY) (A : PrincipalizationAlgorithm.{u}) :
     (D.toEmbeddedBlowupSequence A).ambientSeq =
@@ -546,8 +544,8 @@ def embeddedResolutionRuleOfPrincipalization (A : PrincipalizationAlgorithm.{u})
   intro k _ _ Y pY _ _ _ _ D
   exact (D.toEmbeddedBlowupSequence A).inducedBlowupsWithoutIso (h k Y pY D)
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+By definition the embedded resolution rule constructs the embedded sequence from the given datum and then takes its induced blowups with the isomorphism steps removed.
 -/
 theorem embeddedResolutionRuleOfPrincipalization_apply (A : PrincipalizationAlgorithm.{u}) (h : TransitionsAreBlowupsForEmbeddings A)
     (k : Type u) [Field k] [CharZero k] (Y : Scheme.{u})
@@ -575,8 +573,8 @@ def affineSpaceEmbeddingDatum (hemb : AffineEmbedsIntoAffineSpace.{u})
   comp_eq := (hemb k Y pY).choose_spec.choose_spec.2.2
   sncEmpty := hsnc k ((hemb k Y pY).choose)
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+Both constructions use the same closed embedding into the chosen affine space, the same structural map, and the same principalization of the embedding kernel with empty boundary. The resulting embedded blowup sequences agree.
 -/
 theorem affineSpaceEmbeddingDatum_toEmbeddedBlowupSequence (A : PrincipalizationAlgorithm.{u}) (hemb : AffineEmbedsIntoAffineSpace.{u})
     (hsnc : NilIsStrictNormalCrossingsOnAffineSpace.{u}) (hsm : AffineSpaceIsSmooth.{u})
@@ -591,8 +589,8 @@ def affineSpaceEmbeddingChoice (hemb : AffineEmbedsIntoAffineSpace.{u})
   intro k _ _ Y pY _ _ _ _
   exact affineSpaceEmbeddingDatum hemb hsnc hsm k Y pY
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The embedding choice assigns to each affine input exactly the datum obtained from the chosen embedding into affine space and its ambient smoothness and empty-boundary properties.
 -/
 theorem affineSpaceEmbeddingChoice_eq_affineSpaceEmbeddingDatum (hemb : AffineEmbedsIntoAffineSpace.{u})
     (hsnc : NilIsStrictNormalCrossingsOnAffineSpace.{u}) (hsm : AffineSpaceIsSmooth.{u})
@@ -602,8 +600,8 @@ theorem affineSpaceEmbeddingChoice_eq_affineSpaceEmbeddingDatum (hemb : AffineEm
     [AlgebraicGeometry.IsAffine Y] :
     affineSpaceEmbeddingChoice hemb hsnc hsm k Y pY = affineSpaceEmbeddingDatum hemb hsnc hsm k Y pY := rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Chain the equalities or inequalities of the calculation.
+/- English proof (authored)
+Expand the embedded rule as the shortened induced sequence for the chosen embedding datum. The embedded sequence for this datum agrees with the one obtained from the affine-space principalization data. The comparison identifies their shortened induced sequences, since the proofs that transitions are blowups do not change the underlying data. The latter sequence is exactly the affine resolution rule on the given input.
 -/
 theorem embeddedResolutionRuleOfPrincipalization_affineSpaceEmbeddingDatum (A : PrincipalizationAlgorithm.{u}) (h : TransitionsAreBlowupsForEmbeddings A)
     (hemb : AffineEmbedsIntoAffineSpace.{u}) (hsnc : NilIsStrictNormalCrossingsOnAffineSpace.{u})

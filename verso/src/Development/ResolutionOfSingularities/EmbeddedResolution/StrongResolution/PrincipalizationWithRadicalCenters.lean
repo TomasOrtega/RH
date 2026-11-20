@@ -39,8 +39,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The correctness theorem for canonical rules assumes that strict transforms are the blowups of the corresponding closed subschemes. This compatibility is available, so the rules reduce inductively on dimension.
 -/
 theorem canonicalAlgorithmRules_isCorrect :
     (canonicalAlgorithmRules strictTransformIsBlowupOfClosedSubscheme.{u}).ReducesInductivelyOnDimension :=
@@ -49,8 +49,8 @@ theorem canonicalAlgorithmRules_isCorrect :
 noncomputable abbrev principalizationWithRadicalCenters : PrincipalizationAlgorithm.{u} :=
   canonicalPrincipalization strictTransformIsBlowupOfClosedSubscheme smoothSubschemeIdealIsRadical.{u}
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+For the given affine input, form the specified embedding into affine space. The discarded locus at any stage is the detached locus for these embedding data. The assumed openness of detached loci for every embedding applies to this one.
 -/
 theorem embeddedPrincipalizationDiscardedLocusIsOpen_of_detachedLocusIsOpen (A : PrincipalizationAlgorithm.{u}) (h : DetachedLocusIsOpenForEmbeddings.{u} A) :
     EmbeddedPrincipalizationDiscardedLocusIsOpen.{u} A affineEmbedsIntoAffineSpace
@@ -60,10 +60,8 @@ theorem embeddedPrincipalizationDiscardedLocusIsOpen_of_detachedLocusIsOpen (A :
     (affineSpaceEmbeddingDatum affineEmbedsIntoAffineSpace nilIsStrictNormalCrossingsOnAffineSpace
       affineSpaceIsSmooth k Y pY) i hi
 
-/- English proof (translation)
-Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+Both vanishing assignments send a closed set to its reduced vanishing ideal. They are therefore equal pointwise. Apply the chart isolation result for the reduced assignment to this principalization algorithm and use the equality of assignments.
 -/
 theorem chartIsolationHypotheses_principalizationWithRadicalCenters :
     OpenImmersionRestriction.ChartIsolationHypotheses OpenImmersionRestriction.vanishingIdealAssignment.{u} principalizationWithRadicalCenters.{u} := by
@@ -74,8 +72,8 @@ theorem chartIsolationHypotheses_principalizationWithRadicalCenters :
   have h2 := OpenImmersionRestriction.chartIsolationHypotheses_reducedVanishingAssignment principalizationWithRadicalCenters.{u}
   rwa [h] at h2
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The canonical openness theorem applies using strict-transform compatibility, correctness of the canonical reduction, radicality of smooth subscheme ideals, and the chart isolation hypotheses for the vanishing-ideal assignment. It yields openness of the detached locus at every relevant stage for every embedding.
 -/
 theorem detachedLocusIsOpenForEmbeddings_principalizationWithRadicalCenters :
     DetachedLocusIsOpenForEmbeddings.{u} principalizationWithRadicalCenters.{u} :=
@@ -83,16 +81,16 @@ theorem detachedLocusIsOpenForEmbeddings_principalizationWithRadicalCenters :
     strictTransformIsBlowupOfClosedSubscheme.{u} canonicalAlgorithmRules_isCorrect smoothSubschemeIdealIsRadical.{u}
     chartIsolationHypotheses_principalizationWithRadicalCenters.{u}
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Every detached locus is open for this principalization algorithm by the canonical openness result. The construction that separates the detached components then identifies the embedding transitions as blowups.
 -/
 theorem transitionsAreBlowupsForEmbeddings_principalizationWithRadicalCenters :
     TransitionsAreBlowupsForEmbeddings principalizationWithRadicalCenters.{u} :=
   transitionsAreBlowupsForEmbeddings_of_detachedLocusIsOpen principalizationWithRadicalCenters.{u}
     detachedLocusIsOpenForEmbeddings_principalizationWithRadicalCenters
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The chosen affine embeddings have open discarded loci by detached-locus openness, and their ambient stages are Noetherian. Strict transforms satisfy the expected closed-subscheme blowup compatibility. The theorem constructing blowups from these data therefore applies to the embedded principalization sequence.
 -/
 theorem embeddedPrincipalizationYieldsBlowups_principalizationWithRadicalCenters :
     EmbeddedPrincipalizationYieldsBlowups principalizationWithRadicalCenters.{u} affineEmbedsIntoAffineSpace
@@ -105,8 +103,8 @@ theorem embeddedPrincipalizationYieldsBlowups_principalizationWithRadicalCenters
       nilIsStrictNormalCrossingsOnAffineSpace affineSpaceIsSmooth)
     strictTransformIsBlowupOfClosedSubscheme
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Apply the functoriality theorem for canonical principalization. Its hypotheses follow from strict-transform compatibility, correctness of the dimension reduction, radicality of smooth subscheme ideals, and the closed-immersion commutation theorem for correct rules.
 -/
 theorem isFunctorialPrincipalization_principalizationWithRadicalCenters : IsFunctorialPrincipalization principalizationWithRadicalCenters.{u} :=
   isFunctorialPrincipalization_canonicalPrincipalization strictTransformIsBlowupOfClosedSubscheme canonicalAlgorithmRules_isCorrect

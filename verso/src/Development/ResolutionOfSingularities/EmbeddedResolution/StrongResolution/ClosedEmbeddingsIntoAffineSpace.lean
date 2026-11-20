@@ -10,75 +10,37 @@ open CategoryTheory AlgebraicGeometry
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+/- English proof (authored)
+Global sections are contravariant in the scheme. Pulling a section back along the composite therefore consists of pulling it back along the second morphism and then along the first.
 -/
 private theorem comp_appTop_apply {X Y Z : Scheme.{u}} (f : X ⟶ Y) (g : Y ⟶ Z) (x : Γ(Z, ⊤)) :
     (f ≫ g).appTop x = f.appTop (g.appTop x) := by
   simp
   rfl
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Pullback on global sections is a ring homomorphism and preserves sums.
 -/
 private theorem appTop_add {X Y : Scheme.{u}} (f : X ⟶ Y) (a b : Γ(Y, ⊤)) :
     f.appTop (a + b) = f.appTop a + f.appTop b :=
   map_add (CommRingCat.Hom.hom f.appTop) a b
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Pullback on global sections is a ring homomorphism and preserves differences.
 -/
 private theorem appTop_sub {X Y : Scheme.{u}} (f : X ⟶ Y) (a b : Γ(Y, ⊤)) :
     f.appTop (a - b) = f.appTop a - f.appTop b :=
   map_sub (CommRingCat.Hom.hom f.appTop) a b
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The identity scheme map induces the identity ring map on global sections.
 -/
 private theorem appTop_id_apply {X : Scheme.{u}} (x : Γ(X, ⊤)) :
     (𝟙 X : X ⟶ X).appTop x = x := by
   simp
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Write the coordinates of the combined affine space as two blocks. The given sections in the first affine space reproduce the second embedding’s coordinates on the source, and the sections in the second reproduce the first. Define an automorphism fixing the first block and adding the first family of sections to the second block. Its inverse subtracts those same sections since the first block is fixed. Define a second automorphism fixing the second block and subtracting the second family from the first block, with inverse given by addition. The first automorphism takes the first stabilized embedding, whose second block is zero, to the map with both sets of embedding coordinates. The second automorphism then cancels the first block and leaves the second intact, giving the second stabilized embedding. Each map is over the base and is determined by its coordinate pullbacks, so the composite gives the required automorphism.
 -/
 private theorem exists_iso_affineSpace_sum_comp_eq_of_coord {S : Scheme.{u}} (n m : ℕ)
     {Y : Scheme.{u}}
@@ -313,10 +275,8 @@ private theorem exists_iso_affineSpace_sum_comp_eq_of_coord {S : Scheme.{u}} (n 
   · show L ≫ (σ ≫ τ) = R
     rw [← Category.assoc, hA, hB]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Each closed immersion into an affine space induces a surjection on global coordinate rings. Use the first surjection to lift the coordinate functions of the second embedding to sections on the first affine space, and use the second surjection to lift the coordinates of the first embedding. In the combined affine space, stabilize the first embedding by adding zero coordinates in the second block and the second by adding zeros in the first. The two families of lifts give the coordinate changes that carry one stabilized embedding to the other over the field.
 -/
 theorem closedEmbeddingsRelatedByAutomorphism : ClosedEmbeddingsRelatedByAutomorphism.{u} := by
   intro k hk Y hY p hp n m e₁ he₁ e₂ he₂ h₁ h₂

@@ -16,18 +16,16 @@ private noncomputable def extendAlgHomLastVarZero {k : Type u} [Field k] {A : Ty
   MvPolynomial.aeval fun i : ULift.{u} (Fin (n + 1)) =>
     Fin.lastCases (motive := fun _ => A) 0 (fun j => f (MvPolynomial.X j)) i.down
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The extended polynomial map is defined by evaluating the original variables as before and the final variable at zero. In particular it sends the final variable itself to zero.
 -/
 private theorem extension_X_last_eq_zero {k : Type u} [Field k] {A : Type u} [CommRing A] [Algebra k A]
     {n : ℕ} (f : MvPolynomial (Fin n) k →ₐ[k] A) :
     extendAlgHomLastVarZero f (MvPolynomial.X (ULift.up (Fin.last n))) = 0 := by
   simp [extendAlgHomLastVarZero]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Given an element of the target, choose an original polynomial mapping to it. Regard this polynomial as a polynomial in the enlarged variable list using only the original variables. On these variables the extended map agrees with the original map, so the enlarged polynomial has the same image.
 -/
 private theorem extension_surjective {k : Type u} [Field k] {A : Type u} [CommRing A] [Algebra k A]
     {n : ℕ} (f : MvPolynomial (Fin n) k →ₐ[k] A) (hf : Function.Surjective f) :
@@ -56,8 +54,8 @@ private noncomputable def toAffineSpaceOfAlgHom {k : Type u} [Field k] (Y : Sche
   Y.isoSpec.hom ≫ Spec.map (CommRingCat.ofHom g.toRingHom) ≫
     (AffineSpace.SpecIso m (CommRingCat.of k)).inv
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The canonical map from an affine scheme to the spectrum of its global sections is natural. Apply naturality to the given map to the field spectrum. The field and the global sections of its spectrum are identified by the standard isomorphism, so the resulting identifications cancel and recover the original morphism.
 -/
 private theorem isoSpec_hom_comp_spec_map_appTop {k : Type u} [Field k] (Y : Scheme.{u}) [IsAffine Y]
     (p : Y ⟶ Spec (CommRingCat.of k)) :
@@ -67,10 +65,8 @@ private theorem isoSpec_hom_comp_spec_map_appTop {k : Type u} [Field k] (Y : Sch
     ← SpecMap_ΓSpecIso_hom, Category.assoc, ← Spec.map_comp, Iso.inv_hom_id, Spec.map_id,
     Category.comp_id]
 
-/- English proof (translation)
-Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+A surjective algebra map from the polynomial ring induces a closed immersion on spectra. Transporting through the spectrum identifications of the source and affine space preserves this property. The composite to the field spectrum corresponds to the polynomial constant inclusion followed by the algebra map. Since the map preserves the field algebra structure, this composite on rings is the given structure map on global sections. Thus the embedding is over the field.
 -/
 private theorem isClosedImmersion_embedding_and_comp_eq {k : Type u} [Field k] (Y : Scheme.{u}) [IsAffine Y]
     {m : Type u} [Algebra k ↥Γ(Y, ⊤)] (p : Y ⟶ Spec (CommRingCat.of k))
@@ -98,8 +94,8 @@ private theorem isClosedImmersion_embedding_and_comp_eq {k : Type u} [Field k] (
     rw [h2]
     exact isoSpec_hom_comp_spec_map_appTop Y p
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+The polynomial ring over a field is an integral domain, so its spectrum is irreducible. The homeomorphism from that spectrum to affine space takes the whole spectrum onto the whole affine space and preserves irreducibility.
 -/
 private theorem isIrreducible_univ_affineSpaceIndexedBy (k : Type u) [Field k] (m : Type u) :
     IsIrreducible (Set.univ : Set ↥(affineSpaceIndexedBy k m)) := by
@@ -110,26 +106,16 @@ private theorem isIrreducible_univ_affineSpaceIndexedBy (k : Type u) [Field k] (
   rwa [Set.image_univ,
     (Scheme.homeoOfIso (AffineSpace.SpecIso m (CommRingCat.of k)).symm).surjective.range_eq] at h1
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+An irreducible component is maximal among irreducible sets. Since the entire space is irreducible and contains the given component, maximality forces the component to be the whole space.
 -/
 private theorem eq_univ_of_mem_irreducibleComponents_of_isIrreducible_univ {X : Type u} [TopologicalSpace X]
     (h : IsIrreducible (Set.univ : Set X)) {T : Set X} (hT : T ∈ irreducibleComponents X) :
     T = Set.univ :=
   Set.eq_univ_of_univ_subset (hT.2 h (Set.subset_univ T))
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Under the affine-space spectrum identification, every image prime contains the chosen variable, because the algebra map sends it to zero. The closure of the image is therefore contained in the closed zero locus of that variable. The zero prime of the polynomial ring is outside this zero locus, since the variable is nonzero. Hence the closure is proper. For the quasi-compact embedding map this closure is the support of the kernel ideal.
 -/
 private theorem support_ker_ne_univ_of_map_X_eq_zero {k : Type u} [Field k] (Y : Scheme.{u}) [IsAffine Y]
     {m : Type u} [Algebra k ↥Γ(Y, ⊤)] (g : MvPolynomial m k →ₐ[k] ↥Γ(Y, ⊤))
@@ -189,16 +175,8 @@ private theorem support_ker_ne_univ_of_map_X_eq_zero {k : Type u} [Field k] (Y :
     simp at h8
   exact one_ne_zero h7
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The affine structural morphism is locally of finite type, so its global ring is a finite type algebra over the field. Choose a surjection from a polynomial ring in finitely many variables. Extend it by one variable sent to zero, retaining surjectivity. The map on spectra gives a closed immersion over the field into the corresponding affine space. Its image is contained in the proper coordinate hyperplane of the added variable. Affine space is irreducible, so the support of the kernel contains no ambient component.
 -/
 theorem affineEmbedsIntoAffineSpace : AffineEmbedsIntoAffineSpace.{u} := by
   intro k _ Y _ p _

@@ -50,8 +50,8 @@ def IsCompatibleWithSmoothOfRelativeDimension (B : AffineResolutionRule.{u}) : P
     (u : V ⟶ Y) (r : ℕ) [AlgebraicGeometry.SmoothOfRelativeDimension r u],
     u ≫ pY = pV → IsPullbackBlowupSequence u (B k V pV) (B k Y pY)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+For an affine source and target over the field, apply the smooth pullback theorem for the affine rule constructed from principalization. The inputs supply functorial principalization, blowup transitions, compatible embeddings, and the given smooth map of fixed relative dimension. The theorem identifies the source sequence with the pullback of the target sequence.
 -/
 theorem isCompatibleWithSmoothOfRelativeDimension_affineResolutionRule (A : PrincipalizationAlgorithm.{u})
     (hAlg : IsFunctorialPrincipalization A) (hw : TransitionsAreBlowupsForEmbeddings A)
@@ -63,8 +63,8 @@ theorem isCompatibleWithSmoothOfRelativeDimension_affineResolutionRule (A : Prin
   exact isPullbackBlowupSequence_affineResolutionRuleOfPrincipalization_of_smooth A hAlg hw hemb hsncE hsm hex hcmp
     k Y V pY pV u r hu
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
+/- English proof (authored)
+Relative dimensions add under composition of smooth morphisms of fixed relative dimension. Adding zero on the target side leaves the given relative dimension unchanged.
 -/
 private theorem smoothOfRelativeDimension_comp_zero {A B C : Scheme.{u}} (f : A ⟶ B) (g : B ⟶ C)
     (r : ℕ) [AlgebraicGeometry.SmoothOfRelativeDimension r f]
@@ -73,8 +73,8 @@ private theorem smoothOfRelativeDimension_comp_zero {A B C : Scheme.{u}} (f : A 
   have h : AlgebraicGeometry.SmoothOfRelativeDimension (r + 0) (f ≫ g) := inferInstance
   simpa using h
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
+/- English proof (authored)
+The composite of smooth morphisms of fixed relative dimensions has their sum as relative dimension. The source-side dimension is zero, leaving the given dimension of the second morphism.
 -/
 private theorem smoothOfRelativeDimension_zero_comp {A B C : Scheme.{u}} (f : A ⟶ B) (g : B ⟶ C)
     (r : ℕ) [AlgebraicGeometry.SmoothOfRelativeDimension 0 f]
@@ -83,22 +83,16 @@ private theorem smoothOfRelativeDimension_zero_comp {A B C : Scheme.{u}} (f : A 
   have h : AlgebraicGeometry.SmoothOfRelativeDimension (0 + r) (f ≫ g) := inferInstance
   simpa using h
 
-/- English proof (translation)
-Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
+/- English proof (authored)
+A point in the image of the chosen open comes from a point whose composite image lands in the target open by hypothesis. Therefore that image point belongs to the inverse image of the target open under the original morphism.
 -/
 private theorem opensImage_le_preimage {X Y : Scheme.{u}} (f : X ⟶ Y) (Z : X.Opens) (U₀ : Y.Opens)
     (W : Z.toScheme.Opens) (e : W ≤ (Z.ι ≫ f) ⁻¹ᵁ U₀) : Z.ι ''ᵁ W ≤ f ⁻¹ᵁ U₀ := by
   rintro x ⟨w, hw, rfl⟩
   simpa using e hw
 
-/- English proof (translation)
-Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Every isomorphism is an open immersion and hence smooth of relative dimension zero. Composing a smooth morphism with such an isomorphism on either side preserves its relative dimension by additivity.
 -/
 private theorem respectsIso_smoothOfRelativeDimension (r : ℕ) :
     MorphismProperty.RespectsIso
@@ -125,14 +119,8 @@ private theorem respectsIso_smoothOfRelativeDimension (r : ℕ) :
     exact smoothOfRelativeDimension_comp_zero f i r
   exact ⟨⟩
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Choose a source open containing the point. Smoothness of fixed relative dimension on that open gives affine neighborhoods of the point and its image with a standard smooth section-ring map of the stated dimension. The source affine neighborhood maps isomorphically to its affine open image in the original source. That image still maps into the same target neighborhood. The map on sections agrees with the one from the restricted morphism under the open identification, so the neighborhoods also witness the required smoothness for the original morphism.
 -/
 private theorem smoothOfRelativeDimension_of_iSup_eq_top (r : ℕ) {X Y : Scheme.{u}} (f : X ⟶ Y)
     {ι : Type u} (U : ι → X.Opens) (hU : iSup U = ⊤)
@@ -162,10 +150,8 @@ private theorem smoothOfRelativeDimension_of_iSup_eq_top (r : ℕ) {X Y : Scheme
   exact Eq.mp (congrArg (fun m =>
     RingHom.IsStandardSmoothOfRelativeDimension r (CommRingCat.Hom.hom m)) key) hsm
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Restricting to a source open composes with an open immersion of relative dimension zero and preserves smoothness of the given relative dimension. Conversely, if all restrictions in a source open cover have the property, the corresponding affine local descriptions furnish it at every point of the source. Together with invariance under isomorphisms this proves locality on the source.
 -/
 private theorem isZariskiLocalAtSource_smoothOfRelativeDimension (r : ℕ) :
     AlgebraicGeometry.IsZariskiLocalAtSource
@@ -179,8 +165,8 @@ private theorem isZariskiLocalAtSource_smoothOfRelativeDimension (r : ℕ) :
   · intro X Y f ι U hU H
     exact smoothOfRelativeDimension_of_iSup_eq_top r f U hU H
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+On each source summand the map is the restriction of the original smooth morphism to the chosen source and target opens, followed by the corresponding target summand inclusion. Restriction preserves the fixed relative dimension, and the inclusion has dimension zero. Thus each summand map has the required relative dimension. These summands cover the disjoint union, so locality on the source proves the claim.
 -/
 theorem smoothOfRelativeDimension_opensCoprodMapOfRefinement {X' X : Scheme.{u}} (φ : X' ⟶ X) (r : ℕ)
     [AlgebraicGeometry.SmoothOfRelativeDimension r φ] {ι κ : Type u}
@@ -196,12 +182,8 @@ theorem smoothOfRelativeDimension_opensCoprodMapOfRefinement {X' X : Scheme.{u}}
     exact smoothOfRelativeDimension_comp_zero _ _ r
   exact AlgebraicGeometry.IsZariskiLocalAtSource.sigmaDesc h
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Supply the required witnesses or components.
+/- English proof (authored)
+Quasi-compactness over the field gives quasi-compact source and target. Choose a finite affine open cover of the target and a finite affine open cover of the source subordinate to its inverse images. Their finite disjoint unions are affine and reduced, and their maps to the original schemes are surjective and étale. The composites to the field are locally of finite type and quasi-compact. The subordinate cover defines a map between the disjoint unions by restriction on each summand, which is smooth of the original relative dimension. The chart squares commute by construction, so the map also commutes with the morphisms to the field.
 -/
 theorem exists_affine_etale_cover_of_smoothOfRelativeDimension {k : Type u} [Field k]
     {X X' : Scheme.{u}}
@@ -244,24 +226,8 @@ theorem exists_affine_etale_cover_of_smoothOfRelativeDimension {k : Type u} [Fie
     opensCoprodMapOfRefinement_comp_sigmaOpensDesc φ U V β hβ,
     (by rw [← Category.assoc, opensCoprodMapOfRefinement_comp_sigmaOpensDesc, Category.assoc, hφ])⟩
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Choose compatible surjective affine étale covers of the source and target, with a smooth map between the covers of the same relative dimension. The affine sequences over these covers are strict pullbacks of the corresponding global sequences. Compute the strict pullback of the global target sequence to the source cover in two ways, through the global source by base change and through the affine target cover. The two strict pullbacks are isomorphic by uniqueness, and deleting unit-center steps preserves that isomorphism. Affine smooth compatibility identifies the resulting sequence with the affine source sequence. The source cover is surjective and étale, so comparison of the pullbacks descends this isomorphism to the global source. The shortened base change of the target sequence is therefore the global source sequence, giving the required pullback compatibility.
 -/
 theorem isCompatibleWithSmoothMorphisms_of_isInducedByAffineRule (B : AffineResolutionRule.{u})
     (hB : IsCompatibleWithSmoothOfRelativeDimension B) (R : ResolutionRule.{u})
@@ -322,12 +288,8 @@ theorem isCompatibleWithSmoothMorphisms_of_isInducedByAffineRule (B : AffineReso
     h1.isPullbackSequenceOfBlowups_withoutIsoBlowups
   exact h13.of_isomorphic h12.symm
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Choose a surjective affine étale cover of the affine base. The affine rule on the cover is a strict pullback of the given sequence by the assumption that the given sequence is induced by the affine rule. By étale compatibility the same covering sequence is also a strict pullback of the affine rule’s sequence on the base itself. Comparison along the surjective cover makes the two base sequences isomorphic. The affine rule is a strong resolution on this input, and the property transfers across the sequence isomorphism.
 -/
 private theorem isStrongResolution_of_isInducedByAffineRule_of_isAffine (B : AffineResolutionRule.{u})
     (hres : ∀ (k : Type u) [Field k] [CharZero k] (Y : Scheme.{u})
@@ -355,18 +317,8 @@ private theorem isStrongResolution_of_isInducedByAffineRule_of_isAffine (B : Aff
   have h2 : IsStrictPullbackBlowupSeq g (B k W q) (B k Y p) := hetale k Y W p q g hgq hsurj
   exact IsStrongResolution.of_isomorphic k Y p (h2.isomorphic_of_isomorphic h1 (SequenceOfBlowups.isomorphic_refl _)) (hres k Y p)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+For the reduced base scheme take its affine open cover. Each chart is reduced and its structural map to the field is locally of finite type and quasi-compact. The chart inclusions are smooth of relative dimension zero, so compatibility of the global rule identifies the chart sequence with the pullback of the global one. Each chart sequence is a strong resolution by the affine comparison. These data yield local resolution charts for the global sequence. The local-to-global results give smoothness, properness, an isomorphism over the smooth locus, density of its inverse image, centers lying over the singular locus, and strict normal crossings for the reduced inverse image of that locus. These are all six conditions for strong resolution.
 -/
 private theorem isStrongResolution_of_isInducedByAffineRule (B : AffineResolutionRule.{u})
     (hres : ∀ (k : Type u) [Field k] [CharZero k] (Y : Scheme.{u})
@@ -440,10 +392,8 @@ private theorem isStrongResolution_of_isInducedByAffineRule (B : AffineResolutio
     d.centersLieOver_smoothLocusComplement, d.isStrictNormalCrossingsDivisor_reducedInverseImage⟩
   exact d.dense_preimage_smoothLocus
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Open compatibility ensures that the affine rule has no unit centers in its actual blowup steps. Together with étale compatibility this gives a globally glued sequence on each input. Choose those sequences as the global rule, so each is induced by the affine rule. Compatibility of the affine rule with smooth maps of fixed relative dimension gives smooth functoriality of the glued rule. The local-to-global strong resolution result applies to its sequences, and field base-change compatibility descends from the affine rule to the glued rule. These properties furnish the claimed characteristic-zero resolution.
 -/
 theorem strongResolutionOfSingularitiesCharZero_of_affineResolutionRule (B : AffineResolutionRule.{u})
     (hres : ∀ (k : Type u) [Field k] [CharZero k] (Y : Scheme.{u})
@@ -476,8 +426,8 @@ theorem strongResolutionOfSingularitiesCharZero_of_affineResolutionRule (B : Aff
   intro k _ _ X f _ _ _
   exact isStrongResolution_of_isInducedByAffineRule B hres hetale R hcomes hsmF k X f
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Use the affine resolution rule constructed from the given principalization algorithm. Its strong resolution property on affine inputs is the stated hypothesis. Functorial principalization, the blowup transition construction, and comparison of embeddings give the required compatibilities with étale covers, open immersions, field extensions, and smooth morphisms of fixed relative dimension. The globalization theorem for affine rules now gives the characteristic-zero strong resolution.
 -/
 theorem strongResolutionOfSingularitiesCharZero_of_principalizationAlgorithm (A : PrincipalizationAlgorithm.{u})
     (hemb : AffineEmbedsIntoAffineSpace.{u}) (hsncE : NilIsStrictNormalCrossingsOnAffineSpace.{u})

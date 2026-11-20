@@ -15,8 +15,8 @@ namespace LocalResolutionData
 variable {k : Type u} [Field k] {X : Scheme.{u}} {f : X ⟶ Spec (CommRingCat.of k)}
   [LocallyOfFiniteType f] {s : SequenceOfBlowups X}
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The two structural maps form a commuting square by compatibility of the chart map with the final global map. The final local object is isomorphic to the pullback, and under that isomorphism its projections are the local structural map and the chart map. Hence the square is a pullback.
 -/
 theorem isPullback_chartToLastObj (d : LocalResolutionData k f s) (i : d.cover.I₀) :
     IsPullback (d.chartToLastObj i) ((d.seq i).lastStructMap) s.lastStructMap (d.cover.f i) := by
@@ -27,12 +27,8 @@ theorem isPullback_chartToLastObj (d : LocalResolutionData k f s) (i : d.cover.I
       (d.chartToLastObj_eq i).symm
   exact h.flip
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The final chart square is a pullback. Restrict it over the smooth locus by pasting the pullback squares for open restriction. The base change of the global restricted morphism to this chart is therefore identified with the local final map restricted to the inverse image of the smooth locus. This is the local smooth locus. The local resolution makes the restricted map an isomorphism, and the pullback identification transfers this property to the indicated projection.
 -/
 private theorem isIso_pullback_snd_restrict_smoothLocus (d : LocalResolutionData k f s) (i : d.cover.I₀) :
     IsIso (pullback.snd (s.lastStructMap ∣_ f.smoothLocus) (d.cover.f i ∣_ f.smoothLocus)) := by
@@ -62,12 +58,8 @@ private theorem isIso_pullback_snd_restrict_smoothLocus (d : LocalResolutionData
   exact IsIso.of_isIso_comp_left hsq.flip.isoPullback.hom
     (pullback.snd (s.lastStructMap ∣_ f.smoothLocus) (d.cover.f i ∣_ f.smoothLocus))
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+The chart maps cover the base, so the chosen smooth point has a preimage in some chart. Since its image is smooth, that preimage lies in the open where this chart is restricted to the smooth locus. The restricted chart map sends it to the chosen point.
 -/
 private theorem exists_restrict_smoothLocus_apply_eq (d : LocalResolutionData k f s) :
     ∀ x : ↥(f.smoothLocus.toScheme), ∃ (i : d.cover.I₀)
@@ -98,8 +90,8 @@ private def smoothLocusOpenCover (d : LocalResolutionData k f s) :
     (exists_restrict_smoothLocus_apply_eq d)
     (fun i => show IsOpenImmersion (d.cover.f i ∣_ f.smoothLocus) from inferInstance)
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The restrictions of the original chart maps form an open cover of the smooth locus. Pulling the restricted global morphism back to each of these opens gives an isomorphism by the local calculation. Being an isomorphism is local on the target for an open cover, so the restricted global morphism is an isomorphism.
 -/
 theorem isIso_lastStructMap_restrict_smoothLocus (d : LocalResolutionData k f s) :
     IsIso (s.lastStructMap ∣_ f.smoothLocus) := by

@@ -31,21 +31,19 @@ def totalSpaceToBase (j : ℕ) : S.totalSpace j ⟶ Y :=
   Nat.rec (motive := fun j => S.totalSpace j ⟶ Y) S.totalSpaceZeroIso.hom
     (fun j ih => S.transitionMap j ≫ ih) j
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+At stage zero the recursion for the total-space projection begins with the forward map of the initial isomorphism to the original scheme.
 -/
 @[simp] theorem totalSpaceToBase_zero : S.totalSpaceToBase 0 = S.totalSpaceZeroIso.hom := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+At each successor the recursion defines the projection as the transition to the preceding stage followed by the projection from that stage.
 -/
 @[simp] theorem totalSpaceToBase_succ (j : ℕ) :
     S.totalSpaceToBase (j + 1) = S.transitionMap j ≫ S.totalSpaceToBase j := rfl
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
+/- English proof (authored)
+At zero both projections are the forward map of the same initial isomorphism. At a successor both are obtained by composing the preceding projection with the same successor transition. Induction gives equality at every stage.
 -/
 theorem totalSpaceToBase_eq_blowupSequence_projectionToBase (h : S.TransitionsAreBlowups) (j : ℕ) :
     S.totalSpaceToBase j = (S.blowupSequence h).projectionToBase j := by
@@ -59,8 +57,8 @@ theorem totalSpaceToBase_eq_blowupSequence_projectionToBase (h : S.TransitionsAr
       rw [totalSpaceToBase_succ, ih, (S.blowupSequence h).projectionToBase_succ, hb]
       rfl
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+At zero the restriction of the initial isomorphism to the strict-transform summand is the defined strict-transform map to the base. At a successor the inclusion of the strict-transform summand commutes with the total-space transition and the strict-transform transition. Use that square to move the inclusion past the transition. The induction hypothesis then gives the preceding strict-transform projection, and composition gives the new one.
 -/
 theorem inl_comp_totalSpaceToBase (j : ℕ) :
     (coprod.inl : S.strictTransform j ⟶ S.totalSpace j) ≫ S.totalSpaceToBase j =
@@ -74,12 +72,8 @@ theorem inl_comp_totalSpaceToBase (j : ℕ) :
       rw [totalSpaceToBase_succ, ← Category.assoc, S.inl_comp_transitionMap j, Category.assoc, ih,
         strictTransformToZero_succ, Category.assoc]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The total-space center restricts along the strict-transform summand to the center off the detached locus. Thus a point of the latter support maps to a point of the total-space center support. The induced-center condition sends this image to the singular locus of the base. The total-space projection restricted to the summand equals the strict-transform projection, so the original point has the same base image.
 -/
 theorem centersLieOverSingularLocus_of_inducedCentersLieOverSingularLocus (h : S.TransitionsAreBlowups)
     (hc : S.InducedCentersLieOverSingularLocus h) : S.CentersLieOverSingularLocus := by

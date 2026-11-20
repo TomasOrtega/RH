@@ -14,41 +14,31 @@ namespace LocalResolutionData
 variable {k : Type u} [Field k] {X : Scheme.{u}} {f : X ⟶ Spec (CommRingCat.of k)}
   [LocallyOfFiniteType f] {s : SequenceOfBlowups X}
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The map on points of a composite sends the point first through the first map and then through the second map.
 -/
 private theorem comp_base_apply {A B C : Scheme.{u}} (a : A ⟶ B) (b : B ⟶ C) (z : ↥A) :
     (a ≫ b).base z = b.base (a.base z) := by
   simp
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The inverse isomorphism followed by the forward isomorphism is the identity. Applying the underlying maps to the point gives the equality.
 -/
 private theorem hom_base_inv_base_apply {A B : Scheme.{u}} (e : A ≅ B) (z : ↥B) :
     e.hom.base (e.inv.base z) = z := by
   rw [← comp_base_apply, e.inv_hom_id]
   simp
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The support of a pulled-back ideal is the inverse image of its support. Therefore a point whose image lies in the support belongs to the pulled-back support.
 -/
 private theorem mem_support_comap_of_mem_support {Z W : Scheme.{u}} (g : Z ⟶ W) (I : W.IdealSheafData)
     (z : ↥Z) (hz : g.base z ∈ I.support) : z ∈ (I.comap g).support := by
   rw [Scheme.IdealSheafData.support_comap]
   exact hz
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Choose an open chart containing the image in the base of the given center point. The chart point and center point lift together to the pullback of the global stage. This lift belongs to the pulled-back center support, so the stage reindexing identifies that global center with a step in the local sequence. Under the stage isomorphism the lift gives a point on the local center. The local resolution sends it into the complement of the local smooth locus, which is the inverse image of the complement of the global smooth locus. Compatibility of the pullback projections identifies its image in the base with the original point’s image. Thus the original center lies over the required complement.
 -/
 theorem centersLieOver_smoothLocusComplement (d : LocalResolutionData k f s) :
     s.CentersLieOver ((smoothLocusComplement f : TopologicalSpace.Closeds ↥X) : Set ↥X) := by

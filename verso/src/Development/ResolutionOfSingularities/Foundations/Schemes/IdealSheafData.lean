@@ -9,8 +9,8 @@ namespace AlgebraicGeometry.Scheme.IdealSheafData
 
 variable {X Y : Scheme.{u}}
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The pullback ideal is the scheme-theoretic kernel of the first projection from the pulled-back closed subscheme. This projection is affine as a base change of a closed immersion. On an affine open its ideal of sections is therefore the kernel of the induced ring map on sections.
 -/
 private theorem comap_ideal_eq_ker_pullbackFst (I : Y.IdealSheafData) (f : X ⟶ Y)
     (V : X.affineOpens) :
@@ -21,22 +21,16 @@ private theorem comap_ideal_eq_ker_pullbackFst (I : Y.IdealSheafData) (f : X ⟶
     show ((⊥ : (Limits.pullback f I.subschemeι).IdealSheafData).ideal) = ⊥ from ideal_bot]
   exact (RingHom.ker_eq_comap_bot _).symm
 
-/- English proof (translation)
-Substitute using the available equality. Both sides reduce to the same expression.
+/- English proof (authored)
+Identify the two morphisms. The induced restriction on the specified opens is then the same map of sections.
 -/
 private theorem appLE_congr_hom {Z W : Scheme.{u}} {g₁ g₂ : Z ⟶ W} (h : g₁ = g₂)
     (U : W.Opens) (V : Z.Opens) (e₁ : V ≤ g₁ ⁻¹ᵁ U) :
     g₁.appLE U V e₁ = g₂.appLE U V (h ▸ e₁) := by
   subst h; rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The commutative pullback square identifies the two composites on sections, after restricting to the inverse image of the indicated source open. A section in the original ideal maps to zero on its closed subscheme. It therefore maps to zero along either composite. All generators of the extended ideal are in the kernel of the section map of the first projection, giving the inclusion.
 -/
 private theorem map_appLE_le_ker_pullbackFst (I : Y.IdealSheafData) (f : X ⟶ Y)
     (U : Y.affineOpens) (V : X.affineOpens) (e : (V : X.Opens) ≤ f ⁻¹ᵁ (U : Y.Opens)) :
@@ -72,8 +66,8 @@ private theorem map_appLE_le_ker_pullbackFst (I : Y.IdealSheafData) (f : X ⟶ Y
   rw [← RingHom.comp_apply, ← CommRingCat.hom_comp, happ, CommRingCat.hom_comp,
     RingHom.comp_apply, hker, map_zero]
 
-/- English proof (translation)
-Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
+/- English proof (authored)
+For the whole source and target, the restriction after applying the map on sections is the restriction from the whole source to itself. It is the identity, so the restricted map is the global map.
 -/
 private theorem appLE_top_eq_appTop (f : X ⟶ Y) (e0 : (⊤ : X.Opens) ≤ f ⁻¹ᵁ (⊤ : Y.Opens)) :
     f.appLE (⊤ : Y.Opens) (⊤ : X.Opens) e0 = f.appTop := by
@@ -83,8 +77,8 @@ private theorem appLE_top_eq_appTop (f : X ⟶ Y) (e0 : (⊤ : X.Opens) ≤ f �
     _ = f.app (⊤ : Y.Opens) ≫ 𝟙 Γ(X, ⊤) := by rw [h1]
     _ = f.appTop := Category.comp_id _
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The affine correspondence takes an ideal sheaf to its ideal of global sections. The construction from the chosen ideal is the inverse correspondence, so taking its global sections recovers the ideal.
 -/
 theorem ofIdealTop_ideal_top {Z : Scheme.{u}} [IsAffine Z] (J : Ideal Γ(Z, ⊤)) :
     (ofIdealTop J).ideal ⟨⊤, isAffineOpen_top Z⟩ = J := by
@@ -92,10 +86,8 @@ theorem ofIdealTop_ideal_top {Z : Scheme.{u}} [IsAffine Z] (J : Ideal Γ(Z, ⊤)
   rw [equivOfIsAffine_symm_apply, equivOfIsAffine_apply] at h
   exact h
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-By extensionality, compare the relevant components. Both sides reduce to the same expression. A detailed English derivation is pending.
+/- English proof (authored)
+Compose the section map with the given map to the target ring. The kernel hypothesis makes this composite vanish on the original ideal. It therefore factors through the quotient by that ideal. Identify this quotient with the sections of the closed subscheme on the inverse image of the affine open. The quotient lift gives the desired map and composite identity.
 -/
 private theorem exists_hom_comp_eq_appLE_comp (I : Y.IdealSheafData) (f : X ⟶ Y)
     (U : Y.affineOpens) (V : X.affineOpens) (e : (V : X.Opens) ≤ f ⁻¹ᵁ (U : Y.Opens))
@@ -115,18 +107,8 @@ private theorem exists_hom_comp_eq_appLE_comp (I : Y.IdealSheafData) (f : X ⟶ 
     ext a
     rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The two specified ring maps give maps from the spectrum of the target ring to the affine source open and to the corresponding affine open of the closed subscheme. Their composites into the original target agree because the given equality of ring maps reverses to that equality of scheme morphisms. The two maps therefore lift to the pullback, with projection to the source the map from the first ring homomorphism. The whole spectrum maps into the inverse image of the source open under this projection. Take the resulting map of sections and identify the global sections of that spectrum with its ring. Compatibility of the lift with the first projection says that the resulting map factors the original ring homomorphism.
 -/
 private theorem exists_hom_pullbackFst_app_comp_eq (I : Y.IdealSheafData) (f : X ⟶ Y)
     (U : Y.affineOpens) (V : X.affineOpens) (e : (V : X.Opens) ≤ f ⁻¹ᵁ (U : Y.Opens))
@@ -184,10 +166,8 @@ private theorem exists_hom_pullbackFst_app_comp_eq (I : Y.IdealSheafData) (f : X
     Scheme.Hom.appLE_comp_appLE, appLE_congr_hom hlift, ← hsplit, ha, appLE_top_eq_appTop, hb]
   simp
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Take the quotient of the affine source section ring by the extended ideal. The quotient map vanishes on extensions of the original ideal. It therefore factors through the section ring of the pulled-back closed subscheme by the two factorization lemmas. Any section vanishing under the pullback projection also vanishes in this quotient, so it belongs to the extended ideal.
 -/
 private theorem ker_pullbackFst_le_map_appLE (I : Y.IdealSheafData) (f : X ⟶ Y)
     (U : Y.affineOpens) (V : X.affineOpens) (e : (V : X.Opens) ≤ f ⁻¹ᵁ (U : Y.Opens)) :
@@ -204,8 +184,8 @@ private theorem ker_pullbackFst_le_map_appLE (I : Y.IdealSheafData) (f : X ⟶ Y
   rw [RingHom.mem_ker] at hx ⊢
   rw [← hθ, CommRingCat.hom_comp, RingHom.comp_apply, hx, map_zero]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+On the affine source open the pullback ideal is the kernel of the map on sections of the pulled-back closed subscheme. The extended ideal is contained in this kernel because its generators vanish on that subscheme. Conversely the quotient by the extended ideal factors through the section map of the pullback, so every element of the kernel belongs to the extended ideal. Together the inclusions give equality.
 -/
 theorem comap_ideal_eq_map_appLE (I : Y.IdealSheafData) (f : X ⟶ Y)
     (U : Y.affineOpens) (V : X.affineOpens)
@@ -215,8 +195,8 @@ theorem comap_ideal_eq_map_appLE (I : Y.IdealSheafData) (f : X ⟶ Y)
   exact le_antisymm (ker_pullbackFst_le_map_appLE I f U V e)
     (map_appLE_le_ker_pullbackFst I f U V e)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The affine pullback formula identifies the extended ideal with the pulled-back section ideal. The quoted inclusion follows from this equality.
 -/
 theorem map_appLE_le_comap_ideal (I : Y.IdealSheafData) (f : X ⟶ Y)
     (U : Y.affineOpens) (V : X.affineOpens)
@@ -224,8 +204,8 @@ theorem map_appLE_le_comap_ideal (I : Y.IdealSheafData) (f : X ⟶ Y)
     (I.ideal U).map (f.appLE (U : Y.Opens) (V : X.Opens) e).hom ≤ (I.comap f).ideal V :=
   ge_of_eq (comap_ideal_eq_map_appLE I f U V e)
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Apply the affine section formula with each open equal to its whole scheme. The restricted section map for those opens is the map on global sections.
 -/
 theorem comap_ideal_top_eq_map_appTop [IsAffine X] [IsAffine Y]
     (I : Y.IdealSheafData) (f : X ⟶ Y) :
@@ -237,8 +217,8 @@ theorem comap_ideal_top_eq_map_appTop [IsAffine X] [IsAffine Y]
     (fun φ => Ideal.map (CommRingCat.Hom.hom φ) (I.ideal ⟨⊤, isAffineOpen_top Y⟩))
     (appLE_top_eq_appTop f e0)
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The two ideal sheaves have the same global section ideal by the affine pullback formula and the affine ideal correspondence. Since affine ideal sheaves are determined by their global section ideals, the sheaves agree.
 -/
 theorem comap_ofIdealTop [IsAffine X] [IsAffine Y] (J : Ideal Γ(Y, ⊤)) (f : X ⟶ Y) :
     (ofIdealTop J).comap f = ofIdealTop (J.map f.appTop.hom) := by
@@ -247,8 +227,8 @@ theorem comap_ofIdealTop [IsAffine X] [IsAffine Y] (J : Ideal Γ(Y, ⊤)) (f : X
     rw [comap_ideal_top_eq_map_appTop, ofIdealTop_ideal_top, ofIdealTop_ideal_top]
   exact (equivOfIsAffine (X := X)).injective h
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The image of the given section belongs to the extended ideal by the definition of extension. The affine pullback formula includes that ideal in the pullback section ideal.
 -/
 theorem appLE_mem_comap_ideal (I : Y.IdealSheafData) (f : X ⟶ Y)
     (U : Y.affineOpens) (V : X.affineOpens)
@@ -257,8 +237,8 @@ theorem appLE_mem_comap_ideal (I : Y.IdealSheafData) (f : X ⟶ Y)
     (f.appLE (U : Y.Opens) (V : X.Opens) e).hom x ∈ (I.comap f).ideal V :=
   map_appLE_le_comap_ideal I f U V e (Ideal.mem_map_of_mem _ hx)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+By the affine pullback formula the new ideal is the extension of the old one. Extension sends an ideal generated by a set to the ideal generated by the images of the set.
 -/
 theorem comap_ideal_eq_span_image (I : Y.IdealSheafData) (f : X ⟶ Y)
     (U : Y.affineOpens) (V : X.affineOpens)
@@ -268,23 +248,15 @@ theorem comap_ideal_eq_span_image (I : Y.IdealSheafData) (f : X ⟶ Y)
       = Ideal.span ((f.appLE (U : Y.Opens) (V : X.Opens) e).hom '' s) := by
   rw [comap_ideal_eq_map_appLE I f U V e, hs, Ideal.map_span]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Ideal pullback is the left adjoint in the ideal-sheaf image and pullback Galois connection. Left adjoints preserve suprema, giving the stated equality.
 -/
 theorem comap_iSup {X Y : Scheme.{u}} (f : X ⟶ Y) {ι : Sort*} (I : ι → Y.IdealSheafData) :
     (⨆ i, I i).comap f = ⨆ i, (I i).comap f :=
   (map_gc f).l_iSup
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+On the affine open the pulled-back ideal sheaf is determined by its global section ideal. This ideal is the extension of the original section ideal along the section-ring isomorphism for the open inclusion. A ring isomorphism preserves and reflects the unit ideal. Use the affine correspondence on the open subscheme to conclude the equivalence.
 -/
 theorem comap_ι_eq_top_iff_ideal_eq_top {Y : Scheme.{u}} (I : Y.IdealSheafData) {V : Y.Opens}
     (hV : IsAffineOpen V) : I.comap V.ι = ⊤ ↔ I.ideal ⟨V, hV⟩ = ⊤ := by
@@ -322,20 +294,16 @@ theorem comap_ι_eq_top_iff_ideal_eq_top {Y : Scheme.{u}} (I : Y.IdealSheafData)
       rw [hmap, h, Ideal.map_top, htop]
     exact (equivOfIsAffine (X := V.toScheme)).injective h2
 
-/- English proof (translation)
-By extensionality, compare the relevant components. A detailed English derivation is pending.
+/- English proof (authored)
+On each affine open, building a sheaf from a global ideal extends that ideal along the restriction of global sections. Extension commutes with products. Thus the two proposed sheaves have the same ideal on every affine open.
 -/
 theorem ofIdealTop_mul [IsAffine X] (I J : Ideal Γ(X, ⊤)) :
     ofIdealTop (I * J) = ofIdealTop I * ofIdealTop J := by
   ext U : 2
   exact Ideal.map_mul _ _ _
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Cover the source by affine opens each mapping into an affine open of the target. Such neighborhoods exist because affine opens form a basis in both schemes. On each source open the affine pullback formula is extension of the target section ideals, which commutes with products. Equality on this cover gives equality of the sheaves.
 -/
 theorem comap_mul (I J : Y.IdealSheafData) (f : X ⟶ Y) :
     (I * J).comap f = I.comap f * J.comap f := by
@@ -358,8 +326,8 @@ theorem comap_mul (I J : Y.IdealSheafData) (f : X ⟶ Y) :
     rw [Ideal.map_mul, comap_ideal_eq_map_appLE I f W V hVW,
       comap_ideal_eq_map_appLE J f W V hVW]
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately.
+/- English proof (authored)
+At exponent zero both schemes have the unit ideal, which pullback preserves. The successor power is a product of the preceding power with the original ideal. Apply preservation of products and the induction hypothesis.
 -/
 theorem comap_pow (I : Y.IdealSheafData) (f : X ⟶ Y) (n : ℕ) :
     (I ^ n).comap f = I.comap f ^ n := by
@@ -367,10 +335,8 @@ theorem comap_pow (I : Y.IdealSheafData) (f : X ⟶ Y) (n : ℕ) :
   | zero => simp
   | succ n ih => rw [pow_succ, pow_succ, comap_mul, ih]
 
-/- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The closed support of the pulled-back ideal is the inverse image of the original support. The two membership statements are the defining property of inverse image.
 -/
 theorem mem_support_comap {f : X ⟶ Y} {I : Y.IdealSheafData} {x : X} :
     x ∈ (I.comap f).support ↔ f.base x ∈ I.support := by
@@ -382,8 +348,8 @@ theorem mem_support_comap {f : X ⟶ Y} {I : Y.IdealSheafData} {x : X} :
     rw [AlgebraicGeometry.Scheme.IdealSheafData.support_comap]
     exact hx
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+If the ideal were unit, its support would be empty. The given point in the support contradicts this.
 -/
 theorem ne_top_of_mem_support (J : Y.IdealSheafData) (x : ↥Y) (hx : x ∈ J.support) : J ≠ ⊤ := by
   intro hc
@@ -393,25 +359,23 @@ theorem ne_top_of_mem_support (J : Y.IdealSheafData) (x : ↥Y) (hx : x ∈ J.su
   rw [hb] at hx2
   simp at hx2
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The ideal-sheaf support is the least closed subset exactly for the unit ideal. The least closed subset is the empty set.
 -/
 theorem eq_top_iff_support_eq_empty {X : Scheme.{u}} (I : X.IdealSheafData) :
     I = ⊤ ↔ (I.support : Set X) = ∅ := by
   rw [← support_eq_bot_iff, SetLike.ext'_iff]
   simp
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+A support is nonempty exactly when it differs from the empty set. By the unit ideal criterion this is exactly the condition that the ideal is nonunit.
 -/
 theorem support_nonempty_iff_ne_top {X : Scheme.{u}} (I : X.IdealSheafData) :
     (I.support : Set X).Nonempty ↔ I ≠ ⊤ := by
   rw [ne_eq, eq_top_iff_support_eq_empty, Set.nonempty_iff_ne_empty, ne_eq]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+If the given point were in the original support, its representative on the open would lie in the restricted support by the inverse-image formula. The restricted ideal is unit, and thus has empty support, a contradiction.
 -/
 theorem notMem_support_of_comap_ι_eq_top (I : Y.IdealSheafData) {U : Y.Opens}
     (h : I.comap U.ι = ⊤) {x : Y} (hxU : x ∈ U) : x ∉ I.support := by
@@ -423,12 +387,8 @@ theorem notMem_support_of_comap_ι_eq_top (I : Y.IdealSheafData) {U : Y.Opens}
   have h2 : (⟨x, hxU⟩ : ↥U) ∈ ((⊥ : TopologicalSpace.Closeds ↥U) : Set ↥U) := h1
   simp at h2
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
+/- English proof (authored)
+The affine identification sends the corresponding prime ideal to the given point. The inverse image of the scheme's basic open is the basic open of the same element in the affine spectrum. A prime lies in this basic open exactly when it does not contain the element.
 -/
 private theorem mem_basicOpen_iff_notMem_primeIdealOf {X : Scheme.{u}} {U : X.Opens}
     (hU : IsAffineOpen U) {x : X} (hx : x ∈ U) (g : Γ(X, U)) :
@@ -449,10 +409,8 @@ private theorem mem_basicOpen_iff_notMem_primeIdealOf {X : Scheme.{u}} {U : X.Op
     have h4 : hU.fromSpec.base (hU.primeIdealOf ⟨x, hx⟩) ∈ X.basicOpen g := h3
     rwa [h1] at h4
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+On the affine open the support is the zero locus of the ideal of sections. A point is in this locus precisely when it belongs to none of the basic opens of the ideal's sections. Under the affine identification this says that every section of the ideal belongs to the point's prime ideal.
 -/
 theorem mem_support_iff_ideal_le_primeIdealOf {X : Scheme.{u}} (I : X.IdealSheafData)
     {U : X.Opens} (hU : IsAffineOpen U) {x : X} (hx : x ∈ U) :
@@ -470,10 +428,8 @@ theorem mem_support_iff_ideal_le_primeIdealOf {X : Scheme.{u}} (I : X.IdealSheaf
     rw [mem_basicOpen_iff_notMem_primeIdealOf hU hx f]
     exact not_not.mpr (h hf)
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The map from the source open into the target factors through the chosen target open. Pulling back either ideal along that composite is thus pulling back its restriction to the target open. These restrictions are equal by hypothesis.
 -/
 theorem comap_ι_comp_eq_of_comap_ι_eq (f : X ⟶ Y) (V : Y.Opens) (U : X.Opens)
     (hle : U ≤ f ⁻¹ᵁ V) (I J : Y.IdealSheafData)
@@ -488,8 +444,8 @@ theorem comap_ι_comp_eq_of_comap_ι_eq (f : X ⟶ Y) (V : Y.Opens) (U : X.Opens
       ← AlgebraicGeometry.Scheme.IdealSheafData.comap_comp, CategoryTheory.Category.assoc, hfac]
   rw [← e I, ← e J, h]
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. A detailed English derivation is pending.
+/- English proof (authored)
+The empty product is the unit ideal, preserved by pullback. For a nonempty list, pullback preserves the product of the head with the tail product. Apply induction to the tail.
 -/
 theorem comap_listProd {X Y : Scheme.{u}} (f : X ⟶ Y) (L : List Y.IdealSheafData) :
     L.prod.comap f = (L.map (·.comap f)).prod := by
@@ -499,8 +455,8 @@ theorem comap_listProd {X Y : Scheme.{u}} (f : X ⟶ Y) (L : List Y.IdealSheafDa
     exact comap_top f
   | cons D E ih => simp only [List.map_cons, List.prod_cons, comap_mul, ih]
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the finite indexing set. For the empty set use preservation of the unit ideal. Inserting a new index multiplies the old product by its factor. Pullback preserves this multiplication, and the induction hypothesis applies to the old product.
 -/
 theorem comap_finset_prod {X Y : Scheme.{u}} (f : X ⟶ Y) {ι : Type*} (s : Finset ι)
     (F : ι → Y.IdealSheafData) :
@@ -512,20 +468,16 @@ theorem comap_finset_prod {X Y : Scheme.{u}} (f : X ⟶ Y) {ι : Type*} (s : Fin
   · intro a t ha ih
     simp only [Finset.prod_insert ha, comap_mul, ih]
 
-/- English proof (translation)
-Establish an intermediate fact. Supply the required witnesses or components.
+/- English proof (authored)
+The image of a nilpotent element under the ring isomorphism is nilpotent and hence zero in the reduced target ring. Injectivity forces the original element to be zero.
 -/
 private theorem isReduced_of_ringEquiv {A B : Type u} [CommRing A] [CommRing B]
     (e : A ≃+* B) (h : _root_.IsReduced B) : _root_.IsReduced A := by
   have := h
   exact ⟨fun a ha => e.injective (by simpa using (ha.map (e : A →+* B)).eq_zero)⟩
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Choose an affine neighborhood of the image of the point in the ambient scheme. Its inverse image under the closed immersion is affine, with section ring the quotient by the corresponding ideal. This quotient is reduced because the ideal is radical. An affine scheme with reduced section ring has reduced local rings, since localization preserves reducedness. The stalk of this open at the point is the original stalk on the closed subscheme.
 -/
 private theorem isReduced_stalk_of_radical (I : X.IdealSheafData)
     (hrad : ∀ U : X.affineOpens, (I.ideal U).IsRadical) (y : ↥I.subscheme) :
@@ -552,10 +504,8 @@ private theorem isReduced_stalk_of_radical (I : X.IdealSheafData)
     (Scheme.Opens.stalkIso (I.subschemeι ⁻¹ᵁ (U : X.Opens))
       (⟨y, hy⟩ : ↥(I.subschemeι ⁻¹ᵁ (U : X.Opens)))).symm.commRingCatIsoToRingEquiv key
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+On each affine open, the vanishing ideal is an intersection of primes and therefore radical. The radical-ideal argument shows that every stalk of its closed subscheme is reduced. Reducedness is local on stalks, so the subscheme is reduced.
 -/
 theorem isReduced_subscheme_vanishingIdeal
     (W : Scheme.{u}) (Z : TopologicalSpace.Closeds W) :
@@ -570,8 +520,8 @@ theorem isReduced_subscheme_vanishingIdeal
     exact PrimeSpectrum.isRadical_vanishingIdeal _
   exact isReduced_of_isReduced_stalk _
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+The ideal is the image of the zero ideal along its closed-subscheme inclusion, since this image is the kernel of that inclusion. Pulling back an image ideal is contained in the starting ideal by the general pullback-image inequality. Thus the restriction is contained in the zero ideal, and equality follows.
 -/
 theorem comap_subschemeι_self {X : Scheme.{u}} (I : X.IdealSheafData) :
     I.comap I.subschemeι = ⊥ := by
@@ -583,8 +533,8 @@ end AlgebraicGeometry.Scheme.IdealSheafData
 
 namespace FunctorialResolution.Blowup
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The closed immersion identifies the subscheme topologically with a subspace of the ambient scheme. Subspaces of a Noetherian space are Noetherian.
 -/
 theorem noetherianSpace_subscheme {X : Scheme.{u}} (I : X.IdealSheafData)
     [TopologicalSpace.NoetherianSpace ↥X] :
@@ -597,37 +547,23 @@ instance instNoetherianSpaceSubscheme {X : Scheme.{u}} (I : X.IdealSheafData)
     TopologicalSpace.NoetherianSpace ↥I.subscheme :=
   noetherianSpace_subscheme I
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
+/- English proof (authored)
+The empty product is the multiplicative identity of ideal sheaves, which is the unit ideal.
 -/
 theorem idealSheafData_prod_nil (X : Scheme.{u}) :
     ([] : List X.IdealSheafData).prod = ⊤ := by
   rw [List.prod_nil]
   rfl
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+A list product is defined recursively by multiplying its first factor by the product of its tail.
 -/
 theorem idealSheafData_prod_cons (X : Scheme.{u}) (D : X.IdealSheafData)
     (E : List X.IdealSheafData) : (D :: E).prod = D * E.prod :=
   List.prod_cons
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+On an affine open of the intermediate scheme its image under the open immersion is affine, and the section map from this image is an isomorphism. The inverse images of these corresponding opens under the two remaining maps are the same. Functoriality of section maps therefore identifies the map of the composite with the intermediate scheme's map after transport by section isomorphisms. Its kernel extends to exactly the kernel on the intermediate affine open. This holds on all of its affine opens and proves the ideal-sheaf equality.
 -/
 theorem comap_ker_comp_of_isOpenImmersion {A B C : Scheme.{u}} (j : A ⟶ B) (f : B ⟶ C)
     [IsOpenImmersion f] [QuasiCompact j] [QuasiCompact (j ≫ f)] :
@@ -692,12 +628,8 @@ end FunctorialResolution.Blowup
 
 namespace AlgebraicGeometry.Scheme.IdealSheafData
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+For an isomorphism, the kernel of the pulled-back subscheme inclusion followed by the isomorphism pulls back to the original pulled-back ideal by the open-immersion kernel comparison. Pullback along the inverse shows that the kernel before pulling back was the original ideal. The closed immersions into the target thus have the same kernel, so the universal property gives an isomorphism between their sources commuting with both inclusions.
 -/
 theorem exists_iso_subscheme_comap_of_isIso {Y Y' : Scheme.{u}} (g : Y ⟶ Y') [IsIso g]
     (I : Y'.IdealSheafData) :

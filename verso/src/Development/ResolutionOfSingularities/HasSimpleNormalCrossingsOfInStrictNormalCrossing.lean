@@ -12,16 +12,16 @@ universe u
 
 namespace FunctorialResolution
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+Apply the characteristic-zero strong resolution theorem. Retain the length, tower, initial identification, centers, and blowup property of each resulting sequence. These are the blowup sequences required in the present formulation. The resolution and functoriality properties are exactly those supplied by strong resolution.
 -/
 theorem functorialResolutionCharZero : FunctorialResolutionCharZero.{u} := by
   obtain ⟨R, h1, h2, h3⟩ := EmbeddedResolution.strongResolutionOfSingularitiesCharZero.{u}
   exact ⟨fun k _ _ X f _ _ _ =>
     ⟨(R k X f).length, (R k X f).tower, (R k X f).isoZero, (R k X f).center, (R k X f).isBlowup⟩, h1, h2, h3⟩
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+Keep the given smoothness condition. At each point the simple normal crossing data give an open chart, an étale map compatible with the structural maps, and coordinate labels for the boundary. Package the map and its two properties as an étale chart. The labels and their ideal descriptions then give strict normal crossing position.
 -/
 theorem inStrictNormalCrossingPosition_of_hasSimpleNormalCrossings {X : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} {E : List X.IdealSheafData} (h : HasSimpleNormalCrossings p E) :
@@ -30,8 +30,8 @@ theorem inStrictNormalCrossingPosition_of_hasSimpleNormalCrossings {X : Scheme.{
   obtain ⟨U, hx, m, c, hc, he, a, h1, h2, h3⟩ := h.2 x
   exact ⟨U, hx, m, ⟨c, hc, he⟩, a, h1, h2, h3⟩
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+For a point on the subscheme, use the chart and coordinate labels supplied by the strict normal crossing condition. Unpack the chart into its map, compatibility over the base, and étaleness. Keep its coordinate descriptions of the subscheme and boundary, which give the simple normal crossing condition.
 -/
 theorem hasSimpleNormalCrossingsWith_of_hasStrictNormalCrossingsWith {X : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} {Z : X.IdealSheafData} {E : List X.IdealSheafData}
@@ -45,8 +45,8 @@ noncomputable def blowupSequenceOfIdealBlowupSequence {k : Type u} [Field k] {X 
     (M : FunctorialResolution.EmbeddedResolution.IdealBlowupSequence p I E) : BlowupSequence X :=
   ⟨M.length, M.tower, M.isoZero, M.center, M.isBlowup⟩
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+Retain the common smoothness condition. At each point unpack the strict normal crossing chart into the map, base compatibility, and étaleness. The same coordinate labels and boundary descriptions then give simple normal crossings.
 -/
 theorem hasSimpleNormalCrossings_of_inStrictNormalCrossingPosition {X : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} {E : List X.IdealSheafData} (h : FunctorialResolution.EmbeddedResolution.InStrictNormalCrossingPosition p E) :
@@ -55,16 +55,10 @@ theorem hasSimpleNormalCrossings_of_inStrictNormalCrossingPosition {X : Scheme.{
   obtain ⟨U, hx, m, c, a, h1, h2, h3⟩ := h.2 x
   exact ⟨U, hx, m, c.map, c.comp_struct, c.isEtale, a, h1, h2, h3⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
+/- English proof (authored)
+At stage zero the total transform of the original ideal is the recorded ideal, and the exceptional product is unit. At a successor, pull back the preceding identity along the blowup. The marked step formula factors the pulled-back recorded ideal as the new exceptional ideal times the next recorded ideal. The recurrence for the exceptional product adds this factor to the pullback of the previous product. Induction gives the total-transform factorization at every stage. At the final stage the recorded ideal is unit, so the total transform equals the product of the exceptional ideals.
 
-Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
-
-A detailed English derivation is pending.
+Use the given tracked ideals and boundary to supply the remaining principalization properties. The step and center conditions come from the marked data. The original scheme is Noetherian by local finite type and quasi-compactness over the field, so the boundary remains in strict normal crossing position at each stage. Convert the strict normal crossing data for the boundaries and the centers to the required simple normal crossing formulations.
 -/
 theorem isPrincipalizingSequence_of_idealBlowupSequence {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} [Smooth p] [LocallyOfFiniteType p] [QuasiCompact p]
@@ -109,8 +103,8 @@ noncomputable def principalizationRuleOfAlgorithm (A : EmbeddedResolution.Princi
   fun k _ _ X p _ _ _ I hI E hE =>
     blowupSequenceOfIdealBlowupSequence (A k X p I hI E (inStrictNormalCrossingPosition_of_hasSimpleNormalCrossings hE))
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Define the rule by converting the input simple normal crossing boundary to strict normal crossing data and then taking the underlying blowup sequence of the algorithm. Its final recorded ideal is unit by the algorithm's principalization property, so the sequence principalizes by the total-transform argument. The algorithm's smooth pullback and field extension properties apply to the same converted boundary data and give the required functoriality of the rule.
 -/
 theorem functorialPrincipalizationCharZero_of_algorithm (A : EmbeddedResolution.PrincipalizationAlgorithm.{u}) (h : FunctorialResolution.EmbeddedResolution.IsFunctorialPrincipalization A) :
     FunctorialPrincipalizationCharZero.{u} := by
@@ -125,8 +119,8 @@ theorem functorialPrincipalizationCharZero_of_algorithm (A : EmbeddedResolution.
     exact h.base_change k X p I hI E (inStrictNormalCrossingPosition_of_hasSimpleNormalCrossings hE) K (algebraMap k K) hI'
       (inStrictNormalCrossingPosition_of_hasSimpleNormalCrossings hE')
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Take the principalization algorithm with radical centers. Its functoriality theorem supplies the hypotheses for passing from this algorithm to a characteristic-zero principalization rule.
 -/
 theorem functorialPrincipalizationCharZero : FunctorialPrincipalizationCharZero.{u} :=
   functorialPrincipalizationCharZero_of_algorithm FunctorialResolution.EmbeddedResolution.principalizationWithRadicalCenters FunctorialResolution.EmbeddedResolution.isFunctorialPrincipalization_principalizationWithRadicalCenters

@@ -63,8 +63,8 @@ abbrev top (s : BlowupSequence X) : Scheme.{u} := s.obj s.length
 
 def topMap (s : BlowupSequence X) : s.top ⟶ X := s.structMap s.length
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The structural map of a stage is its transition to stage zero followed by the initial isomorphism. The tower is a functor on the opposite ordered set, so the transition from the later stage to the earlier one followed by the transition to zero is the direct transition to zero. Postcompose this identity with the initial isomorphism.
 -/
 theorem structMap_down (s : BlowupSequence X) {i i' : ℕ} (h : i ≤ i') :
     s.down h ≫ s.structMap i = s.structMap i' :=

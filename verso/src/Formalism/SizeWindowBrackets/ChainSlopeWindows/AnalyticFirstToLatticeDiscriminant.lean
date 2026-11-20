@@ -23,8 +23,8 @@ open Formalism Formalism.D5 Formalism.RankGapBounds.WeightedMeanData Formalism.L
 section Defs
 variable {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H] {W : H → Type} [∀ u0, Fintype (W u0)] {m : ℕ}
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+Each image is indexed by the original finite set because the indexing maps are injective. Reindex the sums by that set and use the given equality of top sizes term by term. The image cardinalities also agree, so the two main inequalities are identical.
 -/
 theorem concl_transport {T Pl Pl' : Type} (TT : Finset T) (e : T ↪ Pl) (e' : T ↪ Pl') (aP : Pl → ℝ) (aP' : Pl' → ℝ)
     (h : ∀ t, aP (e t) = aP' (e' t)) (muC hu Fo logT logOm m a La B0 Nc xe C0 : ℝ) :
@@ -32,24 +32,24 @@ theorem concl_transport {T Pl Pl' : Type} (TT : Finset T) (e : T ↪ Pl) (e' : T
       ThmConcl (TT.map e') aP' muC hu Fo logT logOm m a La B0 Nc xe C0 := by
   simp [ThmConcl, Finset.sum_map, h, Finset.card_map]
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+Pull both sums on top places back to the common finite set through their embeddings. The top sizes agree at each index, and the other factors in the prime-cost deviation bound agree directly. This gives the equivalence.
 -/
 theorem second_conclusion_transport {T Pl Pl' J : Type} [Fintype J] (TT : Finset T) (e : T ↪ Pl) (e' : T ↪ Pl') (aP : Pl → ℝ)
     (aP' : Pl' → ℝ) (h : ∀ t, aP (e t) = aP' (e' t)) (sE : J → ℝ) (lg m B0 C0 : ℝ) :
     TypePrimeCostDeviationBound (TT.map e) aP sE lg m B0 C0 ↔ TypePrimeCostDeviationBound (TT.map e') aP' sE lg m B0 C0 := by
   simp [TypePrimeCostDeviationBound, Finset.sum_map, h]
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+For each unit, the embeddings express the size sums on both sides as sums over the common top set. The assumed pointwise size equality identifies those sums. The cardinalities also agree, so every contribution to corrected height variation agrees.
 -/
 theorem third_conclusion_transport {T Pl Pl' U : Type} (TT : Finset T) (e : T ↪ Pl) (e' : T ↪ Pl') (aP : U → Pl → ℝ)
     (aP' : U → Pl' → ℝ) (h : ∀ u t, aP u (e t) = aP' u (e' t)) (hu logT : U → ℝ) (a La B0 m C0 : ℝ) :
     CorrectedHeightVariationBound (TT.map e) hu logT aP a La B0 m C0 ↔ CorrectedHeightVariationBound (TT.map e') hu logT aP' a La B0 m C0 := by
   simp [CorrectedHeightVariationBound, Finset.sum_map, h, Finset.card_map]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+Transport the main, prime-cost, and corrected-height conclusions to the top-place embedding used by the lattice construction. The main conclusion and the row arithmetic data give divisibility for every free part. The second conclusion gives the exponent comparison at the two chosen primes, and the third gives the height comparison. Use the given row height estimate with the same row data to obtain the final height bound.
 -/
 theorem divisibility_of_inner_divisibility : DivOfDivIn (H := H) (W := W) (m := m) := by
   intro D ell G C N TT T2 a w Fm Rw logOm C0 g₁ g₂ hx hk hLa hlg hX' ⟨hR, hc1, hc2, hc3, hT, h2, h3, hF⟩
@@ -68,10 +68,8 @@ theorem divisibility_of_inner_divisibility : DivOfDivIn (H := H) (W := W) (m := 
         (fun u0 => (Rw u0).R) (fun u0 => (Rw u0).ψ) (fun u0 => (hR u0).1) (fun u0 => (hR u0).2.1) hX'
         (fun u0 => (hR u0).2.2.1) (fun u0 => (hR u0).2.2.2) hF
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+The error windows give nonnegativity of x, the count parameter, and the main logarithmic scale. Use them and the row positivity conditions in the inner-divisibility conversion. Its four outputs give the divisibility, exponent comparison, height comparison, and height bound required on the discriminant side. The other hypotheses are inherited, with thinness and valuation control appended to the size inputs.
 -/
 theorem inputs_first_to_discriminant : Inputs6aToD (H := H) (W := W) (m := m) := by
   intro D ell G C cT N TT T2 a w Fm Rw η θ eK K CL logOm C0 g₁ g₂ hlg
@@ -86,12 +84,8 @@ theorem inputs_first_to_discriminant : Inputs6aToD (H := H) (W := W) (m := m) :=
 
 end Defs
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Take the threshold supplied by the analytic host result. At a point above it, apply that result to the given modulus data, and then use the group bound to get thinness and the valuation estimate. Set the small parameter to the prescribed decaying exponential. For each arithmetic component, apply the input conversion with those estimates after identifying the data’s x and ε with the external ones.
 -/
 theorem analytic_first_to_lattice_discriminant : Core6aToCore2d := by
   intro c' hHA ε A hε hA
@@ -107,8 +101,8 @@ theorem analytic_first_to_lattice_discriminant : Core6aToCore2d := by
   · rw [hx, hεG]; exact hThin
   · rw [hx, hεG]; exact hVal
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
+/- English proof (authored)
+The place is a finite prime over the integers, so its ramification index is a positive integer. Its real value is therefore at least one.
 -/
 theorem ramE_one_le {K : Type} [Field K] [NumberField K] (w : slopeLatticeData.FinPl K) : 1 ≤ ramE w := by
   have := w.2.isPrime
@@ -116,20 +110,8 @@ theorem ramE_one_le {K : Type} [Field K] [NumberField K] (w : slopeLatticeData.F
   unfold ramE
   exact_mod_cast h
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
-
-Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+At each selected place the rounded slope is the floor of the original slope times the ramification index, divided by that index. The rounding loss is nonnegative and less than the reciprocal of the index, which is at most one. Outside the allowed rational primes the original slope is zero, so its rounding loss is zero. The selected places contain the full fibers over their primes, and the unit rule bounds their local weights. The rounding estimate for coset indices now bounds the total loss by (2 log 4 + 6) times the cutoff scale.
 -/
 theorem round_of_floor : RoundOfFloor := by
   classical
@@ -169,8 +151,8 @@ theorem round_of_floor : RoundOfFloor := by
 section DefsB
 variable {U0 : Type} {W : U0 → Type} {Top : Type} [Fintype Top] {m f : ℕ}
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
+/- English proof (authored)
+The exact-coefficient estimate gives the count proposition with coefficient c5. Combine it with the size windows and the fourth-step estimate in the joint fourth-and-fifth estimate to get the slope and counting bounds. The same count proposition and comparison of the word counts with their proxies give the upper bound for the logarithm of the actual count.
 -/
 theorem slopes_from_size_and_count : SlopesFromSizeAndCount (U0 := U0) (W := W) (Top := Top) (m := m) (f := f) := by
   intro D C cZ cL cE5 c5 Sc LZ Gam X bN ⟨hZ, hZW, hcS⟩ ⟨hE, hU, hV, hLW, hEW, hCW, hc1, hc2⟩
@@ -179,12 +161,8 @@ theorem slopes_from_size_and_count : SlopesFromSizeAndCount (U0 := U0) (W := W) 
   have hJ := joint_four_five (withGam D Gam) C cZ cL Sc LZ c5 Gam X hZW hZ hCW hP5 hV hLW hcS hc2
   exact ⟨hJ.1, hJ.2, proposition_to_log_t_upper (withGam D Gam) c5 Gam X hCW hP5 hLW⟩
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
+/- English proof (authored)
+The exact-coefficient estimate supplies the count proposition. With the weight, logarithmic, and size windows, it implies that the logarithm of the word count is at least m log b divided by two. The proxy comparison gives a positive word count, so exponentiation yields a count of at least b raised to m/2. Apply the level-size estimate to this bound using m ≥ 6 and the stated relation between b and the place count. Retain the logarithmic bound as well.
 -/
 theorem level_of_count : LevelOfCount (U0 := U0) (W := W) (Top := Top) (m := m) (f := f) := by
   intro D C cE5 c5 Gam X bN ⟨hE, hU, hV, hLW, hEW, hCW, hc1, hc2⟩ ⟨hm, hfb, hw, hlg, hmk, hc⟩ hL hb u0 u
@@ -209,14 +187,8 @@ end DefsB
 section DefsB2
 variable {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H] {W : H → Type} [∀ u0, Fintype (W u0)] {m : ℕ}
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
+/- English proof (authored)
+Use the size and count estimates for the slope bounds and the upper bound on each log count. The lower count estimate supplies the required level conditions. With the upper bound on log count, the floor-rounding theorem gives the slope order and the rounding allowance. The determinant-index estimate supplies the remaining index bound through the parameter identities. Since log 4 ≤ 3, the rounding allowance fits inside the assumed error coefficient. Insert these results into the first-stage hypotheses.
 -/
 theorem inputs_second_to_first : Inputs6bTo6a (H := H) (W := W) (m := m) := by
   intro D ell G C N TT T2 a w Fm Rw O η θ eK K logOm C0 cZ cL cE5 c5 g₁ g₂
@@ -249,8 +221,8 @@ theorem inputs_second_to_first : Inputs6bTo6a (H := H) (W := W) (m := m) := by
 
 end DefsB2
 
-/- English proof (translation)
-Assume the hypotheses and unpack their components. Supply the required witnesses or components.
+/- English proof (authored)
+Keep the common host, row, and parameter data from the second stage, and choose seven as the required numerical constant. For every arithmetic component, the second-to-first input conversion supplies the additional first-stage conditions.
 -/
 theorem analytic_second_to_first : Core6bToCore6a := by
   rintro A c' Cord eD eL K cHH eK CL eW KW ε x ⟨e, q, d, i1, i2, Ω, i3, W, i4, i5, m, G, C, N, TT, T2, a, w, Fm, Rw, O, Lp,
@@ -260,16 +232,8 @@ theorem analytic_second_to_first : Core6bToCore6a := by
     logOm, C0, hx, hεG, heD, heL, hcHH, hPe, he, h25, hv, hg1, hg2, hlg, hPer, hL, fun o ho =>
       inputs_second_to_first _ _ G C N TT T2 (a o) (w o) (Fm o) (Rw o) (O o) η _ eK K logOm C0 cZ cL cE5 c5 g₁ g₂ (hB o ho)⟩
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+The frame substitution theorem supplies the required expressions for the lattice maps and dimensions. The two frame dimensions sum to the positive total dimension. Thus the fraction of retained coordinates lies between one minus the chain’s deletion allowance and one. The family deletion is one minus that fraction, so it is nonnegative, at most the chain’s allowance, and satisfies the dimension identity. The given trace information and the identification of the dual maps give the integrality condition on its image. These facts give the lattice inputs, the deletion bound, and the recorded chain condition.
 -/
 theorem lattice_of_chain : LatOfChain := by
   intro I _ m F Rw sg Gam C0S delB hdual ⟨hX', hX, hcc, hccs, hN, hNs, hT1, hT2, de, del, hdel, hCh⟩
@@ -302,12 +266,8 @@ theorem lattice_of_chain : LatOfChain := by
   rw [hdual.2.2]
   exact ⟨β, hint, hβ⟩
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+The map identifies the image of the smaller module with a submodule of the comparison module. Its image is nonzero because an injective map cannot send a nonzero submodule to zero. Apply the slope comparison for an injective map and the maximal slope bound for submodules to obtain the claimed inequality.
 -/
 theorem mu_max_of_submodule : MuMaxOfSub := by
   intro I m F hS u hX hM hMf hne
@@ -328,12 +288,8 @@ theorem mu_max_of_submodule : MuMaxOfSub := by
 section DefsC
 variable {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H] {W : H → Type} [∀ u0, Fintype (W u0)] {m : ℕ}
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
-
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The lattice conversion supplies the second-stage lattice data and deletion bound for each family. The smaller module is nonzero because it spans the ambient space, which has a basis with at least one nonzero vector by positivity of the rank. The submodule comparison therefore gives its maximal slope bound. The rank also gives a positive coordinate count. Together with the other inherited inputs these are the second-stage conditions.
 -/
 theorem inputs_third_to_second : Inputs6cTo6b (H := H) (W := W) (m := m) := by
   intro D ell G C N TT T2 a w Fc Rw O η θ eK K logOm C0 cZ cL cE5 c5 C0S g₁ g₂
@@ -357,8 +313,8 @@ theorem inputs_third_to_second : Inputs6cTo6b (H := H) (W := W) (m := m) := by
 
 end DefsC
 
-/- English proof (translation)
-Assume the hypotheses and unpack their components. Supply the required witnesses or components.
+/- English proof (authored)
+Replace each chain family by its underlying lattice family. Apply the third-to-second input conversion to every arithmetic component, using its given chain data. The host parameters and other common fields are carried over to the second stage.
 -/
 theorem analytic_third_to_second : Core6cToCore6b := by
   rintro A c' Cord eD eL K cHH eK CL eW KW ε x ⟨e, q, d, i1, i2, Ω, i3, W, i4, i5, m, G, C, N, TT, T2, a, w, Fc, Rw, O, Lp,
@@ -369,10 +325,8 @@ theorem analytic_third_to_second : Core6cToCore6b := by
     fun o ho => inputs_third_to_second _ _ G C N TT T2 (a o) (w o) (Fc o) (Rw o) (O o) η _ eK K logOm C0 cZ cL cE5 c5 C0S g₁ g₂
       (hB o ho)⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
-
-Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+/- English proof (authored)
+Since x ≥ 1, the power with exponent ε/4 is at most the power with exponent ε/3. Their sum is therefore at most twice the latter power. The assumed bound on the power with exponent 2ε/3 makes this at most the power with exponent ε.
 -/
 theorem rpow_third_le (ε x : ℝ) (hε : 0 < ε) (hx : 1 ≤ x) (h2 : 2 ≤ x ^ (2 * ε / 3)) :
     x ^ (ε / 3) + x ^ (ε / 4) ≤ x ^ ε := by
@@ -383,28 +337,8 @@ theorem rpow_third_le (ε x : ℝ) (hε : 0 < ε) (hx : 1 ≤ x) (h2 : 2 ≤ x ^
   have h4 : 0 < x ^ (ε / 3) := Real.rpow_pos_of_pos hx0 _
   nlinarith
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
-
-Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
+/- English proof (authored)
+Take a common threshold for x ≥ 20, the eventual bounds on the growing powers, and the domination of polynomial factors by the three relevant exponentials. The first domination gives the bound for the decaying trace error after taking reciprocals. The power with exponent 1/2 − ε eventually exceeds both six and (2K + 2)/15. The preceding sum-of-powers bound shows that the product of the exponentials at ε/3 and ε/4 is at most b, which gives the lower bound on b′ for x ≥ 20. For f ≤ 2 times x to the power A, clearing the denominator x and using x + 1 ≤ 2x bounds the first cost’s polynomial factor by 8 times x to the power A + 2. The decaying exponential absorbs this factor. In the second cost, bound the sum of one and the ε/4 exponential by twice that exponential. The remaining factor is at most 48 times x to the power A + 2 and is absorbed by the ε/3 exponential, giving the desired bound.
 -/
 theorem ev_auxiliary (ε A c' K cHH : ℝ) (hε : 0 < ε) (hε4 : ε < 1 / 4) (hc' : 0 < c') :
     ∃ x₀ : ℝ, ∀ x : ℝ, x₀ ≤ x → 20 ≤ x ∧ E8 x ε ≤ x ^ (-cHH) / 2 ∧ 6 ≤ x ^ ((1 : ℝ) / 2 - ε) ∧
@@ -478,18 +412,8 @@ theorem ev_auxiliary (ε A c' K cHH : ℝ) (hε : 0 < ε) (hε4 : ε < 1 / 4) (h
       _ ≤ Real.exp (x ^ (ε / 3)) * Real.exp (x ^ (ε / 4)) := by gcongr
       _ ≤ Real.exp (x ^ ε) := e1
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Use the polynomial consequences of the given equalities and inequalities.
-
-Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+For each unit, the retained dimension is the full dimension times the given power. Since the level is at least two, that power lies between zero and one. The defect estimate and the lower level bound give a lower bound of 1 − 2f/T₀ for the power. Summing over the units puts the ratio of retained to full dimensions between that lower bound and one. The full dimension is positive, so its complement is between zero and 2f/T₀. Multiplying the complement by the full dimension gives exactly the sum of the discarded dimensions.
 -/
 theorem deF_bound {I : Type} [Fintype I] {m : ℕ} (F : Fam I m) (f : ℕ) (T0 : ℝ) (hT0 : 0 < T0)
     (h : ∀ u, F.du u = F.dM u * (1 - 1 / ((F.T u : ℝ) - 1)) ^ f ∧ 2 ≤ (F.T u : ℝ) ∧ T0 ≤ (F.T u : ℝ))
@@ -529,17 +453,15 @@ theorem deF_bound {I : Type} [Fintype I] {m : ℕ} (F : Fam I m) (f : ℕ) (T0 :
     rw [Finset.sum_sub_distrib, sub_mul, one_mul, div_mul_cancel₀ _ hpos.ne']
     exact le_refl _
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The total on each side is the sum over u of d(u), because the index set with d(u) elements has cardinality d(u).
 -/
 theorem rsG_fin {I : Type} [Fintype I] (d : I → ℕ) : MatrixLatticeEstimates.RsG (fun u => Fin (d u)) = HilbertSchmidtNormSquare.Rs d := by
   unfold MatrixLatticeEstimates.RsG HilbertSchmidtNormSquare.Rs
   simp
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Supply the required witnesses or components.
+/- English proof (authored)
+Use the trace conditions for the row identities, matrix estimates, and existing size bounds. The positive scale is at most 1/20, so the trace errors bounded by E8 meet the lattice bound through E8 ≤ half the scale. Supply the dimension bound and the total defect estimate from the new hypotheses. The deletion allowance E7 is less than one because it is the exponential of a negative power. Together these facts give the lattice inputs.
 -/
 theorem latIn_of_trace {I : Type} [Fintype I] {m : ℕ} (F : FamC I m) (Rw : Rows F.toFam) (x ε sg Gam C0S de : ℝ)
     (hT : F.TraceIn Rw x ε sg Gam C0S) (hx : 0 < x) (hsg0 : 0 < sg) (hsg : sg ≤ 1 / 20) (hE8 : E8 x ε ≤ sg / 2)
@@ -556,28 +478,8 @@ theorem latIn_of_trace {I : Type} [Fintype I] {m : ℕ} (F : FamC I m) (Rw : Row
   exact ⟨r1, r2, r3, r4, r5, r6, t1, t2, de, E7 x ε, le_refl _, s1, s2, hsg0, hsg, w1, w2, w3, w4, s4, le_trans s5 hE8,
     le_trans s6 hE8, s7, le_trans s8 hE8, s3, hI, hde0, hde4, hcor, m1, m2, m3, i1, h7, i2, m4, m5, m6⟩
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
-
-Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts.
-
-Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+Raise the proxy inequality to the positive power fk. By the proxy identity it gives Dstar divided by the reference dimension and by Γ² as a lower bound for the power of T with exponent fk. Write z for T raised to k. Then z ≥ T ≥ 4f, so Bernoulli’s inequality gives (1 − 1/z) raised to f at least 3/4. The word-count identity therefore bounds the dimension below by three quarters of Dstar/Γ². Since C₀S is at least two, this implies the required bound.
 -/
 theorem words_of_count : WordsOfCount := by
   intro X Gam T k dst Dstar d C0S f hX hG hf hk hT h4 hdst hD hXD hd hC
@@ -630,44 +532,8 @@ theorem words_of_count : WordsOfCount := by
   have e10 : Dstar / Gam ^ 2 / C0S ≤ Dstar / Gam ^ 2 / 2 := div_le_div_of_nonneg_left hq.le (by norm_num) hC
   linarith
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
-
-Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
-
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
-
-Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+Take x large enough that log x lies between one and x to the power ε/30, the ε/15 power is at least A + 2, and the ε/5 power is at least fourteen. The lower modulus endpoints imply q,d ≥ 8 by exp(t) ≥ 1 + t. The factor involving e is at least one half, so the formula for the scale gives v ≥ π. For the other bound, take logarithms of the three factors in 2v. The group-size bound controls the term in e by A log x. The upper endpoints control log q by the ε/5 power and log d by that power times the square of log x. With z = x to the power 4ε/15, these bounds make log(2v) at most (A + 2)z. This is at most x to the power ε/3 by the threshold condition.
 -/
 theorem modulus_v_eventually : HostVEv := by
   intro ε A hε hA
@@ -766,12 +632,8 @@ theorem modulus_v_eventually : HostVEv := by
     have c7 : (A + 2) * z ≤ x ^ (ε / 15) * z := by gcongr
     linarith
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Identify the full and retained index sets with finite sets of sizes d(u) and r(u). The dimension-sum identity turns positivity of the full size into the hypothesis of the defect theorem. In its final estimate replace the two cardinalities by d(u) and r(u), giving the stated sum.
 -/
 theorem deF_boundC {I : Type} [Fintype I] {m : ℕ} (F : FamC I m) (f : ℕ) (T0 : ℝ) (hT0 : 0 < T0)
     (h : ∀ u, F.toFam.du u = F.toFam.dM u * (1 - 1 / ((F.T u : ℝ) - 1)) ^ f ∧ 2 ≤ (F.T u : ℝ) ∧ T0 ≤ (F.T u : ℝ))
@@ -793,116 +655,8 @@ theorem deF_boundC {I : Type} [Fintype I] {m : ℕ} (F : FamC I m) (f : ℕ) (T0
   rw [e1, e2]
 
 set_option maxHeartbeats 1600000 in
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
-
-Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
-
-Rewrite the hypotheses and the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Consider separately whether the proposition holds or fails. Combine the linear equalities and inequalities to obtain the conclusion. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
-
-Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
-
-Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Take the maximum of the seven thresholds for size, analytic, rounding, scale, key, auxiliary, and deletion estimates. Above it the number of places is twice the group order, the top set is nonempty, m is at least six, and m² ≤ xm ≤ k. The model size and key estimates control b, b′, the logarithmic scales, and the weights in their three cases. They give the size, exact-coefficient, count, and level windows, so the level estimate supplies both the lower word count and its logarithmic bound. Apply the proxy word-count estimate to bound each full dimension below. The retained-dimension formula then gives a nonnegative defect bounded by twice the place count divided by the exponential of the logarithmic lower bound. Combine this with the trace error to control the total scale contribution and obtain the lattice inputs. The rounding threshold bounds both selected prime logarithms and the required count logarithm. The deletion estimate and scale identity bound the combined trace allowance by 7b, within the allowed size bracket. Finally the explicit node sizes and auxiliary cost estimates furnish the remaining arithmetic and cost conditions.
 -/
 theorem inputs_fourth_to_third : Inputs6dTo6c := by
   intro ε A c' K cHH eK hε hε4 hA hc'
@@ -1275,17 +1029,15 @@ theorem inputs_fourth_to_third : Inputs6dTo6c := by
     clear * - hx0 hb0
     nlinarith [mul_pos hx0 hb0]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The host group of parameter e has cardinality 2 raised to e by the group cardinality theorem. The real cardinality is the coercion of that finite cardinality.
 -/
 theorem card_HA (e : ℕ) : (Fintype.card (HA e) : ℝ) = ((2 ^ e : ℕ) : ℝ) := by
   have hcard : Nat.card (HA e) = 2 ^ e := FrobeniusOrbits.Group.card_H e
   rw [← Nat.card_eq_fintype_card, hcard]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
-
-Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+Use the greater of the thresholds for the host modulus-scale bound and the fourth-to-third input conversion. At such a point the modulus ranges give the scale inequalities. In the new global data take the actual host scale as the metric parameter. The host group has cardinality 2 raised to e, so its original bound provides the group-size hypothesis of the conversion for each arithmetic component. This supplies all the third-stage data.
 -/
 theorem analytic_to_third : Core6ToCore6c := by
   intro ε A c' K cHH eK hε hε4 hA hc'
@@ -1301,28 +1053,8 @@ theorem analytic_to_third : Core6ToCore6c := by
     hPer, hL, fun o ho => h1 x (le_trans (le_max_left _ _) hx) (HA e) (W o) m _ _ k _ C N TT T2 (a o) (w o) (Fc o) (Rw o)
       (O o) η logOm C0 cZ cL cE5 c5 C0S κ off (btH o) g₁ g₂ (by rw [card_HA]; exact he) hv1 hv2 hCB hc28 hc1 hcHH (hB o ho)⟩
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
-
-Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
-
-Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+Take x ≥ 8 with the ε/5 power at least max(A,3). Taking logarithms of the modulus intervals gives the four endpoint bounds. Also log n ≤ A log x and log x ≥ 2. Put y equal to the ε/5 power and L equal to log x. The upper bounds on the logarithms of the four factors of the combined modulus sum to at most 3 + yL + y + yL². Since y ≥ 3 and L ≥ 2, the first three terms total at most yL². This gives the required bound on the combined logarithm.
 -/
 theorem log_ne_bound : LogNE := by
   intro ε A hε hA
@@ -1381,8 +1113,8 @@ theorem log_ne_bound : LogNE := by
   have b3 : 2 * (y * L) ≤ y * L ^ 2 := by nlinarith [mul_nonneg (by linarith : (0 : ℝ) ≤ y) (by linarith : (0 : ℝ) ≤ L)]
   linarith
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+For real σ between zero and one, the zeta sign theorem gives a strictly negative value, so a zero there is impossible. For the specified real Dirichlet character, use the assumed nonvanishing. These give the two parts of the small real-zero condition.
 -/
 theorem no_real_zero_small : Chi8NoRealZero → NoRealZeroSmall := by
   intro h
@@ -1391,16 +1123,8 @@ theorem no_real_zero_small : Chi8NoRealZero → NoRealZeroSmall := by
   rw [hz] at this
   simp at this
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The assumed real-character nonvanishing and the modulus logarithm estimate give the conditional analytic input and its positive decay constant. Take the maximum of the thresholds for the analytic conversion, the discriminant input, the complete lattice reduction, and the large-x estimates. Beyond that threshold pass from the analytic data through the third, second, and first stages to the lattice and discriminant data. Apply the complete lattice reduction and the first-variant reductions to obtain the core required by the growth theorem. The large-x conditions then give the pointwise growth bound.
 -/
 theorem chain_analytic_at_point : Chain6At := by
   intro h8

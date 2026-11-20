@@ -10,20 +10,8 @@ open Finset Classical
 
 noncomputable section
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
-
-Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
-
-Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+Split the place sum according to whether the prime below the place lies in the selected prime set. Every term outside that set is zero. Inside the set, substitute the prime-level gains and offsets, and group the places by their primes. The gain minus the offset is constant on each fiber, and the sum of the place weights on that fiber is twice the logarithm of its prime.
 -/
 theorem ga_eq {ι κ : Type*} (W : Finset ι) (below : ι → ℕ) (l : ι → ℝ) (Ps : Finset ℕ)
     (J : Finset κ) (gainW : κ → ι → ℝ) (tauW : ι → ℝ) (gain : κ → ℕ → ℝ) (tau : ℕ → ℝ)
@@ -65,8 +53,8 @@ theorem ga_eq {ι κ : Type*} (W : Finset ι) (below : ι → ℕ) (l : ι → �
     rw [(Finset.mem_filter.1 hw).2]
   rw [hc, ← Finset.sum_mul, h.unit p hp]; ring
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Expand each term into its prime-power and distinguished-prime contributions. Distribute the finite sums and put the sum over ordinary primes on the outside. The distinguished-prime terms retain their original sum over factors and top elements.
 -/
 theorem ask_eq {κ τ : Type*} (Ps : Finset ℕ) (J : Finset κ) (TT : Finset τ)
     (vonMangoldtClassSum : κ → τ → ℕ → ℝ) (dT : κ → τ → ℝ) :
@@ -78,8 +66,8 @@ theorem ask_eq {κ τ : Type*} (Ps : Finset ℕ) (J : Finset κ) (TT : Finset τ
   rw [Finset.sum_congr rfl (fun j _ => Finset.sum_comm)]
   exact Finset.sum_comm
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+Use the prime-sum identity for the arithmetic expression and the fiber identity for the gain. Subtract their ordinary-prime terms at each prime. The bracket that remains is the deficit, and the distinguished-prime contribution is unchanged by the subtraction.
 -/
 theorem splitEq_valid : SplitEq := by
   intro ι κ τ W below l Ps J TT vonMangoldtClassSum dT gainW tauW gain tau h
@@ -88,12 +76,8 @@ theorem splitEq_valid : SplitEq := by
   simp only [mul_sub, Finset.sum_sub_distrib]
   ring
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Split the top set into the served subset and its complement at the given prime. In the served subset, replacing every class sum by its difference from the lower reference level subtracts that level once per factor and served top element. The assumed ledger inequality bounds this difference together with the gain and floor terms. Add the unserved class sum to get the served-loss bound.
 -/
 theorem deficit_le {κ τ : Type*} (J : Finset κ) (TT : Finset τ) (TTp : ℕ → Finset τ)
     (vonMangoldtClassSum : κ → τ → ℕ → ℝ) (gain : κ → ℕ → ℝ) (tau lo fl : ℕ → ℝ) (p : ℕ)
@@ -112,8 +96,8 @@ theorem deficit_le {κ τ : Type*} (J : Finset κ) (TT : Finset τ) (TTp : ℕ �
   rw [h2] at hled
   linarith
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+When all the gains vanish and the offset is zero, the deficit reduces to the full class sum over factors and top elements.
 -/
 theorem deficit_dropped {κ τ : Type*} (J : Finset κ) (TT : Finset τ) (vonMangoldtClassSum : κ → τ → ℕ → ℝ)
     (gain : κ → ℕ → ℝ) (tau : ℕ → ℝ) (p : ℕ) (hg : ∀ j ∈ J, gain j p = 0) (ht : tau p = 0) :
@@ -121,12 +105,8 @@ theorem deficit_dropped {κ τ : Type*} (J : Finset κ) (TT : Finset τ) (vonMan
   unfold deficit wholeAsk
   rw [Finset.sum_eq_zero hg, ht]; ring
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Use the deficit identity and split the ordinary-prime sum over the served prime set and its complement. On served primes apply the served-loss bound, preserving the inequality because twice the prime logarithm is nonnegative. On the complement the gains and offset vanish, so each deficit is the whole arithmetic term. Add these bounds and keep the distinguished-prime contribution.
 -/
 theorem splitLe_valid : SplitLe := by
   intro ι κ τ W below l Ps S J TT TTp vonMangoldtClassSum dT gainW tauW gain tau lo fl h hS hled hdrop
@@ -145,16 +125,8 @@ theorem splitLe_valid : SplitLe := by
     rw [deficit_dropped J TT vonMangoldtClassSum gain tau p (hdrop p hp).1 (hdrop p hp).2]
   linarith
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules.
-
-Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
-
-Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+For each ordinary prime, exactly one of the four class indicators contributes. In the served class use the deficit bound and multiply by the nonnegative logarithmic factor. In the first, second, and high classes use the whole arithmetic sum, since the gains and offset vanish there. Summing over the primes and adding the separate distinguished-prime term gives the result.
 -/
 theorem split_classes_count : SplitClasses := by
   intro ι κ τ W below l Ps cl J TT TTp vonMangoldtClassSum dT gainW tauW gain tau lo fl h hled hdrop
@@ -187,10 +159,8 @@ theorem split_classes_count : SplitClasses := by
   have := Finset.sum_le_sum key
   linarith
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Supply the required witnesses or components. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+Every prime in the finite set is among the primes up to the floor of Y. The summands log p divided by p are nonnegative, so enlarge to that full prime set and apply the factorial-based bound. As the floor is at least one and at most Y, its logarithm is at most log Y.
 -/
 theorem prime_log_sum_bound : PrimeLogSum := by
   intro Y s hY hs
@@ -206,10 +176,8 @@ theorem prime_log_sum_bound : PrimeLogSum := by
           Real.log_le_log (by exact_mod_cast hN) (Nat.floor_le (by linarith))
         linarith
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
-
-Chain the equalities or inequalities of the calculation.
+/- English proof (authored)
+Enlarge the set to all primes at most the floor of Y, using nonnegativity of the logarithms. The resulting sum is Chebyshev’s theta function at that floor. Its upper bound by log 4 times the floor is at most log 4 times Y.
 -/
 theorem theta_finite : ThetaFin := by
   intro Y s hY hs
@@ -224,18 +192,8 @@ theorem theta_finite : ThetaFin := by
 
 def gT (y : ℝ) : ℝ := (Real.log y + 1) / y
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
-
-Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
+/- English proof (authored)
+Put L = log y and L₁ = log(y − 1). The bound log t ≤ t − 1 at t = y/(y − 1) gives L − L₁ ≤ 1/(y − 1), hence y(L − L₁) ≤ 3/2 for y ≥ 3. Also L ≥ 1. The numerator of the difference between the two values of the tail function, over denominator y(y − 1), is L + 1 − y(L − L₁), which is at least L/2. Twice the difference therefore bounds L divided by y².
 -/
 lemma tail_step (y : ℝ) (hy : 3 ≤ y) : Real.log y / y ^ 2 ≤ 2 * (gT (y - 1) - gT y) := by
   unfold gT
@@ -268,20 +226,16 @@ lemma tail_step (y : ℝ) (hy : 3 ≤ y) : Real.log y / y ^ 2 ≤ 2 * (gT (y - 1
   have := mul_le_mul_of_nonneg_left hG hy0.le
   nlinarith [this]
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Establish an intermediate fact. Check the signs of the components of the expression.
+/- English proof (authored)
+For y ≥ 1 the logarithm is nonnegative and the denominator is positive. The tail function, whose numerator is log y + 1, is therefore nonnegative.
 -/
 lemma gT_nonneg (y : ℝ) (hy : 1 ≤ y) : 0 ≤ gT y := by
   unfold gT
   have := Real.log_nonneg hy
   positivity
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+The empty interval gives equality at K = 0. On increasing K by one, use the one-step bound at the new endpoint p₀ + K. Its difference of adjacent tail values cancels the last value in the previous bound. Induction gives the interval estimate.
 -/
 lemma tail_Ico (p₀ : ℕ) (hp : 3 ≤ p₀) (K : ℕ) :
     ∑ n ∈ Finset.Ico p₀ (p₀ + K), Real.log n / (n : ℝ) ^ 2 ≤
@@ -299,14 +253,8 @@ lemma tail_Ico (p₀ : ℕ) (hp : 3 ≤ p₀) (K : ℕ) :
     rw [e]
     linarith
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Replace the relevant objects with their definitions.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+Extend the finite set to an interval of integers beginning at p₀ and ending beyond its largest element. The terms are nonnegative, so the interval sum bounds the original sum. Apply the telescoping interval bound and discard the nonnegative final tail value. Expanding the initial tail value gives the displayed bound.
 -/
 theorem tail_square_bound : TailSq := by
   intro p₀ s hp hs
@@ -330,10 +278,8 @@ theorem tail_square_bound : TailSq := by
   rw [e]
   linarith
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion. Check the signs of the components of the expression.
+/- English proof (authored)
+At each index the positive part of a divided by p raised to that index minus the weight is bounded by a divided by that power. This uses nonnegative weights and a nonnegative numerator. Sum the bounds and factor out a.
 -/
 lemma askAt_le_geom (I : Finset ℕ) (at_ p : ℝ) (w : ℕ → ℝ) (hp : 0 < p) (ha : 0 ≤ at_)
     (hw : ∀ i ∈ I, 0 ≤ w i) : askAt I at_ p w ≤ at_ * ∑ i ∈ I, (1 / p) ^ i := by
@@ -347,16 +293,8 @@ lemma askAt_le_geom (I : Finset ℕ) (at_ p : ℝ) (w : ℕ → ℝ) (hp : 0 < p
   · linarith [hw i hi]
   · positivity
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
+/- English proof (authored)
+Every index is of the form 2k + 1. Enlarge to a full finite range of such indices and factor q from the sum. The remaining geometric series has ratio q² ≤ 1/4, so its sum is at most 1/(1 − q²) ≤ 4/3.
 -/
 lemma geom_odd (I : Finset ℕ) (q : ℝ) (hq0 : 0 ≤ q) (hq : q ≤ 1 / 2) (hI : ∀ i ∈ I, Odd i) :
     ∑ i ∈ I, q ^ i ≤ 4 / 3 * q := by
@@ -382,10 +320,8 @@ lemma geom_odd (I : Finset ℕ) (q : ℝ) (hq0 : 0 ≤ q) (hq : q ≤ 1 / 2) (hI
   rw [h2] at h1
   nlinarith [mul_le_mul_of_nonneg_left h3 hq0]
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Enlarge the indices to a full finite interval beginning at one. All powers are nonnegative, and the geometric series with ratio q < 1 has total q/(1 − q). This bounds the finite sum.
 -/
 lemma geom_pos (I : Finset ℕ) (q : ℝ) (hq0 : 0 ≤ q) (hq : q < 1) (hI : ∀ i ∈ I, 1 ≤ i) :
     ∑ i ∈ I, q ^ i ≤ q / (1 - q) := by
@@ -399,10 +335,8 @@ lemma geom_pos (I : Finset ℕ) (q : ℝ) (hq0 : 0 ≤ q) (hq : q < 1) (hI : ∀
   rw [pow_one] at this
   exact h1.trans this
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The positive-part sum is at most the top size times the corresponding geometric sum. With q = 1/p the ratio is at most one half and the exponents are odd. The odd-power estimate gives the factor 4/(3p).
 -/
 theorem top_term_bound : AskUpperBound := by
   intro I at_ p w hp ha hw hI
@@ -416,12 +350,8 @@ theorem top_term_bound : AskUpperBound := by
   rw [e] at h3
   exact h1.trans h3
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The odd-power estimate gives 4 times the top size divided by 3p. The top-size upper bound makes this at most 2a/p. Multiply by the nonnegative factor 2 log p to get 4a log p divided by p.
 -/
 theorem top_loss_bound : TopLoss := by
   intro I a at_ p w hp ha hat hw hI
@@ -437,16 +367,8 @@ theorem top_loss_bound : TopLoss := by
   rw [e] at h3
   exact h3
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Bound the positive parts at d by the geometric sum over positive exponents. With ratio 1/d this gives the top size divided by d − 1. Since d ≥ 4 and the top size is at most 3a/2, this quotient is at most 2a/d. Multiply by log d.
 -/
 theorem d_term_bound : DTerm := by
   intro I a at_ d w hd ha hat hw hI
@@ -472,12 +394,8 @@ theorem d_term_bound : DTerm := by
   rw [e] at h5
   exact h5
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+For a nonempty set, its smallest and largest members lie in the prescribed real interval. The set is contained in the integer interval between them, with cardinality equal to their difference plus one. That difference is at most B − A. For an empty set the bound follows from A ≤ B.
 -/
 theorem interval_count : IntervalCount := by
   intro A B s hAB hs
@@ -494,26 +412,16 @@ theorem interval_count : IntervalCount := by
     have hM := (hs _ (s.max'_mem hne)).2
     linarith
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+The interval centered at P with relative width c has endpoints P(1 − c) and P(1 + c). Its length is 2cP. Apply the finite interval count to obtain at most 2cP + 1 members.
 -/
 theorem band_count : BandCount := by
   intro P c s hP hc hs
   have h := interval_count (P * (1 - c)) (P * (1 + c)) s (by nlinarith) hs
   linarith
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
-
-Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
-
-Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
+/- English proof (authored)
+Each n in the band satisfies n ≤ 2P, n ≥ P/2, and n ≥ p₀. Thus log n divided by n is at most log(2P) times the smaller of 2/P and 1/p₀. The band count is at most 2cP + 1. Use the bound 2/P on the part from 2cP and 1/p₀ on the extra one, giving the coefficient 4c + 1/p₀.
 -/
 theorem band_sum : BandSum := by
   intro P c p₀ s hP hc0 hc hp₀ hs
@@ -549,10 +457,8 @@ theorem band_sum : BandSum := by
     _ = (s.card * μ) * Real.log (2 * P) := by ring
     _ ≤ (4 * c + 1 / p₀) * Real.log (2 * P) := mul_le_mul_of_nonneg_right hcμ hl2P
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
+/- English proof (authored)
+Apply the weighted band estimate to each of the I bands. Each center is at most X′, so replace its logarithmic factor by log(2X′). Summing those I upper bounds gives the claim.
 -/
 theorem band_total : BandTotal := by
   intro I P X' c p₀ s hc0 hc hp₀ hP hs
@@ -568,34 +474,8 @@ theorem band_total : BandTotal := by
   have := Finset.sum_le_card_nsmul (Finset.range I) _ _ hterm
   rwa [Finset.card_range, nsmul_eq_mul] at this
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
-
-Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Simplify using the standard rewrite rules.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
-
-Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
+/- English proof (authored)
+For p > X″, terms with exponent at least two vanish because their denominator is at least 2X″ and the weight is at least w″. For exponent one a term can survive only when p < X″(1 + θ), and its positive part is at most w″θ. On that interval log p ≤ log(2X″), and there are at most X″θ + 1 integers. Multiply the per-prime bound by this count and use a = w″X″.
 -/
 theorem high_bucket_bound : HighBucket := by
   intro a at_ w'' X'' th s I w hw'' hth0 hth1 hX ha hat0 hat hs hI hw
@@ -672,16 +552,8 @@ theorem high_bucket_bound : HighBucket := by
   refine h7.trans (le_of_eq ?_)
   rw [← ha]; ring
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Replace the relevant objects with their definitions. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+Write the logarithms to base p as quotients by log p. Multiplication by 2 log p cancels the denominator in the linear term and leaves a single factor 1/log p in the square term. Since p ≥ 2 and log 2 > 1/2, that factor is at most two. Sum the resulting uniform nonnegative bound using the cardinality estimate.
 -/
 theorem floor_bucket_bound : FloorBucket := by
   intro C f N a X'' s hC hf ha hs hcard
@@ -712,14 +584,8 @@ theorem floor_bucket_bound : FloorBucket := by
   refine h1.trans (h2.trans (le_of_eq ?_))
   ring
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions.
-
-Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+For each p ≥ 2, convert the logarithm to base p to a quotient by log p. The outer factor cancels that denominator, so every term equals the same nonnegative constant. Multiply by the bound for the number of primes.
 -/
 theorem cp_bucket_bound : CpBucket := by
   intro C Sk a mT X'' s hC hSk ha hmT hs hcard
@@ -739,14 +605,8 @@ theorem cp_bucket_bound : CpBucket := by
   refine h1.trans (h2.trans (le_of_eq ?_))
   ring
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+At primes below p₀ the contribution with coefficient Q₁ is bounded by its sum over those primes, together with a nonnegative allowance with coefficient Q₂. At all other primes the Q₂ contribution already gives the term. Apply the theta bound at p₀ to the first sum and at X′ to the Q₂ sum over all primes.
 -/
 theorem pr_bucket_bound : PrBucket := by
   intro p₀ X' Q₁ Q₂ s hX' hQ₁ hQ₂ hs
@@ -769,24 +629,8 @@ theorem pr_bucket_bound : PrBucket := by
   have h4 := mul_le_mul_of_nonneg_left h2 (show 0 ≤ 2 * Q₂ by linarith)
   linarith
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
-
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
+/- English proof (authored)
+Separate the term proportional to log p divided by p, which occurs for every prime. Below p₀ the order bound gives p raised to the stated exponent at least K₀p, so its inverse contributes at most 1/(K₀p). From p₀ onward the additional contribution has denominator p². Apply the prime logarithm sum bound to the first two sums and the square-tail bound to the last one.
 -/
 theorem or_bucket_bound : OrBucket := by
   intro C lx La a k K₀ X' L₁ p₀ s hC hlx hLa ha hk hK₀ hX' hp₀ hs hL
@@ -839,14 +683,8 @@ theorem or_bucket_bound : OrBucket := by
   refine (add_le_add (add_le_add h4 h5) h6).trans (le_of_eq ?_)
   ring
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+Use the top-set selection theorem for the given orbit weights and badness condition. It gives the required size interval and a weighted bad-count bound in terms of the lower size scale. By the lower bound on the chosen set, that scale is at most twice its cardinality. Multiply by the nonnegative factor 4ma and use this size comparison to get the stated bound.
 -/
 theorem bad_orbits_bucket_bound : BadOrbitsBucket := by
   intro α ι _ _ _ δ β m a ω BAD _ hδ0 hδ1 h16 hβ hω hm ha hcond
@@ -866,8 +704,8 @@ theorem bad_orbits_bucket_bound : BadOrbitsBucket := by
   refine h1.trans (h3.trans (le_of_eq ?_))
   ring
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Use the prime order-sum theorem with the order criterion for powers of two. It supplies a single constant valid for all the permitted parameters and prime sets. Multiplying its bound by the nonnegative top-size factor gives the order-class estimate.
 -/
 theorem orders_bucket_bound : OrdersBucket := by
   obtain ⟨C, hC⟩ := Formalism.RankGapBounds.LocalQuadraticParts.ordersSumY_of Formalism.RankGapBounds.LocalQuadraticParts.powTwoPowEqOneIff_holds
@@ -876,18 +714,8 @@ theorem orders_bucket_bound : OrdersBucket := by
   rw [← Finset.mul_sum]
   exact mul_le_mul_of_nonneg_left (hC e J Y s he hJ hY hs) (by linarith)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
-
-Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
-
-Fix the arbitrary inputs or assume the hypotheses. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Expand and normalize the polynomial expressions, which then agree.
-
-Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+Whenever the score exceeds the positive threshold, its indicator is at most the score divided by that threshold. The same inequality holds below the threshold because the score is nonnegative. Multiply by the nonnegative loss and outer weights and exchange the two finite sums. Each prime’s weighted mean score is at most s₀, so the sum is bounded by s₀/θ times the sum of the losses.
 -/
 theorem markov_drop : MarkovDrop := by
   intro Ω _ π s Sig L θ s₀ hπ hθ hSig hL hmean
@@ -916,12 +744,8 @@ theorem markov_drop : MarkovDrop := by
     rw [Finset.mul_sum]; apply Finset.sum_congr rfl; intro p _; ring
   linarith
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
-
-Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+Exchange the sum over outcomes and the sum over the chosen indices, keeping the common factor m. The mean bound on each index bounds the resulting inner sum by its count times c. The counts sum to at most T, and m and c are nonnegative, so the result is at most mTc.
 -/
 theorem sigma_mean : SigMean := by
   intro Ω ν _ π V kap N m T c hm hc hmean hN
@@ -938,12 +762,8 @@ theorem sigma_mean : SigMean := by
   have := mul_le_mul_of_nonneg_left (h2.trans h3) hm
   linarith
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Use the threshold estimate with loss 4mTa log p divided by p. Factor out the nonnegative constant 4mTa. The prime logarithm sum up to Y is at most log Y + log 4, giving the stated mean bound.
 -/
 theorem second_kind_bucket_bound : SecondKindBucket := by
   intro Ω _ π s Sig Y θ s₀ mTa hπ hθ hs₀ hm hY hSig hs hmean
@@ -957,18 +777,8 @@ theorem second_kind_bucket_bound : SecondKindBucket := by
   rw [e]
   exact mul_le_mul_of_nonneg_left (prime_log_sum_bound Y s hY hs) (by linarith)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
-
-Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Expand and normalize the polynomial expressions, which then agree.
-
-Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+Use the bound on each correction term and multiply by the nonnegative outcome weight and prime logarithm. Exchange the finite sums so that each prime’s mean score appears with coefficient 4mTa log p divided by p. Bound the mean by s₀ and apply the prime logarithm sum estimate.
 -/
 theorem io_mean_bound : IoMean := by
   intro Ω _ π s Sig io Y s₀ mTa hπ hs₀ hm hY hs hmean hio
@@ -999,10 +809,8 @@ theorem io_mean_bound : IoMean := by
     (show 0 ≤ 4 * mTa * s₀ by positivity)
   linarith
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
-
-Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
+/- English proof (authored)
+For each outcome, enlarge its index set to the common set. The added scores are nonnegative, and so are the outer weights and m. Then the mean-score estimate for the common set gives the desired bound.
 -/
 theorem sigma_mean_variance : SigMeanVar := by
   intro Ω ν _ π V Vo kap N m T c hm hc hπ hsub hkap hmean hN
@@ -1013,16 +821,8 @@ theorem sigma_mean_variance : SigMeanVar := by
   apply mul_le_mul_of_nonneg_left _ hm
   exact Finset.sum_le_sum_of_subset_of_nonneg (hsub o) (fun v hv _ => hkap v hv o)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Suppose every positive-weight outcome had value greater than M. Each weighted excess over M would be nonnegative, and the total would be at most zero by the mean bound and normalization. Therefore all weighted excesses would vanish, contradicting the positive excess at any positive-weight outcome. Such an outcome exists because the weights sum to one.
 -/
 theorem choose_window : ChooseWindow := by
   intro Ω _ π X M hπ h1 hM
@@ -1049,8 +849,8 @@ theorem choose_window : ChooseWindow := by
     linarith
   simp [hπ0] at h1
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+The mean of F + G is at most A + B by linearity. Apply the selection lemma to find a positive-weight outcome with F + G at most that total. The nonnegativity of each summand also bounds the other summand by the same total.
 -/
 theorem choose_window_second : ChooseWindow2 := by
   intro Ω _ π F G A B hπ h1 hF hG hA hB
@@ -1058,10 +858,8 @@ theorem choose_window_second : ChooseWindow2 := by
     simp only [mul_add, Finset.sum_add_distrib]; linarith)
   exact ⟨o, ho, hX, by linarith [hG o], by linarith [hF o]⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
+/- English proof (authored)
+For each j the inner sum is bounded by the cardinality of S times c. Summing this constant bound over J multiplies it by the cardinality of J.
 -/
 lemma dsum_le {κ τ : Type*} (J : Finset κ) (S : Finset τ) (g : κ → τ → ℝ) (c : ℝ)
     (h : ∀ j ∈ J, ∀ t ∈ S, g j t ≤ c) :
@@ -1075,50 +873,8 @@ lemma dsum_le {κ τ : Type*} (J : Finset κ) (S : Finset τ) (g : κ → τ →
   calc _ ≤ (J.card : ℝ) * (S.card * c) := h2
     _ = _ := by ring
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
-
-Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
-
-Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Check the signs of the components of the expression. Apply the first step, then apply the next step to every resulting obligation.
-
-Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Check the signs of the components of the expression. Check the signs of the components of the expression.
-
-Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
-
-Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Supply the required witnesses or components. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+Begin with the deficit split into served, first, second, and high primes, together with the distinguished-prime term. The geometric estimate bounds each ordinary contribution by 4a log p divided by p per factor and top element. This handles first and second primes and the unserved tops at served primes. Use the high-range estimate for high primes and the distinguished-prime estimate for the separate term, then multiply each bound by the number of factor-top pairs. For served tops, bound the reference loss and the floor term by their given envelopes. The served primes lie in the integer interval from two to X″, so their count is at most X″, and the prime and order envelopes only occur below X′. Apply the corresponding weighted sum bounds to each envelope. Adding these estimates to the deficit split gives the claimed loss.
 -/
 theorem loss_bound : SecondKindLoss := by
   intro ι κ τ W below l Ps cl J TT TTp Iex at_ wz Id wd d gainW tauW gain tau lo fl
@@ -1278,16 +1034,8 @@ theorem loss_bound : SecondKindLoss := by
   simp only [← hdT] at hD
   linarith
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Prove the components needed by the constructor for the conclusion. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Let R be the positive i-th root of X′. If p were below R(1 − ρ), raising to i would make p raised to i smaller than X′ times the i-th power of 1 − ρ, which is at most X′(1 − ρ). This contradicts the lower bound. If p were above R(1 + ρ), raising to i would give a value greater than X′(1 + ρ), since the i-th power of 1 + ρ is at least 1 + ρ. This contradicts the upper bound.
 -/
 theorem band_root_bound : BandRoot := by
   intro X' ρ p i hX hρ0 hρ1 hp hi hlo hhi
@@ -1312,12 +1060,8 @@ theorem band_root_bound : BandRoot := by
     have h3 : X' * (1 + ρ) ≤ X' * (1 + ρ) ^ i := mul_le_mul_of_nonneg_left h2 hX.le
     linarith
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+/- English proof (authored)
+The band upper endpoint is at most 2X′. Taking logarithms gives i log p ≤ log 2 + log X′ ≤ 2 log X′. Since p ≥ 8 gives log p ≥ 2, the exponent is at most log X′.
 -/
 theorem band_exponent_bound : BandExponent := by
   intro X' ρ p i hX hρ hp hpi
@@ -1336,18 +1080,8 @@ theorem band_exponent_bound : BandExponent := by
   have hi0 : (0 : ℝ) ≤ i := Nat.cast_nonneg i
   nlinarith
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
-
-Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
-
-Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Each prime is covered by the small-order condition or by at least one of the relative bands. Since the weights log p divided by p are nonnegative, the total is at most the sum over the small-order subset plus the sum over all the bands, even for overlapping coverage. Apply the order sum estimate to the small-order subset and the total band estimate to the other part. Their sum is the desired bound.
 -/
 theorem first_kind_bucket_bound : FirstKindBucket := by
   obtain ⟨C, hC⟩ := Formalism.RankGapBounds.LocalQuadraticParts.ordersSumY_of Formalism.RankGapBounds.LocalQuadraticParts.powTwoPowEqOneIff_holds
@@ -1397,20 +1131,8 @@ theorem first_kind_bucket_bound : FirstKindBucket := by
     intro i _ n hn
     exact (Finset.mem_filter.1 hn).2
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
-
-Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Apply the threshold-loss mean bound to the first nonnegative contribution and the mean correction estimate to the nonnegative envelope for the second. The two-term selection lemma gives one positive-weight outcome where their sum is at most the sum of the two mean bounds. At that outcome the given loss inequality bounds the loss by the same sum, and the pointwise correction comparison bounds the actual correction by its envelope. Factoring the sum of the two mean bounds gives the displayed coefficient.
 -/
 theorem loss_choice : LossChoice := by
   intro Ω _ π Loss s Sig io D Y θ s₀ mTa hπ h1 hθ hs₀ hm hY hs hSig hmean hLoss hio

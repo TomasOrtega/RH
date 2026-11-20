@@ -37,8 +37,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Replace the comparison morphism by its equal. The original strict pullback relation then supplies the relation over that morphism.
 -/
 theorem IsStrictPullbackBlowupSeq.congr_hom {X' X : Scheme.{u}} {g g' : X' ⟶ X}
     {t : SequenceOfBlowups X'} {s : SequenceOfBlowups X} (h : IsStrictPullbackBlowupSeq g t s) (hg : g = g') :
@@ -46,8 +46,8 @@ theorem IsStrictPullbackBlowupSeq.congr_hom {X' X : Scheme.{u}} {g g' : X' ⟶ X
   subst hg
   exact h
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Substitute the equality of source sequences into the strict pullback relation. This gives the relation with the second source sequence.
 -/
 theorem IsStrictPullbackBlowupSeq.congr_sourceSeq {X' X : Scheme.{u}} {g : X' ⟶ X}
     {t t' : SequenceOfBlowups X'} {s : SequenceOfBlowups X} (h : IsStrictPullbackBlowupSeq g t s) (ht : t = t') :
@@ -55,8 +55,8 @@ theorem IsStrictPullbackBlowupSeq.congr_sourceSeq {X' X : Scheme.{u}} {g : X' �
   subst ht
   exact h
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Flat base change gives a strict pullback of the base sequence along the second map, followed by a strict pullback along the first. Their composite is a strict pullback along the composite map. By uniqueness up to isomorphism it is isomorphic to the given strict pullback along the composite. Transport the intermediate strict pullback relation through this isomorphism.
 -/
 theorem IsStrictPullbackBlowupSeq.baseChange_of_comp {Q Y X : Scheme.{u}} {φ : Q ⟶ Y} {h : Y ⟶ X}
     [AlgebraicGeometry.Flat φ] [AlgebraicGeometry.Flat h]
@@ -70,16 +70,8 @@ theorem IsStrictPullbackBlowupSeq.baseChange_of_comp {Q Y X : Scheme.{u}} {φ : 
   have hwc : IsStrictPullbackBlowupSeq (φ ≫ h) ((s.baseChange h).baseChange φ) s := hw.comp ht
   exact hw.of_isomorphic_pullback (hwc.isomorphic hu)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
-
-Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
-
-Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
-
-Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
+/- English proof (authored)
+The unit ideal pulls back to the unit ideal, so a nonunit pullback forces the original ideal to be nonunit. Conversely, the support of a pulled-back ideal is the inverse image of the original support. If the pullback is the unit ideal, this inverse image is empty. Surjectivity forces the original support to be empty, so the original ideal is the unit ideal.
 -/
 theorem comap_ne_top_iff_of_surjective {X Y : Scheme.{u}} (f : X ⟶ Y)
     [AlgebraicGeometry.Surjective f] (J : Y.IdealSheafData) :
@@ -109,8 +101,8 @@ theorem comap_ne_top_iff_of_surjective {X Y : Scheme.{u}} (f : X ⟶ Y)
 
 namespace MaxContactFunctoriality
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Identify the triples, so that the ideals of the proposed hypersurfaces lie on the same scheme. Their given compatible equality then identifies these ideals. The structural maps, marked ideals, and marks agree, so the maximal-contact property transports with them.
 -/
 theorem isMaxContactHypersurface_of_triple_eq {T₁ T₂ : MarkedIdealWithBoundary.{u}} (hT : T₁ = T₂)
     (hft₁ : AlgebraicGeometry.LocallyOfFiniteType T₁.structMap)
@@ -125,8 +117,8 @@ theorem isMaxContactHypersurface_of_triple_eq {T₁ T₂ : MarkedIdealWithBounda
   subst hHe
   exact h
 
-/- English proof (translation)
-Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+After identifying the triples, the structural maps coincide and both lists lie on the same scheme. The given equality then identifies the lists, so the existing strict normal crossing property gives the required one.
 -/
 theorem inStrictNormalCrossingPosition_of_triple_eq {T₁ T₂ : MarkedIdealWithBoundary.{u}} (hT : T₁ = T₂)
     (L₁ : List T₁.scheme.IdealSheafData) (L₂ : List T₂.scheme.IdealSheafData) (hL : HEq L₁ L₂)
@@ -137,10 +129,8 @@ theorem inStrictNormalCrossingPosition_of_triple_eq {T₁ T₂ : MarkedIdealWith
   subst hLe
   exact h
 
-/- English proof (translation)
-Establish an intermediate fact. Split into cases according to the possible forms of the given data. Use the matching hypothesis. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
-
-Use the matching hypothesis. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Admissibility gives a smooth structural map over a characteristic-zero field. The order-locus formula for smooth pullback identifies the new locus with the inverse image of the old one. The inverse image of the empty set is empty.
 -/
 theorem orderAtLeastLocus_comap_eq_empty (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible) {Y : Scheme.{u}}
     (h : Y ⟶ T.scheme) [AlgebraicGeometry.Smooth h]
@@ -154,8 +144,8 @@ theorem orderAtLeastLocus_comap_eq_empty (T : MarkedIdealWithBoundary.{u}) (hv :
     assumption
   rw [orderAtLeastLocus_comap T.base T.structMap h T.ideal T.mult, hemp, Set.preimage_empty]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The underlying scheme of the derived triple is the final stage of the marked sequence. The stage dimension bound applied at the length of that sequence gives the inequality.
 -/
 private theorem derivedTriple_dim_le (hstar : _root_.FunctorialResolution.EmbeddedResolution.MaxContactCoverProperties.{u})
     (S : MarkedIdealWithBoundary.{u}) (hV : S.IsAdmissible)
@@ -165,8 +155,8 @@ private theorem derivedTriple_dim_le (hstar : _root_.FunctorialResolution.Embedd
     (MaxContactCoverData.derivedTriple S s hft extra keep).krullDimSucc ≤ S.krullDimSucc :=
   hstar.schemeDim_level_le S hV s.toMarkedSequenceOfBlowups s.length le_rfl
 
-/- English proof (translation)
-Consider separately whether the proposition holds or fails. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+If the final structural map is locally of finite type, form the derived triple. Its dimension is at most the original triple's dimension and hence fits both bounds. In each reduction the lower-dimensional family applies the same assignment to that derived triple and index. Both thus try to append the same marked continuation. If local finite type fails, both reductions return the original sequence.
 -/
 private theorem appendLowerDimReduction_congr_of_dim_le (hstar : _root_.FunctorialResolution.EmbeddedResolution.MaxContactCoverProperties.{u})
     (hinv : ComapIsoInvariance.{u})
@@ -188,10 +178,8 @@ private theorem appendLowerDimReduction_congr_of_dim_le (hstar : _root_.Functori
       (MaxContactCoverData.appendLowerDimReduction_of_not_locallyOfFiniteType hinv T₂ (lowerDimensionalFamily A T₂) S s extra
         keep n hft).symm
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the number of separation steps. At zero both sides give the empty sequence. At a successor the two prior sequences agree by induction. Apply invariance of the appended lower-dimensional reduction under enlargement of the dimension bound to this common sequence.
 -/
 private theorem separateBoundary_congr_of_dim_le (hstar : _root_.FunctorialResolution.EmbeddedResolution.MaxContactCoverProperties.{u})
     (hinv : ComapIsoInvariance.{u})
@@ -209,8 +197,8 @@ private theorem separateBoundary_congr_of_dim_le (hstar : _root_.FunctorialResol
     exact appendLowerDimReduction_congr_of_dim_le hstar hinv A T₁ T₂ hdim S hV hS
       (MaxContactReduction.separateBoundary hinv T₂ (lowerDimensionalFamily A T₂) S n) [] 0 n
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Boundary separation for all original entries yields the same sequence under both bounds. The final strict transform of the hypersurface is thus also common. Apply invariance of the appended reduction under enlargement of the bound to this common sequence and hypersurface transform.
 -/
 theorem reduceAlongHypersurface_congr_of_dim_le (hstar : _root_.FunctorialResolution.EmbeddedResolution.MaxContactCoverProperties.{u})
     (hinv : ComapIsoInvariance.{u})
@@ -224,8 +212,8 @@ theorem reduceAlongHypersurface_congr_of_dim_le (hstar : _root_.FunctorialResolu
     separateBoundary_congr_of_dim_le hstar hinv A T₁ T₂ hdim S hV hS S.boundary.length]
   exact appendLowerDimReduction_congr_of_dim_le hstar hinv A T₁ T₂ hdim S hV hS _ _ S.boundary.length 0
 
-/- English proof (translation)
-Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Identify the input triples and then the hypersurface ideals on their common scheme. The reductions now have the same inputs, so their underlying blowup sequences agree.
 -/
 theorem reduceAlongHypersurface_toSequenceOfBlowups_heq (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u})
     (resolveLower : (S : MarkedIdealWithBoundary.{u}) → S.krullDimSucc ≤ T.krullDimSucc → ℕ → S.SequenceOfBlowups)
@@ -258,8 +246,8 @@ def MarkedOfMarkedDropTrivialBoundary : Prop :=
     d.IsMarked T.structMap T.ideal T.mult (MaxContactReduction.dropTrivialBoundary T).boundary →
       d.IsMarked T.structMap T.ideal T.mult T.boundary
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+Dropping unit boundary entries leaves the dimension, ideal, and mark unchanged. Thus the dimension condition, order bound, and nonempty order locus persist. The assumed admissibility result supplies the remaining hypothesis for the trimmed triple.
 -/
 theorem OrderReductionHypotheses.of_dropTrivialBoundaryAdmissible {P : ℕ → Prop} {T : MarkedIdealWithBoundary.{u}} (h : OrderReductionHypotheses P T)
     (htv : DropTrivialBoundaryAdmissible.{u}) : OrderReductionHypotheses P (MaxContactReduction.dropTrivialBoundary T) := by
@@ -268,10 +256,8 @@ theorem OrderReductionHypotheses.of_dropTrivialBoundaryAdmissible {P : ℕ → P
   · exact h.orderLE
   · exact h.coSupport_nonempty
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Pass to the trimmed triple, which satisfies the order-reduction hypotheses. The descent property gives a sequence downstairs whose strict pullback is the cover sequence, so the chosen descent operation succeeds. Its returned sequence also has that strict pullback property by the specification of the operation. Descent of markings marks it for the trimmed boundary, and the restoration property marks it for the original boundary. Principalization for the original triple selects exactly this descent and takes its marked conversion. Forgetting the marking recovers the chosen underlying sequence.
 -/
 theorem exists_isStrictPullback_cover_dropTrivialBoundary {hinv : ComapIsoInvariance.{u}} {P : ℕ → Prop}
     {A : ℕ → PrincipalizationAssignment.{u}} (hstar : CoverSequenceProperties hinv P A)

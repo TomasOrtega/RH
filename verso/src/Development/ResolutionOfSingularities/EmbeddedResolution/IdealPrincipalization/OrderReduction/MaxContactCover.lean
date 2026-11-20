@@ -47,16 +47,16 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace MaxContactOpenCover
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The first projection is the base change of the given open immersion. Open immersions are stable under base change.
 -/
 private theorem isOpenImmersion_fst_of_isPullback
     {P' X' Y' Z' : Scheme.{u}} {p₁ : P' ⟶ X'} {p₂ : P' ⟶ Y'} {f' : X' ⟶ Z'} {g' : Y' ⟶ Z'}
     (hsq : IsPullback p₁ p₂ f' g') (hg : IsOpenImmersion g') : IsOpenImmersion p₁ :=
   MorphismProperty.of_isPullback hsq.flip hg
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+At the image of a chosen point under the second projection, take an open neighborhood on which the given map is an open immersion. Its inverse image under the second projection is an open neighborhood of the chosen point. The first projection on this neighborhood is the base change of that open immersion and is therefore an open immersion.
 -/
 theorem isLocalIsomorphism_fst_of_isPullback {P X Y Z : Scheme.{u}}
     {fst : P ⟶ X} {snd : P ⟶ Y} {f : X ⟶ Z} {g : Y ⟶ Z}
@@ -78,8 +78,8 @@ abbrev coverPieceι (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible)
   Sigma.ι (fun j : (MaxContactCoverData.chosenCoverData T hv).idx =>
     (((MaxContactCoverData.chosenCoverData T hv).opens j : T.scheme.Opens) : Scheme.{u})) i
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Each summand of a disjoint union of schemes is an open subscheme. Its canonical inclusion is consequently an open immersion.
 -/
 theorem isOpenImmersion_coverPieceι (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible)
     (i : (MaxContactCoverData.chosenCoverData T hv).idx) :
@@ -103,8 +103,8 @@ abbrev coverTriplePiece (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible)
     (i : (MaxContactCoverData.chosenCoverData T hv).idx) : Scheme.{u} :=
   ((coverTripleOpen T hv i : (MaxContactCoverData.coverTriple T hv).scheme.Opens) : Scheme.{u})
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The open associated to a cover piece is its image in the disjoint union. The inclusion of that open has exactly this image, which is also the range of the original immersion.
 -/
 theorem range_coverPieceι (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible)
     (i : (MaxContactCoverData.chosenCoverData T hv).idx) :
@@ -116,10 +116,8 @@ def coverPieceIso (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible)
     coverPiece T hv i ≅ coverTriplePiece T hv i :=
   IsOpenImmersion.isoOfRangeEq (coverPieceι T hv i) (coverTripleOpen T hv i).ι (range_coverPieceι T hv i)
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Every point of a disjoint union is the image of a point of one of its summands. For such a summand the point lies in the image open of its inclusion.
 -/
 theorem exists_mem_coverTripleOpen (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible)
     (x : ↥(MaxContactCoverData.coverTriple T hv).scheme) :
@@ -134,16 +132,16 @@ theorem exists_mem_coverTripleOpen (T : MarkedIdealWithBoundary.{u}) (hv : T.IsA
   rw [← hy]
   simp
 
-/- English proof (translation)
-Reduce the claim to the hypotheses of an applicable result.
+/- English proof (authored)
+The inverse of the piece isomorphism is the factorization of the image-open inclusion through the open immersion from the piece. The defining identity of the factorization gives the composite.
 -/
 private theorem coverPieceIso_inv_comp_coverPieceι (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible)
     (i : (MaxContactCoverData.chosenCoverData T hv).idx) :
     (coverPieceIso T hv i).inv ≫ coverPieceι T hv i = (coverTripleOpen T hv i).ι := by
   apply AlgebraicGeometry.IsOpenImmersion.lift_fac
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The cover map is the map out of the disjoint union induced by the open inclusions into the original scheme. Restricting it to the chosen summand gives its defining open inclusion.
 -/
 private theorem coverPieceι_comp_coverMap (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible)
     (i : (MaxContactCoverData.chosenCoverData T hv).idx) :
@@ -152,8 +150,8 @@ private theorem coverPieceι_comp_coverMap (T : MarkedIdealWithBoundary.{u}) (hv
   rw [MaxContactCoverData.coverMap_eq_sigmaOpensDesc]
   exact sigma_ι_sigmaOpensDesc T.scheme (MaxContactCoverData.chosenCoverData T hv).opens i
 
-/- English proof (translation)
-Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Factor the image-open inclusion through the inverse of the piece isomorphism followed by the summand inclusion. After composing with the cover map, the summand inclusion followed by the cover map is the original open inclusion. This gives the stated factorization.
 -/
 theorem coverTripleOpen_ι_comp_coverMap (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible)
     (i : (MaxContactCoverData.chosenCoverData T hv).idx) :
@@ -167,8 +165,8 @@ theorem coverTripleOpen_ι_comp_coverMap (T : MarkedIdealWithBoundary.{u}) (hv :
     _ = (coverPieceIso T hv i).inv ≫ ((MaxContactCoverData.chosenCoverData T hv).opens i).ι := by
         rw [coverPieceι_comp_coverMap T hv i]
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+Restriction to an open is pullback along its inclusion. That inclusion factors as the inverse piece isomorphism followed by the summand inclusion. Pullback along the composite therefore first pulls back to the summand and then along the inverse isomorphism.
 -/
 theorem restrictIdeal_coverTripleOpen (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible)
     (i : (MaxContactCoverData.chosenCoverData T hv).idx)
@@ -177,10 +175,8 @@ theorem restrictIdeal_coverTripleOpen (T : MarkedIdealWithBoundary.{u}) (hv : T.
   simp only [restrictIdeal_eq_comap_ι, ← coverPieceIso_inv_comp_coverPieceι T hv i,
     Scheme.IdealSheafData.comap_comp]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Choose an image open containing the point of the disjoint union. On that open the cover map factors as an isomorphism onto the corresponding piece followed by the original open inclusion. Its restriction is an open immersion.
 -/
 theorem isLocalIsomorphism_coverMap (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible) :
     MaxContactFunctoriality.IsLocalIsomorphism (MaxContactCoverData.coverMap T hv) := by
@@ -191,8 +187,8 @@ theorem isLocalIsomorphism_coverMap (T : MarkedIdealWithBoundary.{u}) (hv : T.Is
     infer_instance
   exact ⟨coverTripleOpen T hv i, hxi, hψ⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The chart on the original piece commutes with the structural maps to the base. Precompose this equality with the inverse isomorphism from the image open to the original piece. The inverse isomorphism followed by the original open inclusion is the image-open inclusion followed by the cover map. This identifies the two composites to the base.
 -/
 private theorem coverPieceIso_inv_comp_map_comp_affineSpaceFinToSpec (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible)
     (i : (MaxContactCoverData.chosenCoverData T hv).idx) {n : ℕ}
@@ -212,8 +208,8 @@ private theorem coverPieceIso_inv_comp_map_comp_affineSpaceFinToSpec (T : Marked
     _ = (coverTripleOpen T hv i).ι ≫ (MaxContactCoverData.coverMap T hv ≫ T.structMap) :=
         Category.assoc _ _ _
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The inverse piece isomorphism is étale because it is an isomorphism. The original chart map is étale by hypothesis, and composition preserves étaleness.
 -/
 private theorem etale_coverPieceIso_inv_comp_map (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible)
     (i : (MaxContactCoverData.chosenCoverData T hv).idx) {n : ℕ}
@@ -233,8 +229,8 @@ def coverEtaleChart (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible)
   comp_struct := coverPieceIso_inv_comp_map_comp_affineSpaceFinToSpec T hv i c
   isEtale := etale_coverPieceIso_inv_comp_map T hv i c
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+A chart coordinate ideal is the pullback of the indicated coordinate-subspace ideal in affine space. The transported chart factors through the inverse piece isomorphism and the original chart. Pulling back in these two steps gives the original chart's coordinate ideal pulled back along the inverse isomorphism.
 -/
 theorem coverEtaleChart_coordIdeal (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible)
     (i : (MaxContactCoverData.chosenCoverData T hv).idx) {n : ℕ}
@@ -252,20 +248,16 @@ theorem coverEtaleChart_coordIdeal (T : MarkedIdealWithBoundary.{u}) (hv : T.IsA
     congrArg (fun J => J.comap (coverPieceIso T hv i).inv) (EtaleChart.coordIdeal_eq_comap_coordSubspaceIdeal c S)
   exact h1.trans (key.trans h2.symm)
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The spectrum of a ring is quasi-compact. The inverse image of the whole spectrum under a quasi-compact morphism is quasi-compact, and it is the whole source.
 -/
 private theorem compactSpace_of_quasiCompact_toSpec {X : Scheme.{u}} {R : CommRingCat.{u}}
     (f : X ⟶ Spec R) (hf : AlgebraicGeometry.QuasiCompact f) : CompactSpace ↥X := by
   have := hf
   exact QuasiCompact.compactSpace_of_compactSpace f
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+At a point of the tuned order locus, the upper bound on order forces equality with the positive tuned mark. The maximal-contact coordinate theorem gives an affine étale chart around the point and a coordinate ideal of maximal contact. At any other point, the complement of the tuned order locus is open because the locus is closed. Take an affine étale neighborhood contained in that complement and assign it the unit ideal. Its intersection with the order locus is empty.
 -/
 private theorem exists_affineOpen_maxContactCoord_or_disjoint_locus (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible)
     [AlgebraicGeometry.LocallyOfFiniteType T.structMap]
@@ -303,12 +295,8 @@ private theorem exists_affineOpen_maxContactCoord_or_disjoint_locus (T : MarkedI
     intro y hyS hyV
     exact (hVW hyV) hyS
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
-
-Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
+/- English proof (authored)
+For every point choose an affine neighborhood and local ideal with the two alternatives just established. The neighborhoods cover the scheme. The scheme is quasi-compact because its structural map is quasi-compact and the spectrum of the base field is quasi-compact. Choose a finite subcover and carry over its local ideals. It covers the scheme, and each member retains affineness and the required alternative.
 -/
 theorem exists_isMaxContactCover (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible)
     (h : ∀ x : ↥T.scheme,
@@ -346,44 +334,44 @@ def tunedTriple (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible) : Marked
   mult := MaxContactCoverData.tunedMult T
   boundary := T.boundary
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The tuned triple takes its base field directly from the original triple.
 -/
 @[simp] theorem tunedTriple_baseField (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible) :
     (tunedTriple T hv).base = T.base := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The underlying scheme in the definition of the tuned triple is the original scheme.
 -/
 @[simp] theorem tunedTriple_scheme (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible) :
     (tunedTriple T hv).scheme = T.scheme := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+By construction, the structural map of the tuned triple is the original map to the base field's spectrum.
 -/
 @[simp] theorem tunedTriple_structureMorphism (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible) :
     (tunedTriple T hv).structMap = T.structMap := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The ideal used to define the tuned triple is the balanced tuned ideal.
 -/
 @[simp] theorem tunedTriple_ideal (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible) :
     (tunedTriple T hv).ideal = MaxContactCoverData.balancedTunedIdeal T hv := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The mark in the tuned triple is the tuning exponent of the original mark.
 -/
 @[simp] theorem tunedTriple_mult (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible) :
     (tunedTriple T hv).mult = MaxContactCoverData.tunedMult T := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The tuned triple takes the original boundary list as its boundary.
 -/
 @[simp] theorem tunedTriple_boundary (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible) :
     (tunedTriple T hv).boundary = T.boundary := rfl
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The field, structural map, and boundary are inherited from the admissible triple, giving characteristic zero, local finite type, quasi-compactness, smoothness, and strict normal crossings. The tuned mark is positive. The assumed nonvanishing on components supplies the condition for the tuned ideal.
 -/
 theorem isAdmissible_tunedTriple (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible)
     (hnz : NonzeroOnComponents (MaxContactCoverData.balancedTunedIdeal T hv)) :
@@ -396,8 +384,8 @@ theorem isAdmissible_tunedTriple (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdm
     smooth := hv.smooth
     snc := hv.snc }
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+Both constructions use the disjoint union as their scheme and its cover map followed by the original structural map. Both use the original field and tuned mark, and obtain the ideal and boundary by pulling back the tuned ideal and original boundary along the cover map.
 -/
 theorem coverTriple_eq_tunedTriple_pullbackAlong (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible) :
     MaxContactCoverData.coverTriple T hv =
@@ -405,8 +393,8 @@ theorem coverTriple_eq_tunedTriple_pullbackAlong (T : MarkedIdealWithBoundary.{u
         (MaxContactCoverData.coverMap T hv ≫ T.structMap) (MaxContactCoverData.coverMap T hv) :=
   rfl
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Each member of the good cover is affine, and there are finitely many members. The cover triple is their disjoint union, which is affine as the spectrum of the finite product of their coordinate rings.
 -/
 theorem isAffine_coverTriple_scheme (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible)
     (hgood : MaxContactReduction.IsMaxContactCover T (MaxContactCoverData.chosenCoverData T hv) hv.locallyOfFiniteType
@@ -414,12 +402,8 @@ theorem isAffine_coverTriple_scheme (T : MarkedIdealWithBoundary.{u}) (hv : T.Is
     AlgebraicGeometry.IsAffine (MaxContactCoverData.coverTriple T hv).scheme :=
   isAffine_sigmaOpens T.scheme (MaxContactCoverData.chosenCoverData T hv).opens hgood.isAffine
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
-
-Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The source is affine by the cover property and hence quasi-compact. The target is the spectrum of a field, so any open is empty or the whole target. Its inverse image is respectively empty or the whole source, both quasi-compact.
 -/
 theorem quasiCompact_coverMap_comp_structureMorphism (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible)
     (hgood : MaxContactReduction.IsMaxContactCover T (MaxContactCoverData.chosenCoverData T hv) hv.locallyOfFiniteType
@@ -444,15 +428,15 @@ theorem quasiCompact_coverMap_comp_structureMorphism (T : MarkedIdealWithBoundar
     rw [Set.preimage_univ]
     exact isCompact_univ
 
-/- English proof (translation)
-Supply the required witnesses or components.
+/- English proof (authored)
+An irreducible closed subset is nonempty. Any such subset would therefore give a point in the empty space, which is impossible.
 -/
 private theorem isEmpty_irreducibleCloseds_of_isEmpty {C : Type u} [TopologicalSpace C] (h : IsEmpty C) :
     IsEmpty (TopologicalSpace.IrreducibleCloseds C) :=
   ⟨fun Z => h.elim Z.2.1.choose⟩
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The ordered set of irreducible closed subsets of the empty space is empty. Its unique map to the ordered set for the other space is strictly monotone vacuously. The dimension inequality follows from the bound on chain lengths under a strictly monotone map.
 -/
 private theorem topologicalKrullDim_le_of_isEmpty {C B : Type u} [TopologicalSpace C]
     [TopologicalSpace B] (h : IsEmpty C) :
@@ -464,8 +448,8 @@ private theorem topologicalKrullDim_le_of_isEmpty {C B : Type u} [TopologicalSpa
     (fun Z : TopologicalSpace.IrreducibleCloseds C => isEmptyElim Z)
     (fun a _ _ => isEmptyElim a)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The closure of the given point is a nonempty irreducible closed subset. The ordered set used to define Krull dimension therefore contains a chain with one member, ruling out the bottom value.
 -/
 private theorem topologicalKrullDim_ne_bot {B : Type u} [TopologicalSpace B] (b : B) :
     topologicalKrullDim B ≠ ⊥ := by
@@ -474,16 +458,16 @@ private theorem topologicalKrullDim_ne_bot {B : Type u} [TopologicalSpace B] (b 
   have hE : IsEmpty (TopologicalSpace.IrreducibleCloseds B) := Order.krullDim_eq_bot_iff.mp hb'
   exact hE.elim ⟨closure {b}, isIrreducible_singleton.closure, isClosed_closure⟩
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+An open immersion gives the source the subspace topology of its image. For a subspace, taking closures in the ambient space embeds the order of irreducible closed subsets, since intersecting those closures with the subspace recovers the original closed subsets. Strict chains therefore give the dimension bound.
 -/
 private theorem topologicalKrullDim_le_of_isOpenImmersion {P Q : Scheme.{u}} (f : P ⟶ Q)
     (h : IsOpenImmersion f) : topologicalKrullDim ↥P ≤ topologicalKrullDim ↥Q := by
   have := h
   exact f.isOpenEmbedding.isInducing.topologicalKrullDim_le
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The map from the image open to the original scheme is the inverse piece isomorphism followed by the original open inclusion. It is an open immersion, so the dimension of the image open is at most the dimension of the original scheme.
 -/
 private theorem topologicalKrullDim_coverTripleOpen_le (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible)
     (i : (MaxContactCoverData.chosenCoverData T hv).idx) :
@@ -496,16 +480,8 @@ private theorem topologicalKrullDim_coverTripleOpen_le (T : MarkedIdealWithBound
   exact topologicalKrullDim_le_of_isOpenImmersion
     ((coverTripleOpen T hv i).ι ≫ MaxContactCoverData.coverMap T hv) hψ
 
-/- English proof (translation)
-Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Admissibility gives a finite upper bound on the dimension of the original scheme. If that scheme is empty, the cover scheme is also empty because it maps to it, and the dimension comparison holds. Otherwise the original scheme has a point, so its dimension is a finite natural number. The image opens cover the cover scheme and each has dimension at most this number by its open immersion into the original scheme. The dimension bound is local on this open cover. Apply the resulting bound to the successor dimensions.
 -/
 theorem krullDimSucc_coverTriple_scheme_le_dim (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible) :
     krullDimSucc (MaxContactCoverData.coverTriple T hv).scheme ≤ T.krullDimSucc := by

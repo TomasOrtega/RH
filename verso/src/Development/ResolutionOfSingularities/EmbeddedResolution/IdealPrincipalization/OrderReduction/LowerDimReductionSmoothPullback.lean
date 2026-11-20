@@ -53,8 +53,8 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace StrictPullbackBlowupSeq
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The stage map and the projections to the original schemes form a pullback square. The stage map is thus a base change of the original smooth morphism, so it is smooth.
 -/
 theorem smooth_map {X' X : Scheme.{u}} {g : X' ⟶ X} [AlgebraicGeometry.Smooth g]
     {t : SequenceOfBlowups X'} {s : SequenceOfBlowups X} (D : StrictPullbackBlowupSeq g t s)
@@ -73,16 +73,16 @@ namespace MarkedBlowupSequenceData
 variable {k : Type u} [Field k] {X : Scheme.{u}} {p : X ⟶ Spec (CommRingCat.of k)}
   {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
 
-/- English proof (translation)
-Substitute using the available equality. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Identify the two equal indices. The corresponding stage schemes and their ideals then coincide, and pullback along the identity fixes the ideal.
 -/
 theorem ideal_congr_index (u : MarkedBlowupSequenceData p I m E) {i j : ℕ} (h : i = j) :
     u.ideal i = (u.ideal j).comap (eqToHom (congrArg (fun n => u.obj n) h)) := by
   subst h
   simp
 
-/- English proof (translation)
-Substitute using the available equality. Simplify using the standard rewrite rules.
+/- English proof (authored)
+After identifying the equal indices, both boundary lists are on the same stage and the comparison morphism is the identity. Pullback along it fixes each entry.
 -/
 theorem boundary_congr_index (u : MarkedBlowupSequenceData p I m E) {i j : ℕ} (h : i = j) :
     u.boundary i =
@@ -92,8 +92,8 @@ theorem boundary_congr_index (u : MarkedBlowupSequenceData p I m E) {i j : ℕ} 
 
 end MarkedBlowupSequenceData
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Replace each sequence by the equal one given in the hypotheses. The original strict pullback relation then has exactly the required source and target sequences.
 -/
 theorem IsStrictPullbackBlowupSeq.of_eq {X' X : Scheme.{u}} {φ : X' ⟶ X} {B₁ B₂ : SequenceOfBlowups X'}
     {C₁ C₂ : SequenceOfBlowups X} (h₁ : B₁ = B₂) (h₂ : C₁ = C₂)
@@ -117,8 +117,8 @@ variable (S : MarkedIdealWithBoundary.{u}) {Y : Scheme.{u}} (g : Y ⟶ S.scheme)
 noncomputable def pullbackMapAtLength : t.obj t.length ⟶ s.obj s.length :=
   D.lastMap
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The comparison map at the length of the sequence is defined to be the final-stage map of the strict pullback.
 -/
 theorem pullbackMapAtLength_eq_lastMap : pullbackMapAtLength S g s t D = D.lastMap := rfl
 
@@ -126,8 +126,8 @@ theorem pullbackMapAtLength_eq_lastMap : pullbackMapAtLength S g s t D = D.lastM
     List (t.obj t.length).IdealSheafData :=
   L.map (fun A => A.comap (pullbackMapAtLength S g s t D))
 
-/- English proof (translation)
-Substitute using the available equality. Simplify using the standard rewrite rules.
+/- English proof (authored)
+At equal indices the two projections to the base are the same. The identification of their source stages is the identity, and composing with it fixes the projection.
 -/
 private theorem eqToHom_comp_projectionToBase {X : Scheme.{u}} (s : SequenceOfBlowups X) {a b : ℕ}
     (h : a = b) :
@@ -135,8 +135,8 @@ private theorem eqToHom_comp_projectionToBase {X : Scheme.{u}} (s : SequenceOfBl
   subst h
   simp
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The stage comparison at the last source index commutes with projection to the original schemes by its pullback square. Strict pullback gives equality of the two lengths. Identifying the target stage at the source length with the final target stage leaves its projection unchanged, so the square gives the claimed equality for the final map.
 -/
 private theorem lastMap_comp_projectionToBase {X' X : Scheme.{u}} {g : X' ⟶ X}
     {t : SequenceOfBlowups X'} {s : SequenceOfBlowups X} (D : StrictPullbackBlowupSeq g t s) :
@@ -146,8 +146,8 @@ private theorem lastMap_comp_projectionToBase {X' X : Scheme.{u}} {g : X' ⟶ X}
   rw [StrictPullbackBlowupSeq.lastMap_eq, Category.assoc, eqToHom_comp_projectionToBase s D.length_eq]
   exact key.w
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The projections of the marked sequences are those of their underlying blowup sequences. Commutativity of the final comparison square gives equality of the composites to the original scheme. Postcompose with the original structural map and associate the composites.
 -/
 theorem pullbackMapAtLength_comp_eq_comp_structureMorphism :
     pullbackMapAtLength S g s t D ≫ (s.proj s.length ≫ S.structMap) =
@@ -161,8 +161,8 @@ theorem pullbackMapAtLength_comp_eq_comp_structureMorphism :
     congrArg (fun φ : t.obj t.length ⟶ S.scheme => φ ≫ S.structMap) h2
   exact (Category.assoc _ _ _).symm.trans (h3.trans (Category.assoc _ _ _))
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+The structural map of the pulled-back triple is the original base-change map followed by the original structural map. Substituting this description into the final comparison identity gives the result.
 -/
 theorem pullbackMapAtLength_comp_eq_pullbackTriple_structureMorphism :
     pullbackMapAtLength S g s t D ≫ (s.proj s.length ≫ S.structMap) =
@@ -172,8 +172,8 @@ theorem pullbackMapAtLength_comp_eq_pullbackTriple_structureMorphism :
   refine (pullbackMapAtLength_comp_eq_comp_structureMorphism S g s t D).trans ?_
   exact congrArg (fun f => t.proj t.length ≫ f) h
 
-/- English proof (translation)
-Substitute using the available equality. Simplify using the standard rewrite rules.
+/- English proof (authored)
+With the indices identified, the two ideals are the same and the stage identification is the identity. The composite with the identity is the original morphism, so the pullbacks agree.
 -/
 private theorem comap_eq_comap_comp_eqToHom
     (F : ℕ → Scheme.{u}) (J : ∀ n : ℕ, (F n).IdealSheafData) {a b : ℕ} (hab : a = b)
@@ -182,8 +182,8 @@ private theorem comap_eq_comap_comp_eqToHom
   subst hab
   simp
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The controlled-transform comparison expresses the final ideal upstairs as the pullback of the controlled transform downstairs at the same index. Strict pullback gives equal lengths, so this index is also the final stage downstairs. There the marked ideal is the controlled transform. Transporting to the common final stage gives pullback along the stated final map.
 -/
 theorem ideal_eq_comap_pullbackMapAtLength :
     t.ideal t.length = (s.ideal s.length).comap (pullbackMapAtLength S g s t D) := by
@@ -194,8 +194,8 @@ theorem ideal_eq_comap_pullbackMapAtLength :
   rw [s.controlledTransform_eq_ideal t.length hL.le]
   exact comap_eq_comap_comp_eqToHom s.obj s.ideal hL _
 
-/- English proof (translation)
-Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Identify the equal stage indices, so the stage identification in the composite becomes the identity. The flat-pullback formula for boundaries gives the remaining equality at that stage, using the local Noetherian hypotheses on both sequences.
 -/
 private theorem boundary_eq_map_comap_strictPullbackComparisonMap {K : Type u} [Field K] {XX' XX : Scheme.{u}}
     {qq : XX' ⟶ Spec (CommRingCat.of K)} {gg : XX' ⟶ XX} [AlgebraicGeometry.Flat gg]
@@ -212,8 +212,8 @@ private theorem boundary_eq_map_comap_strictPullbackComparisonMap {K : Type u} [
   simp only [eqToHom_refl, Category.comp_id]
   exact tt.boundary_eq_comap_strictPullbackComparisonMap DD hNd hNt i hi
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Apply the stagewise boundary comparison with the two equal final indices. The boundary computed from the underlying blowup data agrees with the marked boundary at the last stage. Its entrywise pullback along the final map is therefore the upstairs boundary.
 -/
 theorem boundary_eq_map_comap_pullbackMapAtLength [AlgebraicGeometry.Flat g]
     (hNs : ∀ i ≤ s.length, AlgebraicGeometry.IsLocallyNoetherian (s.obj i))
@@ -226,8 +226,8 @@ theorem boundary_eq_map_comap_pullbackMapAtLength [AlgebraicGeometry.Flat g]
   rw [MarkedBlowupSequenceData.toBlowupSequenceData_boundary_eq s s.length le_rfl] at key
   exact key
 
-/- English proof (translation)
-Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The target identification is an isomorphism, hence smooth. Composing it with the smooth map preserves smoothness.
 -/
 private theorem smooth_comp_eqToHom {X Y Y' : Scheme.{u}} (f : X ⟶ Y) (h : Y = Y')
     (hf : AlgebraicGeometry.Smooth f) : AlgebraicGeometry.Smooth (f ≫ eqToHom h) := by
@@ -235,8 +235,8 @@ private theorem smooth_comp_eqToHom {X Y Y' : Scheme.{u}} (f : X ⟶ Y) (h : Y =
   simp only [eqToHom_refl, Category.comp_id]
   exact hf
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The stage comparison at the final source index is smooth by the stage pullback square. The final map is that comparison followed by the target identification, so it is smooth as well.
 -/
 private theorem smooth_lastMap {X' X : Scheme.{u}} {g : X' ⟶ X}
     [AlgebraicGeometry.Smooth g] {t : SequenceOfBlowups X'} {s : SequenceOfBlowups X}
@@ -244,16 +244,16 @@ private theorem smooth_lastMap {X' X : Scheme.{u}} {g : X' ⟶ X}
   rw [StrictPullbackBlowupSeq.lastMap_eq]
   exact smooth_comp_eqToHom _ _ (StrictPullbackBlowupSeq.smooth_map D t.length le_rfl)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The map at the length of the sequences is the final map of the strict pullback, which is smooth.
 -/
 theorem smooth_pullbackMapAtLength [AlgebraicGeometry.Smooth g] :
     AlgebraicGeometry.Smooth (pullbackMapAtLength S g s t D) := by
   rw [pullbackMapAtLength_eq_lastMap]
   exact smooth_lastMap D
 
-/- English proof (translation)
-Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+An identification of equal targets is an isomorphism and thus surjective on points. A surjection followed by it remains surjective.
 -/
 private theorem surjective_comp_eqToHom {X Y Z : Scheme.{u}} (f : X ⟶ Y)
     (hf : AlgebraicGeometry.Surjective f) (h : Y = Z) :
@@ -262,8 +262,8 @@ private theorem surjective_comp_eqToHom {X Y Z : Scheme.{u}} (f : X ⟶ Y)
   rw [eqToHom_refl, Category.comp_id]
   exact hf
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Surjectivity is stable under base change for schemes. The stage comparison at the final source index is the base change of the original surjection by its pullback square. Composing with the target length identification preserves surjectivity.
 -/
 private theorem surjective_lastMap {X' X : Scheme.{u}} {g : X' ⟶ X}
     [AlgebraicGeometry.Surjective g] {t : SequenceOfBlowups X'} {s : SequenceOfBlowups X}
@@ -273,16 +273,16 @@ private theorem surjective_lastMap {X' X : Scheme.{u}} {g : X' ⟶ X}
     (surjective_of_isPullback_blowupMorphism g t s t.length D.comp D.comp_zero D.pullback
       t.length le_rfl) _
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The map at the length of the sequences is the final map of the strict pullback, which is surjective.
 -/
 theorem surjective_pullbackMapAtLength [AlgebraicGeometry.Surjective g] :
     AlgebraicGeometry.Surjective (pullbackMapAtLength S g s t D) := by
   rw [pullbackMapAtLength_eq_lastMap]
   exact surjective_lastMap D
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
+/- English proof (authored)
+Identify the equal structural maps, ideals, and marks. Both tuning constructions then use the same geometric data. The certificates of local finite type are proofs of the same property and do not affect the construction.
 -/
 private theorem balancedTunedSheaf_congr (k : Type u) [CommRing k] [IsNoetherianRing k]
     {X : Scheme.{u}} {p q : X ⟶ Spec (CommRingCat.of k)} (hpq : p = q)
@@ -295,12 +295,8 @@ private theorem balancedTunedSheaf_congr (k : Type u) [CommRing k] [IsNoetherian
   subst hmn
   rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The final comparison map is smooth and makes the structural maps commute. The structural map downstairs is smooth by admissibility of the derived triple. The smooth pullback formula for balanced tuning therefore moves the pullback inside the tuning operation. The final ideal upstairs is precisely the pulled-back final ideal downstairs, and the original mark is preserved. Substituting these identities gives the tuned ideal upstairs.
 -/
 theorem tunedIdealAtLength_comap_pullbackMapAtLength [AlgebraicGeometry.Smooth g]
     (hftS : AlgebraicGeometry.LocallyOfFiniteType (s.proj s.length ≫ S.structMap))
@@ -328,8 +324,8 @@ theorem tunedIdealAtLength_comap_pullbackMapAtLength [AlgebraicGeometry.Smooth g
   exact balancedTunedSheaf_congr S.base hmor _ _ hid.symm
     (MarkedIdealWithBoundary.pullbackAlong_mult S Y (g ≫ S.structMap) g).symm
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
+/- English proof (authored)
+Both triples use the final upstairs scheme and the same base field. The final comparison identity identifies their structural maps, and smooth pullback of tuning identifies their ideals. Their tuned marks agree because pulling back preserves the original mark. Both use the supplemental ideals pulled back to the upstairs stage, followed by the truncated final upstairs boundary.
 -/
 theorem pullbackAlong_derivedTriple_eq [AlgebraicGeometry.Smooth g]
     (hftS : AlgebraicGeometry.LocallyOfFiniteType (s.proj s.length ≫ S.structMap))
@@ -349,8 +345,8 @@ theorem pullbackAlong_derivedTriple_eq [AlgebraicGeometry.Smooth g]
   simp only [MaxContactCoverData.derivedTriple, MarkedIdealWithBoundary.pullbackAlong, MarkedIdealWithBoundary.withBoundary]
   congr 1
 
-/- English proof (translation)
-Substitute using the available equality. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Entrywise pullback distributes over list concatenation. Removing an initial segment commutes with entrywise pullback because that operation preserves positions and length. Substitute the given expression for the pulled-back boundary.
 -/
 private theorem map_comap_append_drop {X₁ X₂ : Scheme.{u}} (f : X₁ ⟶ X₂)
     (E Bd : List X₂.IdealSheafData) (Bd' : List X₁.IdealSheafData) (n : ℕ)
@@ -360,8 +356,8 @@ private theorem map_comap_append_drop {X₁ X₂ : Scheme.{u}} (f : X₁ ⟶ X�
   subst h
   rw [List.map_append, List.map_drop]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The defining smooth-surjective pullback property of boundary divisor reduction applies to the two admissible balanced triples. The assumptions give the dimension and order conditions and the required agreement of the nontrivial boundaries and their initial segments. The property supplies the strict pullback relation for their assigned reductions.
 -/
 private theorem isStrictPullbackBlowupSeq_of_isBoundaryDivisorReduction {P : ℕ → Prop} {jj : ℕ} {A B : PrincipalizationAssignment.{u}}
     (hspec : IsBoundaryDivisorReduction P jj A B) (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (hP : P T.krullDimSucc)
@@ -386,18 +382,8 @@ private theorem isStrictPullbackBlowupSeq_of_isBoundaryDivisorReduction {P : ℕ
   have := hsu
   exact hspec.smooth_pullback_strict T hV hP hO hD hjb Yv q h hq E' hbe htake hV2 hP2 hO2 hD2 hjb2
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
-
-Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+The strict pullback of the initial sequences gives a smooth surjective map of final stages. Pullback along that map preserves the tuned final ideal. The boundary comparison identifies the two derived boundaries exactly, because pullback distributes over concatenation and preserves the initial positions to be dropped. Thus the derived triple upstairs is the pullback of the derived triple downstairs. The derived triples satisfy the required order and balance conditions by the tuning theorem. Their dimension conditions and the stated boundary index bounds allow the smooth-surjective compatibility of boundary divisor reduction to compare the two assigned continuations. The append theorem identifies the actual lower-dimensional reductions with the initial sequences followed by these marked continuations, using separation of the dropped boundary components. The canonical identifications with the underlying continuation data preserve the strict pullback relation. Appending that relation to the given one for the initial sequences produces the required witness.
 -/
 theorem nonempty_strictPullback_appendLowerDimReduction [AlgebraicGeometry.Smooth g] [AlgebraicGeometry.Flat g]
     [AlgebraicGeometry.Surjective g]

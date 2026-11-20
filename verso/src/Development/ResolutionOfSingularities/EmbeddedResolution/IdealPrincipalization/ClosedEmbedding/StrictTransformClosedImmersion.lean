@@ -47,7 +47,7 @@ theorem map_eq_ker_subschemeι_comp {U V : Scheme.{u}} (j : U ⟶ V) (K : U.Idea
   rw [Scheme.Hom.ker_comp, Scheme.IdealSheafData.ker_subschemeι]
 
 /- English proof (authored)
-The kernel containment allows the closed subscheme cut out by $L$ to factor through the closed immersion. The kernel of the factorization is the pullback of $L$ along that immersion, hence is $K$. The composite of the subscheme defined by this kernel with the immersion has the same kernel as the original factorization followed by the immersion. That composite is the inclusion of the closed subscheme defined by $L$, whose kernel is $L$.
+The kernel containment allows the closed subscheme cut out by L to factor through the closed immersion. The kernel of the factorization is the pullback of L along that immersion, hence is K. The composite of the subscheme defined by this kernel with the immersion has the same kernel as the original factorization followed by the immersion. That composite is the inclusion of the closed subscheme defined by L, whose kernel is L.
 -/
 theorem ker_subschemeι_comp_eq_of_ker_le {U V : Scheme.{u}} (j : U ⟶ V) [IsClosedImmersion j]
     (L : V.IdealSheafData) (hL : Scheme.Hom.ker j ≤ L) (K : U.IdealSheafData)
@@ -140,7 +140,7 @@ private theorem map_ker_subschemeι_comp_restrict {A A' A₁ A'₁ : Scheme.{u}}
     Scheme.IdealSheafData.ker_subschemeι]
 
 /- English proof (authored)
-The inverse image of the ambient open away from the center is the open away from the source center. On that ambient open, the kernel of the restricted closed immersion is the restriction of the pullback of the old immersion's kernel, by the strict-transform hypothesis. It is contained in the restricted pullback of the image ideal of $D$, because that image subscheme factors through the old closed immersion. The comparison for restricted image ideals now identifies the two inverse images off the centers after embedding into the ambient scheme. Taking the kernels of the resulting maps into that scheme identifies their scheme-theoretic closures, which define the strict transforms.
+The inverse image of the ambient open away from the center is the open away from the source center. On that ambient open, the kernel of the restricted closed immersion is the restriction of the pullback of the old immersion's kernel, by the strict-transform hypothesis. It is contained in the restricted pullback of the image ideal of D, because that image subscheme factors through the old closed immersion. The comparison for restricted image ideals now identifies the two inverse images off the centers after embedding into the ambient scheme. Taking the kernels of the resulting maps into that scheme identifies their scheme-theoretic closures, which define the strict transforms.
 -/
 theorem image_strictTransform_eq_strictTransform_image {A A' A₁ A'₁ : Scheme.{u}} (j : A ⟶ A')
     [IsClosedImmersion j] (Z D : A.IdealSheafData) (π : A₁ ⟶ A) (π' : A'₁ ⟶ A') (j₁ : A₁ ⟶ A'₁)

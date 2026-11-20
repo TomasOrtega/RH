@@ -32,7 +32,7 @@ namespace BlowupSequenceData
 variable {X : Scheme.{u}}
 
 /- English proof (authored)
-Replace $n'$ by the equal index $n$. Then the source identification is the identity on stage $n$, and the composite is the original projection.
+Replace n′ by the equal index n. Then the source identification is the identity on stage n, and the composite is the original projection.
 -/
 theorem projectionToBase_congr (d : BlowupSequenceData X) {n n' : ℕ} (h : n = n') :
     projectionToBase d n = eqToHom (congrArg d.obj h) ≫ projectionToBase d n' := by
@@ -61,14 +61,14 @@ Zero is at most the first length, so the first branch of the stage definition gi
 theorem appendSchemeAt_zero : appendSchemeAt s t 0 = s.obj 0 := appendSchemeAt_of_le_length s t (Nat.zero_le _)
 
 /- English proof (authored)
-If $i$ is strictly below the first length, $i+1$ is at most that length. Thus the new successor stage is the first sequence's stage $i+1$.
+If i is strictly below the first length, i+1 is at most that length. Thus the new successor stage is the first sequence's stage i+1.
 -/
 theorem appendSchemeAt_succ_of_lt_length {i : ℕ} (h : i < s.length) :
     appendSchemeAt s t (i + 1) = s.obj (i + 1) :=
   appendSchemeAt_of_le_length s t (by omega)
 
 /- English proof (authored)
-Substitute the first length for $i$. The first branch includes equality, so the join stage is the final stage of the first sequence.
+Substitute the first length for i. The first branch includes equality, so the join stage is the final stage of the first sequence.
 -/
 theorem appendSchemeAt_of_eq_length {i : ℕ} (h : i = s.length) : appendSchemeAt s t i = s.obj s.length := by
   subst h
@@ -84,7 +84,7 @@ theorem appendSchemeAt_succ_of_eq_length {i : ℕ} (h : i = s.length) :
   rw [appendSchemeAt_of_length_lt s t (by omega), h2]
 
 /- English proof (authored)
-The next index is still beyond the first length. Since subtraction of the first length from $i$ is exact, subtracting it from $i+1$ gives one more than the offset for $i$.
+The next index is still beyond the first length. Since subtraction of the first length from i is exact, subtracting it from i+1 gives one more than the offset for i.
 -/
 theorem appendSchemeAt_succ_of_length_lt {i : ℕ} (h : s.length < i) :
     appendSchemeAt s t (i + 1) = t.obj (i - s.length + 1) := by
@@ -291,7 +291,7 @@ private theorem blowupMorphism_eq_eqToHom_comp_of_eq {Y : Scheme.{u}} (d : Blowu
   simp
 
 /- English proof (authored)
-At index equal to the first length plus $j+1$, the index is strictly beyond the join. Its offset from the join is $j+1$, so the second-stage formula gives the assertion.
+At index equal to the first length plus j+1, the index is strictly beyond the join. Its offset from the join is j+1, so the second-stage formula gives the assertion.
 -/
 private theorem append_schemeAt_of_eq_length_add_succ {Y : Scheme.{u}} (a : BlowupSequenceData Y)
     (b : BlowupSequenceData (a.obj a.length)) (i j : ℕ) (h : i = a.length + j + 1) :
@@ -302,7 +302,7 @@ private theorem append_schemeAt_of_eq_length_add_succ {Y : Scheme.{u}} (a : Blow
   rw [append_schemeAt_of_length_lt a b hgt, hsub]
 
 /- English proof (authored)
-The given index is past the first length, with offset $j+1$. Use the second branch for the adjacent map, replace the offset by $j+1$, and carry the resulting source and target identifications into the stated ones.
+The given index is past the first length, with offset j+1. Use the second branch for the adjacent map, replace the offset by j+1, and carry the resulting source and target identifications into the stated ones.
 -/
 private theorem append_blowupMorphism_of_eq_length_add_succ {Y : Scheme.{u}} (a : BlowupSequenceData Y)
     (b : BlowupSequenceData (a.obj a.length)) (i j : ℕ) (h : i = a.length + j + 1)
@@ -316,7 +316,7 @@ private theorem append_blowupMorphism_of_eq_length_add_succ {Y : Scheme.{u}} (a 
   simp
 
 /- English proof (authored)
-Induct on $j$. At offset one the appended transition goes through the second sequence's first map and its initial isomorphism, then the first sequence's final projection. This is the second projection at one followed by the first final projection. At a later offset, use the second sequence's adjacent map and the induction hypothesis for the previous projection. The intermediate stage identifications cancel and the second projection recursion gives the required formula.
+Induct on j. At offset one the appended transition goes through the second sequence's first map and its initial isomorphism, then the first sequence's final projection. This is the second projection at one followed by the first final projection. At a later offset, use the second sequence's adjacent map and the induction hypothesis for the previous projection. The intermediate stage identifications cancel and the second projection recursion gives the required formula.
 -/
 private theorem projectionToBase_append_of_eq_length_add_succ {Y : Scheme.{u}} (a : BlowupSequenceData Y)
     (b : BlowupSequenceData (a.obj a.length)) :
@@ -344,7 +344,7 @@ private theorem projectionToBase_append_of_eq_length_add_succ {Y : Scheme.{u}} (
       simp
 
 /- English proof (authored)
-Write any index strictly past the first length as that length plus $j+1$. The positive-offset projection formula expresses it as the second projection at $j+1$ followed by the first final projection. Since $j+1$ is the original index minus the first length, this is the desired expression.
+Write any index strictly past the first length as that length plus j+1. The positive-offset projection formula expresses it as the second projection at j+1 followed by the first final projection. Since j+1 is the original index minus the first length, this is the desired expression.
 -/
 theorem projectionToBase_append_of_length_lt {i : ℕ} (h : s.length < i) :
     projectionToBase (s.append t) i =
@@ -803,7 +803,7 @@ private theorem hasStrictNormalCrossingsWith_comap_eqToHom {K : Type u} [Field K
   simpa [AlgebraicGeometry.Scheme.IdealSheafData.comap_id] using hZ
 
 /- English proof (authored)
-Pull the given strict normal crossings condition back along the inverse isomorphism. The structural map simplifies to $q$ because the two isomorphisms cancel. Each boundary entry also returns to its original value by functoriality of pullback. The resulting center is the pullback of the given center along the inverse, as asserted.
+Pull the given strict normal crossings condition back along the inverse isomorphism. The structural map simplifies to q because the two isomorphisms cancel. Each boundary entry also returns to its original value by functoriality of pullback. The resulting center is the pullback of the given center along the inverse, as asserted.
 -/
 private theorem hasStrictNormalCrossingsWith_comap_iso_inv {K : Type u} [Field K] {A B : Scheme.{u}}
     (hinv : ComapIsoInvariance.{u}) (e : A ≅ B) (q : B ⟶ Spec (CommRingCat.of K))

@@ -64,7 +64,7 @@ private theorem eqToHom_comp_iteratedBlowupMorphism_of_eq_zero (d : BlowupSequen
   exact Category.id_comp (𝟙 (d.obj i))
 
 /- English proof (authored)
-A transition from stage $i$ to itself is defined using the length $i-i=0$. Both the index identification and the composite of zero steps are identities.
+A transition from stage i to itself is defined using the length i−i=0. Both the index identification and the composite of zero steps are identities.
 -/
 private theorem towerMorphism_refl (d : BlowupSequenceData X) (i : ℕ) :
     homOfLE d (le_refl i) = 𝟙 (d.obj i) :=
@@ -78,7 +78,7 @@ private theorem iteratedBlowupMorphism_zero (d : BlowupSequenceData X) (i : ℕ)
     homAdd d i 0 = 𝟙 (d.obj i) := rfl
 
 /- English proof (authored)
-In the recursion for a composite of $k+1$ steps ending at stage $i$, the first map goes from stage $i+k+1$ to $i+k$. The remaining $k$ steps form the composite ending at $i$.
+In the recursion for a composite of k+1 steps ending at stage i, the first map goes from stage i+k+1 to i+k. The remaining k steps form the composite ending at i.
 -/
 private theorem iteratedBlowupMorphism_succ (d : BlowupSequenceData X) (i k : ℕ) :
     homAdd d i (k + 1) = d.map (i + k) ≫ homAdd d i k := rfl
@@ -112,7 +112,7 @@ private theorem iteratedBlowupMorphism_congr_start (d : BlowupSequenceData X) {i
   simp
 
 /- English proof (authored)
-Induct on the number of steps in the part of the composite starting farthest from stage $i$. With zero steps, the assertion is the identity law. For the successor, extract the first transition and apply induction to the rest. Move the index identification past that transition, using the equalities of its source and target indices obtained by associating the sum. The resulting composite is the recursion for the sum of the two lengths.
+Induct on the number of steps in the part of the composite starting farthest from stage i. With zero steps, the assertion is the identity law. For the successor, extract the first transition and apply induction to the rest. Move the index identification past that transition, using the equalities of its source and target indices obtained by associating the sum. The resulting composite is the recursion for the sum of the two lengths.
 -/
 private theorem iteratedBlowupMorphism_comp_iteratedBlowupMorphism (d : BlowupSequenceData X) (i a b : ℕ) :
     homAdd d (i + a) b ≫ homAdd d i a =
@@ -129,7 +129,7 @@ private theorem iteratedBlowupMorphism_comp_iteratedBlowupMorphism (d : BlowupSe
       rfl
 
 /- English proof (authored)
-When $j=i+k$, subtraction gives $j-i=k$. Thus the composite defining the tower map has length $k$. After this replacement its initial identification is exactly the one induced by $j=i+k$.
+When j=i+k, subtraction gives j−i=k. Thus the composite defining the tower map has length k. After this replacement its initial identification is exactly the one induced by j=i+k.
 -/
 private theorem towerMorphism_eq_iteratedBlowupMorphism (d : BlowupSequenceData X) {i j : ℕ} (h : i ≤ j) (k : ℕ)
     (hk : j = i + k) :
@@ -140,7 +140,7 @@ private theorem towerMorphism_eq_iteratedBlowupMorphism (d : BlowupSequenceData 
   simp
 
 /- English proof (authored)
-Write the transition from $l$ to $j$ as a composite of $l-j$ steps and the transition from $j$ to $i$ as a composite of $j-i$ steps. Identify $j$ with $i+(j-i)$. Concatenation gives $(j-i)+(l-j)$ steps, which equals $l-i$ because $i\le j\le l$. The initial identifications compose to the one defining the transition from $l$ to $i$.
+Write the transition from l to j as a composite of l−j steps and the transition from j to i as a composite of j−i steps. Identify j with i+(j−i). Concatenation gives (j−i)+(l−j) steps, which equals l−i because i≤ j≤ l. The initial identifications compose to the one defining the transition from l to i.
 -/
 private theorem towerMorphism_comp (d : BlowupSequenceData X) {i j l : ℕ} (hij : i ≤ j) (hjl : j ≤ l) :
     homOfLE d hjl ≫ homOfLE d hij = homOfLE d (hij.trans hjl) := by
@@ -159,7 +159,7 @@ def tower (d : BlowupSequenceData X) : ℕᵒᵖ ⥤ Scheme.{u} where
 
 @[simp]
 /- English proof (authored)
-The tower assigns to the opposite index corresponding to $i$ the stored stage object at $i$.
+The tower assigns to the opposite index corresponding to i the stored stage object at i.
 -/
 theorem tower_obj (d : BlowupSequenceData X) (i : ℕ) : d.tower.obj (op i) = d.obj i := rfl
 
@@ -194,7 +194,7 @@ private theorem towerMorphism_succ (d : BlowupSequenceData X) (i : ℕ) (h : i �
 
 @[simp]
 /- English proof (authored)
-By construction the tower sends the consecutive-index arrow to the transition from stage $i+1$ to stage $i$. The consecutive-index calculation identifies this transition with the stored map.
+By construction the tower sends the consecutive-index arrow to the transition from stage i+1 to stage i. The consecutive-index calculation identifies this transition with the stored map.
 -/
 theorem tower_map_succ (d : BlowupSequenceData X) (i : ℕ) :
     d.tower.map (CategoryTheory.homOfLE (Nat.le_succ i)).op = d.map i :=
@@ -294,13 +294,13 @@ theorem ofSequenceOfBlowups_length (s : SequenceOfBlowups X) : (ofSequenceOfBlow
 
 @[simp]
 /- English proof (authored)
-The object stored at stage $i$ in the recovered data is the scheme of the original sequence at stage $i$.
+The object stored at stage i in the recovered data is the scheme of the original sequence at stage i.
 -/
 theorem ofSequenceOfBlowups_schemeAt (s : SequenceOfBlowups X) (i : ℕ) : (ofSequenceOfBlowups s).obj i = s.schemeAt i := rfl
 
 @[simp]
 /- English proof (authored)
-The recovered data store the original sequence's transition from stage $i+1$ to stage $i$ as the map at index $i$.
+The recovered data store the original sequence's transition from stage i+1 to stage i as the map at index i.
 -/
 theorem ofSequenceOfBlowups_blowupMorphism (s : SequenceOfBlowups X) (i : ℕ) : (ofSequenceOfBlowups s).map i = s.transitionMapSucc i := rfl
 
@@ -579,7 +579,7 @@ private theorem toSequenceOfBlowups_projectionToBase_zero (s : MarkedSequenceOfB
   rw [SequenceOfBlowups.projectionToBase_def, SequenceOfBlowups.transitionMap_def, h1, Category.id_comp]
 
 /- English proof (authored)
-The map stored at index $i$ is the original transition from $i+1$ to $i$. Composing it with the transition from $i$ to zero gives the transition from $i+1$ to zero by functoriality. Following both composites by the initial isomorphism gives the successor rule for projection to the base.
+The map stored at index i is the original transition from i+1 to i. Composing it with the transition from i to zero gives the transition from i+1 to zero by functoriality. Following both composites by the initial isomorphism gives the successor rule for projection to the base.
 -/
 private theorem toSequenceOfBlowups_projectionToBase_succ (s : MarkedSequenceOfBlowups p I m E) (i : ℕ) :
     s.toSequenceOfBlowups.projectionToBase (i + 1) =

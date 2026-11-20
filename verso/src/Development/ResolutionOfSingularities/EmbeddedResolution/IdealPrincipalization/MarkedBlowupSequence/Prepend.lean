@@ -52,7 +52,7 @@ private theorem prepend_schemeAt_zero (Z : X.IdealSheafData) (hZ : Blowup.IsBlow
     (BlowupSequenceData.prepend_schemeAt_zero Z hZ d)
 
 /- English proof (authored)
-Stage $n+1$ of the prepended data is stage $n$ of the original data. Both conversions to sequences preserve the stage objects, giving the claimed identification.
+Stage n+1 of the prepended data is stage n of the original data. Both conversions to sequences preserve the stage objects, giving the claimed identification.
 -/
 private theorem prepend_schemeAt_succ (Z : X.IdealSheafData) (hZ : Blowup.IsBlowupAlongIdealSheaf (𝟙 X) Z)
     (d : BlowupSequenceData X) (n : ℕ) :
@@ -102,7 +102,7 @@ private theorem prependIndex_length_eq_prepend_length {φ : X' ⟶ X} {d' : Blow
   rw [prepend_length, prepend_length, prependIndex_succ, c.idx_length]
 
 /- English proof (authored)
-The new index is zero at stage zero, and the new target length is positive. At stage $n+1$ below the new source length, $n$ is below the old source length. Its original image is below the old target length, and adding one gives the claim.
+The new index is zero at stage zero, and the new target length is positive. At stage n+1 below the new source length, n is below the old source length. Its original image is below the old target length, and adding one gives the claim.
 -/
 private theorem prependIndex_lt_prepend_length {φ : X' ⟶ X} {d' : BlowupSequenceData X'} {d : BlowupSequenceData X}
     (c : SequenceOfBlowupsPullback φ d'.toSequenceOfBlowups d.toSequenceOfBlowups) (Z : X.IdealSheafData)
@@ -124,7 +124,7 @@ private theorem prependIndex_lt_prepend_length {φ : X' ⟶ X} {d' : BlowupSeque
       omega
 
 /- English proof (authored)
-The shifted value at zero is zero, while the next value is positive. At a later stage $n+1$ below the new source length, $n$ is below the old source length. The original comparison strictly increases from $n$ to $n+1$. Adding one to both values keeps that inequality.
+The shifted value at zero is zero, while the next value is positive. At a later stage n+1 below the new source length, n is below the old source length. The original comparison strictly increases from n to n+1. Adding one to both values keeps that inequality.
 -/
 private theorem prependIndex_lt_prependIndex_succ {φ : X' ⟶ X} {d' : BlowupSequenceData X'} {d : BlowupSequenceData X}
     (c : SequenceOfBlowupsPullback φ d'.toSequenceOfBlowups d.toSequenceOfBlowups) (Z : X.IdealSheafData)
@@ -170,7 +170,7 @@ private theorem prepend_toSequenceOfBlowups_projectionToBase_zero {Y : Scheme.{u
     ((BlowupSequenceData.projectionToBase_zero (BlowupSequenceData.prepend Z hZ d)).trans rfl)
 
 /- English proof (authored)
-Convert both projections to the projections of their respective data. For the prepended data the projection from stage $n+1$ is the old projection from stage $n$, as shown by their common recursion.
+Convert both projections to the projections of their respective data. For the prepended data the projection from stage n+1 is the old projection from stage n, as shown by their common recursion.
 -/
 private theorem prepend_toSequenceOfBlowups_projectionToBase_succ {Y : Scheme.{u}} (Z : Y.IdealSheafData)
     (hZ : Blowup.IsBlowupAlongIdealSheaf (𝟙 Y) Z) (d : BlowupSequenceData Y) (n : ℕ) :
@@ -197,7 +197,7 @@ private theorem prependComparisonMap_zero {φ : X' ⟶ X} {d' : BlowupSequenceDa
   simp
 
 /- English proof (authored)
-The stage $n+1$ on the source identifies with old stage $n$, and its target identifies with the original image of $n$. The new comparison is the original comparison there composed with these identifications, which are identity maps on the identified objects.
+The stage n+1 on the source identifies with old stage n, and its target identifies with the original image of n. The new comparison is the original comparison there composed with these identifications, which are identity maps on the identified objects.
 -/
 private theorem prependComparisonMap_succ {φ : X' ⟶ X} {d' : BlowupSequenceData X'} {d : BlowupSequenceData X}
     (c : SequenceOfBlowupsPullback φ d'.toSequenceOfBlowups d.toSequenceOfBlowups) (Z : X.IdealSheafData)
@@ -231,7 +231,7 @@ private theorem isPullback_prependComparisonMap_zero {φ : X' ⟶ X} {d' : Blowu
   exact key
 
 /- English proof (authored)
-At shifted stage $n+1$, the comparison is the old comparison at $n$. The projections on its source and target are the two original projections from the corresponding stages. Hence the new square is the old pullback square at $n$.
+At shifted stage n+1, the comparison is the old comparison at n. The projections on its source and target are the two original projections from the corresponding stages. Hence the new square is the old pullback square at n.
 -/
 private theorem isPullback_prependComparisonMap_succ {φ : X' ⟶ X} {d' : BlowupSequenceData X'} {d : BlowupSequenceData X}
     (c : SequenceOfBlowupsPullback φ d'.toSequenceOfBlowups d.toSequenceOfBlowups) (Z : X.IdealSheafData)
@@ -285,7 +285,7 @@ private theorem comp_eq_comp_of_heq {A' B' A B Y' Y V' V : Scheme.{u}}
   rw [h1, h2, h3, h4, hw]
 
 /- English proof (authored)
-Conversion to sequences represents adjacent transitions by their stored maps. At index $n+1$, the prepended data store the same map as the original data at $n$, so the two sequence transitions agree.
+Conversion to sequences represents adjacent transitions by their stored maps. At index n+1, the prepended data store the same map as the original data at n, so the two sequence transitions agree.
 -/
 private theorem prepend_blowupMorphism_succ {Y : Scheme.{u}} (Z : Y.IdealSheafData)
     (hZ : Blowup.IsBlowupAlongIdealSheaf (𝟙 Y) Z) (d : BlowupSequenceData Y) (n : ℕ) :
@@ -324,7 +324,7 @@ private theorem prepend_transitionMap_succ_self {Y : Scheme.{u}} (Z : Y.IdealShe
     (SequenceOfBlowups.blowupMorphism_eq_transitionMap d.toSequenceOfBlowups n)
 
 /- English proof (authored)
-Induct on the distance from $a$ to $b$. At distance zero both transitions are identities. At the successor, factor each transition through its penultimate stage. The first factors agree by the result for adjacent steps, and the remaining factors agree by induction. Composing gives the result.
+Induct on the distance from a to b. At distance zero both transitions are identities. At the successor, factor each transition through its penultimate stage. The first factors agree by the result for adjacent steps, and the remaining factors agree by induction. Composing gives the result.
 -/
 private theorem prepend_transitionMap_succ_succ {Y : Scheme.{u}} (Z : Y.IdealSheafData)
     (hZ : Blowup.IsBlowupAlongIdealSheaf (𝟙 Y) Z) (d : BlowupSequenceData Y) {a b : ℕ} (hab : a ≤ b)
@@ -407,7 +407,7 @@ private theorem comap_eq_comap_eqToHom_comp_comp_eqToHom_of_heq {A A' B B' : Sch
   simp
 
 /- English proof (authored)
-At stage zero the two new centers are the chosen ideal and its pullback under the base-change morphism, which is the initial comparison map. At stage $n+1$ the two centers and the comparison map identify with those of the original comparison at $n$. Its center pullback equality supplies the assertion.
+At stage zero the two new centers are the chosen ideal and its pullback under the base-change morphism, which is the initial comparison map. At stage n+1 the two centers and the comparison map identify with those of the original comparison at n. Its center pullback equality supplies the assertion.
 -/
 private theorem prepend_center_eq_comap_prependIndex {φ : X' ⟶ X} {d' : BlowupSequenceData X'} {d : BlowupSequenceData X}
     (c : SequenceOfBlowupsPullback φ d'.toSequenceOfBlowups d.toSequenceOfBlowups) (Z : X.IdealSheafData)
@@ -473,7 +473,7 @@ private theorem prepend_center_ne_top {φ : X' ⟶ X} {d' : BlowupSequenceData X
       exact c.center_ne_top n hn (h1.symm.trans htop)
 
 /- English proof (authored)
-The prepended data at stage $n+1$ use the old center at stage $n$. Conversion to sequences preserves both centers.
+The prepended data at stage n+1 use the old center at stage n. Conversion to sequences preserves both centers.
 -/
 private theorem prepend_center_succ {Y : Scheme.{u}} (Z : Y.IdealSheafData)
     (hZ : Blowup.IsBlowupAlongIdealSheaf (𝟙 Y) Z) (d : BlowupSequenceData Y) (n : ℕ) :
@@ -482,7 +482,7 @@ private theorem prepend_center_succ {Y : Scheme.{u}} (Z : Y.IdealSheafData)
     ((BlowupSequenceData.prepend_center_succ Z hZ d n).trans (BlowupSequenceData.toSequenceOfBlowups_center d n).symm)
 
 /- English proof (authored)
-The inserted target index zero is used by the inserted source index zero, so an omitted target index must have the form $n+1$. If old index $n$ occurred in the original comparison, its matching shifted source index would hit $n+1$. Thus $n$ was omitted originally. The center and projection at the shifted stage agree with those at old stage $n$, so the original omission condition excludes any equality with a base-change point.
+The inserted target index zero is used by the inserted source index zero, so an omitted target index must have the form n+1. If old index n occurred in the original comparison, its matching shifted source index would hit n+1. Thus n was omitted originally. The center and projection at the shifted stage agree with those at old stage n, so the original omission condition excludes any equality with a base-change point.
 -/
 private theorem ne_projectionToBase_of_forall_prependIndex_ne {φ : X' ⟶ X} {d' : BlowupSequenceData X'} {d : BlowupSequenceData X}
     (c : SequenceOfBlowupsPullback φ d'.toSequenceOfBlowups d.toSequenceOfBlowups) (Z : X.IdealSheafData)
@@ -668,7 +668,7 @@ private theorem center_ne_top_of_prepend_comap_eq_top {φ : X' ⟶ X} {d' : Blow
     d'.toSequenceOfBlowups.center j ≠ ⊤ := c.center_ne_top j hj
 
 /- English proof (authored)
-If the omitted target stage is zero, its center is the new ideal and its projection is the identity. A point of the source mapping to its support would belong to the support of the pulled-back ideal, impossible because that ideal is the unit ideal. If the omitted stage is $n+1$, the old index $n$ was omitted, since all original comparison indices are shifted by one. The shifted center and projection are the old ones, so the old omission condition applies.
+If the omitted target stage is zero, its center is the new ideal and its projection is the identity. A point of the source mapping to its support would belong to the support of the pulled-back ideal, impossible because that ideal is the unit ideal. If the omitted stage is n+1, the old index n was omitted, since all original comparison indices are shifted by one. The shifted center and projection are the old ones, so the old omission condition applies.
 -/
 private theorem ne_projectionToBase_of_forall_succIndex_ne {φ : X' ⟶ X} {d' : BlowupSequenceData X'} {d : BlowupSequenceData X}
     (c : SequenceOfBlowupsPullback φ d'.toSequenceOfBlowups d.toSequenceOfBlowups) (Z : X.IdealSheafData)
@@ -778,7 +778,7 @@ private theorem strictPrependComparisonMap_zero {X X' : Scheme.{u}} (φ : X' ⟶
   simp
 
 /- English proof (authored)
-After the inserted initial stage, stage $n+1$ identifies with old stage $n$ in both sequences. The new map is the old levelwise map at $n$ composed with the identity on each of those identified stages.
+After the inserted initial stage, stage n+1 identifies with old stage n in both sequences. The new map is the old levelwise map at n composed with the identity on each of those identified stages.
 -/
 private theorem strictPrependComparisonMap_succ {X X' : Scheme.{u}} (φ : X' ⟶ X) {d' : BlowupSequenceData X'}
     {d : BlowupSequenceData X} (Z : X.IdealSheafData) (hZ : Blowup.IsBlowupAlongIdealSheaf (𝟙 X) Z)

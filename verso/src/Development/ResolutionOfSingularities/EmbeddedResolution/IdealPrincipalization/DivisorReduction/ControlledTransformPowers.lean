@@ -59,7 +59,7 @@ private theorem pow_controlledTransform_le_pow_controlledTransform_of_dvd {X : S
           (fun i hi => hdivK i (Nat.lt_succ_of_lt hi)))
 
 /- English proof (authored)
-The center has strict normal crossings with the boundary and is contained in the order-at-least-$n$ locus. Hence the current ideal lies in the $n$th power of the center ideal. Under the blowup that power pulls back to the corresponding exceptional power, which is invertible. Dividing the pulled-back ideal by it yields the claimed factor.
+The center has strict normal crossings with the boundary and is contained in the order-at-least-n locus. Hence the current ideal lies in the nth power of the center ideal. Under the blowup that power pulls back to the corresponding exceptional power, which is invertible. Dividing the pulled-back ideal by it yields the claimed factor.
 -/
 theorem exists_pow_mul_eq_comap_controlledTransform {k : Type u} [Field k] [CharZero k] {X : Scheme.{u}}
     (d : BlowupSequenceData X) (p : X ⟶ Spec (CommRingCat.of k)) (A : X.IdealSheafData) (n t : ℕ)
@@ -82,7 +82,7 @@ end BlowupSequenceData
 namespace DivisorReduction
 
 /- English proof (authored)
-The initial derivative power inclusion is the derivative balance of $I_0$ at order $l$. The ambient derivative ideal sequence is the controlled transform of this initial derivative ideal with marking $m-l$, where $m$ is the original mark. The ambient and divisor sequences have equal lengths, so the stage is within range. Apply the iterated transform power comparison with marks $m-l$ and $m$ and the given exceptional divisibility at every preceding step.
+The initial derivative power inclusion is the derivative balance of I₀ at order l. The ambient derivative ideal sequence is the controlled transform of this initial derivative ideal with marking m−l, where m is the original mark. The ambient and divisor sequences have equal lengths, so the stage is within range. Apply the iterated transform power comparison with marks m−l and m and the given exceptional divisibility at every preceding step.
 -/
 theorem pow_ambientDerivIdeal_le_pow_controlledTransform
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}) (hno : BlowupPreservesNoetherian.{u})

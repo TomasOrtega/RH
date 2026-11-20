@@ -41,7 +41,7 @@ def prependCenter {X : Scheme.{u}} (d : BlowupSequenceData X) (Z : X.IdealSheafD
   | (n + 1) => d.center n
 
 /- English proof (authored)
-At index zero the new map is the original initial isomorphism. The given blowup property of the identity along $Z$ is preserved by precomposing it with this isomorphism, so the new first map is a blowup along $Z$. At index $n+1$, the new map and center are the original ones at $n$. The length bound ensures that this original index is a genuine step.
+At index zero the new map is the original initial isomorphism. The given blowup property of the identity along Z is preserved by precomposing it with this isomorphism, so the new first map is a blowup along Z. At index n+1, the new map and center are the original ones at n. The length bound ensures that this original index is a genuine step.
 -/
 theorem isBlowupAlongIdealSheaf_prependMap {X : Scheme.{u}} (Z : X.IdealSheafData)
     (hZ : Blowup.IsBlowupAlongIdealSheaf (𝟙 X) Z) (d : BlowupSequenceData X) (i : ℕ) (hi : i < d.length + 1) :
@@ -73,12 +73,12 @@ The new sequence keeps all original steps and adds one initial step, so its spec
 @[simp] theorem prepend_length : (prepend Z hZ d).length = d.length + 1 := rfl
 
 /- English proof (authored)
-By construction, the newly inserted initial stage is the base scheme $X$.
+By construction, the newly inserted initial stage is the base scheme X.
 -/
 @[simp] theorem prepend_schemeAt_zero : (prepend Z hZ d).obj 0 = X := rfl
 
 /- English proof (authored)
-The old stage $n$ is placed at the new stage $n+1$, giving the stage equality.
+The old stage n is placed at the new stage n+1, giving the stage equality.
 -/
 @[simp] theorem prepend_schemeAt_succ (n : ℕ) : (prepend Z hZ d).obj (n + 1) = d.obj n := rfl
 
@@ -88,7 +88,7 @@ The new first transition goes from the original initial stage to the base scheme
 @[simp] theorem prepend_blowupMorphism_zero : (prepend Z hZ d).map 0 = d.isoZero.hom := rfl
 
 /- English proof (authored)
-At successor index $n+1$, the transition in the prepended sequence is defined to be the original transition at $n$.
+At successor index n+1, the transition in the prepended sequence is defined to be the original transition at n.
 -/
 @[simp] theorem prepend_blowupMorphism_succ (n : ℕ) : (prepend Z hZ d).map (n + 1) = d.map n := rfl
 
@@ -98,12 +98,12 @@ The new initial stage is the base itself, and its specified isomorphism to the b
 @[simp] theorem prepend_isoObjZero : (prepend Z hZ d).isoZero = Iso.refl X := rfl
 
 /- English proof (authored)
-The inserted first step uses the supplied center ideal $Z$ on the base scheme.
+The inserted first step uses the supplied center ideal Z on the base scheme.
 -/
 @[simp] theorem prepend_center_zero : (prepend Z hZ d).center 0 = Z := rfl
 
 /- English proof (authored)
-After the inserted center, the center at the new index $n+1$ is the original center at $n$.
+After the inserted center, the center at the new index n+1 is the original center at n.
 -/
 @[simp] theorem prepend_center_succ (n : ℕ) : (prepend Z hZ d).center (n + 1) = d.center n := rfl
 

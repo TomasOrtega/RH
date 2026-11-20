@@ -38,7 +38,7 @@ namespace FunctorialResolution.EmbeddedResolution
 namespace DivisorReductionEmptyOrderLocus
 
 /- English proof (authored)
-Write the positive mark as $n+1$. The center lies in the order-at-least-$n$ locus and has strict normal crossings, so the stage ideal is contained in the $n$th power of the center ideal. The transform of mark $n$ therefore exists. The marked product formula identifies it with the product of the exceptional ideal and the given transform of mark $n+1$. At the chosen point this product still has order at least $n+1$, since multiplying by an ideal cannot decrease order. The order estimate for the controlled transform of mark $n$ sends this locus into the preceding order-at-least-$n+1$ locus.
+Write the positive mark as n+1. The center lies in the order-at-least-n locus and has strict normal crossings, so the stage ideal is contained in the nth power of the center ideal. The transform of mark n therefore exists. The marked product formula identifies it with the product of the exceptional ideal and the given transform of mark n+1. At the chosen point this product still has order at least n+1, since multiplying by an ideal cannot decrease order. The order estimate for the controlled transform of mark n sends this locus into the preceding order-at-least-n+1 locus.
 -/
 private theorem blowupMorphism_mem_orderAtLeastLocus {k : Type u} [Field k] [CharZero k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ}
@@ -104,7 +104,7 @@ private theorem projectionToBase_mem_orderAtLeastLocus {T : MarkedIdealWithBound
         i (Nat.lt_of_succ_le hi) z hz
 
 /- English proof (authored)
-Every center point lies in the current order locus, and its projection lies in the original order locus by the iterated comparison. If that projection were the image of a point of $Y$, that point would lie in the inverse image of the original order locus. The hypothesis says that inverse image is empty.
+Every center point lies in the current order locus, and its projection lies in the original order locus by the iterated comparison. If that projection were the image of a point of Y, that point would lie in the inverse image of the original order locus. The hypothesis says that inverse image is empty.
 -/
 theorem center_disjoint_range_of_preimage_orderAtLeastLocus_eq_empty
     {T : MarkedIdealWithBoundary.{u}} (hV : T.IsAdmissible) {Y : Scheme.{u}} (h : Y ⟶ T.scheme)
@@ -121,7 +121,7 @@ theorem center_disjoint_range_of_preimage_orderAtLeastLocus_eq_empty
   simp at hmem
 
 /- English proof (authored)
-The center projections all miss the image of $Y$ by the disjointness result. Under flat base change every center is consequently empty and its blowup is omitted. The comparison for sequences whose centers miss the base-change image therefore gives the pullback relation with the arbitrary length-zero sequence on $Y$.
+The center projections all miss the image of Y by the disjointness result. Under flat base change every center is consequently empty and its blowup is omitted. The comparison for sequences whose centers miss the base-change image therefore gives the pullback relation with the arbitrary length-zero sequence on Y.
 -/
 theorem isPullbackSequenceOfBlowups_of_preimage_orderAtLeastLocus_empty
     {T : MarkedIdealWithBoundary.{u}} (hV : T.IsAdmissible) {Y : Scheme.{u}} (h : Y ⟶ T.scheme)

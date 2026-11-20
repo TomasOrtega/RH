@@ -36,7 +36,7 @@ private theorem exists_affineOpen_ideal_eq_top_of_not_mem_support {X : Scheme.{u
   exact Ideal.eq_top_of_isUnit_mem _ hmem hunit
 
 /- English proof (authored)
-At a point of the support of $Z$, the stalk ideal of $Z$ lies in the maximal ideal. If the stalk of $I_0$ also lay in the maximal ideal, the factorization would put the stalk of $I$ in the $(m+1)$st power of the maximal ideal. Its order would then be at least $m+1$, contrary to the order bound.
+At a point of the support of Z, the stalk ideal of Z lies in the maximal ideal. If the stalk of I₀ also lay in the maximal ideal, the factorization would put the stalk of I in the (m+1)st power of the maximal ideal. Its order would then be at least m+1, contrary to the order bound.
 -/
 theorem not_mem_support_of_mem_support_of_pow_mul {X : Scheme.{u}}
     (Z I I₀ : X.IdealSheafData) (m : ℕ) (hfac : I = Z ^ m * I₀)
@@ -56,7 +56,7 @@ theorem not_mem_support_of_mem_support_of_pow_mul {X : Scheme.{u}}
   omega
 
 /- English proof (authored)
-Check each derivative power inclusion on an affine neighborhood of each point. At a point in the support of $Z$, the residual ideal $I_0$ is unit on a suitable affine neighborhood, so the target ideal power in the inclusion is unit. Outside that support, choose an affine neighborhood on which $Z$ is unit. There the factorization identifies $I_0$ with $I$, and their iterated derivative ideals agree on that neighborhood. The assumed derivative balance of $I$ gives the inclusion there. The local inclusions give derivative balance of $I_0$.
+Check each derivative power inclusion on an affine neighborhood of each point. At a point in the support of Z, the residual ideal I₀ is unit on a suitable affine neighborhood, so the target ideal power in the inclusion is unit. Outside that support, choose an affine neighborhood on which Z is unit. There the factorization identifies I₀ with I, and their iterated derivative ideals agree on that neighborhood. The assumed derivative balance of I gives the inclusion there. The local inclusions give derivative balance of I₀.
 -/
 theorem isDerivBalanced_of_pow_mul (k : Type u) [Field k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]

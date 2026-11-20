@@ -22,7 +22,7 @@ namespace FunctorialResolution.EmbeddedResolution
 namespace DivisorReduction
 
 /- English proof (authored)
-The kernel of the boundary inclusion is its defining ideal $D$. Every function vanishing under that inclusion also vanishes after precomposing with the given map into the boundary, so $D$ is contained in the composite kernel.
+The kernel of the boundary inclusion is its defining ideal D. Every function vanishing under that inclusion also vanishes after precomposing with the given map into the boundary, so D is contained in the composite kernel.
 -/
 private theorem le_ker_comp_subschemeι {X : Scheme.{u}} (D : X.IdealSheafData) {W : Scheme.{u}}
     (g : W ⟶ D.subscheme) : D ≤ AlgebraicGeometry.Scheme.Hom.ker (g ≫ D.subschemeι) :=

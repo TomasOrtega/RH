@@ -35,7 +35,7 @@ theorem divisorFamily_canonicalAlgorithmRules_eq_divisorReductionSeq (hres : Fun
   rfl
 
 /- English proof (authored)
-Choose a point of the support of $J$. It comes from a point of the closed subscheme defined by $J$. The image of this point under the composite to the target lies in the support of the composite kernel, since that support contains the image. The composite kernel is the image ideal, so its support is nonempty.
+Choose a point of the support of J. It comes from a point of the closed subscheme defined by J. The image of this point under the composite to the target lies in the support of the composite kernel, since that support contains the image. The composite kernel is the image ideal, so its support is nonempty.
 -/
 private theorem support_imageIdealSheaf_nonempty {X Y : Scheme.{u}} (f : X ⟶ Y)
     (hf : IsClosedImmersion f) (J : X.IdealSheafData)

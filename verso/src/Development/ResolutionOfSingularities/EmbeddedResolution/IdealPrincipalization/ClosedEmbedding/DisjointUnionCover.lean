@@ -138,7 +138,7 @@ private theorem ideal_ker_eq_top_of_disjoint {Y Z : Scheme.{u}} (g : Z ⟶ Y) [Q
   exact Subsingleton.elim _ _
 
 /- English proof (authored)
-The subscheme giving the image ideal maps into summand $j$, while the affine open lies in summand $i$. Distinct coproduct summands have disjoint images, so the inverse image of the affine open is empty. Its kernel ideal on that open is unit.
+The subscheme giving the image ideal maps into summand j, while the affine open lies in summand i. Distinct coproduct summands have disjoint images, so the inverse image of the affine open is empty. Its kernel ideal on that open is unit.
 -/
 private theorem ideal_imageIdealSheaf_eq_top_of_ne (D : FiniteOpenCoverWithIdeals T) {i j : D.idx} (hij : j ≠ i)
     (W : D.disjointUnion.Opens) (hW : IsAffineOpen W)
@@ -154,7 +154,7 @@ private theorem ideal_imageIdealSheaf_eq_top_of_ne (D : FiniteOpenCoverWithIdeal
     ((D.localIdeal j).subschemeι.base z) v (hcomp.symm.trans hv.symm)
 
 /- English proof (authored)
-Work on an affine open of summand $i$. Its image in the disjoint union is affine because the summand inclusion is an open immersion. There all image ideals from other summands are unit, since their images are disjoint. Thus the intersection of image ideals on this affine image is the contribution from $i$ alone. Pulling it back along the summand inclusion recovers the original ideal of that summand. Equality on every affine open gives the result.
+Work on an affine open of summand i. Its image in the disjoint union is affine because the summand inclusion is an open immersion. There all image ideals from other summands are unit, since their images are disjoint. Thus the intersection of image ideals on this affine image is the contribution from i alone. Pulling it back along the summand inclusion recovers the original ideal of that summand. Equality on every affine open gives the result.
 -/
 theorem comap_iInfImageIdeal_summandι (D : FiniteOpenCoverWithIdeals T) (i : D.idx) :
     D.iInfImageIdeal.comap (D.summandι i) = D.localIdeal i := by

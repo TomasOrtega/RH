@@ -17,26 +17,24 @@ variable {R W : Type} [CommRing R] [AddCommGroup W] [Module R W]
 def pLen (p : Ideal R) [p.IsPrime] (A B : Submodule R W) : ℕ∞ :=
   Module.length R ((localization₂ p A) ⧸ (localization₂ p B).comap (localization₂ p A).subtype)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Localization preserves both inclusions in the tower. Apply additivity of module length to the three resulting localized modules and their quotient sequence.
 -/
 theorem pLen_add (p : Ideal R) [p.IsPrime] {A C B : Submodule R W} (hBC : B ≤ C) (hCA : C ≤ A) :
     pLen p A B = pLen p C B + pLen p A C :=
   indexBasic_len_add (localization₂ p B) (localization₂ p C) (localization₂ p A) (locBasic_locS_mono _ hBC)
     (locBasic_locS_mono _ hCA)
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+After localizing both copies of A, the quotient is a module modulo itself. It is the zero module and has length zero.
 -/
 theorem pLen_self (p : Ideal R) [p.IsPrime] (A : Submodule R W) : pLen p A A = 0 := by
   unfold pLen
   rw [Submodule.comap_subtype_self]
   simp
 
-/- English proof (translation)
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Distinct maximal ideals cannot contain one another. Choose an element of m outside p. It carries every element of A into C, so it witnesses that A lies in the localization of C away from p. By idempotence of localization, the localization of A lies there as well. The localized quotient is zero.
 -/
 theorem pLen_simple_ne (p m : Ideal R) [hp : p.IsMaximal] [hm : m.IsMaximal] (h : p ≠ m)
     {A C : Submodule R W} (hkill : ∀ s ∈ m, ∀ x ∈ A, s • x ∈ C) : pLen p A C = 0 := by
@@ -51,10 +49,8 @@ theorem pLen_simple_ne (p m : Ideal R) [hp : p.IsMaximal] [hm : m.IsMaximal] (h 
   rw [Submodule.comap_subtype_eq_top.2 hle]
   simp
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
-
-Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+An element of m acts as zero on the residue field. Transport this action through the given linear isomorphism to see that multiplying the class of any element of A gives zero in the quotient. This means its product lies in C.
 -/
 theorem kill_of_equiv (m : Ideal R) {A C : Submodule R W}
     (e : (A ⧸ C.comap A.subtype) ≃ₗ[R] (R ⧸ m)) : ∀ s ∈ m, ∀ x ∈ A, s • x ∈ C := by
@@ -68,20 +64,8 @@ theorem kill_of_equiv (m : Ideal R) {A C : Submodule R W}
     rw [map_eq_zero_iff e e.injective, Submodule.Quotient.mk_eq_zero] at h0
     exact h0
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
-
-Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Every scalar outside m has an inverse modulo m. Consider the natural map from A to the localized quotient. For a localized representative x, choose a denominator s outside m such that sx lies in A. If t is inverse to s modulo m, then tsx belongs to A and represents the same localized class as x because s(tsx − x) is killed modulo C. This gives surjectivity. If an element x of A goes to zero, some such sx lies in C. Since ts − 1 annihilates the quotient A/C, it follows that x lies in C. Thus the localized quotient is isomorphic to A/C, hence to the simple residue-field module of length one.
 -/
 theorem pLen_simple_self (m : Ideal R) [hm : m.IsMaximal] {A C : Submodule R W}
     (e : (A ⧸ C.comap A.subtype) ≃ₗ[R] (R ⧸ m)) : pLen m A C = 1 := by
@@ -131,32 +115,8 @@ theorem pLen_simple_self (m : Ideal R) [hm : m.IsMaximal] {A C : Submodule R W}
   rw [(e2.symm.trans e).length_eq]
   exact Module.length_eq_one_iff.2 hs
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
-
-Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the nonzero relative index. If the lattices are equal, all lengths vanish and the index is one. Otherwise the finite nonzero quotient has a maximal proper submodule. Its preimage gives an intermediate lattice C such that A/C is a simple residue-field module. The index factors through C, and the residue field has more than one element, so the index from B to C is strictly smaller. Use the induction hypothesis there. Local length is additive, and the simple quotient adds one at its own maximal ideal and zero at every other. The index product gains the corresponding residue-field factor, giving the formula.
 -/
 theorem card_pLen : ∀ (n : ℕ) (A B : Submodule R W), B ≤ A →
     B.toAddSubgroup.relIndex A.toAddSubgroup = n → n ≠ 0 →
@@ -244,10 +204,8 @@ theorem card_pLen : ∀ (n : ℕ) (A B : Submodule R W), B ≤ A →
 
 end Loc
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The index is a finite product of residue-field cardinalities raised to their local lengths. Every factor in the support is nonzero because the entire index is nonzero. Taking logarithms converts the product into a sum, and the logarithm of each power is the exponent times the logarithm of the corresponding absolute ideal norm.
 -/
 theorem indexLocLen_finsupp {K V : Type} [Field K] [NumberField K] [AddCommGroup V]
     [Module (𝓞 K) V] (A B : Submodule (𝓞 K) V) (hBA : B ≤ A)
@@ -267,16 +225,8 @@ theorem indexLocLen_finsupp {K V : Type} [Field K] [NumberField K] [AddCommGroup
     rw [hc, Finsupp.prod]
     exact Finset.prod_eq_zero hw (by exact_mod_cast h0)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The finite-support index formula expresses each extended local length as a natural number. Thus the local lengths are finite, and their ordinary values vanish outside the finite support supplied by that formula. Replace the finite sum by the sum over all maximal ideals, with zero terms elsewhere.
 -/
 theorem index_local_length : IndexLocLen := by
   intro K V _ _ _ _ A B hBA h
@@ -311,12 +261,8 @@ section Span
 variable {K V : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V]
   [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
-/- English proof (translation)
-Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The vectors with a nonzero integral multiple in Y are closed under addition. They are also closed under multiplication by any field scalar because one can clear its denominator along with the existing multiplier. Thus they form a field-linear subspace containing Y, so they contain its field span.
 -/
 theorem span_le_locS (Y : Submodule (𝓞 K) V) {x : V} (hx : x ∈ Submodule.span K (Y : Set V)) :
     x ∈ locS (nonZeroDivisors (𝓞 K)) Y := by
@@ -342,10 +288,8 @@ theorem span_le_locS (Y : Submodule (𝓞 K) V) {x : V} (hx : x ∈ Submodule.sp
     Submodule.span_le.mpr (fun y hy => locBasic_le_locS _ Y hy)
   exact hle hx
 
-/- English proof (translation)
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Each generator of E lies in the field span of M, so some nonzero integral multiple of it lies in M. Since E is finitely generated, take a common denominator for its generators. Multiplying any element of E by this denominator places it in the intersection. Dividing in the field shows that each such element lies in the field span of the intersection. The reverse inclusion follows from containment in E.
 -/
 theorem span_inf {E M : Submodule (𝓞 K) V} (hE : E.FG)
     (h : Submodule.span K (E : Set V) = Submodule.span K (M : Set V)) :
@@ -371,12 +315,8 @@ variable {K V ι : Type} [Field K] [NumberField K] [StarRing K] [IsTotallyComple
   [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [Fintype ι]
   [DecidableEq ι]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At each infinite place the modulus of the Gram determinant equals its real part. Their real parts are therefore nonnegative. Their product is the height of the lattice generated by the independent family, and this height is positive, so each factor is strictly positive. A complex number whose modulus equals its positive real part has zero imaginary part.
 -/
 theorem gram_pos (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (hX : ∀ v, IsUnit (X v).det) {j : ℕ} (e : Fin j → V) (he : LinearIndependent K e)
@@ -394,26 +334,8 @@ theorem gram_pos (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
   apply (Complex.abs_re_eq_norm).1
   rw [hn v, abs_of_nonneg hge]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The intersection has the same field span and rank as both lattices. Compare each lattice's height to that of the intersection using the relative-index formula. The logarithms of the two indices are finite sums of log norms weighted by local lengths. Their difference is the signed local-index sum, whose support lies in the union of the two finite supports. Subtract the two logarithmic height identities to obtain the claimed formula.
 -/
 theorem ht_lidx (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (hX : ∀ v, IsUnit (X v).det) {E M : Submodule (𝓞 K) V} (hE : E.FG) (hM : M.FG)
@@ -477,20 +399,8 @@ theorem ht_lidx (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
       show _ * _ = (0 : ℝ)
       rw [hsub w hc]; simp
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
+/- English proof (authored)
+The independent family spans the same field space as M, so the field rank equals its positive cardinality. Compare M with the integral span of the family using the logarithmic height formula. The latter lattice's height is the product of the positive Gram determinants at the infinite places, and the comparison supplies the finitely supported correction from the finite places. Take logarithms, divide by the rank with the normalization from the slope formula, and use that the field degree is twice the number of infinite places. This gives the sum of the infinite and finite covolume terms with the stated normalization.
 -/
 theorem log_covolume_slope_mu : LcvMu := by
   intro K V ι _ _ _ _ _ _ _ _ _ _ b X hX j e M he hM hM0 hsp
@@ -530,8 +440,8 @@ theorem log_covolume_slope_mu : LcvMu := by
   rw [hsum, hn]
   field_simp
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+Apply the logarithmic covolume and slope formula to the given independent spanning family. Its finite-support assertion and its final slope identity are the two conclusions required.
 -/
 theorem covolume_formula : Formalism.HN.LcvFormula := by
   intro K V ι _ _ _ _ _ _ _ _ _ _ b X hX j e M he hM hM0 hsp
@@ -548,22 +458,16 @@ variable {K V ι : Type} [Field K] [NumberField K] [StarRing K] [IsTotallyComple
 
 local notation "FI" => FractionalIdeal (nonZeroDivisors (𝓞 K)) K
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The norm of the inverse fractional ideal is the reciprocal of its norm. Taking the logarithm of that reciprocal negates the logarithm.
 -/
 theorem log_absNorm_inv (I : FI) :
     Real.log ((FractionalIdeal.absNorm I⁻¹ : ℚ) : ℝ) =
       -Real.log ((FractionalIdeal.absNorm I : ℚ) : ℝ) := by
   rw [map_inv₀, Rat.cast_inv, Real.log_inv]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions.
-
-Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
+/- English proof (authored)
+The normalized height of the scaled lattice is the original normalized height times the absolute ideal norm raised to the field rank. The field rank is unchanged, so the common positive normalization factor cancels. Thus the actual covolume scales by the same power. Both factors are positive, and taking the negative logarithm gives the asserted degree difference.
 -/
 theorem deg_fractional (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (hX : ∀ v, IsUnit (X v).det) {N : Submodule (𝓞 K) V} (hN : N.FG) {I : FI} (hI : I ≠ 0) :
@@ -591,8 +495,8 @@ theorem deg_fractional (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι 
   rw [h2, Real.log_mul hcov.ne' (pow_ne_zero _ (absNorm_pos hI).ne'), Real.log_pow]
   ring
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+For both lattices the realized rank is the field rank multiplied by the field degree. Multiplication by a nonzero fractional ideal preserves the field span and hence the field rank. The realized ranks are therefore equal.
 -/
 theorem rk_fractional (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (hX : ∀ v, IsUnit (X v).det) {N : Submodule (𝓞 K) V} (hN : N.FG) {I : FI} (hI : I ≠ 0) :
@@ -600,16 +504,8 @@ theorem rk_fractional (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι �
   rw [(place_lattice_structure K V ι b X hX _ (idealSmul_fg I hN)).2.1, (place_lattice_structure K V ι b X hX _ hN).2.1,
     rkK_idealSmul hI]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
+/- English proof (authored)
+Given any sublattice of the ideal-scaled lattice, multiply it by the inverse ideal to obtain a sublattice of the original lattice. Apply the minimal-slope characterization there. Scaling back leaves the ranks unchanged and changes each degree by minus its field rank times the log norm. The realized ranks are the field ranks times the field degree, so the resulting degree difference is shifted by the claimed normalized log norm. This gives the required lower bound against every test sublattice.
 -/
 theorem muMin_fractional_ge (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (hX : ∀ v, IsUnit (X v).det) {L : Submodule (𝓞 K) V} (hL : L.FG) (hL0 : L ≠ ⊥) {I : FI}
@@ -644,10 +540,8 @@ theorem muMin_fractional_ge (b : Basis ι K V) (X : InfinitePlace K → Matrix �
     rw [r1, r2]; push_cast; field_simp
   nlinarith [hch, e1]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+The scaling estimate gives the lower bound. Apply it again to the scaled lattice with the inverse ideal. Scaling back recovers the original lattice, and the log norm changes sign. Rearranging gives the opposite bound.
 -/
 theorem muMin_fractional (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (hX : ∀ v, IsUnit (X v).det) {L : Submodule (𝓞 K) V} (hL : L.FG) (hL0 : L ≠ ⊥) {I : FI}
@@ -666,10 +560,8 @@ theorem muMin_fractional (b : Basis ι K V) (X : InfinitePlace K → Matrix ι �
     linarith
   · exact muMin_fractional_ge b X hX hL hL0 hI
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+The existing maximal-slope scaling inequality gives the upper bound. Apply it to the scaled lattice with the inverse ideal, which recovers the original lattice and negates the log norm. Rearranging gives the matching lower bound.
 -/
 theorem muMaxDef_fractional (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (hX : ∀ v, IsUnit (X v).det) {L : Submodule (𝓞 K) V} (hL : L.FG) (hL0 : L ≠ ⊥) {I : FI}
@@ -690,8 +582,8 @@ theorem muMaxDef_fractional (b : Basis ι K V) (X : InfinitePlace K → Matrix �
 
 end Mod
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+Multiplication by a fractional ideal preserves finite generation. Apply the mean and maximal slope formulas directly. For the minimal slope apply its scaling formula and incorporate the factor two in the normalized definition. These give all the asserted scaling identities.
 -/
 theorem ideal_scaling_holds : Formalism.HN.IdealScale := by
   intro K V ι _ _ _ _ _ _ _ _ _ _ b X hX I hI M hM hM0
@@ -701,17 +593,15 @@ theorem ideal_scaling_holds : Formalism.HN.IdealScale := by
   rw [muMin_fractional b X hX hM hM0 hI]
   ring
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
+/- English proof (authored)
+For the given equal-rank inclusion, the index formula expresses the mean slope in terms of the larger lattice's slope and the relative index. Monotonicity of the maximal slope gives the second assertion.
 -/
 theorem index_slope_formula : Formalism.HN.IndexMu := by
   intro K V ι _ _ _ _ _ _ _ _ _ _ b X hX M N hM hNM hN0 hrk
   exact ⟨muDef_index b X hX hM hNM hN0 hrk, muMaxDef_mono b X hX hM hNM hN0⟩
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Compare the truncated lattice to the ideally scaled lattice containing it. Maximal slope is monotone under that inclusion, and the ideal-scaling identity expresses the larger slope in terms of the original lattice. For the mean slope, use the equal-rank index formula for the inclusion, then substitute the ideal-scaling identity and the preserved field rank.
 -/
 theorem truncated_lattice_holds : Formalism.HN.CutLattice := by
   intro K V ι _ _ _ _ _ _ _ _ _ _ b X hX I hI M N' hM hM0 hN' hN'0 hrk
@@ -722,10 +612,8 @@ theorem truncated_lattice_holds : Formalism.HN.CutLattice := by
   · rw [muDef_index b X hX hfg hN' hN'0 (by rw [hrk, rkK_idealSmul hI]),
       muDef_fractional b X hX hM hM0 hI, rkK_idealSmul hI]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+Apply the covolume-slope formula to both independent families spanning the given lattice. Both expressions give the same slope with denominator equal to the same positive rank. Cancelling the denominator gives equality of the covolume expressions.
 -/
 theorem covolume_basis_free : LcvBasisFree := by
   intro K V ι _ _ _ _ _ _ _ _ _ _ b X hX j j' e e' M he he' hM hM0 hsp hsp'
@@ -736,12 +624,8 @@ theorem covolume_basis_free : LcvBasisFree := by
   have := (div_left_inj' hj').1 h2
   linarith
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
-
-Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
-
-Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+Choose a maximal linearly independent subset of the lattice. Its field span equals that of the lattice. The ambient space is finite-dimensional, so this subset is finite. Enumerate it by its finite index set to obtain the desired independent family.
 -/
 theorem covolume_exists : LcvExists := by
   intro K V _ _ _ _ _ _ _ M
@@ -757,12 +641,8 @@ theorem covolume_exists : LcvExists := by
     · intro hx; exact ⟨Fintype.equivFin s ⟨x, hx⟩, by simp [e]⟩
   exact ⟨_, e, he, fun a => hsN ((Fintype.equivFin s).symm a).2, by rw [hrange, hspan]⟩
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+For the integral span of the family the signed local comparison is against the same lattice, so every local index vanishes. The family is independent and has positive size, hence its span is a nonzero lattice of that rank. Apply the covolume-slope formula and remove the zero finite contribution.
 -/
 theorem covolume_free_module : LcvFree := by
   intro K V ι _ _ _ _ _ _ _ _ _ _ b X hX j e he hj
@@ -789,10 +669,8 @@ open scoped Matrix
 variable {K V ι : Type} [Field K] [NumberField K] [StarRing K]
   [AddCommGroup V] [Module K V] [Fintype ι] [DecidableEq ι]
 
-/- English proof (translation)
-Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The realized coordinate map preserves finite sums. Applying it to each scalar multiple maps the scalar through the chosen infinite-place embedding, giving the sum of the scaled coordinate vectors.
 -/
 theorem fcoord_sum (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ) (v : InfinitePlace K)
     {j : ℕ} (c : Fin j → K) (e : Fin j → V) :
@@ -804,12 +682,8 @@ theorem fcoord_sum (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
   rw [h]
   exact Finset.sum_congr rfl fun k _ => HeightGram.fcoord_smul b X v (c k) (e k)
 
-/- English proof (translation)
-Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Form the complex matrix with the realized vectors as columns. Its Gram matrix is its adjoint times itself. By the coordinate sum identity, the transformed column matrix is the original column matrix times the embedded change-of-basis matrix. Expanding the Gram product and reversing the factors under the adjoint gives the formula.
 -/
 theorem gramPl_baseChange (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (v : InfinitePlace K) {j : ℕ} (e : Fin j → V) (g : Matrix (Fin j) (Fin j) K) :
@@ -832,10 +706,8 @@ theorem gramPl_baseChange (b : Basis ι K V) (X : InfinitePlace K → Matrix ι 
   rw [hG', hG, Matrix.conjTranspose_mul]
   simp only [Matrix.mul_assoc]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Take determinants in the Gram transformation formula. The embedded change-of-basis determinant and its conjugate contribute the squared modulus of the embedded field determinant. Since the original Gram determinant is real, its real part is simply multiplied by this real factor.
 -/
 theorem det_gramPl_baseChange (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (v : InfinitePlace K) {j : ℕ} (e : Fin j → V) (g : Matrix (Fin j) (Fin j) K)
@@ -854,14 +726,8 @@ theorem det_gramPl_baseChange (b : Basis ι K V) (X : InfinitePlace K → Matrix
   rw [e1, Complex.ofReal_re, Complex.normSq_eq_norm_sq, InfinitePlace.norm_embedding_eq,
     Complex.ofReal_re]
 
-/- English proof (translation)
-Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Every transformed vector is a linear combination of the original vectors, giving one inclusion. Since the matrix is invertible, apply its inverse to express every original vector as a combination of the transformed ones. This gives the reverse inclusion.
 -/
 theorem span_baseChange {j : ℕ} (e : Fin j → V) (g : Matrix (Fin j) (Fin j) K)
     (hg : IsUnit g.det) :
@@ -887,8 +753,8 @@ theorem span_baseChange {j : ℕ} (e : Fin j → V) (g : Matrix (Fin j) (Fin j) 
     exact Submodule.sum_mem _ fun a _ =>
       Submodule.smul_mem _ _ (Submodule.subset_span (Set.mem_range_self a))
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The transformed family has the same number of vectors and spans the same space as the original independent family. Its cardinality therefore equals the dimension of its span, which gives independence.
 -/
 theorem linInd_baseChange {j : ℕ} (e : Fin j → V) (he : LinearIndependent K e)
     (g : Matrix (Fin j) (Fin j) K) (hg : IsUnit g.det) :
@@ -898,18 +764,8 @@ theorem linInd_baseChange {j : ℕ} (e : Fin j → V) (he : LinearIndependent K 
 
 end BaseChange
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
-
-Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+At each infinite place the Gram determinant is multiplied by the squared modulus of the embedded change-of-basis determinant. The product of these factors is the absolute rational norm of that determinant because all infinite places are complex. Taking logarithms and applying the covolume normalization gives the change of the infinite term. The transformed family is independent and has the same span, so the total covolume is unchanged. Hence the finite term changes by the negative of the infinite contribution.
 -/
 theorem covolume_base_change : LcvBaseChange := by
   intro K V ι _ _ _ _ _ _ _ _ _ _ b X hX j e g M he hg hM hM0 hsp
@@ -946,14 +802,8 @@ theorem covolume_base_change : LcvBaseChange := by
   unfold lcv at hfree
   linarith
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+Use the integral span of the independent family and its product with the nonzero fractional ideal. Both have the same field span and rank. With identity metric matrices, the covolume formula for the original lattice has zero finite term, and the formula for the scaled lattice uses the same infinite term. Subtract the slopes and use the ideal-scaling formula to obtain the finite term, equal to twice the rank times the log norm divided by the field degree.
 -/
 theorem covolume_ideal : LcvIdeal := by
   intro K V ι _ _ _ _ _ _ _ _ _ _ b j e I he hj hI
@@ -975,14 +825,8 @@ theorem covolume_ideal : LcvIdeal := by
   field_simp at h2 ⊢
   linarith
 
-/- English proof (translation)
-Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
-
-Establish an intermediate fact. Check the signs of the components of the expression. A detailed English derivation is pending.
+/- English proof (authored)
+Use the third cyclotomic field, which is totally complex, and its one-vector family given by 1. Scale its integral span by the principal ideal generated by 2, which is nonzero. The finite covolume formula expresses the result as a positive multiple of the log of the ideal norm. This norm is the absolute field norm of 2, namely 2 raised to the positive field degree. It is greater than one, so the logarithm is positive.
 -/
 theorem lcv_nonvacuous :
     letI : StarRing (CyclotomicField 3 ℚ) := starRingOfComm

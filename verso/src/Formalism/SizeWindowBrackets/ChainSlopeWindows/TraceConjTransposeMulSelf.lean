@@ -11,22 +11,22 @@ section HS
 
 variable {m n k : Type} [Fintype m] [Fintype n] [Fintype k]
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. A detailed English derivation is pending.
+/- English proof (authored)
+The squared Hilbert–Schmidt norm is a finite sum of squared moduli. Each summand is nonnegative.
 -/
 lemma hsSq_nonneg (M : Matrix m n ℂ) : 0 ≤ hsSq M := by
   unfold hsSq
   exact Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun j _ => sq_nonneg _
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
+/- English proof (authored)
+Write z as x + iy. Its product with its complex conjugate is x² + y², which is the square of its modulus viewed as a real number inside the complex field.
 -/
 private theorem star_mul_self_eq_norm_sq (z : ℂ) : star z * z = ((‖z‖ ^ 2 : ℝ) : ℂ) := by
   rw [← Complex.normSq_eq_norm_sq, Complex.normSq_eq_conj_mul_self]
   rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The diagonal entry at column j is the sum over rows i of the conjugate of the entry at i, j times that entry. Each product is the squared modulus. Summing over j and interchanging the finite sums gives precisely the squared Hilbert–Schmidt norm.
 -/
 lemma trace_conjTranspose_mul_self (M : Matrix m n ℂ) :
     (Mᴴ * M).trace = ((hsSq M : ℝ) : ℂ) := by
@@ -35,21 +35,21 @@ lemma trace_conjTranspose_mul_self (M : Matrix m n ℂ) :
   rw [h, Finset.sum_comm]
   simp only [star_mul_self_eq_norm_sq, hsSq, Complex.ofReal_sum]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The trace is the squared Hilbert–Schmidt norm embedded as a real complex number. Taking its real part gives the original real value.
 -/
 lemma hsSq_eq_re (M : Matrix m n ℂ) : hsSq M = (Mᴴ * M).trace.re := by
   rw [trace_conjTranspose_mul_self, Complex.ofReal_re]
 
-/- English proof (translation)
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Conjugation preserves modulus and transposition swaps the row and column indices. The sum of the squared moduli is therefore unchanged.
 -/
 lemma hsSq_conjTranspose (M : Matrix m n ℂ) : hsSq Mᴴ = hsSq M := by
   simp only [hsSq, Matrix.conjTranspose_apply, norm_star]
   exact Finset.sum_comm
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+Each entry is multiplied by c, so its squared modulus is multiplied by the squared modulus of c. Factor this common scalar out of the sum.
 -/
 lemma hsSq_smul (c : ℂ) (M : Matrix m n ℂ) : hsSq (c • M) = ‖c‖ ^ 2 * hsSq M := by
   simp only [hsSq, Matrix.smul_apply, smul_eq_mul, norm_mul, mul_pow, Finset.mul_sum]
@@ -60,16 +60,16 @@ section Fam
 
 variable {ι : Type} [Fintype ι] {D : ℕ} {d : ι → ℕ}
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The diagonal kernel's scalar factor is the square root of the square of the weight. Since the weight is nonnegative, this factor equals the weight itself.
 -/
 lemma Kd_eq (B : ∀ u, Matrix (Fin D) (Fin (d u)) ℂ) (ga : ι → ℝ) (hga : ∀ u, 0 ≤ ga u) (u : ι) :
     Kd B ga u = ((ga u : ℝ) : ℂ) • ((B u)ᴴ * B u) := by
   unfold Kd Kp
   rw [Real.sqrt_mul_self (hga u)]
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Use linearity of the trace on the weighted sum. For each term, cycling the two matrix factors turns the trace of the matrix times its conjugate transpose into the trace of the conjugate transpose times the matrix. The weighted latter product is the diagonal kernel.
 -/
 lemma trace_Qm (B : ∀ u, Matrix (Fin D) (Fin (d u)) ℂ) (ga : ι → ℝ) (hga : ∀ u, 0 ≤ ga u) :
     (Qm B ga).trace = ∑ u, (Kd B ga u).trace := by
@@ -78,8 +78,8 @@ lemma trace_Qm (B : ∀ u, Matrix (Fin D) (Fin (d u)) ℂ) (ga : ι → ℝ) (hg
   refine Finset.sum_congr rfl fun u _ => ?_
   rw [Kd_eq B ga hga u, Matrix.trace_smul, Matrix.trace_smul, Matrix.trace_mul_comm]
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The kernel is the cross Gram matrix multiplied by the square root of the product of the weights. That product is nonnegative. The squared modulus of the scalar is therefore the product itself, and the squared-norm scaling rule gives the result.
 -/
 lemma hsSq_Kp (B : ∀ u, Matrix (Fin D) (Fin (d u)) ℂ) (ga : ι → ℝ) (hga : ∀ u, 0 ≤ ga u)
     (u u' : ι) : hsSq (Kp B ga u u') = ga u * ga u' * hsSq ((B u)ᴴ * B u') := by
@@ -90,14 +90,8 @@ lemma hsSq_Kp (B : ∀ u, Matrix (Fin D) (Fin (d u)) ℂ) (ga : ι → ℝ) (hga
       Real.sq_sqrt (mul_nonneg (hga u) (hga u'))]
   rw [hn]
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Expand the square of the weighted matrix sum and use linearity of the trace. For each pair, cyclically rearrange the factors to obtain the trace of the cross Gram matrix's adjoint times itself. This trace is its squared Hilbert–Schmidt norm. Including the product of the weights converts it into the squared norm of the weighted kernel. Sum over both indices.
 -/
 lemma trace_Qm_sq (B : ∀ u, Matrix (Fin D) (Fin (d u)) ℂ) (ga : ι → ℝ) (hga : ∀ u, 0 ≤ ga u) :
     (Qm B ga * Qm B ga).trace = (((∑ u, ∑ u', hsSq (Kp B ga u u') : ℝ)) : ℂ) := by
@@ -128,15 +122,15 @@ section CS
 
 variable {m n : Type} [Fintype m] [Fintype n]
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+The inequality x² ≤ y gives |x| ≤ √y. Since x ≤ |x|, transitivity gives the claim.
 -/
 private theorem le_sqrt_of_sq_le' {x y : ℝ} (h : x ^ 2 ≤ y) : x ≤ Real.sqrt y := by
   refine (le_abs_self x).trans ?_
   exact Real.abs_le_sqrt h
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Apply Cauchy–Schwarz to the two arrays of entry moduli indexed by row and column pairs. Each sum of squares under the resulting square roots is the corresponding squared Hilbert–Schmidt norm.
 -/
 private theorem sum_norm_mul_le_hsNorm_mul (A B : Matrix m n ℂ) :
     ∑ i, ∑ j, ‖A i j‖ * ‖B i j‖ ≤ hsNorm A * hsNorm B := by
@@ -147,10 +141,8 @@ private theorem sum_norm_mul_le_hsNorm_mul (A B : Matrix m n ℂ) :
   rw [← Real.sqrt_mul (hsSq_nonneg A)]
   exact le_sqrt_of_sq_le' h
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
-
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Expand the trace as the sum of the products of each entry of X with its matching entry in the transpose of Y. The triangle inequality bounds its modulus by the sum of products of moduli. Apply the entrywise Cauchy–Schwarz bound and use invariance of the norm under transposition.
 -/
 lemma norm_trace_mul_le (X : Matrix m n ℂ) (Y : Matrix n m ℂ) :
     ‖(X * Y).trace‖ ≤ hsNorm X * hsNorm Y := by
@@ -165,8 +157,8 @@ lemma norm_trace_mul_le (X : Matrix m n ℂ) (Y : Matrix n m ℂ) :
   rw [← h2]
   exact h1.trans (sum_norm_mul_le_hsNorm_mul X Yᵀ)
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The n diagonal entries of the identity contribute one each to the sum of squared moduli. Every off-diagonal entry contributes zero.
 -/
 lemma hsSq_one (n : ℕ) : hsSq (1 : Matrix (Fin n) (Fin n) ℂ) = n := by
   have h : ∀ i j : Fin n, ‖(1 : Matrix (Fin n) (Fin n) ℂ) i j‖ ^ 2 = if i = j then 1 else 0 := by
@@ -177,25 +169,21 @@ lemma hsSq_one (n : ℕ) : hsSq (1 : Matrix (Fin n) (Fin n) ℂ) = n := by
 
 end CS
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The absolute real part of z is at most its modulus, and its real part is at most its absolute real part.
 -/
 private theorem re_le_norm' (z : ℂ) : z.re ≤ ‖z‖ := by
   exact Complex.re_le_norm z
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+Apply the bound on the real part to −z. Its real part is the negative of the real part of z, and its modulus is unchanged.
 -/
 private theorem neg_re_le_norm' (z : ℂ) : -z.re ≤ ‖z‖ := by
   have h := re_le_norm' (-z)
   rwa [Complex.neg_re, norm_neg] at h
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
-
-Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+Write the trace as n plus the trace of the deviation from the identity. The latter trace is also the trace of the identity times the deviation. Its real part is at least minus its modulus. Bound that modulus by the product of the two Hilbert–Schmidt norms, noting that the norm of the identity is √n.
 -/
 theorem traceLowerBound : TraceLower := by
   intro n K
@@ -216,24 +204,20 @@ section Tri
 
 variable {m n : Type} [Fintype m] [Fintype n]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The Hilbert–Schmidt norm is defined as a square root, which is nonnegative.
 -/
 lemma hsNorm_nonneg (M : Matrix m n ℂ) : 0 ≤ hsNorm M :=
   Real.sqrt_nonneg _
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The squared Hilbert–Schmidt expression is nonnegative. Squaring its nonnegative square root therefore gives the original expression.
 -/
 lemma hsNorm_sq (M : Matrix m n ℂ) : hsNorm M ^ 2 = hsSq M :=
   Real.sq_sqrt (hsSq_nonneg M)
 
-/- English proof (translation)
-Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
-
-Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+/- English proof (authored)
+Bound each entry modulus of the sum by the sum of the two entry moduli and square. After summing, the two pure square terms give the two squared norms. Cauchy–Schwarz bounds the mixed term by twice the product of the norms. Together these are the square of the sum of the two norms.
 -/
 lemma hsSq_add_le (A B : Matrix m n ℂ) : hsSq (A + B) ≤ (hsNorm A + hsNorm B) ^ 2 := by
   have h1 : hsSq (A + B)
@@ -252,8 +236,8 @@ lemma hsSq_add_le (A B : Matrix m n ℂ) : hsSq (A + B) ≤ (hsNorm A + hsNorm B
   have hB := hsNorm_sq B
   nlinarith [hsNorm_nonneg A, hsNorm_nonneg B]
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Take square roots of the squared-norm inequality. Since e is nonnegative, the square root of ex factors as √e times √x.
 -/
 lemma hsNorm_le_of_sq (M : Matrix m n ℂ) {e x : ℝ} (he : 0 ≤ e) (h : hsSq M ≤ e * x) :
     hsNorm M ≤ Real.sqrt e * Real.sqrt x := by
@@ -263,10 +247,8 @@ lemma hsNorm_le_of_sq (M : Matrix m n ℂ) {e x : ℝ} (he : 0 ≤ e) (h : hsSq 
 
 end Tri
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
-
-Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+Write K as the identity plus its deviation. Apply the bound for the squared norm of a sum and use that the Hilbert–Schmidt norm of the identity is √n.
 -/
 lemma hsSq_le_of_sub_one (n : ℕ) (K : Matrix (Fin n) (Fin n) ℂ) :
     hsSq K ≤ (Real.sqrt n + hsNorm (K - 1)) ^ 2 := by
@@ -281,19 +263,15 @@ section Cor
 
 variable {ι : Type} [Fintype ι] {D : ℕ} {d : ι → ℕ}
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. A detailed English derivation is pending.
+/- English proof (authored)
+The total rank is a finite sum of dimensions. Each dimension is nonnegative, so their sum is nonnegative.
 -/
 lemma Rs_nonneg (d : ι → ℕ) : 0 ≤ Rs d := by
   unfold Rs
   exact Finset.sum_nonneg fun u _ => Nat.cast_nonneg _
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
-
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+For each diagonal kernel, the trace lower bound subtracts at most its deviation norm times the square root of its dimension. The assumed squared-deviation bound makes this product at most √e₀ times the dimension. Summing over the kernels and using the trace decomposition gives the lower bound for the total trace.
 -/
 lemma trQ_lower (B : ∀ u, Matrix (Fin D) (Fin (d u)) ℂ) (ga : ι → ℝ) (hga : ∀ u, 0 ≤ ga u)
     {e0 : ℝ} (he : 0 ≤ e0) (hK : ∀ u, hsSq (Kd B ga u - 1) ≤ e0 * (d u : ℝ)) :
@@ -313,24 +291,8 @@ lemma trQ_lower (B : ∀ u, Matrix (Fin D) (Fin (d u)) ℂ) (ga : ι → ℝ) (h
   rw [Finset.mul_sum]
   exact Finset.sum_le_sum fun u _ => hu u
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
-
-Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
-
-Treat this case separately. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The trace of the square is the sum of the squared kernel norms. For distinct indices use the given cross-kernel estimate. For equal indices, split the kernel into identity and deviation and apply the norm bound to obtain at most the dimension times (1 + √e₀)². The cross-kernel expression is nonnegative and can be summed over all pairs, including the diagonal. Its double sum factors as the square of total rank, and the diagonal correction sums to its coefficient times total rank.
 -/
 lemma trQsq_upper (B : ∀ u, Matrix (Fin D) (Fin (d u)) ℂ) (ga : ι → ℝ) (hga : ∀ u, 0 ≤ ga u)
     {Dstar η0 e0 : ℝ} (hD : 0 < Dstar) (hη : -1 ≤ η0) (he : 0 ≤ e0)
@@ -399,15 +361,15 @@ section Compress
 
 variable {m n k : Type} [Fintype m] [Fintype n] [Fintype k] [DecidableEq m] [DecidableEq k]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The conjugate transpose fixes the identity and fixes the product of V with its adjoint because taking the adjoint reverses the factors. It therefore fixes their difference.
 -/
 lemma proj_herm (V : Matrix m k ℂ) : (1 - V * Vᴴ)ᴴ = 1 - V * Vᴴ := by
   rw [Matrix.conjTranspose_sub, Matrix.conjTranspose_one, Matrix.conjTranspose_mul,
     Matrix.conjTranspose_conjTranspose]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
+/- English proof (authored)
+Since the adjoint of V times V is the identity, the square of V times its adjoint is the same as that product. Expand the square of the complementary matrix and use this equality to recover the complementary matrix.
 -/
 lemma proj_idem (V : Matrix m k ℂ) (hV : Vᴴ * V = 1) :
     (1 - V * Vᴴ) * (1 - V * Vᴴ) = 1 - V * Vᴴ := by
@@ -416,10 +378,8 @@ lemma proj_idem (V : Matrix m k ℂ) (hV : Vᴴ * V = 1) :
   simp only [sub_mul, mul_sub, one_mul, mul_one, hP]
   abel
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+Use the trace formula for each squared norm. The first compressed term gives the real trace of the original matrix's adjoint times the projection times the original matrix. The second gives the same expression with the complementary projection because that projection is self-adjoint and idempotent. Adding the two projections gives the identity and recovers the original norm.
 -/
 lemma hsSq_split (V : Matrix m k ℂ) (hV : Vᴴ * V = 1) (M : Matrix m n ℂ) :
     hsSq M = hsSq (Vᴴ * M) + hsSq ((1 - V * Vᴴ) * M) := by
@@ -437,8 +397,8 @@ lemma hsSq_split (V : Matrix m k ℂ) (hV : Vᴴ * V = 1) (M : Matrix m n ℂ) :
     hsSq_eq_re ((1 - V * Vᴴ) * M), e1, e2, Complex.sub_re]
   ring
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+The splitting formula expresses the original squared norm as the compressed squared norm plus the nonnegative squared norm of the complementary term. Drop the latter term.
 -/
 lemma hsSq_left_le (V : Matrix m k ℂ) (hV : Vᴴ * V = 1) (M : Matrix m n ℂ) :
     hsSq (Vᴴ * M) ≤ hsSq M := by
@@ -448,8 +408,8 @@ lemma hsSq_left_le (V : Matrix m k ℂ) (hV : Vᴴ * V = 1) (M : Matrix m n ℂ)
 
 end Compress
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+First apply the one-sided bound to multiplication on the left by the adjoint of V. To bound multiplication on the right by W, take adjoints, which preserve the squared norm and turn this multiplication into left multiplication by the adjoint of W. Apply the one-sided bound again.
 -/
 lemma hsSq_compress {a b c e : ℕ} (V : Matrix (Fin a) (Fin c) ℂ) (hV : Vᴴ * V = 1)
     (W : Matrix (Fin b) (Fin e) ℂ) (hW : Wᴴ * W = 1) (M : Matrix (Fin a) (Fin b) ℂ) :
@@ -463,16 +423,16 @@ section Ram
 
 variable {ι : Type} [Fintype ι] {D : ℕ} {d r : ι → ℕ}
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+Insert the two compressed matrices in the cross-kernel definition. Taking the adjoint of the first product reverses the factors. Move the scalar weight through the products to see the original kernel between the two compression factors.
 -/
 lemma Kp_ram (B : ∀ u, Matrix (Fin D) (Fin (d u)) ℂ) (V : ∀ u, Matrix (Fin (d u)) (Fin (r u)) ℂ)
     (ga : ι → ℝ) (u u' : ι) : Kp (Bram B V) ga u u' = (V u)ᴴ * Kp B ga u u' * V u' := by
   simp only [Kp, Bram, Matrix.conjTranspose_mul, Matrix.mul_smul, Matrix.smul_mul,
     Matrix.mul_assoc]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Use the cross-kernel compression formula on the diagonal. The compression of the original identity is the new identity because each compression matrix has orthonormal columns. Subtract the compressed identity.
 -/
 lemma Kd_ram_sub (B : ∀ u, Matrix (Fin D) (Fin (d u)) ℂ) (V : ∀ u, Matrix (Fin (d u)) (Fin (r u)) ℂ)
     (ga : ι → ℝ) (hV : Isom V) (u : ι) :
@@ -486,8 +446,8 @@ end Ram
 
 section RamTr
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+The trace of the larger identity is n. By cyclicity, the trace of the projection equals the trace of the adjoint times V, which is the identity of size k. Subtract these traces.
 -/
 lemma trace_proj (n k : ℕ) (V : Matrix (Fin n) (Fin k) ℂ) (hV : Vᴴ * V = 1) :
     (1 - V * Vᴴ).trace = ((((n : ℝ) - (k : ℝ)) : ℝ) : ℂ) := by
@@ -496,18 +456,8 @@ lemma trace_proj (n k : ℕ) (V : Matrix (Fin n) (Fin k) ℂ) (hV : Vᴴ * V = 1
   push_cast
   ring
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
-
-Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+The complementary projection is self-adjoint and idempotent, so its squared Hilbert–Schmidt norm equals its trace n − k. This also shows the difference is nonnegative. By cyclicity, the trace lost in compression is the trace of K times the complementary projection. Write K as identity plus its deviation. The identity term gives n − k, and the deviation term is bounded by the product of the two Hilbert–Schmidt norms. Insert the assumed deviation bound and the square-root norm of the projection.
 -/
 lemma ram_gap (n k : ℕ) (K : Matrix (Fin n) (Fin n) ℂ) (V : Matrix (Fin n) (Fin k) ℂ)
     (hV : Vᴴ * V = 1) {e0 : ℝ} (he : 0 ≤ e0) (hK : hsSq (K - 1) ≤ e0 * n) :
@@ -552,10 +502,8 @@ section RamMain
 
 variable {ι : Type} [Fintype ι] {D : ℕ} {d r : ι → ℕ}
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Apply Cauchy–Schwarz to the two sequences of nonnegative square roots. The squares of the entries are the original terms, so the two factors are the square roots of the corresponding sums.
 -/
 private theorem sum_sqrt_mul_sqrt_le_sqrt_sum_mul' {κ : Type} [Fintype κ] (a b : κ → ℝ) (ha : ∀ u, 0 ≤ a u)
     (hb : ∀ u, 0 ≤ b u) :
@@ -568,16 +516,8 @@ private theorem sum_sqrt_mul_sqrt_le_sqrt_sum_mul' {κ : Type} [Fintype κ] (a b
   rw [← Real.sqrt_mul (Finset.sum_nonneg fun u _ => ha u)]
   exact le_sqrt_of_sq_le' h
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+Apply the single-matrix trace loss estimate to each diagonal kernel. The dimension losses are nonnegative and sum to at most the allowed fraction of total rank. The mixed term sums to at most √e₀ times the product of the square roots of the total dimension loss and the total rank, by Cauchy–Schwarz. Use the same loss bound under the square root to get at most √(δe₀) times total rank for this contribution. Then use the trace decomposition before and after compression.
 -/
 theorem compressTraceLowerBound : RamTrace := by
   intro ι _ D d r B V ga de e0 hV hga hde he hK hsum
@@ -615,14 +555,8 @@ theorem compressTraceLowerBound : RamTrace := by
     Complex.re_sum, Real.sqrt_mul hde e0]
   linarith
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
-
-Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The upper bound on lost dimensions gives a retained rank of at least (1 − δ) times the original rank. Compressing each matrix deviation cannot increase its squared norm. Their sum is therefore at most e₀ times the original rank, which is at most twice e₀ times the retained rank since δ ≤ 1/2.
 -/
 theorem compressDiagDefectBound : CompressDiagDefectBound := by
   intro ι _ D d r B V ga de e0 hV hde he hK hsum
@@ -655,12 +589,8 @@ section Num
 
 set_option maxHeartbeats 800000 in
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
-
-Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+Bound both η terms and a in the expression on the left by s/2. The relevant factors are nonnegative, so these replacements give an upper bound. Subtract that upper bound from (1 + 5s)(1 − s/2)². The difference is 2s − (13/2)s² + s³/2 − s⁴/8, which is nonnegative for 0 < s ≤ 1/4. Since 0 ≤ a ≤ s/2, replacing 1 − s/2 by 1 − a in the squared factor only increases the bound.
 -/
 lemma num_main {s η0 η1 a : ℝ} (hs0 : 0 < s) (hs : s ≤ 1 / 4) (hη0 : -1 ≤ η0) (hη0' : η0 ≤ s / 2)
     (hη1' : η1 ≤ s / 2) (_hL : 0 ≤ 1 + η1) (ha : 0 ≤ a) (ha' : a ≤ s / 2) :
@@ -687,8 +617,8 @@ lemma num_main {s η0 η1 a : ℝ} (hs0 : 0 < s) (hs : s ≤ 1 / 4) (hη0 : -1 �
 
 set_option maxHeartbeats 800000 in
 
-/- English proof (translation)
-Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+/- English proof (authored)
+Write B = 1 − a and P = 1 + 5s + 3t. The parameter bounds give 2P(t + a) ≤ 3B. For example, the left side is at most 2 times 11/4 times 21/40, and 3B is at least 117/40. Expanding the difference between P(B − t² − ta)² and (1 + 5s)B² gives tB times 3B − 2P(t + a), plus P times the square of t² + ta. Both terms are nonnegative.
 -/
 lemma num_ram {s a t : ℝ} (hs0 : 0 < s) (hs : s ≤ 1 / 20) (ha : 0 ≤ a) (ha' : a ≤ s / 2)
     (ht : 0 ≤ t) (ht' : t ≤ 1 / 2) :
@@ -700,20 +630,14 @@ lemma num_ram {s a t : ℝ} (hs0 : 0 < s) (hs : s ≤ 1 / 20) (ha : 0 ≤ a) (ha
   have hP0 : 0 ≤ 1 + 5 * s + 3 * t := by linarith
   nlinarith [mul_nonneg (mul_nonneg ht hb0) (sub_nonneg.2 hk), mul_nonneg hP0 (sq_nonneg (t ^ 2 + t * a))]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Divide the assumed inequality ac ≤ b by c > 0. The sign of the inequality is preserved and the factor c cancels on the left.
 -/
 private theorem le_div_of_mul_le_of_pos {a b c : ℝ} (hc : 0 < c) (h : a * c ≤ b) : a ≤ b / c := by
   exact (le_div_iff₀ hc).2 h
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Multiply the bound on T₂ by the positive reference dimension to clear its denominator. Multiply also by D and use D ≤ L times that reference dimension, which is allowed because the squared rank times X is nonnegative. Then replace LX by its bound cb². Since 0 ≤ bR ≤ T₁, squaring and multiplying by c preserves the bound. Cancelling the positive reference dimension and dividing by D gives the conclusion.
 -/
 lemma num_step {T2 T1 R Dst D X L c b : ℝ} (hD : 0 < D) (hDs : 0 < Dst) (hDD : D ≤ L * Dst)
     (hX : 0 ≤ X) (hT2 : T2 ≤ R ^ 2 / Dst * X) (hb : 0 ≤ b * R) (hT1 : b * R ≤ T1)
@@ -742,24 +666,14 @@ section Final
 
 variable {ι : Type} [Fintype ι] {D : ℕ} {d r : ι → ℕ}
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Multiply a/c ≤ b by c > 0. The sign of the inequality is preserved, giving a ≤ bc.
 -/
 private theorem mul_le_of_div_le_of_pos {a b c : ℝ} (hc : 0 < c) (h : a / c ≤ b) : a ≤ b * c := by
   exact (div_le_iff₀ hc).1 h
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+The rank lower bound makes total rank positive. The square-root error is at most 1/8, so the trace lower bound gives a strictly positive trace, which forces positive ambient dimension. Its assumed dimension upper bound then makes 1 + η₁ nonnegative. Apply the trace-square upper bound. The rank hypothesis also bounds the total rank by the square of total rank times the scale divided by the reference dimension. Use that estimate in the diagonal term to put the upper bound in the displayed form.
 -/
 lemma cor_common (B : ∀ u, Matrix (Fin D) (Fin (d u)) ℂ) (ga : ι → ℝ) (hga : ∀ u, 0 ≤ ga u)
     {Dstar sg η0 η1 e0 : ℝ} (hD : 0 < Dstar) (hs0 : 0 < sg) (hs : sg ≤ 1 / 4)
@@ -803,18 +717,8 @@ lemma cor_common (B : ∀ u, Matrix (Fin D) (Fin (d u)) ℂ) (ga : ι → ℝ) (
 
 set_option maxHeartbeats 800000 in
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Replace the relevant objects with their definitions. A detailed English derivation is pending.
+/- English proof (authored)
+The trace-square expansion and the compression norm bound show that compression cannot increase the trace of the square. Use the uncompressed trace-square estimate for its upper bound and the compressed trace estimate for the lower bound on the trace. Write a and t for the square roots of the initial error and the dimension deficit. The lower trace coefficient is 1 − a − t² − ta, which is nonnegative under the parameter bounds. The two scalar estimates bound the upper coefficient after multiplying by the ambient dimension factor, first by (1 + 5s)(1 − a)² and then by (1 + 5s + 3t) times the square of the lower trace coefficient. The final trace comparison follows by the positive-dimension inequality.
 -/
 theorem compressTraceSquareBound : CompressTraceSquareBound := by
   intro ι _ D d r B V ga Dstar sg η0 η1 e0 de hV hga hD hs0 hs hR hη0 hη0' hη1' he ha' hde0 hde hsum hS

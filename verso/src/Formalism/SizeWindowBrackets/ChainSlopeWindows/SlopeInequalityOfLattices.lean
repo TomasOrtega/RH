@@ -20,8 +20,8 @@ variable {U0 : Type} [Fintype U0] {W : U0 → Type} [∀ u0, Fintype (W u0)]
 variable {ι : Type} [DecidableEq ι]
 variable (D : Data U0 W Top m f) (C : Consts) (Xpp : ℝ) (P : ∀ u0, W u0 → PData ι m)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Expand both exponent totals and distribute the factor of two across the sum over the indices. For each index the assumed place-sum identity equates the two summands. Summing gives the equality of totals.
 -/
 theorem exponent_transfer : BridgeEe D P := by
   intro hI u0 u
@@ -29,16 +29,8 @@ theorem exponent_transfer : BridgeEe D P := by
   rw [Finset.mul_sum]
   exact Finset.sum_congr rfl fun j _ => (hI u0 u).2.2 j
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions. Establish an intermediate fact.
-
-Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+The lower and upper weighted slope bounds apply to the local data. Use the place-sum identities to replace the gain, positive correction and exponent by their global counterparts. The upper bound remains valid after adding the nonnegative size allowance. For the lower bound, the local index parameter is nonnegative because twice it is a sum of nonnegative local terms. The coefficient is at least four, so four times this parameter is at most the coefficient times the global index bound. Replace the other two local losses by their size bounds and collect the error terms.
 -/
 theorem unit_weight_transfer : QuotientSlopeBoundsOfPlaceSums D C Xpp P := by
   intro hH hI hS u0 u
@@ -76,10 +68,8 @@ variable {U0 : Type} [Fintype U0] {W : U0 → Type} [∀ u0, Fintype (W u0)]
 variable {ι : Type} [DecidableEq ι]
 variable (D : Data U0 W Top m f) (C : Consts) (Xpp cT : ℝ) (Q : ∀ u0, W u0 → PPrim ι m)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
+/- English proof (authored)
+The degree formula bounds the normalized deficit by twice f divided by T, and the lower bound on T makes this at most one half. Apply the truncated-length estimate with this deficit, using the equality of the truncated weights with log(T). Group the local index contributions by prime to get the stated total. These supply the numerical hypotheses for the two lower-slope estimates. The upper-slope hypotheses are the given pointwise gain and slope bounds.
 -/
 theorem primitive_transfer : BridgePrim D Q := by
   intro h u0 u
@@ -98,12 +88,8 @@ theorem primitive_transfer : BridgePrim D Q := by
     ⟨hMu, d4, hhalf, htau, hTa, hsmall, hU, le_refl _, le_refl _⟩,
     ⟨hl, hsg, hmax, hMaxMu⟩⟩
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The logarithm of T is nonnegative under the lower bound on T. Multiply the bound on the truncation parameter by four and compare the resulting coefficient with the slope-loss coefficient times the nonnegative size factor. Multiplying by log(T) gives the required truncated-length budget. The index and rounding bounds are inherited from the assumptions.
 -/
 theorem primitive_transfer_sizes : BridgePrimSizes D C Xpp cT Q := by
   intro hT h
@@ -119,8 +105,8 @@ theorem primitive_transfer_sizes : BridgePrimSizes D C Xpp cT Q := by
     nlinarith
   exact mul_le_mul_of_nonneg_right h1 hlog
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+First transfer the primitive conditions to the local slope hypotheses. Transfer the size bounds as well, using the lower bound on T from the primitive conditions. The place-sum identities now allow the transfer theorem to give both quotient slope bounds.
 -/
 theorem unit_weight_of_primitive : QuotientSlopeBoundsOfPrimitiveData D C Xpp cT Q := by
   intro hH hI hS
@@ -139,20 +125,8 @@ variable (D : Data U0 W Top m f) (C : Consts) (Xpp : ℝ) (P : ∀ u0, W u0 → 
 
 end Round
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
-
-Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
-
-Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+Apply the lattice slope formulas expressed in local indices and lengths. The finite set S contains the supports of both integer exponent functions, and their contributions outside S vanish. On S, substitute the scaled local weight and divide the two exponents by the same positive ramification factor. This identifies the exponent sum with the weighted gain minus the threshold. The error sum is also supported on S. Substituting the normalized length and threshold identifies each local error term with its contribution to the weighted length sum. Replacing the two sums in the slope formulas yields the stated slope comparison.
 -/
 theorem slope_formula_transfer : LatticeSlopeComparison := by
   intro K V ι _ _ _ _ _ _ _ _ _ _ b X hX σ τ M N β hM hM0 hN hrk hβ S eR l sg' tau len hoff he hl hsg
@@ -202,10 +176,8 @@ variable {U0 : Type} [Fintype U0] {W : U0 → Type} [∀ u0, Fintype (W u0)]
   [∀ u0, Nonempty (W u0)] {Top : Type} [Fintype Top] {m f : ℕ}
 variable (D : Data U0 W Top m f) (C : Consts)
 
-/- English proof (translation)
-Establish an intermediate fact. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+Expand the slope conclusion, the error function and its logarithmic factor. The two resulting inequalities differ only in the association of the product of four, the spread and the logarithm. Pack the seven side assumptions into their conjunction in one direction and unpack them in the other.
 -/
 theorem function_transfer : BridgeF D := by
   have e : ∀ a b : ℝ, 4 * a * b = 4 * (a * b) := fun a b => mul_assoc 4 a b
@@ -218,18 +190,8 @@ theorem function_transfer : BridgeF D := by
     have := h u0 ⟨h1, h2, h3, h4, h5, h6, h7⟩
     rwa [e]
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The identification hypotheses express the weights as ranks and the means and maximal slopes as those of the given lattices. The positive total rank lets the weighted mean identity be cleared of its denominator. Each positive-rank lattice's mean is at most its maximal slope. Subtract the height and bound that value by the maximum of all shifted maximal slopes. Zero-rank terms contribute zero to the mean, so the weighted mean is at most the shifted maximum and the spread is nonnegative. By definition that spread bounds each shifted maximal slope relative to the mean. The side conditions give the ambient minimal-slope comparison and height bound.
 -/
 theorem lattice_numerics (u0 : U0) {K Wd κ κ₁ : Type} [Field K] [NumberField K] [StarRing K]
     [AddCommGroup Wd] [Module K Wd] [Module (𝓞 K) Wd] [IsScalarTower (𝓞 K) K Wd]
@@ -278,10 +240,8 @@ theorem lattice_numerics (u0 : U0) {K Wd κ κ₁ : Type} [Field K] [NumberField
     linarith
   · rw [← hmin]; exact s6
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Use the lattice identifications and the side conditions to obtain the numerical lattice assumptions. Apply the ramified lattice estimate with these and the geometric and compression hypotheses. Replace the ambient slope and the error parameters by the identified quantities from the data. The error expression agrees with the stated function estimate by the conclusion transfer.
 -/
 theorem function_slope_transfer : BridgeFS D := by
   intro u0 K Wd κ κ₁ _ _ _ _ _ _ _ _ _ _ _ _ V ι _ _ _ _ _ _ b' X' cc b X N B v Y Y' Ball γ ιf _ _
@@ -401,42 +361,40 @@ end Model
 
 namespace Model
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The summand at u occurs in the full finite sum. Every other absolute-value term is nonnegative, so the full sum is at least that summand.
 -/
 theorem sum_abs_ge (h : Fin 20 → ℝ) (u : Fin 20) : |h u| ≤ ∑ u, |h u| :=
   Finset.single_le_sum (f := fun u => |h u|) (fun _ _ => abs_nonneg _) (Finset.mem_univ u)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Each summand is an absolute value and is nonnegative. Therefore their finite sum is nonnegative.
 -/
 theorem sum_abs_nonneg (h : Fin 20 → ℝ) : 0 ≤ ∑ u, |h u| :=
   Finset.sum_nonneg fun _ _ => abs_nonneg _
 
-/- English proof (translation)
-Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression.
+/- English proof (authored)
+The quantity is a sum of two absolute values and twice a sum of absolute values. All three terms are nonnegative.
 -/
 theorem LaV_nonneg (μ0 μ1 : ℝ) (h : Fin 20 → ℝ) : 0 ≤ LaV μ0 μ1 h := by
   have := sum_abs_nonneg h
   unfold LaV; positivity
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Check the signs of the components of the expression.
+/- English proof (authored)
+The height is one plus an absolute value. Since the absolute value is nonnegative, the height is positive.
 -/
 theorem HHV_pos (μ0 μ2 : ℝ) (h : Fin 20 → ℝ) : 0 < HHV μ0 μ2 h := by
   unfold HHV; positivity
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+Insert the explicit model data and constants. The height is positive, the normalized weights and degree parameters are one, and the metric scale is π > 0. The normalized maximal and mean slopes satisfy the required ordering by μ₀ ≤ μ₁. The remaining parameter bounds reduce to the stated constants and zeros.
 -/
 theorem setting (μ0 μ1 μ2 : ℝ) (h : Fin 20 → ℝ) (hμ : μ0 ≤ μ1) : (D1 μ0 μ1 μ2 h).HidaSetting C2 := by
   refine ⟨HHV_pos μ0 μ2 h, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, fun _ _ => hμ, ?_, ?_, ?_, ?_, ?_⟩
   all_goals simp [D1, C2, Real.pi_pos]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+In the model all window weights are one and the metric scale is π, so the logarithmic window factors vanish. Substitute the remaining definitions. Bound the model's mean parameter and the chosen height shift above by their absolute values, and bound the negative of the positive correction by its absolute value. These terms occur in the model budget, and its other error allowances are nonnegative. This gives the divisor inequality.
 -/
 theorem div' (μ0 μ1 μ2 : ℝ) (h : Fin 20 → ℝ) : (D1 μ0 μ1 μ2 h).DIV C2 := by
   intro u0 u
@@ -448,10 +406,8 @@ theorem div' (μ0 μ1 μ2 : ℝ) (h : Fin 20 → ℝ) : (D1 μ0 μ1 μ2 h).DIV C
   simp [D1, C2, Data.nT, Data.logOm, ph, Real.pi_ne_zero, NcV]
   linarith
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+After substituting the model data, the varying part of the height expression is the difference of two shifts. Its absolute value is at most the sum of their absolute values, and each is bounded by the sum over all twenty shifts. The model allowance includes twice that sum and only adds nonnegative terms, giving the height comparison.
 -/
 theorem hcomp (μ0 μ1 μ2 : ℝ) (h : Fin 20 → ℝ) : (D1 μ0 μ1 μ2 h).HComp C2 := by
   intro u0 u u'
@@ -464,10 +420,8 @@ theorem hcomp (μ0 μ1 μ2 : ℝ) (h : Fin 20 → ℝ) : (D1 μ0 μ1 μ2 h).HCom
   simp [D1, C2, Data.nT, LaV]
   linarith
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Each word has count 211, independent of the word. In the lower bound the logarithmic weight terms vanish because the window weights are one and the scale is π, leaving a nonpositive expression bounded by log(211). The model's upper bound contains log(211) itself. The logarithmic difference between any two words is zero, so the variation bound also holds.
 -/
 theorem count (μ0 μ1 μ2 : ℝ) (h : Fin 20 → ℝ) : Count5 (D1 μ0 μ1 μ2 h) C2 := by
   intro u0 u
@@ -480,12 +434,8 @@ theorem count (μ0 μ1 μ2 : ℝ) (h : Fin 20 → ℝ) : Count5 (D1 μ0 μ1 μ2 
   · intro u'
     simp [D1, C2]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+Substitute the model values for the two reference slopes and the slope budget. The budget includes the absolute values of the reference mean and maximal slope and a nonnegative sum of absolute shifts. The lower and upper slope comparisons follow from bounding a real number below by the negative of its absolute value and above by its absolute value.
 -/
 theorem slopes (μ0 μ1 μ2 : ℝ) (h : Fin 20 → ℝ) : (D1 μ0 μ1 μ2 h).Slopes C2 := by
   intro u0 u
@@ -500,8 +450,8 @@ theorem slopes (μ0 μ1 μ2 : ℝ) (h : Fin 20 → ℝ) : (D1 μ0 μ1 μ2 h).Slo
   · simp [D1, C2, Data.nT, LaV]
     linarith
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression.
+/- English proof (authored)
+The gain and the positive correction agree directly with the chosen local place sums. For the exponent there is only one index, so identify it with the unique index zero and substitute the defining local exponent sum.
 -/
 theorem ident (μ0 μ1 μ2 : ℝ) (h : Fin 20 → ℝ) :
     PlaceSumIdentities (D1 μ0 μ1 μ2 h) (toP (D1 μ0 μ1 μ2 h) (fun _ _ => Q0 μ0 μ1)) := by
@@ -511,10 +461,8 @@ theorem ident (μ0 μ1 μ2 : ℝ) (h : Fin 20 → ℝ) :
   subst this
   rfl
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+The model constants and nonnegative budget terms give the fixed size constraints by substitution. The index comparison is an equality. The truncation scale 1/20 lies below its numerical upper bound. Finally, the rounding term is at most its absolute value, which is at most four times that absolute value.
 -/
 theorem sizes (μ0 μ1 μ2 : ℝ) (h : Fin 20 → ℝ) :
     SizesPrim (D1 μ0 μ1 μ2 h) C2 |RdV| 1 (fun _ _ => Q0 μ0 μ1) := by

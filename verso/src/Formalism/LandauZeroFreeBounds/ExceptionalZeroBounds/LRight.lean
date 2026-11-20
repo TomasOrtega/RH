@@ -9,10 +9,8 @@ noncomputable section
 
 namespace Formalism.ZeroFreeDirichlet
 
-/- English proof (translation)
-Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Both the character value and the Möbius coefficient have norm at most one. Their product therefore has norm at most one, and the Dirichlet-series term uses the same denominator as the term with coefficient one.
 -/
 lemma norm_term_twist_moebius_le {q : ℕ} (χ : DirichletCharacter ℂ q) (s : ℂ) (n : ℕ) :
     ‖term (↗χ * ↗μ) s n‖ ≤ ‖term (1 : ℕ → ℂ) s n‖ := by
@@ -25,26 +23,8 @@ lemma norm_term_twist_moebius_le {q : ℕ} (χ : DirichletCharacter ℂ q) (s : 
   exact mul_le_one₀ h1 (norm_nonneg _) h2
 
 open Formalism.ZF.MoebiusInverseZetaBounds in
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
-
-Check the signs of the components of the expression. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Check the signs of the components of the expression.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
+/- English proof (authored)
+In the half-plane to the right of one, the Dirichlet series with coefficients equal to the character times the Möbius function is the reciprocal of the character’s L-series. Its norm is bounded by the sum of the norms of its terms, each dominated by the series with coefficient one. For real part σ > 1, the positive terms of that comparison series have sum at most one plus the integral of t to the power −σ from one to infinity, by monotonicity. This is σ/(σ − 1).
 -/
 theorem inverseBound : LInvBound := by
   intro q _ χ s hs
@@ -111,8 +91,8 @@ theorem inverseBound : LInvBound := by
       Summable.tsum_le_tsum (fun n => norm_term_twist_moebius_le χ s n) hS2 hS1
     _ ≤ s.re / (s.re - 1) := hT1
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The L-function agrees with its Dirichlet series in a neighborhood of s in the half-plane of convergence, so their derivatives agree at s as well. The logarithmic derivative identity for the character series then gives the negative derivative quotient as the series with coefficients twisted by the von Mangoldt function.
 -/
 lemma negLD_eq_LSeries_mul_vonMangoldt {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) {s : ℂ} (hs : 1 < s.re) :
     negLD χ s = L (↗χ * ↗Λ) s := by
@@ -122,12 +102,8 @@ lemma negLD_eq_LSeries_mul_vonMangoldt {q : ℕ} [NeZero q] (χ : DirichletChara
   rw [negLD, hev.deriv_eq, DirichletCharacter.LFunction_eq_LSeries χ hs,
     DirichletCharacter.LSeries_twist_vonMangoldt_eq χ hs, neg_div]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
-
-Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Termwise, the character factor has norm at most one. The norm of the power in the denominator depends only on the real part of s. Thus each norm is bounded by the corresponding untwisted von Mangoldt term norm at that real argument. The comparison series is summable to the right of one, and summing the bounds gives the result.
 -/
 lemma norm_LSeries_twist_vonMangoldt_le {q : ℕ} (χ : DirichletCharacter ℂ q) {s : ℂ} (hs : 1 < s.re) :
     ‖L (↗χ * ↗Λ) s‖ ≤ Formalism.ZF.lamF s.re := by
@@ -149,10 +125,8 @@ lemma norm_LSeries_twist_vonMangoldt_le {q : ℕ} (χ : DirichletCharacter ℂ q
     _ ≤ ∑' n, ‖term ↗Λ (s.re : ℂ) n‖ := Summable.tsum_le_tsum hle hS2 hSΛ
     _ = Formalism.ZF.lamF s.re := rfl
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
+/- English proof (authored)
+Use the von Mangoldt series identity for the negative logarithmic derivative and compare its norm to the untwisted series at the real part. That series is the norm of the zeta logarithmic derivative there. Apply the right-half-plane zeta bound, keeping its nonnegative constant.
 -/
 theorem l_log_deriv_right : LLogDerivRight := by
   obtain ⟨C, hC0, hC⟩ := Formalism.ZF.logDerivBoundRightHalfPlane

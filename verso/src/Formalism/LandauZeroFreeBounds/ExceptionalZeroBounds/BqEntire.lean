@@ -9,10 +9,8 @@ namespace Formalism.ZeroFreeDirichlet
 def zetaSubPole : ℂ → ℂ :=
   Function.update (fun s : ℂ => riemannZeta s - 1 / (s - 1)) 1 (Real.eulerMascheroniConstant : ℂ)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Replace the relevant objects with their definitions. A detailed English derivation is pending.
+/- English proof (authored)
+Away from one, both zeta and the reciprocal pole are holomorphic. Their difference has a finite limit at one, and the assigned value is that limit. Thus the singularity is removable, and the extended difference is holomorphic everywhere.
 -/
 theorem zeta_sub_pole_differentiable : Differentiable ℂ zetaSubPole := by
   rw [← differentiableOn_univ,
@@ -29,19 +27,15 @@ theorem zeta_sub_pole_differentiable : Differentiable ℂ zetaSubPole := by
   · unfold zetaSubPole
     exact continuousAt_update_same.mpr tendsto_riemannZeta_sub_one_div
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. A detailed English derivation is pending.
+/- English proof (authored)
+The pole-subtracted extension only assigns a new value at one. At every other point it is exactly zeta minus the reciprocal pole.
 -/
 theorem zeta_minus_pole_eq {s : ℂ} (hs : s ≠ 1) : zetaSubPole s = riemannZeta s - 1 / (s - 1) := by
   unfold zetaSubPole
   exact Function.update_of_ne hs _ _
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
+/- English proof (authored)
+Let P be the product of the three nonprincipal L-functions, which is entire. Form the sum of the pole-subtracted zeta times P and the divided difference of P at one. The divided difference extends holomorphically at one with value P′(1). Away from one, adding P(1)/(s − 1) to this sum recovers the original product. This gives the required entire remainder.
 -/
 theorem dirichlet_product_entire : BqEntire := by
   intro q₁ q₂ _ _ _ χ₁ χ₂ ψ h₁ h₂ hψ

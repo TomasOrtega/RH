@@ -7,10 +7,8 @@ noncomputable section
 
 namespace Formalism.ZeroFreeDirichlet
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The integers from zero through q − 1 map bijectively to the residues modulo q. Reindex the sum by those residues and use the vanishing of the full sum of a nonprincipal character.
 -/
 lemma character_sum_range_modulus_eq_zero {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (hχ : χ ≠ 1) :
     ∑ n ∈ range q, χ (n : ZMod q) = 0 := by
@@ -22,8 +20,8 @@ lemma character_sum_range_modulus_eq_zero {q : ℕ} [NeZero q] (χ : DirichletCh
   rw [Finset.sum_range, Fintype.sum_bijective _ hbij (fun i => χ ((i : ℕ) : ZMod q)) χ (fun _ => rfl)]
   exact MulChar.sum_eq_zero_of_ne_one hχ
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Split the range after the first q terms. The first block is a complete period and sums to zero. In the second block adding q does not change a residue, so its sum is exactly the original range sum of length M.
 -/
 lemma character_sum_range_add_modulus {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (hχ : χ ≠ 1) (M : ℕ) :
     ∑ n ∈ range (q + M), χ (n : ZMod q) = ∑ n ∈ range M, χ (n : ZMod q) := by
@@ -31,10 +29,8 @@ lemma character_sum_range_add_modulus {q : ℕ} [NeZero q] (χ : DirichletCharac
   refine Finset.sum_congr rfl fun n _ => ?_
   rw [Nat.cast_add, ZMod.natCast_self, zero_add]
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Consider separately whether the proposition holds or fails. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Use induction on M. Below q the triangle inequality and the bound of one on the character values give a bound of M, hence q. At or above q remove one complete period, whose sum vanishes. The remaining range is strictly shorter and satisfies the bound by induction.
 -/
 lemma norm_character_sum_range_le {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (hχ : χ ≠ 1) (M : ℕ) :
     ‖∑ n ∈ range M, χ (n : ZMod q)‖ ≤ q := by
@@ -49,12 +45,8 @@ lemma norm_character_sum_range_le {q : ℕ} [NeZero q] (χ : DirichletCharacter 
       rw [character_sum_range_add_modulus χ hχ M']
       exact ih M' (by have := NeZero.pos q; omega)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
-
-Chain the equalities or inequalities of the calculation.
+/- English proof (authored)
+The sum from one to M is the range sum of length M + 1 with its term at zero subtracted. The range sum has norm at most q and the removed term has norm at most one. Apply the triangle inequality.
 -/
 lemma norm_character_sum_Icc_le {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (hχ : χ ≠ 1) (M : ℕ) :
     ‖∑ n ∈ Icc 1 M, χ (n : ZMod q)‖ ≤ (q : ℝ) + 1 := by
@@ -70,14 +62,8 @@ lemma norm_character_sum_Icc_le {q : ℕ} [NeZero q] (χ : DirichletCharacter �
   calc _ ≤ ‖∑ n ∈ range (M + 1), χ (n : ZMod q)‖ + ‖χ ((0 : ℕ) : ZMod q)‖ := norm_sub_le _ _
     _ ≤ q + 1 := add_le_add (norm_character_sum_range_le χ hχ _) (DirichletCharacter.norm_le_one χ _)
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
+/- English proof (authored)
+Apply the partial-sum L-function estimate with character-sum bound q + 1 and cutoff one. The single retained term has norm at most one. The error is bounded by 2(q + 1)(1 + |s|/Re(s)). Since the real part is at least one half, that ratio is at most twice the norm. Use q ≥ 1 to simplify the result to the stated linear bound.
 -/
 theorem lfunction_polynomial_growth : LGrowth := by
   refine ⟨9, ?_⟩

@@ -7,8 +7,8 @@ noncomputable section
 
 namespace Formalism.ZeroFreeDirichlet
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The Dirichlet convolution sums over factor pairs of n. Both factors in each product are evaluated at divisors of n, where they are nonnegative by assumption. Thus the sum is nonnegative.
 -/
 lemma convolution_nonneg_of_divisors (f g : ArithmeticFunction ℂ) (n : ℕ)
     (hf : ∀ d, d ∣ n → 0 ≤ f d) (hg : ∀ d, d ∣ n → 0 ≤ g d) : 0 ≤ (f * g) n := by
@@ -17,12 +17,8 @@ lemma convolution_nonneg_of_divisors (f g : ArithmeticFunction ℂ) (n : ℕ)
   have h := (Nat.mem_divisorsAntidiagonal.1 hx).1
   exact mul_nonneg (hf _ (Dvd.intro _ h)) (hg _ (Dvd.intro_left _ h))
 
-/- English proof (translation)
-Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
-
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+For positive n, expand the convolution over divisors d of n and replace the product character by the assumed product of values. Multiplicativity combines the two χ′ values at n/d and d into χ′(n). The remaining sum of χ(d) is the convolution with the constant-one function. At n = 0 both sides vanish.
 -/
 lemma character_convolution_eq {N N' M : ℕ} (χ : DirichletCharacter ℂ N) (χ' : DirichletCharacter ℂ N')
     (ψ : DirichletCharacter ℂ M) (hψ : ∀ n : ℕ, ψ (n : ZMod M) = χ (n : ZMod N) * χ' (n : ZMod N'))
@@ -48,14 +44,8 @@ lemma character_convolution_eq {N N' M : ℕ} (χ : DirichletCharacter ℂ N) (�
 
 set_option backward.isDefEq.respectTransparency.types false in
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
-
-Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
-
-Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
-
-Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
+/- English proof (authored)
+Every divisor of p raised to k is a power of p. The zeta–quadratic-character convolution is nonnegative. For the other factor, use the character convolution identity on each divisor. If χ′(p) is zero or one, the resulting product is nonnegative. If both values are minus one, the geometric character sum is zero for odd exponent and one for even exponent. Multiplication by the corresponding power of minus one therefore still gives a nonnegative term. Apply nonnegativity of convolution on divisors.
 -/
 lemma prime_power_coefficient_nonneg {N N' M : ℕ} {χ : DirichletCharacter ℂ N} {χ' : DirichletCharacter ℂ N'}
     {ψ : DirichletCharacter ℂ M} (hχ : χ ^ 2 = 1) (hψ : ∀ n : ℕ, ψ (n : ZMod M) = χ (n : ZMod N) * χ' (n : ZMod N'))

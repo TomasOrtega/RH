@@ -7,8 +7,8 @@ noncomputable section
 
 namespace Formalism.ZeroFreeDirichlet
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
+/- English proof (authored)
+Differentiating the reciprocal m times gives the coefficient (−1) to the power m times m factorial, multiplied by the power of s − 1 with exponent −m − 1. At s = 2 this last factor is one.
 -/
 lemma iteratedDeriv_inv_sub_one_at_two (m : ℕ) :
     iteratedDeriv m (fun s : ℂ => (s - 1)⁻¹) 2 = (-1) ^ m * (m ! : ℂ) := by
@@ -16,8 +16,8 @@ lemma iteratedDeriv_inv_sub_one_at_two (m : ℕ) :
   rw [iteratedDeriv_eq_iterate, h, iter_deriv_inv_linear_sub]
   norm_num
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The half-plane identity holds throughout a neighborhood of two. Therefore it also identifies the iterated derivatives there. Apply additivity and constant multiplication for derivatives, and insert the reciprocal derivative formula at two.
 -/
 lemma iteratedDeriv_lseries_at_two {a : ℕ → ℂ} {G : ℂ → ℂ} {lam : ℂ} (hG : Differentiable ℂ G)
     (hFG : ∀ s : ℂ, 1 < s.re → LSeries a s = G s + lam * (s - 1)⁻¹) (m : ℕ) :

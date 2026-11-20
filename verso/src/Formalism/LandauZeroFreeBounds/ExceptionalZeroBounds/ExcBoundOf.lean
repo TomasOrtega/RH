@@ -6,10 +6,8 @@ noncomputable section
 
 namespace Formalism.ZeroFreeDirichlet
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+Split log(3x) into log 3 and log x. The power of x is at least one, so it can multiply the first term in an upper bound. The elementary log-power inequality bounds the second by the same power divided by δ. Add these bounds to get the positive constant log 3 + 1/δ.
 -/
 lemma log_le_const_mul_rpow (δ : ℝ) (hδ : 0 < δ) :
     ∃ K : ℝ, 0 < K ∧ ∀ x : ℝ, 1 ≤ x → Real.log (3 * x) ≤ K * x ^ δ := by
@@ -23,38 +21,16 @@ lemma log_le_const_mul_rpow (δ : ℝ) (hδ : 0 < δ) :
   rw [Real.log_mul (by norm_num) hx0.ne', h5]
   linarith
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Raising the power with exponent ε/k to k multiplies the exponents and gives the ε power of x. Taking its reciprocal gives the power with exponent −ε, since x is positive.
 -/
 lemma rpow_neg_eq_inv_pow (x ε : ℝ) (hx : 0 < x) (k : ℕ) (hk : 0 < k) :
     x ^ (-ε) = ((x ^ (ε / k)) ^ k)⁻¹ := by
   have hk' : (k : ℝ) ≠ 0 := by exact_mod_cast hk.ne'
   rw [← Real.rpow_mul_natCast hx.le, div_mul_cancel₀ ε hk', Real.rpow_neg hx.le]
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
-
-Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
-
-Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
+/- English proof (authored)
+Use the lower bound at one with exponent ε/3, and write u for q raised to ε/3. Bound log(3q) by Ku. If the zero is at least 1/log(3q) from one, then this distance is at least a fixed positive multiple of u⁻³. Otherwise the segment from the zero to one lies in the derivative window. The derivative bound times the segment length bounds the value at one, because the value at the zero vanishes. Combining the lower bound proportional to u⁻¹ with the derivative bound proportional to u² again gives a distance at least a positive constant times u⁻³. Take the smaller of the two constants.
 -/
 theorem exceptional_zero_bound_of : ExcBoundOf := by
   unfold ExcBoundOf ExcBound

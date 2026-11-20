@@ -7,8 +7,8 @@ noncomputable section
 
 namespace Formalism.ZeroFreeDirichlet
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Conjugation of the L-function for a quadratic character is equivalent to conjugation of its argument. A real argument is fixed by conjugation, so its value equals its own conjugate and has zero imaginary part.
 -/
 lemma real_character_lfunction_im_eq_zero {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (hχ : χ ^ 2 = 1) (hχ1 : χ ≠ 1)
     (σ : ℝ) : (DirichletCharacter.LFunction χ σ).im = 0 := by
@@ -16,10 +16,8 @@ lemma real_character_lfunction_im_eq_zero {q : ℕ} [NeZero q] (χ : DirichletCh
   rw [Complex.conj_ofReal] at h
   exact Complex.conj_eq_iff_im.1 h.symm
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+For sufficiently large real arguments the L-function agrees with the Dirichlet series. At infinity the series tends to its coefficient at one, which is one for a character. The eventual agreement transfers that limit to the L-function.
 -/
 lemma lfunction_tendsto_one_atTop {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) :
     Tendsto (fun x : ℝ ↦ DirichletCharacter.LFunction χ x) atTop (𝓝 1) := by
@@ -32,12 +30,8 @@ lemma lfunction_tendsto_one_atTop {q : ℕ} [NeZero q] (χ : DirichletCharacter 
   filter_upwards [eventually_gt_atTop 1] with x hx
   exact (DirichletCharacter.LFunction_eq_LSeries χ (by simpa using hx)).symm
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
-
-Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
+/- English proof (authored)
+Conjugation shows the values are real along the whole real axis. The limit at positive infinity gives a positive value at some point at or to the right of σ. If the value at σ were nonpositive, continuity and the intermediate value theorem would give a real zero between them. This contradicts the assumed nonvanishing throughout the interval, so the value at σ is positive.
 -/
 theorem real_lfunction_real_on_reals : LRealPos := by
   intro q _ χ hχ hχ1 σ₀ hnz σ hσ

@@ -5,8 +5,8 @@ noncomputable section
 
 namespace Formalism.ZeroFreeDirichlet
 
-/- English proof (translation)
-Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Apply the local zero expansion theorem to the given function, disk, and relative growth bound. Its full conclusion gives the zero list, multiplicities, total count, and logarithmic derivative error required here.
 -/
 theorem landau_local3 : LandauLocal3 :=
   fun f z₀ r M hr hM hf hfz₀ hbound => exists_localZeroExpansion_of_bound f z₀ r M hr hM hf hfz₀ hbound

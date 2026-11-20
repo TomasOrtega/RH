@@ -7,10 +7,8 @@ noncomputable section
 
 namespace Formalism.ZeroFreeDirichlet
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+A nonprincipal character has modulus at least three. At s = 1 the real part and norm satisfy all the hypotheses of the near-one L-function bound, so that bound applies with the same constant.
 -/
 theorem lfunction_one_upper_bound : LFunctionOneUpperBound := by
   refine ⟨38 * Real.exp (3 / 2), ?_⟩

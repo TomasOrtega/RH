@@ -7,16 +7,16 @@ noncomputable section
 
 namespace Formalism.ZeroFreeDirichlet
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
+/- English proof (authored)
+At every positive integer the arithmetic function agrees with the character. A Dirichlet series is unaffected by the coefficient at zero, so the known character-series summability for real part above one applies.
 -/
 lemma dirichlet_character_lseries_summable {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) {s : ℂ}
     (hs : 1 < s.re) : LSeriesSummable ⇑(toArithmeticFunction (fun m : ℕ => χ (m : ZMod N))) s := by
   refine (LSeriesSummable_congr s (fun {n} hn => ?_)).mpr (χ.LSeriesSummable_of_one_lt_re hs)
   simp [toArithmeticFunction, hn]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+In the half-plane of absolute convergence the character’s L-function equals its Dirichlet series. The arithmetic function has the same coefficients at every positive integer, which gives the identity.
 -/
 lemma dirichlet_character_lseries_eq {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) {s : ℂ}
     (hs : 1 < s.re) :
@@ -25,10 +25,8 @@ lemma dirichlet_character_lseries_eq {N : ℕ} [NeZero N] (χ : DirichletCharact
   exact LSeries_congr (fun {n} hn => by simp [toArithmeticFunction, hn]) s
 
 set_option backward.isDefEq.respectTransparency.types false in
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Both the zeta series and the character series converge absolutely to the right of one. The series of their Dirichlet convolution equals the product of their series. Identify those series with zeta and the character L-function to obtain the result.
 -/
 lemma lseries_zetaMul_eq {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) {s : ℂ}
     (hs : 1 < s.re) :
@@ -42,22 +40,8 @@ lemma lseries_zetaMul_eq {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) {s
   rw [← ArithmeticFunction.LSeries_zeta_eq_riemannZeta hs]
   exact LSeries_congr (fun {n} hn => by simp [hn]) s
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the second alternative. Prove the second alternative.
-
-Prove the first alternative. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
+/- English proof (authored)
+Use the convolution of the constant-one arithmetic function and the three character coefficient functions. It is multiplicative and equals one at one. At a prime the quadratic characters take values zero or ±1. If the second value is zero or one, the prime-power estimate applies. If it is minus one and the first value is zero or one, interchange the two characters and apply that estimate. The remaining case has both values minus one and is covered directly. Multiplicativity then makes every coefficient nonnegative. The series converge absolutely to the right of one, so repeated convolution identities there identify their product with the stated L-function product and give the abscissa bound.
 -/
 theorem dirichlet_product_coefficients : BqCoeff := by
   intro q₁ q₂ _ _ _ χ₁ χ₂ ψ h1 h2 hψ

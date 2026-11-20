@@ -6,8 +6,8 @@ noncomputable section
 
 namespace Formalism.ZeroFreeDirichlet
 
-/- English proof (translation)
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+The distance bound controls the absolute value of the difference of the real parts. In particular the real part of w is no less than that of the center minus the radius.
 -/
 lemma re_sub_le_re_of_mem_closedBall {z₀ w : ℂ} {r : ℝ} (hw : w ∈ Metric.closedBall z₀ r) : z₀.re - r ≤ w.re := by
   rw [Metric.mem_closedBall, dist_eq_norm] at hw
@@ -16,8 +16,8 @@ lemma re_sub_le_re_of_mem_closedBall {z₀ w : ℂ} {r : ℝ} (hw : w ∈ Metric
   rw [Complex.sub_re] at h1 h2
   linarith
 
-/- English proof (translation)
-Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
+/- English proof (authored)
+Write w as the center plus the displacement from it. The triangle inequality and the bound on the displacement give the result.
 -/
 lemma norm_le_norm_add_of_mem_closedBall {z₀ w : ℂ} {r : ℝ} (hw : w ∈ Metric.closedBall z₀ r) : ‖w‖ ≤ ‖z₀‖ + r := by
   rw [Metric.mem_closedBall, dist_eq_norm] at hw
@@ -25,8 +25,8 @@ lemma norm_le_norm_add_of_mem_closedBall {z₀ w : ℂ} {r : ℝ} (hw : w ∈ Me
     _ ≤ ‖z₀‖ + ‖w - z₀‖ := norm_add_le _ _
     _ ≤ ‖z₀‖ + r := by linarith
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
+/- English proof (authored)
+The norm of the real part 11/10 is 11/10, and the norm of t times the imaginary unit is |t|. Apply the triangle inequality.
 -/
 lemma norm_center_le (t : ℝ) : ‖(11 / 10 : ℂ) + t * I‖ ≤ 11 / 10 + |t| := by
   have h1 : ‖(11 / 10 : ℂ)‖ = 11 / 10 := by
@@ -37,8 +37,8 @@ lemma norm_center_le (t : ℝ) : ‖(11 / 10 : ℂ) + t * I‖ ≤ 11 / 10 + |t|
   calc ‖(11 / 10 : ℂ) + t * I‖ ≤ ‖(11 / 10 : ℂ)‖ + ‖(t : ℂ) * I‖ := norm_add_le _ _
     _ = 11 / 10 + |t| := by rw [h1, h2]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The real part commutes with finite sums. In each term the natural multiplicity is real, so it factors out of the real part of the reciprocal.
 -/
 lemma re_sum_div_sub (Z : Finset ℂ) (m : ℂ → ℕ) (z : ℂ) :
     (∑ ρ ∈ Z, (m ρ : ℂ) / (z - ρ)).re = ∑ ρ ∈ Z, (m ρ : ℝ) * (1 / (z - ρ)).re := by
@@ -46,8 +46,8 @@ lemma re_sum_div_sub (Z : Finset ℂ) (m : ℂ → ℕ) (z : ℂ) :
   refine Finset.sum_congr rfl fun ρ _ => ?_
   rw [div_eq_mul_one_div, show ((m ρ : ℕ) : ℂ) = ((m ρ : ℝ) : ℂ) by norm_cast, Complex.re_ofReal_mul]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The logarithm of 22C₁ is nonnegative and log 2 is positive. Multiplying the assumed lower bound for L by their quotient gives the inequality after cancelling log 2.
 -/
 lemma log_le_div_log_two_mul (C₁ L : ℝ) (hC₁ : 1 ≤ C₁) (hL : Real.log 2 ≤ L) :
     Real.log (22 * C₁) ≤ Real.log (22 * C₁) / Real.log 2 * L := by
@@ -56,36 +56,8 @@ lemma log_le_div_log_two_mul (C₁ L : ℝ) (hC₁ : 1 ≤ C₁) (hL : Real.log 
   rw [div_mul_eq_mul_div, le_div_iff₀ h2]
   exact mul_le_mul_of_nonneg_left hL ha
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
-
-Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
+/- English proof (authored)
+Use the disk of radius 3/5 centered at 11/10 + it. Its real parts are at least one half, and the inverse estimate gives a lower norm bound of 1/11 at the center. The polynomial estimate and triangle inequality give a relative growth bound of 22C₁q(|t| + 2). Apply the local zero expansion to get the zeros in the disk of radius 1/5. For 1 < σ ≤ 6/5 the point σ + it lies in its derivative-estimate disk and is nonzero for the L-function. Take real parts in the derivative estimate and use the nonnegative multiplicities. Bound the logarithm of the relative growth factor by the stated constant times the conductor logarithm using the latter’s lower bound of log 2.
 -/
 theorem localZeroSumBoundOfBounds : LocalZerosOf := by
   intro hLan hGr hInv

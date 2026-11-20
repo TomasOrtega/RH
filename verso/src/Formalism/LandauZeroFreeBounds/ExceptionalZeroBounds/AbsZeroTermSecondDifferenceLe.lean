@@ -4,8 +4,8 @@ noncomputable section
 
 namespace Formalism.ZeroFreeDirichlet
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
+/- English proof (authored)
+Apply the weighted arithmetic–geometric mean inequality to 1 + s and 1 with weights p and 1 − p. The geometric mean is the stated power and the arithmetic mean simplifies to 1 + ps.
 -/
 private theorem one_add_rpow_le_one_add_mul {s p : ℝ} (hs : 0 ≤ s) (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
     (1 + s) ^ p ≤ 1 + p * s := by
@@ -14,8 +14,8 @@ private theorem one_add_rpow_le_one_add_mul {s p : ℝ} (hs : 0 ≤ s) (hp0 : 0 
   rw [Real.one_rpow, mul_one] at t
   nlinarith [t]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+/- English proof (authored)
+Apply log t ≤ t − 1 to the positive reciprocal of 1 + h. Its logarithm is minus log(1 + h). Multiply by 1 + h and rearrange to obtain the lower bound.
 -/
 private theorem le_one_add_mul_log_one_add {h : ℝ} (hh : 0 ≤ h) : h ≤ (1 + h) * Real.log (1 + h) := by
   have h1 : (0:ℝ) < 1 + h := by linarith
@@ -24,8 +24,8 @@ private theorem le_one_add_mul_log_one_add {h : ℝ} (hh : 0 ≤ h) : h ≤ (1 +
   have e : (1 + h) * (1 + h)⁻¹ = 1 := mul_inv_cancel₀ h1.ne'
   nlinarith [mul_le_mul_of_nonneg_left t h1.le]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Write A for the β power of 1 + h. Concavity gives A ≤ 1 + βh. Applying the same bound at 1 − β and using the product of the two powers gives 1 + h ≤ A(1 + (1 − β)h). Rearranging shows that (1 + βh − A)(1 + (1 − β)h) is at most β(1 − β)h². Drop the factor at least one and divide by the positive β(1 − β). The expression inside the absolute value simplifies to minus this normalized difference times y times the β power of y. Since that power is at most y, the absolute value is at most y²h², which implies the claim.
 -/
 lemma abs_zero_term_second_difference_le {y h β : ℝ} (hy : 1 ≤ y) (hh : 0 < h) (_hh1 : h ≤ 1) (hβ1 : 1 / 2 ≤ β)
     (hβ2 : β < 1) :
@@ -74,8 +74,8 @@ lemma abs_zero_term_second_difference_le {y h β : ℝ} (hy : 1 ≤ y) (hh : 0 <
     mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hBy hy0) (sq_nonneg h)
   nlinarith [mul_nonneg (sq_nonneg y) (sq_nonneg h)]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Expand the logarithm of y(1 + h). The terms involving log y and γ cancel, leaving y² multiplied by the difference between (1 + h) log(1 + h) and h. The logarithmic lower bound makes that difference nonnegative. The upper bound log(1 + h) ≤ h makes it at most h². This proves the absolute value bound.
 -/
 lemma abs_main_term_second_difference_le {y h γ : ℝ} (hy : 0 < y) (hh : 0 < h) :
     |y * ((y * (1 + h)) * Real.log (y * (1 + h)) - (1 + γ) * (y * (1 + h)))
@@ -97,8 +97,8 @@ lemma abs_main_term_second_difference_le {y h γ : ℝ} (hy : 0 < y) (hh : 0 < h
     nlinarith [mul_le_mul_of_nonneg_left hL1 h1.le]
   nlinarith [mul_le_mul_of_nonneg_left t (sq_nonneg y)]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
+/- English proof (authored)
+Monotonicity of log and square root makes the square root at y at most the one at z. Both are nonnegative, and the larger coefficient is at least the nonnegative smaller one. Thus minus the product for z is at most minus the product for y with coefficient c₀. Exponentiation gives the bound, since squaring the right exponential doubles its exponent.
 -/
 lemma exp_neg_sqrt_log_le_sq {cs c₀ y z : ℝ} (hc0 : 0 ≤ c₀) (hcs : c₀ ≤ cs) (hy : 1 ≤ y) (hyz : y ≤ z) :
     Real.exp (-cs * Real.sqrt (Real.log z)) ≤ Real.exp (-(c₀ / 2) * Real.sqrt (Real.log y)) ^ 2 := by

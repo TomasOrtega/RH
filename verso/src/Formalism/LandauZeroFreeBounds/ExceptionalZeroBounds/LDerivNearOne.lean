@@ -7,10 +7,8 @@ noncomputable section
 
 namespace Formalism.ZeroFreeDirichlet
 
-/- English proof (translation)
-Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The only positive moduli below three are one and two. Their unit groups are trivial, so every character agrees with the principal character on units, and both vanish on nonunits. A nonprincipal character therefore has modulus at least three.
 -/
 lemma three_le_modulus_of_ne_one {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (hχ : χ ≠ 1) : 3 ≤ q := by
   by_contra h
@@ -24,10 +22,8 @@ lemma three_le_modulus_of_ne_one {q : ℕ} [NeZero q] (χ : DirichletCharacter �
     rw [ha]
     simp
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Use the polynomial consequences of the given equalities and inequalities.
+/- English proof (authored)
+Since q ≥ 3, the argument 3q is at least nine. The bound e < 3 gives exp(2) < 9, so monotonicity of the logarithm gives the result.
 -/
 lemma two_le_log_three_mul (q : ℕ) (hq : 3 ≤ q) : 2 ≤ Real.log (3 * q) := by
   have hqR : (3 : ℝ) ≤ q := by exact_mod_cast hq
@@ -37,12 +33,8 @@ lemma two_le_log_three_mul (q : ℕ) (hq : 3 ≤ q) : 2 ≤ Real.log (3 * q) := 
   rw [Real.le_log_iff_exp_le (by positivity), e2]
   nlinarith
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+Express the power as the exponential of t log x. The logarithm is nonnegative and at most log(3q). Bounding t by the given quotient and cancelling the positive logarithm makes the exponent at most three halves.
 -/
 private lemma rpow_le_exp_three_halves_of_le_log (q : ℕ) (hq : 3 ≤ q) (x t : ℝ) (hx : 1 ≤ x) (hxq : x ≤ 3 * q)
     (ht : t ≤ 3 / (2 * Real.log (3 * q))) : x ^ t ≤ Real.exp (3 / 2) := by
@@ -59,18 +51,16 @@ private lemma rpow_le_exp_three_halves_of_le_log (q : ℕ) (hq : 3 ≤ q) (x t :
   have h3 : Real.log (3 * q) * (3 / (2 * Real.log (3 * q))) = 3 / 2 := by field_simp; try ring
   linarith
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The condition x ≤ q implies x ≤ 3q. Apply the preceding power estimate with exponent equal to the permitted upper endpoint.
 -/
 lemma rpow_le_exp_near_one (q : ℕ) (hq : 3 ≤ q) (x : ℝ) (hx : 1 ≤ x) (hxq : x ≤ q) :
     x ^ (3 / (2 * Real.log (3 * q))) ≤ Real.exp (3 / 2) := by
   have hqR : (0 : ℝ) ≤ q := by positivity
   exact rpow_le_exp_three_halves_of_le_log q hq x _ hx (by linarith) le_rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Write the power with exponent −r as the power with exponent 1 − r divided by x. The lower bound on r makes 1 − r satisfy the preceding exponent bound. Multiply by the positive reciprocal of x.
 -/
 lemma rpow_neg_le_exp_inv_near_one (q : ℕ) (hq : 3 ≤ q) (x : ℝ) (hx : 1 ≤ x) (hxq : x ≤ q) (r : ℝ)
     (hr : 1 - 3 / (2 * Real.log (3 * q)) ≤ r) :
@@ -85,14 +75,8 @@ lemma rpow_neg_le_exp_inv_near_one (q : ℕ) (hq : 3 ≤ q) (x : ℝ) (hx : 1 �
   exact mul_le_mul_of_nonneg_right (rpow_le_exp_three_halves_of_le_log q hq x (1 - r) hx (by linarith) (by linarith))
     (inv_nonneg.2 hx0.le)
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
-
-Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+/- English proof (authored)
+Use the triangle inequality and the bound of one on every character value. The power estimate bounds each term by exp(3/2) divided by its index. Sum to q and use the harmonic sum bound of 1 + log q, which is at most 1 + log(3q).
 -/
 lemma partial_sum_norm_le_near_one {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (hq : 3 ≤ q) (w : ℂ)
     (hw : 1 - 3 / (2 * Real.log (3 * q)) ≤ w.re) :
@@ -120,18 +104,8 @@ lemma partial_sum_norm_le_near_one {q : ℕ} [NeZero q] (χ : DirichletCharacter
   have : Real.log q ≤ Real.log (3 * q) := Real.log_le_log (by positivity) (by linarith)
   linarith
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
-
-Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+/- English proof (authored)
+Use the partial-summation representation and split it at the modulus q. The finite character sum with power weights satisfies the preceding harmonic bound. The endpoint correction is at most exp(3/2), since the partial sums have norm at most q + 1 and the exponent estimate applies up to q + 1. The tail has the same scale multiplied by the ratio of the norm to the real part of the argument, at most eight. Add the three bounds and use log(3q) ≥ 2 to obtain the stated constant.
 -/
 lemma lfunction_norm_le_near_one {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (hχ : χ ≠ 1) (w : ℂ)
     (hw : 1 - 3 / (2 * Real.log (3 * q)) ≤ w.re) (hw4 : 1 / 4 ≤ w.re) (hw2 : ‖w‖ ≤ 2) :
@@ -172,18 +146,8 @@ lemma lfunction_norm_le_near_one {q : ℕ} [NeZero q] (χ : DirichletCharacter �
   have hk := mul_le_mul_of_nonneg_left (show 10 + Real.log (3 * q) ≤ 38 * Real.log (3 * q) by linarith) he.le
   nlinarith
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
-
-Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Around the real point σ take the circle of radius 1/(2 log(3q)). The modulus lower bound makes this radius at most one quarter. The real parts on the circle stay within the range of the near-one estimate and at least one quarter, while the norms are at most two. Apply the Cauchy derivative estimate for the entire nonprincipal L-function. Dividing the circle bound by the radius gives the stated constant times the square of log(3q).
 -/
 theorem lfunction_deriv_near_one : LDerivNearOne := by
   refine ⟨76 * Real.exp (3 / 2), fun q _ χ hχ σ hσ1 hσ2 => ?_⟩

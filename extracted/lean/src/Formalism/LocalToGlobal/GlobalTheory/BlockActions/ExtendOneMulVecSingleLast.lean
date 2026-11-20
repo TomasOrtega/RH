@@ -58,14 +58,8 @@ theorem extM_spec {E : Type} [Field E] (φ : E →+* R) (A : Matrix (Fin (n + 1)
   have hA : A.map φ = B.map φ * inclusionAlt := by
     rw [← hBA, Matrix.map_mul, eN_map]
   have hz : (fun a => φ (z a)) = B.map φ *ᵥ Pi.single (Fin.last n) 1 := by
-    rw [← hBz]
-    ext a
-    simp only [Matrix.mulVec, dotProduct, map_apply, map_sum, map_mul]
-    refine Finset.sum_congr rfl fun k _ => ?_
-    congr 1
-    by_cases hk : k = Fin.last n
-    · subst hk; simp
-    · simp [Pi.single_apply, hk]
+    rw [← hBz, Matrix.mulVec_single_one, Matrix.mulVec_single_one]
+    rfl
   refine ⟨?_, ?_, ?_⟩
   · rw [hA, extM, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc (B.map φ)⁻¹, hinv,
       Matrix.one_mul, extendOne_mul_inclusion, ← Matrix.mul_assoc]

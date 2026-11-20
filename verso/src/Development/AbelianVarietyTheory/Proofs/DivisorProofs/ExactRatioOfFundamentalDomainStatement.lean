@@ -7,8 +7,10 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestric
 open Formalism.MainNotions
 open MeasureTheory Formalism.IndefR.Lev Formalism.IndefR.Datum Formalism.IndefR.Mult Formalism.BasicNotions.TH Formalism.L2.Theta
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ExactRatioProof.exactRatio | exact GlobalTheory.ExactRatioProof.exactRatio | (intros; apply GlobalTheory.ExactRatioProof.exactRatio <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ExactRatioProof.exactRatio` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExactRatioOfFundamentalDomain.lean&line=55#L55)
 -/
 theorem _root_.GlobalTheory.T.exact_ratio_of_fundamental_domain : ∀ (hP : Hypotheses2) (D : D7) (Tu : Type) (C : LevCh D Tu) (t0 : Tu) (hC : C.Is t0) (i : Fin D.R.m) (P : LevelP C.Pg D.R.r ℂ) (μ : MeasureTheory.Measure (GA D (Wc D i))) (𝓕 : Set (GA D (Wc D i))) (hF : IsMeasFD (Wc D i) (GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.levW C i P) μ 𝓕), GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.ExactRatio C i P μ 𝓕 := by
   first | exact @GlobalTheory.ExactRatioProof.exactRatio | exact GlobalTheory.ExactRatioProof.exactRatio | (intros; apply GlobalTheory.ExactRatioProof.exactRatio <;> assumption)

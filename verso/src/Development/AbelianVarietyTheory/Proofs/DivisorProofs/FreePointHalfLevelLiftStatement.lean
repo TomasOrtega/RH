@@ -28,8 +28,10 @@ open GlobalTheory.BadCount
 open scoped TensorProduct
 open Formalism.IndefR.FWT
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.NeatOne.free_half_lifts | exact GlobalTheory.NeatOne.free_half_lifts | (intros; apply GlobalTheory.NeatOne.free_half_lifts <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.NeatOne.free_half_lifts` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFreePointHalfLevelLift.lean&line=266#L266)
 -/
 theorem _root_.GlobalTheory.T.free_point_half_level_lift : Hypotheses2 → Gram → Lifts fun Fm x _ ι p i _ _ => (i : ℕ) + 1 = (Fm.D x ι).R.m → ∀ k : Fin 2,
     GlobalTheory.DefPt.FreePt (p.T.Q.Xo ((i : ℕ) + 1)) p.T.Q.c

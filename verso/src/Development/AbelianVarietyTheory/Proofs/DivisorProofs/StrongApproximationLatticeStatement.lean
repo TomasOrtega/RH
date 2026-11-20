@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.T2SpaceAdeleRing
 open scoped TensorProduct NNReal ENNReal Matrix
 open NumberField IsDedekindDomain MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.AdelicU GlobalTheory.Doubling
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LatticeOnePlaceApprox.exists_approx | exact GlobalTheory.LatticeOnePlaceApprox.exists_approx | (intros; apply GlobalTheory.LatticeOnePlaceApprox.exists_approx <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LatticeOnePlaceApprox.exists_approx` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FStrongApproximationLattice.lean&line=34#L34)
 -/
 theorem _root_.GlobalTheory.T.strong_approximation_lattice : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ) (L : Submodule (𝓞 E) (Fin n → E)) (M : ℕ), 0 < M → ∀ (v : HeightOneSpectrum (𝓞 F)), ∀ y ∈ latLoc F L v,
     ∃ x ∈ L, (∃ z ∈ latLoc F L v, (fun i => (1 : Fv F v) ⊗ₜ[F] x i) = y + M • z) ∧

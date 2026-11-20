@@ -2,8 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeDeformationMultiplication
 import Mathlib
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.diag_coords_of_holomorphic_lattice_family | exact GlobalTheory.diag_coords_of_holomorphic_lattice_family | (intros; apply GlobalTheory.diag_coords_of_holomorphic_lattice_family <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.diag_coords_of_holomorphic_lattice_family` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLatticeDeformationMultiplication.lean&line=8#L8)
 -/
 theorem _root_.GlobalTheory.T.lattice_deformation_multiplication : ∀ (Ω : Type) [NormedAddCommGroup Ω] [NormedSpace ℂ Ω] (g : ℕ) (K : Type) (ρ : K → Fin g → ℂ),
     (∀ a j, starRingEnd ℂ (ρ a j) = ρ a j) → (∀ j k, j ≠ k → ∃ a, ρ a j ≠ ρ a k) →

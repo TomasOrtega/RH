@@ -7,8 +7,10 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SplitCoord.basMat_gram | exact GlobalTheory.SplitCoord.basMat_gram | (intros; apply GlobalTheory.SplitCoord.basMat_gram <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SplitCoord.basMat_gram` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSplitBasisGramLocalForm.lean&line=95#L95)
 -/
 theorem _root_.GlobalTheory.T.split_basis_gram_local_form : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n m : ℕ) (W : Spc F E n) (W₁ : Spc F E m) (H : Plane E n m) (i₀ i₁ : ℕ), (∀ x, σ (σ x) = x) → H.IsAdapted σ B W W₁ i₀ i₁ →

@@ -9,8 +9,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz (schwartzA)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Unf.RealMove.realSize_le_of_isCompact | exact GlobalTheory.Unf.RealMove.realSize_le_of_isCompact | (intros; apply GlobalTheory.Unf.RealMove.realSize_le_of_isCompact <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Unf.RealMove.realSize_le_of_isCompact` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAdelicMatrixRealSizeLeConstMulOfCompactTranslate.lean&line=33#L33)
 -/
 theorem _root_.GlobalTheory.T.adelicMatrixRealSize_le_const_mul_of_compact_translate : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) (n : ℕ) (Q : Set (GA D V)), IsCompact Q → ∃ C : ℝ, 1 ≤ C ∧ ∀ y ∈ Q, ∀ x : Mx D V.rank n, GlobalTheory.Unf.realSize θ x ≤ C * GlobalTheory.Unf.realSize θ (HMul.hMul (Formalism.L2.Theta.mt V y⁻¹) x : Mx D V.rank n) := by
   first | exact @GlobalTheory.Unf.RealMove.realSize_le_of_isCompact | exact GlobalTheory.Unf.RealMove.realSize_le_of_isCompact | (intros; apply GlobalTheory.Unf.RealMove.realSize_le_of_isCompact <;> assumption)

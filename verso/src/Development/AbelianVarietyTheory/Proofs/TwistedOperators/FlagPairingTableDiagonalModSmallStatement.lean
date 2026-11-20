@@ -12,8 +12,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SeeConjRead
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SeeConjRead.flagV_pair_table | exact GlobalTheory.SeeConjRead.flagV_pair_table | (intros; apply GlobalTheory.SeeConjRead.flagV_pair_table <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SeeConjRead.flagV_pair_table` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FFlagPairingTableDiagonalModSmall.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.flagPairingTable_diagonal_modSmall : ∀ {M A : Type} [Zero M] [Ring A] (p : M → M → A) (sm : A → Prop) (ρ k n : ℕ), n = 2 * ρ + k + 1 → ∀ (e f : Fin ρ → M) (b b' : Fin k → M) (z : M), PairTable p sm e f b b' z → ∀ a c : Fin n, sm (p (flagV ρ k n f e b' z a) (flagV ρ k n e f b z c) - if a = c then sgnD ρ k a else 0) := by
   first | exact @GlobalTheory.SeeConjRead.flagV_pair_table | exact GlobalTheory.SeeConjRead.flagV_pair_table | (intros; apply GlobalTheory.SeeConjRead.flagV_pair_table <;> assumption)

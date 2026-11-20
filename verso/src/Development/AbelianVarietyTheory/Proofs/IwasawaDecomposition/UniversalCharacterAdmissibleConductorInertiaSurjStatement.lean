@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExponentAndT
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX GlobalTheory.HeightCounting GlobalTheory.HeightCounting.FormsStep NumberField IsDedekindDomain Polynomial
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HeightCounting.FormsStep.universalCharacter_admissibleConductor_inertia_surjective | exact GlobalTheory.HeightCounting.FormsStep.universalCharacter_admissibleConductor_inertia_surjective | (intros; apply GlobalTheory.HeightCounting.FormsStep.universalC …`.
+/- English proof (citation)
+Apply `GlobalTheory.HeightCounting.FormsStep.universalCharacter_admissibleConductor_inertia_surjective` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FUniversalCharacterAdmissibleConductorInertiaSurj.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.inertia_surjective_of_admQ : GlobalTheory.Published.GlobalArtinReciprocity → ∀ (D : D7) (cf : CharFrame D) (b0 b1 : Big D)
     (Sx : Finset (PlE D.host)) (T : TwR D.LL0 D.nd) (Sp : RingSpec D cf b0 b1 Sx T) (hE : IsEmpty D.nd.Loc) (F : TwF T)

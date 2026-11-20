@@ -10,8 +10,10 @@ open scoped Formalism.Per NNReal
 open Matrix
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ExpandCoeff.coeff_eq_zero_of_roots | exact GlobalTheory.ExpandCoeff.coeff_eq_zero_of_roots | (intros; apply GlobalTheory.ExpandCoeff.coeff_eq_zero_of_roots <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ExpandCoeff.coeff_eq_zero_of_roots` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FCoeffEqZeroOfRootsContainLthRootsConjugates.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.coeff_eq_zero_of_roots_contain_lth_roots_conjugates : ∀ (l : ℕ) [Fact l.Prime] (a : ℕ) [NeZero a] (E : Polynomial (Wq l a)), E.Monic →
     Irreducible (E.map (GlobalTheory.TameFrob.iota l a)) → ∀ z : Om l, z ≠ 0 →

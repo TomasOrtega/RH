@@ -7,8 +7,10 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.HasValues
 open CategoryTheory Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj TensorProduct
 open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.BT
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.BT.hodgeTate_endo | exact GlobalTheory.CompanionTheory.Ar.BT.hodgeTate_endo | (intros; apply GlobalTheory.CompanionTheory.Ar.BT.hodgeTate_endo <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.BT.hodgeTate_endo` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FHodgeTateFunctionalEndomorphism.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.hodge_tate_functional_endomorphism : ∀ (R : Type) [CommRing R] [IsDomain R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (x : Spec (CommRingCat.of R) ⟶ S) (N : ℕ) (i : Γ.G.left ⟶ G.left), Γ.IsTorsionAlong G x N i → ∀ (L : Type) [AddCommGroup L] [Module R L] (M : LieModel G x L) (a : G ⟶ G) [IsMonHom a] (α : T →* T) (A : L →ₗ[R] L), (∀ t, (Γ.pt (α t)).left ≫ i = (Γ.pt t).left ≫ i ≫ a.left) → M.IsDiffOf a A → ∀ (χ : T →* Rˣ) (w : Module.Dual R L), Γ.IsHT i M N χ w → Γ.IsHT i M N (χ.comp α) (w ∘ₗ A) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.BT.hodgeTate_endo | exact GlobalTheory.CompanionTheory.Ar.BT.hodgeTate_endo | (intros; apply GlobalTheory.CompanionTheory.Ar.BT.hodgeTate_endo <;> assumption)

@@ -8,8 +8,10 @@ open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalT
 open GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.ProjVar
 open GlobalTheory.FlagCls
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagCls.FlagMat.coeff_ne_zero | exact GlobalTheory.FlagCls.FlagMat.coeff_ne_zero | (intros; apply GlobalTheory.FlagCls.FlagMat.coeff_ne_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagCls.FlagMat.coeff_ne_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFlagMatrixGradedQuotient.lean&line=59#L59)
 -/
 theorem _root_.GlobalTheory.T.flag_matrix_graded_quotient : ∀ (B Y : Scheme.{0}) (M : B.Modules) (r : ℕ) (hM : IsVB M r) (π : Y ⟶ B) (fl : Vert.Flag ((Scheme.Modules.pullback π).obj M) r) (V : B.Opens) (f : Fin r → Γ(M, V)) (hf : IsFrame f) (K : Type) [Field K] (y : Sp K ⟶ Y) (A : Matrix (Fin r) (Fin r) K), FlagMat hM π fl hf y A → ∀ (i : Fin r) (ch : Chart (fl.gr i) 1) (W : Y.Opens) (hW : W ≤ ch.U) (hWV : W ≤ π ⁻¹ᵁ V) (t : Γ(fl.F i.succ, W)), (fl.π i).app W t = Twist.resM _ hW (ch.e 0) → ∀ (hy : ⊤ ≤ y ⁻¹ᵁ W) (cf : Fin r → K), coordAt hM π hf y hWV hy ((fl.ι i.succ).app W t) = Matrix.vecMul cf A → cf i ≠ 0 := by
   first | exact @GlobalTheory.FlagCls.FlagMat.coeff_ne_zero | exact GlobalTheory.FlagCls.FlagMat.coeff_ne_zero | (intros; apply GlobalTheory.FlagCls.FlagMat.coeff_ne_zero <;> assumption)

@@ -8,8 +8,10 @@ open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalT
 open GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.ProjVar GlobalTheory.TwoLat GlobalTheory.FlagCov
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PairCov.isIso_pullback_of_matches | exact GlobalTheory.PairCov.isIso_pullback_of_matches | (intros; apply GlobalTheory.PairCov.isIso_pullback_of_matches <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PairCov.isIso_pullback_of_matches` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFrameAssignmentMorphism.lean&line=64#L64)
 -/
 theorem _root_.GlobalTheory.T.frame_assignment_morphism : ∀ (D : D7) (O : Setup D) (B : Scheme.{0}) (q : B ⟶ Sp (𝓞 D.what₂.LL)) (Bg : Scheme.{0}) (jB : Bg ⟶ B) (πB : Bg ⟶ gen O.s.T.Z),
     IsPullback jB (πB ≫ genStr O.s.T.Z ≫ spMap O.κ.e.toRingHom) q (spMap (algebraMap (𝓞 D.what₂.LL) D.what₂.LL)) →

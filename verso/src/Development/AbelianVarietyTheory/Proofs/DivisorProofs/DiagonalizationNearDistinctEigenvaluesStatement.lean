@@ -6,8 +6,10 @@ open CategoryTheory AlgebraicGeometry NumberField IsDedekindDomain ReciprocityTh
 open Formalism.BasicNotions GlobalTheory GlobalTheory.Cartier GlobalTheory.CechPic GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.Mean4O GlobalTheory.CoverNorm GlobalTheory.ShFam.Pad GlobalTheory.TrivFlag GlobalTheory.WholeFlag GlobalTheory.ConstLat
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ConstLat.EigenMinor.graded_minor_log_eigen | exact GlobalTheory.ConstLat.EigenMinor.graded_minor_log_eigen | (intros; apply GlobalTheory.ConstLat.EigenMinor.graded_minor_log_eigen <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ConstLat.EigenMinor.graded_minor_log_eigen` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDiagonalizationNearDistinctEigenvalues.lean&line=326#L326)
 -/
 theorem _root_.GlobalTheory.T.log_colMinor_mul_Iic_sub_Iio_eq_block_add_log : ∀ {K : Type} [Field K] (w : AbsoluteValue K ℝ), IsNonarchimedean w → ∀ {N g : ℕ} {ι : Type}
     (H : Matrix (Fin N) (Fin g) K) (P Q R : Matrix (Fin N) (Fin N) K) (b : Fin N → ι) (β : Fin g → ι) (χ : ι → K)

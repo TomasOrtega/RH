@@ -7,8 +7,10 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor (Datum Level Moduli Coeff)
 open ReciprocityTheory.ChartRestriction.G.Pdiv.ChartF (AvFSt HTFSt UpFSt)
 open GlobalTheory.RunDepth GlobalTheory.CharDepth
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RunDepth.laws_and_nuFinAt | exact GlobalTheory.RunDepth.laws_and_nuFinAt | (intros; apply GlobalTheory.RunDepth.laws_and_nuFinAt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RunDepth.laws_and_nuFinAt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FJetHarmonics%2FRunDepthDataLawsAndFiniteLocalDepth.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.runDepthData_laws_and_finite_local_depth : ∀ (D : D7) (L : SizeData₂ D) (Pm : ParameterChoice' D L) (Tp : ParamsT D L Pm) (hK : DV.KapDef D) (T : Core D) (EX : ErrX D) [StarRing (𝓞 D.host.E)], LawsM T → (∀ a : 𝓞 D.host.E, star a = T.Q.H.bar a) → LawsPi T (depOf T EX Tp hK) ∧ LawsDep T ∧ NuFinAt T (depOf T EX Tp hK) := by
   first | exact @GlobalTheory.RunDepth.laws_and_nuFinAt | exact GlobalTheory.RunDepth.laws_and_nuFinAt | (intros; apply GlobalTheory.RunDepth.laws_and_nuFinAt <;> assumption)

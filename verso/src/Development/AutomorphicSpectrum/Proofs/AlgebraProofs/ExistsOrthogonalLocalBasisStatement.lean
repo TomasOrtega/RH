@@ -6,8 +6,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open Matrix GlobalTheory GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Fl
 open scoped ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Relay.exists_orthogonal_local_basis | exact GlobalTheory.CompanionTheory.Relay.exists_orthogonal_local_basis | (intros; apply GlobalTheory.CompanionTheory.Relay.exists_orthogonal_local_basis <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Relay.exists_orthogonal_local_basis` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FAlgebraProofs%2FExistsOrthogonalLocalBasis.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.exists_orthogonal_local_basis : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (p q : ℕ) (ℓ : Nat.Primes) (x' : Fin p → D.La), p + q = D.p + D.q → (gramE D x').det ≠ 0 → (∀ j : E →+* ℂ_[ℓ], Real.log ‖j (gramE D x').det‖ = -(p : ℝ) * logIdeal (j.comp (algebraMap (𝓞 E) E)) (differentIdeal ℤ (𝓞 E))) → ∃ x : Fin p ⊕ Fin q → D.La, x ∘ Sum.inl = x' ∧ IsLocBasis (𝓞 E) ℓ x ∧ ∀ a b, sesq D (x (.inl a)) (x (.inr b)) = 0 := by
   first | exact @GlobalTheory.CompanionTheory.Relay.exists_orthogonal_local_basis | exact GlobalTheory.CompanionTheory.Relay.exists_orthogonal_local_basis | (intros; apply GlobalTheory.CompanionTheory.Relay.exists_orthogonal_local_basis <;> assumption)

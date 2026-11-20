@@ -6,8 +6,10 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory GlobalTheory.Cart
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LatChain.exists_normsX | exact GlobalTheory.LatChain.exists_normsX | (intros; apply GlobalTheory.LatChain.exists_normsX <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LatChain.exists_normsX` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsRationalSectionWithNorms.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.exists_rational_section_with_norms : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (V : Cover Y) (M : HermLB V.p) (lg : ∀ v : HeightOneSpectrum (𝓞 F), TrueGeo.Ext v → AlgPt Y → ℝ), Norms V M (fun _ => 1) (fun _ _ => 0) lg → ∃ (r : M.B.ι → V.X.functionFieldˣ) (hr : IsRatSec M.B r), NormsX V M lg r hr := by
   first | exact @GlobalTheory.LatChain.exists_normsX | exact GlobalTheory.LatChain.exists_normsX | (intros; apply GlobalTheory.LatChain.exists_normsX <;> assumption)

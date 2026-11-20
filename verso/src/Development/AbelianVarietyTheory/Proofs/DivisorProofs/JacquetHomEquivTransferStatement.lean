@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.SiegelWeilAnisotrop
 open GlobalTheory.SmGL GlobalTheory.PRep GlobalTheory.IndLineGL
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.JacTransport.homLeOne_jacU_of_equiv | exact GlobalTheory.JacTransport.homLeOne_jacU_of_equiv | (intros; apply GlobalTheory.JacTransport.homLeOne_jacU_of_equiv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.JacTransport.homLeOne_jacU_of_equiv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FJacquetHomEquivTransfer.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.jacquet_hom_equiv_transfer : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (n m : ℕ) (e : (Σ i : Fin 3, Fin (blk3 m i)) ≃ Fin n) (P Q P₁ : Type) [AddCommGroup P] [Module ℂ P]

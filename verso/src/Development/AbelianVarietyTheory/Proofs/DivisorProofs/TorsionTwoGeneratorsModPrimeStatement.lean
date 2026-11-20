@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionTwoGenerator
 import Mathlib
 open NumberField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.torsionBy_two_generators_mod_prime | exact GlobalTheory.torsionBy_two_generators_mod_prime | (intros; apply GlobalTheory.torsionBy_two_generators_mod_prime <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.torsionBy_two_generators_mod_prime` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTorsionTwoGeneratorsModPrime.lean&line=8#L8)
 -/
 theorem _root_.GlobalTheory.T.torsion_two_generators_mod_prime : ∀ (F : Type) [Field F] [NumberField F] (M : Type) [AddCommGroup M] [Module (𝓞 F) M] (N : ℕ), 1 ≤ N → Finite {x : M // N • x = 0} →
     ∀ 𝔭 : Ideal (𝓞 F), 𝔭.IsMaximal → (N : 𝓞 F) ∈ 𝔭 →

@@ -12,8 +12,10 @@ open ReciprocityTheory.L2DbarEstimates (V)
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts GlobalTheory.FlagBundle GlobalTheory.HermFrame GlobalTheory.GoodMetric GlobalTheory.CxForm GlobalTheory.LineForm GlobalTheory.ChernCalc
 open scoped Matrix ContDiff ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChernCalc.leviForm_neg_log_unit_sub_log_grD | exact GlobalTheory.ChernCalc.leviForm_neg_log_unit_sub_log_grD | (intros; apply GlobalTheory.ChernCalc.leviForm_neg_log_unit_sub_log_grD <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChernCalc.leviForm_neg_log_unit_sub_log_grD` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLeviFormGradedLengthSubLogUnitNormSq.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.leviForm_graded_length_sub_log_unit_normSq : ∀ (F : Type) [Field F] (σ : F →+* ℂ) (X : Var F) (ι : Type) [Finite ι] (m k : ι → ℕ) (E : Fr (ratOf X) m k)
     (H : Mat m X.Fn → CxPts X.str σ → Mat m ℂ), IsMetricFr E H → ∀ (y : CxPts X.str σ), ∀ A ∈ E.S (under y),

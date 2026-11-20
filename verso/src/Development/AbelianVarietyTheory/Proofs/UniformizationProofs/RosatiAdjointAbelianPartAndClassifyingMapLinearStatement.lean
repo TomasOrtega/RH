@@ -13,8 +13,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UT
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UT.rosatiAdj_and_c_linear_of_endU | exact GlobalTheory.UT.rosatiAdj_and_c_linear_of_endU | (intros; apply GlobalTheory.UT.rosatiAdj_and_c_linear_of_endU <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UT.rosatiAdj_and_c_linear_of_endU` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUniformizationProofs%2FRosatiAdjointAbelianPartAndClassifyingMapLinear.lean&line=219#L219)
 -/
 theorem _root_.GlobalTheory.T.rosatiAdjoint_abelianPart_and_classifying_map_linear : LL → AllU fun {R} _ _ {I} {D} {A} {G} _ _ U => ∀ E E' : EndU U.toUnifPre, LBIso (cubeLB G ![fst G G ≫ E.aG, snd G G] U.LG.L) (cubeLB G ![fst G G, snd G G ≫ E'.aG] U.LG.L) → RosatiAdj A.A A.L E.aA E'.aA ∧ RosatiAdj D.toPre.P.A D.toPre.P.L E.aB E'.aB ∧ (∀ χ, D.toPre.c (E.h χ) = D.toPre.c χ ≫ E'.aB) ∧ ∀ χ, D.toPre.c (E'.h χ) = D.toPre.c χ ≫ E.aB := by
   first | exact @GlobalTheory.UT.rosatiAdj_and_c_linear_of_endU | exact GlobalTheory.UT.rosatiAdj_and_c_linear_of_endU | (intros; apply GlobalTheory.UT.rosatiAdj_and_c_linear_of_endU <;> assumption)

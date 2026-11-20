@@ -6,8 +6,10 @@ open Formalism Formalism.MainNotions Formalism.BasicNotions Formalism.BasicNotio
 set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Pass.LocDual.exists_dualLat_isOpen | exact GlobalTheory.Pass.LocDual.exists_dualLat_isOpen | (intros; apply GlobalTheory.Pass.LocDual.exists_dualLat_isOpen <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Pass.LocDual.exists_dualLat_isOpen` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FExistsDualLatticeIsOpenPerfectPairing.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.exists_dualLattice_isOpen_perfectPairing : ∀ {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K]
     [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K]

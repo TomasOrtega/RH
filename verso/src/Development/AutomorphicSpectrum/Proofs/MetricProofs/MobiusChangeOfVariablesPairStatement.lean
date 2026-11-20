@@ -5,8 +5,10 @@ import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.LintegralImageE
 open MeasureTheory Filter Topology Matrix GlobalTheory.CompanionTheory.Ar.PB
 open scoped ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.PB.FibPt.integral_mob_sq_main | exact GlobalTheory.CompanionTheory.Ar.PB.FibPt.integral_mob_sq_main | (intros; apply GlobalTheory.CompanionTheory.Ar.PB.FibPt.integral_mob_sq_main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.PB.FibPt.integral_mob_sq_main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FMobiusChangeOfVariablesPair.lean&line=196#L196)
 -/
 theorem _root_.GlobalTheory.T.mobius_change_of_variables_pair : ∀ (g : Matrix (Fin 2) (Fin 2) ℂ), IsUnit g.det → ∀ f : ℂ × ℂ → ℝ, ∫ p : ℂ × ℂ, (Complex.normSq (GlobalTheory.CompanionTheory.Ar.PB.FibPt.mobD g p.1) * Complex.normSq (GlobalTheory.CompanionTheory.Ar.PB.FibPt.mobD g p.2)) * f (GlobalTheory.CompanionTheory.Ar.PB.FibPt.mob g p.1, GlobalTheory.CompanionTheory.Ar.PB.FibPt.mob g p.2) = ∫ q : ℂ × ℂ, f q := by
   first | exact @GlobalTheory.CompanionTheory.Ar.PB.FibPt.integral_mob_sq_main | exact GlobalTheory.CompanionTheory.Ar.PB.FibPt.integral_mob_sq_main | (intros; apply GlobalTheory.CompanionTheory.Ar.PB.FibPt.integral_mob_sq_main <;> assumption)

@@ -23,8 +23,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KeyTwDeep.exists_twSec_keyRoot_deep | exact GlobalTheory.KeyTwDeep.exists_twSec_keyRoot_deep | (intros; apply GlobalTheory.KeyTwDeep.exists_twSec_keyRoot_deep <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KeyTwDeep.exists_twSec_keyRoot_deep` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FNonemptyTwistedSectionComponent.lean&line=149#L149)
 -/
 theorem _root_.GlobalTheory.T.nonempty_twisted_section_component : Hypotheses2 → ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j : ℕ, 1 ≤ (T.Q.Dw j).p → 1 ≤ (T.Q.Dw j).q → 2 < Module.finrank ℚ D.host.E / 2 → InR D j → ∀ (Y : Deep T.toCore j) (e : ℕ) (o : ℝ), Y.Good e o → ∀ c₁ : ℝ, GlobalTheory.FlatLine.FlatExistsAt Y.U (xiR D) c₁ → ∀ Z : Comp Y.d.Xo₂ Y.d.c₂, Nonempty (GlobalTheory.FlatTw.TwSec Y.U (xiR D) Z (wtOf (T.Q.Dw j) 0 1)) := by
   first | exact @GlobalTheory.KeyTwDeep.exists_twSec_keyRoot_deep | exact GlobalTheory.KeyTwDeep.exists_twSec_keyRoot_deep | (intros; apply GlobalTheory.KeyTwDeep.exists_twSec_keyRoot_deep <;> assumption)

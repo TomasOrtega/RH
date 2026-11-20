@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.Imports
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BKReal GlobalTheory.Per GlobalTheory.BSP
 open scoped Formalism.Per NNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BSP.Height.bas_map_cancel_left | exact GlobalTheory.BSP.Height.bas_map_cancel_left | (intros; apply GlobalTheory.BSP.Height.bas_map_cancel_left <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BSP.Height.bas_map_cancel_left` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FBasisMatrixMapCancelLeft.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.basis_matrix_map_cancel_left : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (d : ℕ) (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) ℤ_[l]) (τ : Ainf l) (s : Seed bk d ρ τ) (ht : Height s) (C : Type) [CommRing C] (F : bk.DS bk.ρ₀ →+* C), F (toDisc l (X : bk.S) bk.ρ₀ bk.E) ∈ nonZeroDivisors C → ∀ M M' : Matrix (Fin d) (Fin d) C, ht.bas.map F * M = ht.bas.map F * M' → M = M' := by
   first | exact @GlobalTheory.BSP.Height.bas_map_cancel_left | exact GlobalTheory.BSP.Height.bas_map_cancel_left | (intros; apply GlobalTheory.BSP.Height.bas_map_cancel_left <;> assumption)

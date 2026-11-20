@@ -13,8 +13,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.psiScal_nsmul_eq_unit_mul_pow | exact GlobalTheory.Mum.psiScal_nsmul_eq_unit_mul_pow | (intros; apply GlobalTheory.Mum.psiScal_nsmul_eq_unit_mul_pow <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.psiScal_nsmul_eq_unit_mul_pow` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPsiScalarNsmulEqUnitMulPowSq.lean&line=55#L55)
 -/
 theorem _root_.GlobalTheory.T.psiScalar_nsmul_eq_unit_mul_pow_sq : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (D : DegPre R) (ga : ∀ χ : D.X, LB.Gen (LB.LinComb D.P.L (K := PUnit) (fun _ => (D.c χ).left) (fun _ => -1))) (a : D.X → (FractionRing R)ˣ), GlobalTheory.UU.PsiScal D ga a → D.PsiEven → D.TauBimult → ∀ (χ : D.X) (n : ℕ), ∃ u : Rˣ, ((a (n • χ) : (FractionRing R)ˣ) : FractionRing R) = algebraMap R (FractionRing R) (u : R) * ((a χ : (FractionRing R)ˣ) : FractionRing R) ^ (n ^ 2) := by
   first | exact @GlobalTheory.Mum.psiScal_nsmul_eq_unit_mul_pow | exact GlobalTheory.Mum.psiScal_nsmul_eq_unit_mul_pow | (intros; apply GlobalTheory.Mum.psiScal_nsmul_eq_unit_mul_pow <;> assumption)

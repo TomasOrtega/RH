@@ -4,8 +4,10 @@ import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.
 open NumberField IsDedekindDomain MeasureTheory Matrix Topology GlobalTheory.CompanionTheory.SW.Core
 open scoped ENNReal NNReal MatrixGroups
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.SW.Core.exists_finset_row_completion | exact GlobalTheory.CompanionTheory.SW.Core.exists_finset_row_completion | (intros; apply GlobalTheory.CompanionTheory.SW.Core.exists_finset_row_completion <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.SW.Core.exists_finset_row_completion` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=CompanionTheory%2FSpectralGeometry%2FLocalGlobalProofs%2FAdelicAnalysis%2FCuspRepresentativesFinite.lean&line=156#L156)
 -/
 theorem _root_.GlobalTheory.T.cusp_representatives_finite : ∀ (F : Type) [Field F] [NumberField F], ∃ (s : Finset SL(2, F)) (C : ℝ), ∀ c d : 𝓞 F, (c ≠ 0 ∨ d ≠ 0) → ∃ l : F, l ≠ 0 ∧ |((Algebra.norm ℚ l : ℚ) : ℝ)| ≤ C ∧ ∀ u : (𝓞 F)ˣ, ∃ r ∈ s, ∃ k : SL(2, F), (∀ i j, ∃ z : 𝓞 F, (z : F) = k i j) ∧ (r * k) 1 0 = ((u : 𝓞 F) : F) * l * (c : F) ∧ (r * k) 1 1 = ((u : 𝓞 F) : F) * l * (d : F) := by
   first | exact @GlobalTheory.CompanionTheory.SW.Core.exists_finset_row_completion | exact GlobalTheory.CompanionTheory.SW.Core.exists_finset_row_completion | (intros; apply GlobalTheory.CompanionTheory.SW.Core.exists_finset_row_completion <;> assumption)

@@ -9,8 +9,10 @@ import Formalism.SharpRestriction.LevelLetterCocycles.ProdOneSubPrimitiveRoots
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BK GlobalTheory.BKReal GlobalTheory.BKGal GlobalTheory.Per Matrix
 open scoped Formalism.Per
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PowFixNear.main | exact GlobalTheory.PowFixNear.main | (intros; apply GlobalTheory.PowFixNear.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PowFixNear.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FExistsPrimePowFixingNormalOfNear.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.exists_prime_pow_fixing_normal_of_near : ∀ (l : ℕ) [Fact l.Prime] (F : FinExt l), Normal ℚ_[l] ↥F.1 → ∀ g : GQ l, (∀ x ∈ F.1, x ≠ 0 → ‖g x - x‖ < ‖x‖) → ∃ s : ℕ, ∀ x ∈ F.1, (g ^ l ^ s) x = x := by
   first | exact @GlobalTheory.PowFixNear.main | exact GlobalTheory.PowFixNear.main | (intros; apply GlobalTheory.PowFixNear.main <;> assumption)

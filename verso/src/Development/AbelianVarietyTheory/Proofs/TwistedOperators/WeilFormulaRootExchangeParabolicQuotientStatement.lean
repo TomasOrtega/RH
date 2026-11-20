@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilFormulaRootE
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.FourierJacobiAverage
 open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.RootEx GlobalTheory.IndefiniteRowSideFullHecke.FourierJacobiAverage
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.QuotIntFJ.weil_formula_FJ | exact GlobalTheory.QuotIntFJ.weil_formula_FJ | (intros; apply GlobalTheory.QuotIntFJ.weil_formula_FJ <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.QuotIntFJ.weil_formula_FJ` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FWeilFormulaRootExchangeParabolicQuotient.lean&line=31#L31)
 -/
 theorem _root_.GlobalTheory.T.weil_formula_rootExchange_parabolic_quotient : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (n : Type) [Fintype n] [DecidableEq n] (c ρ : ℕ) (_ : 1 ≤ ρ) (_ : ρ < c) (ν : Measure k) [ν.IsAddHaarMeasure] (μX : Measure (GL n k)) [μX.IsHaarMeasure] (μG : Measure (GL (n ⊕ Fin c) k)) (f : GL (n ⊕ Fin c) k → ℂ) (z : ℂ), IsQuotInt ν μX μG (ρ + 1) f z → (∀ h, Integrable (fun β : n → k => f (colE c (ρ + 1) β * h)) (Measure.pi fun _ => ν)) ∧ IsQuotIntFJ ν μX μG ρ (fun h => ∫ β : n → k, f (colE c (ρ + 1) β * h) ∂(Measure.pi fun _ => ν)) z := by
   first | exact @GlobalTheory.QuotIntFJ.weil_formula_FJ | exact GlobalTheory.QuotIntFJ.weil_formula_FJ | (intros; apply GlobalTheory.QuotIntFJ.weil_formula_FJ <;> assumption)

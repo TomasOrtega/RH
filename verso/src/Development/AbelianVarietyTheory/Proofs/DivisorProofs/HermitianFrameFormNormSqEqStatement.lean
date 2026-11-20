@@ -8,8 +8,10 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxForm GlobalTheory.CxPts Glob
 open scoped Classical
 open scoped ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LineForm.ddc_sinSq_mul_extTrace_sub | exact GlobalTheory.LineForm.ddc_sinSq_mul_extTrace_sub | (intros; apply GlobalTheory.LineForm.ddc_sinSq_mul_extTrace_sub <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LineForm.ddc_sinSq_mul_extTrace_sub` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHermitianFrameFormNormSqEq.lean&line=116#L116)
 -/
 theorem _root_.GlobalTheory.T.hermitian_frame_form_norm_sq_eq : ∀ (n : ℕ) (K A : ReciprocityTheory.L2DbarEstimates.V n → Matrix (Fin 1 ⊕ Fin 1) (Fin 1 ⊕ Fin 1) ℂ) (v : ReciprocityTheory.L2DbarEstimates.V n → ℝ) (z : ReciprocityTheory.L2DbarEstimates.V n),
     GlobalTheory.HermFrame.MContDiffAt 2 K z → (∀ᶠ x in nhds z, (K x).PosDef) → (∀ a b, AnalyticAt ℂ (fun x => A x a b) z) → IsUnit (A z).det → v z = 1 →

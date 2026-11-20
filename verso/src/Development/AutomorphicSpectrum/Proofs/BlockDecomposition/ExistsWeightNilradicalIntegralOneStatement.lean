@@ -7,8 +7,10 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegralFiberDe
 open Matrix MeasureTheory PositivityTheory.Rg.BcB PositivityTheory.Rg.Tf.Loc GlobalTheory.CompanionTheory.LocVan
 open scoped ENNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.LocVan.exists_nilrad_normaliser | exact GlobalTheory.CompanionTheory.LocVan.exists_nilrad_normaliser | (intros; apply GlobalTheory.CompanionTheory.LocVan.exists_nilrad_normaliser <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.LocVan.exists_nilrad_normaliser` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FExistsWeightNilradicalIntegralOne.lean&line=50#L50)
 -/
 theorem _root_.GlobalTheory.T.exists_weight_nilradical_integral_one : ∀ (n : ℕ) [MeasurableSpace (GL (Fin n) ℂ)] [BorelSpace (GL (Fin n) ℂ)]
   (W₁ W₂ : Submodule ℂ (Fin n → ℂ)) (hW : W₁ ≤ W₂) [MeasurableSpace (nilrad W₁ W₂)]

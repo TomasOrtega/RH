@@ -8,8 +8,10 @@ open ReciprocityTheory.L2DbarEstimates (V)
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts GlobalTheory.FlagBundle GlobalTheory.HermFrame GlobalTheory.GoodMetric GlobalTheory.CxForm GlobalTheory.LineForm GlobalTheory.ChernCalc
 open scoped Matrix ContDiff ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChernCalc.dbarCoh_algebra | exact GlobalTheory.ChernCalc.dbarCoh_algebra | (intros; apply GlobalTheory.ChernCalc.dbarCoh_algebra <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChernCalc.dbarCoh_algebra` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDbarCohomologousEvenFormsAlgebraClosed.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.dbarCohomologousEvenForms_algebra_closed : ∀ (M : Type) [TopologicalSpace M] (n : ℕ) (A : HolAtlas M n) , DbarCoh A 1 1 ∧ (∀ w : A.Pt → Ev n, A.IsForm (fld A w) → A.dbar (fld A w) = 0 → DbarCoh A w w) ∧ ∀ (c : ℂ) (w w' z z' : A.Pt → Ev n), DbarCoh A w w' → DbarCoh A z z' → DbarCoh A (c • w) (c • w') ∧ DbarCoh A (w + z) (w' + z') ∧ DbarCoh A (w * z) (w' * z') := by
   first | exact @GlobalTheory.ChernCalc.dbarCoh_algebra | exact GlobalTheory.ChernCalc.dbarCoh_algebra | (intros; apply GlobalTheory.ChernCalc.dbarCoh_algebra <;> assumption)

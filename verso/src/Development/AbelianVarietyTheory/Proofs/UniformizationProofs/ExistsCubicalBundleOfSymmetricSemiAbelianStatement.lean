@@ -13,8 +13,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UU
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UU.exists_cp_of_isSymmetric | exact GlobalTheory.UU.exists_cp_of_isSymmetric | (intros; apply GlobalTheory.UU.exists_cp_of_isSymmetric <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UU.exists_cp_of_isSymmetric` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUniformizationProofs%2FExistsCubicalBundleOfSymmetricSemiAbelian.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.exists_cubical_bundle_of_symmetric_semiAbelian : Laws → ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (gen : (Over.pullback (jK R)).obj G ≅ A.A), IsMonHom gen.hom → ∀ (L : RigLB G) (c : CubicalStr G L), L.IsSymmetric → ∃ P : CP G, P.L = L ∧ HEq P.c c := by
   first | exact @GlobalTheory.UU.exists_cp_of_isSymmetric | exact GlobalTheory.UU.exists_cp_of_isSymmetric | (intros; apply GlobalTheory.UU.exists_cp_of_isSymmetric <;> assumption)

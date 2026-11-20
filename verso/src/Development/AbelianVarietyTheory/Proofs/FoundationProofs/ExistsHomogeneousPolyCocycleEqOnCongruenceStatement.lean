@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.IsRootOne
 open GlobalTheory.KZ GlobalTheory.KZ.H3 Matrix
 open scoped MatrixGroups
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KZ.H3.exists_coc_near | exact GlobalTheory.KZ.H3.exists_coc_near | (intros; apply GlobalTheory.KZ.H3.exists_coc_near <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KZ.H3.exists_coc_near` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FExistsHomogeneousPolyCocycleEqOnCongruence.lean&line=42#L42)
 -/
 theorem _root_.GlobalTheory.T.exists_homogeneousPolyCocycle_eqOn_congruence : ∀ (N l w : ℕ), 0 < N → l.Prime → l ≠ 2 → ¬ l ∣ N → Odd w → ∀ Φ, IsFam l w (Gam N l) Φ → ∀ n : ℕ, ∃ z : SL(2, ℤ) → MvPolynomial (Fin 2) (ZMod (l ^ n)), IsCoc w (Gam N l) z ∧ Near z (Φ n) := by
   first | exact @GlobalTheory.KZ.H3.exists_coc_near | exact GlobalTheory.KZ.H3.exists_coc_near | (intros; apply GlobalTheory.KZ.H3.exists_coc_near <;> assumption)

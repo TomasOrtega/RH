@@ -10,8 +10,10 @@ open MeasureTheory NumberField IsDedekindDomain Matrix Formalism.BasicNotions Fo
 open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.St.sTil_eq_atInf_of_rational | exact GlobalTheory.St.sTil_eq_atInf_of_rational | (intros; apply GlobalTheory.St.sTil_eq_atInf_of_rational <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.St.sTil_eq_atInf_of_rational` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FRealPlacesFrameMatrixEqRationalOfRational.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.realPlaces_frameMatrix_eq_rational_of_rational : ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word) (wt : (VS D).V ≃ₗ[D.host.E] (VS D).V), WittX X u wt → ∀ (s : X.B.I.Ginf) (γ₀ : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) (y₀ : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) X.B.I.E), (∀ v, uMat (s v) = (X.B.I.P v)⁻¹ * γ₀.map (X.B.I.φ v) * X.B.I.P v) → (∀ j, γ₀ *ᵥ X.crd (qFr wt j) = ∑ i, y₀ i j • X.crd (qFr wt i)) → sTil X wt s = Formalism.L2.Forms.atInf (Formalism.L2.Forms.embT D) (y₀.map X.ιE) := by
   first | exact @GlobalTheory.St.sTil_eq_atInf_of_rational | exact GlobalTheory.St.sTil_eq_atInf_of_rational | (intros; apply GlobalTheory.St.sTil_eq_atInf_of_rational <;> assumption)

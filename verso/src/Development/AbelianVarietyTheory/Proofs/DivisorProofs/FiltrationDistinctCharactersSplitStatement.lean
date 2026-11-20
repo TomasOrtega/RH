@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusThreeBlockApply
 open GlobalTheory.SmGL GlobalTheory.PRep GlobalTheory.LeviBlockExponent GlobalTheory.IndJacBlock
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChainSplit.chain_split | exact GlobalTheory.ChainSplit.chain_split | (intros; apply GlobalTheory.ChainSplit.chain_split <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChainSplit.chain_split` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFiltrationDistinctCharactersSplit.lean&line=72#L72)
 -/
 theorem _root_.GlobalTheory.T.filtration_distinct_characters_split : ∀ {V : Type} [AddCommGroup V] [Module ℂ V] {G : Type} [CommMonoid G] (ρ : G →* Module.End ℂ V)
     (M : ℕ) (S : Fin (M + 1) → Submodule ℂ V) (c : Fin M → G → ℂ), Monotone S → S 0 = ⊥ →

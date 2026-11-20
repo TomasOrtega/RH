@@ -8,8 +8,10 @@ open GlobalTheory.Doubling (absE npow)
 open Formalism.UG (cT bc)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SphEis.mem_ratPts_of_crd_rat | exact GlobalTheory.SphEis.mem_ratPts_of_crd_rat | (intros; apply GlobalTheory.SphEis.mem_ratPts_of_crd_rat <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SphEis.mem_ratPts_of_crd_rat` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FMemRationalPointsOfUnipotentCoordsRational.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.mem_rationalPoints_of_unipotentCoords_rational : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (j m : ℕ) (C D : Matrix (Fin n) (Fin j) E) (Z : Matrix (Fin n) (Fin m) E) (J₀ : Matrix (Fin m) (Fin m) E), Fr σ J C D Z J₀ → ∀ (u : GAd σ J) (b₀ : Matrix (Fin j) (Fin m) E) (c₀ : Matrix (Fin j) (Fin j) E), Crd σ J C D Z J₀ u (adMat F b₀) (adMat F c₀) → u ∈ ratPts σ J := by
   first | exact @GlobalTheory.SphEis.mem_ratPts_of_crd_rat | exact GlobalTheory.SphEis.mem_ratPts_of_crd_rat | (intros; apply GlobalTheory.SphEis.mem_ratPts_of_crd_rat <;> assumption)

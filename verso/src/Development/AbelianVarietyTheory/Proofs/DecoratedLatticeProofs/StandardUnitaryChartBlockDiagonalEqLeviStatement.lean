@@ -11,8 +11,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero (swSec sZero)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.StdUnn.chart_levi | exact GlobalTheory.StdUnn.chart_levi | (intros; apply GlobalTheory.StdUnn.chart_levi <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.StdUnn.chart_levi` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FStandardUnitaryChartBlockDiagonalEqLevi.lean&line=39#L39)
 -/
 theorem _root_.GlobalTheory.T.standardUnitaryChart_blockDiagonal_eq_levi : ∀ (D : D7) (A : HSp D) (μ : D.host.E), IsSkew μ → ∀ κ : GA D (dblSp A) ≃* G D A.rank, IsChart A μ κ → ∀ (g : GA D (dblSp A)) (a : GL (Fin A.rank) (AE D)), mat (κ g) = blk4 a.1 0 0 (adj (a⁻¹).1) → g = (dblDec A).levi a := by
   first | exact @GlobalTheory.StdUnn.chart_levi | exact GlobalTheory.StdUnn.chart_levi | (intros; apply GlobalTheory.StdUnn.chart_levi <;> assumption)

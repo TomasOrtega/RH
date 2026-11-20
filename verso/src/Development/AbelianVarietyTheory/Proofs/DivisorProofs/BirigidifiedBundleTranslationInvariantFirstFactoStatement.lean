@@ -12,8 +12,10 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.UPel.HT
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TranslFst.iso_transl_fst | exact GlobalTheory.TranslFst.iso_transl_fst | (intros; apply GlobalTheory.TranslFst.iso_transl_fst <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TranslFst.iso_transl_fst` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FBirigidifiedBundleTranslationInvariantFirstFacto.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.birigidified_bundle_translation_invariant_first_factor : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A → ∀ (L : LB (G2 A).left), L.IsLB → (∃ t : (L.pull (lift (1 : A ⟶ A) (𝟙 A)).left).Gen, t.IsGen) → (∃ t : (L.pull (lift (𝟙 A) (1 : A ⟶ A)).left).Gen, t.IsGen) → ∀ h : 𝟙_ (Over S) ⟶ A, (∃ t : (L.pull (lift (toUnit A ≫ h) (𝟙 A)).left).Gen, t.IsGen) → LBIso L (L.pull (GlobalTheory.UPel.HT.Hecke.transl (lift h 1 : 𝟙_ (Over S) ⟶ G2 A)).left) := by
   first | exact @GlobalTheory.TranslFst.iso_transl_fst | exact GlobalTheory.TranslFst.iso_transl_fst | (intros; apply GlobalTheory.TranslFst.iso_transl_fst <;> assumption)

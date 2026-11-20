@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UnitaryFamil
 import Mathlib
 open NumberField Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.unitary_isCayley_of_det_ne_zero | exact GlobalTheory.unitary_isCayley_of_det_ne_zero | (intros; apply GlobalTheory.unitary_isCayley_of_det_ne_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.unitary_isCayley_of_det_ne_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FUnitaryFamilyEqCayleyOfSkewFamily.lean&line=51#L51)
 -/
 theorem _root_.GlobalTheory.T.unitary_family_eq_cayley_of_skew_family : ∀ (L : Type) [Field L] [NumberField L] (n : ℕ) (X : (L →+* ℂ) → Matrix (Fin n) (Fin n) ℂ), (∀ σ, X σ * (X (ComplexEmbedding.conjugate σ))ᵀ = 1) → (∀ σ, (1 + X σ).det ≠ 0) → ∃ Y : (L →+* ℂ) → Matrix (Fin n) (Fin n) ℂ, (∀ σ, Y (ComplexEmbedding.conjugate σ) = -(Y σ)ᵀ) ∧ (∀ σ, (1 - Y σ).det ≠ 0) ∧ ∀ σ, (1 + Y σ) * (1 - Y σ)⁻¹ = X σ := by
   first | exact @GlobalTheory.unitary_isCayley_of_det_ne_zero | exact GlobalTheory.unitary_isCayley_of_det_ne_zero | (intros; apply GlobalTheory.unitary_isCayley_of_det_ne_zero <;> assumption)

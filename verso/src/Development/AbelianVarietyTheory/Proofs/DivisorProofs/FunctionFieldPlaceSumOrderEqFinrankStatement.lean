@@ -7,8 +7,10 @@ open scoped IntermediateField Polynomial RatFunc
 open GlobalTheory.Nef
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Nef.FundId.sum_ord_eq_finrank | exact GlobalTheory.Nef.FundId.sum_ord_eq_finrank | (intros; apply GlobalTheory.Nef.FundId.sum_ord_eq_finrank <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Nef.FundId.sum_ord_eq_finrank` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFunctionFieldPlaceSumOrderEqFinrank.lean&line=63#L63)
 -/
 theorem _root_.GlobalTheory.T.functionFieldPlace_sum_order_eq_finrank : ∀ (k F E : Type) [Field k] [IsAlgClosed k] [CharZero k] [Field F] [Field E] [Algebra k F] [Algebra k E] [Algebra F E] [IsScalarTower k F E] [FiniteDimensional F E], IsFF k F →
   ∀ ρ : Place k E → Place k F, IsRes ρ → ∀ (v : Place k F) (π : F), π ≠ 0 → ord v π = 1 → {p | ρ p = v}.Finite ∧ ∑ᶠ p ∈ {p | ρ p = v}, ord p (algebraMap F E π) = Module.finrank F E := by

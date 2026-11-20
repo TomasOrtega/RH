@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeSocleOverOfSimple
 open scoped Topology
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnitaryRep.exists_isSimpleOver_of_unitary | exact GlobalTheory.UnitaryRep.exists_isSimpleOver_of_unitary | (intros; apply GlobalTheory.UnitaryRep.exists_isSimpleOver_of_unitary <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnitaryRep.exists_isSimpleOver_of_unitary` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHermitianFormInvariantQuotientDefinite.lean&line=140#L140)
 -/
 theorem _root_.GlobalTheory.T.hermitian_form_invariant_quotient_definite : ∀ {V G : Type} [AddCommGroup V] [Module ℂ V] [Group G] (ρ : G →* Module.End ℂ V)
     (𝒦 : Set (Subgroup G)) (B : V → V → ℂ) (D N : Submodule ℂ V)

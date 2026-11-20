@@ -9,8 +9,10 @@ open ReciprocityTheory.ChartRestriction.G.PullbackSections (TanM tv mkT tanM_ext
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagMod.Frames.lies_of_chart_tri | exact GlobalTheory.FlagMod.Frames.lies_of_chart_tri | (intros; apply GlobalTheory.FlagMod.Frames.lies_of_chart_tri <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagMod.Frames.lies_of_chart_tri` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCarriesFramedPointOfUnitTriangularChart.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.carries_framedPoint_of_unitTriangular_chart : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (Z : Scheme.{0}) (π : Z ⟶ Y.X) (F : Frames Y π), F.TopEigen → ∀ (S : Type) [CommRing S] [Algebra c.F S] (P : FrPt Xo c S) (z : Sp S ⟶ Z) (k : F.J) (hz : ⊤ ≤ z ⁻¹ᵁ F.U k) (hx : z ≫ π = frX P ≫ Y.j) (U : ∀ σ : E →+* ℂ, Matrix (Fin (Dw.mult σ)) (Fin (Dw.mult σ)) S), (∀ σ, (U σ).BlockTriangular id) → (∀ σ i, IsUnit (U σ i i)) → (∀ σ i, frVec Y P rfl σ i = ∑ j, U σ j i • F.vecAt k z hz hx σ j) → F.Lies z P := by
   first | exact @GlobalTheory.FlagMod.Frames.lies_of_chart_tri | exact GlobalTheory.FlagMod.Frames.lies_of_chart_tri | (intros; apply GlobalTheory.FlagMod.Frames.lies_of_chart_tri <;> assumption)

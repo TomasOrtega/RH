@@ -2,8 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PeriodicSectionContinuousLimit
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TorusDegree.degree_locally_constant | exact GlobalTheory.TorusDegree.degree_locally_constant | (intros; apply GlobalTheory.TorusDegree.degree_locally_constant <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TorusDegree.degree_locally_constant` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPeriodicSectionContinuousLimit.lean&line=91#L91)
 -/
 theorem _root_.GlobalTheory.T.periodic_section_continuous_limit : ∀ (B : Type) [TopologicalSpace B] (b₀ : B) (J : Type) (O : J → Set (B × ℝ × ℝ)) (s : J → B × ℝ × ℝ → ℂ) (α β : B × ℝ × ℝ → ℂ), (∀ i, IsOpen (O i)) → (∀ q, ∃ i, q ∈ O i) → (∀ i b x y, ((b, x + 1, y) ∈ O i ↔ (b, x, y) ∈ O i) ∧ ((b, x, y + 1) ∈ O i ↔ (b, x, y) ∈ O i)) → (∀ i, ∀ q ∈ O i, s i q ≠ 0) → (∀ i b, ContinuousOn (fun v : ℝ × ℝ => s i (b, v)) {v | (b, v) ∈ O i}) → (∀ i j, ContinuousOn (fun q => s i q / s j q) (O i ∩ O j)) → (∀ b, Continuous (fun v : ℝ × ℝ => α (b, v)) ∧ Continuous (fun v : ℝ × ℝ => β (b, v))) → (∀ i b x y, (b, x, y) ∈ O i → s i (b, x, y) = Complex.exp (α (b, x, y)) * s i (b, x + 1, y) ∧ s i (b, x, y) = Complex.exp (β (b, x, y)) * s i (b, x, y + 1)) → ∀ᶠ b in nhds b₀, α (b, 0, 1) - α (b, 0, 0) - (β (b, 1, 0) - β (b, 0, 0)) = α (b₀, 0, 1) - α (b₀, 0, 0) - (β (b₀, 1, 0) - β (b₀, 0, 0)) := by
   first | exact @GlobalTheory.TorusDegree.degree_locally_constant | exact GlobalTheory.TorusDegree.degree_locally_constant | (intros; apply GlobalTheory.TorusDegree.degree_locally_constant <;> assumption)

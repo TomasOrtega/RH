@@ -22,8 +22,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup (coefPlus Cols Si
 open GlobalTheory.SepRows GlobalTheory.CoreOnto
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Twist.CoreOntoAssembly.coreOnto_of_hypotheses | exact GlobalTheory.Twist.CoreOntoAssembly.coreOnto_of_hypotheses | (intros; apply GlobalTheory.Twist.CoreOntoAssembly.coreOnto_of_hypotheses <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Twist.CoreOntoAssembly.coreOnto_of_hypotheses` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FThetaSurjectiveDefiniteLevel.lean&line=34#L34)
 -/
 theorem _root_.GlobalTheory.T.theta_surjective_definite_level : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Hk3.HoweUnram → GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.WeilSiegelFormulaUnitary → GlobalTheory.Published.SiegelWeilUnitaryConvergent → GlobalTheory.Published.DoublingMethod → GlobalTheory.Published.UnramifiedDoublingGL → CoreOnto := by
   first | exact @GlobalTheory.Twist.CoreOntoAssembly.coreOnto_of_hypotheses | exact GlobalTheory.Twist.CoreOntoAssembly.coreOnto_of_hypotheses | (intros; apply GlobalTheory.Twist.CoreOntoAssembly.coreOnto_of_hypotheses <;> assumption)

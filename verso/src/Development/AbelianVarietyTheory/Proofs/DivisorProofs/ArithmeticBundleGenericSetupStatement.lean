@@ -14,8 +14,10 @@ open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalT
 open GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.ProjVar
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagCov.exists_coordFunctional | exact GlobalTheory.FlagCov.exists_coordFunctional | (intros; apply GlobalTheory.FlagCov.exists_coordFunctional <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagCov.exists_coordFunctional` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FArithmeticBundleGenericSetup.lean&line=77#L77)
 -/
 theorem _root_.GlobalTheory.T.arithmetic_bundle_generic_setup : ∀ (D : D7) (O : Setup D) (hO : O.Core) (B : ℝ) (hB : 2 ≤ B) (R : ℝ) (hR : 2 ≤ R) (c : O.s.Comp)
     (Bs : Scheme.{0}) [IsIntegral Bs] (q : Bs ⟶ Sp (𝓞 D.what₂.LL)) (arq : IsArithVar q (dimGr D.what₂.Tau O.N O.j))

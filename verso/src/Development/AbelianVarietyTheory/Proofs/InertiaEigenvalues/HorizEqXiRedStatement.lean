@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.ConductorExpo
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BK GlobalTheory.BKReal GlobalTheory.BKGal GlobalTheory.Per Matrix
 open scoped Formalism.Per
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.horiz_eq_xi_red | exact GlobalTheory.horiz_eq_xi_red | (intros; apply GlobalTheory.horiz_eq_xi_red <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.horiz_eq_xi_red` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FHorizEqXiRed.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.eq_xi_red_of_conn_eq_zero' : ∀ (O K : Type) [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] (l e a : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] [Fact l.Prime] [NormedAlgebra ℚ_[l] K] (P : PhiMod O K l e a ι) (v : Vec K a ι), P.conn v = 0 → v = P.xi (red v) := by
   first | exact @GlobalTheory.horiz_eq_xi_red | exact GlobalTheory.horiz_eq_xi_red | (intros; apply GlobalTheory.horiz_eq_xi_red <;> assumption)

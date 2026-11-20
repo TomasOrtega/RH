@@ -9,8 +9,10 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestric
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ShearLift.eq_of_shear | exact GlobalTheory.ShearLift.eq_of_shear | (intros; apply GlobalTheory.ShearLift.eq_of_shear <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ShearLift.eq_of_shear` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FEqOfShearAutomorphismLiftNilpotent.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.eq_of_shear_automorphism_lift_nilpotent : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (π : R →+* R₀), Function.Surjective π → IsNilpotent (RingHom.ker π) →
     ∀ (A₀ : Over (Sp R₀)) [GrpObj A₀] (X : Over (Sp R)) (i : A₀.left ⟶ X.left), IsPullback i A₀.hom X.hom (spMap π) →

@@ -6,8 +6,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open scoped TensorProduct ContDiff ComplexOrder
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CMTypePlaces.places_bijective | exact GlobalTheory.CMTypePlaces.places_bijective | (intros; apply GlobalTheory.CMTypePlaces.places_bijective <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CMTypePlaces.places_bijective` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FHeightProofs%2FCmTypeRestrictRealSubfieldInfinitePlaceBijective.lean&line=57#L57)
 -/
 theorem _root_.GlobalTheory.T.cmType_restrict_realSubfield_infinitePlace_bijective : ∀ D : D7, Function.Bijective fun τ : D.what₂.Tau => NumberField.InfinitePlace.mk ((tauE D τ).comp (algebraMap D.host.F D.host.E)) := by
   first | exact @GlobalTheory.CMTypePlaces.places_bijective | exact GlobalTheory.CMTypePlaces.places_bijective | (intros; apply GlobalTheory.CMTypePlaces.places_bijective <;> assumption)

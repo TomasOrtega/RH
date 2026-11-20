@@ -8,8 +8,10 @@ open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.UC
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BalMono.eq_of_prod_zpow_eq | exact GlobalTheory.BalMono.eq_of_prod_zpow_eq | (intros; apply GlobalTheory.BalMono.eq_of_prod_zpow_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BalMono.eq_of_prod_zpow_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FEqOfProdZpowEqBalancedFormsBasis.lean&line=57#L57)
 -/
 theorem _root_.GlobalTheory.T.eq_of_prod_zpow_eq_balancedForms_basis : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Free ℤ X] [Module.Finite ℤ X] (F : Type) [Field F] (I : Type) [Fintype I] (ε : Module.Basis I ℤ (balForms H.bar X)) (x y : I → F), (∀ i, x i ≠ 0) → (∀ i, y i ≠ 0) → (∀ a b, ∏ i, x i ^ (ε i : LinearMap.BilinForm ℤ X) a b = ∏ i, y i ^ (ε i : LinearMap.BilinForm ℤ X) a b) → x = y := by
   first | exact @GlobalTheory.BalMono.eq_of_prod_zpow_eq | exact GlobalTheory.BalMono.eq_of_prod_zpow_eq | (intros; apply GlobalTheory.BalMono.eq_of_prod_zpow_eq <;> assumption)

@@ -7,8 +7,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies (LieAt LieInf atPlace IsExpFam IsSmoothInf wordDer)
 open scoped TensorProduct DirectSum Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FrameCompact.exists_maxCompact_of_frames | exact GlobalTheory.FrameCompact.exists_maxCompact_of_frames | (intros; apply GlobalTheory.FrameCompact.exists_maxCompact_of_frames <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FrameCompact.exists_maxCompact_of_frames` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FExistsMaxCompactRealPointsOfOrthonormalFrames.lean&line=146#L146)
 -/
 theorem _root_.GlobalTheory.T.exists_maxCompact_realPoints_of_orthonormalFrames : ∀ (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)), IsInfFam θ → ∀ (V : HSp D), ∀ (ε : D.what₂.Tau → Fin V.rank → Bool) (fr : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ), IsFrameFam V ε fr → ∃ K : Subgroup (GA D V), IsMaxCompactInf V K ∧ (∃ j : (∀ τ, Formalism.REAL.KG (ε τ)) →* K, Function.Surjective j ∧ ∀ τ k, (j (Pi.mulSingle τ k) : GA D V) = kAt θ V τ (ε τ) (fr τ) k) := by
   first | exact @GlobalTheory.FrameCompact.exists_maxCompact_of_frames | exact GlobalTheory.FrameCompact.exists_maxCompact_of_frames | (intros; apply GlobalTheory.FrameCompact.exists_maxCompact_of_frames <;> assumption)

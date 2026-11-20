@@ -12,8 +12,10 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.DIV.Cons
 open Formalism.IndefR.FWT GlobalTheory.BigTop GlobalTheory.OntoChain GlobalTheory.RealIndexBound GlobalTheory.OnTies GlobalTheory.SeriesTie GlobalTheory.BigOn GlobalTheory.BigOn.Exp
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BigOn.Exp.ratHyp0_at_point | exact GlobalTheory.BigOn.Exp.ratHyp0_at_point | (intros; apply GlobalTheory.BigOn.Exp.ratHyp0_at_point <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BigOn.Exp.ratHyp0_at_point` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FBadPrimeMemExceptionalSet.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.bad_prime_mem_exceptional_set : ∀ {eps : ℝ} (Fm : FamP eps) (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) (p : Pt Fm x hx i), p.Rows → More p →
   ∀ t : (Fm.D x i).ntw.Tw, (Fm.D x i).ntw.NonzeroIndexPlace t →

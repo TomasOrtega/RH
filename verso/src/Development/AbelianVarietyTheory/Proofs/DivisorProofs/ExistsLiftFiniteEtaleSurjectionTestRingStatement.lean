@@ -10,8 +10,10 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.FrM
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.EvNatPf
 open AlgebraicGeometry CategoryTheory Limits NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.exists_lift_finiteEtale_testRing | exact GlobalTheory.exists_lift_finiteEtale_testRing | (intros; apply GlobalTheory.exists_lift_finiteEtale_testRing <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.exists_lift_finiteEtale_testRing` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsLiftFiniteEtaleSurjectionTestRing.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.exists_lift_finiteEtaleSurjection_testRing : ∀ (Y Z : Scheme.{0}) (π : Z ⟶ Y), IsFinite π → Etale π → Surjective π →
     ∀ (K : Type) [Field K] (p : TRing K) (x : Sp p.R ⟶ Y), ∃ (q : TRing K) (ι : p.R →ₐ[K] q.R),

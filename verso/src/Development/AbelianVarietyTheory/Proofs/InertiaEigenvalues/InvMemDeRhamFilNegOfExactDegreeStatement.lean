@@ -8,8 +8,10 @@ import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N TensorProduct Module
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FilInv.inv_mem_Fil_neg | exact GlobalTheory.FilInv.inv_mem_Fil_neg | (intros; apply GlobalTheory.FilInv.inv_mem_Fil_neg <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FilInv.inv_mem_Fil_neg` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FInvMemDeRhamFilNegOfExactDegree.lean&line=26#L26)
 -/
 theorem _root_.GlobalTheory.T.inv_mem_deRhamFil_neg_of_exact_degree : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ (K : FinExt l) (a : ℤ) (u v : P.R.BdR), u * v = 1 → u ∈ (P.PD K).Fil a → u ∉ (P.PD K).Fil (a + 1) → v ∈ (P.PD K).Fil (-a) := by
   first | exact @GlobalTheory.FilInv.inv_mem_Fil_neg | exact GlobalTheory.FilInv.inv_mem_Fil_neg | (intros; apply GlobalTheory.FilInv.inv_mem_Fil_neg <;> assumption)

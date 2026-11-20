@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FundamentalDomainLi
 import Mathlib
 open MeasureTheory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.setIntegral_fundamentalDomain_deriv_eq_zero | exact GlobalTheory.setIntegral_fundamentalDomain_deriv_eq_zero | (intros; apply GlobalTheory.setIntegral_fundamentalDomain_deriv_eq_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.setIntegral_fundamentalDomain_deriv_eq_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFundamentalDomainLineDerivativeIntegral.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.fundamental_domain_line_derivative_integral : ∀ {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G]
     (μ : Measure G) [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] (Γ : Subgroup G) [Countable Γ] (D : Set G),

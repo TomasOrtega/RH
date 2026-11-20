@@ -2,8 +2,10 @@ import Mathlib
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LocalizationSheafGlueModules
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.BasicCover.isLocalizedModule_of_basic_cover | exact GlobalTheory.CompanionTheory.BasicCover.isLocalizedModule_of_basic_cover | (intros; apply GlobalTheory.CompanionTheory.BasicCover.isLocalizedModule_of_basic_cover <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.BasicCover.isLocalizedModule_of_basic_cover` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FLocalizationSheafGlueModules.lean&line=34#L34)
 -/
 theorem _root_.GlobalTheory.T.localization_sheaf_glue_modules : ∀ (R E : Type) [CommRing R] [AddCommGroup E] [Module R E] (J : Type) [Finite J] (f : J → R), Ideal.span (Set.range f) = ⊤ →
   ∀ (F : {g : R // ∃ i, f i ∣ g} → Type) [∀ g, AddCommGroup (F g)] [∀ g, Module R (F g)]

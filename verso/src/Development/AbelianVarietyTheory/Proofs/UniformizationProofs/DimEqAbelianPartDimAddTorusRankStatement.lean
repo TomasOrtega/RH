@@ -14,8 +14,10 @@ open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCate
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.AbLaw GlobalTheory.UU
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UU.Tower.dim_eq_add_finrank | exact GlobalTheory.UU.Tower.dim_eq_add_finrank | (intros; apply GlobalTheory.UU.Tower.dim_eq_add_finrank <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UU.Tower.dim_eq_add_finrank` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUniformizationProofs%2FDimEqAbelianPartDimAddTorusRank.lean&line=39#L39)
 -/
 theorem _root_.GlobalTheory.T.dim_eq_abelianPart_dim_add_torus_rank : AllSet fun {V} _ _ _ {A} {G} _ _ s => ∀ (t : Tower s) (g' : ℕ), (SmoothOfRelativeDimension g' (t.l 0).Q.B.hom → A.g = g' + Module.finrank ℤ s.X) ∧ ∀ a : t.Alg, SmoothOfRelativeDimension g' a.B.hom → A.g = g' + Module.finrank ℤ s.X := by
   first | exact @GlobalTheory.UU.Tower.dim_eq_add_finrank | exact GlobalTheory.UU.Tower.dim_eq_add_finrank | (intros; apply GlobalTheory.UU.Tower.dim_eq_add_finrank <;> assumption)

@@ -14,8 +14,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UMin.exists_nbhd_thetaMap | exact GlobalTheory.UMin.exists_nbhd_thetaMap | (intros; apply GlobalTheory.UMin.exists_nbhd_thetaMap <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UMin.exists_nbhd_thetaMap` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsNhdThetaMapOnNormalCharZeroAffine.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.exists_nhd_thetaMap_on_normal_charZero_affine : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (L : LB G.left) (ρ : LB.Gen (L.pull (eSec G))), L.IsLB → ρ.IsGen →
     ∀ (g m n : ℕ) (o : Type) [CommRing o] (X : Scheme.{0}) (s : X ⟶ Sp o) (q : X ⟶ S), Odd m → 3 ≤ m → IsUnit (m : o) → n + 1 = m ^ (4 * g) →

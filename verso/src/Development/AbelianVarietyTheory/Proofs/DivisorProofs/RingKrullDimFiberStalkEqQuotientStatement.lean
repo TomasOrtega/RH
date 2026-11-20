@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RingKrullDimFiberSt
 import Mathlib
 open AlgebraicGeometry CategoryTheory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FibreStalk.ringKrullDim_stalk_fiber | exact GlobalTheory.FibreStalk.ringKrullDim_stalk_fiber | (intros; apply GlobalTheory.FibreStalk.ringKrullDim_stalk_fiber <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FibreStalk.ringKrullDim_stalk_fiber` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRingKrullDimFiberStalkEqQuotient.lean&line=94#L94)
 -/
 theorem _root_.GlobalTheory.T.ringKrullDim_fiber_stalk_eq_quotient : ∀ (B Y : Scheme.{0}) (π : Y ⟶ B) (b : B) (z : π.fiber b), ringKrullDim ((π.fiber b).presheaf.stalk z) = ringKrullDim (Y.presheaf.stalk (π.fiberι b z) ⧸ (IsLocalRing.maximalIdeal (B.presheaf.stalk (π (π.fiberι b z)))).map (π.stalkMap (π.fiberι b z)).hom) := by
   first | exact @GlobalTheory.FibreStalk.ringKrullDim_stalk_fiber | exact GlobalTheory.FibreStalk.ringKrullDim_stalk_fiber | (intros; apply GlobalTheory.FibreStalk.ringKrullDim_stalk_fiber <;> assumption)

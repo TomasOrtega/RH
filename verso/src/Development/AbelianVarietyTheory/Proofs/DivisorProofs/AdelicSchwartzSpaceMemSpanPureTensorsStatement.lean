@@ -9,8 +9,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open scoped GlobalTheory.VacAny
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SchASpan.mem_span_pure | exact GlobalTheory.SchASpan.mem_span_pure | (intros; apply GlobalTheory.SchASpan.mem_span_pure <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SchASpan.mem_span_pure` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAdelicSchwartzSpaceMemSpanPureTensors.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.adelicSchwartzSpace_mem_span_pureTensors : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ], ∀ Φ ∈ schA F κ,
     Φ ∈ Submodule.span ℂ {Ψ : (κ → AF F) → ℂ | ∃ (f : SInf F κ) (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ),

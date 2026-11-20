@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaEvaluationZero
 import Development.AbelianVarietyTheory.Definitions.Divisors.SiegelWeilAnisotropicHermitian
 import Development.AbelianVarietyTheory.Definitions.Divisors.CTSmallCone
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThK.EvMaps.evZero_evCone | exact GlobalTheory.ThK.EvMaps.evZero_evCone | (intros; apply GlobalTheory.ThK.EvMaps.evZero_evCone <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThK.EvMaps.evZero_evCone` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FThetaEvaluationZeroCone.lean&line=114#L114)
 -/
 theorem _root_.GlobalTheory.T.theta_evaluation_zero_cone : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.ThK.EvZero ∧ GlobalTheory.ThK.EvCone := by
   first | exact @GlobalTheory.ThK.EvMaps.evZero_evCone | exact GlobalTheory.ThK.EvMaps.evZero_evCone | (intros; apply GlobalTheory.ThK.EvMaps.evZero_evCone <;> assumption)

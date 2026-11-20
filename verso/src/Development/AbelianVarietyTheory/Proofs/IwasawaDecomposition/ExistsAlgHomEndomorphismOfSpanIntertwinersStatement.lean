@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ContinuousMapPFin
 open NumberField IsDedekindDomain Matrix GlobalTheory.CuspRep GlobalTheory.PRep GlobalTheory.UnitaryBC Formalism.UG Formalism.BasicNotions GlobalTheory.DefU
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FinPart.exists_algHom_end_of_span_intertwiners | exact GlobalTheory.FinPart.exists_algHom_end_of_span_intertwiners | (intros; apply GlobalTheory.FinPart.exists_algHom_end_of_span_intertwiners <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FinPart.exists_algHom_end_of_span_intertwiners` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsAlgHomEndomorphismOfSpanIntertwiners.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.exists_algHom_endomorphism_of_span_intertwiners : ∀ (H W V : Type) [Group H] [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W] [AddCommGroup V] [Module ℂ V] (σ : Representation ℂ H W) (ρ : Representation ℂ H V), σ.IsIrreducible → (⨆ f : σ.IntertwiningMap ρ, LinearMap.range f.toLinearMap) = ⊤ → ∃ Φ : Module.End ℂ W →ₐ[ℂ] Module.End ℂ V, (∀ h, Φ (σ h) = ρ h) ∧ ∀ T : Module.End ℂ V, (∀ h, Commute T (ρ h)) → ∀ A, Commute T (Φ A) := by
   first | exact @GlobalTheory.FinPart.exists_algHom_end_of_span_intertwiners | exact GlobalTheory.FinPart.exists_algHom_end_of_span_intertwiners | (intros; apply GlobalTheory.FinPart.exists_algHom_end_of_span_intertwiners <;> assumption)

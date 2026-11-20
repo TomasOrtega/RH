@@ -5,8 +5,10 @@ open NumberField IsDedekindDomain MeasureTheory Matrix Formalism.BasicNotions Fo
 open scoped TensorProduct InnerProductSpace ContDiff
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RatCount.ncard_rational_le | exact GlobalTheory.RatCount.ncard_rational_le | (intros; apply GlobalTheory.RatCount.ncard_rational_le <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RatCount.ncard_rational_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FNcardRationalPointsTranslatedCompactLePow.lean&line=188#L188)
 -/
 theorem _root_.GlobalTheory.T.ncard_rationalPoints_translatedCompact_le_pow : ∀ (D : D7) (θ : InfFam D) (V : HSp D), IsInfFam θ → ∀ (Ω : Set (GA D V)), IsCompact Ω → ∃ N : ℕ, ∀ x : GA D V, ∃ C : ℝ, ∀ u ∈ GinfC V, ∀ y : GA D V, {γ : GA D V | γ ∈ GQ V ∧ ∃ o ∈ Ω, γ * y = x * u * o}.Finite ∧ (({γ : GA D V | γ ∈ GQ V ∧ ∃ o ∈ Ω, γ * y = x * u * o}.ncard : ℕ) : ℝ) ≤ C * normInf θ V u ^ N := by
   first | exact @GlobalTheory.RatCount.ncard_rational_le | exact GlobalTheory.RatCount.ncard_rational_le | (intros; apply GlobalTheory.RatCount.ncard_rational_le <;> assumption)

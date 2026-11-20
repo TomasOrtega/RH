@@ -10,8 +10,10 @@ open scoped TensorProduct ComplexConjugate Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LiftIdeal.liftI_props | exact GlobalTheory.LiftIdeal.liftI_props | (intros; apply GlobalTheory.LiftIdeal.liftI_props <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LiftIdeal.liftI_props` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FConjugatePlacesProductIdealProperOddCoprime.lean&line=86#L86)
 -/
 theorem _root_.GlobalTheory.T.conjugatePlacesProductIdeal_proper_odd_coprime : ∀ (D : D7) (Pg Q : Finset (Formalism.L2.DIV.Pl D.host.E)) (e : AE D), Pg.Nonempty → (∀ PP, PP ∈ Pg ∨ PP ∈ Q → (2 : 𝓞 D.host.E) ∉ PP.asIdeal) → IsIdemSum e (Pg ∪ Q) → GlobalTheory.LiftLevel.liftI Pg Q ≠ ⊤ ∧ GlobalTheory.LiftLevel.liftI Pg Q ≠ ⊥ ∧ IsCoprime (GlobalTheory.LiftLevel.liftI Pg Q) (conjI (GlobalTheory.LiftLevel.liftI Pg Q)) ∧ IsCoprime (GlobalTheory.LiftLevel.liftI Pg Q) (Ideal.span {2}) := by
   first | exact @GlobalTheory.LiftIdeal.liftI_props | exact GlobalTheory.LiftIdeal.liftI_props | (intros; apply GlobalTheory.LiftIdeal.liftI_props <;> assumption)

@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.HermLat
 open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL MeasureTheory
 open scoped Pointwise ENNReal Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.QRefl.qrefl_inverted | exact GlobalTheory.QRefl.qrefl_inverted | (intros; apply GlobalTheory.QRefl.qrefl_inverted <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.QRefl.qrefl_inverted` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FQuasiReflectionStabilizesLattice.lean&line=201#L201)
 -/
 theorem _root_.GlobalTheory.T.exists_lattice_and_inverting_automorphism_of_quasi_reflection : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ {n : ℕ} (Hm : Matrix (Fin n) (Fin n) E), IsHermND L Hm → ∀ (m : ℕ) (x : Fin m → Fin n → E), IsUnit (gramT L Hm x).det → ∀ a ∈ perp L Hm (Submodule.span E (Set.range x)), ∀ g, IsQRefl L Hm a g → ∃ Λ : Submodule L.O (Fin n → E), IsLat L Λ ∧ ∃ α : ((Fin n → E) ≃ₗ[E] (Fin n → E)) ≃* ((Fin n → E) ≃ₗ[E] (Fin n → E)), (fixG L Hm (Submodule.span E (Set.range x)) ⊓ stabL L Λ).map α.toMonoidHom = fixG L Hm (Submodule.span E (Set.range x)) ⊓ stabL L Λ ∧ α g = g⁻¹ := by
   first | exact @GlobalTheory.QRefl.qrefl_inverted | exact GlobalTheory.QRefl.qrefl_inverted | (intros; apply GlobalTheory.QRefl.qrefl_inverted <;> assumption)

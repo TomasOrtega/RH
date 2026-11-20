@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AeEqOfDenseOfLocalSq
 import Mathlib
 open MeasureTheory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ae_eq_of_dense_of_local_sq_bound | exact GlobalTheory.ae_eq_of_dense_of_local_sq_bound | (intros; apply GlobalTheory.ae_eq_of_dense_of_local_sq_bound <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ae_eq_of_dense_of_local_sq_bound` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FAeEqOfDenseOfLocalSqBound.lean&line=6#L6)
 -/
 theorem _root_.GlobalTheory.T.ae_eq_of_dense_of_local_sq_bound_alt : ∀ {X : Type} [MeasurableSpace X] (μ : Measure X) (K : ℕ → Set X),
     (∀ n, MeasurableSet (K n)) → ⋃ n, K n = Set.univ →

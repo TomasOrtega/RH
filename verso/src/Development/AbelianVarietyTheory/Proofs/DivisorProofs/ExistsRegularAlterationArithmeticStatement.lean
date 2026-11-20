@@ -7,8 +7,10 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace Filter Topology MeasureTh
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.ArInt GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RegAlteration.exists_regular_alteration | exact GlobalTheory.RegAlteration.exists_regular_alteration | (intros; apply GlobalTheory.RegAlteration.exists_regular_alteration <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RegAlteration.exists_regular_alteration` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsRegularAlterationArithmetic.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.exists_regular_alteration_arithmetic : Published.RegularAlteration → ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) [IsIntegral Y] (q : Y ⟶ Sp k) (e : ℕ), IsArithVar q e → ∃ (Y' : Scheme.{0}) (_ : IsIntegral Y') (ρ : Y' ⟶ Y), CxForm.IsRegVar (ρ ≫ q) e ∧ ρ (genericPoint Y') = genericPoint Y ∧ ρ.residueDegree (genericPoint Y') ≠ 0 := by
   first | exact @GlobalTheory.RegAlteration.exists_regular_alteration | exact GlobalTheory.RegAlteration.exists_regular_alteration | (intros; apply GlobalTheory.RegAlteration.exists_regular_alteration <;> assumption)

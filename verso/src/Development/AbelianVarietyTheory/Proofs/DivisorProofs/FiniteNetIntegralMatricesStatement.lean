@@ -8,8 +8,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MulRightMemSB
 open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.SplitFlip GlobalTheory.KSplit GlobalTheory.GJReg
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GJReg.FinReps.finite_reps_intM | exact GlobalTheory.GJReg.FinReps.finite_reps_intM | (intros; apply GlobalTheory.GJReg.FinReps.finite_reps_intM <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GJReg.FinReps.finite_reps_intM` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFiniteNetIntegralMatrices.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.finite_net_integral_matrices : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (t : k),
     t ≠ 0 → valuation k t < 1 → ∀ N M : ℕ, ∃ R : Finset (Matrix (Fin n) (Fin n) k),

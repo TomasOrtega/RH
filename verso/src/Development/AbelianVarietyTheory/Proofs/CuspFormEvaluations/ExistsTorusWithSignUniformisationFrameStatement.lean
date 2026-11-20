@@ -14,8 +14,10 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.PullbackSections Formalism.L2.Pj Formalism.MainNotions.ModuliIntegralCharts.H1 GlobalTheory.AnVal GlobalTheory.BlockTh GlobalTheory.EtaAn
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TorusSign.exists_torusAt_w0_eq | exact GlobalTheory.TorusSign.exists_torusAt_w0_eq | (intros; apply GlobalTheory.TorusSign.exists_torusAt_w0_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TorusSign.exists_torusAt_w0_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FCuspFormEvaluations%2FExistsTorusWithSignUniformisationFrame.lean&line=77#L77)
 -/
 theorem _root_.GlobalTheory.T.exists_torusWithSign_uniformisationFrame : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Unf Xo c σ r) (k : U.Comp) (x : (U.X k).dom) (W : UnfAt U k x), ∃ A : I2.TorusAt (U.X k) x.1, A.w0 = H.w0 := by
   first | exact @GlobalTheory.TorusSign.exists_torusAt_w0_eq | exact GlobalTheory.TorusSign.exists_torusAt_w0_eq | (intros; apply GlobalTheory.TorusSign.exists_torusAt_w0_eq <;> assumption)

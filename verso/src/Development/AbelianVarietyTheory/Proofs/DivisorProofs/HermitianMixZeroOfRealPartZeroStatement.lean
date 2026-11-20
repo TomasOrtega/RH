@@ -11,8 +11,10 @@ open GlobalTheory.FlagFibre (Low uni dens)
 open ReciprocityTheory.L2DbarEstimates (V cHess)
 open scoped ContDiff ComplexOrder Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MixDens.mix_eq_zero_of_re_form_eq_zero | exact GlobalTheory.MixDens.mix_eq_zero_of_re_form_eq_zero | (intros; apply GlobalTheory.MixDens.mix_eq_zero_of_re_form_eq_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MixDens.mix_eq_zero_of_re_form_eq_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHermitianMixZeroOfRealPartZero.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.hermitian_mix_zero_of_real_part_zero : ∀ (d : ℕ) (A M : Matrix (Fin (d + 1)) (Fin (d + 1)) ℂ), A.IsHermitian → (∀ ξ : V (d + 1), (∑ j, ∑ l, ξ j * M j l * starRingEnd ℂ (ξ l)).re = 0) → mix d A M = 0 := by
   first | exact @GlobalTheory.MixDens.mix_eq_zero_of_re_form_eq_zero | exact GlobalTheory.MixDens.mix_eq_zero_of_re_form_eq_zero | (intros; apply GlobalTheory.MixDens.mix_eq_zero_of_re_form_eq_zero <;> assumption)

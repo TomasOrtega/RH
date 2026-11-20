@@ -10,8 +10,10 @@ open GlobalTheory.Published GlobalTheory.Published.AutFin GlobalTheory.StdPar Gl
 open GlobalTheory.UAut GlobalTheory.AdelicU GlobalTheory.SiegelSet
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.HCCusp.GenEig.finite_of_polyGelf | exact GlobalTheory.CompanionTheory.HCCusp.GenEig.finite_of_polyGelf | (intros; apply GlobalTheory.CompanionTheory.HCCusp.GenEig.finite_of_polyGelf <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.HCCusp.GenEig.finite_of_polyGelf` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGlobalProofs%2FCasimirAnnihilatedCuspFormsFiniteDimensional.lean&line=162#L162)
 -/
 theorem _root_.GlobalTheory.T.constant_term_parabolic_finite_type : ∀ (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)), IsInfFam θ → ∀ (V : HSp D) (U : Subgroup (GA D V)), IsOpen (U : Set (GA D V)) → ∀ (ε : D.what₂.Tau → Fin V.rank → Bool) (fr : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ), IsFrameFam V ε fr → ∀ (W : D.what₂.Tau → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module ℂ (W τ)] [∀ τ, FiniteDimensional ℂ (W τ)] (ρ : ∀ τ, Representation ℂ (Formalism.REAL.KG (ε τ)) (W τ)), (∀ τ, IsContRep (ρ τ)) → ∀ A : D.what₂.Tau → List ℂ, FiniteDimensional ℂ (Submodule.span ℂ {φ : GA D V → ℂ | IsAutFunSm θ V φ ∧ (∀ u ∈ U, u ∈ GfC V → ∀ g, φ (g * u) = φ g) ∧ (∀ τ, HasTypeAt θ V τ (ε τ) (fr τ) (ρ τ) φ) ∧ IsCuspFun V φ ∧ ∀ τ, (A τ).foldr (fun a f => gelf θ V τ 1 f - a • f) φ = 0}) := by
   first | exact @GlobalTheory.CompanionTheory.HCCusp.GenEig.finite_of_polyGelf | exact GlobalTheory.CompanionTheory.HCCusp.GenEig.finite_of_polyGelf | (intros; apply GlobalTheory.CompanionTheory.HCCusp.GenEig.finite_of_polyGelf <;> assumption)

@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.AddMonoidHomEqZ
 open NumberField IsDedekindDomain WeierstrassCurve GlobalTheory GlobalTheory.Published GlobalTheory.CMModel Formalism.L2.Th1.F
 open scoped IntermediateField BigOperators Topology
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CMModel.modelAt_shortTwist_four_mul_add_one | exact GlobalTheory.CMModel.modelAt_shortTwist_four_mul_add_one | (intros; apply GlobalTheory.CMModel.modelAt_shortTwist_four_mul_add_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CMModel.modelAt_shortTwist_four_mul_add_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FModelAtShortTwistFourMulAddOne.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.modelAt_shortTwist_four_mul_add_one' : ∀ (V : ValuationSubring ℂ) (F : IntermediateField ℚ ℂ) (a₄ a₆ D : ℂ) (k : ℤ), a₄ ∈ F → a₆ ∈ F → ModelAt V F ⟨0, 0, 0, a₄, a₆⟩ D → ModelAt V F (shortTwist (4 * (k : ℂ) + 1) a₄ a₆) ((4 * (k : ℂ) + 1) ^ 6 * D) := by
   first | exact @GlobalTheory.CMModel.modelAt_shortTwist_four_mul_add_one | exact GlobalTheory.CMModel.modelAt_shortTwist_four_mul_add_one | (intros; apply GlobalTheory.CMModel.modelAt_shortTwist_four_mul_add_one <;> assumption)

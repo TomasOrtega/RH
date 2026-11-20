@@ -18,8 +18,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 open scoped TensorProduct
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CuspGKForms.isKFinCuspOfType_of_mem_gkGen | exact GlobalTheory.CuspGKForms.isKFinCuspOfType_of_mem_gkGen | (intros; apply GlobalTheory.CuspGKForms.isKFinCuspOfType_of_mem_gkGen <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CuspGKForms.isKFinCuspOfType_of_mem_gkGen` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FGkGeneratedCuspFormsOfType.lean&line=261#L261)
 -/
 theorem _root_.GlobalTheory.T.gk_generated_cusp_forms_of_type : GlobalTheory.FunPr.Hypotheses₂ → ∀ {D : D7} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D)
     (S : D.what₂.Tau → SPar) (M : Formalism.IndefR.Mult.DSModel V S), IsInfFam (D := D) θ →

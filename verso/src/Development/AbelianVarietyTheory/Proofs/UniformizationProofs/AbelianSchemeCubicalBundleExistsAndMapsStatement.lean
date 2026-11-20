@@ -10,8 +10,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UU
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AbPackage.abelian_cp | exact GlobalTheory.AbPackage.abelian_cp | (intros; apply GlobalTheory.AbPackage.abelian_cp <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AbPackage.abelian_cp` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUniformizationProofs%2FAbelianSchemeCubicalBundleExistsAndMaps.lean&line=107#L107)
 -/
 theorem _root_.GlobalTheory.T.abelianScheme_cubical_bundle_exists_and_maps : (GlobalFnsSt → ∀ (S : Scheme.{0}) (B : Over S) [GrpObj B] [IsCommMonObj B], IsAbelianScheme B → (∀ L : RigLB B, (∃ t : LB.Gen (Theta B L.L), t.IsGen) → (∃ t : LB.Gen (LB.LinComb L.L (K := Fin 2) ![(ι[B]).left, 𝟙 B.left] ![1, -1]), t.IsGen) → ∃ M : CP B, M.L = L) ∧ ∀ (S' : Scheme.{0}) (f : S' ⟶ S) (B' : Over S') [GrpObj B'] [IsCommMonObj B'], IsAbelianScheme B' → ∀ (M : CP B) (M' : CP B') (β : B'.left ⟶ B.left), IsGrpPullback B' B f β → (∃ r : LB.Gen (M'.L.L.pull (eSec B')), r.IsGen) → LBIso M'.L.L (M.L.L.pull β) → IsCPPullback M' M f β) := by
   first | exact @GlobalTheory.AbPackage.abelian_cp | exact GlobalTheory.AbPackage.abelian_cp | (intros; apply GlobalTheory.AbPackage.abelian_cp <;> assumption)

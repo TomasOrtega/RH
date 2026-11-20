@@ -11,8 +11,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero (swSec sZero)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.StdUnn.thetaKO_eq_tsum_sch | exact GlobalTheory.StdUnn.thetaKO_eq_tsum_sch | (intros; apply GlobalTheory.StdUnn.thetaKO_eq_tsum_sch <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.StdUnn.thetaKO_eq_tsum_sch` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FThetaKernelEqTsumSchrodingerFunction.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.thetaKernel_eq_tsum_schrodingerFunction : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (A B : HSp D) (χB : (AE D)ˣ →* Circle) (omh : GA D (dblSp A) × GA D B →* Module.End ℂ (WO (dblSp A) B → ℂ)), IsWeilDatumO ψ (dblSp A) B 1 χB omh → ∀ (ν : Measure (WO A B)) (𝓨 : Set (WO A B)), IsCovolOne (ratL B A) ν 𝓨 → ∀ f, IsThetaFunO ψ (dblSp A) B f → ∀ g h, thetaKO omh g h f = ∑' ξ : Matrix (Fin B.rank) (Fin A.rank) D.host.E, sch ψ A B ν 𝓨 (omh (g, 1) f) (mt B h⁻¹ ⬝ (rat ξ : Mx D B.rank A.rank)) := by
   first | exact @GlobalTheory.StdUnn.thetaKO_eq_tsum_sch | exact GlobalTheory.StdUnn.thetaKO_eq_tsum_sch | (intros; apply GlobalTheory.StdUnn.thetaKO_eq_tsum_sch <;> assumption)

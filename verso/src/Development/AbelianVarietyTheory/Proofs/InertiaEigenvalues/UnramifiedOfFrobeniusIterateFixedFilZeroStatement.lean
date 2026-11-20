@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.TwistStep
 open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations GlobalTheory.Pst GlobalTheory.PMon TensorProduct
 open scoped Formalism.Per
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PMon.unr_of_iterate_fixed | exact GlobalTheory.PMon.unr_of_iterate_fixed | (intros; apply GlobalTheory.PMon.unr_of_iterate_fixed <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PMon.unr_of_iterate_fixed` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FUnramifiedOfFrobeniusIterateFixedFilZero.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.unramified_of_frobeniusIterate_fixed_filZero : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI) (h : ℕ), 0 < h → ∀ c : P.R.B, P.φB^[h] c = c → (∀ j < h, ev P j c ∈ Fil P 0) → ∃ a : ↥(MaximalUnramifiedExtension l), fr l h a = a ∧ c = algebraMap ↥(MaximalUnramifiedExtension l) P.R.B a := by
   first | exact @GlobalTheory.PMon.unr_of_iterate_fixed | exact GlobalTheory.PMon.unr_of_iterate_fixed | (intros; apply GlobalTheory.PMon.unr_of_iterate_fixed <;> assumption)

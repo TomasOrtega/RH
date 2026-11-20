@@ -8,8 +8,10 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry KaehlerDifferential 
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.CechDR GlobalTheory.AbCoh
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AbCoh.flat_baseChange_HO | exact GlobalTheory.AbCoh.flat_baseChange_HO | (intros; apply GlobalTheory.AbCoh.flat_baseChange_HO <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AbCoh.flat_baseChange_HO` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FStructureCohomologyFlatBaseChange.lean&line=112#L112)
 -/
 theorem _root_.GlobalTheory.T.structure_cohomology_flat_base_change : ∀ (R R' : Type) [CommRing R] [CommRing R'] [Algebra R R'] [Module.Flat R R'] (X X' : Scheme.{0}) (s : X ⟶ Sp R) (s' : X' ⟶ Sp R') (φ : X' ⟶ X) (h : IsPullback φ s' s (spMap (algebraMap R R'))), IsSeparated s → QuasiCompact s → (∃ e : R' ⊗[R] HO1 s ≃ₗ[R'] HO1 s', ∀ c, e (1 ⊗ₜ c) = pullHO1 h.w c) ∧ ∃ e : R' ⊗[R] HO2 s ≃ₗ[R'] HO2 s', ∀ c, e (1 ⊗ₜ c) = pullHO2 h.w c := by
   first | exact @GlobalTheory.AbCoh.flat_baseChange_HO | exact GlobalTheory.AbCoh.flat_baseChange_HO | (intros; apply GlobalTheory.AbCoh.flat_baseChange_HO <;> assumption)

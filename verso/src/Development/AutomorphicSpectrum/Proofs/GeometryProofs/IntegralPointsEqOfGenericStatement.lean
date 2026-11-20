@@ -8,8 +8,10 @@ open Limits MonoidalCategory CartesianMonoidalCategory MonObj
 open GlobalTheory.CompanionTheory.Ar.Num.FamEx GlobalTheory.CompanionTheory.Ar.BT
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Num.FamEx.coordTie_points_eq | exact GlobalTheory.CompanionTheory.Ar.Num.FamEx.coordTie_points_eq | (intros; apply GlobalTheory.CompanionTheory.Ar.Num.FamEx.coordTie_points_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Num.FamEx.coordTie_points_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FIntegralPointsEqOfGeneric.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.integral_points_eq_of_generic : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (κ : Type) (x : κ → Ω), CoordTie ℤ ξ x → ∀ c : κ, x c ≠ 0 → ∀ (B : Type) [CommRing B] [IsDomain B] [Algebra B Ω], Function.Injective (algebraMap B Ω) → (∀ c', x c' / x c ∈ (algebraMap B Ω).range) → ∀ z z' : Spec (CommRingCat.of B) ⟶ X, Spec.map (CommRingCat.ofHom (algebraMap B Ω)) ≫ z = ξ → Spec.map (CommRingCat.ofHom (algebraMap B Ω)) ≫ z' = ξ → z = z' := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Num.FamEx.coordTie_points_eq | exact GlobalTheory.CompanionTheory.Ar.Num.FamEx.coordTie_points_eq | (intros; apply GlobalTheory.CompanionTheory.Ar.Num.FamEx.coordTie_points_eq <;> assumption)

@@ -9,8 +9,10 @@ open MeasureTheory NumberField Formalism.BasicNotions Formalism.MainNotions.S Fo
 open scoped Pointwise ENNReal Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FrameIsom.frameOK_mapLF | exact GlobalTheory.FrameIsom.frameOK_mapLF | (intros; apply GlobalTheory.FrameIsom.frameOK_mapLF <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FrameIsom.frameOK_mapLF` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FIntegralRowFrameMapIsometry.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.integralRowFrame_map_isometry : ∀ (D : D7) (γ : (VS D).V ≃ₗ[D.host.E] (VS D).V), γ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT → ∀ (Λ₁ Λ₂ : Submodule (𝓞 D.host.E) (VS D).V), Formalism.HermitianLatticesTheory.gmap γ Λ₁ = Λ₂ → ∀ (T : D.host.E) (F : LFlag (VS D) D.R.rS T), FrameOK D Λ₁ F → FrameOK D Λ₂ (mapLF γ F) := by
   first | exact @GlobalTheory.FrameIsom.frameOK_mapLF | exact GlobalTheory.FrameIsom.frameOK_mapLF | (intros; apply GlobalTheory.FrameIsom.frameOK_mapLF <;> assumption)

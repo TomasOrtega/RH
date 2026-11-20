@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.Transvection
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsPolyRep
 open Matrix GlobalTheory.AlgWtHW
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.transvection_weightVec_expansion | exact GlobalTheory.transvection_weightVec_expansion | (intros; apply GlobalTheory.transvection_weightVec_expansion <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.transvection_weightVec_expansion` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FTransvectionWeightVecExpansion.lean&line=76#L76)
 -/
 theorem _root_.GlobalTheory.T.exists_transvection_weightVec_expansion : ∀ (n : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] (Φ : GL (Fin n) ℂ → Matrix ι ι ℂ), IsPolyRep Φ → ∀ (i j : Fin n), i ≠ j → ∀ (μ : Fin n → ℤ) (v : ι → ℂ), IsWtVec Φ μ v → ∃ (K : ℕ) (w : ℕ → ι → ℂ), w 0 = v ∧ (∀ k : ℕ, IsWtVec Φ (μ + (k : ℤ) • (Pi.single i 1 - Pi.single j 1)) (w k)) ∧ ∀ (s : ℂ) (B : GL (Fin n) ℂ), B.val = transvection i j s → Φ B *ᵥ v = ∑ k ∈ Finset.range (K + 1), s ^ k • w k := by
   first | exact @GlobalTheory.transvection_weightVec_expansion | exact GlobalTheory.transvection_weightVec_expansion | (intros; apply GlobalTheory.transvection_weightVec_expansion <;> assumption)

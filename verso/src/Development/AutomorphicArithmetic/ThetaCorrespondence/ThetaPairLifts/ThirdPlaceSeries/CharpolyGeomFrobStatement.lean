@@ -10,8 +10,10 @@ open NumberField IsDedekindDomain
 open Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions GlobalTheory.UnitaryBC GlobalTheory.CuspRep GlobalTheory.SmGL GlobalTheory.DefiniteBC
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.GeomFrobChar.charpoly_inv_frob_eq_prod_X_sub_C | exact _root_.GlobalTheory.GeomFrobChar.charpoly_inv_frob_eq_prod_X_sub_C | (intros; apply _root_.GlobalTheory.GeomFrobChar.charpoly_inv_frob_eq_prod_X_sub_C <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GeomFrobChar.charpoly_inv_frob_eq_prod_X_sub_C` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicArithmetic%2FThetaCorrespondence%2FThetaPairLifts%2FThirdPlaceSeries%2FCharpolyGeomFrob.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.charpoly_inv_eq_prod_absNorm_cpow_of_isFrob : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (l : ℕ) [Fact l.Prime]
     (ι : Qbar l ≃+* ℂ) (a : ℕ) (r : G E Ω →* GL (Fin a) (Qbar l)), Continuous r →

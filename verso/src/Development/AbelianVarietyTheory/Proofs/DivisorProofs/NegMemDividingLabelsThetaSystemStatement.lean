@@ -12,8 +12,10 @@ open GlobalTheory.UT ReciprocityTheory.ChartRestriction.G.DVR
 open GlobalTheory.Poinc.Sep
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GSep.neg_mem_supI | exact GlobalTheory.GSep.neg_mem_supI | (intros; apply GlobalTheory.GSep.neg_mem_supI <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GSep.neg_mem_supI` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FNegMemDividingLabelsThetaSystem.lean&line=64#L64)
 -/
 theorem _root_.GlobalTheory.T.neg_mem_dividingLabels_thetaSystem : ∀ (X₁ : GlobalTheory.GSep.GSet) (z₁ : X₁.M.Z) (a : X₁.S.Gam), a ∈ X₁.S.supI X₁.M z₁ → -a ∈ X₁.S.supI X₁.M z₁ := by
   first | exact @GlobalTheory.GSep.neg_mem_supI | exact GlobalTheory.GSep.neg_mem_supI | (intros; apply GlobalTheory.GSep.neg_mem_supI <;> assumption)

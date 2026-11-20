@@ -8,8 +8,10 @@ open IsDedekindDomain NumberField Matrix
 open scoped TensorProduct nonZeroDivisors Pointwise
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GridWeil.exists_weil | exact GlobalTheory.GridWeil.exists_weil | (intros; apply GlobalTheory.GridWeil.exists_weil <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GridWeil.exists_weil` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsWeilRepresentationVacuumCosetVectorsGrid.lean&line=254#L254)
 -/
 theorem _root_.GlobalTheory.T.exists_weilRepresentation_vacuum_cosetVectors_grid : GlobalTheory.Published.WeilRepresentationUnitaryPair → ∀ (D : D7) (T : Type) (L : LevCh D T) (μ0 : T), L.Is μ0 → ∀ (sc : Consts) (G : GridData L sc) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∃ W : G.Weil, W.ψ = ψ := by
   first | exact @GlobalTheory.GridWeil.exists_weil | exact GlobalTheory.GridWeil.exists_weil | (intros; apply GlobalTheory.GridWeil.exists_weil <;> assumption)

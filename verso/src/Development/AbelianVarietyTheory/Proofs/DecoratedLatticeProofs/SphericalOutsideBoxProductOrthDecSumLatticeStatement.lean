@@ -19,8 +19,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Core.Rk.Exh GlobalTheory.RegSW
 open GlobalTheory.Core.Rk.SumBox
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Core.Rk.SumBoxSph.isSphOff_boxT | exact GlobalTheory.Core.Rk.SumBoxSph.isSphOff_boxT | (intros; apply GlobalTheory.Core.Rk.SumBoxSph.isSphOff_boxT <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Core.Rk.SumBoxSph.isSphOff_boxT` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FSphericalOutsideBoxProductOrthDecSumLattice.lean&line=74#L74)
 -/
 theorem _root_.GlobalTheory.T.spherical_outside_box_product_orthDecSumLattice : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (A B W H : HSp D) (o : OrthDec B W H) (LA : Lat A) (LW : Lat W) (LH : Lat H) (Sf : Finset (FinPl D)) (Φ : WO A W → ℂ) (Φ' : WO A H → ℂ), IsSphOff ψ A W LA LW Sf Φ → IsSphOff ψ A H LA LH Sf Φ' → IsSphOff ψ A B LA (sumLatO o LW LH) Sf (o.boxT A Φ Φ') := by
   first | exact @GlobalTheory.Core.Rk.SumBoxSph.isSphOff_boxT | exact GlobalTheory.Core.Rk.SumBoxSph.isSphOff_boxT | (intros; apply GlobalTheory.Core.Rk.SumBoxSph.isSphOff_boxT <;> assumption)

@@ -4,8 +4,10 @@ import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.SquareI
 import GroundTheory.AutomorphicForms.SupercuspidalCoefficients
 open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.JHMult
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.SubQuotScalar.sub_smul_mem_of_equiv_subQuot | exact GlobalTheory.CompanionTheory.SubQuotScalar.sub_smul_mem_of_equiv_subQuot | (intros; apply GlobalTheory.CompanionTheory.SubQuotScalar.sub_smul_mem_of_equiv_subQuot <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.SubQuotScalar.sub_smul_mem_of_equiv_subQuot` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FSubquotientScalarActionMod.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.subquotient_scalar_action_mod : ∀ {M W X : Type} [Group M] [AddCommGroup W] [Module ℂ W] [AddCommGroup X] [Module ℂ X] (ρ : Representation ℂ M W) (σ : Representation ℂ M X) (S T : Subrepresentation ρ), Nonempty ((subQuot S T).Equiv σ) → ∀ (g : M) (c : ℂ), (∀ x, σ g x = c • x) → ∀ s ∈ S.toSubmodule, ρ g s - c • s ∈ T.toSubmodule := by
   first | exact @GlobalTheory.CompanionTheory.SubQuotScalar.sub_smul_mem_of_equiv_subQuot | exact GlobalTheory.CompanionTheory.SubQuotScalar.sub_smul_mem_of_equiv_subQuot | (intros; apply GlobalTheory.CompanionTheory.SubQuotScalar.sub_smul_mem_of_equiv_subQuot <;> assumption)

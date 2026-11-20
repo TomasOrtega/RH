@@ -16,8 +16,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Unf
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Unf.HaarCoord.isMulRightInvariant_map_coord | exact GlobalTheory.Unf.HaarCoord.isMulRightInvariant_map_coord | (intros; apply GlobalTheory.Unf.HaarCoord.isMulRightInvariant_map_coord <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Unf.HaarCoord.isMulRightInvariant_map_coord` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FIsMulRightInvariantMapWittFlagCoordinatesHaar.lean&line=115#L115)
 -/
 theorem _root_.GlobalTheory.T.isMulRightInvariant_map_wittFlagCoordinates_haar : ∀ (D : D7) (V V₀ : HSp D) (ρ : ℕ) (d : HypDec V V₀ ρ) (vb : VolM D ρ V₀.rank) (vU : VolU D ρ) (e : skewA D ρ × (Mx D ρ V₀.rank × UX D ρ) ≃ᵐ flagN d), (∀ p, (e p : GA D V) = d.nC p.1 * (d.nB p.2.1 * d.levi p.2.2.1)) → ∀ (lC : Measure (skewA D ρ)), lC.IsAddHaarMeasure → SFinite lC → ((lC.prod (vb.μ.prod vU.ν)).map e).IsMulRightInvariant := by
   first | exact @GlobalTheory.Unf.HaarCoord.isMulRightInvariant_map_coord | exact GlobalTheory.Unf.HaarCoord.isMulRightInvariant_map_coord | (intros; apply GlobalTheory.Unf.HaarCoord.isMulRightInvariant_map_coord <;> assumption)

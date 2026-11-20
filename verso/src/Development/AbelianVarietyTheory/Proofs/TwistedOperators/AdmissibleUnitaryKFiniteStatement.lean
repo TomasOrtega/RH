@@ -14,8 +14,10 @@ open GlobalTheory.AutomorphicL2Unitary (IsTopIrreducible)
 open GlobalTheory.HCChar GlobalTheory.Published GlobalTheory.Published.Langlands
 open scoped InnerProductSpace Topology ENNReal ComplexConjugate
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HCUnitary.admissible_and_analytic | exact GlobalTheory.HCUnitary.admissible_and_analytic | (intros; apply GlobalTheory.HCUnitary.admissible_and_analytic <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HCUnitary.admissible_and_analytic` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FAdmissibleUnitaryKFinite.lean&line=103#L103)
 -/
 theorem _root_.GlobalTheory.T.admissible_unitary_K_finite : (GlobalTheory.Published.IrreducibleUnitaryAdmissible → ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)), IsURepOn (UJset ε) σ → IsIrredOn (UJset ε) σ → IsAdmRep ε σ) ∧ (GlobalTheory.Published.KFiniteCoefficientsAnalytic → ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)), IsAdmRep ε π → ∀ v w : H, IsKFin ε π v → AnalyticOnUJ ε fun g => ⟪w, π g v⟫_ℂ) := by
   first | exact @GlobalTheory.HCUnitary.admissible_and_analytic | exact GlobalTheory.HCUnitary.admissible_and_analytic | (intros; apply GlobalTheory.HCUnitary.admissible_and_analytic <;> assumption)

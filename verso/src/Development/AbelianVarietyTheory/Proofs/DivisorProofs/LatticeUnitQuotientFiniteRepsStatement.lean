@@ -11,8 +11,10 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.IndLine
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SphLineComm.smul_latHat_finite_mod | exact GlobalTheory.SphLineComm.smul_latHat_finite_mod | (intros; apply GlobalTheory.SphLineComm.smul_latHat_finite_mod <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SphLineComm.smul_latHat_finite_mod` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLatticeUnitQuotientFiniteReps.lean&line=137#L137)
 -/
 theorem _root_.GlobalTheory.T.lattice_unit_quotient_finite_reps : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (d : ℕ) (W : Spc F E d) (v : Pl F)
     (u : AF F), W.L.IsLattice E → evI F u = 0 → (∀ w : Pl F, w ≠ v → evFin F w u = 0) →

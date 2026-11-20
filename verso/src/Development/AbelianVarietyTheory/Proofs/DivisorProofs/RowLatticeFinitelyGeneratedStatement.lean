@@ -7,8 +7,10 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.AllWt GlobalTheory.CompHt GlobalTheory.BigTop GlobalTheory.CovTop
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CovTop.latAll_fg_at | exact GlobalTheory.CovTop.latAll_fg_at | (intros; apply GlobalTheory.CovTop.latAll_fg_at <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CovTop.latAll_fg_at` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRowLatticeFinitelyGenerated.lean&line=52#L52)
 -/
 theorem _root_.GlobalTheory.T.row_lattice_finitely_generated : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} (p : PtAt ex Csz), p.Rows → RecTied D L → ∀ i : Fin D.R.m, (latAll p.R.toRealDat i).FG := by
   first | exact @GlobalTheory.CovTop.latAll_fg_at | exact GlobalTheory.CovTop.latAll_fg_at | (intros; apply GlobalTheory.CovTop.latAll_fg_at <;> assumption)

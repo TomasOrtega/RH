@@ -7,8 +7,10 @@ open NumberField IsDedekindDomain MeasureTheory Formalism.BasicNotions Formalism
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FrameRed.frMapO_actO_int_red | exact GlobalTheory.FrameRed.frMapO_actO_int_red | (intros; apply GlobalTheory.FrameRed.frMapO_actO_int_red <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FrameRed.frMapO_actO_int_red` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FFrameMatrixMovedHomIntegralReductions.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.frameMatrix_movedHom_integral_reductions : ∀ (D : D7) (S T : HSp D) (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (Fin T.rank) (Lev.EAf D)) (g : GA D S) (h : GA D T), finE S g ∈ St βS → finE T h ∈ St βT → ∀ x : WO S T, (IsIntM (frMapO S T βS βT (actO S T g⁻¹ h⁻¹ x)) ↔ IsIntM (frMapO S T βS βT x)) ∧ (IsIntM (frMapO S T βS βT x) → ∀ PP : Pl D.host.E, redM PP (frMapO S T βS βT (actO S T g⁻¹ h⁻¹ x)) = ((redFn βT PP (finE T h))⁻¹).val * redM PP (frMapO S T βS βT x) * (redFn βS PP (finE S g)).val) := by
   first | exact @GlobalTheory.FrameRed.frMapO_actO_int_red | exact GlobalTheory.FrameRed.frMapO_actO_int_red | (intros; apply GlobalTheory.FrameRed.frMapO_actO_int_red <;> assumption)

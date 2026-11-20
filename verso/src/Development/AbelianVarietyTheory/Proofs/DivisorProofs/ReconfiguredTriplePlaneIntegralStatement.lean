@@ -19,8 +19,10 @@ open GlobalTheory.ConeSmallMidJB
 open GlobalTheory.ThK
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SoPolApprox.approx_pol | exact GlobalTheory.SoPolApprox.approx_pol | (intros; apply GlobalTheory.SoPolApprox.approx_pol <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SoPolApprox.approx_pol` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FReconfiguredTriplePlaneIntegral.lean&line=253#L253)
 -/
 theorem _root_.GlobalTheory.T.reconfigured_triple_plane_integral : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ) (G₁ : Geo σ a b) (X : Chars F E) (om₁ : Rep σ G₁.V G₁.W) (om₁' : Rep σ G₁.V' G₁.W), IsTriple B G₁ X om₁ om₁' →
     ∀ (V : Spc F E a) (V' : Spc F E b) (W₁' : Spc F E (a + b)), IsTriple B (reG G₁ V V' W₁') X om₁ om₁' →

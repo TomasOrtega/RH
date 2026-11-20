@@ -7,8 +7,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFam GlobalTheory.TorRef
 open ReciprocityTheory.ChartRestriction.G.DVR
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TraitLattice.nontrivial_of_closed_not_mem_abLocus | exact GlobalTheory.TraitLattice.nontrivial_of_closed_not_mem_abLocus | (intros; apply GlobalTheory.TraitLattice.nontrivial_of_closed_not_mem_abLocus <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TraitLattice.nontrivial_of_closed_not_mem_abLocus` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FNontrivialDegenerationOutsideAbelian.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.nontrivial_degeneration_outside_abelian : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (T : CDVR) (y : Sp T.V ⟶ Y.X) (t : SAB H (Sp T.V)) (_ : SABMap t Y.t y) (P : PELUnif (maximalIdeal T.V) t), y (closedPoint T.V) ∉ abLocus Y.t.G → Nontrivial P.D.toPre.X := by
   first | exact @GlobalTheory.TraitLattice.nontrivial_of_closed_not_mem_abLocus | exact GlobalTheory.TraitLattice.nontrivial_of_closed_not_mem_abLocus | (intros; apply GlobalTheory.TraitLattice.nontrivial_of_closed_not_mem_abLocus <;> assumption)

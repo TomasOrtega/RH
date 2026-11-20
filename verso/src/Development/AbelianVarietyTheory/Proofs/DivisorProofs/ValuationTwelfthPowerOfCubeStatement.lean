@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.AddMonoidHomEqZ
 open NumberField IsDedekindDomain WeierstrassCurve GlobalTheory GlobalTheory.Published GlobalTheory.CMModel Formalism.L2.Th1.F
 open scoped IntermediateField BigOperators Topology
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.valuation_twelfth_power_of_cube | exact GlobalTheory.valuation_twelfth_power_of_cube | (intros; apply GlobalTheory.valuation_twelfth_power_of_cube <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.valuation_twelfth_power_of_cube` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FValuationTwelfthPowerOfCube.lean&line=45#L45)
 -/
 theorem _root_.GlobalTheory.T.exists_valuation_pow_twelve_mul_eq : ∀ (p : ℕ) (V : ValuationSubring ℂ) (F : IntermediateField ℚ ℂ) (D A Q : ℂ), p % 4 = 3 → D ∈ F → A ∈ F → Q ∈ F → D ≠ 0 → A ≠ 0 → V.valuation A ^ 3 = V.valuation D → Q ^ 8 * (p : ℂ) ^ 6 = D ^ (p - 1) → ∃ u ∈ F, u ≠ 0 ∧ V.valuation u ^ 12 * V.valuation (p : ℂ) ^ (if p % 8 = 3 then 3 else 9) = V.valuation D := by
   first | exact @GlobalTheory.valuation_twelfth_power_of_cube | exact GlobalTheory.valuation_twelfth_power_of_cube | (intros; apply GlobalTheory.valuation_twelfth_power_of_cube <;> assumption)

@@ -8,8 +8,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EtaleFinitePiece.main | exact GlobalTheory.EtaleFinitePiece.main | (intros; apply GlobalTheory.EtaleFinitePiece.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EtaleFinitePiece.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsEtaleNeighbourhoodFinitePieceIsolatedPoint.lean&line=239#L239)
 -/
 theorem _root_.GlobalTheory.T.exists_etale_neighbourhood_finite_piece_isolated_point : ∀ (U Y : Scheme.{0}) (τ : U ⟶ Y), IsLocallyNoetherian Y → LocallyOfFiniteType τ → IsSeparated τ → ∀ x : U, (∃ O : U.Opens, x ∈ O ∧ ∀ u ∈ O, τ u = τ x → u = x) → ∃ (T : Scheme.{0}) (h : T ⟶ Y) (W : (pullback τ h).Opens) (p : ↥(pullback τ h)), Etale h ∧ PreconnectedSpace T ∧ p ∈ W ∧ pullback.fst τ h p = x ∧ IsFinite (W.ι ≫ pullback.snd τ h) ∧ (∀ w ∈ W, pullback.snd τ h w = pullback.snd τ h p → w = p) ∧ ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] (t : Sp Ω ⟶ T), Set.range t = {pullback.snd τ h p} → ∃! w : Sp Ω ⟶ W.toScheme, w ≫ W.ι ≫ pullback.snd τ h = t := by
   first | exact @GlobalTheory.EtaleFinitePiece.main | exact GlobalTheory.EtaleFinitePiece.main | (intros; apply GlobalTheory.EtaleFinitePiece.main <;> assumption)

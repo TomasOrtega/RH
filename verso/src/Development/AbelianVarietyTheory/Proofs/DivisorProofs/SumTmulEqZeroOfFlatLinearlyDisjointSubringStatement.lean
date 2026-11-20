@@ -7,8 +7,10 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.Toroidal GlobalTheory.LocM G
 open scoped CategoryTheory.Obj
 open GlobalTheory.Desc
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Desc.tmul_sum_eq_zero_of_flat_linDisj | exact GlobalTheory.Desc.tmul_sum_eq_zero_of_flat_linDisj | (intros; apply GlobalTheory.Desc.tmul_sum_eq_zero_of_flat_linDisj <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Desc.tmul_sum_eq_zero_of_flat_linDisj` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSumTmulEqZeroOfFlatLinearlyDisjointSubring.lean&line=63#L63)
 -/
 theorem _root_.GlobalTheory.T.sum_tmul_eq_zero_of_flat_linearlyDisjoint_subring : ∀ (R R₁ A F K : Type) [CommRing R] [CommRing R₁] [CommRing A] [Field F] [Field K] [Algebra R A] [Algebra R R₁], Module.Flat R R₁ → ∀ (c₀ : R →+* F) (e : A →+* F) (c : R₁ →+* K) (θ : F →+* K), Function.Injective c₀ → Function.Injective e → e.comp (algebraMap R A) = c₀ → θ.comp c₀ = c.comp (algebraMap R R₁) → LinDisj c₀ c θ → ∀ (n : ℕ) (a : Fin n → A) (r : Fin n → R₁), ∑ i, θ (e (a i)) * c (r i) = 0 → ∑ i, a i ⊗ₜ[R] r i = 0 := by
   first | exact @GlobalTheory.Desc.tmul_sum_eq_zero_of_flat_linDisj | exact GlobalTheory.Desc.tmul_sum_eq_zero_of_flat_linDisj | (intros; apply GlobalTheory.Desc.tmul_sum_eq_zero_of_flat_linDisj <;> assumption)

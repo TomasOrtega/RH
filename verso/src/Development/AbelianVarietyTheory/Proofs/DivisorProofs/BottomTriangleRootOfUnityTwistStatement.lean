@@ -13,8 +13,10 @@ open GlobalTheory.NormSum (Pair Tup)
 open Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BottomRebase.rebase | exact GlobalTheory.BottomRebase.rebase | (intros; apply GlobalTheory.BottomRebase.rebase <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BottomRebase.rebase` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FBottomTriangleRootOfUnityTwist.lean&line=203#L203)
 -/
 theorem _root_.GlobalTheory.T.bottom_triangle_root_of_unity_twist : GlobalTheory.FunPr.Hypotheses₂ →
     GlobalTheory.SqTop.GBig fun {D} T _ _ G _ _ _ _ => ∀ (W : G.Weil), IsStdChar D W.ψ (-1) → ∀ (i j : Fin D.R.m) (A A' WW : HSp D)

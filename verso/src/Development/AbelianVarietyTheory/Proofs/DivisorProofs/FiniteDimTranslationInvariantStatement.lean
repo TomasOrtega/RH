@@ -6,8 +6,10 @@ open Matrix GlobalTheory.TorFin
 open scoped ContDiff
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TransODE.main | exact GlobalTheory.TransODE.main | (intros; apply GlobalTheory.TransODE.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TransODE.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFiniteDimTranslationInvariant.lean&line=95#L95)
 -/
 theorem _root_.GlobalTheory.T.finite_dim_translation_invariant : ∀ (G : Type) [Group G] (W : Submodule ℂ (G → ℂ)) (γ : ℝ → G), FiniteDimensional ℂ W → γ 0 = 1 → (∀ ψ ∈ W, ∃ ψ' ∈ W, ∀ (g : G) (t : ℝ), HasDerivAt (fun τ : ℝ => ψ (γ τ * g)) (ψ' (γ t * g)) t) → ∀ ψ ∈ W, ∀ t : ℝ, (fun g => ψ (γ t * g)) ∈ W := by
   first | exact @GlobalTheory.TransODE.main | exact GlobalTheory.TransODE.main | (intros; apply GlobalTheory.TransODE.main <;> assumption)

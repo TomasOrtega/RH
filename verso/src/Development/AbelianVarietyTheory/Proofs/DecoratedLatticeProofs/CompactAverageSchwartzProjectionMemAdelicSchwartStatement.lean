@@ -19,8 +19,10 @@ open GlobalTheory.Mem.AutSpace (SmFun)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompactAvgSchwartz.projS_mem | exact GlobalTheory.CompactAvgSchwartz.projS_mem | (intros; apply GlobalTheory.CompactAvgSchwartz.projS_mem <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompactAvgSchwartz.projS_mem` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FCompactAverageSchwartzProjectionMemAdelicSchwart.lean&line=93#L93)
 -/
 theorem _root_.GlobalTheory.T.compactAverageSchwartzProjection_mem_adelicSchwartz : ∀ (D : D7), ∀ θ : InfFam D, IsInfFam θ → ∀ (T : HSp D) (n : ℕ) (K : Subgroup (GA D T)), IsCompact (K : Set (GA D T)) → ∀ ν : Measure K, IsProbabilityMeasure ν → ∀ Φ ∈ schwartzA θ T.rank n, projS ν Φ ∈ schwartzA θ T.rank n := by
   first | exact @GlobalTheory.CompactAvgSchwartz.projS_mem | exact GlobalTheory.CompactAvgSchwartz.projS_mem | (intros; apply GlobalTheory.CompactAvgSchwartz.projS_mem <;> assumption)

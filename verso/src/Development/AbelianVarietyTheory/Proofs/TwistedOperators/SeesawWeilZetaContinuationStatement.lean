@@ -14,8 +14,10 @@ open GlobalTheory.SquareComm
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThetaRealDeriv.thO_pure_deriv_second | exact GlobalTheory.ThetaRealDeriv.thO_pure_deriv_second | (intros; apply GlobalTheory.ThetaRealDeriv.thO_pure_deriv_second <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThetaRealDeriv.thO_pure_deriv_second` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FSeesawWeilZetaContinuation.lean&line=139#L139)
 -/
 theorem _root_.GlobalTheory.T.seesaw_weil_zeta_continuation : GlobalTheory.Published.HoweDualityReal → GlobalTheory.FunPr.Hypotheses₂ →
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →

@@ -11,8 +11,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.Hypo
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HoweRealSmall.howe_real_ker' | exact GlobalTheory.HoweRealSmall.howe_real_ker' | (intros; apply GlobalTheory.HoweRealSmall.howe_real_ker' <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HoweRealSmall.howe_real_ker'` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FHoweDualityRealPlacesTrivialCharFockLiftSmallPai.lean&line=74#L74)
 -/
 theorem _root_.GlobalTheory.T.howeDuality_realPlaces_trivialChar_fockLift_smallPair : GlobalTheory.Published.HoweDualityReal →
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)

@@ -13,8 +13,10 @@ import GroundTheory.HeightsAndTheta.Heights.Intersections.Statements
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StatementsPushDown
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.ArakelovGeometry Filter Topology NumberField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Giv.hilbert_samuel_G3Star_of_systems | exact GlobalTheory.CompanionTheory.Ar.Giv.hilbert_samuel_G3Star_of_systems | (intros; apply GlobalTheory.CompanionTheory.Ar.Giv.hilbert_samuel_G3Star_of_systems <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Giv.hilbert_samuel_G3Star_of_systems` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FHilbertSamuelG3StarOfStatements.lean&line=28#L28)
 -/
 theorem _root_.GlobalTheory.T.hilbert_samuel_G3Star_of_statements : ReciprocityTheory.ChartRestriction.G.Geo.ArithIntersectionSystemStatement → ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.MoriwakiHSStatement → ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.MoriwakiBigStatement → ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKStatement → GroundTheory.Heights₂.Heights.HilbertSamuel.ArithmeticVolumeMultiplicative.Statement := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Giv.hilbert_samuel_G3Star_of_systems | exact GlobalTheory.CompanionTheory.Ar.Giv.hilbert_samuel_G3Star_of_systems | (intros; apply GlobalTheory.CompanionTheory.Ar.Giv.hilbert_samuel_G3Star_of_systems <;> assumption)

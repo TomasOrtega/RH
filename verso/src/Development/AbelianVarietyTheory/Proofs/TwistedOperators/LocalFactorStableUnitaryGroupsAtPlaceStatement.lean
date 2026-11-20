@@ -7,8 +7,10 @@ open scoped TensorProduct ComplexOrder
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LocalFactorUnitary.isLocal_om_gAt | exact GlobalTheory.LocalFactorUnitary.isLocal_om_gAt | (intros; apply GlobalTheory.LocalFactorUnitary.isLocal_om_gAt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LocalFactorUnitary.isLocal_om_gAt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FLocalFactorStableUnitaryGroupsAtPlace.lean&line=44#L44)
 -/
 theorem _root_.GlobalTheory.T.localFactor_stable_unitaryGroupsAtPlace : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : OmT S T) (sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)), IsWeilDatumO ψ S T χS χT om → IsInfFam θ → ∀ (p : Place D) (f : WO S T → ℂ), IsLocal ψ θ S T sS sT ΛS ΛT p f → ∀ g h, IsLocal ψ θ S T sS sT ΛS ΛT p (om (gAt S p g, gAt T p h) f) := by
   first | exact @GlobalTheory.LocalFactorUnitary.isLocal_om_gAt | exact GlobalTheory.LocalFactorUnitary.isLocal_om_gAt | (intros; apply GlobalTheory.LocalFactorUnitary.isLocal_om_gAt <;> assumption)

@@ -12,8 +12,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSelfDualTr
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.FundSetMeasStatement
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj Formalism.BasicNotions.TH Formalism.L2.Theta ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.AllWt GlobalTheory.CompHt GlobalTheory.CovTop GlobalTheory.BigTop GlobalTheory.CovHt
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CovHt.DividedNum.dividedWeight | exact GlobalTheory.CovHt.DividedNum.dividedWeight | (intros; apply GlobalTheory.CovHt.DividedNum.dividedWeight <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CovHt.DividedNum.dividedWeight` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTorusLengthLowerBoundQuotient.lean&line=141#L141)
 -/
 theorem _root_.GlobalTheory.T.torus_length_lower_bound_quotient : Size → Lifts fun Fm x _ ι p i PP C => (i : ℕ) + 1 < (Fm.D x ι).R.m → zBase (Fm.L x ι) ^ 24 ≤ lenT p i PP ∧ ∀ u1, Quo p i PP u1 → lenT p i PP * GlobalTheory.CovHt.l1 u1 ≤ C * unitE p ∧ ∀ τ (a b : Fin ((dat p i).p + (dat p i).q)), (b : ℕ) = a + 1 → (lenT p i PP : ℤ) ≤ u1 τ a - u1 τ b := by
   first | exact @GlobalTheory.CovHt.DividedNum.dividedWeight | exact GlobalTheory.CovHt.DividedNum.dividedWeight | (intros; apply GlobalTheory.CovHt.DividedNum.dividedWeight <;> assumption)

@@ -8,8 +8,10 @@ open ReciprocityTheory.L2DbarEstimates (V)
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts GlobalTheory.FlagBundle GlobalTheory.HermFrame GlobalTheory.GoodMetric GlobalTheory.CxForm GlobalTheory.LineForm GlobalTheory.ChernCalc
 open scoped Matrix ContDiff ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChernCalc.FirstChernW.c1W_isForm_and_dbar_eq_zero | exact GlobalTheory.ChernCalc.FirstChernW.c1W_isForm_and_dbar_eq_zero | (intros; apply GlobalTheory.ChernCalc.FirstChernW.c1W_isForm_and_dbar_eq_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChernCalc.FirstChernW.c1W_isForm_and_dbar_eq_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFirstChernFormOfWeightIsFormDbarEqZero.lean&line=25#L25)
 -/
 theorem _root_.GlobalTheory.T.firstChernFormOfWeight_isForm_dbar_eq_zero : ∀ (F : Type) [Field F] (σ : F →+* ℂ) (X : Var F) (L : LB X.X) (ψ : Weight X.str σ L), ψ.IsCInf → (atlas X σ).IsForm (fld (atlas X σ) (c1W ψ)) ∧ (atlas X σ).dbar (fld (atlas X σ) (c1W ψ)) = 0 := by
   first | exact @GlobalTheory.ChernCalc.FirstChernW.c1W_isForm_and_dbar_eq_zero | exact GlobalTheory.ChernCalc.FirstChernW.c1W_isForm_and_dbar_eq_zero | (intros; apply GlobalTheory.ChernCalc.FirstChernW.c1W_isForm_and_dbar_eq_zero <;> assumption)

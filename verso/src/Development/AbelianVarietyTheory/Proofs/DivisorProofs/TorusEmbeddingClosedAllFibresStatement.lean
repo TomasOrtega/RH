@@ -9,8 +9,10 @@ open scoped CategoryTheory.Obj ComplexOrder
 open GlobalTheory GlobalTheory.CubeFib GlobalTheory.LieMet GlobalTheory.LieHt GlobalTheory.LocM.Frm GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.ShFam.Hor GlobalTheory.ShFam.Hor.LogCh GlobalTheory.Toroidal GlobalTheory.HeightParts GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.BdFib
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TorusFibreImm.isClosedImmersion_fibre | exact GlobalTheory.TorusFibreImm.isClosedImmersion_fibre | (intros; apply GlobalTheory.TorusFibreImm.isClosedImmersion_fibre <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TorusFibreImm.isClosedImmersion_fibre` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTorusEmbeddingClosedAllFibres.lean&line=67#L67)
 -/
 theorem _root_.GlobalTheory.T.torus_embedding_closed_all_fibres : GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraMaps.TorusSaturated → ∀ (W : Scheme.{0}) [IsIntegral W] [IsLocallyNoetherian W] (G : Over W) [GrpObj G], IsSemiAbelian G → ∀ (r : ℕ) (u : splitTorus W (Fin r → ℤ) ⟶ G), IsMonHom u → (∀ (k : Type) [Field k] (g : Sp k ⟶ W), g (IsLocalRing.closedPoint k) = genericPoint W → IsClosedImmersion ((Over.pullback g).map u).left) → ∀ (k : Type) [Field k] (w : Sp k ⟶ W), IsClosedImmersion ((Over.pullback w).map u).left := by
   first | exact @GlobalTheory.TorusFibreImm.isClosedImmersion_fibre | exact GlobalTheory.TorusFibreImm.isClosedImmersion_fibre | (intros; apply GlobalTheory.TorusFibreImm.isClosedImmersion_fibre <;> assumption)

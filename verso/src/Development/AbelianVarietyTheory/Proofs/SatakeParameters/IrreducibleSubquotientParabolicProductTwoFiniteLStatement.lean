@@ -16,8 +16,10 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil
 set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ProdSubquot.irreducible_subquotient_prod₂ | exact GlobalTheory.ProdSubquot.irreducible_subquotient_prod₂ | (intros; apply GlobalTheory.ProdSubquot.irreducible_subquotient_prod₂ <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ProdSubquot.irreducible_subquotient_prod₂` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FIrreducibleSubquotientParabolicProductTwoFiniteL.lean&line=149#L149)
 -/
 theorem _root_.GlobalTheory.T.irreducibleSubquotient_parabolicProductTwo_finiteLength : GlobalTheory.Published.BernsteinZelevinskyFiniteness → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (r t : ℕ) (V W : Type) [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] (ρ₁ : Representation ℂ (GL (Fin r) k) V) (ρ₂ : Representation ℂ (GL (Fin t) k) W) (π : Irr k (r + t)), IsSmooth ρ₁ → IsSmooth ρ₂ → HasFiniteLength ρ₁ → HasFiniteLength ρ₂ → IsSubquotient π.π (prod₂ ρ₁ ρ₂) → ∃ (π₁ : Irr k r) (π₂ : Irr k t), IsSubquotient π₁.π ρ₁ ∧ IsSubquotient π₂.π ρ₂ ∧ IsSubquotient π.π (prod₂ π₁.π π₂.π) := by
   first | exact @GlobalTheory.ProdSubquot.irreducible_subquotient_prod₂ | exact GlobalTheory.ProdSubquot.irreducible_subquotient_prod₂ | (intros; apply GlobalTheory.ProdSubquot.irreducible_subquotient_prod₂ <;> assumption)

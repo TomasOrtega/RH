@@ -9,8 +9,10 @@ open NumberField MeasureTheory Matrix GlobalTheory.CuspRep GlobalTheory.HCA Grou
 open scoped ContDiff
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GlVec.isSmoothFun_and_rightDeriv_eq_vecF | exact GlobalTheory.GlVec.isSmoothFun_and_rightDeriv_eq_vecF | (intros; apply GlobalTheory.GlVec.isSmoothFun_and_rightDeriv_eq_vecF <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GlVec.isSmoothFun_and_rightDeriv_eq_vecF` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsSmoothFunAndRightDerivEqLeftInvariantVectorField.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.isSmoothFun_and_rightDeriv_eq_leftInvariantVectorField : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ), ∀ f : Lie E a → ℂ, ContDiffOn ℝ ∞ f (invSet E a) → (glH E a).IsSmoothFun (fun y : glG E a => f (toL y.1.val)) ∧ ∀ X : glL E a, ContDiffOn ℝ ∞ (vecF E a (toL X.1) f) (invSet E a) ∧ (glH E a).rightDeriv X (fun y : glG E a => f (toL y.1.val)) = fun y : glG E a => vecF E a (toL X.1) f (toL y.1.val) := by
   first | exact @GlobalTheory.GlVec.isSmoothFun_and_rightDeriv_eq_vecF | exact GlobalTheory.GlVec.isSmoothFun_and_rightDeriv_eq_vecF | (intros; apply GlobalTheory.GlVec.isSmoothFun_and_rightDeriv_eq_vecF <;> assumption)

@@ -14,8 +14,10 @@ open ReciprocityTheory.AnForm.R GlobalTheory.ZH GlobalTheory.Poinc GlobalTheory.
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Poinc.Sep.E8Fibration.fibre_exists | exact GlobalTheory.Poinc.Sep.E8Fibration.fibre_exists | (intros; apply GlobalTheory.Poinc.Sep.E8Fibration.fibre_exists <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Poinc.Sep.E8Fibration.fibre_exists` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsPolarizedSpecializationField.lean&line=45#L45)
 -/
 theorem _root_.GlobalTheory.T.exists_polarized_specialization_field : ∀ (W : Matrix (Fin 8) (Fin 8) ℤ) (gQ : ℕ) (V V₁ : Type) [CommRing V] [IsDomain V] [CommRing V₁] [IsDomain V₁]
   (Q : Data V), Q.g = gQ → ∀ (ρ : V →+* V₁), Function.Injective ρ → ∀ (D : DegPre V₁) (e : (Fin 8 → Q.X) ≃+ D.X),

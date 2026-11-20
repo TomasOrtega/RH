@@ -14,8 +14,10 @@ open GlobalTheory.SquareComm
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TripleDarboux.exists_reading | exact GlobalTheory.TripleDarboux.exists_reading | (intros; apply GlobalTheory.TripleDarboux.exists_reading <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TripleDarboux.exists_reading` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FTripleFrameBaseExists.lean&line=339#L339)
 -/
 theorem _root_.GlobalTheory.T.triple_frame_base_exists : GlobalTheory.FunPr.Hypotheses₂ → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁) (B : Fr X) (α β : (AE D)ˣ →* Circle), IsTriple W W₁ X α β →

@@ -11,8 +11,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero (swSec sZero)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.StdUnn.isHeckeChar_resEta_inv | exact GlobalTheory.StdUnn.isHeckeChar_resEta_inv | (intros; apply GlobalTheory.StdUnn.isHeckeChar_resEta_inv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.StdUnn.isHeckeChar_resEta_inv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FIsHeckeCharRestrictionEtaInv.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.isHeckeChar_restrictionEta_inv : ∀ (D : D7) (χ : (AE D)ˣ →* Circle) (m : ℕ), IsHeckeChar D χ → ResEta D χ m → IsHeckeChar D χ⁻¹ ∧ ResEta D χ⁻¹ m := by
   first | exact @GlobalTheory.StdUnn.isHeckeChar_resEta_inv | exact GlobalTheory.StdUnn.isHeckeChar_resEta_inv | (intros; apply GlobalTheory.StdUnn.isHeckeChar_resEta_inv <;> assumption)

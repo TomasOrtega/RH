@@ -9,8 +9,10 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj TensorProduct
 open GlobalTheory.ZV
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AmpleDominates.eventually_sec_and_relAmple | exact GlobalTheory.AmpleDominates.eventually_sec_and_relAmple | (intros; apply GlobalTheory.AmpleDominates.eventually_sec_and_relAmple <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AmpleDominates.eventually_sec_and_relAmple` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FModuliProofs%2FEventuallySectionAndRelAmplePowDiv.lean&line=66#L66)
 -/
 theorem _root_.GlobalTheory.T.eventually_section_and_relAmple_pow_div : ∀ (K : Type) [Field K] [IsAlgClosed K] (P : Out.PolAV (Sp K)) (M N : LB P.A.left), M.IsLB → N.IsLB → Out.RelAmple P.A M → ∀ᶠ t : ℕ in Filter.atTop, (∃ s : (LB.div (lbPow M t) N).Sec, ∃ j, s.f j ≠ 0) ∧ Out.RelAmple P.A (LB.div (lbPow M t) N) := by
   first | exact @GlobalTheory.AmpleDominates.eventually_sec_and_relAmple | exact GlobalTheory.AmpleDominates.eventually_sec_and_relAmple | (intros; apply GlobalTheory.AmpleDominates.eventually_sec_and_relAmple <;> assumption)

@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BlochKatoChara
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.StepJumpDirect
 open Formalism Formalism.MainNotions Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Module GlobalTheory.Pass
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Pass.HfCharStep.main | exact GlobalTheory.Pass.HfCharStep.main | (intros; apply GlobalTheory.Pass.HfCharStep.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Pass.HfCharStep.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FBlochKatoCharactersTypePrimeProof.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.blochKatoCharactersTypePrime_proof : StepHfChar := by
   first | exact @GlobalTheory.Pass.HfCharStep.main | exact GlobalTheory.Pass.HfCharStep.main | (intros; apply GlobalTheory.Pass.HfCharStep.main <;> assumption)

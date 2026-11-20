@@ -20,8 +20,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle (Tri)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RowEx MeasureTheory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SplitSourceAlg.src_split_algComb | exact GlobalTheory.SplitSourceAlg.src_split_algComb | (intros; apply GlobalTheory.SplitSourceAlg.src_split_algComb <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SplitSourceAlg.src_split_algComb` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FThetaLocalSupportSource.lean&line=29#L29)
 -/
 theorem _root_.GlobalTheory.T.theta_local_support_source : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →

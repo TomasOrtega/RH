@@ -15,8 +15,10 @@ open scoped Classical
 open GlobalTheory.CompanionTheory.FinActS
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.FinActCore.hint_prod_eq_foldr | exact GlobalTheory.CompanionTheory.FinActCore.hint_prod_eq_foldr | (intros; apply GlobalTheory.CompanionTheory.FinActCore.hint_prod_eq_foldr <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.FinActCore.hint_prod_eq_foldr` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FRestrictedProductIntegral.lean&line=57#L57)
 -/
 theorem _root_.GlobalTheory.T.restricted_product_integral : ∀ {ι Γ : Type} [Group Γ] {Hl : ι → Type} [∀ i, Group (Hl i)] (p : ∀ i, Γ →* Hl i) (e : ∀ i, Hl i →* Γ) (K : Subgroup Γ) (KH V : ∀ i, Subgroup (Hl i))
     (f : ∀ i, Hl i → ℂ)

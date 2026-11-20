@@ -11,8 +11,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Core.Rk.IP
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LSD_hasProd_LvTw | exact GlobalTheory.LSD_hasProd_LvTw | (intros; apply GlobalTheory.LSD_hasProd_LvTw <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LSD_hasProd_LvTw` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FHasProdPartialLFunctionTwistedByCharLocalFactors.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.hasProd_partialLFunctionTwistedByChar_local_factors : ∀ (D : D7) (Sf : Finset (FinPl D)) (par : GlobalTheory.LFun.Fam D.host.E) (χ : (AE D)ˣ →* Circle) (r : ℕ) (κ : ℝ), GlobalTheory.LFun.Bounded (GlobalTheory.LFun.above D.host.E (Sf : Set (FinPl D))) par r κ → ∀ z : ℂ, κ + 1 < z.re → HasProd (fun v : {v : FinPl D // v ∉ (Sf : Set (FinPl D))} => GlobalTheory.LFun.LvTw par (GlobalTheory.LFun.val χ) v.1 z) (GlobalTheory.LFun.LSD D Sf par χ z) := by
   first | exact @GlobalTheory.LSD_hasProd_LvTw | exact GlobalTheory.LSD_hasProd_LvTw | (intros; apply GlobalTheory.LSD_hasProd_LvTw <;> assumption)

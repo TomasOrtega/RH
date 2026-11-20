@@ -6,8 +6,10 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 open scoped Formalism.Per NNReal
 open Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BSP.EquivOE.main | exact GlobalTheory.BSP.EquivOE.main | (intros; apply GlobalTheory.BSP.EquivOE.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BSP.EquivOE.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FEquivariantPhiModuleMatrixMemOE.lean&line=25#L25)
 -/
 theorem _root_.GlobalTheory.T.equivariant_phiModule_matrix_mem_OE : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (d d' : ℕ) (S : Strat bk d) (S' : Strat bk d') (X : Matrix (Fin d') (Fin d) (WCb l)), (∀ g : ↥(GK K), bk.FixFlat g → X.map (galW l (g : GQ l)) = X) → bk.evW bk.E ^ S.a • (S'.A.map bk.evW * X.map (frobW l)) = bk.evW bk.E ^ S'.a • (X * S.A.map bk.evW) → ∀ i j, X i j ∈ bk.OE := by
   first | exact @GlobalTheory.BSP.EquivOE.main | exact GlobalTheory.BSP.EquivOE.main | (intros; apply GlobalTheory.BSP.EquivOE.main <;> assumption)

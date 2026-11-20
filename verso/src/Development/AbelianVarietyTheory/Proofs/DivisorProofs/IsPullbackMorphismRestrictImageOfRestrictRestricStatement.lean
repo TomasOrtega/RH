@@ -8,8 +8,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.isPullback_morphismRestrict_image_of_restrict_restrict | exact GlobalTheory.isPullback_morphismRestrict_image_of_restrict_restrict | (intros; apply GlobalTheory.isPullback_morphismRestrict_image_of_restrict_restrict <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.isPullback_morphismRestrict_image_of_restrict_restrict` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsPullbackMorphismRestrictImageOfRestrictRestric.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.isPullback_restrict_image_of_restrict_restrict : ∀ (P' X S T : Scheme.{0}) (a : X ⟶ P') (W : P'.Opens) (V : W.toScheme.Opens) (q : X ⟶ S) (h : P' ⟶ T) (π : S ⟶ T), IsPullback ((a ∣_ W) ∣_ V) (((a ∣_ W) ⁻¹ᵁ V).ι ≫ (a ⁻¹ᵁ W).ι ≫ q) (V.ι ≫ W.ι ≫ h) π → IsPullback (a ∣_ (W.ι ''ᵁ V)) ((a ⁻¹ᵁ (W.ι ''ᵁ V)).ι ≫ q) ((W.ι ''ᵁ V).ι ≫ h) π := by
   first | exact @GlobalTheory.isPullback_morphismRestrict_image_of_restrict_restrict | exact GlobalTheory.isPullback_morphismRestrict_image_of_restrict_restrict | (intros; apply GlobalTheory.isPullback_morphismRestrict_image_of_restrict_restrict <;> assumption)

@@ -10,8 +10,10 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open ReciprocityTheory.AnForm.M
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points GlobalTheory.CechPic GlobalTheory.ProjVar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.chernInt_indep_of_iso | exact GlobalTheory.chernInt_indep_of_iso | (intros; apply GlobalTheory.chernInt_indep_of_iso <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.chernInt_indep_of_iso` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FChernIntegralEqOfLineBundleIso.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.chernIntegral_eq_of_lineBundle_iso : ∀ (Y : Var ℂ) (L A : LB Y.X) (φ : Weight Y.str (RingHom.id ℂ) L) (ψ : Weight Y.str (RingHom.id ℂ) A), LBIso L A → φ.IsCInf → ψ.IsCInf → Weight.chernInt φ Y.dim Set.univ (fun _ => 1) = Weight.chernInt ψ Y.dim Set.univ (fun _ => 1) := by
   first | exact @GlobalTheory.chernInt_indep_of_iso | exact GlobalTheory.chernInt_indep_of_iso | (intros; apply GlobalTheory.chernInt_indep_of_iso <;> assumption)

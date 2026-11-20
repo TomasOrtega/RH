@@ -13,8 +13,10 @@ noncomputable section
 namespace GlobalTheory.HeightCounting.RowRhoInt
 end GlobalTheory.HeightCounting.RowRhoInt
 namespace GlobalTheory.HeightCounting.RowRhoInt
-/- English proof (translation)
-The claim follows from `_root_.GlobalTheory.T.exists_galois_rep_of_cuspidal_alt`.
+/- English proof (citation)
+Apply `GlobalTheory.T.exists_galois_rep_of_cuspidal_alt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicArithmetic%2FThetaCorrespondence%2FThetaPairLifts%2FThirdPlaceSeries%2FExistsIsRepOfTwStatement.lean&line=11#L11)
 -/
 theorem twistEx_alt : GlobalTheory.Published.GlobalArtinReciprocity → ∀ (D : D7) (cf : CharFrame D) (jE : D.host.E →+* Qb) (A : _root_.GlobalTheory.HeightCounting.CharFrameHostEmbedding D cf jE),
     GalEx D → ∀ (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (π : D.naut.CG D.R.r), D.naut.csd π → D.naut.ralg π →

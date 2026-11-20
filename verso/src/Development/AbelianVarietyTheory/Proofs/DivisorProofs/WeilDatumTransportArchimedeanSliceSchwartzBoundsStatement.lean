@@ -9,8 +9,10 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WeilContF.slice_bounds | exact GlobalTheory.WeilContF.slice_bounds | (intros; apply GlobalTheory.WeilContF.slice_bounds <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WeilContF.slice_bounds` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FWeilDatumTransportArchimedeanSliceSchwartzBounds.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.weilDatumTransport_archimedeanSlice_schwartz_bounds : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

@@ -17,8 +17,10 @@ open PI.DSInfCharCap (actU Egl)
 open GlobalTheory.RealInd.Stages Finset GlobalTheory.FlagMeas Formalism.REAL
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RealInd.Stages.stageFun_normSq_integral | exact GlobalTheory.RealInd.Stages.stageFun_normSq_integral | (intros; apply GlobalTheory.RealInd.Stages.stageFun_normSq_integral <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RealInd.Stages.stageFun_normSq_integral` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FStageFunctionNormIntegral.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.stage_function_norm_integral : ∀ {n : ℕ} {ε : Fin n → Bool} {U V : Type} [NormedAddCommGroup U] [InnerProductSpace ℂ U] [NormedAddCommGroup V] [InnerProductSpace ℂ V] (M : Subgroup (UJ ε)) (Fsp : Submodule ℂ (UJ ε → U)) (ι : Fsp →ₗ[ℂ] V) (μ : Measure ↥(KG ε ⊓ M)) [IsProbabilityMeasure μ], (∀ f : Fsp, ‖ι f‖ ^ 2 = ∫ k : ↥(KG ε ⊓ M), ‖f.1 k‖ ^ 2 ∂μ) → ∀ {F : UJ ε → U}, Continuous F → (∀ g, restr M F g ∈ Fsp) → ∫ k : KG ε, ‖stageFun M Fsp ι F k‖ ^ 2 ∂muK ε = ∫ k : KG ε, ‖F k‖ ^ 2 ∂muK ε := by
   first | exact @GlobalTheory.RealInd.Stages.stageFun_normSq_integral | exact GlobalTheory.RealInd.Stages.stageFun_normSq_integral | (intros; apply GlobalTheory.RealInd.Stages.stageFun_normSq_integral <;> assumption)

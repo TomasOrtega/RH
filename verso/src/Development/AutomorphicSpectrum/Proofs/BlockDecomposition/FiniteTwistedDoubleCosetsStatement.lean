@@ -9,8 +9,10 @@ open PositivityTheory.Rg.BcB.G8 PositivityTheory.Rg.BcB.G8.Fin GlobalTheory.Comp
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.LocHypSplit.finite_doubleCosets_split | exact GlobalTheory.CompanionTheory.LocHypSplit.finite_doubleCosets_split | (intros; apply GlobalTheory.CompanionTheory.LocHypSplit.finite_doubleCosets_split <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.LocHypSplit.finite_doubleCosets_split` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FFiniteTwistedDoubleCosets.lean&line=32#L32)
 -/
 theorem _root_.GlobalTheory.T.finite_twisted_double_cosets : ∀ {H : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] (σ : H →* H) (K : Subgroup H) (d d' : H) (f : H × H → ℂ)
   (C₁ C₂ : Set H), Continuous σ → (∀ g, σ (σ g) = g) → IsOpen (K : Set H) → IsCompact (K : Set H) → (∀ k ∈ K, σ k ∈ K) →

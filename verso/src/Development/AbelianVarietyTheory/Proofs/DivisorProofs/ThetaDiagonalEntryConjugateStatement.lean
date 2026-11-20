@@ -16,8 +16,10 @@ open ReciprocityTheory.L2DbarEstimates (V cHess)
 open scoped ContDiff ComplexOrder Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MixDens.theta_eq_re_diag | exact GlobalTheory.MixDens.theta_eq_re_diag | (intros; apply GlobalTheory.MixDens.theta_eq_re_diag <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MixDens.theta_eq_re_diag` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FThetaDiagonalEntryConjugate.lean&line=66#L66)
 -/
 theorem _root_.GlobalTheory.T.theta_diagonal_entry_conjugate : ∀ {m : ℕ} (G F : Matrix (Fin m) (Fin m) ℂ) (n : Low m → ℂ) (T : Matrix (Fin m) (Fin m) ℂ), (∀ a c : Fin m, c < a → T a c = 0) → chg T (chg (uni n) G) = 1 → ∀ i : Fin m, theta G (-(Fᵀ * G)) n i = (((uni n * T)⁻¹ * F * (uni n * T)) i i).re := by
   first | exact @GlobalTheory.MixDens.theta_eq_re_diag | exact GlobalTheory.MixDens.theta_eq_re_diag | (intros; apply GlobalTheory.MixDens.theta_eq_re_diag <;> assumption)

@@ -9,8 +9,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KeyValsGen.keyVals | exact GlobalTheory.KeyValsGen.keyVals | (intros; apply GlobalTheory.KeyValsGen.keyVals <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KeyValsGen.keyVals` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FKeyValuesDetOmegaDeltaUnitAffineOpens.lean&line=191#L191)
 -/
 theorem _root_.GlobalTheory.T.keyValues_detOmega_delta_unit_affineOpens : ∀ κ : Rule, Homog (fun _ => 1) κ → Funct κ →
   ∀ (S : Scheme.{0}) [IsIntegral S] (G : Over S) [GrpObj G] [IsCommMonObj G] (g : ℕ) (L : RigLB G) (δ : LB S)

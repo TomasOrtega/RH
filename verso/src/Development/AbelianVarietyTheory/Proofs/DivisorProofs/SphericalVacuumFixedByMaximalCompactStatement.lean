@@ -25,8 +25,10 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SplitVacFixRight.vac_fixed_good | exact GlobalTheory.SplitVacFixRight.vac_fixed_good | (intros; apply GlobalTheory.SplitVacFixRight.vac_fixed_good <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SplitVacFixRight.vac_fixed_good` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSphericalVacuumFixedByMaximalCompact.lean&line=422#L422)
 -/
 theorem _root_.GlobalTheory.T.spherical_vacuum_fixed_by_maximal_compact : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W),

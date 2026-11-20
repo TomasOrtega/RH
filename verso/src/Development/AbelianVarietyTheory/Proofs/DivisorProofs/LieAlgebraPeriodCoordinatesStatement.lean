@@ -18,8 +18,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds (IsClassZe
 open TensorProduct
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LieCoord.exists_lieCoord_unif | exact GlobalTheory.LieCoord.exists_lieCoord_unif | (intros; apply GlobalTheory.LieCoord.exists_lieCoord_unif <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LieCoord.exists_lieCoord_unif` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLieAlgebraPeriodCoordinates.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.lie_algebra_period_coordinates : ∀ {E : Type} [Field E] [NumberField E] {I : Type} [Fintype I] {𝔠 : FracId (FR E)} {φ : I → E →+* ℂ} {L : Set E}
     (R : Subring ℂ) (X₀ : Obj (FR E) 𝔠 (Sp R)) (X : Obj (FR E) 𝔠 (Sp ℂ)) (U : Unif φ L 0 X) (p : X.A.left ⟶ X₀.A.left),

@@ -9,8 +9,10 @@ open scoped CategoryTheory.Obj ComplexOrder
 open GlobalTheory GlobalTheory.CubeFib GlobalTheory.LieMet GlobalTheory.LieHt GlobalTheory.LocM.Frm GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.ShFam.Hor GlobalTheory.ShFam.Hor.LogCh GlobalTheory.Toroidal GlobalTheory.HeightParts GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.BdFib
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BdFib.Glue.hasModel_of_coprime | exact GlobalTheory.BdFib.Glue.hasModel_of_coprime | (intros; apply GlobalTheory.BdFib.Glue.hasModel_of_coprime <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BdFib.Glue.hasModel_of_coprime` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSemiabelianModelLocalizationTransfer.lean&line=82#L82)
 -/
 theorem _root_.GlobalTheory.T.semiabelian_model_localization_transfer : GlobalTheory.Published.SemiAbelianHomExtension → ∀ (K : Type) [Field K] [NumberField K] (A : Over (Sp K)) [GrpObj A] (a b : 𝓞 K), a ≠ 0 → b ≠ 0 → IsCoprime a b → (∃ (G : Over (Sp (Localization.Away (a : 𝓞 K)))) (_ : GrpObj G) (θ : A.left ⟶ G.left) (i : Localization.Away (a : 𝓞 K) →+* K), IsSemiAbelian G ∧ i.comp (algebraMap (𝓞 K) _) = algebraMap (𝓞 K) K ∧ IsGrpPullback A G (spMap i) θ) → (∃ (G : Over (Sp (Localization.Away (b : 𝓞 K)))) (_ : GrpObj G) (θ : A.left ⟶ G.left) (i : Localization.Away (b : 𝓞 K) →+* K), IsSemiAbelian G ∧ i.comp (algebraMap (𝓞 K) _) = algebraMap (𝓞 K) K ∧ IsGrpPullback A G (spMap i) θ) → HasModel A := by
   first | exact @GlobalTheory.BdFib.Glue.hasModel_of_coprime | exact GlobalTheory.BdFib.Glue.hasModel_of_coprime | (intros; apply GlobalTheory.BdFib.Glue.hasModel_of_coprime <;> assumption)

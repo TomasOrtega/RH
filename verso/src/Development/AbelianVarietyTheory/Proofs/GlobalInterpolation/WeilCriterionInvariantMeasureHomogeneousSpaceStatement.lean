@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.InvariantRad
 open MeasureTheory GlobalTheory.IndefiniteRowSideFullHecke.InvariantRadonFibre
 open scoped ENNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WeilCriterion.modulusClause | exact GlobalTheory.WeilCriterion.modulusClause | (intros; apply GlobalTheory.WeilCriterion.modulusClause <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WeilCriterion.modulusClause` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FGlobalInterpolation%2FWeilCriterionInvariantMeasureHomogeneousSpace.lean&line=210#L210)
 -/
 theorem _root_.GlobalTheory.T.weil_criterion_invariant_measure_homogeneous_space : ModulusClause := by
   first | exact @GlobalTheory.WeilCriterion.modulusClause | exact GlobalTheory.WeilCriterion.modulusClause | (intros; apply GlobalTheory.WeilCriterion.modulusClause <;> assumption)

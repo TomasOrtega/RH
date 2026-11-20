@@ -10,8 +10,10 @@ open scoped TensorProduct NNReal Matrix
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SiegelConv.De_vecMulVec_basisMap | exact GlobalTheory.SiegelConv.De_vecMulVec_basisMap | (intros; apply GlobalTheory.SiegelConv.De_vecMulVec_basisMap <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SiegelConv.De_vecMulVec_basisMap` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSiegelLagrangianVecMulVecCoords.lean&line=28#L28)
 -/
 theorem _root_.GlobalTheory.T.siegel_lagrangian_vecMulVec_coords : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n d : ℕ) (κ : Type) [Fintype κ]
     (De : Matrix (Fin d) (Fin n ⊕ Fin n) (AE F E) →ₗ[AF F] (κ → AF F) × (κ → AF F))

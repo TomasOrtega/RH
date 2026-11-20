@@ -17,8 +17,10 @@ open scoped TensorProduct nonZeroDivisors
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open scoped Pointwise
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FrameMoves.moves_iff_smul | exact GlobalTheory.FrameMoves.moves_iff_smul | (intros; apply GlobalTheory.FrameMoves.moves_iff_smul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FrameMoves.moves_iff_smul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FStabilizesSelfDualIffFrameMatrixStabilizes.lean&line=66#L66)
 -/
 theorem _root_.GlobalTheory.T.stabilizes_selfDual_iff_frame_matrix_stabilizes : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : GlobalTheory.FinPl.SplitPt D k) (A : HSp D) (n : Type) [Fintype n] [DecidableEq n] (β : GlobalTheory.FinPl.Frame p A n) (L : GlobalTheory.FinPl.Lat A) (Λ : Submodule 𝒪[k] (n → k)), IsSelfDualC A L → β.IsLat L Λ → ∀ κ : GA D A, (GlobalTheory.FinPl.Moves A κ L L (· = p.v) ↔ coordHom A p.pr β.b β.b' β.bb' β.b'b κ • Λ = Λ) := by
   first | exact @GlobalTheory.FrameMoves.moves_iff_smul | exact GlobalTheory.FrameMoves.moves_iff_smul | (intros; apply GlobalTheory.FrameMoves.moves_iff_smul <;> assumption)

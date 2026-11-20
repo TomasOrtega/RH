@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.IsLatMeasura
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MeasurableSetDetNormPos
 open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheory.Count GlobalTheory.FlagMeas GlobalTheory.FlagBase GlobalTheory.MeanDual
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MeanDual.dualAt_latAt_eq_latAt_trDual | exact GlobalTheory.MeanDual.dualAt_latAt_eq_latAt_trDual | (intros; apply GlobalTheory.MeanDual.dualAt_latAt_eq_latAt_trDual <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MeanDual.dualAt_latAt_eq_latAt_trDual` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FTraceFormDualTranslatedLatticeEqInverseTranspose.lean&line=174#L174)
 -/
 theorem _root_.GlobalTheory.T.traceFormDual_translatedLattice_eq_inverseTranspose : ∀ (E : Type) [Field E] [NumberField E], IsTotallyComplex E → ∀ (j : ℕ) (Λ : Submodule (𝓞 E) (Fin j → E)), Submodule.IsLattice E Λ → ∀ g : MatInf E j, 0 < detNorm E j g → dualAt E j (latAt E j Λ g) = latAt E j (trDual E j Λ) (invT E j g) := by
   first | exact @GlobalTheory.MeanDual.dualAt_latAt_eq_latAt_trDual | exact GlobalTheory.MeanDual.dualAt_latAt_eq_latAt_trDual | (intros; apply GlobalTheory.MeanDual.dualAt_latAt_eq_latAt_trDual <;> assumption)

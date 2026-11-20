@@ -17,8 +17,10 @@ open Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BottomWeights.isBottom_n_eq | exact GlobalTheory.BottomWeights.isBottom_n_eq | (intros; apply GlobalTheory.BottomWeights.isBottom_n_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BottomWeights.isBottom_n_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSquareBottomPairsWeightsEq.lean&line=47#L47)
 -/
 theorem _root_.GlobalTheory.T.squareBottomPairs_weights_eq : ∀ {D : D7} {T : Type} {Lc : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} (G : GridData Lc sc) (t : T) (i j : Fin D.R.m)
     (𝔪 : Ideal (𝓞 D.host.E)) {δ t0 : ℂ} {Q : ℕ} (P P' : Pair D ⊤ δ t0 Q), IsBottom G t i j 𝔪 P P' → P'.n = P.n := by

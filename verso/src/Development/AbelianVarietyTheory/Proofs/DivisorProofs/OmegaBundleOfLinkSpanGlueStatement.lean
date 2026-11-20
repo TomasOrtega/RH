@@ -9,8 +9,10 @@ open GlobalTheory.Twist (resM)
 open Formalism.MainNotions.DIV.Cons (intO SCF)
 open GlobalTheory.OmegaHT
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.OmegaHT.Bundle.bundle_of_locBasis | exact GlobalTheory.OmegaHT.Bundle.bundle_of_locBasis | (intros; apply GlobalTheory.OmegaHT.Bundle.bundle_of_locBasis <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.OmegaHT.Bundle.bundle_of_locBasis` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FOmegaBundleOfLinkSpanGlue.lean&line=208#L208)
 -/
 theorem _root_.GlobalTheory.T.omega_bundle_of_link_span_glue : GlobalTheory.OmegaHT.LinkSt → GlobalTheory.OmegaHT.SpanSt → GlobalTheory.OmegaHT.GlueSt → GlobalTheory.OmegaHT.BundleSt := by
   first | exact @GlobalTheory.OmegaHT.Bundle.bundle_of_locBasis | exact GlobalTheory.OmegaHT.Bundle.bundle_of_locBasis | (intros; apply GlobalTheory.OmegaHT.Bundle.bundle_of_locBasis <;> assumption)

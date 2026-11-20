@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.EFirstGeOfULa
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Formalism.L2.Host GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.Bl GlobalTheory.Fc GlobalTheory.Fc.Cv NumberField
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Fc.Cv.view_at_built | exact GlobalTheory.Fc.Cv.view_at_built | (intros; apply GlobalTheory.Fc.Cv.view_at_built <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Fc.Cv.view_at_built` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FGlobalInterpolation%2FPropertyAtConstructedPointsOfTrueColumnsView.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.property_at_constructedPoints_of_trueColumnsView : ∀ (R : ∀ D : D7, Obj D → Prop), (∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T) (Z : w.Lt) (O : Obj (w.D Z)) (nch : NChoice (w.D Z)), ColView w Z O.ex.tw nch → GlobalTheory.LvT.WtSign.BaseSigns B → Formalism.L2.Theta.RealTied (w.D Z) → R (w.D Z) O) → ∀ (K : Ctx) (β : BPt K), β.Is HasCols → R β.D β.O := by
   first | exact @GlobalTheory.Fc.Cv.view_at_built | exact GlobalTheory.Fc.Cv.view_at_built | (intros; apply GlobalTheory.Fc.Cv.view_at_built <;> assumption)

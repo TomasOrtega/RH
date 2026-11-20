@@ -5,8 +5,10 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory
 open scoped CategoryTheory.Obj UpperHalfPlane
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CommonField.exists_common_field | exact GlobalTheory.CommonField.exists_common_field | (intros; apply GlobalTheory.CommonField.exists_common_field <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CommonField.exists_common_field` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FCubicalLineBundles%2FExistsNumberFieldDefiningCmCurveHoms.lean&line=124#L124)
 -/
 theorem _root_.GlobalTheory.T.exists_numberField_defining_cm_curve_homs : ThetaUnifAV → Out.PolBaseChangeSt → ∀ (K
     : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 → ∀ (σ₀

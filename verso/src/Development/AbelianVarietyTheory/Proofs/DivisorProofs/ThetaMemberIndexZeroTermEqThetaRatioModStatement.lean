@@ -14,8 +14,10 @@ open GlobalTheory.UT ReciprocityTheory.ChartRestriction.G.DVR
 open GlobalTheory.Poinc.Sep
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GSep.ConstTerm.const_term_sub_mem | exact GlobalTheory.GSep.ConstTerm.const_term_sub_mem | (intros; apply GlobalTheory.GSep.ConstTerm.const_term_sub_mem <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GSep.ConstTerm.const_term_sub_mem` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FThetaMemberIndexZeroTermEqThetaRatioMod.lean&line=33#L33)
 -/
 theorem _root_.GlobalTheory.T.thetaMember_index_zero_term_eq_theta_ratio_mod : ∀ (I : Type) (X₁ : GlobalTheory.GSep.GSet) (z₁ : X₁.M.Z) (act : I → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)) (x₀ : X₁.S.Gam), X₁.M.Div X₁.S.th x₀ z₁ → ∀ (V1 : Type) [CommRing V1] [IsDomain V1] [IsLocalRing V1] (ev1 : X₁.M.Z.presheaf.stalk z₁ →+* V1) (Y1 : Type) [AddCommGroup Y1] (t1 : Y1 → V1) (δ1 : I → Y1 → Y1) (𝔪1 : GlobalTheory.GSep.GMem X₁ z₁ act V1 ev1 Y1 t1 δ1) (C : Type) (lab : C → X₁.S.Gam), (∀ c, lab c ∈ X₁.S.HH X₁.M z₁) → ∀ T : Y1 → C → V1, 𝔪1.Terms x₀ lab T → ∀ (c : C) (r : X₁.M.Z.presheaf.stalk z₁), X₁.M.stalkHom z₁ r = X₁.S.th (lab c) / X₁.S.th x₀ → ev1 r - T 0 c ∈ maximalIdeal V1 := by
   first | exact @GlobalTheory.GSep.ConstTerm.const_term_sub_mem | exact GlobalTheory.GSep.ConstTerm.const_term_sub_mem | (intros; apply GlobalTheory.GSep.ConstTerm.const_term_sub_mem <;> assumption)

@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.Eigenfunctio
 open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S Formalism.REAL Formalism.QuantumDeterminants GlobalTheory.Count GlobalTheory.Dec
 open scoped InnerProductSpace ContDiff
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.exists_smooth_average_eq_of_mem_lowKSub | exact GlobalTheory.exists_smooth_average_eq_of_mem_lowKSub | (intros; apply GlobalTheory.exists_smooth_average_eq_of_mem_lowKSub <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.exists_smooth_average_eq_of_mem_lowKSub` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FExistsSmoothAverageEqOfMemLowKSub.lean&line=47#L47)
 -/
 theorem _root_.GlobalTheory.T.exists_smooth_average_eq_of_mem_lowKSub' : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (lam : Fin n → ℝ) (w : H), IsURepOn (UJset ε) σ → IsKTypeOf ε σ (lowK ε lam) (lowKSub ε lam σ) → w ∈ lowKSub ε lam σ → w ≠ 0 → ∀ u ∈ lowKSub ε lam σ, ∃ F : (Fin n → Fin n → ℂ) → ℂ, ContDiff ℝ ∞ F ∧ HasCompactSupport F ∧ u = ∫ g : UJ ε, F (fun i j => umat g i j) • σ (umat g) w ∂(muG ε) := by
   first | exact @GlobalTheory.exists_smooth_average_eq_of_mem_lowKSub | exact GlobalTheory.exists_smooth_average_eq_of_mem_lowKSub | (intros; apply GlobalTheory.exists_smooth_average_eq_of_mem_lowKSub <;> assumption)

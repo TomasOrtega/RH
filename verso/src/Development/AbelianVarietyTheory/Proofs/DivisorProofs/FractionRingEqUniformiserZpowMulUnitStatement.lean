@@ -11,8 +11,10 @@ open GlobalTheory.Poinc Formalism.L2.Pj
 attribute [local instance] Over.cartesianMonoidalCategory
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DVR.fractionRing_eq_zpow_mul_unit | exact GlobalTheory.DVR.fractionRing_eq_zpow_mul_unit | (intros; apply GlobalTheory.DVR.fractionRing_eq_zpow_mul_unit <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DVR.fractionRing_eq_zpow_mul_unit` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFractionRingEqUniformiserZpowMulUnit.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.fractionRing_eq_uniformiser_zpow_mul_unit : ∀ {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {ϖ : V}, Irreducible ϖ → ∀ (y : FractionRing V), y ≠ 0 → ∃ (v : ℤ) (w : Vˣ), y = algebraMap V (FractionRing V) ϖ ^ v * algebraMap V (FractionRing V) (w : V) := by
   first | exact @GlobalTheory.DVR.fractionRing_eq_zpow_mul_unit | exact GlobalTheory.DVR.fractionRing_eq_zpow_mul_unit | (intros; apply GlobalTheory.DVR.fractionRing_eq_zpow_mul_unit <;> assumption)

@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.Bh
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BKReal GlobalTheory.Per GlobalTheory.BSP
 open scoped Formalism.Per NNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BSP.evalHom | exact GlobalTheory.BSP.evalHom | (intros; apply GlobalTheory.BSP.evalHom <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BSP.evalHom` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FExistsStratifiedPhiModuleHomValueMap.lean&line=36#L36)
 -/
 theorem _root_.GlobalTheory.T.exists_stratifiedPhiModuleHom_valueMap : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (d d' : ℕ) (S : Strat bk d) (S' : Strat bk d') (Y : Matrix (Fin d') (Fin d) bk.S), IsStratHom S S' Y → ∀ (B : Obj l ↥(OL K)) (N : Type) [AddCommGroup N] [Module B.A N] (N' : Type) [AddCommGroup N'] [Module B.A N'] (V : Eval S B N) (V' : Eval S' B N'), ∃ w : N →ₗ[B.A] N', ∀ (Q : Obj l ↥(OL K)) (a : Hom B Q) (g : Hom bk.prism Q) (x : N), V'.v a g (w x) = (Y.map (BK.hf g)).mulVec (V.v a g x) := by
   first | exact @GlobalTheory.BSP.evalHom | exact GlobalTheory.BSP.evalHom | (intros; apply GlobalTheory.BSP.evalHom <;> assumption)

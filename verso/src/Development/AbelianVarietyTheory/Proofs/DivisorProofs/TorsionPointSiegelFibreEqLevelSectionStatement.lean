@@ -9,8 +9,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.TInj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TInj.torsion_isLev | exact GlobalTheory.TInj.torsion_isLev | (intros; apply GlobalTheory.TInj.torsion_isLev <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TInj.torsion_isLev` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTorsionPointSiegelFibreEqLevelSection.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.torsionPoint_siegelFibre_eq_levelSection : ∀ {X : Scheme.{0}} {g n : ℕ} {B : Type} [CommRing B] {ζ : B} {sX : X ⟶ Sp B} (c : SiegPre g n ζ sX), IsUnit ζ → ∀ {S : Scheme.{0}} (A : Over S) [GrpObj A] (y : S ⟶ X) (α : A.left ⟶ c.A.left), IsGrpPullback A c.A y α → ∀ (F : Type) [Field F] [IsAlgClosed F] (t : Sp F ⟶ S) (x : Over.mk t ⟶ A), x ^ n = 1 → ∃ l, x.left ≫ α = t ≫ y ≫ (c.lev l).left := by
   first | exact @GlobalTheory.TInj.torsion_isLev | exact GlobalTheory.TInj.torsion_isLev | (intros; apply GlobalTheory.TInj.torsion_isLev <;> assumption)

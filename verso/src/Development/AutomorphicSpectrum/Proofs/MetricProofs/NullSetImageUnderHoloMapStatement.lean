@@ -5,8 +5,10 @@ open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm 
 open scoped ComplexOrder Classical
 open GlobalTheory.CompanionTheory.Ar.PB.WSq
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.PB.NullImage.isNull_image_of_holoMap | exact GlobalTheory.CompanionTheory.Ar.PB.NullImage.isNull_image_of_holoMap | (intros; apply GlobalTheory.CompanionTheory.Ar.PB.NullImage.isNull_image_of_holoMap <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.PB.NullImage.isNull_image_of_holoMap` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FNullSetImageUnderHoloMap.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.null_set_image_under_holoMap : ∀ (e : ℕ) (X Y : Type) [TopologicalSpace X] [TopologicalSpace Y] (A : FinHolAtlas e X) (B : FinHolAtlas e Y) (h : Y → X) (Z : Set Y), HoloMap B A h → IsNull B Z → IsNull A (h '' Z) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.PB.NullImage.isNull_image_of_holoMap | exact GlobalTheory.CompanionTheory.Ar.PB.NullImage.isNull_image_of_holoMap | (intros; apply GlobalTheory.CompanionTheory.Ar.PB.NullImage.isNull_image_of_holoMap <;> assumption)

@@ -13,8 +13,10 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.Ro
 open Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IdemSumSet.places_eq_of_isIdemSum | exact GlobalTheory.IdemSumSet.places_eq_of_isIdemSum | (intros; apply GlobalTheory.IdemSumSet.places_eq_of_isIdemSum <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IdemSumSet.places_eq_of_isIdemSum` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FIsIdemSumPlacesUnique.lean&line=42#L42)
 -/
 theorem _root_.GlobalTheory.T.isIdemSum_places_unique : ∀ (D : D7) (e : AE D) (P P' : Finset (Pl D.host.E)), IsIdemSum e P → IsIdemSum e P' → P = P' := by
   first | exact @GlobalTheory.IdemSumSet.places_eq_of_isIdemSum | exact GlobalTheory.IdemSumSet.places_eq_of_isIdemSum | (intros; apply GlobalTheory.IdemSumSet.places_eq_of_isIdemSum <;> assumption)

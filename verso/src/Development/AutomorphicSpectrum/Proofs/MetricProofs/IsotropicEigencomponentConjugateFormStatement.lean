@@ -6,8 +6,10 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.BdryChart
 import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.IsPshLocallyIntegrableStatement
 open NumberField Matrix Filter Topology GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp GroundTheory.Heights₂.Heights.LowerBoundFree GroundTheory.Heights₂.Heights.Regular
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Relay.isotropic_eigencomponent_conjugate_form | exact GlobalTheory.CompanionTheory.Relay.isotropic_eigencomponent_conjugate_form | (intros; apply GlobalTheory.CompanionTheory.Relay.isotropic_eigencomponent_conjugate_form <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Relay.isotropic_eigencomponent_conjugate_form` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FIsotropicEigencomponentConjugateForm.lean&line=8#L8)
 -/
 theorem _root_.GlobalTheory.T.isotropic_eigencomponent_conjugate_form : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (g : ℕ) (Λ : Type) [AddCommGroup Λ] [Module (𝓞 E) Λ] (Ψ : Type) [Fintype Ψ] (R : RiemLat E g Λ) (I : Submodule (𝓞 E) Λ), IsIsoSub R.form I → ∀ s : 𝓞 E →+* ℂ, (∀ v ∈ I, ∀ w ∈ I, R.ip (eigComp R.B ((starRingEnd ℂ).comp s) (R.P v)) (eigComp R.B ((starRingEnd ℂ).comp s) (R.P w)) = starRingEnd ℂ (R.ip (eigComp R.B s (R.P v)) (eigComp R.B s (R.P w)))) ∧ ∀ (r : ℕ) (v : Fin r → Λ), (∀ a, v a ∈ I) → LinearIndependent (𝓞 E) v → LinearIndependent ℂ fun a => eigComp R.B s (R.P (v a)) := by
   first | exact @GlobalTheory.CompanionTheory.Relay.isotropic_eigencomponent_conjugate_form | exact GlobalTheory.CompanionTheory.Relay.isotropic_eigencomponent_conjugate_form | (intros; apply GlobalTheory.CompanionTheory.Relay.isotropic_eigencomponent_conjugate_form <;> assumption)

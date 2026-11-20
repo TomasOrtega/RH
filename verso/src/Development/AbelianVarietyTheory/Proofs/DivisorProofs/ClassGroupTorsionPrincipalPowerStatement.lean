@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ClassGroupTorsionPr
 import Mathlib
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.exists_pow_eq_span_singleton_of_intCast_mem | exact GlobalTheory.exists_pow_eq_span_singleton_of_intCast_mem | (intros; apply GlobalTheory.exists_pow_eq_span_singleton_of_intCast_mem <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.exists_pow_eq_span_singleton_of_intCast_mem` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FClassGroupTorsionPrincipalPower.lean&line=47#L47)
 -/
 theorem _root_.GlobalTheory.T.class_group_torsion_principal_power : ∀ (A K : Type) [CommRing A] [IsDomain A] [Module.Finite ℤ A]
     [Field K] [Algebra A K] [IsFractionRing A K] (M : ℤ), M ≠ 0 →

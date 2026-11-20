@@ -23,8 +23,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 open scoped GlobalTheory.VacAny
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HeisLatVac.vacFn_hasCompactSupport_of_isCompact | exact GlobalTheory.HeisLatVac.vacFn_hasCompactSupport_of_isCompact | (intros; apply GlobalTheory.HeisLatVac.vacFn_hasCompactSupport_of_isCompact <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HeisLatVac.vacFn_hasCompactSupport_of_isCompact` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHeisenbergLatticeVacuumFnHasCompactSupport.lean&line=25#L25)
 -/
 theorem _root_.GlobalTheory.T.heisenbergLatticeVacuumFn_hasCompactSupport : ∀ {F : Type} [Field F] [NumberField F] (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) {κ : Type} [Fintype κ]
     (ψ₀ : AddChar (Fv F v) ℂ) (Λ : AddSubgroup ((κ → Fv F v) × (κ → Fv F v)))

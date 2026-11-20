@@ -7,8 +7,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.tensor_of_pullback_surj_ker | exact GlobalTheory.Mum.tensor_of_pullback_surj_ker | (intros; apply GlobalTheory.Mum.tensor_of_pullback_surj_ker <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.tensor_of_pullback_surj_ker` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTensorProductSurjectiveKerOfAffinePullback.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.tensorProduct_surjective_ker_of_affine_pullback : ∀ {R O R' Q : Type} [CommRing R] [CommRing O] [CommRing R'] [CommRing Q] [Algebra R O] [Algebra R R'] [Algebra R Q] (I : Ideal R') (a : O →ₐ[R] Q) (b : R' ⧸ I →ₐ[R] Q), IsPullback (spMap (a : O →+* Q)) (spMap (b : R' ⧸ I →+* Q)) (spMap (algebraMap R O)) (spMap (algebraMap R (R' ⧸ I))) → Function.Surjective (Algebra.TensorProduct.lift a (b.comp (Ideal.Quotient.mkₐ R I)) fun _ _ => Commute.all _ _) ∧ RingHom.ker (Algebra.TensorProduct.lift a (b.comp (Ideal.Quotient.mkₐ R I)) fun _ _ => Commute.all _ _) = I.map (Algebra.TensorProduct.includeRight : R' →ₐ[R] TensorProduct R O R') := by
   first | exact @GlobalTheory.Mum.tensor_of_pullback_surj_ker | exact GlobalTheory.Mum.tensor_of_pullback_surj_ker | (intros; apply GlobalTheory.Mum.tensor_of_pullback_surj_ker <;> assumption)

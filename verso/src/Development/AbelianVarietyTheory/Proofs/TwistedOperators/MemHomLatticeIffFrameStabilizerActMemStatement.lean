@@ -7,8 +7,10 @@ open NumberField IsDedekindDomain MeasureTheory Formalism.BasicNotions Formalism
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.StabLatInv.mem_latO_iff_actO_mem | exact GlobalTheory.StabLatInv.mem_latO_iff_actO_mem | (intros; apply GlobalTheory.StabLatInv.mem_latO_iff_actO_mem <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.StabLatInv.mem_latO_iff_actO_mem` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FMemHomLatticeIffFrameStabilizerActMem.lean&line=45#L45)
 -/
 theorem _root_.GlobalTheory.T.mem_homLattice_iff_frameStabilizer_act_mem : ∀ (D : D7) (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (Fin T.rank) (Lev.EAf D)), IsSelfDualC S ΛS → IsSelfDualC T ΛT → IsFrame βS ΛS → IsFrame βT ΛT → ∀ (g : GA D S) (h : GA D T), finE S g ∈ St βS → finE T h ∈ St βT → ∀ u, u ∈ latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) (fun _ => True) ↔ actO S T g h u ∈ latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) (fun _ => True) := by
   first | exact @GlobalTheory.StabLatInv.mem_latO_iff_actO_mem | exact GlobalTheory.StabLatInv.mem_latO_iff_actO_mem | (intros; apply GlobalTheory.StabLatInv.mem_latO_iff_actO_mem <;> assumption)

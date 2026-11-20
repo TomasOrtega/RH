@@ -9,8 +9,10 @@ open Ad3.R (G2 Jd md KA LInv IsLoc2 pt pri dia2)
 open scoped NumberField.AdeleRing ValuativeRel
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.ThetaStab.val_stab | exact GlobalTheory.CompanionTheory.ThetaStab.val_stab | (intros; apply GlobalTheory.CompanionTheory.ThetaStab.val_stab <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.ThetaStab.val_stab` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FTwistedLocalThetaLocallyConstant.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.twisted_local_theta_locally_constant : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 → ∀ (c : HeckeCharacter K) (v : Pl) (L : LM c v),
   L.ok → ∀ g₀ : GL (Fin 2) (Qv v), L.plus g₀ → ∃ U ∈ nhds g₀, ∀ g ∈ U, ∀ (τ : (Qv v)ˣ) (ξ : K),

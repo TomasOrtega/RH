@@ -8,8 +8,10 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 open scoped ENNReal Classical
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory GlobalTheory.ArInt GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.ShFam.Pad GlobalTheory.VertForm GlobalTheory.CoverNorm
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CoverNormConst.norms_const_mul | exact GlobalTheory.CoverNormConst.norms_const_mul | (intros; apply GlobalTheory.CoverNormConst.norms_const_mul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CoverNormConst.norms_const_mul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FNormsScaleByConstant.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.norms_scale_by_constant : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (V : Cover Y) (L : HermLB V.p) (f : Y.X → Y.Fn) (a : ∀ σ : F →+* ℂ, Pts Y σ → ℝ) (l : ∀ v : HeightOneSpectrum (𝓞 F), Ext v → AlgPt Y → ℝ) (c : F), c ≠ 0 → Norms V L f a l → Norms V L f (fun σ y => a σ y + Real.log ‖σ c‖) (fun v e y => l v e y + Real.log (NumberField.HeightOneSpectrum.adicAbv F v c)) := by
   first | exact @GlobalTheory.CoverNormConst.norms_const_mul | exact GlobalTheory.CoverNormConst.norms_const_mul | (intros; apply GlobalTheory.CoverNormConst.norms_const_mul <;> assumption)

@@ -8,8 +8,10 @@ open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHeck
 open Formalism.IndefR.DatumF
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SymplSkew.symplOF_swap | exact GlobalTheory.SymplSkew.symplOF_swap | (intros; apply GlobalTheory.SymplSkew.symplOF_swap <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SymplSkew.symplOF_swap` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAdelicSymplecticTraceFormAlternatingSwap.lean&line=56#L56)
 -/
 theorem _root_.GlobalTheory.T.adelicSymplecticTraceForm_alternating_swap : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     (∀ e, σ (σ e) = e) → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

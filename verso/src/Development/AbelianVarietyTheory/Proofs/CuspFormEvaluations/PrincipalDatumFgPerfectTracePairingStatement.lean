@@ -7,8 +7,10 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.Lat
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ThExprUniqOfChartIndep2
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.WeightAlgebra Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.PullbackSections GlobalTheory.RunIn
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.principalDatum_trace_perfect | exact GlobalTheory.principalDatum_trace_perfect | (intros; apply GlobalTheory.principalDatum_trace_perfect <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.principalDatum_trace_perfect` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FCuspFormEvaluations%2FPrincipalDatumFgPerfectTracePairing.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.principalDatum_fg_perfect_tracePairing : ∀ D : D7, ∃ AA : Submodule (𝓞 D.host.E) D.host.E, AA.FG ∧ AA ≠ ⊥ ∧ ∀ x : D.host.E, (∀ a ∈ AA, ∀ b ∈ AA, ∃ z : ℤ, Algebra.trace ℚ D.host.E (D.host.xi0 * x * a * ReciprocityTheory.ChartRestriction.G.FD.cc b) = z) ↔ IsIntegral ℤ x := by
   first | exact @GlobalTheory.principalDatum_trace_perfect | exact GlobalTheory.principalDatum_trace_perfect | (intros; apply GlobalTheory.principalDatum_trace_perfect <;> assumption)

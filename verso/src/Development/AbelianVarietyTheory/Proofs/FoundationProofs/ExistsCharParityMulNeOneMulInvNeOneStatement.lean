@@ -2,8 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsCharParityMulNeOneMulInvNeOne
 import Mathlib
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.exists_char_parity_mul_ne_one_mul_inv_ne_one | exact GlobalTheory.exists_char_parity_mul_ne_one_mul_inv_ne_one | (intros; apply GlobalTheory.exists_char_parity_mul_ne_one_mul_inv_ne_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.exists_char_parity_mul_ne_one_mul_inv_ne_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FExistsCharParityMulNeOneMulInvNeOne.lean&line=5#L5)
 -/
 theorem _root_.GlobalTheory.T.exists_dirichletCharacter_parity_mul_ne_one_mul_inv_ne_one : ∀ (N r : ℕ) (χ : DirichletCharacter ℂ N) (sg : ℂ), 0 < N → r.Prime → 7 ≤ r → r ∣ N → (sg = 1 ∨ sg = -1) → ∃ θ : DirichletCharacter ℂ N, θ (-1) = sg ∧ θ * χ ≠ 1 ∧ θ * χ⁻¹ ≠ 1 := by
   first | exact @GlobalTheory.exists_char_parity_mul_ne_one_mul_inv_ne_one | exact GlobalTheory.exists_char_parity_mul_ne_one_mul_inv_ne_one | (intros; apply GlobalTheory.exists_char_parity_mul_ne_one_mul_inv_ne_one <;> assumption)

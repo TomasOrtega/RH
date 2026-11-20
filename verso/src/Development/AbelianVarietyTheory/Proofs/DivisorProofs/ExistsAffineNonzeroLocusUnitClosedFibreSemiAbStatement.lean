@@ -7,8 +7,10 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.Toroidal GlobalTheory.LocM G
 open scoped CategoryTheory.Obj
 open GlobalTheory.Desc
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SemiAbAffineUnit.exists_affine_nonzeroLocus_unit | exact GlobalTheory.SemiAbAffineUnit.exists_affine_nonzeroLocus_unit | (intros; apply GlobalTheory.SemiAbAffineUnit.exists_affine_nonzeroLocus_unit <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SemiAbAffineUnit.exists_affine_nonzeroLocus_unit` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsAffineNonzeroLocusUnitClosedFibreSemiAb.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.exists_affine_nonzeroLocus_unit_closedFibre_semiAb : ∀ (R : Type) [CommRing R] [IsRegularLocalRing R] [IsDomain R] (G : Over (Sp R)) [GrpObj G], IsSemiAbelian G → IsAbelianScheme ((Over.pullback (jK R)).obj G) → ∃ (M₀ : LB G.left) (s₀ : M₀.Sec), M₀.IsLB ∧ IsAffineOpen (nonzeroLocus s₀) ∧ ∃ y₀ ∈ nonzeroLocus s₀, G.hom y₀ = closedPoint R := by
   first | exact @GlobalTheory.SemiAbAffineUnit.exists_affine_nonzeroLocus_unit | exact GlobalTheory.SemiAbAffineUnit.exists_affine_nonzeroLocus_unit | (intros; apply GlobalTheory.SemiAbAffineUnit.exists_affine_nonzeroLocus_unit <;> assumption)

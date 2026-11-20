@@ -7,8 +7,10 @@ import Formalism.PeriodIntegrals.QuotInv
 open BranchingSupport Formalism.FourierDecayAlt Formalism.FourierDecayAlt.ThreeDimData Matrix MeasureTheory Finset
 open scoped InnerProductSpace ENNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MatHaar.haar_unique_locFinite_openPos | exact GlobalTheory.MatHaar.haar_unique_locFinite_openPos | (intros; apply GlobalTheory.MatHaar.haar_unique_locFinite_openPos <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MatHaar.haar_unique_locFinite_openPos` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FJetHarmonics%2FMatGroupHaarUniqueFiniteCompactOpenPos.lean&line=166#L166)
 -/
 theorem _root_.GlobalTheory.T.matGroupHaar_unique_finite_compact_openPos : ∀ (m : ℕ) (G : Set (Matrix (Fin m) (Fin m) ℂ)) (μ : Measure (PI.MtM m)), PI.IsMatGroup G → PI.IsHaarOnM G μ → (∀ μ' : Measure (PI.MtM m), PI.IsHaarOnM G μ' → ∃ c : ℝ≥0∞, 0 < c ∧ c < ⊤ ∧ μ' = c • μ) ∧ (∀ K : Set (PI.MtM m), IsCompact K → (∀ x ∈ K, Matrix.of x ∈ G) → μ K < ⊤) ∧ ∀ U : Set (PI.MtM m), IsOpen U → (∃ x ∈ U, Matrix.of x ∈ G) → 0 < μ U := by
   first | exact @GlobalTheory.MatHaar.haar_unique_locFinite_openPos | exact GlobalTheory.MatHaar.haar_unique_locFinite_openPos | (intros; apply GlobalTheory.MatHaar.haar_unique_locFinite_openPos <;> assumption)

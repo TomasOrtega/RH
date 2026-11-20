@@ -5,8 +5,10 @@ open Matrix Finset
 open scoped InnerProductSpace
 open PositivityTheory.RgBcC PositivityTheory.RgBcC.Real PositivityTheory.RgBcC.RealD GlobalTheory.CompanionTheory.RealCount
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.RealCount.highestWeight_antitone_of_finiteDimensional_stable | exact GlobalTheory.CompanionTheory.RealCount.highestWeight_antitone_of_finiteDimensional_stable | (intros; apply GlobalTheory.CompanionTheory.RealCount.highestWeight_antiton …`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.RealCount.highestWeight_antitone_of_finiteDimensional_stable` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FHighestWeightAntitoneOfFiniteDimensionalStable.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.highest_weight_antitone_alt : ∀ {n : ℕ} (V : Type) [AddCommGroup V] [Module ℂ V] (Kf : Fin n → Fin n → Module.End ℂ V) (S : Submodule ℂ V)
     (ν : Fin n → ℝ) (v : V), Formalism.REAL.GlRel Kf → FiniteDimensional ℂ S → (∀ a b, ∀ w ∈ S, Kf a b w ∈ S) → v ∈ S → v ≠ 0 →

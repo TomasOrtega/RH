@@ -6,8 +6,10 @@ open Matrix Complex NumberField GlobalTheory.SW Filter Topology
 open ReciprocityTheory.ChartRestriction.G.FD (cc herm)
 open scoped ComplexConjugate ComplexOrder Real Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SW.classSum_nb | exact GlobalTheory.SW.classSum_nb | (intros; apply GlobalTheory.SW.classSum_nb <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SW.classSum_nb` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSiegelThetaTransformation%2FClassSumNb.lean&line=229#L229)
 -/
 theorem _root_.GlobalTheory.T.classSum_sum_nb_eq_of_moves_invariant : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n M q : ℕ) (P : Ideal (𝓞 E)), 0 < M → GoodPrime M q P → ∀ f : Lt E n → ℂ, (∀ h ∈ DH E n M, ∀ Λ ∈ Vset E n M, ∀ Λ' ∈ Vset E n M, Moves h Λ Λ' → f Λ' = f Λ) → ((q : ℂ) - 1) * classSum M (fun Λ => ∑ᶠ Λ' ∈ Nb M P Λ, f Λ') = ((q : ℂ) ^ n - 1) * classSum M f := by
   first | exact @GlobalTheory.SW.classSum_nb | exact GlobalTheory.SW.classSum_nb | (intros; apply GlobalTheory.SW.classSum_nb <;> assumption)

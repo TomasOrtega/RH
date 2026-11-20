@@ -10,8 +10,10 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Unf GlobalTheory.Unf.FB
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Unf.FB.uniRad_surj_psi | exact GlobalTheory.Unf.FB.uniRad_surj_psi | (intros; apply GlobalTheory.Unf.FB.uniRad_surj_psi <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Unf.FB.uniRad_surj_psi` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FFlagUnipotentRadicalSurjectsUnitriangularCharact.lean&line=226#L226)
 -/
 theorem _root_.GlobalTheory.T.flagUnipotentRadical_surjects_unitriangular_characters_agree : ∀ (D : D7) (σ : ℕ) (B : BesLev D σ), (∀ u : UX D (σ + 1), ∃ n ∈ flagN B.d, mt B.V n ⬝ x0 B = x0 B ⬝ u.1.1 ∧ (u ∈ UXQ D (σ + 1) → n ∈ GQ B.V)) ∧ ∀ (ψ : AddChar (AF D.host.F) ℂ), ∀ n ∈ flagN B.d, ∀ (h : GA D B.A) (u : UX D (σ + 1)), mt B.V (n * embA B.d B.o h) ⬝ x0 B = x0 B ⬝ u.1.1 → psiBes ψ B.d 1 (vecB B.o B.ζ) n = psiUni ψ u.1 := by
   first | exact @GlobalTheory.Unf.FB.uniRad_surj_psi | exact GlobalTheory.Unf.FB.uniRad_surj_psi | (intros; apply GlobalTheory.Unf.FB.uniRad_surj_psi <;> assumption)

@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.FormalCoboundarySmu
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrobKerIdealLeAugIdeal
 open CategoryTheory TensorProduct MvPowerSeries GlobalTheory GlobalTheory.PDiv GlobalTheory.PDivGroup GlobalTheory.Katz
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Katz.isCoc_iff_mem_cocycles | exact GlobalTheory.Katz.isCoc_iff_mem_cocycles | (intros; apply GlobalTheory.Katz.isCoc_iff_mem_cocycles <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Katz.isCoc_iff_mem_cocycles` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsSymmetricFormalGroupCocycleIffMemCocycles.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.isSymmetricFormalGroupCocycle_iff_mem_cocycles : ∀ (p : ℕ) (k : Type) [CommRing k] (d : ℕ) (G : PDivGroup p k) (c : Chart G d), ∀ (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) k), c.IsLawOf μ → ∀ s, IsCoc μ s ↔ (fun n => c.ev₂ n s) ∈ G.cocycles := by
   first | exact @GlobalTheory.Katz.isCoc_iff_mem_cocycles | exact GlobalTheory.Katz.isCoc_iff_mem_cocycles | (intros; apply GlobalTheory.Katz.isCoc_iff_mem_cocycles <;> assumption)

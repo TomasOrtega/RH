@@ -4,8 +4,10 @@ import Mathlib
 open MeasureTheory
 open scoped Pointwise
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.sum_integral_indicator_eq_setIntegral_count | exact GlobalTheory.sum_integral_indicator_eq_setIntegral_count | (intros; apply GlobalTheory.sum_integral_indicator_eq_setIntegral_count <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.sum_integral_indicator_eq_setIntegral_count` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFundamentalDomainUnfoldSubgroup.lean&line=7#L7)
 -/
 theorem _root_.GlobalTheory.T.fundamental_domain_unfold_subgroup : ∀ {G G₁ : Type} [Group G] [MeasurableSpace G] [Group G₁] (N Q : Subgroup G) (Γ : Subgroup G₁)
     (μN : Measure N) (ι : G₁ → G) (𝓕 : Set N) (D : Set G) (h : G),

@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.InvVolConjLevelOne
 open GlobalTheory.FunObj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.chainTo_update_add | exact GlobalTheory.chainTo_update_add | (intros; apply GlobalTheory.chainTo_update_add <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.chainTo_update_add` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FLinearMapChainCompositeUpdateAdd.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.linearMapChainComposite_update_add : ∀ {V : ℕ → Type} [∀ j, AddCommGroup (V j)] [∀ j, Module ℂ (V j)] (k : ∀ j, V j →ₗ[ℂ] V (j + 1)) (j₀ : ℕ)
     (A B : V j₀ →ₗ[ℂ] V (j₀ + 1)) (n : ℕ), j₀ < n →

@@ -13,8 +13,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SWLink
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SWLinkMeas.exists_isTamagawa | exact GlobalTheory.SWLinkMeas.exists_isTamagawa | (intros; apply GlobalTheory.SWLinkMeas.exists_isTamagawa <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SWLinkMeas.exists_isTamagawa` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTamagawaMeasureMatrixAdeles.lean&line=78#L78)
 -/
 theorem _root_.GlobalTheory.T.tamagawa_measure_matrix_adeles : ∀ (D : D7) (m n d : ℕ) (ε : Module.Basis (Fin d) D.host.F D.host.E) (μ : Measure (Mx D m n)) (𝓕 : Set (Mx D m n)), IsCovolOne (ratMx D m n) μ 𝓕 → ∀ [MeasurableSpace (Fin m × Fin n × Fin d → AF D.host.F)] [BorelSpace (Fin m × Fin n × Fin d → AF D.host.F)], ∃ μ' : Measure (Fin m × Fin n × Fin d → AF D.host.F), IsTamagawa D.host.F (Fin m × Fin n × Fin d) μ' ∧ ∀ f : (Fin m × Fin n × Fin d → AF D.host.F) → ℂ, ∫ y, f y ∂μ' = ∫ x, f (coord ε x) ∂μ := by
   first | exact @GlobalTheory.SWLinkMeas.exists_isTamagawa | exact GlobalTheory.SWLinkMeas.exists_isTamagawa | (intros; apply GlobalTheory.SWLinkMeas.exists_isTamagawa <;> assumption)

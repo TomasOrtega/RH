@@ -4,8 +4,10 @@ import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomology
 set_option backward.isDefEq.respectTransparency false
 open CategoryTheory AlgebraicGeometry TensorProduct GlobalTheory.LogCris DividedPowers CrystallineSemistableComparison CrystallineSemistableComparison.Pb
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.AlmostFinite.afg_separated_complete | exact GlobalTheory.CompanionTheory.AlmostFinite.afg_separated_complete | (intros; apply GlobalTheory.CompanionTheory.AlmostFinite.afg_separated_complete <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.AlmostFinite.afg_separated_complete` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FAlmostFiniteModuleBoundedTorsion.lean&line=243#L243)
 -/
 theorem _root_.GlobalTheory.T.almost_finite_module_bounded_torsion : ∀ (R : Type) [CommRing R] (I : Ideal R) (c : R), I.FG → IsNilpotent I → I.IsPrime →
     (∀ x y : R, x ∈ Ideal.span {y} ⊔ I ∨ y ∈ Ideal.span {x} ⊔ I) → (∀ x : R, x ∉ I → ∃ n : ℕ, c ^ n ∈ Ideal.span {x} ⊔ I) →

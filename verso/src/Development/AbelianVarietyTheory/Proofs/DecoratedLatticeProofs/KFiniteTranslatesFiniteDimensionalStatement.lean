@@ -16,8 +16,10 @@ open GlobalTheory.Core.Rk.IP
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Core.Rk.Exh GlobalTheory.RegSW
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Core.Rk.FinDim.finiteDimensional_span_io | exact GlobalTheory.Core.Rk.FinDim.finiteDimensional_span_io | (intros; apply GlobalTheory.Core.Rk.FinDim.finiteDimensional_span_io <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Core.Rk.FinDim.finiteDimensional_span_io` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FKFiniteTranslatesFiniteDimensional.lean&line=46#L46)
 -/
 theorem _root_.GlobalTheory.T.K_finite_translates_finite_dimensional : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (A : HSp D) (cA : CptF A) (a : GL (Fin A.rank) (AE D)), Defin θ A cA a → ∀ (W : HSp D) (χ : (AE D)ˣ →* Circle) (omh : WRep (dblSp A) W), IsWeilDatumO ψ (dblSp A) W 1 χ omh → ∀ φ, IsKFinVec omh (Khat A a) φ → ∀ K : Set (GA D A), IsCompact K → FiniteDimensional ℂ (Submodule.span ℂ {f : WO (dblSp A) W → ℂ | ∃ g₁ ∈ K, ∃ g₂ ∈ K, f = omh (io A (g₁, g₂), 1) φ}) := by
   first | exact @GlobalTheory.Core.Rk.FinDim.finiteDimensional_span_io | exact GlobalTheory.Core.Rk.FinDim.finiteDimensional_span_io | (intros; apply GlobalTheory.Core.Rk.FinDim.finiteDimensional_span_io <;> assumption)

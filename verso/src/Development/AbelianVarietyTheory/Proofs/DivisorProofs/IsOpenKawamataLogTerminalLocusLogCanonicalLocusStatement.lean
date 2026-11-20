@@ -9,8 +9,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.CechPic GlobalTheory.QCoh GlobalTheory.Discrepancy GlobalTheory.LogPair
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Discrepancy.isOpen_kltLocus_lcLocus | exact GlobalTheory.Discrepancy.isOpen_kltLocus_lcLocus | (intros; apply GlobalTheory.Discrepancy.isOpen_kltLocus_lcLocus <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Discrepancy.isOpen_kltLocus_lcLocus` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsOpenKawamataLogTerminalLocusLogCanonicalLocus.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.isOpen_kawamataLogTerminalLocus_logCanonicalLocus : GlobalTheory.Published.Principalisation → ∀ (k : Type) [Field k] [CharZero k] (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X] (p : X ⟶ Sp k) (n : ℕ), IsProjOver p → topologicalKrullDim X = n → ∀ (Δ : X → ℚ) (m : ℕ) (G : CartierDiv X), 0 < m → IsLogCanonicalMultiple p n Δ m G → IsOpen {x : X | KltAt p n Δ x} ∧ IsOpen {x : X | LcAt p n Δ x} := by
   first | exact @GlobalTheory.Discrepancy.isOpen_kltLocus_lcLocus | exact GlobalTheory.Discrepancy.isOpen_kltLocus_lcLocus | (intros; apply GlobalTheory.Discrepancy.isOpen_kltLocus_lcLocus <;> assumption)

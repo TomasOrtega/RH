@@ -12,8 +12,10 @@ open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G Reciproci
 open GlobalTheory GlobalTheory.RunIn
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.lamwAt_of_lawsCore | exact GlobalTheory.lamwAt_of_lawsCore | (intros; apply GlobalTheory.lamwAt_of_lawsCore <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.lamwAt_of_lawsCore` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FCubicalLineBundles%2FMeanLogSupNormLowerBoundOfCoreLaws.lean&line=30#L30)
 -/
 theorem _root_.GlobalTheory.T.meanLogSupNorm_lower_bound_of_coreLaws : ∃ C0 : ℝ, 0 < C0 ∧ ∀ (D : D7) (T : Core D) (h : LawsCore T), GamAt T → ∀ (large₂ : SizeData₂ D), (∀ i, Real.log (D.host.g i) ≤ 9 * large₂.sc.L + 1) → ∀ (j : ℕ) (w : WeightFamilies.Wt D j) (C A : ℝ), C0 ≤ C → 2 ≤ A → Formalism.MainNotions.Gaps.EtaleWeightGaps.LAMwAt large₂ (recB h) j w C A := by
   first | exact @GlobalTheory.lamwAt_of_lawsCore | exact GlobalTheory.lamwAt_of_lawsCore | (intros; apply GlobalTheory.lamwAt_of_lawsCore <;> assumption)

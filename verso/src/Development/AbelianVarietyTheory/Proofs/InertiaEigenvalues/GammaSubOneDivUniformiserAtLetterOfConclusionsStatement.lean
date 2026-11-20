@@ -5,8 +5,10 @@ import Formalism.SharpRestriction.LevelLetterCocycles.RamifiedCoefficientChains
 import Formalism.SharpRestriction.LevelLetterCocycles.SemisimpleLetterIffForallMem
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.adm18_of_N1used | exact GlobalTheory.adm18_of_N1used | (intros; apply GlobalTheory.adm18_of_N1used <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.adm18_of_N1used` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FGammaSubOneDivUniformiserAtLetterOfConclusions.lean&line=82#L82)
 -/
 theorem _root_.GlobalTheory.T.gamma_sub_one_div_uniformiser_at_letter_of_conclusions : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F), Formalism.MainNotions.DeltaInvariantLattices.DeltaInvariantNormBound D HW F Cm → Formalism.MainNotions.RamifiedCoefficientChains.adm18 D HW F := by
   first | exact @GlobalTheory.adm18_of_N1used | exact GlobalTheory.adm18_of_N1used | (intros; apply GlobalTheory.adm18_of_N1used <;> assumption)

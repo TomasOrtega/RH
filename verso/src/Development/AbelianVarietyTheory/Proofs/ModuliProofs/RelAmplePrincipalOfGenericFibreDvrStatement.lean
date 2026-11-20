@@ -18,8 +18,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj TensorProduct Pointwise
 open GlobalTheory.Models GlobalTheory.ZM
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PolDvr.relAmple_kTriv_of_generic_fibre | exact GlobalTheory.PolDvr.relAmple_kTriv_of_generic_fibre | (intros; apply GlobalTheory.PolDvr.relAmple_kTriv_of_generic_fibre <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PolDvr.relAmple_kTriv_of_generic_fibre` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FModuliProofs%2FRelAmplePrincipalOfGenericFibreDvr.lean&line=53#L53)
 -/
 theorem _root_.GlobalTheory.T.relAmple_principal_of_genericFibre_dvr : GlobalTheory.LN.HomExtSt → Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (V K : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K] [Algebra V K] [IsFractionRing V K] (t : SAB H (Sp V)) (tK : SAB H (Sp K)) (_ : SABMap tK t (spMap (algebraMap V K))), IsProper t.G.hom → Out.RelAmple tK.G tK.PP.L → Out.KTriv tK.G tK.PP.L → Out.RelAmple t.G t.PP.L ∧ Out.KTriv t.G t.PP.L := by
   first | exact @GlobalTheory.PolDvr.relAmple_kTriv_of_generic_fibre | exact GlobalTheory.PolDvr.relAmple_kTriv_of_generic_fibre | (intros; apply GlobalTheory.PolDvr.relAmple_kTriv_of_generic_fibre <;> assumption)

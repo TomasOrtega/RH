@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.Bh
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BKReal GlobalTheory.Per GlobalTheory.BSP
 open scoped Formalism.Per NNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BSP.Res.exists_witt_residue | exact GlobalTheory.BSP.Res.exists_witt_residue | (intros; apply GlobalTheory.BSP.Res.exists_witt_residue <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BSP.Res.exists_witt_residue` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FExistsWittResidueFieldInRingOfIntegers.lean&line=57#L57)
 -/
 theorem _root_.GlobalTheory.T.exists_witt_residueField_in_ringOfIntegers : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l), ∃ (a : ℕ) (_ : NeZero a) (w : Wq l a →ₐ[ℤ_[l]] ↥(OL K)), Kunr l a ≤ K.1 ∧ (∀ c, intToOC K (w c) = Per.θ l (wA l a c)) ∧ ∀ x : ↥(OL K), ∃ c, ¬ IsUnit (x - w c) := by
   first | exact @GlobalTheory.BSP.Res.exists_witt_residue | exact GlobalTheory.BSP.Res.exists_witt_residue | (intros; apply GlobalTheory.BSP.Res.exists_witt_residue <;> assumption)

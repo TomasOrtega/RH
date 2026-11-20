@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUSplittingTrRep
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.WeilTr MeasureTheory
 open scoped Matrix ENNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SchrKeepsSchA.schr_mem_schA | exact GlobalTheory.SchrKeepsSchA.schr_mem_schA | (intros; apply GlobalTheory.SchrKeepsSchA.schr_mem_schA <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SchrKeepsSchA.schr_mem_schA` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSchroedingerPreservesAdelicSchwartz.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.schroedinger_preserves_adelic_schwartz : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ → ∀ (κ : Type) [Fintype κ]
     (p : (κ → AF F) × (κ → AF F)), ∀ Φ ∈ schA F κ, schr ψ p Φ ∈ schA F κ := by

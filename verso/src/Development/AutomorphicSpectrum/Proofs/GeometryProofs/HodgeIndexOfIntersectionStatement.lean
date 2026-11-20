@@ -24,8 +24,10 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.Glo
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Link.hodgeIndex_of_intersection | exact GlobalTheory.CompanionTheory.Ar.Link.hodgeIndex_of_intersection | (intros; apply GlobalTheory.CompanionTheory.Ar.Link.hodgeIndex_of_intersection <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Link.hodgeIndex_of_intersection` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FHodgeIndexOfIntersection.lean&line=35#L35)
 -/
 theorem _root_.GlobalTheory.T.hodge_index_of_intersection : ReciprocityTheory.ChartRestriction.G.Geo.ArithIntersectionSystemStatement → ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.MoriwakiHSStatement → ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.MoriwakiBigStatement → ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKStatement → Prov.HS := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Link.hodgeIndex_of_intersection | exact GlobalTheory.CompanionTheory.Ar.Link.hodgeIndex_of_intersection | (intros; apply GlobalTheory.CompanionTheory.Ar.Link.hodgeIndex_of_intersection <;> assumption)

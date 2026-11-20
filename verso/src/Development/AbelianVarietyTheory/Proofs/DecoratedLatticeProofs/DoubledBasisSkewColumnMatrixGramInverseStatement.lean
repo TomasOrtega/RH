@@ -11,8 +11,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero (swSec sZero)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.StdUnn.Tm_gram_inv | exact GlobalTheory.StdUnn.Tm_gram_inv | (intros; apply GlobalTheory.StdUnn.Tm_gram_inv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.StdUnn.Tm_gram_inv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FDoubledBasisSkewColumnMatrixGramInverse.lean&line=42#L42)
 -/
 theorem _root_.GlobalTheory.T.doubledBasisSkewColumnMatrix_gram_inverse : ∀ (D : D7) (A : HSp D) (μ : D.host.E), IsSkew μ → (Tm A μ)ᴴ * (dblSp A).gram * Tm A μ = μ • Jst D A.rank ∧ IsUnit (Tm A μ).det ∧ (Tm A μ)⁻¹ = (Matrix.fromRows (dblDec A).qX (μ⁻¹ • (dblDec A).qY)).submatrix finSumFinEquiv.symm id := by
   first | exact @GlobalTheory.StdUnn.Tm_gram_inv | exact GlobalTheory.StdUnn.Tm_gram_inv | (intros; apply GlobalTheory.StdUnn.Tm_gram_inv <;> assumption)

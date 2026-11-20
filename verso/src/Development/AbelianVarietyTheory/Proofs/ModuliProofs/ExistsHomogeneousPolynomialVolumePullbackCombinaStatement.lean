@@ -10,8 +10,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj TensorProduct
 open GlobalTheory.ZV
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.VolPoly.exists_vol_linComb_poly | exact GlobalTheory.VolPoly.exists_vol_linComb_poly | (intros; apply GlobalTheory.VolPoly.exists_vol_linComb_poly <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.VolPoly.exists_vol_linComb_poly` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FModuliProofs%2FExistsHomogeneousPolynomialVolumePullbackCombina.lean&line=268#L268)
 -/
 theorem _root_.GlobalTheory.T.exists_homogeneousPolynomial_volume_pullback_combinations : Out.Laws → Out.Laws2 → ∀ (K : Type) [Field K] [IsAlgClosed K] (P : Out.PolAV (Sp K)) (I : Type) [Fintype I] (φ : I → (P.A.left ⟶ P.A.left)), ∃ Φ : MvPolynomial I ℚ, Φ.IsHomogeneous P.g ∧ ∀ ε : I → ℤ, Out.RelAmple P.A (LB.LinComb P.L φ ε) → Vol P.A.hom (LB.LinComb P.L φ ε) P.g ((MvPolynomial.eval (fun i => (ε i : ℚ)) Φ : ℚ) : ℝ) := by
   first | exact @GlobalTheory.VolPoly.exists_vol_linComb_poly | exact GlobalTheory.VolPoly.exists_vol_linComb_poly | (intros; apply GlobalTheory.VolPoly.exists_vol_linComb_poly <;> assumption)

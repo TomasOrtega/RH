@@ -7,8 +7,10 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory Car
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.CechDR GlobalTheory.DeRham
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CrysFlatBC.bijective_liftSemi_pull1 | exact GlobalTheory.CrysFlatBC.bijective_liftSemi_pull1 | (intros; apply GlobalTheory.CrysFlatBC.bijective_liftSemi_pull1 <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CrysFlatBC.bijective_liftSemi_pull1` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCrystallineFrobeniusSemilinearBijective.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.crystalline_thickening_pullback_bijective : ∀ (R D : Type) [CommRing R] [CommRing D] [Algebra R D] [Module.Flat R D] (π : D →+* R) (κ : DividedPowers (RingHom.ker π)), IsNilDP κ → (∀ a : R, π (algebraMap R D a) = a) → ∀ (X : Scheme.{0}) (s : X ⟶ Sp R) (t : X ⟶ Sp D) (φ : X ⟶ X), Smooth s → IsSeparated s → QuasiCompact s → t = s ≫ spMap π → φ = 𝟙 X → ∀ m : IsMor (dp0 R) s κ t (algebraMap R D) φ, Function.Bijective (liftSemi m.pull1) := by
   first | exact @GlobalTheory.CrysFlatBC.bijective_liftSemi_pull1 | exact GlobalTheory.CrysFlatBC.bijective_liftSemi_pull1 | (intros; apply GlobalTheory.CrysFlatBC.bijective_liftSemi_pull1 <;> assumption)

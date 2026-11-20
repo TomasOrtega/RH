@@ -9,8 +9,10 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open scoped TensorProduct
 open Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.exists_GL_cols_eq_inv_rows_eq_of_mul_eq_one | exact GlobalTheory.exists_GL_cols_eq_inv_rows_eq_of_mul_eq_one | (intros; apply GlobalTheory.exists_GL_cols_eq_inv_rows_eq_of_mul_eq_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.exists_GL_cols_eq_inv_rows_eq_of_mul_eq_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLeftInverseExtendsToGL.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.left_inverse_extends_to_GL : ∀ (K : Type) [Field K] (n r : ℕ) (X : Matrix (Fin n) (Fin r) K) (L : Matrix (Fin r) (Fin n) K), L * X = 1 →
     r ≤ n ∧ ∃ C : GL (Fin n) K, ∀ (j : Fin r) (k : Fin n), (k : ℕ) = j → (∀ a, C.1 a k = X a j) ∧ ∀ a, (C⁻¹).1 k a = L j a := by

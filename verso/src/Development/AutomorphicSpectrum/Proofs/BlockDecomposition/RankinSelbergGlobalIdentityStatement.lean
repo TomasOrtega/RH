@@ -2,8 +2,10 @@ import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RankinSelbergGlobalIdentity
 import PositivityTheory.AutomorphicForms.PublishedInputs.CuspidalContinuity.ArchimedeanCuspidal.VerticalStrips.UnramifiedEulerProductIntegral
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.RankinSelberg.globalIdentity | exact GlobalTheory.CompanionTheory.RankinSelberg.globalIdentity | (intros; apply GlobalTheory.CompanionTheory.RankinSelberg.globalIdentity <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.RankinSelberg.globalIdentity` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FRankinSelbergGlobalIdentity.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.rankin_selberg_global_identity : Ad3.R.B0 → Ad3.R.A1 → Ad3.R.G0 → Ad3.R.G2a → Ad3.R.G4 → Ad3.R.G5 → Ad3.R.GS → Ad3.R.FT → Ad3.R.F2 → Ad3.R.F5 → Ad3.R.F6 → Ad3.R.ConstantTermVanishingAlt → Ad3.R.E6 → Ad3.R.G6 → Ad3.R.X0 := by
   first | exact @GlobalTheory.CompanionTheory.RankinSelberg.globalIdentity | exact GlobalTheory.CompanionTheory.RankinSelberg.globalIdentity | (intros; apply GlobalTheory.CompanionTheory.RankinSelberg.globalIdentity <;> assumption)

@@ -2,8 +2,10 @@ import Mathlib
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.RepresentationBasisLinearIndependent
 open NumberField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Flat.free_of_free_over_field | exact GlobalTheory.CompanionTheory.Ar.Flat.free_of_free_over_field | (intros; apply GlobalTheory.CompanionTheory.Ar.Flat.free_of_free_over_field <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Flat.free_of_free_over_field` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FAlgebraProofs%2FRepresentationBasisLinearIndependent.lean&line=8#L8)
 -/
 theorem _root_.GlobalTheory.T.representation_basis_linear_independent : ∀ (E : Type) [Field E] [NumberField E] (R k : Type) [CommRing R] [IsLocalRing R] [Field k] (f : R →+* k) [IsLocalHom f] (n : Type) [Fintype n] [DecidableEq n] (r : ℕ) (ρ : 𝓞 E →+* Matrix n n R), (∃ x : Fin r → n → k, LinearIndependent k (fun q : Fin r × Module.Free.ChooseBasisIndex ℤ (𝓞 E) => ((ρ (RingOfIntegers.basis E q.2)).map f).mulVec (x q.1)) ∧ Submodule.span k (Set.range fun q : Fin r × Module.Free.ChooseBasisIndex ℤ (𝓞 E) => ((ρ (RingOfIntegers.basis E q.2)).map f).mulVec (x q.1)) = ⊤) → ∃ x : Fin r → n → R, LinearIndependent R (fun q : Fin r × Module.Free.ChooseBasisIndex ℤ (𝓞 E) => (ρ (RingOfIntegers.basis E q.2)).mulVec (x q.1)) ∧ Submodule.span R (Set.range fun q : Fin r × Module.Free.ChooseBasisIndex ℤ (𝓞 E) => (ρ (RingOfIntegers.basis E q.2)).mulVec (x q.1)) = ⊤ := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Flat.free_of_free_over_field | exact GlobalTheory.CompanionTheory.Ar.Flat.free_of_free_over_field | (intros; apply GlobalTheory.CompanionTheory.Ar.Flat.free_of_free_over_field <;> assumption)

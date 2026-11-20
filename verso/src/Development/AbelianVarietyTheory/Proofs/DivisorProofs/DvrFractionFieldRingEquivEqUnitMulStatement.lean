@@ -15,8 +15,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.HTLat GlobalTheory.Published GlobalTheory.Published.AbVarRed IsLocalRing
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.dvr_fractionField_ringEquiv_eq_mul | exact GlobalTheory.dvr_fractionField_ringEquiv_eq_mul | (intros; apply GlobalTheory.dvr_fractionField_ringEquiv_eq_mul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.dvr_fractionField_ringEquiv_eq_mul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDvrFractionFieldRingEquivEqUnitMul.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.dvr_fractionField_ringEquiv_eq_unit_mul : ∀ (W K' : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field K'] [Algebra W K'] [IsFractionRing W K'] (σ : K' ≃+* K'), (∀ x : W, ∃ y : W, σ (algebraMap W K' x) = algebraMap W K' y) → (∀ x : W, ∃ y : W, σ.symm (algebraMap W K' x) = algebraMap W K' y) → ∀ l : K', l ≠ 0 → ∃ a : W, σ l = algebraMap W K' a * l := by
   first | exact @GlobalTheory.dvr_fractionField_ringEquiv_eq_mul | exact GlobalTheory.dvr_fractionField_ringEquiv_eq_mul | (intros; apply GlobalTheory.dvr_fractionField_ringEquiv_eq_mul <;> assumption)

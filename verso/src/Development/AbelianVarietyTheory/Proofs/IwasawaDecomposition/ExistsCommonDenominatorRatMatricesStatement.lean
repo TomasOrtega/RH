@@ -17,8 +17,10 @@ open MonoidalCategory CartesianMonoidalCategory MonObj GlobalTheory.ShFam.Hor.Lo
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.rat_matrix_common_denom | exact GlobalTheory.rat_matrix_common_denom | (intros; apply GlobalTheory.rat_matrix_common_denom <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.rat_matrix_common_denom` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsCommonDenominatorRatMatrices.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.exists_common_denominator_rat_matrices : ∀ (a g : ℕ) (b : Fin a → Matrix (Fin g) (Fin g) ℚ), ∃ (D : ℕ) (B : Fin a → Matrix (Fin g) (Fin g) ℤ), 0 < D ∧ ∀ k i j, (B k i j : ℚ) = D * b k i j := by
   first | exact @GlobalTheory.rat_matrix_common_denom | exact GlobalTheory.rat_matrix_common_denom | (intros; apply GlobalTheory.rat_matrix_common_denom <;> assumption)

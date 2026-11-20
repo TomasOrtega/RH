@@ -23,8 +23,10 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Form
 open scoped TensorProduct
 open Formalism.IndefR.principalLevelFrame Formalism.IndefR.Mult
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ConjInt.frame_mat_le_one | exact GlobalTheory.ConjInt.frame_mat_le_one | (intros; apply GlobalTheory.ConjInt.frame_mat_le_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ConjInt.frame_mat_le_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FSelfDualFrameConjugatePlaceIntegral.lean&line=27#L27)
 -/
 theorem _root_.GlobalTheory.T.selfDualFrame_conjugate_place_integral : ∀ (D : D7) (V : HSp D) (β : GL (Fin V.rank) (EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (N : ℕ), IsSDFrame V β Λ N → ∀ (g : GA D V) (Q : Formalism.L2.DIV.Pl D.host.E), (∀ a b : Fin V.rank, Valued.v (GlobalTheory.StdFrames.cpt Q ((β⁻¹ * (finE V g)⁻¹ * β).val a b)) ≤ 1) → ∀ a b : Fin V.rank, Valued.v (GlobalTheory.StdFrames.cpt (GlobalTheory.IdemSupport.cP Q) ((β⁻¹ * finE V g * β).val a b)) ≤ 1 := by
   first | exact @GlobalTheory.ConjInt.frame_mat_le_one | exact GlobalTheory.ConjInt.frame_mat_le_one | (intros; apply GlobalTheory.ConjInt.frame_mat_le_one <;> assumption)

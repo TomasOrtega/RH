@@ -15,8 +15,10 @@ import Development.AbelianVarietyTheory.BlockTheory.SiegelWeilLocal.RareFlags
 open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S Formalism.REAL Formalism.QuantumDeterminants GlobalTheory.Count GlobalTheory.Dec
 open scoped InnerProductSpace ContDiff
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CountFinal.countingTheorem_of_volumeStep | exact GlobalTheory.CountFinal.countingTheorem_of_volumeStep | (intros; apply GlobalTheory.CountFinal.countingTheorem_of_volumeStep <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CountFinal.countingTheorem_of_volumeStep` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FUnitaryAutomorphicCountingOfCompactDualVolumeRat.lean&line=37#L37)
 -/
 theorem _root_.GlobalTheory.T.unitaryAutomorphicCounting_of_compactDualVolumeRatio : GlobalTheory.FlagMeas.VolumeStep → GlobalTheory.IndefiniteRowSideFullHecke.LatticeCountingTheorem.CountingTheorem := by
   first | exact @GlobalTheory.CountFinal.countingTheorem_of_volumeStep | exact GlobalTheory.CountFinal.countingTheorem_of_volumeStep | (intros; apply GlobalTheory.CountFinal.countingTheorem_of_volumeStep <;> assumption)

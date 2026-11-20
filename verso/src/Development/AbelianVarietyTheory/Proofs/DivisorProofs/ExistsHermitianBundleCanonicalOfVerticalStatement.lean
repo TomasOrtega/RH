@@ -6,8 +6,10 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory GlobalTheory.Cart
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LatChain.exists_can_of_vert | exact GlobalTheory.LatChain.exists_can_of_vert | (intros; apply GlobalTheory.LatChain.exists_can_of_vert <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LatChain.exists_can_of_vert` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsHermitianBundleCanonicalOfVertical.lean&line=66#L66)
 -/
 theorem _root_.GlobalTheory.T.exists_hermitian_bundle_canonical_of_vertical : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (q : X ⟶ Sp k) (p : ℕ), p ≠ 0 → ∀ E : CartierDiv X, Vert p E → ∃ M : HermLB q, Can M E := by
   first | exact @GlobalTheory.LatChain.exists_can_of_vert | exact GlobalTheory.LatChain.exists_can_of_vert | (intros; apply GlobalTheory.LatChain.exists_can_of_vert <;> assumption)

@@ -10,8 +10,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj TensorProduct
 open GlobalTheory.ZM
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ZM.LocalCoord.secCoord_local | exact GlobalTheory.ZM.LocalCoord.secCoord_local | (intros; apply GlobalTheory.ZM.LocalCoord.secCoord_local <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ZM.LocalCoord.secCoord_local` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FModuliProofs%2FSectionCoordinateVectorExistsLocally.lean&line=94#L94)
 -/
 theorem _root_.GlobalTheory.T.sectionCoordinateVector_exists_locally : ∀ (X : Scheme.{0}) (M : LB X) (I : Type) (th : I → M.Sec), M.IsLB → (∀ (R : Type) [CommRing R] [IsLocalRing R] (x : Sp R ⟶ X), ∃ v, SecCoord M th x v) ∧ (∀ (R : Type) [CommRing R] (x : Sp R ⟶ X) (p : Sp R), ∃ f : R, f ∉ p.asIdeal ∧ ∃ v, SecCoord M th (spMap (algebraMap R (Localization.Away f)) ≫ x) v) ∧ ∀ p : X, ∃ (R : Type) (_ : CommRing R) (x : Sp R ⟶ X) (v : I → R), IsOpenImmersion x ∧ p ∈ Set.range x ∧ SecCoord M th x v := by
   first | exact @GlobalTheory.ZM.LocalCoord.secCoord_local | exact GlobalTheory.ZM.LocalCoord.secCoord_local | (intros; apply GlobalTheory.ZM.LocalCoord.secCoord_local <;> assumption)

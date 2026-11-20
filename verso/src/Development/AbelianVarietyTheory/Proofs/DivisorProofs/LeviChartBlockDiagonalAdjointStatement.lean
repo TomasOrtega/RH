@@ -13,8 +13,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SWLink
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SWLink.LeviChart.levi_unip_chart | exact GlobalTheory.SWLink.LeviChart.levi_unip_chart | (intros; apply GlobalTheory.SWLink.LeviChart.levi_unip_chart <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SWLink.LeviChart.levi_unip_chart` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLeviChartBlockDiagonalAdjoint.lean&line=131#L131)
 -/
 theorem _root_.GlobalTheory.T.levi_chart_block_diagonal_adjoint : ∀ (D : D7) (n : ℕ) (J₂ : Matrix (Fin (n + n)) (Fin (n + n)) D.host.E) (T : GL (Fin (n + n)) D.host.E) (κ : UD D J₂ ≃* GlobalTheory.StdUnn.G D n), IsChartW T κ → ∀ J : Matrix (Fin n) (Fin n) D.host.E, IsWittBasis D.sp.cm.sig J 1 T → (∀ p : siegelOf finSumFinEquiv (uinc D J₂), (p : UD D J₂) ∈ leviSubOf finSumFinEquiv (uinc D J₂) → GlobalTheory.StdUnn.mat (κ p) = GlobalTheory.StdUnn.blk4 (leviOf finSumFinEquiv (uinc D J₂) p).1 0 0 (adj ((leviOf finSumFinEquiv (uinc D J₂) p)⁻¹).1)) ∧ ∀ b ∈ unipOf finSumFinEquiv (uinc D J₂), ∃ β : Mx D n n, GlobalTheory.StdUnn.mat (κ b) = GlobalTheory.StdUnn.blk4 1 β 0 1 := by
   first | exact @GlobalTheory.SWLink.LeviChart.levi_unip_chart | exact GlobalTheory.SWLink.LeviChart.levi_unip_chart | (intros; apply GlobalTheory.SWLink.LeviChart.levi_unip_chart <;> assumption)

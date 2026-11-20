@@ -8,8 +8,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermi
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
 open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.BigTop GlobalTheory.BigTop.Fun GlobalTheory.SqTop
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BigTop.Fun.sqRatio_atPt | exact GlobalTheory.BigTop.Fun.sqRatio_atPt | (intros; apply GlobalTheory.BigTop.Fun.sqRatio_atPt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BigTop.Fun.sqRatio_atPt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSquareRatioInEmbeddingRange.lean&line=91#L91)
 -/
 theorem _root_.GlobalTheory.T.square_ratio_in_embedding_range : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching → SetAt → (Closed FamHyp fun Fm _ => EvPt Fm fun x _ i _ => |(Fm.L x i).logDerivativeAtOne| ≤ (Fm.L x i).sc.x ^ (Fm.L x i).sc.eps) → GlobalTheory.RowClaim.ConstK → LNe → TriEx → Tower → (AtPt fun {D} _ _ _ _ _ _ _ _ _ _ _ ch => ∀ i j t, GlobalTheory.RowTest.sqRatio ch i j t ∈ Set.range D.what₂.embLL) := by
   first | exact @GlobalTheory.BigTop.Fun.sqRatio_atPt | exact GlobalTheory.BigTop.Fun.sqRatio_atPt | (intros; apply GlobalTheory.BigTop.Fun.sqRatio_atPt <;> assumption)

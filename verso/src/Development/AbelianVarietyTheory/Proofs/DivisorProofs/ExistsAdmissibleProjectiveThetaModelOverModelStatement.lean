@@ -14,8 +14,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Poinc.exists_admissible_projective_theta_model | exact GlobalTheory.Poinc.exists_admissible_projective_theta_model | (intros; apply GlobalTheory.Poinc.exists_admissible_projective_theta_model <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Poinc.exists_admissible_projective_theta_model` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsAdmissibleProjectiveThetaModelOverModel.lean&line=73#L73)
 -/
 theorem _root_.GlobalTheory.T.exists_admissible_projective_theta_model_over_model : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real), S.Big → ∀ M₁ : RatModel o Ω, IsProjOver M₁.s → ∀ (K : Type) [Finite K] (Jk : K → Type) [∀ k, Finite (Jk k)] (t : ∀ k, Jk k → Ω), (∀ k j, t k j ≠ 0) → ∃ (Y : RatModel o Ω) (πY : Y.Z ⟶ M₁.Z) (U₀ : Y.Z.Opens) (EE : Y.Lat S.J) (_ : ZHOut ρ Y U₀ EE), M₁.IsHom Y (AlgHom.id o Ω) πY ∧ IsProper πY ∧ S.admitted Y U₀ ∧ S.IsEE Y U₀ EE ∧ ∀ k, Nonempty (Jk k) → Y.HasDiv (t k) := by
   first | exact @GlobalTheory.Poinc.exists_admissible_projective_theta_model | exact GlobalTheory.Poinc.exists_admissible_projective_theta_model | (intros; apply GlobalTheory.Poinc.exists_admissible_projective_theta_model <;> assumption)

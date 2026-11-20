@@ -9,8 +9,10 @@ open scoped TensorProduct InnerProductSpace ComplexConjugate
 open GlobalTheory.ChainOnto
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChainOnto.integral_autMeasure_eq_setIntegral | exact GlobalTheory.ChainOnto.integral_autMeasure_eq_setIntegral | (intros; apply GlobalTheory.ChainOnto.integral_autMeasure_eq_setIntegral <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChainOnto.integral_autMeasure_eq_setIntegral` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FIntegralQuotientEqSetIntegralFundamentalDomain.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.integral_quotient_eq_setIntegral_fundamentalDomain : ∀ (D : D7) (V : HSp D) (ν : Measure (GA D V)) (X : Set (GA D V)), ν.IsHaarMeasure → IsFundamentalDomain (GQ V) X ν → ∀ F : GA D V → ℂ, (∀ γ ∈ GQ V, ∀ g, F (γ * g) = F g) → AEStronglyMeasurable F ν → ∫ q, GlobalTheory.AutomorphicL2Unitary.descend (GQ V) F q ∂(GlobalTheory.AutomorphicL2Unitary.autMeasure V ν) = ∫ g in X, F g ∂ν := by
   first | exact @GlobalTheory.ChainOnto.integral_autMeasure_eq_setIntegral | exact GlobalTheory.ChainOnto.integral_autMeasure_eq_setIntegral | (intros; apply GlobalTheory.ChainOnto.integral_autMeasure_eq_setIntegral <;> assumption)

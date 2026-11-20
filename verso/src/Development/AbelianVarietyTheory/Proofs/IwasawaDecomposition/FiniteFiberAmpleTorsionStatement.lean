@@ -7,8 +7,10 @@ open AlgebraicGeometry CategoryTheory Limits NumberField IsLocalRing Topological
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R Formalism.L2.Pj
 open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFam GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.TorRef
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FibreFinite.finite_preimage | exact GlobalTheory.FibreFinite.finite_preimage | (intros; apply GlobalTheory.FibreFinite.finite_preimage <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FibreFinite.finite_preimage` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FFiniteFiberAmpleTorsion.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.finite_fiber_ample_torsion : ∀ {S S' T : Scheme.{0}} (q : S ⟶ T) (h : S ⟶ S') (L : LB S'), IsProper q → IsAffineHom h →
     ∀ hA : GlobalTheory.IsAmpleLB L, ∀ t : T,

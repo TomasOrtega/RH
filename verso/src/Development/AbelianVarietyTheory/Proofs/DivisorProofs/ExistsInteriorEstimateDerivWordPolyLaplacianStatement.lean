@@ -8,8 +8,10 @@ import GroundTheory.AutomorphicForms.GKModules.ParametricIntegral
 open MeasureTheory GroundTheory.Automorphic
 open scoped ContDiff
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.interior_word_bound | exact GlobalTheory.interior_word_bound | (intros; apply GlobalTheory.interior_word_bound <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.interior_word_bound` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsInteriorEstimateDerivWordPolyLaplacian.lean&line=31#L31)
 -/
 theorem _root_.GlobalTheory.T.exists_interior_estimate_deriv_word_polyLaplacian : ∀ (𝔸 : Type) [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpace 𝔸] [FiniteDimensional ℝ 𝔸] (G : Subgroup 𝔸ˣ) (𝔤 : Submodule ℝ 𝔸) (h : IsExpLieAlgebra G 𝔤) (d : ℕ) (b : Module.Basis (Fin d) ℝ 𝔤) (P : Polynomial ℂ), P.Monic → ∃ Kc : Set G, IsCompact Kc ∧ ∀ l : List 𝔤, ∃ C : ℝ, 0 ≤ C ∧ ∀ f : h.smoothFuns (F := ℂ), Polynomial.aeval (∑ i, h.rightDerivEnd (F := ℂ) (b i) * h.rightDerivEnd (F := ℂ) (b i)) P f = 0 → ∀ (g : G) (M : ℝ), (∀ y ∈ Kc, ‖(f : G → ℂ) (g * y)‖ ≤ M) → ‖l.foldr h.rightDeriv (f : G → ℂ) g‖ ≤ C * M := by
   first | exact @GlobalTheory.interior_word_bound | exact GlobalTheory.interior_word_bound | (intros; apply GlobalTheory.interior_word_bound <;> assumption)

@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ComplementRe
 open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL MeasureTheory
 open scoped Pointwise ENNReal Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HL.FrameLift.lift | exact GlobalTheory.HL.FrameLift.lift | (intros; apply GlobalTheory.HL.FrameLift.lift <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HL.FrameLift.lift` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FSelfDualLatticeUnipotentTranslateStandard.lean&line=320#L320)
 -/
 theorem _root_.GlobalTheory.T.selfDual_lattice_unipotent_translate_standard : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (r k : ℕ) (S : Frames L r k), ∀ (g : Fin (r + 1) → S.V) (gs : Fin r → S.V), (g = S.f ∧ gs = S.es) ∨ (g = S.f' ∧ gs = S.es') → ∀ Λ, IsSD L S.Hm Λ → ∀ n ∈ S.Nof g, (∀ x, (x ∈ Λ ∧ x ∈ S.spanTo g (r + 1)) ↔ x ∈ Submodule.span L.O (Set.range fun b => n (g b))) → ∃ A, S.IsInner g gs A ∧ ∃ n₁ ∈ S.Nof g, (∀ b, n₁ (g b) = n (g b)) ∧ Λ = n₁ • S.stdLat g gs A := by
   first | exact @GlobalTheory.HL.FrameLift.lift | exact GlobalTheory.HL.FrameLift.lift | (intros; apply GlobalTheory.HL.FrameLift.lift <;> assumption)

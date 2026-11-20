@@ -10,8 +10,10 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Unf
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HaarCoordsUnit.volN_eq_map_coords | exact GlobalTheory.HaarCoordsUnit.volN_eq_map_coords | (intros; apply GlobalTheory.HaarCoordsUnit.volN_eq_map_coords <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HaarCoordsUnit.volN_eq_map_coords` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FFlagUnipotentHaarEqMapCoordinates.lean&line=51#L51)
 -/
 theorem _root_.GlobalTheory.T.flagUnipotentHaar_eq_map_coordinates : ∀ (D : D7) (V V₀ : HSp D) (ρ : ℕ) (d : HypDec V V₀ ρ) (vN : VolN d) (vb : VolM D ρ V₀.rank) (vU : VolU D ρ) (e : skewA D ρ × (Mx D ρ V₀.rank × UX D ρ) ≃ᵐ flagN d), (∀ p, (e p : GA D V) = d.nC p.1 * (d.nB p.2.1 * d.levi p.2.2.1)) → ∀ (lC : Measure (skewA D ρ)) (𝓒 : Set (skewA D ρ)), lC.IsAddHaarMeasure → SFinite lC → IsAddFundamentalDomain ((ratMx D ρ ρ).addSubgroupOf (skewA D ρ)) 𝓒 lC → lC 𝓒 = 1 → vN.ν = (lC.prod (vb.μ.prod vU.ν)).map e := by
   first | exact @GlobalTheory.HaarCoordsUnit.volN_eq_map_coords | exact GlobalTheory.HaarCoordsUnit.volN_eq_map_coords | (intros; apply GlobalTheory.HaarCoordsUnit.volN_eq_map_coords <;> assumption)

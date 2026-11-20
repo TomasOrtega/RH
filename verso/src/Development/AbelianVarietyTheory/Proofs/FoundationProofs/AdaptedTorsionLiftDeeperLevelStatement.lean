@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DifferentiableCo
 open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.NormSum GlobalTheory.GalTheta
 open scoped BigOperators
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GalTheta.adapted_lift_deeper | exact GlobalTheory.GalTheta.adapted_lift_deeper | (intros; apply GlobalTheory.GalTheta.adapted_lift_deeper <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GalTheta.adapted_lift_deeper` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FAdaptedTorsionLiftDeeperLevel.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.adapted_torsion_lift_deeper_level : ∀ (D : D7), galStar D → ∀ (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), Crv D cc δ → ∀ σ : (⊤ : IntermediateField ℚ ℂ) →ₐ[ℚ] ℂ, FixK D ⊤ σ → ∀ (c c' : ℂ) (n₀ n : ℕ), 0 < n₀ → 0 < n → InRationalLattice (lamOf D cc δ) c → Adp1 ⊤ σ (lamOf D cc δ) n₀ c c' → ∃ ω ∈ lamOf D cc δ, Adp1 ⊤ σ (lamOf D cc δ) (n₀ * n) (c + (n₀ : ℂ) * ω) c' := by
   first | exact @GlobalTheory.GalTheta.adapted_lift_deeper | exact GlobalTheory.GalTheta.adapted_lift_deeper | (intros; apply GlobalTheory.GalTheta.adapted_lift_deeper <;> assumption)

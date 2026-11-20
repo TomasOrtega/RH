@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsOf
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj Formalism.BasicNotions.TH Formalism.L2.Theta ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.AllWt GlobalTheory.CompHt GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.Mean4 GlobalTheory.Mean4O ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M
 open scoped ENNReal Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DetLineFlat.first_chern_form_determinant_line_eq_zero | exact GlobalTheory.DetLineFlat.first_chern_form_determinant_line_eq_zero | (intros; apply GlobalTheory.DetLineFlat.first_chern_form_determinant_line_eq_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DetLineFlat.first_chern_form_determinant_line_eq_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDeterminantLineChernFormFlat.lean&line=75#L75)
 -/
 theorem _root_.GlobalTheory.T.determinant_line_chern_form_flat : Hypotheses2 → HypothesesH → OnObj fun D O _ T _ _ => ∀ (B : ℝ) (τ : D.what₂.Tau) c (g : (T.M c).Fun),
     (T.M c).Smooth g →

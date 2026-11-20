@@ -10,8 +10,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Unif.eq_top_of_special_part | exact GlobalTheory.Unif.eq_top_of_special_part | (intros; apply GlobalTheory.Unif.eq_top_of_special_part <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Unif.eq_top_of_special_part` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUniformizationProofs%2FOpenEqTopOfContainsSpecialPartUniversallyClosed.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.open_eq_top_of_contains_special_part_universallyClosed : ∀ (R : Type) [CommRing R] (I : Ideal R), I ≤ Ideal.jacobson ⊥ → ∀ (Y : Over (Spec (CommRingCat.of R))) [UniversallyClosed Y.hom] (U : Y.left.Opens), (∀ z : (thickObj R I 0 Y).left, pullback.fst Y.hom (thick R I 0) z ∈ U) → U = ⊤ := by
   first | exact @GlobalTheory.Unif.eq_top_of_special_part | exact GlobalTheory.Unif.eq_top_of_special_part | (intros; apply GlobalTheory.Unif.eq_top_of_special_part <;> assumption)

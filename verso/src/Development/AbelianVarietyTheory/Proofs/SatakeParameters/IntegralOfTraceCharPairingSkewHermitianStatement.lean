@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LatticeModelVacu
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.Gam0
 open Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Hk3.GramSep.int_of_psi_trace_gam | exact GlobalTheory.Hk3.GramSep.int_of_psi_trace_gam | (intros; apply GlobalTheory.Hk3.GramSep.int_of_psi_trace_gam <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Hk3.GramSep.int_of_psi_trace_gam` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FIntegralOfTraceCharPairingSkewHermitian.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.integral_of_traceCharPairing_skewHermitian : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (ϖ : L) (σ : L →+* L) (q : ℕ) (δ : L) (ψ : AddChar L ℂ),
   Formalism.UG.IsUnramInv ϖ σ q → (Valued.v δ = 1 ∧ σ δ = -δ) →

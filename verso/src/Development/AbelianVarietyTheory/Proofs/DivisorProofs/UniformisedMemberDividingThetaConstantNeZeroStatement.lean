@@ -13,8 +13,10 @@ open GlobalTheory.UT ReciprocityTheory.ChartRestriction.G.DVR
 open GlobalTheory.Poinc.Sep
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Poinc.Sep.UMem.yK_th_ne_zero | exact GlobalTheory.Poinc.Sep.UMem.yK_th_ne_zero | (intros; apply GlobalTheory.Poinc.Sep.UMem.yK_th_ne_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Poinc.Sep.UMem.yK_th_ne_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FUniformisedMemberDividingThetaConstantNeZero.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.uniformisedMember_dividingThetaConstant_ne_zero : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) (Z : Scheme.{0}) (i : F.X ⟶ Z) (X₁ : Setup F W i) (z₁ : X₁.M.Z) (act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)), ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (X : Type) [AddCommGroup X] (m : ℕ) (t : Fin m → V) (δ : Fin m → LinearMap.BilinForm ℤ X) (𝔪 : UMem X₁ z₁ act V ev X t δ) (x₀ : X₁.S.Gam), X₁.M.Div X₁.S.th x₀ z₁ → 𝔪.yK ⟨X₁.S.th x₀, X₁.S.th_mem x₀⟩ ≠ 0 := by
   first | exact @GlobalTheory.Poinc.Sep.UMem.yK_th_ne_zero | exact GlobalTheory.Poinc.Sep.UMem.yK_th_ne_zero | (intros; apply GlobalTheory.Poinc.Sep.UMem.yK_th_ne_zero <;> assumption)

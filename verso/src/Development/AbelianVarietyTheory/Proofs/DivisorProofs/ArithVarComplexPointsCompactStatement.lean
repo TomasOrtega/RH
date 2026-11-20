@@ -16,8 +16,10 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G Recip
 open GlobalTheory.Cartier GlobalTheory.CovTest.SwapLine
 open ReciprocityTheory.AnForm.M GlobalTheory.ChernPoly
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IsArithVar.finite_emb_and_topology | exact GlobalTheory.IsArithVar.finite_emb_and_topology | (intros; apply GlobalTheory.IsArithVar.finite_emb_and_topology <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IsArithVar.finite_emb_and_topology` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FArithVarComplexPointsCompact.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.arith_var_complex_points_compact : ∀ {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {D : ℕ}, IsArithVar p D →
     Finite (k →+* ℂ) ∧ ∀ σ : k →+* ℂ, CompactSpace (CxPts p σ) ∧ T2Space (CxPts p σ) ∧

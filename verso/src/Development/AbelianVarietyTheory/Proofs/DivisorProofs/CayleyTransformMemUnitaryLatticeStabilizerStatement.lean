@@ -8,8 +8,10 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open scoped TensorProduct Matrix
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CayleyStab.cayley_mem_KAt | exact GlobalTheory.CayleyStab.cayley_mem_KAt | (intros; apply GlobalTheory.CayleyStab.cayley_mem_KAt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CayleyStab.cayley_mem_KAt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCayleyTransformMemUnitaryLatticeStabilizer.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.cayleyTransform_mem_unitaryLatticeStabilizer : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (d : ℕ)
     (W : Spc F E d) (v : Pl F) (Y : Matrix (Fin d) (Fin d) (AE F E)), At (evFin F v) Y →

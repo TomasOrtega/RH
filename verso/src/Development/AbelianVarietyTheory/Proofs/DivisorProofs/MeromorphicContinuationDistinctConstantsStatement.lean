@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MeromorphicContinua
 import Mathlib
 open Filter Topology
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.analytic_continuation_constant_term_projector | exact GlobalTheory.analytic_continuation_constant_term_projector | (intros; apply GlobalTheory.analytic_continuation_constant_term_projector <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.analytic_continuation_constant_term_projector` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FMeromorphicContinuationDistinctConstants.lean&line=4#L4)
 -/
 theorem _root_.GlobalTheory.T.meromorphic_continuation_distinct_constants : ∀ (Y : Type) (τ : Y → Y) (c₁ c₂ c₃ c₄ : ℂ → ℂ), Differentiable ℂ c₁ → Differentiable ℂ c₂ → Differentiable ℂ c₃ →
     Differentiable ℂ c₄ → ∀ (Ω Ω₁ : Set ℂ) (s₀ : ℂ), IsOpen Ω → IsPreconnected Ω → IsOpen Ω₁ → Ω₁.Nonempty → Ω₁ ⊆ Ω →

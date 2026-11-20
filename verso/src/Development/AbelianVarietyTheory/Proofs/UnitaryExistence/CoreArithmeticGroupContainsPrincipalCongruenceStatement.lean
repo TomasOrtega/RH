@@ -5,8 +5,10 @@ import Formalism.LocalToGlobal.ProjectiveLattices.FreeBridge
 import Development.AbelianVarietyTheory.Definitions.RegularCharts.BaseNorm
 open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PrincCore.hasPrinc_core | exact GlobalTheory.PrincCore.hasPrinc_core | (intros; apply GlobalTheory.PrincCore.hasPrinc_core <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PrincCore.hasPrinc_core` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUnitaryExistence%2FCoreArithmeticGroupContainsPrincipalCongruence.lean&line=203#L203)
 -/
 theorem _root_.GlobalTheory.T.coreArithmeticGroup_contains_principalCongruence : ∀ (D : D7) (T : Core D) (h : LawsCore T) (j : ℕ) (hj : InR D j), ∀ σ, GoodEmb T.Q.c σ → GlobalTheory.FrameNorm.HasPrinc (Formalism.L2.PjFree.Unf.ofPj (T.U j σ)) T.Q.l.M := by
   first | exact @GlobalTheory.PrincCore.hasPrinc_core | exact GlobalTheory.PrincCore.hasPrinc_core | (intros; apply GlobalTheory.PrincCore.hasPrinc_core <;> assumption)

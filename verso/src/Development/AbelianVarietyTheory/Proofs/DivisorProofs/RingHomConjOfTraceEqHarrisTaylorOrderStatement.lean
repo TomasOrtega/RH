@@ -6,8 +6,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped Matrix
 open GlobalTheory.UPel.HT
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UPel.HT.rep_conj_of_trace_eq | exact GlobalTheory.UPel.HT.rep_conj_of_trace_eq | (intros; apply GlobalTheory.UPel.HT.rep_conj_of_trace_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UPel.HT.rep_conj_of_trace_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRingHomConjOfTraceEqHarrisTaylorOrder.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.ringHom_conj_of_trace_eq_harrisTaylorOrder : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (g : ℕ) (ρ ρ' : D.O →+* Matrix (Fin g) (Fin g) ℂ), (∀ c : 𝓞 D.F, (ρ (algebraMap (𝓞 D.F) D.O c)).trace = (ρ' (algebraMap (𝓞 D.F) D.O c)).trace) → ∃ h : Matrix (Fin g) (Fin g) ℂ, IsUnit h ∧ ∀ a, ρ' a * h = h * ρ a := by
   first | exact @GlobalTheory.UPel.HT.rep_conj_of_trace_eq | exact GlobalTheory.UPel.HT.rep_conj_of_trace_eq | (intros; apply GlobalTheory.UPel.HT.rep_conj_of_trace_eq <;> assumption)

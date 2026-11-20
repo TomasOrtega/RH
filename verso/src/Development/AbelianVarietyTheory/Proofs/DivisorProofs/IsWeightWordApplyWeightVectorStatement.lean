@@ -11,8 +11,10 @@ open CompanionTheory.D.DSIC (KRel KUnit KStab IsSmMod)
 open CompanionTheory.D.LK (IsKMod IsMin)
 open scoped InnerProductSpace
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.wordWeight | exact GlobalTheory.wordWeight | (intros; apply GlobalTheory.wordWeight <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.wordWeight` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsWeightWordApplyWeightVector.lean&line=55#L55)
 -/
 theorem _root_.GlobalTheory.T.isWeight_word_apply_weightVector : ∀ (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (E : Fin n → Fin n → Module.End ℂ V), GlRel E → ∀ (μ : Fin n → ℝ) (w : V), IsWeight E μ w → ∀ l : List (Fin n × Fin n), IsWeight E (μ + (l.map fun p : Fin n × Fin n => root p.1 p.2).sum) ((l.map fun p : Fin n × Fin n => E p.1 p.2).prod w) := by
   first | exact @GlobalTheory.wordWeight | exact GlobalTheory.wordWeight | (intros; apply GlobalTheory.wordWeight <;> assumption)

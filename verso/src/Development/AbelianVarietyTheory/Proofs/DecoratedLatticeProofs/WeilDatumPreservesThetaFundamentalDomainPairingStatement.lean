@@ -10,8 +10,10 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Unf
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WeilPairing.thPair_om_eq | exact GlobalTheory.WeilPairing.thPair_om_eq | (intros; apply GlobalTheory.WeilPairing.thPair_om_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WeilPairing.thPair_om_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FWeilDatumPreservesThetaFundamentalDomainPairing.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.weilDatum_preserves_thetaFundamentalDomainPairing : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χ χ' : ((AE D)ˣ →* Circle)) (om : Om S T), IsWeilDatumO ψ S T χ χ' om → ∀ (v : VolM D T.rank S.rank) p f f', IsThetaFunO ψ S T f → IsThetaFunO ψ S T f' → thPair v.μ v.𝓕 (om p f) (om p f') = thPair v.μ v.𝓕 f f' := by
   first | exact @GlobalTheory.WeilPairing.thPair_om_eq | exact GlobalTheory.WeilPairing.thPair_om_eq | (intros; apply GlobalTheory.WeilPairing.thPair_om_eq <;> assumption)

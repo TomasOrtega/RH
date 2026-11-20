@@ -11,8 +11,10 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open Formalism.IndefR.DatumF
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.WeilTypeChar.exists_weil_char_k | exact _root_.GlobalTheory.WeilTypeChar.exists_weil_char_k | (intros; apply _root_.GlobalTheory.WeilTypeChar.exists_weil_char_k <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WeilTypeChar.exists_weil_char_k` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicArithmetic%2FFoundations%2FGaloisRepresentations%2FThetaParseval%2FThetaKernels%2FExistsWeilCharK.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.exists_hecke_character_trivial_exponent : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     _root_.UpperTheory.TP.W.GoodK σ B → ∃ ξ : (AF F ⊗[F] E)ˣ →* Circle, IsHeckeCharF ξ ∧ HasExp B.emb ξ (fun _ => 1) := by

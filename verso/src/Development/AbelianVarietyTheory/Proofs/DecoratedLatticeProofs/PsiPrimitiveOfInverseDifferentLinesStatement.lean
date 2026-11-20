@@ -9,8 +9,10 @@ open GlobalTheory.SeeSaw (idV dI FI)
 open ValuativeRel
 open GlobalTheory.Core.Mi.LatMatch
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Core.Mi.LatMatch.primAt_lastAt_of_lines | exact GlobalTheory.Core.Mi.LatMatch.primAt_lastAt_of_lines | (intros; apply GlobalTheory.Core.Mi.LatMatch.primAt_lastAt_of_lines <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Core.Mi.LatMatch.primAt_lastAt_of_lines` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FPsiPrimitiveOfInverseDifferentLines.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.psi_primitive_of_inverseDifferent_lines : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S S₀ : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) (z : Fin S₀.rank → D.host.E) (L : Lat S) (M : Lat S₀) (μ : D.host.E) (v : GlobalTheory.FinPl.Pl D), μ ≠ 0 → LineAt z μ M v → (∀ i : Fin ρ, ∀ a ∈ idAt D (· = v), colMul d.jX i a ∈ latV S L (· = v) ↔ incA D μ * a ∈ idV (dI D ^ (ρ - i.1)) v) → PrimAt ψ d L v ∧ LastAt ψ d z L M v := by
   first | exact @GlobalTheory.Core.Mi.LatMatch.primAt_lastAt_of_lines | exact GlobalTheory.Core.Mi.LatMatch.primAt_lastAt_of_lines | (intros; apply GlobalTheory.Core.Mi.LatMatch.primAt_lastAt_of_lines <;> assumption)

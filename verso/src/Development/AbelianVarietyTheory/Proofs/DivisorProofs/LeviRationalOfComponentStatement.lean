@@ -22,8 +22,10 @@ open GlobalTheory.Doubling (absE)
 open GlobalTheory.ConeSmallMidJB
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MidLineParam.levi_one_mem_ratU | exact GlobalTheory.MidLineParam.levi_one_mem_ratU | (intros; apply GlobalTheory.MidLineParam.levi_one_mem_ratU <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MidLineParam.levi_one_mem_ratU` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLeviRationalOfComponent.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.levi_rational_of_component : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (d d₁ : ℕ)
     (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁),

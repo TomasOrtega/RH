@@ -18,8 +18,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (Base Spc Model Ha
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Div.SquareRanks.square_ranks | exact GlobalTheory.Div.SquareRanks.square_ranks | (intros; apply GlobalTheory.Div.SquareRanks.square_ranks <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Div.SquareRanks.square_ranks` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FThetaGridSquareRankInequalities.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.thetaGridSquare_rank_inequalities : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (_hL : L.Is μ₀) (i j : Fin D.R.m),
     (spW₁ G i j).rank < (spW G i j).rank ∧ Even ((spW G i j).rank + (spW₁ G i j).rank) ∧

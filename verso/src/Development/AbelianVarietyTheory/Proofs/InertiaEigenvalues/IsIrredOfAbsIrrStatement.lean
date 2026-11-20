@@ -5,8 +5,10 @@ import Formalism.SharpRestriction.LevelLetterCocycles.QuotientHomNonvanishingBou
 import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.SemisimplificationConstituents
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IrredOfAbsIrred.isIrred_of_absIrrSub | exact GlobalTheory.IrredOfAbsIrred.isIrred_of_absIrrSub | (intros; apply GlobalTheory.IrredOfAbsIrred.isIrred_of_absIrrSub <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IrredOfAbsIrred.isIrred_of_absIrrSub` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FIsIrredOfAbsIrr.lean&line=8#L8)
 -/
 theorem _root_.GlobalTheory.T.isIrred_of_absIrr : ∀ {k Γ : Type} [Field k] [Group Γ] {a : ℕ} (ρ : Γ →* GL (Fin a) k), AbsIrrSub ρ ⊤ → GlobalTheory.IndefiniteRowSideFullHecke.SemisimplificationConstituents.IsIrred (matRep ((Units.coeHom _).comp ρ)) := by
   first | exact @GlobalTheory.IrredOfAbsIrred.isIrred_of_absIrrSub | exact GlobalTheory.IrredOfAbsIrred.isIrred_of_absIrrSub | (intros; apply GlobalTheory.IrredOfAbsIrred.isIrred_of_absIrrSub <;> assumption)

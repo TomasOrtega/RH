@@ -22,8 +22,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
   GlobalTheory.FunObj.borelSpaceKw
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnfoldLoss.MovedChosen.moved_loss | exact GlobalTheory.UnfoldLoss.MovedChosen.moved_loss | (intros; apply GlobalTheory.UnfoldLoss.MovedChosen.moved_loss <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnfoldLoss.MovedChosen.moved_loss` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FMovedTensorChosenPlaceCoeffValuationLossLe.lean&line=138#L138)
 -/
 theorem _root_.GlobalTheory.T.movedTensorChosenPlace_coeffValuationLoss_le : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks]
     [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} (ch : Choice R) (large₂ : SizeData₂ D) (F : Face D A) (CF b : ℝ),

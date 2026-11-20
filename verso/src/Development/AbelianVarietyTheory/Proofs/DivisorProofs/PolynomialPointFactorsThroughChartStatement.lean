@@ -14,8 +14,10 @@ open scoped ContDiff ComplexOrder Classical
 open GlobalTheory.FlagCell GlobalTheory.FlagConnect
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagCell.isAffineOpen_and_bijective_of_section | exact GlobalTheory.FlagCell.isAffineOpen_and_bijective_of_section | (intros; apply GlobalTheory.FlagCell.isAffineOpen_and_bijective_of_section <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagCell.isAffineOpen_and_bijective_of_section` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPolynomialPointFactorsThroughChart.lean&line=28#L28)
 -/
 theorem _root_.GlobalTheory.T.polynomial_point_factors_through_chart : ∀ (B Y : Scheme.{0}) (π : Y ⟶ B) (U : B.Opens) (hU : IsAffineOpen U) (W : Y.Opens) (hW : W ≤ π ⁻¹ᵁ U) (N : Type) (n : N → Γ(Y, W)) (ψ : Spec (CommRingCat.of (MvPolynomial N Γ(B, U))) ⟶ Y), ψ ≫ π = Spec.map (CommRingCat.ofHom (MvPolynomial.C : Γ(B, U) →+* MvPolynomial N Γ(B, U))) ≫ hU.fromSpec → ∀ (hψ : ⊤ ≤ ψ ⁻¹ᵁ W), (∀ s, (ψ.appLE W ⊤ hψ).hom (n s) = (Scheme.ΓSpecIso (CommRingCat.of (MvPolynomial N Γ(B, U)))).inv.hom (MvPolynomial.X s)) → W.toSpecΓ ≫ Spec.map (CommRingCat.ofHom (MvPolynomial.eval₂Hom (π.appLE U W hW).hom n)) ≫ ψ = W.ι → IsAffineOpen W ∧ Function.Bijective (MvPolynomial.eval₂Hom (π.appLE U W hW).hom n) := by
   first | exact @GlobalTheory.FlagCell.isAffineOpen_and_bijective_of_section | exact GlobalTheory.FlagCell.isAffineOpen_and_bijective_of_section | (intros; apply GlobalTheory.FlagCell.isAffineOpen_and_bijective_of_section <;> assumption)

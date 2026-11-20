@@ -11,8 +11,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Core.Rk.IP
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Core.Rk.CuspConj.conj_comp_mem_A0 | exact GlobalTheory.Core.Rk.CuspConj.conj_comp_mem_A0 | (intros; apply GlobalTheory.Core.Rk.CuspConj.conj_comp_mem_A0 <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Core.Rk.CuspConj.conj_comp_mem_A0` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FCuspFormsArchimedeanKFiniteStarCompMem.lean&line=28#L28)
 -/
 theorem _root_.GlobalTheory.T.cuspFormsArchimedeanKFinite_star_comp_mem : ∀ (D : D7) (θ : InfFam D) (A : HSp D) (cA : CptF A), IsInfFam θ → ∀ u ∈ A0 θ A cA, (fun g => conj (u g)) ∈ A0 θ A cA := by
   first | exact @GlobalTheory.Core.Rk.CuspConj.conj_comp_mem_A0 | exact GlobalTheory.Core.Rk.CuspConj.conj_comp_mem_A0 | (intros; apply GlobalTheory.Core.Rk.CuspConj.conj_comp_mem_A0 <;> assumption)

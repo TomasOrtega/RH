@@ -8,8 +8,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.ZM GlobalTheory.SiegLev GlobalTheory.SiegelTor
 open scoped CategoryTheory.Obj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SiegLev.nonempty_sQuot | exact GlobalTheory.SiegLev.nonempty_sQuot | (intros; apply GlobalTheory.SiegLev.nonempty_sQuot <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SiegLev.nonempty_sQuot` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FNonemptySiegelLevelLoweringQuotientFamily.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.nonempty_siegelLevelLoweringQuotientFamily : ∀ (h n N : ℕ) (F : SFam h N (zetaAway N)) (j : cycAway n →+* cycAway N), 3 ≤ n → Odd N → n ∣ N → j (zetaAway n) = zetaAway N ^ (N / n) → IsFinite (spMap j) → Etale (spMap j) → Nonempty (SQuot F n (zetaAway n) j) := by
   first | exact @GlobalTheory.SiegLev.nonempty_sQuot | exact GlobalTheory.SiegLev.nonempty_sQuot | (intros; apply GlobalTheory.SiegLev.nonempty_sQuot <;> assumption)

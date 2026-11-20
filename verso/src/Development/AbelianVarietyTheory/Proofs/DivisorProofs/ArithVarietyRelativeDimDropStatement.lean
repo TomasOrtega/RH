@@ -7,8 +7,10 @@ open NumberField MvPolynomial Filter Topology Formalism.BasicNotions Formalism.M
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.ArInt
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.isArithVar_of_surjective_dim_succ | exact GlobalTheory.isArithVar_of_surjective_dim_succ | (intros; apply GlobalTheory.isArithVar_of_surjective_dim_succ <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.isArithVar_of_surjective_dim_succ` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FArithVarietyRelativeDimDrop.lean&line=37#L37)
 -/
 theorem _root_.GlobalTheory.T.arith_variety_relative_dim_drop : ∀ (k : Type) [CommRing k] (Y Y₁ : Scheme.{0}) (p : Y ⟶ Sp k) (q₁ : Y₁ ⟶ Sp k) (ρ : Y ⟶ Y₁) (D : ℕ),
     ρ ≫ q₁ = p → IsArithVar p D → IsIntegral Y₁ → IsProjOver q₁ → Surjective ρ →

@@ -9,8 +9,10 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestric
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.NilThickIso.isIso_of_flat_of_isIso_reduction | exact GlobalTheory.NilThickIso.isIso_of_flat_of_isIso_reduction | (intros; apply GlobalTheory.NilThickIso.isIso_of_flat_of_isIso_reduction <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.NilThickIso.isIso_of_flat_of_isIso_reduction` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsIsoOfFlatPullbackReduction.lean&line=212#L212)
 -/
 theorem _root_.GlobalTheory.T.isIso_of_flat_pullback_reduction : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (π : R →+* R₀), Function.Surjective π → IsNilpotent (RingHom.ker π) →
     ∀ (X Y : Over (Sp R)) (X₀ Y₀ : Over (Sp R₀)) (i : X₀.left ⟶ X.left) (j : Y₀.left ⟶ Y.left),

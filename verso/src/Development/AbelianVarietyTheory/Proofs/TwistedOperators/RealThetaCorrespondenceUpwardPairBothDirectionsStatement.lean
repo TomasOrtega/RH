@@ -22,8 +22,10 @@ open scoped TensorProduct InnerProductSpace ComplexConjugate
 open GlobalTheory.EvenOnto
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EvenOnto.upPair_arch | exact GlobalTheory.EvenOnto.upPair_arch | (intros; apply GlobalTheory.EvenOnto.upPair_arch <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EvenOnto.upPair_arch` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FRealThetaCorrespondenceUpwardPairBothDirections.lean&line=60#L60)
 -/
 theorem _root_.GlobalTheory.T.realThetaCorrespondence_upwardPair_both_directions : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → ∀ (D : D7) (t : ℕ) (S S' : SPar) (aS aT : ℚ), UpPair t S S' aS aT → (∀ (τ : D.what₂.Tau) (V W : HSp D), GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ToSource τ V W aS aT S S' ∧ GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ZetaSource τ V W aS aT S S') ∧ ∀ X : ProvA, Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisUpDownLine X → Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisFourth X → Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisFifth X → GlobalTheory.PairLift.RulePar X S S' aS aT ∧ GlobalTheory.PairLift.RulePar X S' S aT aS := by
   first | exact @GlobalTheory.EvenOnto.upPair_arch | exact GlobalTheory.EvenOnto.upPair_arch | (intros; apply GlobalTheory.EvenOnto.upPair_arch <;> assumption)

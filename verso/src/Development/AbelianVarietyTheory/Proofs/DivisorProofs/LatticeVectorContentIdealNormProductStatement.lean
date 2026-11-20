@@ -12,8 +12,10 @@ open NumberField MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheor
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LatHtFinPart.finprod_normFin_eq_absNorm | exact GlobalTheory.LatHtFinPart.finprod_normFin_eq_absNorm | (intros; apply GlobalTheory.LatHtFinPart.finprod_normFin_eq_absNorm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LatHtFinPart.finprod_normFin_eq_absNorm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLatticeVectorContentIdealNormProduct.lean&line=25#L25)
 -/
 theorem _root_.GlobalTheory.T.lattice_vector_content_ideal_norm_product : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ)
     (L : Submodule (𝓞 E) (Fin n → E)), Submodule.IsLattice E L → ∀ u : Fin n → E, u ≠ 0 →

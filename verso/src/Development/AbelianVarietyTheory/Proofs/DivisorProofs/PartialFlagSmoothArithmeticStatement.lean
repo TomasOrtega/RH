@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.EqOfIsomet
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry Matrix
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.FlagZ GlobalTheory.FlagPoly Formalism.DegreeFormula
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagZ.smooth_dim_isArithVar_part | exact GlobalTheory.FlagZ.smooth_dim_isArithVar_part | (intros; apply GlobalTheory.FlagZ.smooth_dim_isArithVar_part <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagZ.smooth_dim_isArithVar_part` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPartialFlagSmoothArithmetic.lean&line=49#L49)
 -/
 theorem _root_.GlobalTheory.T.partial_flag_smooth_arithmetic : ∀ (ι κ : Type) [Fintype ι] [Finite κ] (N : ℕ) (a : κ → ι) (l : κ → Fin (N + 1)), SmoothOfRelativeDimension (Nat.card (CellVar a l)) (str a l) ∧ topologicalKrullDim (Part a l) = (Nat.card (CellVar a l) + 1 : ℕ) ∧ GlobalTheory.IsArithVar (str a l) (Nat.card (CellVar a l)) := by
   first | exact @GlobalTheory.FlagZ.smooth_dim_isArithVar_part | exact GlobalTheory.FlagZ.smooth_dim_isArithVar_part | (intros; apply GlobalTheory.FlagZ.smooth_dim_isArithVar_part <;> assumption)

@@ -17,8 +17,10 @@ attribute [local instance] GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMod
 open GlobalTheory.PureMatch GlobalTheory.SquareFlipReach ValuativeRel
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PureMatch.exists_depth_bigP_eq_smallP | exact GlobalTheory.PureMatch.exists_depth_bigP_eq_smallP | (intros; apply GlobalTheory.PureMatch.exists_depth_bigP_eq_smallP <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PureMatch.exists_depth_bigP_eq_smallP` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsDepthSplitThetaBigEqSmallBlockTranslate.lean&line=38#L38)
 -/
 theorem _root_.GlobalTheory.T.exists_depth_splitThetaBig_eq_small_blockTranslate : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k]
     (a : ℕ) (A' C : Type) [Fintype A'] [DecidableEq A'] [Fintype C] [DecidableEq C] (μ₀ : Measure (GL A' k)) [μ₀.IsHaarMeasure]

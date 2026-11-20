@@ -2,8 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsGeneratorValuationPrimeDvdPowSubOfFinitePa
 import Mathlib
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.exists_generator_valuation_prime_dvd_pow_sub_of_finite_padicInt | exact GlobalTheory.exists_generator_valuation_prime_dvd_pow_sub_of_finite_padicInt | (intros; apply GlobalTheory.exists_generator_valuation_prime_dvd_pow_sub_of_finite_padicInt <;> assum …`.
+/- English proof (citation)
+Apply `GlobalTheory.exists_generator_valuation_prime_dvd_pow_sub_of_finite_padicInt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FExistsGeneratorValuationPrimeDvdPowSubOfFinitePa.lean&line=5#L5)
 -/
 theorem _root_.GlobalTheory.T.exists_uniformizer_valuation_lt_one_frobenius_congr : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [Algebra ℤ_[p] Ω], Function.Injective (algebraMap ℤ_[p] Ω) →
   ∀ v : Valuation Ω NNReal, (∀ x : Ω, IsIntegral ℤ_[p] x → v x ≤ 1) → v (p : Ω) < 1 →

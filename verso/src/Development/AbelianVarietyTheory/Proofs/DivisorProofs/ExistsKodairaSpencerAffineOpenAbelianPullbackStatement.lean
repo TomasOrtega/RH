@@ -14,8 +14,10 @@ open GlobalTheory.RayEv (Ray)
 open GlobalTheory.Toroidal GlobalTheory.LogKS GlobalTheory.RigChart GlobalTheory.Heat
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KSOpen.exists_isKS_of_pull | exact GlobalTheory.KSOpen.exists_isKS_of_pull | (intros; apply GlobalTheory.KSOpen.exists_isKS_of_pull <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KSOpen.exists_isKS_of_pull` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsKodairaSpencerAffineOpenAbelianPullback.lean&line=176#L176)
 -/
 theorem _root_.GlobalTheory.T.exists_kodairaSpencer_affine_open_abelian_pullback : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X : Scheme.{0}) (t : SAB H X) (V : X.Opens) (U : X.affineOpens), U.1 ≤ V → ∀ (t' : SAB H (Sp Γ(X, U.1))), Nonempty (SABMap t' t (chart U)) → IsProper t'.G.hom → Out.RelAmple t'.G t'.PP.L → Out.KTriv t'.G t'.PP.L → ∀ (n : ℕ) (v : Fin n → (Sp (DualNumber Γ(X, U.1)) ⟶ t.G.left)), (∀ i, IsTanAtG t (chart U) (v i)) → (∀ w, IsTanAtG t (chart U) w → ∃! cf : Fin n → Γ(X, U.1), IsCombAtG t (chart U) v cf w) → ∀ D : Derivation ℤ Γ(X, U.1) Γ(X, U.1), ∃ Θ, IsKS t V U v D Θ := by
   first | exact @GlobalTheory.KSOpen.exists_isKS_of_pull | exact GlobalTheory.KSOpen.exists_isKS_of_pull | (intros; apply GlobalTheory.KSOpen.exists_isKS_of_pull <;> assumption)

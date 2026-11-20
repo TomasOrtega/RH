@@ -10,8 +10,10 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open ReciprocityTheory.AnForm.M
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points GlobalTheory.CechPic GlobalTheory.ProjVar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.cxPts_var_compact_manifold | exact GlobalTheory.cxPts_var_compact_manifold | (intros; apply GlobalTheory.cxPts_var_compact_manifold <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.cxPts_var_compact_manifold` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FComplexPointsSmoothProjVarietyCompactManifold.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.complexPoints_smoothProjVariety_compact_manifold : ∀ Y : Var ℂ, CompactSpace (CxPts Y.str (RingHom.id ℂ)) ∧ T2Space (CxPts Y.str (RingHom.id ℂ)) ∧ SecondCountableTopology (CxPts Y.str (RingHom.id ℂ)) ∧ ∃ A : FinHolAtlas Y.dim (CxPts Y.str (RingHom.id ℂ)), IsAlgAtlas A := by
   first | exact @GlobalTheory.cxPts_var_compact_manifold | exact GlobalTheory.cxPts_var_compact_manifold | (intros; apply GlobalTheory.cxPts_var_compact_manifold <;> assumption)

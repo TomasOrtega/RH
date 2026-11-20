@@ -22,8 +22,10 @@ open scoped GlobalTheory.VacAny
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PsiNontrivAt.exists_psiAt_ne_one | exact GlobalTheory.PsiNontrivAt.exists_psiAt_ne_one | (intros; apply GlobalTheory.PsiNontrivAt.exists_psiAt_ne_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PsiNontrivAt.exists_psiAt_ne_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FStandardAdelicAddCharNontrivialFinitePlace.lean&line=25#L25)
 -/
 theorem _root_.GlobalTheory.T.standardAdelicAddChar_nontrivial_finitePlace : ∀ {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ →
     ∀ w : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, ∃ t, GlobalTheory.LatVac.psiAt ψ w t ≠ 1 := by

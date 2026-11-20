@@ -12,8 +12,10 @@ open scoped TensorProduct InnerProductSpace
 open GlobalTheory.Hk3
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.thetaUp_injective_on_carried | exact GlobalTheory.thetaUp_injective_on_carried | (intros; apply GlobalTheory.thetaUp_injective_on_carried <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.thetaUp_injective_on_carried` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FUpwardThetaLiftInjectiveOnCarriedPart.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.upward_theta_lift_injective_on_carried_part : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3), R.PThmB → (0 < R.kap ∧ ∀ i t p, 0 < R.lam3 i t p A3.A.v0) → ∀ p c, R.Carries p c → ∀ w ∈ R.EEc c, w ≠ 0 → LinearMap.adjoint (R.Th A3.A.μ0) w ≠ 0 := by
   first | exact @GlobalTheory.thetaUp_injective_on_carried | exact GlobalTheory.thetaUp_injective_on_carried | (intros; apply GlobalTheory.thetaUp_injective_on_carried <;> assumption)

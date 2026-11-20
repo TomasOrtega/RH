@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MultCellsAmong
 open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.TorRef GlobalTheory.PolFan
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PolFan.exists_star_drop_multCells | exact GlobalTheory.PolFan.exists_star_drop_multCells | (intros; apply GlobalTheory.PolFan.exists_star_drop_multCells <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PolFan.exists_star_drop_multCells` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsStarSubdivisionRemovesMaxMultiplicityCells.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.exists_starSubdivision_removes_maxMultiplicity_cells : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (q : ℕ) (φ lab : InvFun (𝓞 E)),
     (∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] [Module.Projective (𝓞 E) X], Dominates H.bar X) →

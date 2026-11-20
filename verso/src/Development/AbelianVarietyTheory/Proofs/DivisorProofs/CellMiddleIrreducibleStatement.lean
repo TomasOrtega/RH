@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.SiegelWeilAnisotrop
 open GlobalTheory.SmGL GlobalTheory.PRep GlobalTheory.IndLineGL
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IndLineGL.cellMid_isIrreducible_of_eq | exact GlobalTheory.IndLineGL.cellMid_isIrreducible_of_eq | (intros; apply GlobalTheory.IndLineGL.cellMid_isIrreducible_of_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IndLineGL.cellMid_isIrreducible_of_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCellMiddleIrreducible.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.cell_middle_irreducible : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],
     GlobalTheory.ThK.KP → ∀ (a a' m : ℕ) (α₀ β₀ : kˣ →* ℂˣ), IsSmoothChar α₀ → IsSmoothChar β₀ →

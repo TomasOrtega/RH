@@ -22,8 +22,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm GlobalTheory.ChainFr MeasureTheory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GoodFock.exists_good_polynomial | exact GlobalTheory.GoodFock.exists_good_polynomial | (intros; apply GlobalTheory.GoodFock.exists_good_polynomial <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GoodFock.exists_good_polynomial` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPolynomialThetaPairingExists.lean&line=549#L549)
 -/
 theorem _root_.GlobalTheory.T.polynomial_theta_pairing_exists : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
   ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →

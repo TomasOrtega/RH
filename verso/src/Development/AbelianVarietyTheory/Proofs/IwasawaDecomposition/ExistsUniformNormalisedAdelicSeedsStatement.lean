@@ -6,8 +6,10 @@ open Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Rows Fo
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mem.R3.Rw.Resize.seeds_uniform_exists | exact GlobalTheory.Mem.R3.Rw.Resize.seeds_uniform_exists | (intros; apply GlobalTheory.Mem.R3.Rw.Resize.seeds_uniform_exists <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mem.R3.Rw.Resize.seeds_uniform_exists` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsUniformNormalisedAdelicSeeds.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.exists_uniform_normalisedAdelicSeeds : ∀ (K : Ctx) (P : Pre) (f : GlobalTheory.Mem.Top.Fr P) (F : IntermediateField ℚ ℂ), ∃ (S : Finset ℕ) (S₂ : Finset ℂ), (∀ z ∈ S₂, IsAlgebraic ℚ z) ∧ ∀ px : PreX P, (∃ F₀, SeedW K P f F F₀ px Set.univ ⊤) → ∃ F₀, SeedW K P f F F₀ px (S : Set ℕ) (IntermediateField.adjoin ℚ (S₂ : Set ℂ)) := by
   first | exact @GlobalTheory.Mem.R3.Rw.Resize.seeds_uniform_exists | exact GlobalTheory.Mem.R3.Rw.Resize.seeds_uniform_exists | (intros; apply GlobalTheory.Mem.R3.Rw.Resize.seeds_uniform_exists <;> assumption)

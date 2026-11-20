@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.DeltaStruct
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BKReal GlobalTheory.Per GlobalTheory.BSP
 open scoped Formalism.Per NNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BSP.exists_ringHom_comp_of_isCompl | exact GlobalTheory.BSP.exists_ringHom_comp_of_isCompl | (intros; apply GlobalTheory.BSP.exists_ringHom_comp_of_isCompl <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BSP.exists_ringHom_comp_of_isCompl` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FExistsRingHomExtendIsAdicCompletionMap.lean&line=7#L7)
 -/
 theorem _root_.GlobalTheory.T.exists_ringHom_extend_isAdicCompletionMap : ∀ (L : Type) [CommRing L] (Q : Type) [CommRing Q] (C : Type) [CommRing C] (i : L →+* Q) (J : Ideal L) (JC : Ideal C), IsCompl i J → IsAdicComplete JC C → ∀ g : L →+* C, J.map g ≤ JC → ∃ h : Q →+* C, h.comp i = g := by
   first | exact @GlobalTheory.BSP.exists_ringHom_comp_of_isCompl | exact GlobalTheory.BSP.exists_ringHom_comp_of_isCompl | (intros; apply GlobalTheory.BSP.exists_ringHom_comp_of_isCompl <;> assumption)

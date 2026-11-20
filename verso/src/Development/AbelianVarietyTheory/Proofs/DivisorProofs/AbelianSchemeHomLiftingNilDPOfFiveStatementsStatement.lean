@@ -9,8 +9,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbelianUno
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.GrothendieckDeformation
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CanonicalOfAbelianDeRham
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SqLift.abelianLifting_of_known_theorems | exact GlobalTheory.SqLift.abelianLifting_of_known_theorems | (intros; apply GlobalTheory.SqLift.abelianLifting_of_known_theorems <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SqLift.abelianLifting_of_known_theorems` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAbelianSchemeHomLiftingNilDPOfFiveStatements.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.abelianSchemeHomLiftingNilDP_of_hodge_cube_duality_unobstructed : GlobalTheory.Published.AbelianHodgeDeRham → GlobalTheory.Published.CubeTheorem → GlobalTheory.Published.DualAbelianScheme → GlobalTheory.Published.PoincareDeRhamDuality → GlobalTheory.Published.AbelianUnobstructed → GlobalTheory.Published.AbelianLifting := by
   first | exact @GlobalTheory.SqLift.abelianLifting_of_known_theorems | exact GlobalTheory.SqLift.abelianLifting_of_known_theorems | (intros; apply GlobalTheory.SqLift.abelianLifting_of_known_theorems <;> assumption)

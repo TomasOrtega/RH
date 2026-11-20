@@ -9,8 +9,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.SiegelWeil₂.SiegelEi
 import Development.AbelianVarietyTheory.PublishedTheorems.SiegelWeil₂.SiegelWeilUnitarySchrodinger
 open GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.LiteralAutomorphy
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mem.hypH_of_rowRatW | exact GlobalTheory.Mem.hypH_of_rowRatW | (intros; apply GlobalTheory.Mem.hypH_of_rowRatW <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mem.hypH_of_rowRatW` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FDoublingInputsImply.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.doubling_inputs_imply : PrM → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.WeilSiegelFormulaUnitary → GlobalTheory.Published.SiegelWeilUnitarySchrodinger → GlobalTheory.Published.SiegelEisensteinContinuation → GlobalTheory.Published.SiegelEisensteinSimplePole → GlobalTheory.Published.UnramifiedDoublingGL → GlobalTheory.Published.BernsteinZelevinskyFiniteness → GlobalTheory.Published.SchurOrthogonalitySquareIntegrable → GlobalTheory.Published.RegularisedSiegelWeilFirstTerm → RowRatW → HypH := by
   first | exact @GlobalTheory.Mem.hypH_of_rowRatW | exact GlobalTheory.Mem.hypH_of_rowRatW | (intros; apply GlobalTheory.Mem.hypH_of_rowRatW <;> assumption)

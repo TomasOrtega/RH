@@ -24,8 +24,10 @@ open scoped Classical
 attribute [local instance] MvPolynomial.gradedAlgebra
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompHt.map_genericPrime_eq_coneIdeal | exact GlobalTheory.CompHt.map_genericPrime_eq_coneIdeal | (intros; apply GlobalTheory.CompHt.map_genericPrime_eq_coneIdeal <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompHt.map_genericPrime_eq_coneIdeal` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FProjectiveChartGenericPointFunction.lean&line=57#L57)
 -/
 theorem _root_.GlobalTheory.T.projective_chart_generic_point_function : ∀ (K Ω : Type) [Field K] [NumberField K] [Field Ω] [Algebra K Ω] (m : ℕ) (y : Fin (m + 1) → Ω) (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp (𝓞 K)) (π : X ⟶ PSpace (𝓞 K) m) (ψ : Ω →+* X.functionField) (i : Fin (m + 1)) (U : X.Opens) (hη : genericPoint X ∈ U) (hU : U ≤ π ⁻¹ᵁ GlobalTheory.ProjSpace.chart (𝓞 K) m i),
     π ≫ PSpace.str (𝓞 K) m = p →

@@ -10,8 +10,10 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G Recip
 open scoped Classical
 open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalTheory.FlagAr GlobalTheory.ShFam.Pad GlobalTheory.VB
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SmoothDimTotal.topologicalKrullDim_eq_of_smooth_surjective | exact GlobalTheory.SmoothDimTotal.topologicalKrullDim_eq_of_smooth_surjective | (intros; apply GlobalTheory.SmoothDimTotal.topologicalKrullDim_eq_of_smooth_surjective <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SmoothDimTotal.topologicalKrullDim_eq_of_smooth_surjective` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FKrullDimSmoothSurjectiveTotal.lean&line=102#L102)
 -/
 theorem _root_.GlobalTheory.T.krull_dim_smooth_surjective_total : ∀ (B Y : Scheme.{0}) [IsLocallyNoetherian B] (π : Y ⟶ B) (n d : ℕ) [SmoothOfRelativeDimension n π], Function.Surjective π → topologicalKrullDim B = (d + 1 : ℕ) → topologicalKrullDim Y = (d + n + 1 : ℕ) := by
   first | exact @GlobalTheory.SmoothDimTotal.topologicalKrullDim_eq_of_smooth_surjective | exact GlobalTheory.SmoothDimTotal.topologicalKrullDim_eq_of_smooth_surjective | (intros; apply GlobalTheory.SmoothDimTotal.topologicalKrullDim_eq_of_smooth_surjective <;> assumption)

@@ -24,8 +24,10 @@ open scoped Classical
 attribute [local instance] MvPolynomial.gradedAlgebra
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HermLB.isometric_pull_fs_toProj | exact GlobalTheory.HermLB.isometric_pull_fs_toProj | (intros; apply GlobalTheory.HermLB.isometric_pull_fs_toProj <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HermLB.isometric_pull_fs_toProj` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHermitianMetricUnitaryGauge.lean&line=26#L26)
 -/
 theorem _root_.GlobalTheory.T.hermitian_metric_unitary_gauge : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (L : GlobalTheory.HermLB p) (m : ℕ) (t : Fin (m + 1) → L.B.Sec) (ht : ⨆ j, nonzeroLocus (t j) = ⊤)
     (A : (k →+* ℂ) → Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ) (hA : ∀ σ, (A σ).det ≠ 0)

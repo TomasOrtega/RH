@@ -14,8 +14,10 @@ open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Hk3 (Core Good IsSF SchurAll TwoSided FixAll EEc Wcc eH IsLab HoweUnram)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AdjSpan.range_adjoint_le_span | exact GlobalTheory.AdjSpan.range_adjoint_le_span | (intros; apply GlobalTheory.AdjSpan.range_adjoint_le_span <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AdjSpan.range_adjoint_le_span` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRangeAdjointCompositeLiftLeSpanBlockEigenspaces.lean&line=146#L146)
 -/
 theorem _root_.GlobalTheory.T.range_adjoint_compositeLift_le_span_blockEigenspaces : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A) {s : ℕ}, GlobalTheory.Chain.LiftInteg D → A.fam.Ok s → Core R F → SchurAll R → ∀ t, LinearMap.range (LinearMap.adjoint (R.Th t)) ≤ Submodule.span ℂ (R.jX t '' ((A.fam.R t).ZH : Set (A.fam.R t).S.Forms)) := by
   first | exact @GlobalTheory.AdjSpan.range_adjoint_le_span | exact GlobalTheory.AdjSpan.range_adjoint_le_span | (intros; apply GlobalTheory.AdjSpan.range_adjoint_le_span <;> assumption)

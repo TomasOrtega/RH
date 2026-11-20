@@ -10,8 +10,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.CharKer
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CharKer.pmap_isPullback_actMap | exact GlobalTheory.CharKer.pmap_isPullback_actMap | (intros; apply GlobalTheory.CharKer.pmap_isPullback_actMap <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CharKer.pmap_isPullback_actMap` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FKernelActionIsPullbackProdMapTorsor.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.kernelAction_isPullback_prodMap_torsor : ∀ (S : Scheme.{0}) (A A' N T : Over S) [GrpObj A] [GrpObj A'] [GrpObj N] (i : N ⟶ A) (q : A ⟶ A'), IsMonHom i → IsMonHom q → IsPullback i (toUnit N) q η[A'] → IsPullback (prMap A N T) (actMap i T) (pmap q T) (pmap q T) := by
   first | exact @GlobalTheory.CharKer.pmap_isPullback_actMap | exact GlobalTheory.CharKer.pmap_isPullback_actMap | (intros; apply GlobalTheory.CharKer.pmap_isPullback_actMap <;> assumption)

@@ -11,8 +11,10 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocalGlobalAbo
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX NumberField IsDedekindDomain GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw GlobalTheory.HeightCounting GlobalTheory.HeightCounting.Up
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeRec.factG
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PinLayer.pin_atMem | exact GlobalTheory.PinLayer.pin_atMem | (intros; apply GlobalTheory.PinLayer.pin_atMem <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PinLayer.pin_atMem` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsLocalLanglandsPlaceDatum.lean&line=63#L63)
 -/
 theorem _root_.GlobalTheory.T.exists_local_langlands_place_datum : PrN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AtMem hL fun _ _ _ _ w Z _ _ t nch n c => ∃ P : GlobalTheory.NPin.Pin hL (w.D Z), PinAt c.a P := by
   first | exact @GlobalTheory.PinLayer.pin_atMem | exact GlobalTheory.PinLayer.pin_atMem | (intros; apply GlobalTheory.PinLayer.pin_atMem <;> assumption)

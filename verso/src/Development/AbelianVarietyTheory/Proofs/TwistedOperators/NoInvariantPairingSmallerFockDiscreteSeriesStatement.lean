@@ -7,8 +7,10 @@ open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.PairLift
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.NoLowPairing.no_pairing_of_noLow | exact GlobalTheory.NoLowPairing.no_pairing_of_noLow | (intros; apply GlobalTheory.NoLowPairing.no_pairing_of_noLow <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.NoLowPairing.no_pairing_of_noLow` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FNoInvariantPairingSmallerFockDiscreteSeries.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.no_invariant_pairing_smaller_fock_discreteSeries : ∀ (X : ProvA) (p q r s : ℕ) (lam' : Ix r s → ℚ), Formalism.MainNotions.SchurIrreducible.AdmGK (X.ds r s lam').HK → NoLow X p q lam' → ∀ i : ℕ, 1 ≤ i → i ≤ p → i ≤ q → ∀ b : Formalism.BasicNotions.TH.Pol (p - i) (q - i) r s →ₗ[ℂ] (X.ds r s lam').HK.V →ₛₗ[starRingEnd ℂ] ℂ, (∀ Z ∈ upq r s, ∀ P y, b (fockAct2 (p - i) (q - i) r s Z P) y + b P ((X.ds r s lam').HK.act Z y) = 0) → b = 0 := by
   first | exact @GlobalTheory.NoLowPairing.no_pairing_of_noLow | exact GlobalTheory.NoLowPairing.no_pairing_of_noLow | (intros; apply GlobalTheory.NoLowPairing.no_pairing_of_noLow <;> assumption)

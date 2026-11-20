@@ -6,8 +6,10 @@ open Matrix Complex NumberField GlobalTheory.SW Filter Topology
 open ReciprocityTheory.ChartRestriction.G.FD (cc herm)
 open scoped ComplexConjugate ComplexOrder Real Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SW.summable_exp_neg_trace | exact GlobalTheory.SW.summable_exp_neg_trace | (intros; apply GlobalTheory.SW.summable_exp_neg_trace <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SW.summable_exp_neg_trace` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSiegelThetaTransformation%2FSummableExpNegTraceTotallyPositiveHermitian.lean&line=60#L60)
 -/
 theorem _root_.GlobalTheory.T.summable_exp_neg_trace_totallyPositive_hermitian : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Finset (E →+* ℂ)), IsType Ψ → ∀ (N c : ℕ) (δ : ℝ), 0 < c → 0 < δ → Summable fun T : {T : Matrix (Fin N) (Fin N) E // ccT T = T ∧ Den c T ∧ ∀ τ : Ψ, (T.map τ.1).PosSemidef} => Real.exp (-(δ * ∑ τ : Ψ, (T.1.map τ.1).trace.re)) := by
   first | exact @GlobalTheory.SW.summable_exp_neg_trace | exact GlobalTheory.SW.summable_exp_neg_trace | (intros; apply GlobalTheory.SW.summable_exp_neg_trace <;> assumption)

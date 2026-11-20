@@ -7,8 +7,10 @@ open scoped TensorProduct InnerProductSpace ComplexConjugate
 open GlobalTheory.ChainOnto
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChainOnto.TameRes.tameAt_of_isRes | exact GlobalTheory.ChainOnto.TameRes.tameAt_of_isRes | (intros; apply GlobalTheory.ChainOnto.TameRes.tameAt_of_isRes <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChainOnto.TameRes.tameAt_of_isRes` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FHeckeCharTameAtOfFactorsThroughResidue.lean&line=74#L74)
 -/
 theorem _root_.GlobalTheory.T.heckeChar_tameAt_of_factors_through_residue : ∀ (D : D7) (H : Formalism.L2.Host.HChar D.host.E) (PP : Pl D.host.E) (a : (kP PP)ˣ →* ℂˣ), IsRes H PP a → H.TameAt PP := by
   first | exact @GlobalTheory.ChainOnto.TameRes.tameAt_of_isRes | exact GlobalTheory.ChainOnto.TameRes.tameAt_of_isRes | (intros; apply GlobalTheory.ChainOnto.TameRes.tameAt_of_isRes <;> assumption)

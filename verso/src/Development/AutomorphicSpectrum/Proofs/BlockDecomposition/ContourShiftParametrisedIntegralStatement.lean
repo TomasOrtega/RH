@@ -2,8 +2,10 @@ import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContourShiftParametrisedIntegral
 universe u
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.EisTube.laplaceEntire_firstCountable | exact GlobalTheory.CompanionTheory.EisTube.laplaceEntire_firstCountable | (intros; apply GlobalTheory.CompanionTheory.EisTube.laplaceEntire_firstCountable <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.EisTube.laplaceEntire_firstCountable` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FContourShiftParametrisedIntegral.lean&line=8#L8)
 -/
 theorem _root_.GlobalTheory.T.contour_shift_parametrised_integral : ∀ (ι : Type) [Fintype ι] (P : Type u) [TopologicalSpace P] [FirstCountableTopology P] (h : P → ℝ), (∀ p, 0 ≤ h p) →
     (∀ p, ∃ U ∈ nhds p, BddAbove (h '' U)) →

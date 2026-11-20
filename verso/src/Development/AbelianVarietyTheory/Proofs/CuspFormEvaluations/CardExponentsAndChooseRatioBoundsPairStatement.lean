@@ -2,8 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.CardExponentsAndChooseRatioBoundsPair
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.BinomRatio
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.card_exponents_and_choose_ratio_bounds | exact GlobalTheory.card_exponents_and_choose_ratio_bounds | (intros; apply GlobalTheory.card_exponents_and_choose_ratio_bounds <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.card_exponents_and_choose_ratio_bounds` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FCuspFormEvaluations%2FCardExponentsAndChooseRatioBoundsPair.lean&line=40#L40)
 -/
 theorem _root_.GlobalTheory.T.card_exponents_and_choose_ratio_bounds_pair : ∀ (D T : ℕ), (0 < D → D < T → Nat.card {α : Fin D → ℕ // ∑ i, α i < T - D} = (T - 1).choose D) ∧ ∀ (δ d ρ : ℕ), 2 ≤ D → 11 * D ^ 2 ≤ T → d ≤ δ * (T + 2 * D + 6).choose D → (ρ + δ * (T - 1).choose D ≤ d → (ρ : ℝ) ≤ 22 * (D : ℝ) ^ 2 * d / T) ∧ (ρ + δ * (T + D).choose D ≤ d → (ρ : ℝ) ≤ 22 * (D : ℝ) ^ 2 * d / T) := by
   first | exact @GlobalTheory.card_exponents_and_choose_ratio_bounds | exact GlobalTheory.card_exponents_and_choose_ratio_bounds | (intros; apply GlobalTheory.card_exponents_and_choose_ratio_bounds <;> assumption)

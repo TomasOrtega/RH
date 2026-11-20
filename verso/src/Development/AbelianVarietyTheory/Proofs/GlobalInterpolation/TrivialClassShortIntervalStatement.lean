@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.LamIdealOfNot
 open Complex ArithmeticFunction MeasureTheory Filter Topology NumberField GlobalTheory.Hk GlobalTheory.Mem
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Hk.ShortInt.trivialClass_shortInterval | exact GlobalTheory.Hk.ShortInt.trivialClass_shortInterval | (intros; apply GlobalTheory.Hk.ShortInt.trivialClass_shortInterval <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Hk.ShortInt.trivialClass_shortInterval` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FGlobalInterpolation%2FTrivialClassShortInterval.lean&line=218#L218)
 -/
 theorem _root_.GlobalTheory.T.exists_lam_zero_sum_shortInterval_ge : ∃ A c c' : ℝ, 0 < A ∧ 0 < c ∧ 0 < c' ∧ ∀ (𝓕 : LFam) (X h : ℝ), 1 ≤ X → Real.log 𝓕.B ≤ c * Real.sqrt (Real.log X) → Real.exp (-c * Real.sqrt (Real.log X)) ≤ h → h ≤ 1 → c' * h * X / 𝓕.B ^ A ≤ ∑ n ∈ Finset.Ioc ⌊X⌋₊ ⌊X * (1 + h)⌋₊, 𝓕.lam 0 n := by
   first | exact @GlobalTheory.Hk.ShortInt.trivialClass_shortInterval | exact GlobalTheory.Hk.ShortInt.trivialClass_shortInterval | (intros; apply GlobalTheory.Hk.ShortInt.trivialClass_shortInterval <;> assumption)

@@ -13,8 +13,10 @@ import GroundTheory.HeightsAndTheta.Heights.Intersections.Statements
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StatementsPushDown
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.ArakelovGeometry Filter Topology NumberField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Giv.nefOnFibres_of_generatesOn | exact GlobalTheory.CompanionTheory.Ar.Giv.nefOnFibres_of_generatesOn | (intros; apply GlobalTheory.CompanionTheory.Ar.Giv.nefOnFibres_of_generatesOn <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Giv.nefOnFibres_of_generatesOn` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FAlgebraProofs%2FGeneratedLineBundleNefOnFibres.lean&line=25#L25)
 -/
 theorem _root_.GlobalTheory.T.generated_line_bundle_nef_on_fibres : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω] (y : (Σ k, ι k) → Ω) (D : ℕ) (a : K → ℤ) (q : ℕ) (w : Fin q → Ω), IsArithVar (mCoordIdeal y) (D + 1) → Birational y → (∀ j, w j ∈ chartLat y a 1) → KH.GeneratesOn y a w → NefOnFibres (mCoordIdeal y) a := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Giv.nefOnFibres_of_generatesOn | exact GlobalTheory.CompanionTheory.Ar.Giv.nefOnFibres_of_generatesOn | (intros; apply GlobalTheory.CompanionTheory.Ar.Giv.nefOnFibres_of_generatesOn <;> assumption)

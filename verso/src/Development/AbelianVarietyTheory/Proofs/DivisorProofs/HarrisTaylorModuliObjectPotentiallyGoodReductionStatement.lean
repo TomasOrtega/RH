@@ -13,8 +13,10 @@ open GlobalTheory GlobalTheory.AbLaw GlobalTheory.UU GlobalTheory.LN GlobalTheor
 open scoped CategoryTheory.Obj
 open GlobalTheory.UPel.HT
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HTPotGood.potGood | exact GlobalTheory.HTPotGood.potGood | (intros; apply GlobalTheory.HTPotGood.potGood <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HTPotGood.potGood` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHarrisTaylorModuliObjectPotentiallyGoodReduction.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.harrisTaylorModuliObject_potentiallyGoodReduction : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ) (V K : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (maximalIdeal V) V] [Field K] [CharZero K] [Algebra V K] [IsFractionRing V K] (β : R →+* K) (o : Obj b N (spMap β)), (2 * D.a < Module.finrank ℚ D.F ∨ (D.IsDivision ∧ D.n < 2 * D.m)) → GlobalTheory.SS.PotModel V K o.A (fun _ _ _ G _ => IsAbelianScheme G) := by
   first | exact @GlobalTheory.HTPotGood.potGood | exact GlobalTheory.HTPotGood.potGood | (intros; apply GlobalTheory.HTPotGood.potGood <;> assumption)

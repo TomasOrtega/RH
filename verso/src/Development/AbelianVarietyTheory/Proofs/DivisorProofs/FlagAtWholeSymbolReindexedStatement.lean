@@ -14,8 +14,10 @@ open scoped Classical
 open MvPolynomial Formalism.BasicNotions.DV
 open GlobalTheory.ShFam.Pad GlobalTheory.TrivFlag
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TrivFlag.flagAt_wholeSym | exact GlobalTheory.TrivFlag.flagAt_wholeSym | (intros; apply GlobalTheory.TrivFlag.flagAt_wholeSym <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TrivFlag.flagAt_wholeSym` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFlagAtWholeSymbolReindexed.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.flag_at_whole_symbol_reindexed : Hypotheses2 → HypothesesH → RegularAlteration → ScholzeWeinsteinB → ∀ (D : D7) (O : Setup D), O.Core →
     ∀ (Sx : Finset ℕ) (R : ℝ), 2 ≤ R → ∀ p : ℕ, p.Prime → ∀ c : O.s.Comp,

@@ -9,8 +9,10 @@ import Formalism.LocalRingCardinality.DataTies
 open BranchingSupport GlobalTheory.CellAmp GlobalTheory.Amp Formalism.BasicNotions Formalism.MainNotions.S Formalism.QuantumDeterminants Matrix MeasureTheory Finset
 open scoped InnerProductSpace ENNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BesselSchurGap.bessel_schur | exact GlobalTheory.BesselSchurGap.bessel_schur | (intros; apply GlobalTheory.BesselSchurGap.bessel_schur <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BesselSchurGap.bessel_schur` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FBesselMapMultipleIsometryLargeGap.lean&line=136#L136)
 -/
 theorem _root_.GlobalTheory.T.besselMap_multipleIsometry_largeGap : GlobalTheory.GapIn.Hyp → ∀ (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C0 : ℝ), 1000 ≤ Cl → (∀ τ w w' θ (W : LocW D.R.k D.R.rS), GoodW D τ w w' θ W → 0 < θ) → (∀ w, 0 < Tr D w) → BSch D large₂ C' Cl Cg cb Cu cT CT C0 := by
   first | exact @GlobalTheory.BesselSchurGap.bessel_schur | exact GlobalTheory.BesselSchurGap.bessel_schur | (intros; apply GlobalTheory.BesselSchurGap.bessel_schur <;> assumption)

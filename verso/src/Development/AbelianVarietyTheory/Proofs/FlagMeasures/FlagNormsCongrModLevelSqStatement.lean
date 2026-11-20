@@ -10,8 +10,10 @@ open NumberField MeasureTheory Formalism.BasicNotions Formalism.MainNotions.S Fo
 open scoped Classical ENNReal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.NormCong.norms_congr | exact GlobalTheory.NormCong.norms_congr | (intros; apply GlobalTheory.NormCong.norms_congr <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.NormCong.norms_congr` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FFlagNormsCongrModLevelSq.lean&line=90#L90)
 -/
 theorem _root_.GlobalTheory.T.flagNorms_congr_mod_level_sq : ∀ (D : D7) (Z : LocDat D) (FP : ∀ p : PlF D, LocNG.FPair (locH Z p) D.R.rS) (u u' : D.what₂.Word) (F : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)), Based Z FP (Tu D u) (Tu D u') F F' → (∀ p, (FP p).NormsOK) → (D.mem u).A.T ≡ (D.mem u').A.T [MOD (gS D) ^ 2] := by
   first | exact @GlobalTheory.NormCong.norms_congr | exact GlobalTheory.NormCong.norms_congr | (intros; apply GlobalTheory.NormCong.norms_congr <;> assumption)

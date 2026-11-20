@@ -10,8 +10,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.CharKer
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CharKer.triv_pull_of_isPullGen | exact GlobalTheory.CharKer.triv_pull_of_isPullGen | (intros; apply GlobalTheory.CharKer.triv_pull_of_isPullGen <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CharKer.triv_pull_of_isPullGen` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCechTrivialPullbackOfIsPullbackGenerator.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.cechTrivial_pullback_of_isPullbackGenerator : ∀ (X Y : Scheme.{0}) (p : X ⟶ Y) (M : LB Y) (e : ∀ k, Γ(X, p ⁻¹ᵁ M.U k)ˣ), IsPullGen p M e → Triv (M.pull p) := by
   first | exact @GlobalTheory.CharKer.triv_pull_of_isPullGen | exact GlobalTheory.CharKer.triv_pull_of_isPullGen | (intros; apply GlobalTheory.CharKer.triv_pull_of_isPullGen <;> assumption)

@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.ResidualConst
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemSpanRingCornerIdealModuleIff
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N GlobalTheory.IndefiniteRowSideFullHecke.CongruenceModuleMatrices GlobalTheory.SpanRing
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IdemConstRank.rank_const | exact GlobalTheory.IdemConstRank.rank_const | (intros; apply GlobalTheory.IdemConstRank.rank_const <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IdemConstRank.rank_const` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FIdempotentRankConstOfCharpolyInLocalFunctions.lean&line=82#L82)
 -/
 theorem _root_.GlobalTheory.T.idempotent_rank_const_of_charpoly_in_local_functions : ∀ {X O : Type} [CommRing O] [IsDomain O] [IsLocalRing O] {n : ℕ} (T : Subalgebra O (X → O)) (e : X → Matrix (Fin n) (Fin n) O), IsLocalRing T → e * e = e → (∀ j : ℕ, (fun x => (e x).charpoly.coeff j) ∈ T) → ∀ x y, ((e x).map (toFr O)).rank = ((e y).map (toFr O)).rank := by
   first | exact @GlobalTheory.IdemConstRank.rank_const | exact GlobalTheory.IdemConstRank.rank_const | (intros; apply GlobalTheory.IdemConstRank.rank_const <;> assumption)

@@ -7,8 +7,10 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Form
 open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.JointHarm.exists_ioP | exact GlobalTheory.JointHarm.exists_ioP | (intros; apply GlobalTheory.JointHarm.exists_ioP <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.JointHarm.exists_ioP` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsLowestKTypeFockMapThetaVectors.lean&line=298#L298)
 -/
 theorem _root_.GlobalTheory.T.exists_lowestKType_fockMap_thetaVectors : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), R.toLevCh.Is A.μ0 → R.IsFam → R.IsModels → R.thP_ωP → R.thP_vP → R.thP_pt_theta ∧ ∃ io, ({ R with ioP := io } : RealDat D A Ks).thP_ioP := by
   first | exact @GlobalTheory.JointHarm.exists_ioP | exact GlobalTheory.JointHarm.exists_ioP | (intros; apply GlobalTheory.JointHarm.exists_ioP <;> assumption)

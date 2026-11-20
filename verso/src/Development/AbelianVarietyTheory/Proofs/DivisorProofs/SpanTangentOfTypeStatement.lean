@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.IsSatFrame
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LogFGLDepthStagesLowAImports
 open MvPowerSeries ReciprocityTheory.PGsh ReciprocityTheory.ChartRestriction.G.Sh GlobalTheory.DepthStages
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.span_tangent_of_type | exact GlobalTheory.span_tangent_of_type | (intros; apply GlobalTheory.span_tangent_of_type <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.span_tangent_of_type` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSpanTangentOfType.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.mem_span_tangent_of_type_of_isBasis : ∀ (C : Type) [Field C] (v : AddValuation C (WithTop ℝ)) (p d h : ℕ) (ty : Fin d → ZMod h)
     (G : LogFGL v d) (γ : Fin d → Fin d → PowerSeries C), IsBasis G p ty γ →

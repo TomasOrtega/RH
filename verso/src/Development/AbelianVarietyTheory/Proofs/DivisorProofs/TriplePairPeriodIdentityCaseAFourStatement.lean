@@ -11,8 +11,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ConeLaw.integ_law | exact GlobalTheory.ConeLaw.integ_law | (intros; apply GlobalTheory.ConeLaw.integ_law <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ConeLaw.integ_law` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTriplePairPeriodIdentityCaseAFour.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.triple_pair_period_identity_case_a_four : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a'))

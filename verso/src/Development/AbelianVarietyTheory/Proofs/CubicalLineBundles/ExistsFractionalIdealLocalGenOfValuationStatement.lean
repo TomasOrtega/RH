@@ -9,8 +9,10 @@ open scoped CategoryTheory.Obj ComplexOrder
 open GlobalTheory GlobalTheory.CM GlobalTheory.LamF
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LamF.exists_fractionalIdeal_isLocGen_of_valuation | exact GlobalTheory.LamF.exists_fractionalIdeal_isLocGen_of_valuation | (intros; apply GlobalTheory.LamF.exists_fractionalIdeal_isLocGen_of_valuation <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LamF.exists_fractionalIdeal_isLocGen_of_valuation` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FCubicalLineBundles%2FExistsFractionalIdealLocalGenOfValuation.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.exists_fractionalIdeal_localGen_of_valuation : ∀ (K : Type) [Field K] [NumberField K] (oa : HeightOneSpectrum (𝓞 K) → ℤ), (Function.support oa).Finite → ∃ I : FractionalIdeal (nonZeroDivisors (𝓞 K)) K, I ≠ 0 ∧ ∀ (p : HeightOneSpectrum (𝓞 K)) (a : K), p.valuation K a = WithZero.exp (-oa p) → IsLocGen p a I := by
   first | exact @GlobalTheory.LamF.exists_fractionalIdeal_isLocGen_of_valuation | exact GlobalTheory.LamF.exists_fractionalIdeal_isLocGen_of_valuation | (intros; apply GlobalTheory.LamF.exists_fractionalIdeal_isLocGen_of_valuation <;> assumption)

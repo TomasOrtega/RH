@@ -14,8 +14,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UU
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EvenTriv.exists_even_cubTriv_specialFibre | exact GlobalTheory.EvenTriv.exists_even_cubTriv_specialFibre | (intros; apply GlobalTheory.EvenTriv.exists_even_cubTriv_specialFibre <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EvenTriv.exists_even_cubTriv_specialFibre` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUniformizationProofs%2FExistsEvenCubicalTrivialisationSpecialFibre.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.exists_even_cubical_trivialisation_specialFibre : Laws → ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], CDVR V → ∀ (A : PolAV (Spec (CommRingCat.of (FractionRing V)))) (G : Over (Spec (CommRingCat.of V))) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (gen : (Over.pullback (jK V)).obj G ≅ A.A), IsMonHom gen.hom → ∀ (P : CP G) (w : G ⟶ G), IsMonHom w → LBIso P.L.L (cubeLB G ![𝟙 G, w] P.L.L) → ∀ (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (Q₀ : TQ (thickObj V (maximalIdeal V) 0 G) X) (P₀ : CP (thickObj V (maximalIdeal V) 0 G)), IsLevelCP (maximalIdeal V) 0 P₀ P → ∃ σ : CubTriv P₀.c Q₀.i, σ.Even := by
   first | exact @GlobalTheory.EvenTriv.exists_even_cubTriv_specialFibre | exact GlobalTheory.EvenTriv.exists_even_cubTriv_specialFibre | (intros; apply GlobalTheory.EvenTriv.exists_even_cubTriv_specialFibre <;> assumption)

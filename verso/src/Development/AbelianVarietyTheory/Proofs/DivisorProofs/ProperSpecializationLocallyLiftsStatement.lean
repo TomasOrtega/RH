@@ -9,8 +9,10 @@ open scoped CategoryTheory.Obj ComplexOrder
 open GlobalTheory GlobalTheory.CubeFib GlobalTheory.LieMet GlobalTheory.LieHt GlobalTheory.LocM.Frm GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.ShFam.Hor GlobalTheory.ShFam.Hor.LogCh GlobalTheory.Toroidal GlobalTheory.HeightParts GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.BdFib
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.image_contains_specializations_near | exact GlobalTheory.image_contains_specializations_near | (intros; apply GlobalTheory.image_contains_specializations_near <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.image_contains_specializations_near` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FProperSpecializationLocallyLifts.lean&line=38#L38)
 -/
 theorem _root_.GlobalTheory.T.proper_specialization_locally_lifts : ∀ (F : Type) [Field F] [NumberField F] (Y : Scheme.{0}) (p : Y ⟶ Sp F), IsProper p → ∀ (V : Scheme.{0}) (π : V ⟶ Y), LocallyOfFiniteType π → ∀ ν : V, ∃ U : Y.Opens, π ν ∈ U ∧ ∀ z : Y, z ∈ U → π ν ⤳ z → ∃ u : V, π u = z := by
   first | exact @GlobalTheory.image_contains_specializations_near | exact GlobalTheory.image_contains_specializations_near | (intros; apply GlobalTheory.image_contains_specializations_near <;> assumption)

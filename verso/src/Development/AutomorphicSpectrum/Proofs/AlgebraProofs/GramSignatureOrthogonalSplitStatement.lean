@@ -6,8 +6,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open Matrix GlobalTheory GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Fl
 open scoped ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Relay.gram_signature_orthogonal_split | exact GlobalTheory.CompanionTheory.Relay.gram_signature_orthogonal_split | (intros; apply GlobalTheory.CompanionTheory.Relay.gram_signature_orthogonal_split <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Relay.gram_signature_orthogonal_split` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FAlgebraProofs%2FGramSignatureOrthogonalSplit.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.gram_signature_orthogonal_split : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (p q : ℕ) (x : Fin p ⊕ Fin q → D.La), IsTypeFn H p q ty → p + q = D.p + D.q → LinearIndependent (𝓞 E) x → (∀ a b, sesq D (x (.inl a)) (x (.inr b)) = 0) → (∀ τ : E →+* ℂ, τ (H.rt : E) = H.rt0 → ((gramE D (x ∘ Sum.inl)).map fun a => Complex.I * τ a).PosDef ∧ (-((gramE D (x ∘ Sum.inr)).map fun a => Complex.I * τ a)).PosDef) → ∃ (P : D.La →+ (Fin g → ℂ)) (hP : IsPeriod D ty P), IsPure hP x := by
   first | exact @GlobalTheory.CompanionTheory.Relay.gram_signature_orthogonal_split | exact GlobalTheory.CompanionTheory.Relay.gram_signature_orthogonal_split | (intros; apply GlobalTheory.CompanionTheory.Relay.gram_signature_orthogonal_split <;> assumption)

@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsSplitPlOfNot
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX GlobalTheory.HeightCounting GlobalTheory.HeightCounting.FormsStep NumberField IsDedekindDomain Polynomial
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Member.DeltaTame.delta_tame_and_15 | exact GlobalTheory.Member.DeltaTame.delta_tame_and_15 | (intros; apply GlobalTheory.Member.DeltaTame.delta_tame_and_15 <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Member.DeltaTame.delta_tame_and_15` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FFifteenNotMemAndDeltaInertiaOrderDividesFifteenP.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.fifteen_not_mem_and_delta_inertia_order_divides_fifteen_pow : ∀ (D : D7) (T : TwR D.LL0 D.nd) (i : T.Tw) (P : PlE D.host), P ∈ T.pD i →
     ((15 : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal ∧ ∀ A : ValuationSubring D.nd.Om, IsPlaceOver A P → ∀ σ ∈ Ine (F := D.host.E) A,

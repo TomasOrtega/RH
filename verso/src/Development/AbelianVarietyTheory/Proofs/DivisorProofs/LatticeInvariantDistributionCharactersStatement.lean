@@ -2,8 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeInvariantDistributionCharacters
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LatticeComb.comb_unique | exact GlobalTheory.LatticeComb.comb_unique | (intros; apply GlobalTheory.LatticeComb.comb_unique <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LatticeComb.comb_unique` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLatticeInvariantDistributionCharacters.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.lattice_invariant_distribution_characters : ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     (P : LinearMap.BilinForm ℝ V), P.Nondegenerate →

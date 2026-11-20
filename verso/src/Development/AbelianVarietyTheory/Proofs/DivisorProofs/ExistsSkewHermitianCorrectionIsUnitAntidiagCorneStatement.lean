@@ -8,8 +8,10 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open scoped TensorProduct Matrix
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HermBlockChange.exists_unit_lower_block | exact GlobalTheory.HermBlockChange.exists_unit_lower_block | (intros; apply GlobalTheory.HermBlockChange.exists_unit_lower_block <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HermBlockChange.exists_unit_lower_block` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsSkewHermitianCorrectionIsUnitAntidiagCorne.lean&line=8#L8)
 -/
 theorem _root_.GlobalTheory.T.exists_skewHermitian_correction_isUnit_antidiag_corner : ∀ (O : Type) [CommRing O] (c : O →+* O), IsUnit (2 : O) →
     (∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) O), (∀ i j, c (J j i) = J i j) → IsUnit J.det →

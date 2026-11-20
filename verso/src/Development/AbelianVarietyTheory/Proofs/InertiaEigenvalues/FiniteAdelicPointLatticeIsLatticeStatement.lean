@@ -6,8 +6,10 @@ open Formalism.MainNotions.IntegralHeckeForms (TwOK ClsQ HkIdx V0 Fm0 FullRk SgJ
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LatFull.latAt_isLattice | exact GlobalTheory.LatFull.latAt_isLattice | (intros; apply GlobalTheory.LatFull.latAt_isLattice <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LatFull.latAt_isLattice` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FFiniteAdelicPointLatticeIsLattice.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.finite_adelic_point_lattice_isLattice : ∀ (D : D7) (ρ : Setup D.ntw), ρ.Good → ∀ (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool) (h : GA D (Vc D j)), Submodule.IsLattice D.host.E ((ρ.B i j b).latAt (finPt (Vc D j) h)) := by
   first | exact @GlobalTheory.LatFull.latAt_isLattice | exact GlobalTheory.LatFull.latAt_isLattice | (intros; apply GlobalTheory.LatFull.latAt_isLattice <;> assumption)

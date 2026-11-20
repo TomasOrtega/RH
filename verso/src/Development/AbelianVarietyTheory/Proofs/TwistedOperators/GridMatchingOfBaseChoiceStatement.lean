@@ -12,8 +12,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions Form
 open IsDedekindDomain NumberField GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.RowTest GlobalTheory.RowClaim MeasureTheory
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RowLift.exists_rowMatchS | exact GlobalTheory.RowLift.exists_rowMatchS | (intros; apply GlobalTheory.RowLift.exists_rowMatchS <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RowLift.exists_rowMatchS` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FGridMatchingOfBaseChoice.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.grid_matching_of_base_choice : GlobalTheory.FunPr.Hypotheses₂ → ∀ {D : D7} (large₂ : SizeData₂ D)
     {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m}

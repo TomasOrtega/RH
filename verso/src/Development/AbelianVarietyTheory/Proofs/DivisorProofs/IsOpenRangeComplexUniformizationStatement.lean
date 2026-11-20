@@ -12,8 +12,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.BoundaryPolynomialFunctions (IsProj
 open Formalism.BasicNotions Formalism.L2.Pj GlobalTheory.Toroidal GlobalTheory.ShFam GlobalTheory.ShFam.Hor GlobalTheory.Mean4O
 open scoped ContDiff ComplexOrder ENNReal Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompClopen.isOpen_range_up | exact GlobalTheory.CompClopen.isOpen_range_up | (intros; apply GlobalTheory.CompClopen.isOpen_range_up <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompClopen.isOpen_range_up` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsOpenRangeComplexUniformization.lean&line=65#L65)
 -/
 theorem _root_.GlobalTheory.T.isOpen_range_complex_uniformization : ∀ (D : D7) (O : Setup D) (c : O.s.Comp) (M : DRBase O c) (σ : O.κ.c.F →+* ℂ), IsOpen (Set.range (up M.b rfl σ)) := by
   first | exact @GlobalTheory.CompClopen.isOpen_range_up | exact GlobalTheory.CompClopen.isOpen_range_up | (intros; apply GlobalTheory.CompClopen.isOpen_range_up <;> assumption)

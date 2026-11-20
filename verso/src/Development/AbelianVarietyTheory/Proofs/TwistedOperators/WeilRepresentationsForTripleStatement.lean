@@ -14,8 +14,10 @@ open GlobalTheory.SquareComm
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SquareComm.WeilOfTriple.exists_weil_pair | exact GlobalTheory.SquareComm.WeilOfTriple.exists_weil_pair | (intros; apply GlobalTheory.SquareComm.WeilOfTriple.exists_weil_pair <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SquareComm.WeilOfTriple.exists_weil_pair` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FWeilRepresentationsForTriple.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.weil_representations_for_triple : GlobalTheory.FunPr.Hypotheses₂ → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (W W₁ X : HSp D) (α β : (AE D)ˣ →* Circle), IsTriple W W₁ X α β →

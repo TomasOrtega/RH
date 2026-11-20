@@ -17,8 +17,10 @@ open GlobalTheory.Mem.Col2.AdT
 open Filter Topology
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TwU.NearOne.congAt_eventually_nhds_one | exact GlobalTheory.TwU.NearOne.congAt_eventually_nhds_one | (intros; apply GlobalTheory.TwU.NearOne.congAt_eventually_nhds_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TwU.NearOne.congAt_eventually_nhds_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FEventuallyNhdsOneAdelicMatrixCongruentOneAtPrime.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.eventually_nhds_one_adelicMatrixCongruentOneAtPrime : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n N : ℕ) (P : HeightOneSpectrum (𝓞 E)), letI := tensTopL (F := F) (E := E) (FiniteAdeleRing (𝓞 F) F); ∀ᶠ u : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F) in nhds 1, GlobalTheory.TwU.CongAt P N u := by
   first | exact @GlobalTheory.TwU.NearOne.congAt_eventually_nhds_one | exact GlobalTheory.TwU.NearOne.congAt_eventually_nhds_one | (intros; apply GlobalTheory.TwU.NearOne.congAt_eventually_nhds_one <;> assumption)

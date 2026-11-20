@@ -16,8 +16,10 @@ open GlobalTheory.TrMult
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Chamber GlobalTheory.TruncKer GlobalTheory.Cusp
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IwasawaTri.mem_pLoc_flag0_of_mul_eq_upper | exact GlobalTheory.IwasawaTri.mem_pLoc_flag0_of_mul_eq_upper | (intros; apply GlobalTheory.IwasawaTri.mem_pLoc_flag0_of_mul_eq_upper <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IwasawaTri.mem_pLoc_flag0_of_mul_eq_upper` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FParabolicMatrixCoordinatesTriangular.lean&line=47#L47)
 -/
 theorem _root_.GlobalTheory.T.parabolic_matrix_coordinates_triangular : ∀ (D : D7) (V : HSp D) (Φ : WittFrame V) (v : HeightOneSpectrum (𝓞 D.host.F)) (p : GLoc D.sp.cm.sig V.gram v) (b : Matrix (Fin (wittIndex V)) (Fin (wittIndex V)) (TensorProduct D.host.F (Fv D.host.F v) D.host.E)), b.BlockTriangular id → (HA.mat (F := D.host.F) (Fv D.host.F v) D.sp.cm.sig V.gram p).1 * (Matrix.of fun (x : Fin V.rank) (i : Fin (wittIndex V)) => GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.coordR (F := D.host.F) V (Fv D.host.F v) (Φ.e i) x) = (Matrix.of fun (x : Fin V.rank) (i : Fin (wittIndex V)) => GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.coordR (F := D.host.F) V (Fv D.host.F v) (Φ.e i) x) * b → p ∈ PLoc Φ.flag0 v := by
   first | exact @GlobalTheory.IwasawaTri.mem_pLoc_flag0_of_mul_eq_upper | exact GlobalTheory.IwasawaTri.mem_pLoc_flag0_of_mul_eq_upper | (intros; apply GlobalTheory.IwasawaTri.mem_pLoc_flag0_of_mul_eq_upper <;> assumption)

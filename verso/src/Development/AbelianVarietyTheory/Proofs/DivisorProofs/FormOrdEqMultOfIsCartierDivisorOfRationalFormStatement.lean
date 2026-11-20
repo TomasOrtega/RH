@@ -9,8 +9,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.CechPic GlobalTheory.QCoh GlobalTheory.Discrepancy GlobalTheory.LogPair
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Discrepancy.DivOver.formOrd_eq_mult_of_isDivOfForm | exact GlobalTheory.Discrepancy.DivOver.formOrd_eq_mult_of_isDivOfForm | (intros; apply GlobalTheory.Discrepancy.DivOver.formOrd_eq_mult_of_isDivOfForm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Discrepancy.DivOver.formOrd_eq_mult_of_isDivOfForm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFormOrdEqMultOfIsCartierDivisorOfRationalForm.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.formOrd_eq_mult_of_isCartierDivisorOfRationalForm : ∀ (k : Type) [Field k] [CharZero k] (Y : Scheme.{0}) [IsIntegral Y] [IsLocallyNoetherian Y] (q : Y ⟶ Sp k) (n : ℕ) [SmoothOfRelativeDimension n q] (η : RatForms q n), η ≠ 0 → ∀ K : CartierDiv Y, IsDivOfForm K η → ∀ (E : DivOver q) (w : Y), E.IsAt w → E.formOrd η = K.mult w := by
   first | exact @GlobalTheory.Discrepancy.DivOver.formOrd_eq_mult_of_isDivOfForm | exact GlobalTheory.Discrepancy.DivOver.formOrd_eq_mult_of_isDivOfForm | (intros; apply GlobalTheory.Discrepancy.DivOver.formOrd_eq_mult_of_isDivOfForm <;> assumption)

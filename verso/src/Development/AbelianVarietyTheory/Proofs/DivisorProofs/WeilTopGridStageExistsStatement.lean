@@ -7,8 +7,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle (Tri)
 open GlobalTheory.ConstRatio (Factor)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SqTower.TopGridExists.top_grid_exists | exact GlobalTheory.SqTower.TopGridExists.top_grid_exists | (intros; apply GlobalTheory.SqTower.TopGridExists.top_grid_exists <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SqTower.TopGridExists.top_grid_exists` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FWeilTopGridStageExists.lean&line=64#L64)
 -/
 theorem _root_.GlobalTheory.T.weil_top_grid_stage_exists : GlobalTheory.FunPr.Hypotheses₂ →
   GBig fun {D} T _ _ G _ _ _ _ => ∀ (W : G.Weil) (i j : Fin D.R.m), ∃ X : TriG G i j, TopGrid W i j X ∧ IsStageC W i j (pp D j) (qq D j) X := by

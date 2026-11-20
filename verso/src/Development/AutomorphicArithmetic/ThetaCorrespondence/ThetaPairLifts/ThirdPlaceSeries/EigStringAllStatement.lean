@@ -11,8 +11,10 @@ section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.Host Formalism.L2.NT NumberField IsDedekindDomain Polynomial GlobalTheory.HeightCounting GlobalTheory.RowTie GlobalTheory.SplitRead GlobalTheory.NPin
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.EigStr.eigString_all_of_aux41_adm7_tieLab | exact _root_.GlobalTheory.EigStr.eigString_all_of_aux41_adm7_tieLab | (intros; apply _root_.GlobalTheory.EigStr.eigString_all_of_aux41_adm7_tieLab <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EigStr.eigString_all_of_aux41_adm7_tieLab` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicArithmetic%2FThetaCorrespondence%2FThetaPairLifts%2FThirdPlaceSeries%2FEigStringAll.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.eigString_of_agree_aux41_adm7_tieLab : GlobalTheory.Published.AutomorphicFormsFiniteGL → ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D), ∀ (X : GlobalTheory.NJoin.RealAt D P.cf P.C P.tp) (_ : GlobalTheory.NJoin.Agree X P.M P.rep), _root_.Formalism.MainNotions.SumRepresentations.provisionFortyOne D → _root_.Formalism.MainNotions.SumRepresentations.adm7_alt D → Formalism.MainNotions.SumRepresentations.tieLab D → ∀ i, GlobalTheory.NJoin.EigString X i := by
   first | exact @_root_.GlobalTheory.EigStr.eigString_all_of_aux41_adm7_tieLab | exact _root_.GlobalTheory.EigStr.eigString_all_of_aux41_adm7_tieLab | (intros; apply _root_.GlobalTheory.EigStr.eigString_all_of_aux41_adm7_tieLab <;> assumption)

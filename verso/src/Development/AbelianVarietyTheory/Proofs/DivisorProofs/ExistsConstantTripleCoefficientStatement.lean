@@ -15,8 +15,10 @@ open GlobalTheory.NormSum (Pair Tup)
 open Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BotMatch.theta_minor_match | exact GlobalTheory.BotMatch.theta_minor_match | (intros; apply GlobalTheory.BotMatch.theta_minor_match <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BotMatch.theta_minor_match` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsConstantTripleCoefficient.lean&line=72#L72)
 -/
 theorem _root_.GlobalTheory.T.exists_constant_triple_coefficient : GlobalTheory.Published.MinguezThetaGL → GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
     (∀ D, GlobalTheory.NormSum.Inp D) → GlobalTheory.SqTop.BotSmall →

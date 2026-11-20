@@ -11,8 +11,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UU
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BaseExpansionExists.main | exact GlobalTheory.BaseExpansionExists.main | (intros; apply GlobalTheory.BaseExpansionExists.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BaseExpansionExists.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUniformizationProofs%2FExistsExpansionSectionLineBundlePower.lean&line=133#L133)
 -/
 theorem _root_.GlobalTheory.T.exists_expansion_section_lineBundle_power : Laws → Laws2 → (AllPre fun U => ∀ k, 1 ≤ k → ∀ σ, ∃ f, U.ExpT (𝟙_ _) k σ f) := by
   first | exact @GlobalTheory.BaseExpansionExists.main | exact GlobalTheory.BaseExpansionExists.main | (intros; apply GlobalTheory.BaseExpansionExists.main <;> assumption)

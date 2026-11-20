@@ -13,8 +13,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UT
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TorsionIso.torsion_eq | exact GlobalTheory.TorsionIso.torsion_eq | (intros; apply GlobalTheory.TorsionIso.torsion_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TorsionIso.torsion_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUniformizationProofs%2FUniformisationTorsionIdentificationWithPairing.lean&line=33#L33)
 -/
 theorem _root_.GlobalTheory.T.uniformisation_torsion_identification_with_pairing : LL → AllUF fun {R} _ _ {I} {D} {A} {G} _ _ U F _ _ => ∀ (k : ℕ), 1 ≤ k → ∃ f, Tors U.toUnifPre F k f := by
   first | exact @GlobalTheory.TorsionIso.torsion_eq | exact GlobalTheory.TorsionIso.torsion_eq | (intros; apply GlobalTheory.TorsionIso.torsion_eq <;> assumption)

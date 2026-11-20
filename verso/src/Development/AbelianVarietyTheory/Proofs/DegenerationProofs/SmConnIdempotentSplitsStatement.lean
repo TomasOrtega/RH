@@ -10,8 +10,10 @@ open scoped CategoryTheory.Obj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.SS
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SS.smConn_idempotent_splits | exact GlobalTheory.SS.smConn_idempotent_splits | (intros; apply GlobalTheory.SS.smConn_idempotent_splits <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SS.smConn_idempotent_splits` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDegenerationProofs%2FSmConnIdempotentSplits.lean&line=98#L98)
 -/
 theorem _root_.GlobalTheory.T.exists_retract_of_smConn_idempotent : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G], SmConn G → ∀ e : G ⟶ G, IsMonHom e → e ≫ e = e → ∃ (G₁ : Over S) (_ : GrpObj G₁) (i : G₁ ⟶ G) (r : G ⟶ G₁), SmConn G₁ ∧ IsMonHom i ∧ IsMonHom r ∧ i ≫ r = 𝟙 G₁ ∧ r ≫ i = e := by
   first | exact @GlobalTheory.SS.smConn_idempotent_splits | exact GlobalTheory.SS.smConn_idempotent_splits | (intros; apply GlobalTheory.SS.smConn_idempotent_splits <;> assumption)

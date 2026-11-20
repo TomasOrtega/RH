@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.AdelicP
 open Matrix GlobalTheory.ClassFin
 open scoped Kronecker ComplexOrder TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ClassFin.exists_tensor_stabiliser_closed_orbit | exact GlobalTheory.ClassFin.exists_tensor_stabiliser_closed_orbit | (intros; apply GlobalTheory.ClassFin.exists_tensor_stabiliser_closed_orbit <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ClassFin.exists_tensor_stabiliser_closed_orbit` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FAdelicLatticeProofs%2FExistsTensorStabiliserClosedSLOrbit.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.exists_tensor_stabiliser_closed_SL_orbit : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (Γ : Set (Matrix ι ι ℂ)), IsQGroup Γ → SS Γ → ∃ (m : ℕ) (d : Fin m → ℕ) (t : TIdx ι d → ℚ), (∀ g ∈ Γ, act d (fun k => ((t k : ℚ) : ℂ)) g = (fun k => ((t k : ℚ) : ℂ))) ∧ (∀ y : Matrix ι ι ℂ, y.det = 1 → act d (fun k => ((t k : ℚ) : ℂ)) y = (fun k => ((t k : ℚ) : ℂ)) → y ∈ Γ) ∧ IsClosed (orb d (fun k => ((t k : ℚ) : ℂ))) := by
   first | exact @GlobalTheory.ClassFin.exists_tensor_stabiliser_closed_orbit | exact GlobalTheory.ClassFin.exists_tensor_stabiliser_closed_orbit | (intros; apply GlobalTheory.ClassFin.exists_tensor_stabiliser_closed_orbit <;> assumption)

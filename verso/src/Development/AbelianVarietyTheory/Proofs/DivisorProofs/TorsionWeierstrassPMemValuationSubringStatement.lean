@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.AddMonoidHomEqZ
 open NumberField IsDedekindDomain WeierstrassCurve GlobalTheory GlobalTheory.Published GlobalTheory.CMModel Formalism.L2.Th1.F
 open scoped IntermediateField BigOperators Topology
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CMModel.TorsMemVal.main | exact GlobalTheory.CMModel.TorsMemVal.main | (intros; apply GlobalTheory.CMModel.TorsMemVal.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CMModel.TorsMemVal.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTorsionWeierstrassPMemValuationSubring.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.torsion_weierstrassP_mem_valuationSubring : ∀ (L : PeriodPair) (β u : ℂ) (V : ValuationSubring ℂ) (N : ℕ), MulStable L β → β.im ≠ 0 → V.valuation u ^ 12 = V.valuation (latticeCurve L).Δ → V.valuation (N : ℂ) = 1 → ∀ z w, z ∉ L.lattice → w ∉ L.lattice → (N : ℂ) * z ∈ L.lattice → (N : ℂ) * w ∈ L.lattice → L.derivWeierstrassP z / u ^ 3 ∈ V ∧ (L.weierstrassP z - L.weierstrassP w) / u ^ 2 ∈ V := by
   first | exact @GlobalTheory.CMModel.TorsMemVal.main | exact GlobalTheory.CMModel.TorsMemVal.main | (intros; apply GlobalTheory.CMModel.TorsMemVal.main <;> assumption)

@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SkewHermitianPertur
 import Mathlib
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.skewHermitian_perturb_idempotent_det_ne_zero | exact GlobalTheory.skewHermitian_perturb_idempotent_det_ne_zero | (intros; apply GlobalTheory.skewHermitian_perturb_idempotent_det_ne_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.skewHermitian_perturb_idempotent_det_ne_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSkewHermitianPerturbIdempotentDetNeZero.lean&line=6#L6)
 -/
 theorem _root_.GlobalTheory.T.exists_skewHermitian_det_mul_add_ne_zero_of_idempotent : ∀ (k : Type) [Field k] (σ : k →+* k), (∀ x, σ (σ x) = x) → ∀ ε : k, ε ≠ 0 → σ ε = -ε →
     ∀ (n : ℕ) (E D : Matrix (Fin n) (Fin n) k), E * E = E → (E.map σ)ᵀ = E → E * (D.map σ)ᵀ + D * E = 0 →

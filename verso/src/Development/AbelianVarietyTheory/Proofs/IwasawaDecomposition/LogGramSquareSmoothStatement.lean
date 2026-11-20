@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.DualGr
 open AlgebraicGeometry CategoryTheory Matrix ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.CxPts GlobalTheory.GradedNorm
 open scoped ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.smoothOn_log_grSq | exact GlobalTheory.smoothOn_log_grSq | (intros; apply GlobalTheory.smoothOn_log_grSq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.smoothOn_log_grSq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FLogGramSquareSmooth.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.log_gram_square_smooth : ∀ {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {σ : k →+* ℂ} {D m : ℕ} (R : AnRead p σ D) (S : Set (CxPts p σ)) (M : CxPts p σ → Matrix (Fin m) (Fin m) ℂ), (∀ a b, R.SmoothOn S (fun y => (M y a b).re) ∧ R.SmoothOn S (fun y => (M y a b).im)) → (∀ y ∈ S, (M y).PosDef) → ∀ i : Fin m, R.SmoothOn S (fun y => Real.log (grSq (M y) i)) := by
   first | exact @GlobalTheory.smoothOn_log_grSq | exact GlobalTheory.smoothOn_log_grSq | (intros; apply GlobalTheory.smoothOn_log_grSq <;> assumption)

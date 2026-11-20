@@ -8,8 +8,10 @@ open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCate
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.eq_iff_expansion_eq | exact GlobalTheory.eq_iff_expansion_eq | (intros; apply GlobalTheory.eq_iff_expansion_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.eq_iff_expansion_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUniformizationProofs%2FUniformisationEqIffExpansionEq.lean&line=69#L69)
 -/
 theorem _root_.GlobalTheory.T.uniformisation_eq_iff_expansion_eq : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R), AdmBase R I → ∀ (D : DegData R I) (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] [GeometricallyConnected G.hom] (U : UnifPre I D A G) (k : ℕ) (s s' : U.SecK k) (F F' : Fam D.toPre (FractionRing R) k), U.Expands k s F → U.Expands k s' F' → (s = s' ↔ F = F') := by
   first | exact @GlobalTheory.eq_iff_expansion_eq | exact GlobalTheory.eq_iff_expansion_eq | (intros; apply GlobalTheory.eq_iff_expansion_eq <;> assumption)

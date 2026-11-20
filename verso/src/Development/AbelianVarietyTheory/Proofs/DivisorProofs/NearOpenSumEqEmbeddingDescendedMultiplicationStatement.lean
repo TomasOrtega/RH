@@ -7,8 +7,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.DescKP.sum_eq_mT_emb | exact GlobalTheory.Mum.DescKP.sum_eq_mT_emb | (intros; apply GlobalTheory.Mum.DescKP.sum_eq_mT_emb <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.DescKP.sum_eq_mT_emb` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FNearOpenSumEqEmbeddingDescendedMultiplication.lean&line=92#L92)
 -/
 theorem _root_.GlobalTheory.T.nearOpen_sum_eq_embedding_descendedMultiplication : ∀ {R : Type} [CommRing R] [IsLocalRing R] {S : Scheme.{0}} {π : S ⟶ Sp R} {G : Over S} [GrpObj G] (N : Near π G) (V : (N.U ⊗ N.U).left.Opens) (m : V.toScheme ⟶ N.U.left) (hm : m ≫ N.U.hom = V.ι ≫ (N.U ⊗ N.U).hom), (∀ (T : Scheme.{0}) (v : T ⟶ V.toScheme) (s : T ⟶ S) (x y : Over.mk s ⟶ G), N.Pt s (v ≫ V.ι ≫ (fst N.U N.U).left) x.left → N.Pt s (v ≫ V.ι ≫ (snd N.U N.U).left) y.left → N.Pt s (v ≫ m) (x * y).left) → ∀ (p : pullback π π ⟶ S) (hp : p ≫ π = pullback.fst π π ≫ π), (DescKP.VT N V).ι ≫ (Desc.sum N p hp).left = DescKP.mT N V m hm ≫ (Desc.emb N p hp).left := by
   first | exact @GlobalTheory.Mum.DescKP.sum_eq_mT_emb | exact GlobalTheory.Mum.DescKP.sum_eq_mT_emb | (intros; apply GlobalTheory.Mum.DescKP.sum_eq_mT_emb <;> assumption)

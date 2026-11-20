@@ -6,8 +6,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.ZH GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.FlagBundle GlobalTheory.GoodMetric GlobalTheory.FlagPush
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagPush.exists_eval_regular_at_fieldPoint | exact GlobalTheory.FlagPush.exists_eval_regular_at_fieldPoint | (intros; apply GlobalTheory.FlagPush.exists_eval_regular_at_fieldPoint <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagPush.exists_eval_regular_at_fieldPoint` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsEvalRegularFunctionsAtFieldPoint.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.exists_eval_regular_functions_at_fieldPoint : ∀ (F : Type) [Field F] (Y : Var F) (Z : Scheme.{0}) [IsIntegral Z] (k : Type) [Field k] (w : Sp k ⟶ Z), ∃ ev : (algebraMap (Z.presheaf.stalk (w (IsLocalRing.closedPoint k))) Z.functionField).range →+* k, (∀ u, ev u ≠ 0 ↔ UnitAt (w (IsLocalRing.closedPoint k)) (u : Z.functionField)) ∧ ∀ (q : Z ⟶ Y.X) [IsDominant q] (u : Y.Fn), RegAt (q (w (IsLocalRing.closedPoint k))) u → ∃ h, ev ⟨functionFieldMap q u, h⟩ = (ratOf Y).val (w ≫ q) u := by
   first | exact @GlobalTheory.FlagPush.exists_eval_regular_at_fieldPoint | exact GlobalTheory.FlagPush.exists_eval_regular_at_fieldPoint | (intros; apply GlobalTheory.FlagPush.exists_eval_regular_at_fieldPoint <;> assumption)

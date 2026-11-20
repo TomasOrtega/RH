@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.TraceDef
 open Matrix NumberField GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMid GlobalTheory.LKCount
 open scoped TensorProduct Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.testProd_support_finite | exact GlobalTheory.testProd_support_finite | (intros; apply GlobalTheory.testProd_support_finite <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.testProd_support_finite` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHeckeTestProductSupportFiniteLeftCosets.lean&line=93#L93)
 -/
 theorem _root_.GlobalTheory.T.heckeTestProduct_support_finite_leftCosets : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (L : G.Level) (f : G.GAf → ℂ),
     IsTest (MonoidHom.id _) L.K.toSubgroup L.K.toSubgroup f →

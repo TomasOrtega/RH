@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.Standa
 
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.StdChainStab.stdChain_stab_rad | exact GlobalTheory.StdChainStab.stdChain_stab_rad | (intros; apply GlobalTheory.StdChainStab.stdChain_stab_rad <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.StdChainStab.stdChain_stab_rad` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FTranslatedStandardChainStabilizerRadical.lean&line=72#L72)
 -/
 theorem _root_.GlobalTheory.T.translated_standard_chain_stabilizer_radical : ∀ {K : Type} [Field K] {n m : ℕ} (Y : Fin (m + 1) → Submodule K (Fin n → K)) (d : Fin m → ℕ) (h : ∑ j, d j = n)
     (g : GL (Fin n) K), (∀ (j : Fin (m + 1)) (y : Fin n → K),

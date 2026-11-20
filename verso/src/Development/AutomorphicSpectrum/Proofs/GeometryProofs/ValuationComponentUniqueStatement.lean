@@ -27,8 +27,10 @@ open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Rec
 open scoped Matrix
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Relay.valuation_component_unique | exact GlobalTheory.CompanionTheory.Relay.valuation_component_unique | (intros; apply GlobalTheory.CompanionTheory.Relay.valuation_component_unique <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Relay.valuation_component_unique` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FValuationComponentUnique.lean&line=29#L29)
 -/
 theorem _root_.GlobalTheory.T.valuation_component_unique : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (h : GenFrEx Xo c) (e : Comp Xo c → Rul Xo c), CompLaws U h e → (∀ la, ∀ v ∈ valSet Xo c (algCls Xo c) la, ∃ Z, v (e Z) = 0 ∧ ∀ Z', Z' ≠ Z → v (e Z') = ⊤ ∧ ∀ a, ∀ f ∈ cuspOn U h a Z', v f = ⊤) ∧ (∀ la Z, ∃ v ∈ valSet Xo c (algCls Xo c) la, v (e Z) = 0) ∧ ∀ a, (∀ Z, ∀ f ∈ cuspZ Xo c U a, e Z * f ∈ cuspOn U h a Z) ∧ ⨆ Z, cuspOn U h a Z = cuspZ Xo c U a := by
   first | exact @GlobalTheory.CompanionTheory.Relay.valuation_component_unique | exact GlobalTheory.CompanionTheory.Relay.valuation_component_unique | (intros; apply GlobalTheory.CompanionTheory.Relay.valuation_component_unique <;> assumption)

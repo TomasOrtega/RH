@@ -9,8 +9,10 @@ open NumberField MvPolynomial Filter Topology Formalism.BasicNotions Formalism.M
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.ArInt
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EigWhole.latAt_onObj | exact GlobalTheory.EigWhole.latAt_onObj | (intros; apply GlobalTheory.EigWhole.latAt_onObj <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EigWhole.latAt_onObj` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLatticeAtOfPrismatic.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.lattice_at_of_prismatic : Hypotheses2 → HypothesesH → RegularAlteration → ScholzeWeinsteinB → PrismaticDieudonnePerfd → OnObj fun _ O _ _ _ _ => LatAt O.Y := by
   first | exact @GlobalTheory.EigWhole.latAt_onObj | exact GlobalTheory.EigWhole.latAt_onObj | (intros; apply GlobalTheory.EigWhole.latAt_onObj <;> assumption)

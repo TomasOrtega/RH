@@ -9,8 +9,10 @@ open CategoryTheory AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.Cris GlobalTheory.DeRham GlobalTheory.RealMult GlobalTheory.CMVal
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RealMult.Obj.exists_isMonHom_of_map_lattice | exact GlobalTheory.RealMult.Obj.exists_isMonHom_of_map_lattice | (intros; apply GlobalTheory.RealMult.Obj.exists_isMonHom_of_map_lattice <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RealMult.Obj.exists_isMonHom_of_map_lattice` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLatticePreservingMapGivesEndomorphism.lean&line=42#L42)
 -/
 theorem _root_.GlobalTheory.T.lattice_preserving_map_gives_endomorphism : ∀ (F : Type) [Field F] [NumberField F] (𝔠 : FracId F) (X : Obj F 𝔠 (Sp ℂ)) (M : LB X.A.left) (g : ℕ)
     (u : HolUnif X.A M g) (T : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)), (∀ w ∈ u.Λ, T w ∈ u.Λ) →

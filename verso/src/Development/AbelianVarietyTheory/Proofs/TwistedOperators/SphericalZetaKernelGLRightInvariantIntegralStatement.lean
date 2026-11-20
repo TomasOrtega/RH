@@ -13,8 +13,10 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ZetaGL.kerGL_mul_right_KGL | exact GlobalTheory.ZetaGL.kerGL_mul_right_KGL | (intros; apply GlobalTheory.ZetaGL.kerGL_mul_right_KGL <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ZetaGL.kerGL_mul_right_KGL` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FSphericalZetaKernelGLRightInvariantIntegral.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.sphericalZetaKernelGL_right_invariant_integral : ∀ (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (r N : ℕ) (z : ℂˣ) (φ : GL (Fin r) (w.adicCompletion E) → ℂ), KerGL w N z φ → ∀ g k : GL (Fin r) (w.adicCompletion E), k ∈ KGL w r → φ (g * k) = φ g := by
   first | exact @GlobalTheory.ZetaGL.kerGL_mul_right_KGL | exact GlobalTheory.ZetaGL.kerGL_mul_right_KGL | (intros; apply GlobalTheory.ZetaGL.kerGL_mul_right_KGL <;> assumption)

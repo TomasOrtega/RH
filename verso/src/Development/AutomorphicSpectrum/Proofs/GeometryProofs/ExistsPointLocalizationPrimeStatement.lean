@@ -4,8 +4,10 @@ import Mathlib
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCptGen
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj GlobalTheory.CompanionTheory.Ar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.regAt_prime_generisation | exact GlobalTheory.CompanionTheory.Ar.regAt_prime_generisation | (intros; apply GlobalTheory.CompanionTheory.Ar.regAt_prime_generisation <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.regAt_prime_generisation` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FExistsPointLocalizationPrime.lean&line=44#L44)
 -/
 theorem _root_.GlobalTheory.T.exists_point_localization_prime : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X), IsCptGen ξ → ∀ (p : Cpt ξ) (I : Ideal (regAt ξ p)), I.IsPrime → ∃ q : Cpt ξ, q.1 ⤳ p.1 ∧ ∀ a : Ω, a ∈ regAt ξ q ↔ ∃ s : regAt ξ p, s ∉ I ∧ (s : Ω) * a ∈ regAt ξ p := by
   first | exact @GlobalTheory.CompanionTheory.Ar.regAt_prime_generisation | exact GlobalTheory.CompanionTheory.Ar.regAt_prime_generisation | (intros; apply GlobalTheory.CompanionTheory.Ar.regAt_prime_generisation <;> assumption)

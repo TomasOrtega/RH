@@ -10,8 +10,10 @@ open GlobalTheory.QCoh (freeModule)
 open GlobalTheory.Twist (resM)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagZ.Univ.colSpan_germ_cellGL | exact GlobalTheory.FlagZ.Univ.colSpan_germ_cellGL | (intros; apply GlobalTheory.FlagZ.Univ.colSpan_germ_cellGL <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagZ.Univ.colSpan_germ_cellGL` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCellFlagStalkSpan.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.cell_flag_stalk_span : ∀ (ι : Type) [Fintype ι] (N : ℕ) (w : ι → Equiv.Perm (Fin N)) (τ : ι) (l : ℕ) (y : Fl ι N) (hy : y ∈ cellOpen ι N w), colSpan (Matrix.GeneralLinearGroup.map (((Fl ι N).presheaf.germ (cellOpen ι N w) y hy).hom.comp (cellRing ι N w)) (cellGL Prod.fst Prod.snd w τ)).1 l = Submodule.span _ {v | ∃ j : Fin N, (j : ℕ) < l ∧ v = (freeModule (Fl ι N) (Fin N)).presheaf.germ (cellOpen ι N w) y hy (cellCol ι N w τ j)} := by
   first | exact @GlobalTheory.FlagZ.Univ.colSpan_germ_cellGL | exact GlobalTheory.FlagZ.Univ.colSpan_germ_cellGL | (intros; apply GlobalTheory.FlagZ.Univ.colSpan_germ_cellGL <;> assumption)

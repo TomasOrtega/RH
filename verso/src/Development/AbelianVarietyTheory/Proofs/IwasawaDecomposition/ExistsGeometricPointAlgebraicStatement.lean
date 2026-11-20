@@ -5,8 +5,10 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 open AlgebraicGeometry CategoryTheory Limits
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.exists_algebraic_point_of_fiber | exact GlobalTheory.exists_algebraic_point_of_fiber | (intros; apply GlobalTheory.exists_algebraic_point_of_fiber <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.exists_algebraic_point_of_fiber` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsGeometricPointAlgebraic.lean&line=8#L8)
 -/
 theorem _root_.GlobalTheory.T.exists_geometric_point_algebraic : ∀ {A : Type} [CommRing A] {B : Scheme.{0}} (f : Sp A ⟶ B) [LocallyOfFiniteType f] (x : Sp A) (K' : Type) [Field K']
     [IsAlgClosed K'] (ι : B.residueField (f x) →+* K'),

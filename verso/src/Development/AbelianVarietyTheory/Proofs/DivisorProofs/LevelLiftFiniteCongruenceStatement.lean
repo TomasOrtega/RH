@@ -9,8 +9,10 @@ open GlobalTheory.Dict (castFr)
 open scoped TensorProduct Matrix
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LiftCong.lift_finCong | exact GlobalTheory.LiftCong.lift_finCong | (intros; apply GlobalTheory.LiftCong.lift_finCong <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LiftCong.lift_finCong` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLevelLiftFiniteCongruence.lean&line=96#L96)
 -/
 theorem _root_.GlobalTheory.T.level_lift_finite_congruence : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (l : Level H) (V : HSp D) (r : ℕ) (hr : V.rank = r) (β : GL (Fin r) (EAf D)) (Pg : Finset (Formalism.L2.DIV.Pl D.host.E)), IsLatBasis V hr β → (∀ w, w ∈ Pg ↔ l.Mb ≤ w.asIdeal) → (∀ (g : Formalism.L2.DIV.G0 Pg r) κ, IsLift V hr β Pg g κ → FinCong V 1 κ) ∧ (l.Mb.IsRadical → ∀ κ, IsLift V hr β Pg 1 κ → FinCong V l.M κ) := by
   first | exact @GlobalTheory.LiftCong.lift_finCong | exact GlobalTheory.LiftCong.lift_finCong | (intros; apply GlobalTheory.LiftCong.lift_finCong <;> assumption)

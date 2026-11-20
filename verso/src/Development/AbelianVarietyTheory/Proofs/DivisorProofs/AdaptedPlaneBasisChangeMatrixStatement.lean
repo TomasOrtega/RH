@@ -10,8 +10,10 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.ThK.PlaneEv
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThK.FrameDet.frame_det_ne_zero | exact GlobalTheory.ThK.FrameDet.frame_det_ne_zero | (intros; apply GlobalTheory.ThK.FrameDet.frame_det_ne_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThK.FrameDet.frame_det_ne_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAdaptedPlaneBasisChangeMatrix.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.adapted_plane_basis_change_matrix : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (d₁ r' s' i₀ i₁ : ℕ) (W : Spc F E (d₁ + 2)) (W₁ : Spc F E d₁) (H' : Plane E (d₁ + 2) d₁)

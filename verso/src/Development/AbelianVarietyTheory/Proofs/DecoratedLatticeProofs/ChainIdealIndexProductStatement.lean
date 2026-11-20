@@ -8,8 +8,10 @@ open scoped TensorProduct Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Fam
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.StepConst.cI_mul_idx | exact GlobalTheory.StepConst.cI_mul_idx | (intros; apply GlobalTheory.StepConst.cI_mul_idx <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.StepConst.cI_mul_idx` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FChainIdealIndexProduct.lean&line=209#L209)
 -/
 theorem _root_.GlobalTheory.T.chain_ideal_index_product : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : Formalism.MainNotions.G.Inst D L) (Gl : Formalism.MainNotions.G.LatInst D) (Kc : Formalism.MainNotions.G.Consts) (Yd : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl Kc Yd cX) (W : RealPack ex) (u : D.what₂.Word) (f : FamCh W u), PkHyp W → f.RowOK → ∀ v : VCom f.c, v.Is → VTie f v → ∀ t (w : VTup (f.t t)) (F : GlobalTheory.QPl.QFam v (f.t t)), F.Pins w → QLev f F → ∀ j, j < D.R.m → (f.t t).cI j * ∏ i, ((F.Q i).idx (j + 1) : ℂ) = (f.t W.P.A3.A.μ0).cI j := by
   first | exact @GlobalTheory.StepConst.cI_mul_idx | exact GlobalTheory.StepConst.cI_mul_idx | (intros; apply GlobalTheory.StepConst.cI_mul_idx <;> assumption)

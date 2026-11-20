@@ -9,8 +9,10 @@ open NumberField MvPolynomial Filter Topology Formalism.BasicNotions Formalism.M
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.ArInt
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CovTest.SwapLine.swapReg_exists | exact GlobalTheory.CovTest.SwapLine.swapReg_exists | (intros; apply GlobalTheory.CovTest.SwapLine.swapReg_exists <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CovTest.SwapLine.swapReg_exists` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsHomogeneousSwapRegular.lean&line=27#L27)
 -/
 theorem _root_.GlobalTheory.T.exists_homogeneous_swap_regular : ArCalc → ∃ G, Homog G ∧ SwapReg G := by
   first | exact @GlobalTheory.CovTest.SwapLine.swapReg_exists | exact GlobalTheory.CovTest.SwapLine.swapReg_exists | (intros; apply GlobalTheory.CovTest.SwapLine.swapReg_exists <;> assumption)

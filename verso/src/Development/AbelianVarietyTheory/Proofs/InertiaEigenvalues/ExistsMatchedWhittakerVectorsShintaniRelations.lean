@@ -29,8 +29,10 @@ open scoped ENNReal ComplexConjugate ContDiff
 open Matrix
 set_option maxHeartbeats 1000000 in
 
-/- English proof (translation)
-Use `first`. Consider the case `exact @GlobalTheory.KappaCut.exists_kappa`. Consider the case `exact GlobalTheory.KappaCut.exists_kappa`. Consider the case `(intros; apply GlobalTheory.KappaCut.exists_kappa <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KappaCut.exists_kappa` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FExistsUnipotentInvariantCompactlySupportedWeight.lean&line=74#L74)
 -/
 theorem _root_.GlobalTheory.Tx.exists_unipotentInvariant_compactlySupported_weight : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m : ℕ) (x₀ : GA E (m + 1)),
     ∃ κ : GA E (m + 1) → ℝ, Continuous κ ∧ (∀ h, 0 ≤ κ h) ∧ (∀ u ∈ GlobalTheory.JSW.NA E (m + 1), ∀ h, κ (u * h) = κ h) ∧

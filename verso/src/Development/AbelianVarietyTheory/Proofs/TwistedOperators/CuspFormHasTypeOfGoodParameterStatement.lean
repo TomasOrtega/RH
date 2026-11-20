@@ -13,8 +13,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open IsDedekindDomain NumberField MeasureTheory GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.RowTest GlobalTheory.StdFrames GlobalTheory.RowClaim GlobalTheory.FlipRun
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CuspValueTypeAt.hasTypeAt_value | exact GlobalTheory.CuspValueTypeAt.hasTypeAt_value | (intros; apply GlobalTheory.CuspValueTypeAt.hasTypeAt_value <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CuspValueTypeAt.hasTypeAt_value` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FCuspFormHasTypeOfGoodParameter.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.cusp_form_has_type_of_good_parameter : GlobalTheory.FunPr.Hypotheses₂ → ∀ {D : D7} (θ : InfFam D) (N : GlobalTheory.Grid.Node D) (τ : D.what₂.Tau), IsInfFam θ → N.V.SigOK → GoodPar N.V.rank (N.V.sig (tauE D τ)).1 (N.V.sig (tauE D τ)).2 (N.S τ) → ∀ F ∈ N.Cusp θ, ∀ w, GlobalTheory.IndefiniteRowSideFullHecke.FinitePartTypes.HasTypeAt θ N.V τ (N.S τ) (F w) := by
   first | exact @GlobalTheory.CuspValueTypeAt.hasTypeAt_value | exact GlobalTheory.CuspValueTypeAt.hasTypeAt_value | (intros; apply GlobalTheory.CuspValueTypeAt.hasTypeAt_value <;> assumption)

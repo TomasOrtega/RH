@@ -14,8 +14,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.AbLaw
 open GlobalTheory.KeyKa
 
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KeyBasis.main | exact GlobalTheory.KeyBasis.main | (intros; apply GlobalTheory.KeyBasis.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KeyBasis.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FThetaLawProofs%2FBasisPowerSectionsLocalBaseChange.lean&line=290#L290)
 -/
 theorem _root_.GlobalTheory.T.basis_powerSections_local_baseChange : Out.Laws → ∀ (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] (x : KeyIn R) (l : ℕ), 1 ≤ l → (∃ b : Fin (l ^ x.P.g) → RR x l, IsBasis x b) ∧ ∀ b : Fin (l ^ x.P.g) → RR x l, IsBasis x b → ∀ (R' : Type) [CommRing R'] (f : R →+* R') (x' : KeyIn R') φ w (b' : Fin (l ^ x.P.g) → RR x' l), KeyVia x' x f φ w → (∀ k, SecVia x' x φ w (b' k) (b k)) → IsBasis x' b' := by
   first | exact @GlobalTheory.KeyBasis.main | exact GlobalTheory.KeyBasis.main | (intros; apply GlobalTheory.KeyBasis.main <;> assumption)

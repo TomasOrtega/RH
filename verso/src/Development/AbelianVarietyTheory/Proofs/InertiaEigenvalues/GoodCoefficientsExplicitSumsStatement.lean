@@ -8,8 +8,10 @@ import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
 import Formalism.GaloisCohomology.LocalTateDualityK
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N TensorProduct Module
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.goodO_coeff_explicit_sums | exact GlobalTheory.goodO_coeff_explicit_sums | (intros; apply GlobalTheory.goodO_coeff_explicit_sums <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.goodO_coeff_explicit_sums` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FGoodCoefficientsExplicitSums.lean&line=44#L44)
 -/
 theorem _root_.GlobalTheory.T.goodCoefficients_explicit_sums : ∀ (l : ℕ) [Fact l.Prime] (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O → (∀ x : ℕ → O, ∃ a : O, ∀ n : ℕ, ∃ b : O, a - ∑ j ∈ Finset.range n, ((l : ℕ) : O) ^ j * x j = ((l : ℕ) : O) ^ n * b) ∧ (∀ a : O, (∀ n : ℕ, ∃ b : O, a = ((l : ℕ) : O) ^ n * b) → a = 0) := by
   first | exact @GlobalTheory.goodO_coeff_explicit_sums | exact GlobalTheory.goodO_coeff_explicit_sums | (intros; apply GlobalTheory.goodO_coeff_explicit_sums <;> assumption)

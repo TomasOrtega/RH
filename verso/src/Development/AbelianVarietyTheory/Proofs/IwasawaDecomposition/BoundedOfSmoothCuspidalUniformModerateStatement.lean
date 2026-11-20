@@ -7,8 +7,10 @@ open scoped TensorProduct InnerProductSpace ContDiff ComplexOrder
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.DefLift
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CuspDecay.bounded_of_smooth_unifModGrowth | exact GlobalTheory.CuspDecay.bounded_of_smooth_unifModGrowth | (intros; apply GlobalTheory.CuspDecay.bounded_of_smooth_unifModGrowth <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CuspDecay.bounded_of_smooth_unifModGrowth` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FBoundedOfSmoothCuspidalUniformModerate.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.bounded_of_smooth_cuspidal_uniform_moderate : GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (θ : InfFam D) (V : HSp D), IsInfFam θ → ∀ φ : GA D V → ℂ, IsAutFun V φ → GlobalTheory.IndefiniteRowSideFullHecke.HolomorphicParabolicSmoothFunctions.IsSmoothFn V θ φ → GlobalTheory.IndefiniteRowSideFullHecke.HolomorphicParabolicSmoothFunctions.IsUnifModGrowth V θ φ → IsCuspFun V φ → ∃ C : ℝ, ∀ g, ‖φ g‖ ≤ C := by
   first | exact @GlobalTheory.CuspDecay.bounded_of_smooth_unifModGrowth | exact GlobalTheory.CuspDecay.bounded_of_smooth_unifModGrowth | (intros; apply GlobalTheory.CuspDecay.bounded_of_smooth_unifModGrowth <;> assumption)

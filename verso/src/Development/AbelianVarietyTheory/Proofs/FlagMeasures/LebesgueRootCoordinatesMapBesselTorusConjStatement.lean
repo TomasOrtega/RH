@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.Admissible
 open Formalism.FourierDecayAlt GlobalTheory.ThA MeasureTheory Formalism.QuantumDeterminants Matrix
 open scoped InnerProductSpace
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThA.TorusJac.muN_map_conj | exact GlobalTheory.ThA.TorusJac.muN_map_conj | (intros; apply GlobalTheory.ThA.TorusJac.muN_map_conj <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThA.TorusJac.muN_map_conj` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FLebesgueRootCoordinatesMapBesselTorusConj.lean&line=153#L153)
 -/
 theorem _root_.GlobalTheory.T.lebesgue_rootCoordinates_map_besselTorus_conj : ∀ (k r : ℕ) (α : ℂ), α ≠ 0 → (D.muN k r).map (conjM (aT k r α)) = ENNReal.ofReal ((‖α‖ ^ B.kap k r)⁻¹) • D.muN k r := by
   first | exact @GlobalTheory.ThA.TorusJac.muN_map_conj | exact GlobalTheory.ThA.TorusJac.muN_map_conj | (intros; apply GlobalTheory.ThA.TorusJac.muN_map_conj <;> assumption)

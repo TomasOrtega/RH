@@ -11,8 +11,10 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.exists_embedding_parInd_of_jacquet_nontrivial | exact GlobalTheory.exists_embedding_parInd_of_jacquet_nontrivial | (intros; apply GlobalTheory.exists_embedding_parInd_of_jacquet_nontrivial <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.exists_embedding_parInd_of_jacquet_nontrivial` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FExistsEmbeddingParIndOfJacquetNontrivial.lean&line=38#L38)
 -/
 theorem _root_.GlobalTheory.T.exists_injective_parInd_of_jacquet_nontrivial : GlobalTheory.Published.BernsteinZelevinskyFiniteness → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (π : Irr k n) (s : ℕ) (d : Fin s → ℕ) (e : (Σ a, Fin (d a)) ≃ Fin n), ¬ Subsingleton (Jacquet π.π (unipRad k e)) → ∃ (Y : Type) (_ : AddCommGroup Y) (_ : Module ℂ Y) (τ : Representation ℂ (Levi k fun a => Fin (d a)) Y), τ.IsIrreducible ∧ IsSmooth τ ∧ IsSubquotient τ (jac e π.π) ∧ ∃ φ : π.π.IntertwiningMap (parInd e τ), Function.Injective φ := by
   first | exact @GlobalTheory.exists_embedding_parInd_of_jacquet_nontrivial | exact GlobalTheory.exists_embedding_parInd_of_jacquet_nontrivial | (intros; apply GlobalTheory.exists_embedding_parInd_of_jacquet_nontrivial <;> assumption)

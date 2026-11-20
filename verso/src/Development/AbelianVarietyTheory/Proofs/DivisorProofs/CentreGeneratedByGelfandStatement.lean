@@ -8,8 +8,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.SiegelSet GlobalTheory.UAut GlobalTheory.LeviHC
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LeviHC.MultiCentre.centre_multi | exact GlobalTheory.LeviHC.MultiCentre.centre_multi | (intros; apply GlobalTheory.LeviHC.MultiCentre.centre_multi <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LeviHC.MultiCentre.centre_multi` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCentreGeneratedByGelfand.lean&line=60#L60)
 -/
 theorem _root_.GlobalTheory.T.centre_generated_by_gelfand : RelativeCentre → ∀ (A : Type) [Ring A] [Algebra ℂ A] (ι : Type) [Finite ι] (n : ℕ) (X : ι → Fin n → Fin n → A),
     (∀ i, Formalism.REAL.GlRel (X i)) → (∀ i j, i ≠ j → ∀ a b c d, X i a b * X j c d = X j c d * X i a b) →

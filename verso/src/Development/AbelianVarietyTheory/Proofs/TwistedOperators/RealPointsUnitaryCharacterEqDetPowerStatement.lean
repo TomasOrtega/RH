@@ -8,8 +8,10 @@ open GlobalTheory.SW hiding Level
 open scoped TensorProduct ComplexConjugate Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AdSpan.char_eq_detPow | exact GlobalTheory.AdSpan.char_eq_detPow | (intros; apply GlobalTheory.AdSpan.char_eq_detPow <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AdSpan.char_eq_detPow` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FRealPointsUnitaryCharacterEqDetPower.lean&line=197#L197)
 -/
 theorem _root_.GlobalTheory.T.realPoints_unitaryCharacter_eq_detPower : ∀ (D : D7) (θ : InfFam D) (V : HSp D), IsInfFam θ → V.SigOK → ∀ z : GA D V → ℂ, (∀ a ∈ GinfC V, ∀ a' ∈ GinfC V, z (a * a') = z a * z a') → (∀ a ∈ GinfC V, ‖z a‖ = 1) → ContinuousOn z (GinfC V : Set (GA D V)) → ∃ m : D.what₂.Tau → ℤ, ∀ a ∈ GinfC V, z a = detPow θ V m a := by
   first | exact @GlobalTheory.AdSpan.char_eq_detPow | exact GlobalTheory.AdSpan.char_eq_detPow | (intros; apply GlobalTheory.AdSpan.char_eq_detPow <;> assumption)

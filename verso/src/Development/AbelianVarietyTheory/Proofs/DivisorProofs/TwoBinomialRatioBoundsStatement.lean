@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsArchOne
 import Development.AbelianVarietyTheory.BlockTheory.PoincareCuspForms.SmallUnipotentElements
 open NumberField Module ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.AR.Inst ReciprocityTheory.ChartRestriction.G.AR.Up GlobalTheory.IndefiniteRowSideFullHecke.FrameWeightGapBounds GlobalTheory.ShareOn
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BinomRatio.two_binom_ratios | exact GlobalTheory.BinomRatio.two_binom_ratios | (intros; apply GlobalTheory.BinomRatio.two_binom_ratios <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BinomRatio.two_binom_ratios` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTwoBinomialRatioBounds.lean&line=133#L133)
 -/
 theorem _root_.GlobalTheory.T.two_binomial_ratio_bounds : ∀ T n : ℕ, 2 ≤ n → 11 * n ^ 2 ≤ T → (T + 3 * n + 10).choose n ≤ 2 * (T + n).choose n ∧ (1 - (n : ℝ) * (n + 6) / T) * ((T + 2 * n + 6).choose n : ℕ) ≤ ((T + n).choose n : ℕ) := by
   first | exact @GlobalTheory.BinomRatio.two_binom_ratios | exact GlobalTheory.BinomRatio.two_binom_ratios | (intros; apply GlobalTheory.BinomRatio.two_binom_ratios <;> assumption)

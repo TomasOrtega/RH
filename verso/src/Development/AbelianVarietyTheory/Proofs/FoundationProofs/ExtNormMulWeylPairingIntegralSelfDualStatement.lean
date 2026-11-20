@@ -11,8 +11,10 @@ import Formalism.LocalToGlobal.IndefiniteForms.IndefiniteTree.RealCubicMeans.Lea
 open NumberField IsDedekindDomain MvPolynomial Formalism.BasicNotions Formalism.L2.DIV Formalism.DivisionValues GlobalTheory.TestLat Formalism.L2.Indef.Tree.ArchimedeanLeafBounds.Cuts
 open scoped Matrix ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PairInt.extNorm_mul_pairK_integral | exact GlobalTheory.PairInt.extNorm_mul_pairK_integral | (intros; apply GlobalTheory.PairInt.extNorm_mul_pairK_integral <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PairInt.extNorm_mul_pairK_integral` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FExtNormMulWeylPairingIntegralSelfDual.lean&line=52#L52)
 -/
 theorem _root_.GlobalTheory.T.extNorm_mul_weylPairing_integral_selfDual : ∀ (K : Type) [Field K] [NumberField K] [StarRing K] (ι : Type) [Fintype ι] (n : ℕ) (lam : ι → DomWeight n) (G : ι → Matrix (Fin n) (Fin n) K) (M : ι → Submodule (𝓞 K) (Fin n → K)), (∀ τ, (G τ)ᴴ = G τ) → (∀ τ, IsUnit (G τ).det) → (∀ τ, IsSelfDualK (G τ) (M τ)) → ∀ x ∈ nabK lam M, ∀ y ∈ nabK lam M, extNorm K lam * pairK lam G x y ∈ (algebraMap (𝓞 K) K).range := by
   first | exact @GlobalTheory.PairInt.extNorm_mul_pairK_integral | exact GlobalTheory.PairInt.extNorm_mul_pairK_integral | (intros; apply GlobalTheory.PairInt.extNorm_mul_pairK_integral <;> assumption)

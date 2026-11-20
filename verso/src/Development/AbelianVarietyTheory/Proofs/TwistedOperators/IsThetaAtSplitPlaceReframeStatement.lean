@@ -11,8 +11,10 @@ open GlobalTheory.AdSpan.ReVec
 open scoped TensorProduct ComplexConjugate Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThetaAtReframe.isThetaAt_reframe | exact GlobalTheory.ThetaAtReframe.isThetaAt_reframe | (intros; apply GlobalTheory.ThetaAtReframe.isThetaAt_reframe <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThetaAtReframe.isThetaAt_reframe` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FIsThetaAtSplitPlaceReframe.lean&line=81#L81)
 -/
 theorem _root_.GlobalTheory.T.isThetaAtSplitPlace_reframe : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (b : Module.Basis (Fin S.rank) D.host.E S.V) (e : AE D) (Λ : AddSubgroup (WO S T)) (Λ' : AddSubgroup (WO (reS S b) T)) (c : ℂ) (f₀ Φ f : WO S T → ℂ), (∀ x y : WO (reS S b) T, symplO (reS S b) T x y = symplO S T (reW S T b x) (reW S T b y)) → (∀ u, u ∈ Λ' ↔ reW S T b u ∈ Λ) → IsThetaAt ψ (symplO S T) (heisO ψ S T) e Λ c f₀ Φ f → IsThetaAt ψ (symplO (reS S b) T) (heisO ψ (reS S b) T) e Λ' c (reF S T b f₀) (fun x => Φ (reW S T b x)) (reF S T b f) := by
   first | exact @GlobalTheory.ThetaAtReframe.isThetaAt_reframe | exact GlobalTheory.ThetaAtReframe.isThetaAt_reframe | (intros; apply GlobalTheory.ThetaAtReframe.isThetaAt_reframe <;> assumption)

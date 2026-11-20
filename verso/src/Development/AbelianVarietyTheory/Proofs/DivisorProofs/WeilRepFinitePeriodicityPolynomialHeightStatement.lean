@@ -10,8 +10,10 @@ open scoped TensorProduct NNReal Matrix
 open scoped Classical
 open GlobalTheory.ArchDecay
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ArchDecay.per_om_level | exact GlobalTheory.ArchDecay.per_om_level | (intros; apply GlobalTheory.ArchDecay.per_om_level <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ArchDecay.per_om_level` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FWeilRepFinitePeriodicityPolynomialHeight.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.weilRep_finite_periodicity_polynomial_height : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' → ∀ Φ ∈ schA F (Fin n × Fin d), ∃ (C : ℝ) (k : ℕ), ∀ g h, ∃ m : ℕ, 0 < m ∧ (m : ℝ) ≤ C * ((ht g : ℝ) * ht h) ^ k ∧ Per F m (om (g, h) Φ) := by
   first | exact @GlobalTheory.ArchDecay.per_om_level | exact GlobalTheory.ArchDecay.per_om_level | (intros; apply GlobalTheory.ArchDecay.per_om_level <;> assumption)

@@ -13,8 +13,10 @@ open GroundTheory.Global.AdicLiesOver
 open GlobalTheory.CompanionTheory.FexTheta
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.FexBound.bounded | exact GlobalTheory.CompanionTheory.FexBound.bounded | (intros; apply GlobalTheory.CompanionTheory.FexBound.bounded <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.FexBound.bounded` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FBoundedLocalThetaCoefficient.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.bounded_local_theta_coefficient : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 → ∀ (c : HeckeCharacter K) (v : Pl) (L : LM c v),
   L.ok → ∀ (g : GL (Fin 2) (Qv v)) (ξ : K), ∃ C : ℝ, ∀ x, ‖fL L g ξ x‖ ≤ C := by

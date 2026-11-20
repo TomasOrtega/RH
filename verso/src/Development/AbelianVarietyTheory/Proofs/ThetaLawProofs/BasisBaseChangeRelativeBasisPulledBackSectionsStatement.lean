@@ -16,8 +16,10 @@ open GlobalTheory.AbLaw
 open GlobalTheory.KeyKa
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RelBasisFibre.main | exact GlobalTheory.RelBasisFibre.main | (intros; apply GlobalTheory.RelBasisFibre.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RelBasisFibre.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FThetaLawProofs%2FBasisBaseChangeRelativeBasisPulledBackSections.lean&line=80#L80)
 -/
 theorem _root_.GlobalTheory.T.basisBaseChange_relativeBasis_pulledBackSections : ∀ (R R' : Type) [CommRing R] [CommRing R'] (x : KeyIn R) (x' : KeyIn R') (f : R →+* R') φ w (l N : ℕ) (b : Fin N → RR x l) (b' : Fin N → RR x' l), KeyVia x' x f φ w → (∀ k, SecVia x' x φ w (b' k) (b k)) → IsBasis x' b' → GlobalTheory.RelBasis.IndepOn b x'.P.A.hom φ ⊤ ∧ GlobalTheory.RelBasis.SpanOn b x'.P.A.hom φ ⊤ := by
   first | exact @GlobalTheory.RelBasisFibre.main | exact GlobalTheory.RelBasisFibre.main | (intros; apply GlobalTheory.RelBasisFibre.main <;> assumption)

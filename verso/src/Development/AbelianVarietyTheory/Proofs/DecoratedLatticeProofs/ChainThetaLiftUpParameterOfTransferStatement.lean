@@ -18,8 +18,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting (SplitPro
 open GlobalTheory.IndefiniteRowSideFullHecke.VolumeFlatSection (Blocks parahoric datum)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChainTw.upParQ_of_transfer | exact GlobalTheory.ChainTw.upParQ_of_transfer | (intros; apply GlobalTheory.ChainTw.upParQ_of_transfer <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChainTw.upParQ_of_transfer` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FChainThetaLiftUpParameterOfTransfer.lean&line=31#L31)
 -/
 theorem _root_.GlobalTheory.T.chainThetaLiftUp_parameter_of_transfer : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Hk3.HoweUnram → ∀ D : D7, UpParQ D := by
   first | exact @GlobalTheory.ChainTw.upParQ_of_transfer | exact GlobalTheory.ChainTw.upParQ_of_transfer | (intros; apply GlobalTheory.ChainTw.upParQ_of_transfer <;> assumption)

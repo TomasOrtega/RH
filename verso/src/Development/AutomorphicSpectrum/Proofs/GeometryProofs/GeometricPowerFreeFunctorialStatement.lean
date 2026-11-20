@@ -7,8 +7,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.GeomBC.geomPF_baseChange | exact GlobalTheory.CompanionTheory.Ar.GeomBC.geomPF_baseChange | (intros; apply GlobalTheory.CompanionTheory.Ar.GeomBC.geomPF_baseChange <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.GeomBC.geomPF_baseChange` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FGeometricPowerFreeFunctorial.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.geometric_power_free_functorial : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X0 : Scheme.{0}) (t : SAB H X0), (∀ (k k₂ : Type) [Field k] [Field k₂] (f : k →+* k₂) (x : Sp k ⟶ X0), GeomPF t x → GeomPF t (spMap f ≫ x)) ∧ ∀ (X₂ : Scheme.{0}) (t₂ : SAB H X₂) (f : X₂ ⟶ X0) (_ : SABMap t₂ t f) (k : Type) [Field k] (x : Sp k ⟶ X₂), GeomPF t₂ x ↔ GeomPF t (x ≫ f) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.GeomBC.geomPF_baseChange | exact GlobalTheory.CompanionTheory.Ar.GeomBC.geomPF_baseChange | (intros; apply GlobalTheory.CompanionTheory.Ar.GeomBC.geomPF_baseChange <;> assumption)

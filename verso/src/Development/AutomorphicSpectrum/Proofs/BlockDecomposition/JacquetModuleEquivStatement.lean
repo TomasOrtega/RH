@@ -9,8 +9,10 @@ open GroundTheory.Automorphic.Iwasawa (blockUpper)
 open GroundTheory.Automorphic (permGL indRep)
 open DoubleCoset (doubleCoset)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.JacquetEquiv.nonempty_jacquetRep_equiv | exact GlobalTheory.CompanionTheory.JacquetEquiv.nonempty_jacquetRep_equiv | (intros; apply GlobalTheory.CompanionTheory.JacquetEquiv.nonempty_jacquetRep_equiv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.JacquetEquiv.nonempty_jacquetRep_equiv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FJacquetModuleEquiv.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.jacquet_module_equiv : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (n : ℕ) (γ : Fin n → ℕ) {V V' : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V'] (π : Representation ℂ (GL (Fin n) F) V) (π' : Representation ℂ (GL (Fin n) F) V'), π.Equiv π' → Nonempty ((jacquetRep F n γ π).Equiv (jacquetRep F n γ π')) := by
   first | exact @GlobalTheory.CompanionTheory.JacquetEquiv.nonempty_jacquetRep_equiv | exact GlobalTheory.CompanionTheory.JacquetEquiv.nonempty_jacquetRep_equiv | (intros; apply GlobalTheory.CompanionTheory.JacquetEquiv.nonempty_jacquetRep_equiv <;> assumption)

@@ -9,8 +9,10 @@ open CategoryTheory AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.Cris GlobalTheory.DeRham GlobalTheory.RealMult GlobalTheory.CMVal
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RealMult.Obj.exists_end_descend_algebraic | exact GlobalTheory.RealMult.Obj.exists_end_descend_algebraic | (intros; apply GlobalTheory.RealMult.Obj.exists_end_descend_algebraic <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RealMult.Obj.exists_end_descend_algebraic` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FEndomorphismDescendsToAlgebraicModel.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.endomorphism_descends_to_algebraic_model : ∀ (F : Type) [Field F] [NumberField F] (𝔠 : FracId F) (X₀ : Obj F 𝔠 (Sp Qb)) (X : Obj F 𝔠 (Sp ℂ))
     (p : X.A.left ⟶ X₀.A.left), X.IsPullBy X₀ (spMap (algebraMap Qb ℂ)) p →

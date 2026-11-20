@@ -5,8 +5,10 @@ import Formalism.PairingDivisors.StatementH
 open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.NormSum
 open scoped BigOperators
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.NormOneScalar.exists_norm_one_det_ne_zero | exact GlobalTheory.NormOneScalar.exists_norm_one_det_ne_zero | (intros; apply GlobalTheory.NormOneScalar.exists_norm_one_det_ne_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.NormOneScalar.exists_norm_one_det_ne_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FExistsNormOneScalarAvoidingMatrixEigenvalues.lean&line=61#L61)
 -/
 theorem _root_.GlobalTheory.T.exists_normOne_scalar_avoiding_matrix_eigenvalues : ∀ (D : D7) (n : ℕ) (γ : Matrix (Fin n) (Fin n) D.host.E), ∃ z : D.host.E, z * D.host.conj z = 1 ∧ z ≠ 1 ∧ (1 - z • γ).det ≠ 0 := by
   first | exact @GlobalTheory.NormOneScalar.exists_norm_one_det_ne_zero | exact GlobalTheory.NormOneScalar.exists_norm_one_det_ne_zero | (intros; apply GlobalTheory.NormOneScalar.exists_norm_one_det_ne_zero <;> assumption)

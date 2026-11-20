@@ -11,8 +11,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.CechPoset
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CechPoset.Φ_bijective_of_affine | exact GlobalTheory.CechPoset.Φ_bijective_of_affine | (intros; apply GlobalTheory.CechPoset.Φ_bijective_of_affine <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CechPoset.Φ_bijective_of_affine` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FBaseChangeTrivialBundleCechBijectiveOfAffine.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.baseChangeTrivialBundleCech_bijective_of_affine : ∀ {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R'] {X X' : Scheme.{0}} {s : X ⟶ Sp R} {s' : X' ⟶ Sp R'} {φ : X' ⟶ X} (h : IsPullback φ s' s (spMap (algebraMap R R'))) {κ : Type} [LinearOrder κ] [Fintype κ] (D : κ → X.Opens) (hD' : ∀ I : Finset κ, I.Nonempty → IsAffineOpen (⨅ i ∈ I, φ ⁻¹ᵁ D i)), (∀ I : Finset κ, I.Nonempty → IsAffineOpen (⨅ i ∈ I, D i)) → ∀ p : ℕ, Function.Bijective (Φ h.w D hD' p) := by
   first | exact @GlobalTheory.CechPoset.Φ_bijective_of_affine | exact GlobalTheory.CechPoset.Φ_bijective_of_affine | (intros; apply GlobalTheory.CechPoset.Φ_bijective_of_affine <;> assumption)

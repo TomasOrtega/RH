@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.SandwichMaps
 open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.span_wedge_of_span_basis | exact GlobalTheory.span_wedge_of_span_basis | (intros; apply GlobalTheory.span_wedge_of_span_basis <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.span_wedge_of_span_basis` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExteriorPowerBasisLatticePrincipal.lean&line=8#L8)
 -/
 theorem _root_.GlobalTheory.T.exteriorPower_basis_lattice_principal : ∀ (C : Type) [Field C] (O : Type) [CommRing O] [Algebra O C] (V : Type) [AddCommGroup V] [Module C V] [Module O V] [IsScalarTower O C V] (N : ℕ) (b : Module.Basis (Fin N) C V), Module.finrank C (⋀[C]^N V) = 1 ∧ exteriorPower.ιMulti C N b ≠ 0 ∧ Submodule.span O {w : ⋀[C]^N V | ∃ x : Fin N → V, (∀ i, x i ∈ (Submodule.span O (Set.range b) : Set V)) ∧ w = exteriorPower.ιMulti C N x} = Submodule.span O {exteriorPower.ιMulti C N b} := by
   first | exact @GlobalTheory.span_wedge_of_span_basis | exact GlobalTheory.span_wedge_of_span_basis | (intros; apply GlobalTheory.span_wedge_of_span_basis <;> assumption)

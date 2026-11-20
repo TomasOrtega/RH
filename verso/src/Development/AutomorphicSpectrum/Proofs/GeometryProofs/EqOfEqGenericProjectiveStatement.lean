@@ -8,8 +8,10 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeLine
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.maps_eq_of_eq_at_generic | exact GlobalTheory.CompanionTheory.Ar.maps_eq_of_eq_at_generic | (intros; apply GlobalTheory.CompanionTheory.Ar.maps_eq_of_eq_at_generic <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.maps_eq_of_eq_at_generic` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FEqOfEqGenericProjective.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.eq_of_eq_generic_projective : ∀ (R : Type) [CommRing R] (Z W : Scheme.{0}) [IsIntegral Z] (s : W ⟶ Sp R) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ Z) (f g : Z ⟶ W), IsProjOver s → (∀ q : Z, genPt ξ ⤳ q) → ξ ≫ f = ξ ≫ g → f = g := by
   first | exact @GlobalTheory.CompanionTheory.Ar.maps_eq_of_eq_at_generic | exact GlobalTheory.CompanionTheory.Ar.maps_eq_of_eq_at_generic | (intros; apply GlobalTheory.CompanionTheory.Ar.maps_eq_of_eq_at_generic <;> assumption)

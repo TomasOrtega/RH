@@ -14,8 +14,10 @@ open ReciprocityTheory.AnForm.R GlobalTheory.ZH GlobalTheory.Poinc GlobalTheory.
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Poinc.Sep.E8Fibration.isPPFib_baseChange | exact GlobalTheory.Poinc.Sep.E8Fibration.isPPFib_baseChange | (intros; apply GlobalTheory.Poinc.Sep.E8Fibration.isPPFib_baseChange <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Poinc.Sep.E8Fibration.isPPFib_baseChange` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPrincipallyPolarisedFibreBaseChange.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.principallyPolarisedFibre_baseChange : ∀ {S S' : Scheme.{0}} (f : S' ⟶ S) (G : Over S) [GrpObj G] (g : ℕ) (M : RigLB G), E8Fibration.IsPPFib G g M → ∃ M' : RigLB ((Over.pullback f).obj G), M'.L = M.L.pull (pullback.fst G.hom f) ∧ E8Fibration.IsPPFib ((Over.pullback f).obj G) g M' := by
   first | exact @GlobalTheory.Poinc.Sep.E8Fibration.isPPFib_baseChange | exact GlobalTheory.Poinc.Sep.E8Fibration.isPPFib_baseChange | (intros; apply GlobalTheory.Poinc.Sep.E8Fibration.isPPFib_baseChange <;> assumption)

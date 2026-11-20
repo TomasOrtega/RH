@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Definitions.ThetaMetrics.IsAmpleLBOfRelA
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsIsClosedImmersionGenericPoint
 open CategoryTheory AlgebraicGeometry NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.TrueGeo
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TrueGeo.InducedGen.exists_isGenerated_pow | exact GlobalTheory.TrueGeo.InducedGen.exists_isGenerated_pow | (intros; apply GlobalTheory.TrueGeo.InducedGen.exists_isGenerated_pow <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TrueGeo.InducedGen.exists_isGenerated_pow` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPowerOfInducedBundleGenerated.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.power_of_induced_bundle_generated : ∀ (F : Type) [Field F] [NumberField F] (C : CxSt F) (Y : Var F) (A : Adl C Y) (M : TrueGeo.Model Y) (L : HermLB M.p) (q : ℕ+) (cf : HeightOneSpectrum (𝓞 F) → ℝ), A.Induced M L q cf → Y.ample A.D → ∃ m : ℕ, 1 ≤ m ∧ GlobalTheory.IsGenerated ((L.pow m).B.pull M.j) := by
   first | exact @GlobalTheory.TrueGeo.InducedGen.exists_isGenerated_pow | exact GlobalTheory.TrueGeo.InducedGen.exists_isGenerated_pow | (intros; apply GlobalTheory.TrueGeo.InducedGen.exists_isGenerated_pow <;> assumption)

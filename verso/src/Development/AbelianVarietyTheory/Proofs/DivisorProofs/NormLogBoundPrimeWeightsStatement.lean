@@ -8,8 +8,10 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 open scoped ENNReal Classical
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory GlobalTheory.ArInt GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.ShFam.Pad GlobalTheory.VertForm GlobalTheory.CoverNorm
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.VertBound.abs_num_le | exact GlobalTheory.VertBound.abs_num_le | (intros; apply GlobalTheory.VertBound.abs_num_le <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.VertBound.abs_num_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FNormLogBoundPrimeWeights.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.norm_log_bound_prime_weights : Hypotheses2 → ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (V : Cover Y) (D : ℕ), Y.dim = D → ∀ num : Form (Cl V.p) D, IsArForm D num → ∀ (M : HermLB V.p) (lg : ∀ v : HeightOneSpectrum (𝓞 F), TrueGeo.Ext v → AlgPt Y → ℝ), Norms V M (fun _ => 1) (fun _ _ => 0) lg → ∀ (S : Finset ℕ) (a : ℕ → ℝ), (∀ l ∈ S, l.Prime ∧ 0 ≤ a l) → (∀ (v : HeightOneSpectrum (𝓞 F)) (e : TrueGeo.Ext v) (y : AlgPt Y), |lg v e y| ≤ (if resP v ∈ S then a (resP v) else 0) * (-Real.log (e.w (resP v : AlgebraicClosure F)))) → ∀ N : Fin D → HermLB V.p, (∀ j, ∀ l ∈ S, NefOver (N j) l) → |num (Fin.cons (cl M) fun j => cl (N j))| ≤ (∑ l ∈ S, a l * Real.log l) * num (Fin.cons (cl (oneB V.p)) fun j => cl (N j)) := by
   first | exact @GlobalTheory.VertBound.abs_num_le | exact GlobalTheory.VertBound.abs_num_le | (intros; apply GlobalTheory.VertBound.abs_num_le <;> assumption)

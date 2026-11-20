@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GlNormOneAdelicQuoti
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.IsGaugeAll
 open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheory.Count GlobalTheory.FlagMeas
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagBase.SiegelStep.glVol_step | exact GlobalTheory.FlagBase.SiegelStep.glVol_step | (intros; apply GlobalTheory.FlagBase.SiegelStep.glVol_step <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagBase.SiegelStep.glVol_step` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FGlNormOneAdelicQuotientVolumeSiegelStep.lean&line=214#L214)
 -/
 theorem _root_.GlobalTheory.T.glNormOneAdelicQuotientVolume_siegel_step : ∀ (E : Type) [Field E] [NumberField E], IsTotallyComplex E → ∀ j : ℕ, 2 ≤ j → glVol E (j - 1) < ⊤ → glVol E j = glVol E (j - 1) * ENNReal.ofReal (Formalism.HermitianLatticesTheory.vInv E ^ (Formalism.HermitianLatticesTheory.fDeg E * (2 * j - 1)) * zetaE E j) := by
   first | exact @GlobalTheory.FlagBase.SiegelStep.glVol_step | exact GlobalTheory.FlagBase.SiegelStep.glVol_step | (intros; apply GlobalTheory.FlagBase.SiegelStep.glVol_step <;> assumption)

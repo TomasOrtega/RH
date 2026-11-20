@@ -7,8 +7,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DescGrp.exists_semiAbelian_descent | exact GlobalTheory.DescGrp.exists_semiAbelian_descent | (intros; apply GlobalTheory.DescGrp.exists_semiAbelian_descent <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DescGrp.exists_semiAbelian_descent` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsSemiAbelianDescentAlongProperSurjective.lean&line=28#L28)
 -/
 theorem _root_.GlobalTheory.T.exists_semiAbelian_descent_along_proper_surjective : ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsIntegrallyClosed R] (S : Scheme.{0}) (π : S ⟶ Sp R), IsProper π → Surjective π → IsIntegral S → ∀ (G' : Over S) [GrpObj G'] [IsCommMonObj G'], IsSemiAbelian G' → ∀ (G : Over (Sp R)) (β : G'.left ⟶ G.left), Smooth G.hom → IsPullback β G'.hom G.hom π → ∀ φ : (Over.pullback (pullback.fst π π)).obj G' ≅ (Over.pullback (pullback.snd π π)).obj G', IsMonHom φ.hom → pullback.fst G'.hom (pullback.fst π π) ≫ β = φ.hom.left ≫ pullback.fst G'.hom (pullback.snd π π) ≫ β → ∃ (_ : GrpObj G) (_ : IsCommMonObj G), IsSemiAbelian G ∧ IsGrpPullback G' G π β := by
   first | exact @GlobalTheory.DescGrp.exists_semiAbelian_descent | exact GlobalTheory.DescGrp.exists_semiAbelian_descent | (intros; apply GlobalTheory.DescGrp.exists_semiAbelian_descent <;> assumption)

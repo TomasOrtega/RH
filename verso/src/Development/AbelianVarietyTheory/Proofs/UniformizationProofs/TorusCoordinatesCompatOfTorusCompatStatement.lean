@@ -13,8 +13,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.gtCoord_compat_of_torusCompat | exact GlobalTheory.gtCoord_compat_of_torusCompat | (intros; apply GlobalTheory.gtCoord_compat_of_torusCompat <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.gtCoord_compat_of_torusCompat` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUniformizationProofs%2FTorusCoordinatesCompatOfTorusCompat.lean&line=89#L89)
 -/
 theorem _root_.GlobalTheory.T.torusCoordinates_compat_of_torus_compat : GlobalFnsSt → ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : DegPre R) (e : ℕ) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (g : GtCoord I D e G) (g' : GtCoord I D (e + 1) G), thickMap R I e G ≫ g'.pG.left = g.pG.left → TorusCompat (thickTrans R I e) (thickMap R I e G) g.i g'.i → ∀ χ, LB.Gen.Corr D.P.L _ _ _ _ (LB.pullGen D.P.L _ _ (g'.t χ) (thickMap R I e G)) (g.t χ) := by
   first | exact @GlobalTheory.gtCoord_compat_of_torusCompat | exact GlobalTheory.gtCoord_compat_of_torusCompat | (intros; apply GlobalTheory.gtCoord_compat_of_torusCompat <;> assumption)

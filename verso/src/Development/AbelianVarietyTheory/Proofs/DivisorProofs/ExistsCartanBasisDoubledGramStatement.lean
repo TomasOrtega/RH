@@ -14,8 +14,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling GlobalTheory.ThK.DblKer
 open GlobalTheory.SkewDblIwasawa
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SkewDblIwasawa.arch | exact GlobalTheory.SkewDblIwasawa.arch | (intros; apply GlobalTheory.SkewDblIwasawa.arch <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SkewDblIwasawa.arch` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsCartanBasisDoubledGram.lean&line=77#L77)
 -/
 theorem _root_.GlobalTheory.T.exists_cartan_basis_doubled_gram : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     IsCMExt F E σ → ∀ (B : Base F E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (θ : InfinitePlace F → Matrix (Fin n) (Fin n) ℂ),

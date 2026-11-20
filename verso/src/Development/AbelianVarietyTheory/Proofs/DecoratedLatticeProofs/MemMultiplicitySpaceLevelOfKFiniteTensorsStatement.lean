@@ -10,8 +10,10 @@ open GlobalTheory.Chain GlobalTheory.ChainFr GlobalTheory.PairLift GlobalTheory.
 open scoped TensorProduct InnerProductSpace ComplexConjugate
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KFiniteLevel.mem_multT_of_kfin | exact GlobalTheory.KFiniteLevel.mem_multT_of_kfin | (intros; apply GlobalTheory.KFiniteLevel.mem_multT_of_kfin <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KFiniteLevel.mem_multT_of_kfin` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FMemMultiplicitySpaceLevelOfKFiniteTensors.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.mem_multiplicitySpace_level_of_KFinite_tensors : ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (θ : InfFam D), IsInfFam θ → ∀ (J : Set (GA D V)) (χ : GA D V → ℂ), (∀ κ ∈ J, κ ∈ GfC V) → ∀ F ∈ MultT θ M ∅ 1, (∀ w ∈ (Submodule.span ℂ {w : SmT M | ∃ v : (M).Vec, (∀ τ, (v τ : (M).H τ) ∈ GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.kfin M τ) ∧ w = PiTensorProduct.tprod ℂ v}), ∀ κ ∈ J, ∀ g, F w (g * κ) = χ κ * F w g) → F ∈ MultT θ M J χ := by
   first | exact @GlobalTheory.KFiniteLevel.mem_multT_of_kfin | exact GlobalTheory.KFiniteLevel.mem_multT_of_kfin | (intros; apply GlobalTheory.KFiniteLevel.mem_multT_of_kfin <;> assumption)

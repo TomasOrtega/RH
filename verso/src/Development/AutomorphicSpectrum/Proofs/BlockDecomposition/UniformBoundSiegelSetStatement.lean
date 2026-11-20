@@ -7,8 +7,10 @@ open NumberField IsDedekindDomain Matrix MeasureTheory Filter Topology Polynomia
 open GlobalTheory.CuspRep GlobalTheory.UnitaryBC PositivityTheory.Rg.Rs GlobalTheory.CompanionTheory.Conc
 open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Automorphic.AutomorphicForm
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Conc.TailU.tail_unif | exact GlobalTheory.CompanionTheory.Conc.TailU.tail_unif | (intros; apply GlobalTheory.CompanionTheory.Conc.TailU.tail_unif <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Conc.TailU.tail_unif` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FUniformBoundSiegelSet.lean&line=191#L191)
 -/
 theorem _root_.GlobalTheory.T.uniform_bound_siegel_set : ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) [MeasurableSpace (AdelicGLn.AdelicGL K n)] [BorelSpace (AdelicGLn.AdelicGL K n)] (μ : Measure (AdelicGLn.AdelicGL K n)) [μ.IsHaarMeasure] (ι : Type)
   (f : ι → AdelicGLn.AdelicGL K n → ℂ) (κ : ℕ → ℝ), (∀ i, Continuous (f i)) → UBnd f κ → (∀ r, 0 < r → r < n → κ r < An.rho K n r) →

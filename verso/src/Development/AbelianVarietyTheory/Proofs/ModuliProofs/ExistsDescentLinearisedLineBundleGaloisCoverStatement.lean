@@ -10,8 +10,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj TensorProduct
 open GlobalTheory.ZM
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LinDescent.exists_descent_of_isGaloisCover | exact GlobalTheory.LinDescent.exists_descent_of_isGaloisCover | (intros; apply GlobalTheory.LinDescent.exists_descent_of_isGaloisCover <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LinDescent.exists_descent_of_isGaloisCover` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FModuliProofs%2FExistsDescentLinearisedLineBundleGaloisCover.lean&line=79#L79)
 -/
 theorem _root_.GlobalTheory.T.exists_descent_linearised_lineBundle_galoisCover : ∀ (X Y : Scheme.{0}) (π : X ⟶ Y) (Ga : Type) [Group Ga] (ρ : Ga → (X ⟶ X)) (L : LB X), IsGaloisCover Ga ρ π → L.IsLB → ∀ u : ∀ a, LB.Gen (LB.LinComb L (K := Fin 2) ![𝟙 X, ρ a] ![1, -1]), (∀ a, (u a).IsGen) → (∀ a c, LB.Gen.Corr L _ _ _ _ (u (a * c)) (LB.mulGen L _ _ _ _ (u a) (LB.pullGen L _ _ (u c) (ρ a)))) → ∃ M : LB Y, M.IsLB ∧ LBIso L (M.pull π) := by
   first | exact @GlobalTheory.LinDescent.exists_descent_of_isGaloisCover | exact GlobalTheory.LinDescent.exists_descent_of_isGaloisCover | (intros; apply GlobalTheory.LinDescent.exists_descent_of_isGaloisCover <;> assumption)

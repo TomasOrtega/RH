@@ -10,8 +10,10 @@ open GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.FunObj.SqNum GlobalTh
 open GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle (Tri)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.NormPos.norm_ne_zero_of_coord | exact GlobalTheory.NormPos.norm_ne_zero_of_coord | (intros; apply GlobalTheory.NormPos.norm_ne_zero_of_coord <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.NormPos.norm_ne_zero_of_coord` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDefiniteThetaPairNormNeZeroOfCoordNeZero.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.definiteThetaPair_norm_ne_zero_of_coord_ne_zero : ∀ (D : D7), GlobalTheory.NormSum.Inp D → ∀ (δ t0 : ℂ) (Q : ℕ) (P : GlobalTheory.NormSum.Pair D ⊤ δ t0 Q), (∃ h T, P.coord h T ≠ 0) → P.norm ≠ 0 := by
   first | exact @GlobalTheory.NormPos.norm_ne_zero_of_coord | exact GlobalTheory.NormPos.norm_ne_zero_of_coord | (intros; apply GlobalTheory.NormPos.norm_ne_zero_of_coord <;> assumption)

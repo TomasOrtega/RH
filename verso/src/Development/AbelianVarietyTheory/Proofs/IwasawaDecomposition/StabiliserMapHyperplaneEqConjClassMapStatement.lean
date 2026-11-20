@@ -6,8 +6,10 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mem.Col2.HAt.Stab.stabMap_tied | exact GlobalTheory.Mem.Col2.HAt.Stab.stabMap_tied | (intros; apply GlobalTheory.Mem.Col2.HAt.Stab.stabMap_tied <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mem.Col2.HAt.Stab.stabMap_tied` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FStabiliserMapHyperplaneEqConjClassMap.lean&line=122#L122)
 -/
 theorem _root_.GlobalTheory.T.stabiliserMap_hyperplane_eq_conj_classMap : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (H : Formalism.L2.Herm.HermColsCh (I.rec7 l Z)) (F : ∀ u, FormsTiedSym (I.rec7 l Z) u (H.Ch u) (H.chOf u)), (∀ u, I.StdF l Z u (F u) ∧ I.StdLvC l Z u (F u)) → CarH H F → ∀ (A : ∀ u, Formalism.L2.Herm.AtT (I.rec7 l Z) u (H.vT u) (H.Fv u)), CarT H F A → Formalism.L2.Herm.SymmetricStabilizerMapCompatibility (I.rec7 l Z) H A := by
   first | exact @GlobalTheory.Mem.Col2.HAt.Stab.stabMap_tied | exact GlobalTheory.Mem.Col2.HAt.Stab.stabMap_tied | (intros; apply GlobalTheory.Mem.Col2.HAt.Stab.stabMap_tied <;> assumption)

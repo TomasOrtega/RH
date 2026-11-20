@@ -7,8 +7,10 @@ open GlobalTheory.Unf GlobalTheory.Grow GlobalTheory.FinPl ValuativeRel IsLocalR
 open scoped TensorProduct Pointwise
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FinPl.PutIn.orth_and_eq_eSum | exact GlobalTheory.FinPl.PutIn.orth_and_eq_eSum | (intros; apply GlobalTheory.FinPl.PutIn.orth_and_eq_eSum <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FinPl.PutIn.orth_and_eq_eSum` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FSplitPointIdempotentsOrthogonalSumPlaces.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.split_point_idempotents_orthogonal_sum_places : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type) (p : ι → SplitPt D k) (J : List ι) (P : Pl D → Prop), Places p J P → ∀ (Pset : Finset (Formalism.L2.DIV.Pl D.host.E)) (e : AE D), IsIdemSum e Pset → (∃ eq : ι ≃ Pset, ∀ i, Formalism.L2.NTheta.IsIdemAt (p i).e (eq i).1) → (∀ i j, i ≠ j → (p i).e * (p j).e = 0) ∧ e = GlobalTheory.FinPl.PutIn.eSum p J := by
   first | exact @GlobalTheory.FinPl.PutIn.orth_and_eq_eSum | exact GlobalTheory.FinPl.PutIn.orth_and_eq_eSum | (intros; apply GlobalTheory.FinPl.PutIn.orth_and_eq_eSum <;> assumption)

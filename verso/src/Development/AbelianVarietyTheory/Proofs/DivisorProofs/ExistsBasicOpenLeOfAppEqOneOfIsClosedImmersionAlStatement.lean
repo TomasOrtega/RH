@@ -10,8 +10,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.exists_basicOpen_le_of_app_eq_one_of_isClosedImmersion | exact GlobalTheory.exists_basicOpen_le_of_app_eq_one_of_isClosedImmersion | (intros; apply GlobalTheory.exists_basicOpen_le_of_app_eq_one_of_isClosedImmersion <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.exists_basicOpen_le_of_app_eq_one_of_isClosedImmersion` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsBasicOpenLeOfAppEqOneOfIsClosedImmersionAl.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.exists_basicOpen_le_of_app_eq_one_of_isClosedImmersion' : ∀ (X' Z' : Scheme.{0}) (i' : Z' ⟶ X') [IsClosedImmersion i'] (Y' : X'.Opens), IsAffineOpen Y' →
     ∀ (N : X'.Opens), (∀ z : Z', i' z ∈ Y' → i' z ∈ N) →

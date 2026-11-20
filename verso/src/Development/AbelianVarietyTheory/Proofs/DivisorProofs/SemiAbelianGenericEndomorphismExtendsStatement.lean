@@ -7,8 +7,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.genericEnd_extends | exact GlobalTheory.Mum.genericEnd_extends | (intros; apply GlobalTheory.Mum.genericEnd_extends <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.genericEnd_extends` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSemiAbelianGenericEndomorphismExtends.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.semiAbelian_generic_endomorphism_extends : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ f : (Over.pullback (jK R)).obj G ⟶ (Over.pullback (jK R)).obj G, IsMonHom f → ∃ g : G ⟶ G, IsMonHom g ∧ (Over.pullback (jK R)).map g = f := by
   first | exact @GlobalTheory.Mum.genericEnd_extends | exact GlobalTheory.Mum.genericEnd_extends | (intros; apply GlobalTheory.Mum.genericEnd_extends <;> assumption)

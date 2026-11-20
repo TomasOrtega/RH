@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.HoweUnram
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MemIntMat
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Hk3.HoweG.gramClass_orbit_mod_lower | exact GlobalTheory.Hk3.HoweG.gramClass_orbit_mod_lower | (intros; apply GlobalTheory.Hk3.HoweG.gramClass_orbit_mod_lower <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Hk3.HoweG.gramClass_orbit_mod_lower` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FExistsConjugateModelExtremalDualParameter.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.exists_conjugateModel_extremal_dual_parameter : ∀ (L : Type) [Field L] [CharZero L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : L) (σ : L →+* L) (q : ℕ) (δ : L)
     (n n' : ℕ) (JS : GL (Fin n) L) (JT : GL (Fin n') L) (ψ : AddChar L ℂ) (M : Type) [AddCommGroup M] [Module ℂ M]

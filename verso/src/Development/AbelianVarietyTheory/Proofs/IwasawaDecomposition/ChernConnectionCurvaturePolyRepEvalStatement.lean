@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Ch
 open AlgebraicGeometry MvPolynomial GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts GlobalTheory.ChartGlue GlobalTheory.FlagBundle GlobalTheory.HermFrame GlobalTheory.GoodMetric
 open ReciprocityTheory.L2DbarEstimates (V)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GoodMetric.conn_curvPoly_ev | exact GlobalTheory.GoodMetric.conn_curvPoly_ev | (intros; apply GlobalTheory.GoodMetric.conn_curvPoly_ev <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GoodMetric.conn_curvPoly_ev` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FChernConnectionCurvaturePolyRepEval.lean&line=136#L136)
 -/
 theorem _root_.GlobalTheory.T.chernConnection_curvature_polyRep_eval : ∀ (ι : Type) [Fintype ι] (m : ι → ℕ) (ρ : PolyRep m) (n : ℕ) (G : V n → Mat m ℂ) (v : V n), (∀ τ, MContDiffAt 2 (fun u => G u τ) v) → (∀ τ, (G v τ).det ≠ 0) → (∀ᶠ u in nhds v, ∀ ξ, conn (fun w => ρ.ev (G w)) u ξ = ρ.lie (fun τ => conn (fun w => G w τ) u ξ)) ∧ curvPoly (fun w => ρ.ev (G w)) v = ρ.lie (fun τ => curvPoly (fun w => G w τ) v) := by
   first | exact @GlobalTheory.GoodMetric.conn_curvPoly_ev | exact GlobalTheory.GoodMetric.conn_curvPoly_ev | (intros; apply GlobalTheory.GoodMetric.conn_curvPoly_ev <;> assumption)

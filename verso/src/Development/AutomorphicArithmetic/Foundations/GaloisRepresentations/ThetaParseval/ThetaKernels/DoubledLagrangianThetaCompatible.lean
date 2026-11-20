@@ -11,8 +11,10 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open Formalism.IndefR.DatumF
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.RatDarbouxTransferF.haar_fundDomain_transfer_k | exact _root_.GlobalTheory.RatDarbouxTransferF.haar_fundDomain_transfer_k | (intros; apply _root_.GlobalTheory.RatDarbouxTransferF.haar_fundDomain_transfer_k <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RatDarbouxTransferF.haar_fundDomain_transfer_k` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicArithmetic%2FFoundations%2FGaloisRepresentations%2FThetaParseval%2FThetaKernels%2FHaarFundDomainTransferK.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.doubled_lagrangian_theta_compatible : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     _root_.UpperTheory.TP.W.GoodK σ B → IsStdCharF (fun w : InfinitePlace F => (B.emb w).1) B.ψ (-1) →

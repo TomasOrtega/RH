@@ -16,8 +16,10 @@ set_option synthInstance.maxHeartbeats 400000
 open GlobalTheory.LevelSeries
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LevelSeries.flip_central_exists | exact GlobalTheory.LevelSeries.flip_central_exists | (intros; apply GlobalTheory.LevelSeries.flip_central_exists <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LevelSeries.flip_central_exists` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FExistsCentralConjugateFlipScalarFiniteAdelic.lean&line=94#L94)
 -/
 theorem _root_.GlobalTheory.T.exists_central_conjugateFlipScalar_finiteAdelic : ∀ (D : D7) (V : HSp D) (T : Finset (Formalism.L2.DIV.Pl D.host.E)) (m : ℕ) (eT : AE D), IsIdemSum eT T → m ≠ 0 → ∃ z : GA D V, z ∈ GfC V ∧ (∀ l : ℕ, (∀ PP ∈ T, ((l : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal) → OneAt V l z) ∧ Formalism.L2.Theta.mt V z = flipElt eT m • (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) := by
   first | exact @GlobalTheory.LevelSeries.flip_central_exists | exact GlobalTheory.LevelSeries.flip_central_exists | (intros; apply GlobalTheory.LevelSeries.flip_central_exists <;> assumption)

@@ -10,8 +10,10 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj TensorProduct Pointwise
 open GlobalTheory.Models
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Models.Cpt.exists_above_isIso_of_overring | exact GlobalTheory.Models.Cpt.exists_above_isIso_of_overring | (intros; apply GlobalTheory.Models.Cpt.exists_above_isIso_of_overring <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Models.Cpt.exists_above_isIso_of_overring` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FModuliProofs%2FExistsModelBaseChangeOverring.lean&line=83#L83)
 -/
 theorem _root_.GlobalTheory.T.exists_model_baseChange_overring : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (U : Scheme.{0}) (F O : Type) [Field F] [CommRing O] (c : U ⟶ Sp F) (t : SAB H U) (β : O →+* F) (O' : Type) [CommRing O'] (β' : O' →+* F) (b : O →+* O') (C : Cpt c t β) (ν : SABMap t t (𝟙 U)), ν.φ = 𝟙 _ → IsDedFrac β → IsDedFrac β' → β'.comp b = β → ∃ (C' : Cpt c t β') (a : C'.Above C b (𝟙 U) ν), IsIso (pullback.lift a.π C'.s a.π_over) := by
   first | exact @GlobalTheory.Models.Cpt.exists_above_isIso_of_overring | exact GlobalTheory.Models.Cpt.exists_above_isIso_of_overring | (intros; apply GlobalTheory.Models.Cpt.exists_above_isIso_of_overring <;> assumption)

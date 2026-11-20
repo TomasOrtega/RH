@@ -16,8 +16,10 @@ open Limits MonoidalCategory CartesianMonoidalCategory MonObj
 open GlobalTheory.CompanionTheory.Ar.Num.FamEx GlobalTheory.CompanionTheory.Ar.BT
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Num.FamEx.dual_baseChange_fractionField | exact GlobalTheory.CompanionTheory.Ar.Num.FamEx.dual_baseChange_fractionField | (intros; apply GlobalTheory.CompanionTheory.Ar.Num.FamEx.dual_baseChange_fractionField <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Num.FamEx.dual_baseChange_fractionField` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FDualLatticeBaseChange.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.dual_lattice_base_change : ∀ (Ω : Type) [Field Ω] (O : Type) [CommRing O] [Algebra O Ω] (R : Subalgebra O Ω) [IsFractionRing R Ω] (L : Type) [AddCommGroup L] [Module R L] [Module.Finite R L] [Module.Projective R L] (Li : Type) [AddCommGroup Li] [Module Ω Li] (toLi : L →ₗ[R] Li), IsBaseChange Ω toLi → ∃ j : Module.Dual R L →ₗ[R] Module.Dual Ω Li, IsBaseChange Ω j ∧ ∀ u v, j u (toLi v) = algebraMap R Ω (u v) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Num.FamEx.dual_baseChange_fractionField | exact GlobalTheory.CompanionTheory.Ar.Num.FamEx.dual_baseChange_fractionField | (intros; apply GlobalTheory.CompanionTheory.Ar.Num.FamEx.dual_baseChange_fractionField <;> assumption)

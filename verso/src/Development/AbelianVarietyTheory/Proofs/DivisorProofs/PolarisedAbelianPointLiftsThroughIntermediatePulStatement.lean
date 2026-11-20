@@ -13,8 +13,10 @@ open GlobalTheory.Poinc
 open MonObj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PolLift.lift_of_pullback_comp | exact GlobalTheory.PolLift.lift_of_pullback_comp | (intros; apply GlobalTheory.PolLift.lift_of_pullback_comp <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PolLift.lift_of_pullback_comp` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPolarisedAbelianPointLiftsThroughIntermediatePul.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.polarisedAbelianPoint_lifts_through_intermediate_pullback : ∀ {S₀ S₁ S₂ : Scheme.{0}} (f₁ : S₁ ⟶ S₀) (f₂ : S₂ ⟶ S₁) (A : PolAV S₀) (B : PolAV S₁) (P : PolAV S₂) (b : B.A.left ⟶ A.A.left) (a : P.A.left ⟶ A.A.left), IsGrpPullback B.A A.A f₁ b → IsGrpPullback P.A A.A (f₂ ≫ f₁) a → ∃ c : P.A.left ⟶ B.A.left, c ≫ b = a ∧ c ≫ B.A.hom = P.A.hom ≫ f₂ ∧ IsGrpPullback P.A B.A f₂ c ∧ (LBIso P.L (A.L.pull a) → LBIso B.L (A.L.pull b) → LBIso P.L (B.L.pull c)) := by
   first | exact @GlobalTheory.PolLift.lift_of_pullback_comp | exact GlobalTheory.PolLift.lift_of_pullback_comp | (intros; apply GlobalTheory.PolLift.lift_of_pullback_comp <;> assumption)

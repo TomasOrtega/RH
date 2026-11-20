@@ -7,8 +7,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.exists_near | exact GlobalTheory.Mum.exists_near | (intros; apply GlobalTheory.Mum.exists_near <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.exists_near` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsSmoothModelNearClosedFibreEmbedding.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.exists_smooth_model_near_closedFibre_embedding : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) → ∀ (M : Modif R) (G' : Over M.S) [GrpObj G'] [IsCommMonObj G'], IsSemiAbelian G' → ∀ E : Emb M.π G', ∃ (N : Near M.π G') (fU : N.U.left ⟶ PSpace R E.N) (l : pullback N.U.hom M.π ⟶ E.H.toScheme), l ≫ E.H.ι = N.u ∧ l ≫ E.f = pullback.fst _ _ ≫ fU := by
   first | exact @GlobalTheory.Mum.exists_near | exact GlobalTheory.Mum.exists_near | (intros; apply GlobalTheory.Mum.exists_near <;> assumption)

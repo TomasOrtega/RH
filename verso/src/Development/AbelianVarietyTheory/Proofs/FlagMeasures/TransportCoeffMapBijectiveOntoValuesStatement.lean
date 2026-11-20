@@ -5,8 +5,10 @@ open MeasureTheory NumberField IsDedekindDomain Matrix Formalism.BasicNotions Fo
 open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.transport_J_bijective_onto | exact GlobalTheory.transport_J_bijective_onto | (intros; apply GlobalTheory.transport_J_bijective_onto <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.transport_J_bijective_onto` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FTransportCoeffMapBijectiveOntoValues.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.transportCoeffMap_bijective_onto_values : ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word) (F : Formalism.L2.Forms.Forms0 D u) (Tr : Transport X u F), Function.Injective Tr.J ∧ ∀ p ∈ Formalism.L2.Forms.ValC (Formalism.L2.Forms.gramC (Formalism.L2.Forms.gramN D 0 (Nat.zero_le _)) (Formalism.L2.Forms.embT D)) (Formalism.L2.Forms.lamT u 0), ∃ ξ, Tr.J ξ = p := by
   first | exact @GlobalTheory.transport_J_bijective_onto | exact GlobalTheory.transport_J_bijective_onto | (intros; apply GlobalTheory.transport_J_bijective_onto <;> assumption)

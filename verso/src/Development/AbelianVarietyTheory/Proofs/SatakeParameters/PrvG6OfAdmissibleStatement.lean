@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ConclusionG6OfAd
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.HeckeCharEqOfLAdicRealisation
 open Formalism.BasicNotions Formalism.ConjugateSelfDual Formalism.MainNotions Formalism.MainNotions.N Polynomial NumberField IsDedekindDomain ReciprocityTheory.Gal GlobalTheory.StringRepresentationDecomposition
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ClosingSixth.conclusionG6_of_adm | exact GlobalTheory.ClosingSixth.conclusionG6_of_adm | (intros; apply GlobalTheory.ClosingSixth.conclusionG6_of_adm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ClosingSixth.conclusionG6_of_adm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FConclusionG6OfAdmissible.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.conclusionG6_of_admissible : ∀ D : D7, SumRepresentations.admitted D → RbEx D → SumRepresentations.ConclusionG6 D := by
   first | exact @GlobalTheory.ClosingSixth.conclusionG6_of_adm | exact GlobalTheory.ClosingSixth.conclusionG6_of_adm | (intros; apply GlobalTheory.ClosingSixth.conclusionG6_of_adm <;> assumption)

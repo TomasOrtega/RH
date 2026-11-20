@@ -3,8 +3,10 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetProjecti
 import Development.WeilBound.RepresentationTheoryGL.TwistedFactors.LocalBaseChange.StrictDominanceCasselman.IsStrictlyDominant
 open GlobalTheory.PRep GlobalTheory.SmGL ValuativeRel PositivityTheory.Lbc
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Casselman.mk_mem_fixed_jac | exact GlobalTheory.CompanionTheory.Casselman.mk_mem_fixed_jac | (intros; apply GlobalTheory.CompanionTheory.Casselman.mk_mem_fixed_jac <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Casselman.mk_mem_fixed_jac` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FJacquetProjectionFixedSurjective.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.jacquet_projection_fixed_surjective : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (N h : ℕ) (d : Fin h → ℕ) (hd : ∑ a, d a = N) (J : Subgroup (GL (Fin N) k)), IsOpen (J : Set (GL (Fin N) k)) → IsCompact (J : Set (GL (Fin N) k)) → HasIwahoriFact k N J d hd → (∀ a, 0 < d a) → ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V), IsSmooth π → ∀ v : fixed π J, (Submodule.Quotient.mk (v : V) : Jacquet π (unipRad k (stdBlocks d hd))) ∈ fixed (jac (stdBlocks d hd) π) (KM k N J d hd) := by
   first | exact @GlobalTheory.CompanionTheory.Casselman.mk_mem_fixed_jac | exact GlobalTheory.CompanionTheory.Casselman.mk_mem_fixed_jac | (intros; apply GlobalTheory.CompanionTheory.Casselman.mk_mem_fixed_jac <;> assumption)

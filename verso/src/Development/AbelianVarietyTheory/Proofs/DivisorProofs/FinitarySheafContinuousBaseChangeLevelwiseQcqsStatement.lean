@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IndEtOfForallFinset
 import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondition
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex TensorProduct GlobalTheory.EtC
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Use `first`. Consider the case `exact @GlobalTheory.EtC.contCone_bc_qcqsOver`. Consider the case `exact GlobalTheory.EtC.contCone_bc_qcqsOver`. Consider the case `(intros; apply GlobalTheory.EtC.contCone_bc_qcqsOver <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EtC.contCone_bc_qcqsOver` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFinitarySheafContinuousBaseChangeLevelwiseQcqs.lean&line=60#L60)
 -/
 theorem _root_.GlobalTheory.T.finitarySheaf_continuous_baseChange_levelwiseQcqs : ∀ (R : Type) [CommRing R] (F : Shv R), Finitary F → ∀ (S : Scheme.{0}) (E : Spc) (p : E ⟶ sch.obj S), QcqsOver p → (∀ (I : Type) [SmallCategory I] [IsCofiltered I] (G : I ⥤ Over S) (c : Cone G), IsLimit c → (∀ i, IsAffine (G.obj i).left) → ContCone R F ((bc p).mapCone c)) := by
   first

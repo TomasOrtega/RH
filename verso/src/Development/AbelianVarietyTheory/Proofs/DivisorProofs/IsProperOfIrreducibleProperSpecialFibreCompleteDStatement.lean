@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsProperOfIrreducib
 import Mathlib
 open CategoryTheory Limits AlgebraicGeometry
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FibreProper.isProper_of_irreducible_of_isProper_specialFibre | exact GlobalTheory.FibreProper.isProper_of_irreducible_of_isProper_specialFibre | (intros; apply GlobalTheory.FibreProper.isProper_of_irreducible_of_isProper_specialFibre <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FibreProper.isProper_of_irreducible_of_isProper_specialFibre` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsProperOfIrreducibleProperSpecialFibreCompleteD.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.isProper_of_irreducible_properSpecialFibre_completeDvr : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O] (X : Scheme.{0}) (f : X ⟶ Spec (CommRingCat.of O)), IrreducibleSpace X → IsSeparated f → LocallyOfFiniteType f → QuasiCompact f → (∃ x : X, f x = IsLocalRing.closedPoint O) → IsProper (pullback.snd f (Spec.map (CommRingCat.ofHom (IsLocalRing.residue O)))) → IsProper f := by
   first | exact @GlobalTheory.FibreProper.isProper_of_irreducible_of_isProper_specialFibre | exact GlobalTheory.FibreProper.isProper_of_irreducible_of_isProper_specialFibre | (intros; apply GlobalTheory.FibreProper.isProper_of_irreducible_of_isProper_specialFibre <;> assumption)

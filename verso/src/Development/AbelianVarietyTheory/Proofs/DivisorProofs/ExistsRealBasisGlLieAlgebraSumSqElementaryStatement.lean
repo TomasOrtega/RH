@@ -9,8 +9,10 @@ open NumberField MeasureTheory Matrix GlobalTheory.CuspRep GlobalTheory.HCA Grou
 open scoped ContDiff
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.glBasis_sum_sq | exact GlobalTheory.glBasis_sum_sq | (intros; apply GlobalTheory.glBasis_sum_sq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.glBasis_sum_sq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsRealBasisGlLieAlgebraSumSqElementary.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.exists_realBasis_glLieAlgebra_sum_sq_elementary : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ), ∃ (d : ℕ) (b : Module.Basis (Fin d) ℝ (glL E a)), ∀ (A : Type) [Ring A] [Algebra ℝ A] (ρ : glL E a →ₗ[ℝ] A), ∑ k, ρ (b k) * ρ (b k) = ∑ τ : E →+* ℂ, ∑ i : Fin a, ∑ j : Fin a, (ρ ⟨Matrix.single i j (atEmb τ 1), Submodule.mem_top⟩ ^ 2 + ρ ⟨Matrix.single i j (atEmb τ Complex.I), Submodule.mem_top⟩ ^ 2) := by
   first | exact @GlobalTheory.glBasis_sum_sq | exact GlobalTheory.glBasis_sum_sq | (intros; apply GlobalTheory.glBasis_sum_sq <;> assumption)

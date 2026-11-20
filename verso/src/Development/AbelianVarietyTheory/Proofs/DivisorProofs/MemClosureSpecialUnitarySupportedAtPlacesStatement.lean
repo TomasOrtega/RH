@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.No
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.Published
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SUTrunc.mem_closure_supp | exact GlobalTheory.SUTrunc.mem_closure_supp | (intros; apply GlobalTheory.SUTrunc.mem_closure_supp <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SUTrunc.mem_closure_supp` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FMemClosureSpecialUnitarySupportedAtPlaces.lean&line=97#L97)
 -/
 theorem _root_.GlobalTheory.T.mem_closure_specialUnitarySupportedAtPlaces : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ g ∈ SUAdelic σ J, g ∈ closure {x : HA (AF F) σ J | ∃ (T₁ : Finset (InfinitePlace F)) (T₂ : Finset (HeightOneSpectrum (𝓞 F))) (η : AF F), IsPlacesIdem T₁ T₂ η ∧ x ∈ SUSupp σ J η} := by
   first | exact @GlobalTheory.SUTrunc.mem_closure_supp | exact GlobalTheory.SUTrunc.mem_closure_supp | (intros; apply GlobalTheory.SUTrunc.mem_closure_supp <;> assumption)

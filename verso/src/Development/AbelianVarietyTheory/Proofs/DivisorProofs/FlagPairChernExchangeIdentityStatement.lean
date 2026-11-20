@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.GlobalHeightBoundIf
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BracketIndepOfCofactors
 open MvPolynomial Formalism.BasicNotions Formalism.BasicNotions.DV
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagRankTwo.ck_eq_of_rank_two | exact GlobalTheory.FlagRankTwo.ck_eq_of_rank_two | (intros; apply GlobalTheory.FlagRankTwo.ck_eq_of_rank_two <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagRankTwo.ck_eq_of_rank_two` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFlagPairChernExchangeIdentity.lean&line=140#L140)
 -/
 theorem _root_.GlobalTheory.T.flag_pair_chern_exchange_identity : ∀ (Z : ITh) (P P' : FPair Z 2) (k : ℕ) (Q : Z.Ch), (∀ (E E' : Z.VDiv) (a : Z.Ch), Z.capDeg E (Z.cD E' * a) = Z.capDeg E' (Z.cD E * a)) → Z.c1 (P.x 0) + Z.c1 (P.x 1) = Z.c1 (P'.x 0) + Z.c1 (P'.x 1) → P.Dv 0 + P.Dv 1 = P'.Dv 0 + P'.Dv 1 → (∀ (D : Z.VDiv) (y : Z.Ch), Z.capDeg D ((Z.c1 (P'.x' 1) - Z.c1 (P.x' 0)) * (Z.c1 (P.x' 0) - Z.c1 (P'.x' 0)) * y) = 0) → (∀ y : Z.Ch, Z.capDeg (P.Dv 1 - P'.Dv 0) ((Z.c1 (P.x 0) - Z.c1 (P'.x 0)) * y) + Z.capDeg (P.Dv 0 - P'.Dv 0) ((Z.c1 (P'.x' 1) - Z.c1 (P.x' 0)) * y) = 0) → ck P k Q = ck P' k Q := by
   first | exact @GlobalTheory.FlagRankTwo.ck_eq_of_rank_two | exact GlobalTheory.FlagRankTwo.ck_eq_of_rank_two | (intros; apply GlobalTheory.FlagRankTwo.ck_eq_of_rank_two <;> assumption)

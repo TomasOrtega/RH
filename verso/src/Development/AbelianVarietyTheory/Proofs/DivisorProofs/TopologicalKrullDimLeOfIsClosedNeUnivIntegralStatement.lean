@@ -14,8 +14,10 @@ open CategoryTheory Limits AlgebraicGeometry TopologicalSpace Filter Asymptotics
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Twist
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.topologicalKrullDim_le_of_isClosed_ne_univ | exact GlobalTheory.topologicalKrullDim_le_of_isClosed_ne_univ | (intros; apply GlobalTheory.topologicalKrullDim_le_of_isClosed_ne_univ <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.topologicalKrullDim_le_of_isClosed_ne_univ` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTopologicalKrullDimLeOfIsClosedNeUnivIntegral.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.topologicalKrullDim_le_of_isClosed_ne_univ_integral : ∀ (X : Scheme.{0}) [IsIntegral X] (d : ℕ), topologicalKrullDim X ≤ (d + 1 : ℕ) → ∀ Z : Set X, IsClosed Z → Z ≠ Set.univ → topologicalKrullDim Z ≤ (d : ℕ) := by
   first | exact @GlobalTheory.topologicalKrullDim_le_of_isClosed_ne_univ | exact GlobalTheory.topologicalKrullDim_le_of_isClosed_ne_univ | (intros; apply GlobalTheory.topologicalKrullDim_le_of_isClosed_ne_univ <;> assumption)

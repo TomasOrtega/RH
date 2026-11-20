@@ -2,8 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DeformMultipleZerosLinearFamily
 open Polynomial
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DeformZeros.deform | exact GlobalTheory.DeformZeros.deform | (intros; apply GlobalTheory.DeformZeros.deform <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DeformZeros.deform` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FDeformMultipleZerosLinearFamily.lean&line=79#L79)
 -/
 theorem _root_.GlobalTheory.T.deform_multiple_zeros_linear_family : ∀ (k J I : Type) [Field k] [CharZero k] [Fintype J] [Fintype I] (N : ℕ) (ξ : J → PowerSeries k) (s : I → J → PowerSeries k) (y₀ : J → k), 1 ≤ N →
  ∑ j, y₀ j * PowerSeries.constantCoeff (ξ j) = 0 →

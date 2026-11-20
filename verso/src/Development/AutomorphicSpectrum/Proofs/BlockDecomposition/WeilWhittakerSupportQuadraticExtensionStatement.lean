@@ -16,8 +16,10 @@ open GlobalTheory.CompanionTheory.WcB
 open scoped Topology
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.LatticeChoice.exists_lattice_adapted | exact GlobalTheory.CompanionTheory.LatticeChoice.exists_lattice_adapted | (intros; apply GlobalTheory.CompanionTheory.LatticeChoice.exists_lattice_adapted <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.LatticeChoice.exists_lattice_adapted` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FWeilWhittakerSupportQuadraticExtension.lean&line=100#L100)
 -/
 theorem _root_.GlobalTheory.T.weil_whittaker_support_quadratic_extension : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] [MeasurableSpace E] [BorelSpace E] [Algebra F E] [ValuativeExtension F E] [FiniteDimensional F E] [Algebra.IsSeparable F E] [Fact (Module.finrank F E = 2)] (χ : AddChar F Circle), Continuous χ → χ ≠ 1 → ∀ (Φ : E → ℂ), IsLocallyConstant Φ → HasCompactSupport Φ → ∃ C : ℝ, 0 < C ∧ ∀ κ : F, ∃ M : AddSubgroup E, IsCompact (M : Set E) ∧ IsOpen (M : Set E) ∧ (∀ r ∈ M, ∀ u, Φ (u + r) = Φ u) ∧ (∀ r ∈ M, χ (κ * Algebra.norm F r) = 1) ∧ ∀ x : E, (∀ r ∈ M, χ (Algebra.trace F E (x * r)) = 1) → (modulus x : ℝ) ≤ C * max 1 (modulus κ : ℝ) := by
   first | exact @GlobalTheory.CompanionTheory.LatticeChoice.exists_lattice_adapted | exact GlobalTheory.CompanionTheory.LatticeChoice.exists_lattice_adapted | (intros; apply GlobalTheory.CompanionTheory.LatticeChoice.exists_lattice_adapted <;> assumption)

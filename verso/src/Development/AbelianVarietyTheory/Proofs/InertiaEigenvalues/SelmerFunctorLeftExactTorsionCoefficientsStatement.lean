@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.Co
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.ContinuousCycMod
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.MainNotions.BlochKatoReduction Formalism.MainNotions.BlochKatoReduction.Gen GlobalTheory.TwSys GlobalTheory.SelFun GlobalTheory.Published
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SelLeftExact.selmer_left_exact | exact GlobalTheory.SelLeftExact.selmer_left_exact | (intros; apply GlobalTheory.SelLeftExact.selmer_left_exact <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SelLeftExact.selmer_left_exact` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FSelmerFunctorLeftExactTorsionCoefficients.lean&line=216#L216)
 -/
 theorem _root_.GlobalTheory.T.selmer_functor_left_exact_torsion_coefficients : ∀ (D : Formalism.BasicNotions.D7) (N : NData D.R D.host D.what₂) (X : NTw D.R D.host D.what₂ D.LL0 N) (bkP : BKPh X) (i : X.Tw) (s : X.Sig i) (Λ : Type) [CommRing Λ] [IsLocalRing Λ] [Algebra (X.O0 i) Λ] (κ : GE N →* Λˣ) (Q : Finset (PlE D.host)), Setup bkP i s κ Q → NoInv i s κ → LocSat bkP i s κ → SelLeft bkP i s κ Q := by
   first | exact @GlobalTheory.SelLeftExact.selmer_left_exact | exact GlobalTheory.SelLeftExact.selmer_left_exact | (intros; apply GlobalTheory.SelLeftExact.selmer_left_exact <;> assumption)

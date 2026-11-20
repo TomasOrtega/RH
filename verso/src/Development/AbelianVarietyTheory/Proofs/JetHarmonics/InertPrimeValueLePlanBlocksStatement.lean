@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.JetHarmonics.InertPrimeValueLePla
 import Development.AbelianVarietyTheory.Definitions.Jets.DepthNumbersThresholdEq
 open Formalism.L2.FormalSeriesBounds Formalism.IncomingBounds Formalism.UnitaryBoundIntegral Formalism.L2.DIV Formalism.L2.Pj Formalism.BasicNotions GlobalTheory.GoodDepth NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PlanValue.val_le_plan | exact GlobalTheory.PlanValue.val_le_plan | (intros; apply GlobalTheory.PlanValue.val_le_plan <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PlanValue.val_le_plan` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FJetHarmonics%2FInertPrimeValueLePlanBlocks.lean&line=192#L192)
 -/
 theorem _root_.GlobalTheory.T.inertPrime_value_le_planBlocks : ∀ (P : RF.Par) (l : ℕ) (C1 : ℝ), ParOK P → 5 ≤ l → ∀ (Pk : RF.PkgInert P l C1) (p : ∀ z, Plan l P.d (RF.alongOrb P z Pk.W)),
   (∀ z ∈ Pk.Z, ∀ a i, i0 P.k l ≤ i → (p z).y a i = 0) →

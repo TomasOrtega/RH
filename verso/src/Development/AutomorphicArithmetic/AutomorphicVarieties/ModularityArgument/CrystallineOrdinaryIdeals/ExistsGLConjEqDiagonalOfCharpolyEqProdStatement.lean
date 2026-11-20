@@ -3,8 +3,10 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.TriDefs
 open Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal Module UpperTheory.V.Loc UpperTheory.V.U3 UpperTheory.V.Alg IsLocalRing Polynomial Topology
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.exists_GL_conj_eq_diagonal_of_charpoly_eq_prod | exact GlobalTheory.exists_GL_conj_eq_diagonal_of_charpoly_eq_prod | (intros; apply GlobalTheory.exists_GL_conj_eq_diagonal_of_charpoly_eq_prod <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.exists_GL_conj_eq_diagonal_of_charpoly_eq_prod` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicArithmetic%2FAutomorphicVarieties%2FModularityArgument%2FCrystallineOrdinaryIdeals%2FExistsGLConjEqDiagonalOfCharpolyEqProd.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.diagonalize_of_distinct_eigenvalues : ∀ {C : Type} [CommRing C] [IsLocalRing C] (A : Matrix (Fin 3) (Fin 3) C) (p : Fin 3 → C), (∀ a b, a ≠ b → IsUnit (p a - p b)) → A.charpoly = ∏ a, (X - Polynomial.C (p a)) → ∃ h : GL (Fin 3) C, (h : Matrix (Fin 3) (Fin 3) C) * A * ((h⁻¹ : GL (Fin 3) C) : Matrix (Fin 3) (Fin 3) C) = Matrix.diagonal p := by
   first | exact @GlobalTheory.exists_GL_conj_eq_diagonal_of_charpoly_eq_prod | exact GlobalTheory.exists_GL_conj_eq_diagonal_of_charpoly_eq_prod | (intros; apply GlobalTheory.exists_GL_conj_eq_diagonal_of_charpoly_eq_prod <;> assumption)

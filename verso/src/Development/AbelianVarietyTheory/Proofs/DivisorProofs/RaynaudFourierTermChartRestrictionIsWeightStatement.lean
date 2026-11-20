@@ -18,8 +18,10 @@ open GlobalTheory.Toroidal GlobalTheory.LogKS GlobalTheory.LogKSChart GlobalTheo
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HeatMod.isWt_fourierTerm | exact GlobalTheory.HeatMod.isWt_fourierTerm | (intros; apply GlobalTheory.HeatMod.isWt_fourierTerm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HeatMod.isWt_fourierTerm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRaynaudFourierTermChartRestrictionIsWeight.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.raynaudFourierTerm_chartRestriction_isWeight : ∀ (R : Type) [CommRing R] [IsDomain R] (Q : DegPre R) (Ω : Type) [CommRing Ω] [StarRing Ω] [Module Ω Q.X] (oa : Q.OAct Ω) (Y : Ray oa), ∀ (k : ℕ) (α : Q.X) (σ : Q.SecB k α) (τ : SecM Y.q.left Q.P.L k), IsTerm Y k α σ τ → ∀ (j : Q.P.L.ι) (W : Y.H.left.Opens), (∃ V : Q.P.A.left.Opens, W = Y.q.left ⁻¹ᵁ V) → W ≤ Y.q.left ⁻¹ᵁ Q.P.L.U j → IsWt Y α W (rsT (τ.f fun _ => j) W) := by
   first | exact @GlobalTheory.HeatMod.isWt_fourierTerm | exact GlobalTheory.HeatMod.isWt_fourierTerm | (intros; apply GlobalTheory.HeatMod.isWt_fourierTerm <;> assumption)

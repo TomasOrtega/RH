@@ -11,8 +11,10 @@ open Ad3 Ad3.K Ad3.K.QuadraticBaseChangeGL3
 open scoped NumberField.AdeleRing ValuativeRel
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.WS.Coset.isSB_cosetInd | exact GlobalTheory.CompanionTheory.WS.Coset.isSB_cosetInd | (intros; apply GlobalTheory.CompanionTheory.WS.Coset.isSB_cosetInd <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.WS.Coset.isSB_cosetInd` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FCosetIndicatorSchwartzBruhat.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.coset_indicator_schwartz_bruhat : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (n : ℤ) (x : F × F), GlobalTheory.CompanionTheory.WS.IsSB (GlobalTheory.CompanionTheory.WS.cosetInd n x) := by
   first | exact @GlobalTheory.CompanionTheory.WS.Coset.isSB_cosetInd | exact GlobalTheory.CompanionTheory.WS.Coset.isSB_cosetInd | (intros; apply GlobalTheory.CompanionTheory.WS.Coset.isSB_cosetInd <;> assumption)

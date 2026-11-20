@@ -13,8 +13,10 @@ open GlobalTheory.NormDict
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.NormDict.substF_invT_minorPol | exact GlobalTheory.NormDict.substF_invT_minorPol | (intros; apply GlobalTheory.NormDict.substF_invT_minorPol <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.NormDict.substF_invT_minorPol` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSubstitutionInverseTransposeMaximalMinorProduct.lean&line=49#L49)
 -/
 theorem _root_.GlobalTheory.T.substitution_inverse_transpose_maximalMinorProduct : ∀ {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ t0 : ℂ} {Q : ℕ} (P : Pair D cc δ t0 Q) (X : Data P)
     (T : Tup D P.a P.d P.n) (G : D.what₂.Tau → Matrix (Fin X.A.rank) (Fin X.A.rank) ℂ),

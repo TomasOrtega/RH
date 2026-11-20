@@ -12,8 +12,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.BoundaryPolynomialFunctions (IsProj
 open Formalism.BasicNotions Formalism.L2.Pj GlobalTheory.Toroidal GlobalTheory.ShFam GlobalTheory.ShFam.Hor GlobalTheory.Mean4O
 open scoped ContDiff ComplexOrder ENNReal Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HermFrame.chTwo_chg_blockDiagonal'_dualGram | exact GlobalTheory.HermFrame.chTwo_chg_blockDiagonal'_dualGram | (intros; apply GlobalTheory.HermFrame.chTwo_chg_blockDiagonal'_dualGram <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HermFrame.chTwo_chg_blockDiagonal'_dualGram` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGramChangeBlockDiagonalFrame.lean&line=29#L29)
 -/
 theorem _root_.GlobalTheory.T.gram_change_block_diagonal_frame : ∀ (D : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] (m : ι → ℕ) (n : Type) [Fintype n] [DecidableEq n] (U : Set (V D)) (K : ∀ τ : ι, V D → Matrix (Fin (m τ)) (Fin (m τ)) ℂ) (T : V D → Matrix (Σ τ : ι, Fin (m τ)) n ℂ) (G : V D → Matrix n n ℂ), IsOpen U → (∀ τ, IsPosFrame U (K τ)) → (∀ j b, DifferentiableOn ℂ (fun u => T u j b) U) → (∀ u ∈ U, Function.Bijective (T u).mulVec) → (∀ u ∈ U, G u = chg (T u) (Matrix.blockDiagonal' fun τ => dualGram (K τ u))) → ∀ z ∈ U, chTwo G z = (fun ξ₁ η₁ ξ₂ η₂ => ∑ τ, chTwo (K τ) z ξ₁ η₁ ξ₂ η₂) ∧ ∀ ξ η, (curv G z ξ η).trace = -∑ τ, (curv (K τ) z ξ η).trace := by
   first | exact @GlobalTheory.HermFrame.chTwo_chg_blockDiagonal'_dualGram | exact GlobalTheory.HermFrame.chTwo_chg_blockDiagonal'_dualGram | (intros; apply GlobalTheory.HermFrame.chTwo_chg_blockDiagonal'_dualGram <;> assumption)

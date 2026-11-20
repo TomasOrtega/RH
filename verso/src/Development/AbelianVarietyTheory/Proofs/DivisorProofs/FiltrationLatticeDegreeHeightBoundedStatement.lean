@@ -14,8 +14,10 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions ReciprocityTheory.
 open GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.LieRead
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LieRead.steps_read_heights | exact GlobalTheory.LieRead.steps_read_heights | (intros; apply GlobalTheory.LieRead.steps_read_heights <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LieRead.steps_read_heights` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFiltrationLatticeDegreeHeightBounded.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.filtration_lattice_degree_height_bounded : Hypotheses2 → HypothesesH → OnObj fun D O _ _ H _ => ∃ C : ℝ, ∀ y : Pt O.s, y ∈ H.int → ∀ (K : Type) [Field K] [NumberField K] (F : SemiFib K) (ι : K →+* Qb) (h : HermFam K (Fin F.P₀.g → K)), FibTie O y F ι → F.IsHerm h → ∀ τ, ∀ k ≤ O.S.Dw.mult τ, latRank K (stepLat O F τ k) = k ∧ |deg h (stepLat O F τ k) + stepHt O O.met.hm y τ k| ≤ C := by
   first | exact @GlobalTheory.LieRead.steps_read_heights | exact GlobalTheory.LieRead.steps_read_heights | (intros; apply GlobalTheory.LieRead.steps_read_heights <;> assumption)

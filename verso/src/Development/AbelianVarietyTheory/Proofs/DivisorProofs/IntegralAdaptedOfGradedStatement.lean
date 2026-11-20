@@ -11,8 +11,10 @@ open Formalism.MainNotions.DIV.Cons (intO)
 open scoped Classical
 open GlobalTheory.LieFilt
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LieFilt.intAdapted_of_grCond' | exact GlobalTheory.LieFilt.intAdapted_of_grCond' | (intros; apply GlobalTheory.LieFilt.intAdapted_of_grCond' <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LieFilt.intAdapted_of_grCond'` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIntegralAdaptedOfGraded.lean&line=138#L138)
 -/
 theorem _root_.GlobalTheory.T.integral_adapted_of_graded : ∀ {K : Type} [NormedField K] [IsUltrametricDist K] {κ : Type} [Fintype κ] (bl : κ → ℕ) {g : ℕ}
     (P : Matrix (Fin g) κ K), Function.Bijective P.mulVec → GrCond bl P → IntAdapted bl P := by

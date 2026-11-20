@@ -8,8 +8,10 @@ import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
 import Formalism.GaloisCohomology.LocalTateDualityK
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N TensorProduct Module
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LatticeCard.card_lattice_quot_pow | exact GlobalTheory.LatticeCard.card_lattice_quot_pow | (intros; apply GlobalTheory.LatticeCard.card_lattice_quot_pow <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LatticeCard.card_lattice_quot_pow` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FCardLatticeQuotPrimePow.lean&line=119#L119)
 -/
 theorem _root_.GlobalTheory.T.card_lattice_quot_prime_pow : ∀ (l : ℕ) [Fact l.Prime] (G : Type) [Group G] [TopologicalSpace G] (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O → ∀ (A : GRep G ℚ_[l] LL O) (LA : Lattice (O := O) A.ρ) (r : ℕ), Nat.card (↥LA.T ⧸ (Ideal.span {((l : ℕ) : O) ^ r} • ⊤ : Submodule O ↥LA.T)) = Nat.card (O ⧸ Ideal.span {((l : ℕ) : O)}) ^ (r * finrank LL A.V) := by
   first | exact @GlobalTheory.LatticeCard.card_lattice_quot_pow | exact GlobalTheory.LatticeCard.card_lattice_quot_pow | (intros; apply GlobalTheory.LatticeCard.card_lattice_quot_pow <;> assumption)

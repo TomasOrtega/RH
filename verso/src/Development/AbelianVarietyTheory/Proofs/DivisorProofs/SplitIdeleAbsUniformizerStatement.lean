@@ -9,8 +9,10 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open scoped TensorProduct
 open Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Div.IdeleAtNorm.absE_ideleAt_split | exact GlobalTheory.Div.IdeleAtNorm.absE_ideleAt_split | (intros; apply GlobalTheory.Div.IdeleAtNorm.absE_ideleAt_split <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Div.IdeleAtNorm.absE_ideleAt_split` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSplitIdeleAbsUniformizer.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.split_idele_abs_uniformizer : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (v : HeightOneSpectrum (𝓞 F)) (t : E →ₐ[F] Fv F v) (ϖ : (Fv F v)ˣ)
     (e : (Fv F v ⊗[F] E)ˣ), splitProj t (e : Fv F v ⊗[F] E) = ϖ → splitProj (t.comp σ) (e : Fv F v ⊗[F] E) = 1 →

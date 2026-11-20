@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.Exists
 open NumberField IsDedekindDomain Polynomial Formalism.ConjugateSelfDual ReciprocityTheory.Gal
 open scoped Pointwise
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.crt_approx_integral | exact GlobalTheory.crt_approx_integral | (intros; apply GlobalTheory.crt_approx_integral <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.crt_approx_integral` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FCrtApproxIntegral.lean&line=8#L8)
 -/
 theorem _root_.GlobalTheory.T.exists_integral_near_one_small_off_decomposition : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (K : IntermediateField E Ω) [FiniteDimensional E K] (A : ValuationSubring Ω) (c : ℕ), c ≠ 0 → ∃ t ∈ K, IsIntegral ℤ t ∧ A.valuation (t - 1) ≤ A.valuation (c : Ω) ∧ ∀ σ : G E Ω, (∃ x ∈ K, IsIntegral ℤ x ∧ ¬(A.valuation (σ x) < 1 ↔ A.valuation x < 1)) → A.valuation (σ t) ≤ A.valuation (c : Ω) := by
   first | exact @GlobalTheory.crt_approx_integral | exact GlobalTheory.crt_approx_integral | (intros; apply GlobalTheory.crt_approx_integral <;> assumption)

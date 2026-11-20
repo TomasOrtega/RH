@@ -10,8 +10,10 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Unf
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MixTargetProof.mixedTarget | exact GlobalTheory.MixTargetProof.mixedTarget | (intros; apply GlobalTheory.MixTargetProof.mixedTarget <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MixTargetProof.mixedTarget` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FMixedModelFormulasWittTarget.lean&line=146#L146)
 -/
 theorem _root_.GlobalTheory.T.mixedModelFormulas_wittTarget : ∀ D : D7, GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.MixedTarget D := by
   first | exact @GlobalTheory.MixTargetProof.mixedTarget | exact GlobalTheory.MixTargetProof.mixedTarget | (intros; apply GlobalTheory.MixTargetProof.mixedTarget <;> assumption)

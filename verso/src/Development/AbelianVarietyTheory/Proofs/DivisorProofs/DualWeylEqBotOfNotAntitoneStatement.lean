@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualWeylEqBotOfNotA
 import Mathlib
 import Formalism.GradedWeylDivisibility.StatementA
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.NonDomZero.dualWeyl_eq_bot_of_not_antitone | exact GlobalTheory.NonDomZero.dualWeyl_eq_bot_of_not_antitone | (intros; apply GlobalTheory.NonDomZero.dualWeyl_eq_bot_of_not_antitone <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.NonDomZero.dualWeyl_eq_bot_of_not_antitone` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDualWeylEqBotOfNotAntitone.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.dualWeyl_eq_bot_of_not_antitone' : ∀ (O : Type) [CommRing O] [IsDomain O] [CharZero O] (N : ℕ) (ν : Fin N → ℕ), ¬ Antitone ν → Formalism.GradedWeylDivisibility.dualWeyl O N N ν = ⊥ := by
   first | exact @GlobalTheory.NonDomZero.dualWeyl_eq_bot_of_not_antitone | exact GlobalTheory.NonDomZero.dualWeyl_eq_bot_of_not_antitone | (intros; apply GlobalTheory.NonDomZero.dualWeyl_eq_bot_of_not_antitone <;> assumption)

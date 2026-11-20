@@ -8,8 +8,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 open GlobalTheory.ThK.LemF.QuotInv
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ModulusCoord.map_haar_eq_smul_of_coords | exact GlobalTheory.ModulusCoord.map_haar_eq_smul_of_coords | (intros; apply GlobalTheory.ModulusCoord.map_haar_eq_smul_of_coords <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ModulusCoord.map_haar_eq_smul_of_coords` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSemidirectHaarMeasureProduct.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.semidirect_haar_measure_product : ∀ (Q L A C : Type) [Group Q] [TopologicalSpace Q] [IsTopologicalGroup Q] [LocallyCompactSpace Q]
     [SecondCountableTopology Q] [T2Space Q] [MeasurableSpace Q] [BorelSpace Q]

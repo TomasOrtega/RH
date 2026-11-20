@@ -12,8 +12,10 @@ open Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G ReciprocityTheory.Char
 open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Rec GlobalTheory.CompanionTheory.Ar.Plug
 attribute [-instance] GlobalTheory.CompHt.fintypePsi
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Plug.exists_small_basis | exact GlobalTheory.CompanionTheory.Ar.Plug.exists_small_basis | (intros; apply GlobalTheory.CompanionTheory.Ar.Plug.exists_small_basis <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Plug.exists_small_basis` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FGenericFrameComponentBound.lean&line=279#L279)
 -/
 theorem _root_.GlobalTheory.T.generic_frame_component_bound : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (h : GenFrEx Xo c), ∀ (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) [DecidableEq (CMType H)] (T : Top.RootTower (CMType H) (Dw.p + Dw.q)) (o : Top.GoodOrigin Y T) (B : ℕ) (b : T.Comp) (Fr : Small.GenFrame (o.toTowerOrigin.Or B b)) (Z : Comp Xo c) (Rd : Reading Fr h Z) (II : IntersectionSystem) (u : GlobalTheory.AllWt.Weight Dw) (g : ℝ), IsFullIntersectionSystem II → T.T1 II → Top.WeightHyp T.j (reW u) g → Top.bigB0 (reW u) g < B + 1 → ∃ (k₀ : ℕ) (R₀ : ℝ) (f : Fin (o.toTowerOrigin.Or B b).Fl.deg → (T.M B b).Ω), 8 ∣ k₀ ∧ 0 < R₀ ∧ (∀ i, f i ∈ modelSmall (o.toTowerOrigin.Or B b) (k₀ • u) R₀) ∧ (∀ a : Fin (o.toTowerOrigin.Or B b).Fl.deg → Om Z, ∑ i, Rd.φ (a i) * f i = 0 → a = 0) ∧ ∀ (v : GlobalTheory.AllWt.Weight Dw) (s : (T.M B b).Ω), (∀ i, trOf Rd v (s * f i) = 0) → s = 0 := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Plug.exists_small_basis | exact GlobalTheory.CompanionTheory.Ar.Plug.exists_small_basis | (intros; apply GlobalTheory.CompanionTheory.Ar.Plug.exists_small_basis <;> assumption)

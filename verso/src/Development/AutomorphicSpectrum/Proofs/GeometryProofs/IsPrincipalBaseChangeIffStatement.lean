@@ -11,8 +11,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.SemiabelianTori.Geomet
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField TensorProduct Filter Topology Matrix
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.isPrincipal_iff_of_sabMap_field | exact GlobalTheory.CompanionTheory.Ar.isPrincipal_iff_of_sabMap_field | (intros; apply GlobalTheory.CompanionTheory.Ar.isPrincipal_iff_of_sabMap_field <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.isPrincipal_iff_of_sabMap_field` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FIsPrincipalBaseChangeIff.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.isPrincipal_base_change_iff : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (L L' : Type) [Field L] [Field L'] (e : L →+* L') (t : SAB H (Sp L)) (t' : SAB H (Sp L')) (_ : SABMap t' t (spMap e)), IsPrincipal t' ↔ IsPrincipal t := by
   first | exact @GlobalTheory.CompanionTheory.Ar.isPrincipal_iff_of_sabMap_field | exact GlobalTheory.CompanionTheory.Ar.isPrincipal_iff_of_sabMap_field | (intros; apply GlobalTheory.CompanionTheory.Ar.isPrincipal_iff_of_sabMap_field <;> assumption)

@@ -11,8 +11,10 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnipRadProper.blocks_lt_of_unipRad_ne_bot | exact GlobalTheory.UnipRadProper.blocks_lt_of_unipRad_ne_bot | (intros; apply GlobalTheory.UnipRadProper.blocks_lt_of_unipRad_ne_bot <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnipRadProper.blocks_lt_of_unipRad_ne_bot` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FBlocksLtOfParabolicUnipotentRadicalNeBot.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.blocks_lt_of_parabolicUnipotentRadical_ne_bot : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n s : ℕ) (d : Fin s → ℕ) (e : (Σ a, Fin (d a)) ≃ Fin n), unipRad k e ≠ ⊥ → ∀ a, d a < n := by
   first | exact @GlobalTheory.UnipRadProper.blocks_lt_of_unipRad_ne_bot | exact GlobalTheory.UnipRadProper.blocks_lt_of_unipRad_ne_bot | (intros; apply GlobalTheory.UnipRadProper.blocks_lt_of_unipRad_ne_bot <;> assumption)

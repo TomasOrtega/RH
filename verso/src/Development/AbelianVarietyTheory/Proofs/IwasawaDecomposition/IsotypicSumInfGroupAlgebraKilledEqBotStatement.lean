@@ -19,8 +19,10 @@ open Formalism.IndefR.RecTie Formalism.IndefR.Lev Formalism.L2.Rows GlobalTheory
 attribute [local instance] Formalism.IndefR.principalLevelFrame.instCMHostI
 open GlobalTheory.CuspMult
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RepCount.iSup_range_homInto_inf_killed_eq_bot | exact GlobalTheory.RepCount.iSup_range_homInto_inf_killed_eq_bot | (intros; apply GlobalTheory.RepCount.iSup_range_homInto_inf_killed_eq_bot <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RepCount.iSup_range_homInto_inf_killed_eq_bot` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FIsotypicSumInfGroupAlgebraKilledEqBot.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.isotypicSum_inf_groupAlgebraKilled_eq_bot : ∀ (H S0 X : Type) [Group H] [AddCommGroup S0] [Module ℂ S0] [AddCommGroup X] [Module ℂ X] (σ0 : Representation ℂ H S0) (ρ : Representation ℂ H X) (C : Submodule ℂ X) (I : Set (MonoidAlgebra ℂ H)), σ0.IsIrreducible → killed σ0 I = ⊥ → ((⨆ f ∈ homInto σ0 ρ C, LinearMap.range f) ⊓ killed ρ I : Submodule ℂ X) = ⊥ := by
   first | exact @GlobalTheory.RepCount.iSup_range_homInto_inf_killed_eq_bot | exact GlobalTheory.RepCount.iSup_range_homInto_inf_killed_eq_bot | (intros; apply GlobalTheory.RepCount.iSup_range_homInto_inf_killed_eq_bot <;> assumption)

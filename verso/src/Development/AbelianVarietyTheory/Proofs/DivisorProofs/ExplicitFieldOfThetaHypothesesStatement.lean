@@ -40,8 +40,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle (Tri)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RowEx
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RowEx.exField_of_join | exact GlobalTheory.RowEx.exField_of_join | (intros; apply GlobalTheory.RowEx.exField_of_join <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RowEx.exField_of_join` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExplicitFieldOfThetaHypotheses.lean&line=77#L77)
 -/
 theorem _root_.GlobalTheory.T.explicit_field_of_theta_hypotheses : GlobalTheory.Published.HoweDualityReal → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching → GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.Mem.LiteralAutomorphy.JoinOut → GlobalTheory.Published.HeckeTateFunctionalEquation → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.SquareSt.WeilConvergence → GlobalTheory.SquareSt.LocalMatching → GlobalTheory.SquareSt.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.FunctionalsSeparate → ExField := by
   first | exact @GlobalTheory.RowEx.exField_of_join | exact GlobalTheory.RowEx.exField_of_join | (intros; apply GlobalTheory.RowEx.exField_of_join <;> assumption)

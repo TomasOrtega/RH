@@ -6,8 +6,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open Matrix GlobalTheory GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Fl
 open scoped ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Relay.padic_norm_transition_det_one | exact GlobalTheory.CompanionTheory.Relay.padic_norm_transition_det_one | (intros; apply GlobalTheory.CompanionTheory.Relay.padic_norm_transition_det_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Relay.padic_norm_transition_det_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FAlgebraProofs%2FPadicNormTransitionDetOne.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.padic_norm_transition_det_one : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (I : Type) [Fintype I] [DecidableEq I] (x e : I → D.La) (T : Matrix I I E) (ℓ : Nat.Primes), IsLocBasis (𝓞 E) ℓ x → IsLocBasis (𝓞 E) ℓ e → IsTransition D x e T → ∀ j : E →+* ℂ_[ℓ], ‖j T.det‖ = 1 := by
   first | exact @GlobalTheory.CompanionTheory.Relay.padic_norm_transition_det_one | exact GlobalTheory.CompanionTheory.Relay.padic_norm_transition_det_one | (intros; apply GlobalTheory.CompanionTheory.Relay.padic_norm_transition_det_one <;> assumption)

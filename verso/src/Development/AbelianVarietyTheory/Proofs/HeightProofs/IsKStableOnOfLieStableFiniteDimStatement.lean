@@ -9,8 +9,10 @@ import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsBlockOrd
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.S Formalism.L2.Theta GlobalTheory.RealPar Matrix MeasureTheory
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RealPar.isKStableOn_of_kStable | exact GlobalTheory.RealPar.isKStableOn_of_kStable | (intros; apply GlobalTheory.RealPar.isKStableOn_of_kStable <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RealPar.isKStableOn_of_kStable` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FHeightProofs%2FIsKStableOnOfLieStableFiniteDim.lean&line=70#L70)
 -/
 theorem _root_.GlobalTheory.T.isKStableOn_of_lieStable_finiteDim : ∀ (p q n : ℕ) (e : Ix p q ≃ Fin n) (ε : Fin n → Bool) (T : GrpData p q) (R : DSRep T) (σ : Matrix (Fin n) (Fin n) ℂ → (R.U.H →L[ℂ] R.U.H)), BlockOrd e ε → Factors R.U e σ → ∀ W : Submodule ℂ R.HK.V, FiniteDimensional ℂ W → KStable R.HK.act W → IsKStableOn ε σ (W.map R.ι) := by
   first | exact @GlobalTheory.RealPar.isKStableOn_of_kStable | exact GlobalTheory.RealPar.isKStableOn_of_kStable | (intros; apply GlobalTheory.RealPar.isKStableOn_of_kStable <;> assumption)

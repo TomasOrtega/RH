@@ -8,8 +8,10 @@ import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ConeValuesNegativeInt
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ConeTilingBySignRegionsStatement
 open NumberField Formalism.MainNotions.ShortIntervalPrimes GlobalTheory.RayZeta GlobalTheory.CompanionTheory.Hypotheses₂.Shintani GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.series_value_rational | exact GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.series_value_rational | (intros; apply GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.series_value_rational <;> assum …`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.series_value_rational` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGlobalProofs%2FSummationDecompositionFiniteDifferences.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.shintani_values_negative_integers_rational : ∀ (ι : Type) [Fintype ι] (r : ℕ) (a : ι → Fin r → ℝ) (b : ι → ℝ) (u : (Fin r → ℕ) → ℚ) (cs : List (Fin r)) (N p : ℕ), Fintype.card ι * p < N →
   (∀ i, cs.count i = N ∨ ∀ m, m i ≠ 0 → u m = 0) →

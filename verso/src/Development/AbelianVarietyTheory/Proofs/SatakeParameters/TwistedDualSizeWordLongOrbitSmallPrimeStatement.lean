@@ -6,8 +6,10 @@ import Formalism.FrobeniusOrbits.HostCorollaries
 import Formalism.SharpRestriction.ParConsts
 open NumberField IsDedekindDomain GlobalTheory.HTW GlobalTheory.HTW.Rec Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.FrobeniusOrbits
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HTW.Rec.wordsB_recWord_of_long_orbit | exact GlobalTheory.HTW.Rec.wordsB_recWord_of_long_orbit | (intros; apply GlobalTheory.HTW.Rec.wordsB_recWord_of_long_orbit <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HTW.Rec.wordsB_recWord_of_long_orbit` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FTwistedDualSizeWordLongOrbitSmallPrime.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.twistedDualSizeWord_long_orbit_small_prime : ∀ {D : D7} (L : SizeData₂ D) (_ : ParameterChoice' D L) (C C₂ : ℝ) (j : Fin D.R.m) (ε : ℤˣ) {n : ℕ} (g : ZMod n → D.R.GG) (ψ : D.R.GG) (l : ℕ), Roomy L C → IsOrbit g ψ → 2 * C₂ ≤ C → 11 ≤ l → (l : ℝ) < LevelStarExponents.lA L → 4 * D.host.Lw < orderOf ψ.2 → WordsB L l C₂ (recWord L j ε g) := by
   first | exact @GlobalTheory.HTW.Rec.wordsB_recWord_of_long_orbit | exact GlobalTheory.HTW.Rec.wordsB_recWord_of_long_orbit | (intros; apply GlobalTheory.HTW.Rec.wordsB_recWord_of_long_orbit <;> assumption)

@@ -9,8 +9,10 @@ open PositivityTheory.RgTw (Mat)
 open GlobalTheory.CompanionTheory.GLK (e1 e2 f1)
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.ModelS.ReversedBlocks.exists_perm_yZ | exact GlobalTheory.CompanionTheory.ModelS.ReversedBlocks.exists_perm_yZ | (intros; apply GlobalTheory.CompanionTheory.ModelS.ReversedBlocks.exists_perm_yZ <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.ModelS.ReversedBlocks.exists_perm_yZ` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FExistsPermShiftedWeightEqInfChar.lean&line=74#L74)
 -/
 theorem _root_.GlobalTheory.T.exists_perm_shifted_weight_eq_inf_char : ∀ (n : ℕ) (lam : Fin n → ℤ) (lev : Fin n → ℕ), IsLev lam lev → ∃ σ : Equiv.Perm (Fin n), ∀ a : Fin n, (GlobalTheory.CompanionTheory.ModelS.yZ lam lev a : ℂ) + ((n : ℂ) - 1) / 2 - ((a : ℕ) : ℂ) = infOf lam false (σ a) := by
   first | exact @GlobalTheory.CompanionTheory.ModelS.ReversedBlocks.exists_perm_yZ | exact GlobalTheory.CompanionTheory.ModelS.ReversedBlocks.exists_perm_yZ | (intros; apply GlobalTheory.CompanionTheory.ModelS.ReversedBlocks.exists_perm_yZ <;> assumption)

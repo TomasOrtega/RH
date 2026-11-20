@@ -5,8 +5,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open scoped TensorProduct Kronecker ComplexOrder
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EtaProduct.eta_split_mul_lam_pos | exact GlobalTheory.EtaProduct.eta_split_mul_lam_pos | (intros; apply GlobalTheory.EtaProduct.eta_split_mul_lam_pos <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EtaProduct.eta_split_mul_lam_pos` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FEtaTildeHeckeCharSplitMulSignOfNormFormula.lean&line=464#L464)
 -/
 theorem _root_.GlobalTheory.T.etaTildeHeckeChar_split_mul_sign_of_norm_formula : ∀ (D : D7) (η : (AE D)ˣ →* Circle), IsEtaTilde D η → ∀ (lam : ℕ →* ℂ), GoodNorm (GlobalTheory.FinWeil.sgO D) lam → (∀ n : ℕ, n ≠ 0 → (∀ q : ℕ, q.Prime → Formalism.MainNotions.StandardLatticesGL3.InertQ D q → ¬ q ∣ n) → lam n = (Real.sqrt n : ℂ)) → ∀ ε, IsHalfIdem D ε → ∀ (x : D.host.E) (k : ℕ), x ≠ 0 → (k : ℚ) = |Algebra.norm ℚ x| → ∀ y : (AE D)ˣ, (y : AE D) = (ε + cA D ε) * incA D x + (1 - (ε + cA D ε)) → ∃ r : ℝ, 0 < r ∧ (η y : ℂ) * lam k * ∏ τ, tauE D τ x = r := by
   first | exact @GlobalTheory.EtaProduct.eta_split_mul_lam_pos | exact GlobalTheory.EtaProduct.eta_split_mul_lam_pos | (intros; apply GlobalTheory.EtaProduct.eta_split_mul_lam_pos <;> assumption)

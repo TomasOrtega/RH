@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.AddMonoidHomEqZ
 open NumberField IsDedekindDomain WeierstrassCurve GlobalTheory GlobalTheory.Published GlobalTheory.CMModel Formalism.L2.Th1.F
 open scoped IntermediateField BigOperators Topology
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CMModel.integersLattice_invariants_ne_zero | exact GlobalTheory.CMModel.integersLattice_invariants_ne_zero | (intros; apply GlobalTheory.CMModel.integersLattice_invariants_ne_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CMModel.integersLattice_invariants_ne_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIntegersLatticeInvariantsNeZero.lean&line=64#L64)
 -/
 theorem _root_.GlobalTheory.T.integersLattice_g2_g3_ne_zero_and_mulStable : ∀ (p : ℕ) (L : PeriodPair), p.Prime → 3 < p → IsIntegersLattice p L → L.g₂ ≠ 0 ∧ L.g₃ ≠ 0 ∧ MulStable L (sqrtNegNat p) := by
   first | exact @GlobalTheory.CMModel.integersLattice_invariants_ne_zero | exact GlobalTheory.CMModel.integersLattice_invariants_ne_zero | (intros; apply GlobalTheory.CMModel.integersLattice_invariants_ne_zero <;> assumption)

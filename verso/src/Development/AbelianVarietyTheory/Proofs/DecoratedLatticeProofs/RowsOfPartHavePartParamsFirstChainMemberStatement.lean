@@ -17,8 +17,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.VolumeFlatSection (Blocks parahoric
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open GlobalTheory.LiftRows (Given)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChainTw.rowPar_of_chain | exact GlobalTheory.ChainTw.rowPar_of_chain | (intros; apply GlobalTheory.ChainTw.rowPar_of_chain <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChainTw.rowPar_of_chain` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FRowsOfPartHavePartParamsFirstChainMember.lean&line=103#L103)
 -/
 theorem _root_.GlobalTheory.T.rows_of_part_have_part_params_first_chain_member : GlobalTheory.Published.CuspRapidDecay → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Given R F → (∀ h : RangeX R, RChain R h) → RangeX R → RowPar R := by
   first | exact @GlobalTheory.ChainTw.rowPar_of_chain | exact GlobalTheory.ChainTw.rowPar_of_chain | (intros; apply GlobalTheory.ChainTw.rowPar_of_chain <;> assumption)

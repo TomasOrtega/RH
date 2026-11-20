@@ -9,8 +9,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolynomialDatumActi
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FockVacStab.isGauss_of_acts | exact GlobalTheory.FockVacStab.isGauss_of_acts | (intros; apply GlobalTheory.FockVacStab.isGauss_of_acts <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FockVacStab.isGauss_of_acts` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FGaussianCompactActionEigen.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.gaussian_compact_action_eigen : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W)

@@ -13,8 +13,10 @@ open NumberField MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheor
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.tsum_rpow_prod_add_le_of_box_count | exact GlobalTheory.tsum_rpow_prod_add_le_of_box_count | (intros; apply GlobalTheory.tsum_rpow_prod_add_le_of_box_count <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.tsum_rpow_prod_add_le_of_box_count` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLatticePointWeightedPowerSumBound.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.lattice_point_weighted_power_sum_bound : ∀ (ι : Type) [Fintype ι] (s : ℝ), 1 < s → ∃ C : ℝ, ∀ (S : Type) (f : S → ι → ℝ) (K : ℝ) (A : ι → ℝ),
     (∀ c w, 0 ≤ f c w) → 0 ≤ K → (∀ w, 0 < A w) →

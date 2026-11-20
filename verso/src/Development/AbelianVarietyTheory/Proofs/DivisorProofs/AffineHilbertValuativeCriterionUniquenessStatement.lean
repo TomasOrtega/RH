@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComapBcComp
 open AlgebraicGeometry CategoryTheory CategoryTheory.Limits Opposite
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HilbAff.valuativeCriterion_uniqueness | exact GlobalTheory.HilbAff.valuativeCriterion_uniqueness | (intros; apply GlobalTheory.HilbAff.valuativeCriterion_uniqueness <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HilbAff.valuativeCriterion_uniqueness` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAffineHilbertValuativeCriterionUniqueness.lean&line=98#L98)
 -/
 theorem _root_.GlobalTheory.T.affineHilbert_valuativeCriterion_uniqueness : ∀ (A B : Type) [CommRing A] [CommRing B] [Algebra A B] [Module.Free A B] [Module.Finite A B] (r : ℕ) (H : Scheme.{0}) (R : (GlobalTheory.HilbAff.functor A B r).RepresentableBy H), ValuativeCriterion.Uniqueness (R.homEquiv (𝟙 H)).1 := by
   first | exact @GlobalTheory.HilbAff.valuativeCriterion_uniqueness | exact GlobalTheory.HilbAff.valuativeCriterion_uniqueness | (intros; apply GlobalTheory.HilbAff.valuativeCriterion_uniqueness <;> assumption)

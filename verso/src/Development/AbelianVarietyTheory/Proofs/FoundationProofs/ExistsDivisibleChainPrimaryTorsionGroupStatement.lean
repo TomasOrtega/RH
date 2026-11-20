@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.FinalTheorems
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.HV GlobalTheory.Ord2
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Ord2.DivChain.exists_divisible_chain | exact GlobalTheory.Ord2.DivChain.exists_divisible_chain | (intros; apply GlobalTheory.Ord2.DivChain.exists_divisible_chain <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Ord2.DivChain.exists_divisible_chain` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FExistsDivisibleChainPrimaryTorsionGroup.lean&line=81#L81)
 -/
 theorem _root_.GlobalTheory.T.exists_divisible_chain_primary_torsion_group : ∀ (l : ℕ) [Fact l.Prime] (X : Type) [AddCommGroup X], (∀ x : X, ∃ n : ℕ, l ^ n • x = 0) → Finite {x : X // l • x = 0} → (∀ m : ℕ, ∃ x : X, l ^ m • x ≠ 0) → ∃ x : ℕ → X, x 0 ≠ 0 ∧ ∀ n, l • x (n + 1) = x n := by
   first | exact @GlobalTheory.Ord2.DivChain.exists_divisible_chain | exact GlobalTheory.Ord2.DivChain.exists_divisible_chain | (intros; apply GlobalTheory.Ord2.DivChain.exists_divisible_chain <;> assumption)

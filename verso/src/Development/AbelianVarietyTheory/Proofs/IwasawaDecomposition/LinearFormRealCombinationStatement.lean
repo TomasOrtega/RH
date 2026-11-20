@@ -6,8 +6,10 @@ open AlgebraicGeometry CategoryTheory Limits NumberField IsLocalRing Topological
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R Formalism.L2.Pj
 open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFam GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.TorRef
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PolFanReal.linearForm_of_toReal_eq | exact GlobalTheory.PolFanReal.linearForm_of_toReal_eq | (intros; apply GlobalTheory.PolFanReal.linearForm_of_toReal_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PolFanReal.linearForm_of_toReal_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FLinearFormRealCombination.lean&line=27#L27)
 -/
 theorem _root_.GlobalTheory.T.linear_form_real_combination : ∀ (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (ℓ : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ) (m : ℕ)
     (γ : Fin m → LinearMap.BilinForm ℤ X) (c : Fin m → ℝ) (be : LinearMap.BilinForm ℤ X),

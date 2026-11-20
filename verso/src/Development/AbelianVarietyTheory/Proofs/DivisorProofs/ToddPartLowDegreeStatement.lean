@@ -14,8 +14,10 @@ open GlobalTheory GlobalTheory.TorsionForm
 open scoped ContDiff Real CategoryTheory.Obj ComplexOrder
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ToddLow.tdPart_low | exact GlobalTheory.ToddLow.tdPart_low | (intros; apply GlobalTheory.ToddLow.tdPart_low <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ToddLow.tdPart_low` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FToddPartLowDegree.lean&line=64#L64)
 -/
 theorem _root_.GlobalTheory.T.todd_part_low_degree : ∀ r : ℕ, tdPart r 1 = (1 / 2 : ℚ) • chPart r 1 ∧ tdPart r 2 = (1 / 8 : ℚ) • chPart r 1 ^ 2 - (1 / 12 : ℚ) • chPart r 2 := by
   first | exact @GlobalTheory.ToddLow.tdPart_low | exact GlobalTheory.ToddLow.tdPart_low | (intros; apply GlobalTheory.ToddLow.tdPart_low <;> assumption)

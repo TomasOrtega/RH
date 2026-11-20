@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.Co
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.ContinuousCycMod
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.MainNotions.BlochKatoReduction Formalism.MainNotions.BlochKatoReduction.Gen GlobalTheory.TwSys GlobalTheory.SelFun GlobalTheory.Published
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.StepTwo.Dyadic.bound_mod_two_of_hypothesis | exact GlobalTheory.StepTwo.Dyadic.bound_mod_two_of_hypothesis | (intros; apply GlobalTheory.StepTwo.Dyadic.bound_mod_two_of_hypothesis <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.StepTwo.Dyadic.bound_mod_two_of_hypothesis` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FBoundModTwoUniformizerAtTwoOfChebotarev.lean&line=25#L25)
 -/
 theorem _root_.GlobalTheory.T.boundModTwoUniformizerAtTwo_of_chebotarev : Cheb → PoitouTateTotallyComplex → CohDimTwo → TameLocal → LocalFiniteness → LocalTateDuality → LocalEulerChar → GlobalFiniteness → GlobalEulerChar → UnramifiedOrthogonality → Gen.ArchimedeanSignatureMatching → ∀ (D : Formalism.BasicNotions.D7) (N : NData D.R D.host D.what₂) (X : NTw D.R D.host D.what₂ D.LL0 N) (bkP : BKPh X), ThmC bkP := by
   first | exact @GlobalTheory.StepTwo.Dyadic.bound_mod_two_of_hypothesis | exact GlobalTheory.StepTwo.Dyadic.bound_mod_two_of_hypothesis | (intros; apply GlobalTheory.StepTwo.Dyadic.bound_mod_two_of_hypothesis <;> assumption)

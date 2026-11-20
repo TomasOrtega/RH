@@ -8,8 +8,10 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts G
 open GlobalTheory.FlagFibre (Low)
 open scoped Matrix ContDiff ComplexOrder ENNReal Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagCell2.pull_comp_linear | exact GlobalTheory.FlagCell2.pull_comp_linear | (intros; apply GlobalTheory.FlagCell2.pull_comp_linear <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagCell2.pull_comp_linear` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPullbackComplexFormsLinearMapCompLinear.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.pullbackComplexFormsLinearMap_comp_linear : ∀ (n n' n'' : ℕ) (L : V n →L[ℂ] V n') (L' : V n' →L[ℂ] V n'') (α : Alt n''), pull (L'.comp L) α = pull L (pull L' α) := by
   first | exact @GlobalTheory.FlagCell2.pull_comp_linear | exact GlobalTheory.FlagCell2.pull_comp_linear | (intros; apply GlobalTheory.FlagCell2.pull_comp_linear <;> assumption)

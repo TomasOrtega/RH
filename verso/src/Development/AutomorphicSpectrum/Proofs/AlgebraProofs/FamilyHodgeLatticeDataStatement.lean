@@ -8,8 +8,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Flat.family_conj_H_lattices | exact GlobalTheory.CompanionTheory.Ar.Flat.family_conj_H_lattices | (intros; apply GlobalTheory.CompanionTheory.Ar.Flat.family_conj_H_lattices <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Flat.family_conj_H_lattices` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FAlgebraProofs%2FFamilyHodgeLatticeData.lean&line=88#L88)
 -/
 theorem _root_.GlobalTheory.T.family_hodge_lattice_data : ∀ (K : Type) [Field K] (C : ACurve K) (p : ℕ) [Fact p.Prime] [CharP K p] (d : ℕ) (O : Type) [CommRing O] [StarRing O] (F : Family C p d O), Nonempty C.I → ∃ D : ConjData C p O d, (∀ a, D.ρH a = rhoH F.B a) ∧ ∀ i y, y ∈ D.H i ↔ y ∈ stdLat (C.v i).valuationSubring.toSubring (transH (F.φ i) (F.ψ i) (F.lam i)) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Flat.family_conj_H_lattices | exact GlobalTheory.CompanionTheory.Ar.Flat.family_conj_H_lattices | (intros; apply GlobalTheory.CompanionTheory.Ar.Flat.family_conj_H_lattices <;> assumption)

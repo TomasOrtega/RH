@@ -16,8 +16,10 @@ open GlobalTheory.Doubling (absE)
 open GlobalTheory.ConeSmallMidJB
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ConeSmallMidJB.IsoMid.exists_isotropic_of_mid | exact GlobalTheory.ConeSmallMidJB.IsoMid.exists_isotropic_of_mid | (intros; apply GlobalTheory.ConeSmallMidJB.IsoMid.exists_isotropic_of_mid <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ConeSmallMidJB.IsoMid.exists_isotropic_of_mid` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FConeMidsetIsotropicVector.lean&line=58#L58)
 -/
 theorem _root_.GlobalTheory.T.cone_midset_isotropic_vector : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ) (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' → ∀ X om om', IsTriple B G X om om' →
     ∀ T : Set (UA σ G.W.J), T ⊆ ratU σ G.W.J → ∀ t ∈ GlobalTheory.ConeSmallSer.midSet H'.x T, ∃ z : Fin (a + b) → E, z ≠ 0 ∧ form σ G₁.W.J z z = 0 := by

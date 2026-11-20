@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.In
 open GlobalTheory.Chamber
 open scoped InnerProductSpace ContDiff Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.smooth_extension_of_residues_cancel | exact GlobalTheory.smooth_extension_of_residues_cancel | (intros; apply GlobalTheory.smooth_extension_of_residues_cancel <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.smooth_extension_of_residues_cancel` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FResidueSumHyperplaneZero.lean&line=128#L128)
 -/
 theorem _root_.GlobalTheory.T.residue_sum_hyperplane_zero : ∀ {k : ℕ} {J K : Type} [DecidableEq K] (s : Finset J) (m : J → Finset K) (v : J → K → A0 k) (g : J → A0 k → ℂ),
   (∀ j ∈ s, ContDiff ℝ ∞ (g j)) → (∀ j ∈ s, ∀ a ∈ m j, v j a ≠ 0) →

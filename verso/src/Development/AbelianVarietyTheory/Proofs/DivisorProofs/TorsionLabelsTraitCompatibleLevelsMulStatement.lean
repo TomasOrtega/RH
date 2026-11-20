@@ -12,8 +12,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.lab_level_mul | exact GlobalTheory.Mum.lab_level_mul | (intros; apply GlobalTheory.Mum.lab_level_mul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.lab_level_mul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTorsionLabelsTraitCompatibleLevelsMul.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.torsionLabels_trait_compatible_levels_mul : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (lab : Labels D.toPre A), OneTrait D.toPre A lab → ∀ k d : ℕ, 1 ≤ k → 1 ≤ d → ∀ (p : QkPt D.toPre (Kb R) k) (q : QkPt D.toPre (Kb R) (k * d)), q.y = d • p.y → q.g = p.g → lab (k * d) q = lab k p := by
   first | exact @GlobalTheory.Mum.lab_level_mul | exact GlobalTheory.Mum.lab_level_mul | (intros; apply GlobalTheory.Mum.lab_level_mul <;> assumption)

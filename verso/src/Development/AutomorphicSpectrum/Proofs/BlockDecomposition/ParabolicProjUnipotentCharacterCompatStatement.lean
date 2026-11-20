@@ -5,8 +5,10 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsCIndValue
 open Matrix GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.BZMir GlobalTheory.BZMir.Leib GlobalTheory.RgGu.Leib GlobalTheory.CompanionTheory.LeibPhi Topology
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.LeibPhi.gpProj_mirUin_char | exact GlobalTheory.CompanionTheory.LeibPhi.gpProj_mirUin_char | (intros; apply GlobalTheory.CompanionTheory.LeibPhi.gpProj_mirUin_char <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.LeibPhi.gpProj_mirUin_char` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FParabolicProjUnipotentCharacterCompat.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.parabolic_proj_unipotent_character_compat : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle) (m j : ℕ) (u : MirUin k (m + (j + 1)))
     (hh : (u : Mir k (m + (j + 1))) ∈ MirabolicParabolic k m (j + 1)),

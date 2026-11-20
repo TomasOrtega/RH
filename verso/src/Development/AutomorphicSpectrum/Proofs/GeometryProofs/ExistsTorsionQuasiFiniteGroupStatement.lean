@@ -8,8 +8,10 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeLine
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.TorsQF.torsion_qfGroup | exact GlobalTheory.CompanionTheory.Ar.TorsQF.torsion_qfGroup | (intros; apply GlobalTheory.CompanionTheory.Ar.TorsQF.torsion_qfGroup <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.TorsQF.torsion_qfGroup` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FExistsTorsionQuasiFiniteGroup.lean&line=41#L41)
 -/
 theorem _root_.GlobalTheory.T.exists_torsion_quasi_finite_group : ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [CharZero R] (X : Scheme.{0}) (G : Over X) [GrpObj G] (x : Sp R ⟶ X) (n : ℕ), IsSemiAbelian G → 0 < n → FullTorsion G (spMap (algebraMap R (FractionRing R)) ≫ x) n → ∃ (T : Type) (_ : CommGroup T) (_ : Finite T) (Q : BT.QFGroup R T) (i : Q.G.left ⟶ G.left), Q.IsTorsionAlong G x n i := by
   first | exact @GlobalTheory.CompanionTheory.Ar.TorsQF.torsion_qfGroup | exact GlobalTheory.CompanionTheory.Ar.TorsQF.torsion_qfGroup | (intros; apply GlobalTheory.CompanionTheory.Ar.TorsQF.torsion_qfGroup <;> assumption)

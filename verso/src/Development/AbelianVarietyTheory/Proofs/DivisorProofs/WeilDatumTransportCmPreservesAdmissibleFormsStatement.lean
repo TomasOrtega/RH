@@ -6,8 +6,10 @@ open scoped TensorProduct Matrix
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WeilAdmCM.transport_adm | exact GlobalTheory.WeilAdmCM.transport_adm | (intros; apply GlobalTheory.WeilAdmCM.transport_adm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WeilAdmCM.transport_adm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FWeilDatumTransportCmPreservesAdmissibleForms.lean&line=176#L176)
 -/
 theorem _root_.GlobalTheory.T.weilDatumTransport_cm_preserves_admissibleForms : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

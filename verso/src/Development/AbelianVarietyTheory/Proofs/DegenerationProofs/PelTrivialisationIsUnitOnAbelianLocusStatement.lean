@@ -13,8 +13,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.LN
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.psiUnitOn_abLocus_pel | exact GlobalTheory.psiUnitOn_abLocus_pel | (intros; apply GlobalTheory.psiUnitOn_abLocus_pel <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.psiUnitOn_abLocus_pel` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDegenerationProofs%2FPelTrivialisationIsUnitOnAbelianLocus.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.pelTrivialisation_isUnit_on_abelianLocus : Laws → Laws2 → Laws3 → Laws4 → Laws5 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (I : Ideal R), admitted R I → ∀ (t : SAB H (Sp R)) (P : PELUnif I t), P.TorsionIso → IsOpen (abLocus t.G) → ∀ y, PsiUnitOn P.D.toPre y (abLocus t.G) := by
   first | exact @GlobalTheory.psiUnitOn_abLocus_pel | exact GlobalTheory.psiUnitOn_abLocus_pel | (intros; apply GlobalTheory.psiUnitOn_abLocus_pel <;> assumption)

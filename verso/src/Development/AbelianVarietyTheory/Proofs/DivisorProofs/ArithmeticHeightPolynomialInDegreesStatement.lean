@@ -11,8 +11,10 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G Recip
 open GlobalTheory.Cartier GlobalTheory.CovTest.SwapLine
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.VertFun.exists_vertical_functional | exact GlobalTheory.VertFun.exists_vertical_functional | (intros; apply GlobalTheory.VertFun.exists_vertical_functional <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.VertFun.exists_vertical_functional` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FArithmeticHeightPolynomialInDegrees.lean&line=68#L68)
 -/
 theorem _root_.GlobalTheory.T.arithmetic_height_polynomial_in_degrees : ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) (p : Y ⟶ Sp k) (D : ℕ), IsArithVar p D →
     ∀ (Z : Scheme.{0}) (i : Z ⟶ Y) [IsClosedImmersion i] [IsIntegral Z] (ℓ : ℕ) [Fact ℓ.Prime]

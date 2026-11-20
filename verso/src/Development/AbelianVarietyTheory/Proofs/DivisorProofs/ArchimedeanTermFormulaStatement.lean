@@ -10,8 +10,10 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G Recip
 open scoped Classical
 open GlobalTheory.CovTestDR GlobalTheory.VdmRec
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.OrthFilt.termW_eq_val | exact GlobalTheory.OrthFilt.termW_eq_val | (intros; apply GlobalTheory.OrthFilt.termW_eq_val <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.OrthFilt.termW_eq_val` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FArchimedeanTermFormula.lean&line=223#L223)
 -/
 theorem _root_.GlobalTheory.T.archimedean_term_formula : GlobalTheory.CovTop.HypothesesXH → Hypotheses2 → HypothesesH → RegularAlteration → OnObj fun D O _ _ _ _ => ∀ c (M : DRBase O c) (R : ℝ), 2 ≤ R → termW O c R = M.val R (genericPoint M.B) (dimGr D.what₂.Tau O.N O.j - 1) / (Module.finrank ℚ D.what₂.LL : ℝ) := by
   first | exact @GlobalTheory.OrthFilt.termW_eq_val | exact GlobalTheory.OrthFilt.termW_eq_val | (intros; apply GlobalTheory.OrthFilt.termW_eq_val <;> assumption)

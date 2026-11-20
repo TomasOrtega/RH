@@ -11,8 +11,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.Trait.exp_unique | exact GlobalTheory.Mum.Trait.exp_unique | (intros; apply GlobalTheory.Mum.Trait.exp_unique <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.Trait.exp_unique` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExpansionSecondScalarDeterminedOfNonzero.lean&line=169#L169)
 -/
 theorem _root_.GlobalTheory.T.expansion_secondScalar_determined_of_nonzero : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (C : LabCover D) (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W] (T : Trait C W) (k : ℕ), 1 ≤ k → ∀ (s : SecK C.P.L.L C.α k) (F : IntFam (maximalIdeal R) D.toPre k), (∃ α j, (F.f α).f j ≠ 0) → ∀ a b b' : W, a ≠ 0 → T.Exp a b s F → T.Exp a b' s F → b = b' := by
   first | exact @GlobalTheory.Mum.Trait.exp_unique | exact GlobalTheory.Mum.Trait.exp_unique | (intros; apply GlobalTheory.Mum.Trait.exp_unique <;> assumption)

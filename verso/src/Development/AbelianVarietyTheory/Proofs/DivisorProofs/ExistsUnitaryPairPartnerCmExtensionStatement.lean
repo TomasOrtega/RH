@@ -9,8 +9,10 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open Formalism.IndefR.DatumF
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WeilPairPartnerF.pair_partnerF | exact GlobalTheory.WeilPairPartnerF.pair_partnerF | (intros; apply GlobalTheory.WeilPairPartnerF.pair_partnerF <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WeilPairPartnerF.pair_partnerF` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsUnitaryPairPartnerCmExtension.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.exists_unitaryPair_partner_cmExtension : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → IsStdCharF (fun w : InfinitePlace F => (B.emb w).1) B.ψ (-1) →

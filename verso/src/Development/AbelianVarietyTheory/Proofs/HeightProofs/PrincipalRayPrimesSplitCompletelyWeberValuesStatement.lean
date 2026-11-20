@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.LFunctionPosi
 open NumberField IsDedekindDomain Polynomial GlobalTheory.FieldSize
 open scoped IntermediateField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WeberSplitAny.splits_completely_of_three_le | exact GlobalTheory.WeberSplitAny.splits_completely_of_three_le | (intros; apply GlobalTheory.WeberSplitAny.splits_completely_of_three_le <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WeberSplitAny.splits_completely_of_three_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FHeightProofs%2FPrincipalRayPrimesSplitCompletelyWeberValues.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.principalRayPrimes_splitCompletely_weberValues : ∀ (K : IntermediateField ℚ ℂ) [NumberField K] [IsTotallyComplex K], Module.finrank ℚ K = 2 → discr K < -4 → ∀ L : PeriodPair, (∀ z, z ∈ L.lattice ↔ ∃ a : 𝓞 K, ((a : K) : ℂ) = z) → ∀ n : ℕ, 3 ≤ n → ∃ (_ : NumberField (IntermediateField.adjoin K (weberSet L n))) (S : Finset ℕ), ∀ (π : 𝓞 K) (p : ℕ), p.Prime → p ∉ S → Ideal.absNorm (Ideal.span {π}) = p → π - 1 ∈ Ideal.span {(n : 𝓞 K)} → {Q : HeightOneSpectrum (𝓞 (IntermediateField.adjoin K (weberSet L n))) | Q.asIdeal.comap (algebraMap (𝓞 K) (𝓞 (IntermediateField.adjoin K (weberSet L n)))) = Ideal.span {π}}.ncard = Module.finrank K (IntermediateField.adjoin K (weberSet L n)) := by
   first | exact @GlobalTheory.WeberSplitAny.splits_completely_of_three_le | exact GlobalTheory.WeberSplitAny.splits_completely_of_three_le | (intros; apply GlobalTheory.WeberSplitAny.splits_completely_of_three_le <;> assumption)

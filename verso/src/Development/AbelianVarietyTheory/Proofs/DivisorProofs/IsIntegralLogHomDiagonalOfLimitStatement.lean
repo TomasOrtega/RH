@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralLogHomDia
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ResidueEqZeroIffV
 open NumberField MvPowerSeries IsLocalRing ReciprocityTheory.PGsh ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.FGDepth GlobalTheory.CharDepth GlobalTheory.FactorDepth GlobalTheory.IndefiniteRowSideFullHecke.TypedPartSplitPrimes GlobalTheory.PrimePart
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DiagLimit.isIntHom_diagonal_of_limit | exact GlobalTheory.DiagLimit.isIntHom_diagonal_of_limit | (intros; apply GlobalTheory.DiagLimit.isIntHom_diagonal_of_limit <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DiagLimit.isIntHom_diagonal_of_limit` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsIntegralLogHomDiagonalOfLimit.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.isIntegralLogHom_diagonal_of_limit : ∀ (C : Type) [Field C] [CharZero C] (v : AddValuation C (WithTop ℝ)), ∀ (d : ℕ) (G : LogFGL v d) (κ : Type) [Fintype κ] [DecidableEq κ] (U : Matrix (Fin d) κ C) (L : Matrix κ (Fin d) C), (∀ a b, IsIntV v (U a b)) → (∀ a b, IsIntV v (L a b)) → U * L = 1 → ∀ t : κ → C, (∀ r : ℝ, ∃ (t' : κ → C) (A : Matrix (Fin d) (Fin d) C) (φ : Fin d → MvPowerSeries (Fin d) C), IsIntHom G G φ A ∧ (∀ ℓ, A.mulVec (fun e => U e ℓ) = t' ℓ • fun e => U e ℓ) ∧ ∀ ℓ, (r : WithTop ℝ) ≤ v (t' ℓ - t ℓ)) → ∃ φ, IsIntHom G G φ (U * Matrix.diagonal t * L) := by
   first | exact @GlobalTheory.DiagLimit.isIntHom_diagonal_of_limit | exact GlobalTheory.DiagLimit.isIntHom_diagonal_of_limit | (intros; apply GlobalTheory.DiagLimit.isIntHom_diagonal_of_limit <;> assumption)

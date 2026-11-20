@@ -15,8 +15,10 @@ open IsDedekindDomain NumberField Matrix GlobalTheory.ChiGrid GlobalTheory.FunOb
 open scoped ComplexOrder
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FockRealVec.vec_theta_fock | exact GlobalTheory.FockRealVec.vec_theta_fock | (intros; apply GlobalTheory.FockRealVec.vec_theta_fock <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FockRealVec.vec_theta_fock` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FGridFiniteDatumVectorThetaFockVacuum.lean&line=27#L27)
 -/
 theorem _root_.GlobalTheory.T.gridFiniteDatumVector_theta_fockVacuum : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GlobalTheory.ChiGrid.GridData L sc} (W : G.Weil) {U : Set T} {N : GlobalTheory.FunObj.Std G U} (Z : GlobalTheory.FunObj.Normal W N) {t : T} {p : GlobalTheory.ChiGrid.Pair T}, GlobalTheory.FunObj.DefPair D.R.m p → ∀ d : GlobalTheory.FunObj.FinDatum G t p, Z.HasVec d → IsThetaFunO W.ψ (G.pS p) (G.pT p) (Z.vec d) ∧ ∀ τ, IsFockVacAt (heisO W.ψ (G.pS p) (G.pT p)) W.θ τ (cplxO (G.cartS W.cart p τ) (G.onT W.cart p τ)) (Z.vec d) := by
   first | exact @GlobalTheory.FockRealVec.vec_theta_fock | exact GlobalTheory.FockRealVec.vec_theta_fock | (intros; apply GlobalTheory.FockRealVec.vec_theta_fock <;> assumption)

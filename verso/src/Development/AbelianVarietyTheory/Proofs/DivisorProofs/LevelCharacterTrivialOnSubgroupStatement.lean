@@ -5,8 +5,10 @@ open NumberField IsDedekindDomain Matrix MeasureTheory ReciprocityTheory.ChartRe
 open scoped TensorProduct InnerProductSpace Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HolRead.PrincLevelSub.mem_levS_and_levChi | exact GlobalTheory.HolRead.PrincLevelSub.mem_levS_and_levChi | (intros; apply GlobalTheory.HolRead.PrincLevelSub.mem_levS_and_levChi <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HolRead.PrincLevelSub.mem_levS_and_levChi` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLevelCharacterTrivialOnSubgroup.lean&line=31#L31)
 -/
 theorem _root_.GlobalTheory.T.level_character_trivial_on_subgroup : ∀ (D : D7) (T0 : Type) (L : LevCh D T0) (μ0 : T0), L.Is μ0 → ∀ (i : Fin D.R.m) (Kf : Subgroup (GA D (Wc D i))), IsLevelK (Wc D i) (D.host.g 0 * D.host.g 1) Kf → ∀ k ∈ Kf, k ∈ levS (Wc D i) (L.βW i) (L.datWp i L.triv) ∧ Lev.levChi (Wc D i) (L.βW i) (L.datWp i L.triv) k = 1 := by
   first | exact @GlobalTheory.HolRead.PrincLevelSub.mem_levS_and_levChi | exact GlobalTheory.HolRead.PrincLevelSub.mem_levS_and_levChi | (intros; apply GlobalTheory.HolRead.PrincLevelSub.mem_levS_and_levChi <;> assumption)

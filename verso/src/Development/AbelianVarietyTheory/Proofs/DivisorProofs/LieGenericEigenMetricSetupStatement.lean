@@ -9,8 +9,10 @@ open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalT
 open GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.ProjVar
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagCovWeight.weight_lie | exact GlobalTheory.FlagCovWeight.weight_lie | (intros; apply GlobalTheory.FlagCovWeight.weight_lie <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagCovWeight.weight_lie` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLieGenericEigenMetricSetup.lean&line=180#L180)
 -/
 theorem _root_.GlobalTheory.T.lie_generic_eigen_metric_setup : ∀ (D : D7) (O : Setup D) (c : O.s.Comp) (Bs : Scheme.{0}) (q : Bs ⟶ Sp (𝓞 D.what₂.LL))
     (E : D.what₂.Tau × Bool → Bs.Modules) (h : ∀ a, VMetric q (E a) (rkB D.what₂.Tau O.N O.j a)) (H : ∀ a, (h a).IsCInf)

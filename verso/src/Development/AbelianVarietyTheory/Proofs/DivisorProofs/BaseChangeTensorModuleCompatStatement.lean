@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseChangeTensorMod
 import Mathlib
 open TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.baseChange_tensor_int_field_equiv | exact GlobalTheory.baseChange_tensor_int_field_equiv | (intros; apply GlobalTheory.baseChange_tensor_int_field_equiv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.baseChange_tensor_int_field_equiv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FBaseChangeTensorModuleCompat.lean&line=8#L8)
 -/
 theorem _root_.GlobalTheory.T.base_change_tensor_module_compat : ∀ (K L O : Type) [Field K] [Field L] [Algebra K L] [CommRing O] (M : Type) [AddCommGroup M]
     [Module K M] [Module O M] [SMulCommClass K O M] (N : Type) [AddCommGroup N] [Module L N] [Module O N]

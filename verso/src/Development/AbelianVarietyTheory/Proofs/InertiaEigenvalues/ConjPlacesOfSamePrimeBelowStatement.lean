@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.Exists
 open NumberField IsDedekindDomain Polynomial Formalism.ConjugateSelfDual ReciprocityTheory.Gal
 open scoped Pointwise
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.conj_places_of_same_prime_below | exact GlobalTheory.conj_places_of_same_prime_below | (intros; apply GlobalTheory.conj_places_of_same_prime_below <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.conj_places_of_same_prime_below` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FConjPlacesOfSamePrimeBelow.lean&line=8#L8)
 -/
 theorem _root_.GlobalTheory.T.exists_conj_valuationSubring_of_same_below : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (K : IntermediateField E Ω) [FiniteDimensional E K] (A B : ValuationSubring Ω), (∀ x ∈ K, IsIntegral ℤ x → (A.valuation x < 1 ↔ B.valuation x < 1)) → ∃ ρ : G E Ω, (∀ x ∈ K, ρ x = x) ∧ ρ • A = B := by
   first | exact @GlobalTheory.conj_places_of_same_prime_below | exact GlobalTheory.conj_places_of_same_prime_below | (intros; apply GlobalTheory.conj_places_of_same_prime_below <;> assumption)

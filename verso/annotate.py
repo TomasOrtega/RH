@@ -4,6 +4,7 @@ from concurrent.futures import ProcessPoolExecutor
 import json
 from pathlib import Path
 
+from citations import citations
 from proofs import explain, extract_claims, insert_notes, mask_non_code, remove_notes
 
 
@@ -22,10 +23,15 @@ def annotate_module(relative):
     absent = authored.keys() - {claim.name for claim in claims}
     if absent:
         raise ValueError(f"{relative}: authored explanations have no declaration: {sorted(absent)}")
-    notes = [
-        ("authored", authored[claim.name]) if claim.name in authored else explain(source, masked, claim)
-        for claim in claims
-    ]
+    cited = dict(citations(EXTRACTED, source, masked, (claim for claim in claims if claim.name not in authored)))
+    notes = []
+    for claim in claims:
+        if claim.name in authored:
+            notes.append(("authored", authored[claim.name]))
+        elif claim.start in cited:
+            notes.append(("citation", cited[claim.start]))
+        else:
+            notes.append(explain(source, masked, claim))
     annotated = insert_notes(source, claims, notes)
     stripped, stored = remove_notes(annotated)
     if stripped != source or [offset for offset, _, _ in stored] != [claim.start for claim in claims]:

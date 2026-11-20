@@ -6,8 +6,10 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BoundedDenomina
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW NumberField IsDedekindDomain MeasureTheory Topology Filter GroundTheory.Global PositivityTheory.Rg.Base1 GlobalTheory.CompanionTheory.BasePsi
 open scoped ENNReal NNReal Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.BasePsi.Test.psiA_isTest | exact GlobalTheory.CompanionTheory.BasePsi.Test.psiA_isTest | (intros; apply GlobalTheory.CompanionTheory.BasePsi.Test.psiA_isTest <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.BasePsi.Test.psiA_isTest` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FFinitePlaceCutoffContinuousCompactSupport.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.finite_place_cutoff_continuous_compact_support : ∀ (F : Type) [Field F] [NumberField F] (S : Finset (HeightOneSpectrum (𝓞 F)))
     (g : ∀ v : HeightOneSpectrum (𝓞 F), Fv F v → ℝ) (a : (AF F)ˣ), (∀ v ∈ S, Continuous (g v) ∧ HasCompactSupport (g v)) →

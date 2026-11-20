@@ -128,8 +128,10 @@ private theorem eq_base {K : Type} [Field K] [CharZero K] {Δ : K} (t : Lsq K Δ
 
 end UpperTheory.V.Z.Sym.Glob
 
-/- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.CubicCharpolyDiscriminant.tauEx`.
+/- English proof (citation)
+Apply `UpperTheory.Reformulated.B.CubicCharpolyDiscriminant.tauEx` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicArithmetic%2FIntegralCasts%2FCapelliIdentities%2FCubicCharpolyDiscriminant.lean&line=81#L81)
 -/
 theorem UpperTheory.V.Z.Sym.Glob.tauEx :
     UpperTheory.V.Z.Sym.Glob.TauEx :=

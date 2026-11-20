@@ -4,8 +4,10 @@ import Mathlib
 open scoped Matrix
 open NumberField IsDedekindDomain
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.totallyComplex_span_embeddings_and_finrank | exact GlobalTheory.totallyComplex_span_embeddings_and_finrank | (intros; apply GlobalTheory.totallyComplex_span_embeddings_and_finrank <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.totallyComplex_span_embeddings_and_finrank` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FTotallyComplexSpanEmbeddingsAndFinrank.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.span_range_embedding_and_finrank_of_isTotallyComplex : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E], Submodule.span ℝ (Set.range (Pi.ringHom fun w : InfinitePlace E => w.embedding)) = ⊤ ∧ Module.finrank ℝ (InfinitePlace E → ℂ) = Module.finrank ℚ E := by
   first | exact @GlobalTheory.totallyComplex_span_embeddings_and_finrank | exact GlobalTheory.totallyComplex_span_embeddings_and_finrank | (intros; apply GlobalTheory.totallyComplex_span_embeddings_and_finrank <;> assumption)

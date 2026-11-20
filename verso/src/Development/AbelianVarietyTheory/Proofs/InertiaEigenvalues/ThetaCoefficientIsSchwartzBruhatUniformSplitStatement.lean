@@ -10,8 +10,10 @@ open GlobalTheory.DownLift
 open GlobalTheory.DownLift.GenFinite
 open GlobalTheory.DownLift.SplitCoef
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DownLift.SplitCoef.coef_isSBHalf_uniform | exact GlobalTheory.DownLift.SplitCoef.coef_isSBHalf_uniform | (intros; apply GlobalTheory.DownLift.SplitCoef.coef_isSBHalf_uniform <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DownLift.SplitCoef.coef_isSBHalf_uniform` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FThetaCoefficientIsSchwartzBruhatUniformSplit.lean&line=33#L33)
 -/
 theorem _root_.GlobalTheory.T.thetaCoefficient_isSchwartzBruhat_uniform_split : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D), IsStdChar D ψ (-1) → ∀ (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)), IsSelfDualC S ΛS → IsSelfDualC T ΛT → ∀ a : AE D, IsSplitIdem D a → ∀ f : WO S T → ℂ, IsThetaFunO ψ S T f → (∃ k : ℕ, 0 < k ∧ (∀ u ∈ latH S T ΛS ΛT, IsHalf a u ∨ IsHalf (cA D a) u → heisO ψ S T (k • u) f = f) ∧ ∀ ℓ, InvForm ψ S T a ℓ → ∀ x, IsHalf a x → ℓ (heisO ψ S T x f) ≠ 0 → k • x ∈ latH S T ΛS ΛT) ∧ (∀ ℓ, InvForm ψ S T a ℓ → IsSBHalf a (latH S T ΛS ΛT) (coef ψ S T a ℓ f)) ∧ ∃ X : Finset (WO S T), (∀ x ∈ X, IsHalf a x) ∧ ∀ x, IsHalf a x → (∀ ℓ, InvForm ψ S T a ℓ → ℓ (heisO ψ S T x f) = 0) ∨ ∃ x₁ ∈ X, heisO ψ S T x f = heisO ψ S T x₁ f := by
   first | exact @GlobalTheory.DownLift.SplitCoef.coef_isSBHalf_uniform | exact GlobalTheory.DownLift.SplitCoef.coef_isSBHalf_uniform | (intros; apply GlobalTheory.DownLift.SplitCoef.coef_isSBHalf_uniform <;> assumption)

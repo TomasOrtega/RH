@@ -10,8 +10,10 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory Car
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.Cris GlobalTheory.DeRham GlobalTheory.AnPer
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AnPer.point_hol_ext_of_isSeparated | exact GlobalTheory.AnPer.point_hol_ext_of_isSeparated | (intros; apply GlobalTheory.AnPer.point_hol_ext_of_isSeparated <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AnPer.point_hol_ext_of_isSeparated` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHolomorphicPointExtOfIsSeparated.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.holomorphicPoint_ext_of_isSeparated : ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (W : Opens E) {X : Scheme.{0}}, X.IsSeparated → ∀ x x' : Sp (Hol W) ⟶ X, (∀ (p : E) (hp : p ∈ W), spMap (Hol.ev p hp).toRingHom ≫ x = spMap (Hol.ev p hp).toRingHom ≫ x') → x = x' := by
   first | exact @GlobalTheory.AnPer.point_hol_ext_of_isSeparated | exact GlobalTheory.AnPer.point_hol_ext_of_isSeparated | (intros; apply GlobalTheory.AnPer.point_hol_ext_of_isSeparated <;> assumption)

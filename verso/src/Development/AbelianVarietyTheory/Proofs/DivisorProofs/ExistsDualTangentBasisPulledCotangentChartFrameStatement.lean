@@ -10,8 +10,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KeyVals.DualBasis.exists_isDual | exact GlobalTheory.KeyVals.DualBasis.exists_isDual | (intros; apply GlobalTheory.KeyVals.DualBasis.exists_isDual <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KeyVals.DualBasis.exists_isDual` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsDualTangentBasisPulledCotangentChartFrame.lean&line=94#L94)
 -/
 theorem _root_.GlobalTheory.T.exists_dualTangentBasis_pulledCotangentChartFrame : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] (g : ℕ) (c : VB.Chart (LieVB.omega G) g) (R : Type) [CommRing R]
     (ξ : Sp R ⟶ S), IsSemiAbelian G → SmoothOfRelativeDimension g G.hom → ⊤ ≤ ξ ⁻¹ᵁ c.U →

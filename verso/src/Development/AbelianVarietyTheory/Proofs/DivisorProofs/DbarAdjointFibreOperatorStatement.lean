@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DbarEqZeroOfHolomor
 open Matrix GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe GlobalTheory.TorsionForm GlobalTheory.TorsionForm.FlatAcyc
 open scoped Real ContDiff
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TorsionForm.FlatAcyc.dbarV_add_dbarAdj_const_eq_fibreOp | exact GlobalTheory.TorsionForm.FlatAcyc.dbarV_add_dbarAdj_const_eq_fibreOp | (intros; apply GlobalTheory.TorsionForm.FlatAcyc.dbarV_add_dbarAdj_const_eq_fibreOp <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TorsionForm.FlatAcyc.dbarV_add_dbarAdj_const_eq_fibreOp` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDbarAdjointFibreOperator.lean&line=47#L47)
 -/
 theorem _root_.GlobalTheory.T.dbar_adjoint_fibre_operator : ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {g : ℕ}
     (τ : E → Matrix (Fin g) (Fin g) ℂ) (h : Pt E g → ℝ) (b : E) (z : Fin g → ℂ)

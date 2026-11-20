@@ -7,8 +7,10 @@ import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
 import Formalism.SharpRestriction.LevelLetterCocycles.EmbeddingTypeJumps
 open NumberField IsDedekindDomain Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations Formalism.ConjugateSelfDual ReciprocityTheory.Gal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.InertiaEigenvalues.DimAtQD.main | exact GlobalTheory.InertiaEigenvalues.DimAtQD.main | (intros; apply GlobalTheory.InertiaEigenvalues.DimAtQD.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.InertiaEigenvalues.DimAtQD.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FBlochKatoDimAtAuxiliaryPrimePlaces.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.blochKatoDim_at_auxiliary_prime_places : Formalism.GaloisCohomology.LocalTateDualityK → Formalism.GaloisCohomology.LocalEulerCharK → ∀ (D : D7) (i : D.nd.Loc), EmbeddingTypeJumps.AtQD i → ∀ (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i)) (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw), Formalism.WeaklyAdmissibleFiltrations.BlochKatoDim (Br.PD D.loc D.nbr i w hw) ↥C.LL.1 := by
   first | exact @GlobalTheory.InertiaEigenvalues.DimAtQD.main | exact GlobalTheory.InertiaEigenvalues.DimAtQD.main | (intros; apply GlobalTheory.InertiaEigenvalues.DimAtQD.main <;> assumption)

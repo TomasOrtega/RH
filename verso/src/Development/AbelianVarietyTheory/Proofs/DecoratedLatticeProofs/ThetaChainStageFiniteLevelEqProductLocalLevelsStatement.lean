@@ -18,8 +18,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting (SplitPro
 open GlobalTheory.IndefiniteRowSideFullHecke.VolumeFlatSection (Blocks parahoric datum)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChainTw.LevLoc.levLoc | exact GlobalTheory.ChainTw.LevLoc.levLoc | (intros; apply GlobalTheory.ChainTw.LevLoc.levLoc <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChainTw.LevLoc.levLoc` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FThetaChainStageFiniteLevelEqProductLocalLevels.lean&line=87#L87)
 -/
 theorem _root_.GlobalTheory.T.thetaChainStage_finiteLevel_eq_product_localLevels : ∀ D : D7, ForStageQ D fun c w _ s => MeasurableSet (levSet s) ∧ MeasurableSet (intOff c s) ∧ (∀ g, g ∈ levSet s ↔ g ∈ intOff c s ∧ ∀ v ∈ c.S, gAt s.V (.inl v) g ∈ Lev.levG s.V s.β s.L) ∧ (∀ g ∈ levSet s, ∃ b : GinfC s.V, ∃ κ ∈ Lev.levG s.V s.β s.L, g = (b : GA D s.V) * κ) ∧ (∀ κ ∈ Lev.levG s.V s.β s.L, ‖Lev.levChi s.V s.β s.L κ‖ = 1 ∧ ∀ v, GlobalTheory.AdelicU.proj D.sp.cm.sig s.V.gram v κ ∈ GlobalTheory.AdelicU.stabLoc D.sp.cm.sig s.V.gram s.Λ v) ∧ ∃ mR, IsLevMeas s mR := by
   first | exact @GlobalTheory.ChainTw.LevLoc.levLoc | exact GlobalTheory.ChainTw.LevLoc.levLoc | (intros; apply GlobalTheory.ChainTw.LevLoc.levLoc <;> assumption)

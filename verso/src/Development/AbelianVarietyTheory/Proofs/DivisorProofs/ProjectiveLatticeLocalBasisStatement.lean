@@ -8,8 +8,10 @@ open CategoryTheory Limits AlgebraicGeometry IsLocalRing TensorProduct
 open GlobalTheory GlobalTheory.QCoh GlobalTheory.Vert GlobalTheory.MixedLocalChains GlobalTheory.PerfdLat GlobalTheory.Published GlobalTheory.GroupBplus GlobalTheory.BplusDescent GlobalTheory.LatGlue
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor (resG)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LocFreeSub.exists_basis_near_prime | exact GlobalTheory.LocFreeSub.exists_basis_near_prime | (intros; apply GlobalTheory.LocFreeSub.exists_basis_near_prime <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LocFreeSub.exists_basis_near_prime` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FProjectiveLatticeLocalBasis.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.projective_lattice_local_basis : ∀ (R : Type) [CommRing R] [IsDomain R] (h : ℕ) (P : Submodule R (Fin h → R)), Module.Finite R P → Module.Projective R P → ∀ c : R, c ≠ 0 → (∀ x : Fin h → R, c • x ∈ P) → ∀ q : Ideal R, q.IsPrime → ∃ g ∉ q, ∃ b : Fin h → Fin h → R, (∀ l, b l ∈ P) ∧ (Matrix.of fun a l => b l a).det ≠ 0 ∧ ∀ u ∈ P, ∃ n : ℕ, g ^ n • u ∈ Submodule.span R (Set.range b) := by
   first | exact @GlobalTheory.LocFreeSub.exists_basis_near_prime | exact GlobalTheory.LocFreeSub.exists_basis_near_prime | (intros; apply GlobalTheory.LocFreeSub.exists_basis_near_prime <;> assumption)

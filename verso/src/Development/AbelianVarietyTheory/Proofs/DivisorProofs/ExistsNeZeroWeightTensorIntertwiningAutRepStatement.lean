@@ -5,8 +5,10 @@ open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep 
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BCT.TrKer.exists_ne_zero_wsp_intertwining | exact GlobalTheory.BCT.TrKer.exists_ne_zero_wsp_intertwining | (intros; apply GlobalTheory.BCT.TrKer.exists_ne_zero_wsp_intertwining <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BCT.TrKer.exists_ne_zero_wsp_intertwining` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsNeZeroWeightTensorIntertwiningAutRep.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.exists_ne_zero_weightTensor_intertwining_autRep : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (lam : InfinitePlace E → DomWeight n) (π : Submodule ℂ (UA E n → ℂ)), IsAutRepU π → (∀ v : InfinitePlace E, HasWeightAt π v.embedding (lam v)) → ∃ T : Wsp lam →ₗ[ℂ] (UA E n → ℂ), T ≠ 0 ∧ (∀ w, T w ∈ π) ∧ ∀ x ∈ infU E n, ∀ w, T (wInf lam x w) = RU E n x (T w) := by
   first | exact @GlobalTheory.BCT.TrKer.exists_ne_zero_wsp_intertwining | exact GlobalTheory.BCT.TrKer.exists_ne_zero_wsp_intertwining | (intros; apply GlobalTheory.BCT.TrKer.exists_ne_zero_wsp_intertwining <;> assumption)

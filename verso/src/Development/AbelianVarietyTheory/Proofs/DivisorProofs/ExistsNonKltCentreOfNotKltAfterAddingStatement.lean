@@ -9,8 +9,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open GlobalTheory GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.QCoh GlobalTheory.Discrepancy GlobalTheory.PairStep
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PairStep.Centre.exists_isNkltCentre | exact GlobalTheory.PairStep.Centre.exists_isNkltCentre | (intros; apply GlobalTheory.PairStep.Centre.exists_isNkltCentre <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PairStep.Centre.exists_isNkltCentre` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsNonKltCentreOfNotKltAfterAdding.lean&line=59#L59)
 -/
 theorem _root_.GlobalTheory.T.exists_nonKltCentre_of_not_klt_after_adding : ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X] (p : X ⟶ Sp ℂ) (n : ℕ), IsProjOver p → topologicalKrullDim X = n → ∀ (Δ D : X → ℚ) (x : X), IsQCart D → KltAt p n Δ x → ¬ KltAt p n (Δ + D) x → ∃ z, z ⤳ x ∧ IsNkltCentre p n (Δ + D) z := by
   first | exact @GlobalTheory.PairStep.Centre.exists_isNkltCentre | exact GlobalTheory.PairStep.Centre.exists_isNkltCentre | (intros; apply GlobalTheory.PairStep.Centre.exists_isNkltCentre <;> assumption)

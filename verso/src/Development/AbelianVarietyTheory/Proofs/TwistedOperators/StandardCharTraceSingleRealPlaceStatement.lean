@@ -7,8 +7,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open IsDedekindDomain NumberField MeasureTheory Matrix
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PhaseReal.psi_trace_single | exact GlobalTheory.PhaseReal.psi_trace_single | (intros; apply GlobalTheory.PhaseReal.psi_trace_single <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PhaseReal.psi_trace_single` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FStandardCharTraceSingleRealPlace.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.standardChar_trace_single_realPlace : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (θ : InfFam D), IsInfFam θ → ∀ (τ : D.what₂.Tau) (t : AE D),
   finPart D t = 0 → (∀ ρ, ρ ≠ τ → θ ρ (infPart D t) = 0) →

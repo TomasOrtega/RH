@@ -15,8 +15,10 @@ set_option autoImplicit false
 open GlobalTheory.CMTorsion
 open GlobalTheory.WeierstrassCurve (scheme toSpec mapHom)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TangentVecUnique.eq_of_isDiff_of_isTangent | exact GlobalTheory.TangentVecUnique.eq_of_isDiff_of_isTangent | (intros; apply GlobalTheory.TangentVecUnique.eq_of_isDiff_of_isTangent <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TangentVecUnique.eq_of_isDiff_of_isTangent` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFrobeniusPeriodChange.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.tangent_differential_unique : ∀ (A : Over (Sp ℂ)) [GrpObj A] (L : LB A.left) (n : ℕ) (u : HolUnif A L n) (v : epsR ℂ ⟶ A) (w w' : Fin n → ℂ), IsTangent v → u.IsDiff w v → u.IsDiff w' v → w = w' := by
   first | exact @GlobalTheory.TangentVecUnique.eq_of_isDiff_of_isTangent | exact GlobalTheory.TangentVecUnique.eq_of_isDiff_of_isTangent | (intros; apply GlobalTheory.TangentVecUnique.eq_of_isDiff_of_isTangent <;> assumption)

@@ -8,8 +8,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup (coefPlus Cols Si
 open GlobalTheory.SepRows
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SepRows.RowRapidPf.rowRapid | exact GlobalTheory.SepRows.RowRapidPf.rowRapid | (intros; apply GlobalTheory.SepRows.RowRapidPf.rowRapid <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SepRows.RowRapidPf.rowRapid` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FLevelTowerRapidDecay.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.level_tower_rapid_decay : GlobalTheory.FunPr.Hypotheses₂ → RowTower → RowRapid := by
   first | exact @GlobalTheory.SepRows.RowRapidPf.rowRapid | exact GlobalTheory.SepRows.RowRapidPf.rowRapid | (intros; apply GlobalTheory.SepRows.RowRapidPf.rowRapid <;> assumption)

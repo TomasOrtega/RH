@@ -10,8 +10,10 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Unf
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HandFam.handBF_isQuasiFam | exact GlobalTheory.HandFam.handBF_isQuasiFam | (intros; apply GlobalTheory.HandFam.handBF_isQuasiFam <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HandFam.handBF_isQuasiFam` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FBesselToFourierJacobiHandedFamilyContinuousAutom.lean&line=29#L29)
 -/
 theorem _root_.GlobalTheory.T.besselToFourierJacobi_handedFamily_continuous_automorphic : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (ρ : ℕ) (B : BesLev D ρ) (J : JacLev D ρ) (s : StepBF ψ B J) (L' : HSp D) (ζ' : Fin L'.rank → D.host.E), IsLineVec L' ζ' → ∀ (l : Link B L' ζ') (φ : GA D B.A → ℂ) (Ξ : WO B.V₀ J.W₀ → ℂ), IsContAut B.A φ → IsThetaFunO ψ B.V₀ J.W₀ Ξ → IsQuasiFam ψ J.W₀ L' (handBF s l φ Ξ) := by
   first | exact @GlobalTheory.HandFam.handBF_isQuasiFam | exact GlobalTheory.HandFam.handBF_isQuasiFam | (intros; apply GlobalTheory.HandFam.handBF_isQuasiFam <;> assumption)

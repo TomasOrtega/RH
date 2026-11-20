@@ -7,8 +7,10 @@ open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.UC
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UCanon.isRigid_canon | exact GlobalTheory.UCanon.isRigid_canon | (intros; apply GlobalTheory.UCanon.isRigid_canon <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UCanon.isRigid_canon` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCanonicalDataRigidAlongStratum.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.canonical_data_rigid_along_stratum : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Geo.Tor.Level H} (Xo : Moduli Dw l) (c : Coeff l) (φ : InvFun (𝓞 E)), ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], GlobalTheory.Mum.Base R → ∀ (C : MonoFam Xo c φ R) (Cn : Canon C), GlobalTheory.RigChart.IsRigid C.P.D.toPre C.s (fun i => (l.M' : ℤ) • C.δ i) := by
   first | exact @GlobalTheory.UCanon.isRigid_canon | exact GlobalTheory.UCanon.isRigid_canon | (intros; apply GlobalTheory.UCanon.isRigid_canon <;> assumption)

@@ -8,8 +8,10 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open scoped Matrix TensorProduct FourierTransform
 open MeasureTheory GroundTheory.Automorphic.GJMatrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FourierSndDecay.fourier_snd_rapid_decay | exact GlobalTheory.FourierSndDecay.fourier_snd_rapid_decay | (intros; apply GlobalTheory.FourierSndDecay.fourier_snd_rapid_decay <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FourierSndDecay.fourier_snd_rapid_decay` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSchwartzFourierSecondVariableRapidDecay.lean&line=47#L47)
 -/
 theorem _root_.GlobalTheory.T.schwartz_fourier_secondVariable_rapid_decay : ∀ (U V : Type) [NormedAddCommGroup U] [NormedSpace ℝ U] [FiniteDimensional ℝ U] [NormedAddCommGroup V] [InnerProductSpace ℝ V] [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V] (h : SchwartzMap (U × V) ℂ) (k : ℕ), ∃ C : ℝ, ∀ (u : U) (w : V), (1 + ‖u‖) ^ k * (1 + ‖w‖) ^ k * ‖𝓕 (fun t : V => h (u, t)) w‖ ≤ C := by
   first | exact @GlobalTheory.FourierSndDecay.fourier_snd_rapid_decay | exact GlobalTheory.FourierSndDecay.fourier_snd_rapid_decay | (intros; apply GlobalTheory.FourierSndDecay.fourier_snd_rapid_decay <;> assumption)

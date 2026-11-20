@@ -11,8 +11,10 @@ open scoped TensorProduct InnerProductSpace
 open GlobalTheory.Hk3
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Hk3.CorrInert.sphCorr_of_inert | exact GlobalTheory.Hk3.CorrInert.sphCorr_of_inert | (intros; apply GlobalTheory.Hk3.CorrInert.sphCorr_of_inert <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Hk3.CorrInert.sphCorr_of_inert` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FSphericalThetaCorrespondenceInertPlaceOfHowe.lean&line=98#L98)
 -/
 theorem _root_.GlobalTheory.T.sphericalThetaCorrespondence_inertPlace_of_howe : HoweUnram → ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)) (P : Pl D.host.E), IsWeilDatumO ψ S T χS χT om → conjPl P = P → VacFix ψ om P → SphCorr ψ om P := by
   first | exact @GlobalTheory.Hk3.CorrInert.sphCorr_of_inert | exact GlobalTheory.Hk3.CorrInert.sphCorr_of_inert | (intros; apply GlobalTheory.Hk3.CorrInert.sphCorr_of_inert <;> assumption)

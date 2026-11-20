@@ -5,8 +5,10 @@ open MeasureTheory Filter Topology GlobalTheory GlobalTheory.Cartier GlobalTheor
 open ReciprocityTheory.L2DbarEstimates (V)
 open scoped ContDiff Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GoodTop.exists_cInf_partition | exact GlobalTheory.GoodTop.exists_cInf_partition | (intros; apply GlobalTheory.GoodTop.exists_cInf_partition <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GoodTop.exists_cInf_partition` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsSmoothPartitionOfUnityComplexPoints.lean&line=75#L75)
 -/
 theorem _root_.GlobalTheory.T.exists_smooth_partition_of_unity_complexPoints : ∀ {F : Type} [Field F] {σ : F →+* ℂ} {X : Var F} (W : CxPts X.str σ → Set (CxPts X.str σ)), (∀ y, W y ∈ 𝓝 y) → ∃ (s : Finset (CxPts X.str σ)) (ρ : s → CxPts X.str σ → ℝ), (∀ i y, CInfAt (ρ i) y) ∧ (∀ i, tsupport (ρ i) ⊆ W i) ∧ ∀ y, ∑ i, ρ i y = 1 := by
   first | exact @GlobalTheory.GoodTop.exists_cInf_partition | exact GlobalTheory.GoodTop.exists_cInf_partition | (intros; apply GlobalTheory.GoodTop.exists_cInf_partition <;> assumption)

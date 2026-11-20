@@ -11,8 +11,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RootOfUniformiserDVR.cong_on_adjoin | exact GlobalTheory.RootOfUniformiserDVR.cong_on_adjoin | (intros; apply GlobalTheory.RootOfUniformiserDVR.cong_on_adjoin <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RootOfUniformiserDVR.cong_on_adjoin` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FAutomorphismCongrOneOnAdjoinRootUniformiser.lean&line=31#L31)
 -/
 theorem _root_.GlobalTheory.T.automorphism_congr_one_on_adjoin_root_uniformiser : ∀ (W : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] (F : Type) [Field F]
     [Algebra (FractionRing W) F] [Algebra W F] [IsScalarTower W (FractionRing W) F]

@@ -26,8 +26,10 @@ open GlobalTheory.CompanionTheory.WcB
 open scoped Topology
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.WcB.Wc_continuousOn_of_wS | exact GlobalTheory.CompanionTheory.WcB.Wc_continuousOn_of_wS | (intros; apply GlobalTheory.CompanionTheory.WcB.Wc_continuousOn_of_wS <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.WcB.Wc_continuousOn_of_wS` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FWeilWhittakerCentralTwist.lean&line=28#L28)
 -/
 theorem _root_.GlobalTheory.T.weil_whittaker_central_twist : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] [MeasurableSpace E] [BorelSpace E] [Algebra F E] [ValuativeExtension F E] [FiniteDimensional F E] [Algebra.IsSeparable F E] [Fact (Module.finrank F E = 2)] (χ : AddChar F Circle) (σ : E ≃ₐ[F] E) (μ : Measure E) (lam : ℂ) (c : Eˣ →* ℂˣ) (Φ : E → ℂ), Φ ∈ GL2LocalData.SBc F E c → ∀ A : Set (GL (Fin 2) F), ContinuousOn (fun p : GL (Fin 2) F × Eˣ => wS χ σ μ lam c Φ p.1 p.2) {p | p.1 ∈ A} → ContinuousOn (GL2LocalData.Wc χ σ μ lam c Φ) (A ∩ {g | ∃ t : Eˣ, Algebra.norm F (t : E) = (g.val).det}) := by
   first | exact @GlobalTheory.CompanionTheory.WcB.Wc_continuousOn_of_wS | exact GlobalTheory.CompanionTheory.WcB.Wc_continuousOn_of_wS | (intros; apply GlobalTheory.CompanionTheory.WcB.Wc_continuousOn_of_wS <;> assumption)

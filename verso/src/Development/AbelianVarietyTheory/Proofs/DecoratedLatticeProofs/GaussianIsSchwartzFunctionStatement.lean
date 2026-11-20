@@ -9,8 +9,10 @@ open GlobalTheory.AutomorphicL2Unitary GlobalTheory.AdelicU GlobalTheory.Doublin
 open GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz (schwartzA)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GaussSchwartz.exists_schwartz_gauss | exact GlobalTheory.GaussSchwartz.exists_schwartz_gauss | (intros; apply GlobalTheory.GaussSchwartz.exists_schwartz_gauss <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GaussSchwartz.exists_schwartz_gauss` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FGaussianIsSchwartzFunction.lean&line=228#L228)
 -/
 theorem _root_.GlobalTheory.T.gaussian_is_schwartz_function : ∀ (D : D7) (n : ℕ) (V : HSp D) (l : D.what₂.Tau → ℝ), (∀ τ, l τ ≠ 0) → ∀ s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ, (∀ τ, IsCartanInv (gramAt D V τ) (s τ)) → ∃ f : SchwartzMap (D.what₂.Tau → Fin V.rank → Fin n → ℂ) ℂ, ∀ z, f z = gauss V l s (fun τ => Matrix.of (z τ)) := by
   first | exact @GlobalTheory.GaussSchwartz.exists_schwartz_gauss | exact GlobalTheory.GaussSchwartz.exists_schwartz_gauss | (intros; apply GlobalTheory.GaussSchwartz.exists_schwartz_gauss <;> assumption)

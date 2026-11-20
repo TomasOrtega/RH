@@ -7,8 +7,10 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 open MvPolynomial Formalism.GradedWeylDivisibility GlobalTheory.HighWtEmb
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HighWtEmb.mem_smul_top_of_redT_eq_zero | exact GlobalTheory.HighWtEmb.mem_smul_top_of_redT_eq_zero | (intros; apply GlobalTheory.HighWtEmb.mem_smul_top_of_redT_eq_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HighWtEmb.mem_smul_top_of_redT_eq_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FMemSmulTopOfDualWeylTensorReductionEqZero.lean&line=122#L122)
 -/
 theorem _root_.GlobalTheory.T.mem_smul_top_of_dualWeylTensorReduction_eq_zero : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (N : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] (mu : ι → ℕ → ℕ) (ϖ : O), Irreducible ϖ → (∀ τ, Antitone (res N (mu τ))) → GlobalTheory.HighWt.BaseChange → ∀ y : NablaT O N mu, redT O N mu ϖ y = 0 → y ∈ (Ideal.span {ϖ} • ⊤ : Submodule O (NablaT O N mu)) := by
   first | exact @GlobalTheory.HighWtEmb.mem_smul_top_of_redT_eq_zero | exact GlobalTheory.HighWtEmb.mem_smul_top_of_redT_eq_zero | (intros; apply GlobalTheory.HighWtEmb.mem_smul_top_of_redT_eq_zero <;> assumption)

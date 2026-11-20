@@ -11,8 +11,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.TopVol GlobalTheory.FinPl
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TopVol.TwistPlaces.places_injective | exact GlobalTheory.TopVol.TwistPlaces.places_injective | (intros; apply GlobalTheory.TopVol.TwistPlaces.places_injective <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TopVol.TwistPlaces.places_injective` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FTrueGeometryTwistChainValue.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.injective_QJ_G_q_v : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (a : GeoAll W u), a.Is → a.True → ∀ (t : W.P.T) (J : QJ a t), J.Reads → Function.Injective fun i => (J.G i).q.v := by
   first | exact @GlobalTheory.TopVol.TwistPlaces.places_injective | exact GlobalTheory.TopVol.TwistPlaces.places_injective | (intros; apply GlobalTheory.TopVol.TwistPlaces.places_injective <;> assumption)

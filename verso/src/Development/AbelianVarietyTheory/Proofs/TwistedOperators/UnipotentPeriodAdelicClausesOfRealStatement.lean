@@ -9,8 +9,10 @@ open GlobalTheory.ChainFr GlobalTheory.SepRows GlobalTheory.SepPer Matrix
 open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SepPer.AdelicFromReal.adelicAt_of_real | exact GlobalTheory.SepPer.AdelicFromReal.adelicAt_of_real | (intros; apply GlobalTheory.SepPer.AdelicFromReal.adelicAt_of_real <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SepPer.AdelicFromReal.adelicAt_of_real` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FUnipotentPeriodAdelicClausesOfReal.lean&line=347#L347)
 -/
 theorem _root_.GlobalTheory.T.unipotentPeriod_adelic_clauses_of_real : GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (Y V : HSp D) (d : HermitianOrthogonalExtensionData Y V 1 1) (S S' : D.what₂.Tau → SPar) (M₀ : DSModel Y S') (M : DSModel V S) (p : Pack M₀ M) (Q : ℝ), p.Is θ d Q → ∀ (Λ : Lat V) (𝔪 : Ideal (𝓞 D.host.E)), IsSelfDualC V Λ → 𝔪 ≠ ⊥ → zv d ∈ Λ → ∀ (J : Set (GA D Y)), (∀ k ∈ GfC Y, Lev.finE V (stabilizerEmbedding d k) ∈ congLev D.sp.cm V.gram Λ 𝔪 → k ∈ J) → ∀ t ∈ MultT θ M₀ J 1, ∀ ν : Measure (GA D Y), ν.IsHaarMeasure → ∃ c, p.AdelicAt θ d Q Λ 𝔪 ν (t (PiTensorProduct.tprod ℂ p.w)) c := by
   first | exact @GlobalTheory.SepPer.AdelicFromReal.adelicAt_of_real | exact GlobalTheory.SepPer.AdelicFromReal.adelicAt_of_real | (intros; apply GlobalTheory.SepPer.AdelicFromReal.adelicAt_of_real <;> assumption)

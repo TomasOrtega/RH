@@ -20,8 +20,10 @@ open scoped Pointwise ENNReal Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LocOver.isTerm_move_unitary | exact GlobalTheory.LocOver.isTerm_move_unitary | (intros; apply GlobalTheory.LocOver.isTerm_move_unitary <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LocOver.isTerm_move_unitary` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FLocalTermMoveUnitaryIsTerm.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.localTerm_move_unitary_isTerm : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] {M : Formalism.MainNotions.S.Loc.Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : Formalism.MainNotions.S.Loc.HermSp M V) {r : ℕ} (g : V ≃ₗ[E] V) (hg : LocNG.IsUnitary H g) (t : Formalism.MainNotions.S.Loc.Term V M r), H.IsTerm t → H.IsTerm (move g t) := by
   first | exact @GlobalTheory.LocOver.isTerm_move_unitary | exact GlobalTheory.LocOver.isTerm_move_unitary | (intros; apply GlobalTheory.LocOver.isTerm_move_unitary <;> assumption)

@@ -13,8 +13,10 @@ open GlobalTheory.FlagFormDeg (apolar)
 open ReciprocityTheory.L2DbarEstimates (V cHess bas)
 open scoped ContDiff ComplexOrder Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnitInvBilin.eq_trace_form | exact GlobalTheory.UnitInvBilin.eq_trace_form | (intros; apply GlobalTheory.UnitInvBilin.eq_trace_form <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnitInvBilin.eq_trace_form` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FInvariantBilinearTraceFormula.lean&line=155#L155)
 -/
 theorem _root_.GlobalTheory.T.invariant_bilinear_trace_formula : ∀ (r : ℕ) (B : Matrix (Fin r) (Fin r) ℂ →ₗ[ℂ] Matrix (Fin r) (Fin r) ℂ →ₗ[ℂ] ℂ) (μ : ℂ), (∀ U : Matrix (Fin r) (Fin r) ℂ, Uᴴ * U = 1 → ∀ F F', B (Uᴴ * F * U) (Uᴴ * F' * U) = B F F') → (∀ a b c d : Fin r, B (Matrix.single a b 1) (Matrix.single c d 1) = B (Matrix.single c b 1) (Matrix.single a d 1)) → (∀ F, B 1 F = μ * F.trace) → ∀ F F', B F F' = μ / (r + 1) * (F.trace * F'.trace + (F * F').trace) := by
   first | exact @GlobalTheory.UnitInvBilin.eq_trace_form | exact GlobalTheory.UnitInvBilin.eq_trace_form | (intros; apply GlobalTheory.UnitInvBilin.eq_trace_form <;> assumption)

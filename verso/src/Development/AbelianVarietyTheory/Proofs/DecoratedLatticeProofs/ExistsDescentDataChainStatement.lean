@@ -8,8 +8,10 @@ open scoped TensorProduct Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Fam
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.StepSplit.main | exact GlobalTheory.StepSplit.main | (intros; apply GlobalTheory.StepSplit.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.StepSplit.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FExistsDescentDataChain.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.exists_descent_data_chain : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : Formalism.MainNotions.G.Inst D L) (Gl : Formalism.MainNotions.G.LatInst D) (Kc : Formalism.MainNotions.G.Consts) (Yd : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl Kc Yd cX) (W : RealPack ex) (u : D.what₂.Word) (f : FamCh W u), PkHyp W → f.RowOK → (∀ j, j + 1 < D.R.m → ∃ dG, IsDG W j ((pk W).MY (j + 1)) ((pk W).ΛY (j + 1)) ((pk W).βY (j + 1)) ((pk W).vac j) dG ∧ ∀ t, ∃ dQ, IsDQ W t j ((pk W).MY (j + 1)) ((pk W).ΛY (j + 1)) ((pk W).βY (j + 1)) ((pk W).vac j) dQ ∧ (f.row t).vP j = comb (pk W).ψ _ _ dQ (comb (pk W).ψ _ _ dG ((pk W).vac j))) ∧ ∀ j h, ∃ dG, IsDG W (j + 1) (pk W).MX (pk W).ΛX (pk W).βX (vacT (pk W) j h) dG ∧ ∀ t, ∃ dQ, IsDQ W t (j + 1) (pk W).MX (pk W).ΛX (pk W).βX (vacT (pk W) j h) dQ ∧ (f.row t).vT j h = comb (pk W).ψ _ _ dQ (comb (pk W).ψ _ _ dG (vacT (pk W) j h)) := by
   first | exact @GlobalTheory.StepSplit.main | exact GlobalTheory.StepSplit.main | (intros; apply GlobalTheory.StepSplit.main <;> assumption)

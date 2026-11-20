@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasLocType
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.mem_span_equivariant_into_of_mem_imgSpan | exact GlobalTheory.mem_span_equivariant_into_of_mem_imgSpan | (intros; apply GlobalTheory.mem_span_equivariant_into_of_mem_imgSpan <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.mem_span_equivariant_into_of_mem_imgSpan` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FInvariantSubmoduleInImageSpan.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.invariant_submodule_in_image_span : ∀ (G U W : Type) [Group G] [AddCommGroup U] [Module ℂ U] [AddCommGroup W] [Module ℂ W]
     (π : Representation ℂ G U) (ρ : Representation ℂ G W), π.IsIrreducible →

@@ -9,8 +9,10 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsSchwartzBr
 open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.SplitWeil.FourierPi
 open scoped Topology
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CosetSumShift.sum_shift | exact GlobalTheory.CosetSumShift.sum_shift | (intros; apply GlobalTheory.CosetSumShift.sum_shift <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CosetSumShift.sum_shift` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FSumIntegralScaledBoxPiCosetRepsShiftInvariant.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.sum_integralScaledBoxPi_coset_reps_shift_invariant : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : Type) [Fintype n] (r R : kˣ) (S : Finset (n → k)), (∀ b ∈ S, b ∈ box n R) → (∀ a ∈ box n R, ∃! b, b ∈ S ∧ a - b ∈ box n r) → ∀ F : (n → k) → ℂ, (∀ t ∈ box n r, ∀ y, F (y + t) = F y) → ∀ a ∈ box n R, ∑ b ∈ S, F (a + b) = ∑ b ∈ S, F b := by
   first | exact @GlobalTheory.CosetSumShift.sum_shift | exact GlobalTheory.CosetSumShift.sum_shift | (intros; apply GlobalTheory.CosetSumShift.sum_shift <;> assumption)

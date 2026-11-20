@@ -11,8 +11,10 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor (Datum Level Moduli Coeff SABM
 open GlobalTheory.FormTies
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FormTies.exists_isLevAct | exact GlobalTheory.FormTies.exists_isLevAct | (intros; apply GlobalTheory.FormTies.exists_isLevAct <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FormTies.exists_isLevAct` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FJetHarmonics%2FExistsLevelChangeActionOnCuspForms.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.exists_levelChangeAction_on_cuspForms : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (w : WeightFamilies.Wt D j) (P : Type) (ℓ : P → (LaMod (T.Q.Dw j) T.Q.l ≃ₗ[𝓞 D.host.E] LaMod (T.Q.Dw j) T.Q.l)), ∃ act, IsLevAct T h j w ℓ act := by
   first | exact @GlobalTheory.FormTies.exists_isLevAct | exact GlobalTheory.FormTies.exists_isLevAct | (intros; apply GlobalTheory.FormTies.exists_isLevAct <;> assumption)

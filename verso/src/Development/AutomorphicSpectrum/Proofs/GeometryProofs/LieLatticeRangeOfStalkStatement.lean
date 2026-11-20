@@ -5,8 +5,10 @@ open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj Alg
 open scoped CategoryTheory.Obj
 open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.LieStalk
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.LieStalk.lat_eq_range | exact GlobalTheory.CompanionTheory.Ar.LieStalk.lat_eq_range | (intros; apply GlobalTheory.CompanionTheory.Ar.LieStalk.lat_eq_range <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.LieStalk.lat_eq_range` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FLieLatticeRangeOfStalk.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.lie_lattice_range_of_stalk : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (h : IsCptGen ξ) (G : Over X) [GrpObj G] (E : Type) [AddCommGroup E] [Module Ω E] (M : LieModel G ξ E) (p : Cpt ξ) (Ep : Type) [AddCommGroup Ep] [Module (regAt ξ p) Ep] (Mp : LieModel G (regPt h p) Ep) (j : Ep →ₗ[regAt ξ p] E), (∀ e, (M.pt (j e)).left = spMap (dualMap (algebraMap (regAt ξ p) Ω)) ≫ (Mp.pt e).left) → (M.lat p : Set E) = Set.range j := by
   first | exact @GlobalTheory.CompanionTheory.Ar.LieStalk.lat_eq_range | exact GlobalTheory.CompanionTheory.Ar.LieStalk.lat_eq_range | (intros; apply GlobalTheory.CompanionTheory.Ar.LieStalk.lat_eq_range <;> assumption)

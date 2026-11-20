@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HasEuclideanBallVolu
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SigmaFiniteOfRealSmul
 open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheory.Count GlobalTheory.FlagMeas GlobalTheory.FlagBase GlobalTheory.LeviIso
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LeviIso.isRadial_prod | exact GlobalTheory.LeviIso.isRadial_prod | (intros; apply GlobalTheory.LeviIso.isRadial_prod <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LeviIso.isRadial_prod` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FHasEuclideanBallVolumeSublevelAsymptoticsProd.lean&line=199#L199)
 -/
 theorem _root_.GlobalTheory.T.hasEuclideanBallVolumeSublevelAsymptotics_prod : ∀ (X Y : Type) [MeasurableSpace X] [MeasurableSpace Y] (μ : Measure X) (ν : Measure Y) [SFinite μ] [SFinite ν] (q : X → ℝ) (p : Y → ℝ) (d e : ℕ), Measurable q → Measurable p → (∀ x, 0 ≤ q x) → (∀ y, 0 ≤ p y) → IsRadial μ q d → IsRadial ν p e → IsRadial (μ.prod ν) (fun z => q z.1 + p z.2) (d + e) := by
   first | exact @GlobalTheory.LeviIso.isRadial_prod | exact GlobalTheory.LeviIso.isRadial_prod | (intros; apply GlobalTheory.LeviIso.isRadial_prod <;> assumption)

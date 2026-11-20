@@ -18,8 +18,10 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open scoped TensorProduct
 open Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.colPerp_conj_place_pair | exact GlobalTheory.colPerp_conj_place_pair | (intros; apply GlobalTheory.colPerp_conj_place_pair <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.colPerp_conj_place_pair` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSplitProjectionOrthogonalColumnFixed.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.split_projection_orthogonal_column_fixed : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (hJ : IsHermND σ J)

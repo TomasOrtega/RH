@@ -8,8 +8,10 @@ open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues GlobalTheory.AdelicScalar GlobalTheory.LiftRows GlobalTheory.LowRow
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LowRow.CuspLift.liftIsCuspC | exact GlobalTheory.LowRow.CuspLift.liftIsCuspC | (intros; apply GlobalTheory.LowRow.CuspLift.liftIsCuspC <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LowRow.CuspLift.liftIsCuspC` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAdelicLiftMemCuspFormMultiplicitySpace.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.adelicLift_mem_cuspForm_multiplicitySpace : GlobalTheory.Published.CuspRapidDecay → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), LiftIsCuspC R F := by
   first | exact @GlobalTheory.LowRow.CuspLift.liftIsCuspC | exact GlobalTheory.LowRow.CuspLift.liftIsCuspC | (intros; apply GlobalTheory.LowRow.CuspLift.liftIsCuspC <;> assumption)

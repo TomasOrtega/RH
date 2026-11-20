@@ -12,8 +12,10 @@ open Formalism.MainNotions.IntegralHeckeForms (TwOK ClsQ HkIdx V0 Fm0 FullRk SgJ
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.TwInputs.exists_inputs_of_hkSup_galHodge | exact _root_.GlobalTheory.TwInputs.exists_inputs_of_hkSup_galHodge | (intros; apply _root_.GlobalTheory.TwInputs.exists_inputs_of_hkSup_galHodge <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TwInputs.exists_inputs_of_hkSup_galHodge` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicArithmetic%2FThetaCorrespondence%2FThetaPairLifts%2FThirdPlaceSeries%2FInputsOfSides.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.exists_inputs_of_galHodgeN_roots : GlobalTheory.Published.ChebotarevDegreeOne → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.ToricDenominator → ∀ (D : D7) (X : RealSide D) (E : IntegralHeckeForms.XD D) (Y : SerSide X E), ∀ G : _root_.GlobalTheory.TwInputs.GalSideAlt D, (∀ i, D.ntw.NonzeroIndexPlace i → ∀ j b, RatRow Y.YS X.geo.v₀ Y.Z.good i j b) → XiBdd Y.Z.rd → (∀ j, GlobalTheory.IndefiniteRowSideFullHecke.LatticesOverBalls.HkSupAt X.core X.R.toRealDat j) → _root_.UpperTheory.GalS.GalHodgeN D G.wd → (∀ (k : Fin 2) (z : ℂ), z ^ (D.host.g k * (D.host.g k - 1)) = 1 → z ∈ (Formalism.L2.Host.embLL0 D).fieldRange) → ∃ N0, Inputs D E N0 := by
   first | exact @_root_.GlobalTheory.TwInputs.exists_inputs_of_hkSup_galHodge | exact _root_.GlobalTheory.TwInputs.exists_inputs_of_hkSup_galHodge | (intros; apply _root_.GlobalTheory.TwInputs.exists_inputs_of_hkSup_galHodge <;> assumption)

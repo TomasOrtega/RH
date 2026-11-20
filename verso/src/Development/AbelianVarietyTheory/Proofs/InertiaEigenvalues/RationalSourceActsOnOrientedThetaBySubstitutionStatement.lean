@@ -9,8 +9,10 @@ open Formalism.IndefR.Lev Formalism.IndefR.Mult Formalism.IndefR.Datum Formalism
 open GlobalTheory.RawLift
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RatSubst.om_rat_left_apply | exact GlobalTheory.RatSubst.om_rat_left_apply | (intros; apply GlobalTheory.RatSubst.om_rat_left_apply <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RatSubst.om_rat_left_apply` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FRationalSourceActsOnOrientedThetaBySubstitution.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.rational_source_acts_on_orientedTheta_by_substitution : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (ω : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsWeilDatumO ψ S T χS χT ω → ∀ f, IsThetaFunO ψ S T f → ∀ γ ∈ GQ S, ∀ x, ω (γ, 1) f x = f (actO S T γ⁻¹ 1 x) := by
   first | exact @GlobalTheory.RatSubst.om_rat_left_apply | exact GlobalTheory.RatSubst.om_rat_left_apply | (intros; apply GlobalTheory.RatSubst.om_rat_left_apply <;> assumption)

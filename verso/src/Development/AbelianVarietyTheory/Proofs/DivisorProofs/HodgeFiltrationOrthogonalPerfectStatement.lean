@@ -10,8 +10,10 @@ open ReciprocityTheory.ChartRestriction.G.Semi (IsAbelianScheme LB)
 open GlobalTheory GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.DeRham GlobalTheory.PDiv GlobalTheory.PtExt
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PoincareKer.mem_fil_left | exact GlobalTheory.PoincareKer.mem_fil_left | (intros; apply GlobalTheory.PoincareKer.mem_fil_left <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PoincareKer.mem_fil_left` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHodgeFiltrationOrthogonalPerfect.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.hodge_filtration_orthogonal_perfect : GlobalTheory.Published.AbelianHodgeDeRham → ∀ (R : Type) [CommRing R] [Nontrivial R] (A B : Over (Sp R)) [GrpObj A] [GrpObj B] (g : ℕ), IsAbelianScheme A → IsAbelianScheme B → SmoothOfRelativeDimension g A.hom → SmoothOfRelativeDimension g B.hom → ∀ P : LB (A ⊗ B).left, AbDual.IsPerfect A B P → ∀ φ : HdR A →ₗ[R] HdR B →ₗ[R] R, AbDual.IsCorrForm (dp0 R) (𝟙 _) A B P φ → ∀ x : HdR A, (∀ y ∈ Fil B, φ x y = 0) → x ∈ Fil A := by
   first | exact @GlobalTheory.PoincareKer.mem_fil_left | exact GlobalTheory.PoincareKer.mem_fil_left | (intros; apply GlobalTheory.PoincareKer.mem_fil_left <;> assumption)

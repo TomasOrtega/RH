@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.AddMonoidHomEqZ
 open NumberField IsDedekindDomain WeierstrassCurve GlobalTheory GlobalTheory.Published GlobalTheory.CMModel Formalism.L2.Th1.F
 open scoped IntermediateField BigOperators Topology
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CMModel.prod_derivWeierstrassP_translates_eq_Δ | exact GlobalTheory.CMModel.prod_derivWeierstrassP_translates_eq_Δ | (intros; apply GlobalTheory.CMModel.prod_derivWeierstrassP_translates_eq_Δ <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CMModel.prod_derivWeierstrassP_translates_eq_Δ` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FProductDerivWeierstrassPHalfPeriodsDiscriminant.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.product_derivWeierstrassP_half_periods_discriminant : ∀ (L : PeriodPair) (a b t : ℂ), a ∉ L.lattice → b ∉ L.lattice → a + b ∉ L.lattice → 2 * a ∈ L.lattice → 2 * b ∈ L.lattice → 2 * t ∉ L.lattice → L.derivWeierstrassP t * L.derivWeierstrassP (t + a) * L.derivWeierstrassP (t + b) * L.derivWeierstrassP (t + (a + b)) = (latticeCurve L).Δ := by
   first | exact @GlobalTheory.CMModel.prod_derivWeierstrassP_translates_eq_Δ | exact GlobalTheory.CMModel.prod_derivWeierstrassP_translates_eq_Δ | (intros; apply GlobalTheory.CMModel.prod_derivWeierstrassP_translates_eq_Δ <;> assumption)

@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CharacterEigensp
 import Development.AbelianVarietyTheory.Definitions.Foundations.OrderedConst
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil ValuativeRel GlobalTheory.PsType
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PsType.eig_compl_aug | exact GlobalTheory.PsType.eig_compl_aug | (intros; apply GlobalTheory.PsType.eig_compl_aug <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PsType.eig_compl_aug` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FCharacterEigenspaceIsComplPrincipalSeriesTwisted.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.characterEigenspace_isCompl_principalSeriesTwistedSpan : ∀ (G V : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup V] [Module ℂ V] (π : Representation ℂ G V), IsSmooth π → ∀ (H : Set G) (θ : G → ℂ), Datum H θ → (∀ u ∈ aug π H θ, IsEig π H θ u → u = 0) ∧ ∀ w : V, ∃ w' : V, IsEig π H θ w' ∧ w - w' ∈ aug π H θ := by
   first | exact @GlobalTheory.PsType.eig_compl_aug | exact GlobalTheory.PsType.eig_compl_aug | (intros; apply GlobalTheory.PsType.eig_compl_aug <;> assumption)

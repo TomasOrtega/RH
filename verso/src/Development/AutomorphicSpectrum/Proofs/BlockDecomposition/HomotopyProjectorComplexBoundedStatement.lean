@@ -4,8 +4,10 @@ import Mathlib
 import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.HodgeWedgeFields.H1CommutesBaseChange
 open CategoryTheory AlgebraicGeometry TensorProduct Opposite MonoidalCategory CartesianMonoidalCategory MonObj ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.CechDR MainStatements.Hodge
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.PerfRetract.exists_finite_projective_model | exact GlobalTheory.CompanionTheory.PerfRetract.exists_finite_projective_model | (intros; apply GlobalTheory.CompanionTheory.PerfRetract.exists_finite_projective_model <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.PerfRetract.exists_finite_projective_model` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FHomotopyProjectorComplexBounded.lean&line=204#L204)
 -/
 theorem _root_.GlobalTheory.T.homotopy_projector_complex_bounded : ∀ {R : Type} [CommRing R] [IsNoetherianRing R] (E : ℕ → Type) [∀ n, AddCommGroup (E n)]
     [∀ n, Module R (E n)] [∀ n, Module.Flat R (E n)] (d : ∀ n, E n →ₗ[R] E (n + 1))

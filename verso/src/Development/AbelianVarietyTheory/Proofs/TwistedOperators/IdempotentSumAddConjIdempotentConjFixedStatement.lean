@@ -11,8 +11,10 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IdemConjSum.idemSum_add_conj_idem | exact GlobalTheory.IdemConjSum.idemSum_add_conj_idem | (intros; apply GlobalTheory.IdemConjSum.idemSum_add_conj_idem <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IdemConjSum.idemSum_add_conj_idem` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FIdempotentSumAddConjIdempotentConjFixed.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.idempotentSum_add_conj_idempotent_conj_fixed : ∀ {D : D7} (Z : Finset (Pl D.host.E)) (e : AE D), IsIdemSum e Z → (e + cA D e) * (e + cA D e) = e + cA D e ∧ cA D (e + cA D e) = e + cA D e := by
   first | exact @GlobalTheory.IdemConjSum.idemSum_add_conj_idem | exact GlobalTheory.IdemConjSum.idemSum_add_conj_idem | (intros; apply GlobalTheory.IdemConjSum.idemSum_add_conj_idem <;> assumption)

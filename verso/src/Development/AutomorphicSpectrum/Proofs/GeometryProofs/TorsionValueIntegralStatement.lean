@@ -9,8 +9,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GroundTheory.Heights₂.Heights TensorProduct
 open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Sl
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Sl.IntTors.integral_torsVal | exact GlobalTheory.CompanionTheory.Ar.Sl.IntTors.integral_torsVal | (intros; apply GlobalTheory.CompanionTheory.Ar.Sl.IntTors.integral_torsVal <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Sl.IntTors.integral_torsVal` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FTorsionValueIntegral.lean&line=727#L727)
 -/
 theorem _root_.GlobalTheory.T.torsion_value_integral : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (L : Type) [Field L] [NumberField L] (D : PPData H L) (th : Out.H0 D.t.PP.L 1) (K : Type) [Field K] [NumberField K] (c : 𝓞 L →+* K) (y : Over.mk (spMap c) ⟶ D.t.G) (N : ℕ) (T : K), TorsVal D.t.PP th y N T → IsIntegral ℤ T := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Sl.IntTors.integral_torsVal | exact GlobalTheory.CompanionTheory.Ar.Sl.IntTors.integral_torsVal | (intros; apply GlobalTheory.CompanionTheory.Ar.Sl.IntTors.integral_torsVal <;> assumption)

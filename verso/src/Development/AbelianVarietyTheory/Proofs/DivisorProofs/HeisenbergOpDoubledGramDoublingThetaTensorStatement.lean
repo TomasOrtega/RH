@@ -8,8 +8,10 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DblHeis.heisOF_dblG_deltaT | exact GlobalTheory.DblHeis.heisOF_dblG_deltaT | (intros; apply GlobalTheory.DblHeis.heisOF_dblG_deltaT <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DblHeis.heisOF_dblG_deltaT` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHeisenbergOpDoubledGramDoublingThetaTensor.lean&line=44#L44)
 -/
 theorem _root_.GlobalTheory.T.heisenbergOp_doubledGram_doublingThetaTensor : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

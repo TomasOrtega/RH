@@ -21,8 +21,10 @@ open GlobalTheory.ConstRatio (NegIdx Factor)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SqTower.StageExists.stage_exists | exact GlobalTheory.SqTower.StageExists.stage_exists | (intros; apply GlobalTheory.SqTower.StageExists.stage_exists <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SqTower.StageExists.stage_exists` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSignatureRigidifications.lean&line=80#L80)
 -/
 theorem _root_.GlobalTheory.T.self_dual_lattice_rank_bound : GlobalTheory.FunPr.Hypotheses₂ → GBig fun {D} T _ _ G _ _ _ _ => ∀ (W : G.Weil), IsStdChar D W.ψ (-1) → ∀ (i j : Fin D.R.m) (p q : ℕ)
     (A A' WW : HSp D) (ΛA : Submodule (𝓞 D.host.E) (Fin A.rank → D.host.E)) (ΛA' : Submodule (𝓞 D.host.E) (Fin A'.rank → D.host.E))

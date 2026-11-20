@@ -8,8 +8,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.HTLat GlobalTheory.Published GlobalTheory.Published.AbVarRed IsLocalRing
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HTLat.Tate.eq_one_of_pow_eq_one_of_lev_two | exact GlobalTheory.HTLat.Tate.eq_one_of_pow_eq_one_of_lev_two | (intros; apply GlobalTheory.HTLat.Tate.eq_one_of_pow_eq_one_of_lev_two <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HTLat.Tate.eq_one_of_pow_eq_one_of_lev_two` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FEqOneOfFiniteOrderOfTrivialModSqTateModule.lean&line=184#L184)
 -/
 theorem _root_.GlobalTheory.T.eq_one_of_finite_order_of_trivial_mod_sq_tateModule : ∀ (l : ℕ) [Fact l.Prime] (M : Type) [CommGroup M] (u : Module.End ℤ_[l] (Tate l M)) (E : ℕ), 0 < E → u ^ E = 1 → (∀ t, (u t).lev 2 = t.lev 2) → u = 1 := by
   first | exact @GlobalTheory.HTLat.Tate.eq_one_of_pow_eq_one_of_lev_two | exact GlobalTheory.HTLat.Tate.eq_one_of_pow_eq_one_of_lev_two | (intros; apply GlobalTheory.HTLat.Tate.eq_one_of_pow_eq_one_of_lev_two <;> assumption)

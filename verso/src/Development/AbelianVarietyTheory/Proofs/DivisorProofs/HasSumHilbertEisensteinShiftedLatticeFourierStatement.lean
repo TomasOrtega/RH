@@ -7,8 +7,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization (Emb Frac latM q
 open GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates (iterD partialD)
 open scoped Classical MatrixGroups nonZeroDivisors
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HilbFam.hasSum_split_shift | exact GlobalTheory.HilbFam.hasSum_split_shift | (intros; apply GlobalTheory.HilbFam.hasSum_split_shift <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HilbFam.hasSum_split_shift` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHasSumHilbertEisensteinShiftedLatticeFourier.lean&line=31#L31)
 -/
 theorem _root_.GlobalTheory.T.hasSum_hilbertEisenstein_shiftedLattice_fourier : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (k : ℕ) (𝔞 𝔟 : Frac F) (a₀ : ℂ) (a : F → ℂ) (x : F) (w : Emb F → ℂ), Even k → IsCoef k 𝔞 𝔟 a₀ a → w ∈ upperHalf F → HasSum (fun ξ : F ↦ a ξ * eTr (ξ * x) * qPow ξ w) ((cK F k : ℂ) * gval k (split 𝔞 𝔟 x) w 1 / ((2 * Real.pi * Complex.I) ^ Module.finrank ℚ F * (omegaFactor 𝔞 : ℂ)) ^ k) := by
   first | exact @GlobalTheory.HilbFam.hasSum_split_shift | exact GlobalTheory.HilbFam.hasSum_split_shift | (intros; apply GlobalTheory.HilbFam.hasSum_split_shift <;> assumption)

@@ -10,8 +10,10 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Form
 open scoped TensorProduct Classical ComplexConjugate
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AdTh.LevelLaw.omega_level_vP | exact GlobalTheory.AdTh.LevelLaw.omega_level_vP | (intros; apply GlobalTheory.AdTh.LevelLaw.omega_level_vP <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AdTh.LevelLaw.omega_level_vP` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRealisationNonarchimedeanCompat.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.realisation_nonarchimedean_compat : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : Formalism.L2.DIV.FamIn D.what₂.LL G Pl0 T0 D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), R.Char F → ∀ (i : Fin D.R.m) (t : T0) (k : GA D (Vc D i)), VStd D i → k ∈ GfC (Vc D i) → ∀ hk : fin (Vc D i) k ∈ levJ R i t, R.ωP i t (k, 1) (R.vP i t) = (((levEnv (Vc D i) (R.βV i) (R.datVt i t)).χ ⟨fin (Vc D i) k, hk⟩ : ℂˣ) : ℂ)⁻¹ • R.vP i t := by
   first | exact @GlobalTheory.AdTh.LevelLaw.omega_level_vP | exact GlobalTheory.AdTh.LevelLaw.omega_level_vP | (intros; apply GlobalTheory.AdTh.LevelLaw.omega_level_vP <;> assumption)

@@ -8,8 +8,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.De
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BKReal GlobalTheory.Per GlobalTheory.BSP GlobalTheory.MemLoc GlobalTheory.Pst GlobalTheory.BKLim GlobalTheory.Cong Matrix
 open scoped Formalism.Per NNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BSP.galois_moves_flat_by_unit_root | exact GlobalTheory.BSP.galois_moves_flat_by_unit_root | (intros; apply GlobalTheory.BSP.galois_moves_flat_by_unit_root; all_goals assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BSP.galois_moves_flat_by_unit_root` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FExistsGaloisMovesFlatByUnitRoot.lean&line=32#L32)
 -/
 theorem _root_.GlobalTheory.T.exists_galois_moves_flat_by_unit_root : ∀ (l : ℕ) [Fact l.Prime], (∀ (x : ℂ_[l]) (m : ℕ), 0 < m → x ^ m = 1 → ∃ z : Om l, (z : ℂ_[l]) = x) → ∀ (K : FinExt l) (bk : BK K) (e : OCb l), e.untilt = 1 → ∃ g : ↥(GK K), Per.σF (g : GQ l) bk.flat = e * bk.flat := by
   first | exact @GlobalTheory.BSP.galois_moves_flat_by_unit_root | exact GlobalTheory.BSP.galois_moves_flat_by_unit_root | (intros; apply GlobalTheory.BSP.galois_moves_flat_by_unit_root; all_goals assumption)

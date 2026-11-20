@@ -12,8 +12,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Core.Rk.IP
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.constant_one_mem_cuspForms_of_wittIndex_zero | exact GlobalTheory.constant_one_mem_cuspForms_of_wittIndex_zero | (intros; apply GlobalTheory.constant_one_mem_cuspForms_of_wittIndex_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.constant_one_mem_cuspForms_of_wittIndex_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FConstantOneMemCuspFormsOfWittIndexZero.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.one_mem_A0_of_wittIndex_eq_zero : ∀ {D : D7} {θ : InfFam D} {A B : HSp D} {sA : RealMat A} {sB : RealMat B} {t : ℕ} {cA : CptF A}, HidaSetting θ A B sA sB t cA → wittIndex A = 0 → (fun _ : GA D A => (1 : ℂ)) ∈ A0 θ A cA := by
   first | exact @GlobalTheory.constant_one_mem_cuspForms_of_wittIndex_zero | exact GlobalTheory.constant_one_mem_cuspForms_of_wittIndex_zero | (intros; apply GlobalTheory.constant_one_mem_cuspForms_of_wittIndex_zero <;> assumption)

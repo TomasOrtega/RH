@@ -10,8 +10,10 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AddJFintype
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.FlagStep
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.FlagStep.exists_tensor_equiv_of_semilinear | exact GlobalTheory.CompanionTheory.Ar.FlagStep.exists_tensor_equiv_of_semilinear | (intros; apply GlobalTheory.CompanionTheory.Ar.FlagStep.exists_tensor_equiv_of_semilinear <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.FlagStep.exists_tensor_equiv_of_semilinear` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FTensorEquivOfBasisExtension.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.tensor_equiv_of_basis_extension : ∀ (Ω₀ Ω : Type) [Field Ω₀] [Field Ω] [Algebra Ω₀ Ω] (V V' : Type) [AddCommGroup V]
     [Module Ω₀ V] [AddCommGroup V'] [Module Ω V'] (j : V →+ V'),

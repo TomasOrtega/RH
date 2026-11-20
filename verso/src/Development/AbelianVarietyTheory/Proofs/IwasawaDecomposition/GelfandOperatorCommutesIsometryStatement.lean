@@ -6,8 +6,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mem.Isom.IsoMat.gelf_tr | exact GlobalTheory.Mem.Isom.IsoMat.gelf_tr | (intros; apply GlobalTheory.Mem.Isom.IsoMat.gelf_tr <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mem.Isom.IsoMat.gelf_tr` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FGelfandOperatorCommutesIsometry.lean&line=69#L69)
 -/
 theorem _root_.GlobalTheory.T.gelfand_operator_commutes_isometry : ∀ (D : D7) (V V' : HSp D) (I : GlobalTheory.Mem.Isom.IsoMat V V') (θ : InfF D), IsInfFam θ → ∀ (τ : D.what₂.Tau) (k : ℕ) (φ : GA D V → ℂ), φ ∈ GlobalTheory.Mem.AutSpace.SmFun θ V → gelf θ V' τ k (I.tr φ) = I.tr (gelf θ V τ k φ) := by
   first | exact @GlobalTheory.Mem.Isom.IsoMat.gelf_tr | exact GlobalTheory.Mem.Isom.IsoMat.gelf_tr | (intros; apply GlobalTheory.Mem.Isom.IsoMat.gelf_tr <;> assumption)

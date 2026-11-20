@@ -9,8 +9,10 @@ open GlobalTheory.PRep (IsAdmissible)
 open GlobalTheory.TrMult
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AuxiliarySplitPlace.exists_auxiliarySplitPlace_notMem_finset | exact GlobalTheory.AuxiliarySplitPlace.exists_auxiliarySplitPlace_notMem_finset | (intros; apply GlobalTheory.AuxiliarySplitPlace.exists_auxiliarySplitPlace_notMem_finset <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AuxiliarySplitPlace.exists_auxiliarySplitPlace_notMem_finset` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsAuxiliarySplitPlaceNotMemFinsetAlt.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.exists_splitPlaceHermitianSpace_notMem_finset : ∀ (D : D7) (V : HSp D) (S : Finset (HeightOneSpectrum (𝓞 D.host.F))), ∃ U : AuxiliaryPlaceHermitianSpace V, U.u ∉ S := by
   first | exact @GlobalTheory.AuxiliarySplitPlace.exists_auxiliarySplitPlace_notMem_finset | exact GlobalTheory.AuxiliarySplitPlace.exists_auxiliarySplitPlace_notMem_finset | (intros; apply GlobalTheory.AuxiliarySplitPlace.exists_auxiliarySplitPlace_notMem_finset <;> assumption)

@@ -13,8 +13,10 @@ open Formalism.UG (IsUnifV qV IsUnramInv GU KU IsInertAt Hecke IsCommensurated T
 open Formalism.MainNotions.SchurIrreducible (IsSplit)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChainOnto.fock_vacFin_off | exact GlobalTheory.ChainOnto.fock_vacFin_off | (intros; apply GlobalTheory.ChainOnto.fock_vacFin_off <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChainOnto.fock_vacFin_off` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FFockVectorsLatticeVacuaOffFiniteSet.lean&line=78#L78)
 -/
 theorem _root_.GlobalTheory.T.fock_vectors_lattice_vacua_off_finite_set : ∀ D : D7, ForStep D fun c _ s s' p => ∀ φ, ∀ v ∉ c.S, VacFin c.ψ s.V s'.V v (p.pt φ) := by
   first | exact @GlobalTheory.ChainOnto.fock_vacFin_off | exact GlobalTheory.ChainOnto.fock_vacFin_off | (intros; apply GlobalTheory.ChainOnto.fock_vacFin_off <;> assumption)

@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DifferentiableSq
 open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.NormSum GlobalTheory.EvenTheta
 open scoped BigOperators
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EvenTheta.FunEq.intSer_of_funEq_padic | exact GlobalTheory.EvenTheta.FunEq.intSer_of_funEq_padic | (intros; apply GlobalTheory.EvenTheta.FunEq.intSer_of_funEq_padic <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EvenTheta.FunEq.intSer_of_funEq_padic` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FPowerSeriesCoeffNormLeOneFunctionalEquationPadic.lean&line=112#L112)
 -/
 theorem _root_.GlobalTheory.T.powerSeriesCoeffNormLeOne_functional_equation_padic : ∀ (p : ℕ) [Fact p.Prime] (f h A B : PowerSeries ℂ_[p]) (N : ℕ), PowerSeries.constantCoeff f = 1 → IntSer h → PowerSeries.constantCoeff h = 0 → ‖PowerSeries.coeff 1 h‖ = 1 → ‖(N : ℂ_[p])‖ < 1 → IntSer A → PowerSeries.constantCoeff A = 1 → IntSer B → PowerSeries.constantCoeff B = 1 → (PowerSeries.subst h f : PowerSeries ℂ_[p]) * A = f ^ N * B → IntSer f := by
   first | exact @GlobalTheory.EvenTheta.FunEq.intSer_of_funEq_padic | exact GlobalTheory.EvenTheta.FunEq.intSer_of_funEq_padic | (intros; apply GlobalTheory.EvenTheta.FunEq.intSer_of_funEq_padic <;> assumption)

@@ -7,8 +7,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle (Tri)
 open GlobalTheory.ConstRatio (Factor)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TopDict.top_dictionary | exact GlobalTheory.TopDict.top_dictionary | (intros; apply GlobalTheory.TopDict.top_dictionary <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TopDict.top_dictionary` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGridFramesDoublingPolynomialExists.lean&line=237#L237)
 -/
 theorem _root_.GlobalTheory.T.grid_frames_doubling_polynomial_exists : GlobalTheory.FunPr.Hypotheses₂ →
   GBig fun {D} T _ _ G _ _ _ _ => ∀ (W : G.Weil) (i j : Fin D.R.m) (X : TriG G i j), TopGrid W i j X → IsStageC W i j (pp D j) (qq D j) X →

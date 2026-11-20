@@ -10,8 +10,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.AbLaw
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CubeGlue.triv_of_triv_faces | exact GlobalTheory.CubeGlue.triv_of_triv_faces | (intros; apply GlobalTheory.CubeGlue.triv_of_triv_faces <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CubeGlue.triv_of_triv_faces` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUnitaryExistence%2FTheoremOfCubeTwoProjectiveFactors.lean&line=108#L108)
 -/
 theorem _root_.GlobalTheory.T.theorem_of_cube_two_projective_factors : ∀ (k : Type) [Field k] (X Y Z : Over (Sp k)) (x₀ : 𝟙_ (Over (Sp k)) ⟶ X) (y₀ : 𝟙_ (Over (Sp k)) ⟶ Y) (z₀ : 𝟙_ (Over (Sp k)) ⟶ Z), Smooth X.hom → Smooth Y.hom → IsProper X.hom → IsProper Y.hom → IsProjBy X.hom → IsProjBy Y.hom → GeometricallyIntegral X.hom → GeometricallyIntegral Y.hom → ConnectedSpace Z.left → ∀ M : LB (X ⊗ Y ⊗ Z).left, M.IsLB → Triv (M.pull (lift (toUnit (Y ⊗ Z) ≫ x₀) (𝟙 (Y ⊗ Z))).left) → Triv (M.pull (lift (fst X Z) (lift (toUnit (X ⊗ Z) ≫ y₀) (snd X Z))).left) → Triv (M.pull (lift (fst X Y) (lift (snd X Y) (toUnit (X ⊗ Y) ≫ z₀))).left) → Triv M := by
   first | exact @GlobalTheory.CubeGlue.triv_of_triv_faces | exact GlobalTheory.CubeGlue.triv_of_triv_faces | (intros; apply GlobalTheory.CubeGlue.triv_of_triv_faces <;> assumption)

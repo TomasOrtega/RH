@@ -15,8 +15,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle (Tri)
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BotDict.fst_isFinF | exact GlobalTheory.BotDict.fst_isFinF | (intros; apply GlobalTheory.BotDict.fst_isFinF <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BotDict.fst_isFinF` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSeesawTripleFirstFiniteDatumStandardIsVacuumDatu.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.seesawTriple_firstFiniteDatum_standard_isVacuumDatum : ∀ {D : D7} {T : Type} {A A' WW : HSp D} (X : Tri T A A' WW) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (α β : T → ((AE D)ˣ →* Circle)) (νH : T → Formalism.L2.Host.HChar D.host.E) (S : T → Finset (HeightOneSpectrum (𝓞 D.host.E))) (hA : X.rA.IsStd) (hW : X.rW.IsStd), X.Is ψ θ α β νH S → ∀ t, IsFinF ψ θ true (GlobalTheory.BotDict.stdFr A hA.1) (GlobalTheory.BotDict.stdFr WW hW.1) (X.f t) := by
   first | exact @GlobalTheory.BotDict.fst_isFinF | exact GlobalTheory.BotDict.fst_isFinF | (intros; apply GlobalTheory.BotDict.fst_isFinF <;> assumption)

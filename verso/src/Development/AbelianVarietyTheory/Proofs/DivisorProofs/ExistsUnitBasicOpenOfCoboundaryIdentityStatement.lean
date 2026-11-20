@@ -8,8 +8,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.LBDescent
 open TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LBDescent.coboundary_unit_basicOpen | exact GlobalTheory.LBDescent.coboundary_unit_basicOpen | (intros; apply GlobalTheory.LBDescent.coboundary_unit_basicOpen <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LBDescent.coboundary_unit_basicOpen` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsUnitBasicOpenOfCoboundaryIdentity.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.exists_unit_basicOpen_of_coboundary_identity : ∀ {X Y : Scheme.{0}} (f : X ⟶ Y) (V V₀ : Y.Opens)
     (h : pullback.fst f f ⁻¹ᵁ f ⁻¹ᵁ V₀ ≤ pullback.snd f f ⁻¹ᵁ f ⁻¹ᵁ V₀)

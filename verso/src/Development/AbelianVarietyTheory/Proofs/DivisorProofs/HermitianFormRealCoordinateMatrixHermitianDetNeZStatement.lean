@@ -7,8 +7,10 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open GlobalTheory.RealWeil GlobalTheory.RealWeilF
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RealWeilF.HMF_herm_det | exact GlobalTheory.RealWeilF.HMF_herm_det | (intros; apply GlobalTheory.RealWeilF.HMF_herm_det <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RealWeilF.HMF_herm_det` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHermitianFormRealCoordinateMatrixHermitianDetNeZ.lean&line=65#L65)
 -/
 theorem _root_.GlobalTheory.T.hermitianFormRealCoordinateMatrix_hermitian_det_ne_zero : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E), B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

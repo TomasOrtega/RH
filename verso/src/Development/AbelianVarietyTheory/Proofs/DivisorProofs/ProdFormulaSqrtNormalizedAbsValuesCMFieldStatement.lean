@@ -5,8 +5,10 @@ open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep 
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ProdForm.absHalf_prodFormula | exact GlobalTheory.ProdForm.absHalf_prodFormula | (intros; apply GlobalTheory.ProdForm.absHalf_prodFormula <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ProdForm.absHalf_prodFormula` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FProdFormulaSqrtNormalizedAbsValuesCMField.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.prodFormula_sqrt_normalizedAbsValues_CMField : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (x : E), x ≠ 0 → (Function.mulSupport fun w : Pl E => absHalf w (algebraMap E (w.adicCompletion E) x)).Finite ∧ (∏ᶠ w : Pl E, absHalf w (algebraMap E (w.adicCompletion E) x)) * ∏ v : InfinitePlace E, (‖v.embedding x‖ : ℂ) = 1 := by
   first | exact @GlobalTheory.ProdForm.absHalf_prodFormula | exact GlobalTheory.ProdForm.absHalf_prodFormula | (intros; apply GlobalTheory.ProdForm.absHalf_prodFormula <;> assumption)

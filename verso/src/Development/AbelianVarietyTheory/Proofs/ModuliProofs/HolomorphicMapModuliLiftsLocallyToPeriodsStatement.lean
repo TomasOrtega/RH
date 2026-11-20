@@ -8,8 +8,10 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LocLift.holomorphic_map_lifts_to_periods | exact GlobalTheory.LocLift.holomorphic_map_lifts_to_periods | (intros; apply GlobalTheory.LocLift.holomorphic_map_lifts_to_periods <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LocLift.holomorphic_map_lifts_to_periods` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FModuliProofs%2FHolomorphicMapModuliLiftsLocallyToPeriods.lean&line=135#L135)
 -/
 theorem _root_.GlobalTheory.T.holomorphic_map_moduli_lifts_locally_to_periods : ThetaUnifAV → Out.Laws → (∀ (k
     : Type) [Field k] (X : Scheme.{0}) (s

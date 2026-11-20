@@ -14,8 +14,10 @@ open Formalism.BasicNotions Formalism.L2.Pj GlobalTheory.Toroidal GlobalTheory.S
 open scoped ContDiff ComplexOrder ENNReal Classical
 open GlobalTheory.HorComp
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HorComp.OneComp.component_unique | exact GlobalTheory.HorComp.OneComp.component_unique | (intros; apply GlobalTheory.HorComp.OneComp.component_unique <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HorComp.OneComp.component_unique` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAlgebraicChartIrreducibleComponentLocal.lean&line=103#L103)
 -/
 theorem _root_.GlobalTheory.T.algebraic_chart_irreducible_component_local : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (σ : κ.c.F →+* ℂ) (Y : Scheme.{0}) [IsIntegral Y] (q : Y ⟶ Sp (𝓞 κ.c.F)) (jm : Y ⟶ s.T.Z.X) [IsClosedImmersion jm] (hq : jm ≫ s.T.Z.s = q) (n : ℕ), IsArithVar q n → ∀ (ch : AlgChart q (σ.comp (algebraMap (𝓞 κ.c.F) κ.c.F)) n) (y : CxPts q (σ.comp (algebraMap (𝓞 κ.c.F) κ.c.F))), y ∈ ch.e.source → ∀ C ∈ irreducibleComponents (cxFib (algebraMap (𝓞 κ.c.F) κ.c.F) q σ), ∀ C' ∈ irreducibleComponents (cxFib (algebraMap (𝓞 κ.c.F) κ.c.F) q σ), up jm hq σ y ∈ ptsOf s.T.Z (toGenCx jm hq σ '' C) → up jm hq σ y ∈ ptsOf s.T.Z (toGenCx jm hq σ '' C') → C = C' := by
   first | exact @GlobalTheory.HorComp.OneComp.component_unique | exact GlobalTheory.HorComp.OneComp.component_unique | (intros; apply GlobalTheory.HorComp.OneComp.component_unique <;> assumption)

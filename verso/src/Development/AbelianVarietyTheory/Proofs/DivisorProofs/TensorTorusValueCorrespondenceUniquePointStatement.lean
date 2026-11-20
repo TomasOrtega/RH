@@ -13,8 +13,10 @@ open GlobalTheory.Mum
 open GlobalTheory.Ex GlobalTheory.Mum.TensTor
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.TensTor.gtRelV_unique | exact GlobalTheory.Mum.TensTor.gtRelV_unique | (intros; apply GlobalTheory.Mum.TensTor.gtRelV_unique <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.TensTor.gtRelV_unique` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTensorTorusValueCorrespondenceUniquePoint.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.tensorTorusValueCorrespondence_unique_point : ∀ (F : Type) [Field F] (N N' : NumD F) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) (φ : N'.A → Fin r → N.A) (e : N'.X → Fin r → N.X) (wv : N'.A → F), TensFacts W φ e wv → ∀ (v' u' : N'.Gt) (vs : Fin r → N.Gt), GtRelV W φ e wv v' vs → GtRelV W φ e wv u' vs → v' = u' := by
   first | exact @GlobalTheory.Mum.TensTor.gtRelV_unique | exact GlobalTheory.Mum.TensTor.gtRelV_unique | (intros; apply GlobalTheory.Mum.TensTor.gtRelV_unique <;> assumption)

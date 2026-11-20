@@ -10,8 +10,10 @@ open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.CuspMult
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PolUnitary.conj_eq_dual | exact GlobalTheory.PolUnitary.conj_eq_dual | (intros; apply GlobalTheory.PolUnitary.conj_eq_dual <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PolUnitary.conj_eq_dual` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDualPolynomialCoefficientsEq.lean&line=61#L61)
 -/
 theorem _root_.GlobalTheory.T.dual_polynomial_coefficients_eq : ∀ (q r : ℕ) (f : ℂ[X]) (a w : ℕ → ℂ), q ≠ 0 → f.coeff 0 = 1 → f.natDegree ≤ r → (∀ k, a k = (f.map (starRingEnd ℂ)).coeff k / ((-1) ^ k * (q : ℂ) ^ (k * (k - 1) / 2))) → (∀ k, w k = (dualPoly ((q : ℂ) ^ (r - 1)) f).coeff k / ((-1) ^ k * (q : ℂ) ^ (k * (k - 1) / 2))) → ((a r ≠ 0 ∧ ∀ k ≤ r, star (a k) * a r = a (r - k)) ∨ (w r ≠ 0 ∧ ∀ k ≤ r, star (w k) * w r = w (r - k))) → ∀ k ≤ r, a k = w k := by
   first | exact @GlobalTheory.PolUnitary.conj_eq_dual | exact GlobalTheory.PolUnitary.conj_eq_dual | (intros; apply GlobalTheory.PolUnitary.conj_eq_dual <;> assumption)

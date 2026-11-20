@@ -6,8 +6,10 @@ import Formalism.LocalToGlobal.GroupLattices.AdmissibleAtGeneratorPlaces
 import Formalism.SharpRestriction.AdmissibleParameterJoins.GandSaj
 open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.Fc GlobalTheory.Mem.Top GlobalTheory.AtG
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AtG.jetTableBound_constantOne_of_chainAgreement | exact GlobalTheory.AtG.jetTableBound_constantOne_of_chainAgreement | (intros; apply GlobalTheory.AtG.jetTableBound_constantOne_of_chainAgreement <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AtG.jetTableBound_constantOne_of_chainAgreement` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FJetTableBoundConstantOneOfChainAgreement.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.propositionCOneUsedTuples_one_of_tiesAt_sizeAt : JetSplitAmb → ∀ (D : D7) (L : SizeData₂ D) (EX : ErrX D) (Dx : DivX D), (∀ μ, (μ = D.what₂.mu0 ∨ ∃ w, μ = D.what₂.muAt w) → TiesAt D EX Dx μ) → (∀ i, GlobalTheory.IndefiniteRowSideFullHecke.BadPrimesPeriodBound.SizeAt D i) → Formalism.L2.G.Adm2InU.UsedTuplesBoundByConstant D L EX 1 := by
   first | exact @GlobalTheory.AtG.jetTableBound_constantOne_of_chainAgreement | exact GlobalTheory.AtG.jetTableBound_constantOne_of_chainAgreement | (intros; apply GlobalTheory.AtG.jetTableBound_constantOne_of_chainAgreement <;> assumption)

@@ -7,8 +7,10 @@ import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.LatNormGrL
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
 open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar NumberField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.chart_regAt_localisation | exact GlobalTheory.CompanionTheory.Ar.chart_regAt_localisation | (intros; apply GlobalTheory.CompanionTheory.Ar.chart_regAt_localisation <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.chart_regAt_localisation` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FRegAtChartLocalization.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.regAt_chart_localization : ∀ (o : Type) [CommRing o] (Ω : Type) [Field Ω] [Algebra o Ω] (κ : Type) [Finite κ] (x : κ → Ω) (M : PModel o x) (c : κ) (p : Cpt M.ξ), InChart M.ξ x c p → (∀ a ∈ chRing o x c, a ∈ regAt M.ξ p) ∧ ∀ a : Ω, a ∈ regAt M.ξ p ↔ ∃ u ∈ chRing o x c, ∃ v ∈ chRing o x c, unitAt M.ξ p v ∧ a = u / v := by
   first | exact @GlobalTheory.CompanionTheory.Ar.chart_regAt_localisation | exact GlobalTheory.CompanionTheory.Ar.chart_regAt_localisation | (intros; apply GlobalTheory.CompanionTheory.Ar.chart_regAt_localisation <;> assumption)

@@ -11,8 +11,10 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 open GlobalTheory.Doubling (absE)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IdeleArchBound.lintegral_stab_lt_top | exact GlobalTheory.IdeleArchBound.lintegral_stab_lt_top | (intros; apply GlobalTheory.IdeleArchBound.lintegral_stab_lt_top <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IdeleArchBound.lintegral_stab_lt_top` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIdeleStabilizerDecayIntegralFinite.lean&line=379#L379)
 -/
 theorem _root_.GlobalTheory.T.idele_stabilizer_decay_integral_finite : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (s : ℕ), 1 ≤ s →
     ∃ N : ℕ, ∀ μ : Measure (AE F E)ˣ, μ.IsHaarMeasure →

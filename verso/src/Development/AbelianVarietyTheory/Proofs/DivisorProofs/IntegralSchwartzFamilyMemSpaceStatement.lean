@@ -13,8 +13,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE absEv unitFin ideleAt)
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.fdint_mem_finiteDimensional | exact GlobalTheory.fdint_mem_finiteDimensional | (intros; apply GlobalTheory.fdint_mem_finiteDimensional <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.fdint_mem_finiteDimensional` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIntegralSchwartzFamilyMemSpace.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.integral_schwartz_family_mem_space : ∀ {D Ω₁ Ω₂ : Type} [NormedAddCommGroup D] [NormedSpace ℝ D] [MeasurableSpace Ω₁] [MeasurableSpace Ω₂]
     (m₁ : Measure Ω₁) (m₂ : Measure Ω₂) [IsFiniteMeasure m₁] [SFinite m₂] (V : Submodule ℂ (SchwartzMap D ℂ)),

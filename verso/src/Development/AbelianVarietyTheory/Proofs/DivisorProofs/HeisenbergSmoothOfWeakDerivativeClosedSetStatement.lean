@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousFourierGa
 open MeasureTheory Complex Matrix GlobalTheory.RealWeil
 open scoped RealInnerProductSpace ContDiff Real ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RealWeil.sm_of_weak_deriv_closed | exact GlobalTheory.RealWeil.sm_of_weak_deriv_closed | (intros; apply GlobalTheory.RealWeil.sm_of_weak_deriv_closed <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RealWeil.sm_of_weak_deriv_closed` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHeisenbergSmoothOfWeakDerivativeClosedSet.lean&line=32#L32)
 -/
 theorem _root_.GlobalTheory.T.heisenberg_smooth_of_weak_derivative_closed_set : ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] (B : Type) [NormedAddCommGroup B] [NormedSpace ℂ B] [CompleteSpace B] (om : V →L[ℝ] V →L[ℝ] ℝ) (ρ : V → B →L[ℂ] B), IsHeis (fun x y => om x y) ρ → ∀ (X : Type) (l : X → B →L[ℂ] ℂ), (∀ x b, ‖l x b‖ ≤ ‖b‖) → (∀ b (C : ℝ), 0 ≤ C → (∀ x, ‖l x b‖ ≤ C) → ‖b‖ ≤ C) → (∀ x v, ∃ (a : ℂ) (x' : X), ∀ b, l x (ρ v b) = a * l x' b) → ∀ Θ : Set B, (∀ f ∈ Θ, ∀ x, Differentiable ℝ fun v => l x (ρ v f)) → (∀ f ∈ Θ, ∀ z : V, ∃ f' ∈ Θ, ∀ x, HasDerivAt (fun t : ℝ => l x (ρ (t • z) f)) (l x f') 0) → ∀ f ∈ Θ, Sm ρ f := by
   first | exact @GlobalTheory.RealWeil.sm_of_weak_deriv_closed | exact GlobalTheory.RealWeil.sm_of_weak_deriv_closed | (intros; apply GlobalTheory.RealWeil.sm_of_weak_deriv_closed <;> assumption)

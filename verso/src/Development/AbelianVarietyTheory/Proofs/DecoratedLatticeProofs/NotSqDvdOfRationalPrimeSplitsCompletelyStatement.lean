@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnitaryDatumLevelPrimeSplitDegreeGramFacts
 open NumberField IsDedekindDomain
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.St.G.SplitUnram.not_sq_dvd_of_splitsIn | exact GlobalTheory.St.G.SplitUnram.not_sq_dvd_of_splitsIn | (intros; apply GlobalTheory.St.G.SplitUnram.not_sq_dvd_of_splitsIn <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.St.G.SplitUnram.not_sq_dvd_of_splitsIn` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FNotSqDvdOfRationalPrimeSplitsCompletely.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.not_sq_dvd_of_rationalPrimeSplitsCompletely : ∀ (E : Type) [Field E] [NumberField E] (T : ℕ), T.Prime → GlobalTheory.St.G.SplitsIn E T → ∀ w : HeightOneSpectrum (𝓞 E), (T : 𝓞 E) ∈ w.asIdeal → ¬ w.asIdeal ^ 2 ∣ Ideal.span {(T : 𝓞 E)} := by
   first | exact @GlobalTheory.St.G.SplitUnram.not_sq_dvd_of_splitsIn | exact GlobalTheory.St.G.SplitUnram.not_sq_dvd_of_splitsIn | (intros; apply GlobalTheory.St.G.SplitUnram.not_sq_dvd_of_splitsIn <;> assumption)

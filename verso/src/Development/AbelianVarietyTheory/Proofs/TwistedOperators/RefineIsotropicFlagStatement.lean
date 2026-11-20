@@ -17,8 +17,10 @@ open PI.DSInfCharCap (actU Egl)
 open GlobalTheory.RealInd.Stages Finset GlobalTheory.FlagMeas Formalism.REAL
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RealInd.Stages.exists_refine_isIsoFlag | exact GlobalTheory.RealInd.Stages.exists_refine_isIsoFlag | (intros; apply GlobalTheory.RealInd.Stages.exists_refine_isIsoFlag <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RealInd.Stages.exists_refine_isIsoFlag` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FRefineIsotropicFlag.lean&line=133#L133)
 -/
 theorem _root_.GlobalTheory.T.refine_isotropic_flag : ∀ {n a : ℕ} {ε : Fin n → Bool} {j : Fin a → ℕ} {W : Flag n a}, IsIsoFlag ε j W → ∃ (b : ℕ) (W' : Flag n b) (β : Fin b → Fin a) (p : Fin (a + 1) → Fin (b + 1)), IsIsoFlag ε (fun _ => 1) W' ∧ (∀ i, W' (p i) = W i) ∧ W' (Fin.last b) = W (Fin.last a) ∧ (∀ l i, β l = i ↔ p i.castSucc ≤ l.castSucc ∧ l.castSucc < p i.succ) ∧ ∀ i, (p i : ℕ) = ∑ l ∈ univ.filter (fun l : Fin a => (l : ℕ) < (i : ℕ)), j l := by
   first | exact @GlobalTheory.RealInd.Stages.exists_refine_isIsoFlag | exact GlobalTheory.RealInd.Stages.exists_refine_isIsoFlag | (intros; apply GlobalTheory.RealInd.Stages.exists_refine_isIsoFlag <;> assumption)

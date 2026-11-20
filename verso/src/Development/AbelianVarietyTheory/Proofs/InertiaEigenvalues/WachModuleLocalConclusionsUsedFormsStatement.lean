@@ -5,8 +5,10 @@ import Formalism.GaloisCohomology.LocalTateDualityK
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.RationalDualityOfAllCoefficients
 open Formalism Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.NL.usedLocalConclusion_and_prvE | exact GlobalTheory.NL.usedLocalConclusion_and_prvE | (intros; apply GlobalTheory.NL.usedLocalConclusion_and_prvE <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.NL.usedLocalConclusion_and_prvE` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FWachModuleLocalConclusionsUsedForms.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.wachModuleLocalConclusions_usedForms : ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F), DeltaInvariantLattices.UsedLocalConclusion D HW F Cm ∧ DeltaInvariantLattices.ConclusionE D HW F := by
   first | exact @GlobalTheory.NL.usedLocalConclusion_and_prvE | exact GlobalTheory.NL.usedLocalConclusion_and_prvE | (intros; apply GlobalTheory.NL.usedLocalConclusion_and_prvE <;> assumption)

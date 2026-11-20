@@ -20,8 +20,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.DownLift
 open GlobalTheory.ExportSeries GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators GlobalTheory.IndefiniteRowSideFullHecke.InfinityTypes
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RealFockSubst.om_ptP_subst | exact GlobalTheory.RealFockSubst.om_ptP_subst | (intros; apply GlobalTheory.RealFockSubst.om_ptP_subst <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RealFockSubst.om_ptP_subst` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FRealPointsActFockScalarLinearSubstitution.lean&line=26#L26)
 -/
 theorem _root_.GlobalTheory.T.realPoints_act_fock_scalar_linear_substitution : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.LiftRows.Given R F → ∀ (i : Fin D.R.m) (t : T), ∀ u ∈ GinfC (Vc D i), ∃ (c : ℂ) (g : GLR D (Vc D i).rank), ∀ P : PolF D (Wc D i).rank (Vc D i).rank, R.ωP i t (u, 1) (R.ptP i t P) = c • R.ptP i t (fockSubst (pS D i) g P) := by
   first | exact @GlobalTheory.RealFockSubst.om_ptP_subst | exact GlobalTheory.RealFockSubst.om_ptP_subst | (intros; apply GlobalTheory.RealFockSubst.om_ptP_subst <;> assumption)

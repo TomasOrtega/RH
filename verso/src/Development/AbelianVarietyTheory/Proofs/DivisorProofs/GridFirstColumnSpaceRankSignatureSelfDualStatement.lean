@@ -8,8 +8,10 @@ open IsDedekindDomain NumberField Matrix
 open scoped TensorProduct nonZeroDivisors Pointwise
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChiGrid.colY_isV | exact GlobalTheory.ChiGrid.colY_isV | (intros; apply GlobalTheory.ChiGrid.colY_isV <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChiGrid.colY_isV` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGridFirstColumnSpaceRankSignatureSelfDual.lean&line=28#L28)
 -/
 theorem _root_.GlobalTheory.T.gridFirstColumnSpace_rank_signature_selfDual : ∀ (D : D7) (T : Type) (L : LevCh D T) (μ0 : T), L.Is μ0 → ∀ j, j ≤ D.R.m → (columnBlock L j).IsV (rankV D 0 j) ((D.R.m - j) / 2) := by
   first | exact @GlobalTheory.ChiGrid.colY_isV | exact GlobalTheory.ChiGrid.colY_isV | (intros; apply GlobalTheory.ChiGrid.colY_isV <;> assumption)

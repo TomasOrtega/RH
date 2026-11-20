@@ -22,8 +22,10 @@ open GlobalTheory.HSApp
 set_option synthInstance.maxHeartbeats 400000
 open GlobalTheory.LamT (CMPt)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FieldPolyZ.exists_isHomogeneous_secZ | exact GlobalTheory.FieldPolyZ.exists_isHomogeneous_secZ | (intros; apply GlobalTheory.FieldPolyZ.exists_isHomogeneous_secZ <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FieldPolyZ.exists_isHomogeneous_secZ` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FWeightedSectionExponentShift.lean&line=58#L58)
 -/
 theorem _root_.GlobalTheory.T.weighted_section_exponent_shift : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H)
     (Xo : Moduli Dw l) (c : Coeff l) (K : Type) [Field K] [Algebra c.F K] (y₀ : FrPt Xo c K) (e : Formalism.L2.Pj.Ix Dw → ℤ)

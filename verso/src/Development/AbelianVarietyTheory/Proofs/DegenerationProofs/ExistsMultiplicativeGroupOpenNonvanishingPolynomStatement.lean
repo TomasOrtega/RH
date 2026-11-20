@@ -13,8 +13,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.SS
 open GlobalTheory.SS.ArcInf
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SS.TorOpen.exists_open_part | exact GlobalTheory.SS.TorOpen.exists_open_part | (intros; apply GlobalTheory.SS.TorOpen.exists_open_part <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SS.TorOpen.exists_open_part` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDegenerationProofs%2FExistsMultiplicativeGroupOpenNonvanishingPolynom.lean&line=108#L108)
 -/
 theorem _root_.GlobalTheory.T.exists_multiplicativeGroup_open_nonvanishing_polynomial : ∀ (k : Type) [Field k] (q : Polynomial k), ∃ jj : algOver k (Localization.Away (Polynomial.X * q)) ⟶ Gm (Sp k), IsOpenImmersion jj.left ∧ ∀ x y z : Localization.Away (Polynomial.X * q) →ₐ[k] k, (algOverHom x ≫ jj) * (algOverHom y ≫ jj) = algOverHom z ≫ jj → x (algebraMap (Polynomial k) _ Polynomial.X) * y (algebraMap (Polynomial k) _ Polynomial.X) = z (algebraMap (Polynomial k) _ Polynomial.X) := by
   first | exact @GlobalTheory.SS.TorOpen.exists_open_part | exact GlobalTheory.SS.TorOpen.exists_open_part | (intros; apply GlobalTheory.SS.TorOpen.exists_open_part <;> assumption)

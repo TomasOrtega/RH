@@ -12,8 +12,10 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open ReciprocityTheory.ChartRestriction.G.DVR.FlatBC (algX)
 open GlobalTheory GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.QCoh GlobalTheory.Discrepancy GlobalTheory.PairStep GlobalTheory.FieldPair
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PairStep.exists_ample_eff_kltAt_start | exact GlobalTheory.PairStep.exists_ample_eff_kltAt_start | (intros; apply GlobalTheory.PairStep.exists_ample_eff_kltAt_start <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PairStep.exists_ample_eff_kltAt_start` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsAmpleEffectiveKltInductionStart.lean&line=25#L25)
 -/
 theorem _root_.GlobalTheory.T.exists_ample_effective_klt_inductionStart : GlobalTheory.Published.Principalisation → ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X]
     (p : X ⟶ Sp ℂ) (n : ℕ), IsProjOver p → topologicalKrullDim X = n →

@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzContinuousA
 import Mathlib
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.schwartz_continuousAt_of_pointwise_of_bounded | exact GlobalTheory.schwartz_continuousAt_of_pointwise_of_bounded | (intros; apply GlobalTheory.schwartz_continuousAt_of_pointwise_of_bounded <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.schwartz_continuousAt_of_pointwise_of_bounded` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSchwartzContinuousAtOfPointwiseOfBounded.lean&line=157#L157)
 -/
 theorem _root_.GlobalTheory.T.schwartz_continuousAt_of_continuousAt_apply_of_bounded : ∀ {X : Type} [TopologicalSpace X] {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     (F : X → SchwartzMap V ℂ) (x0 : X), (∀ v, ContinuousAt (fun x => F x v) x0) →

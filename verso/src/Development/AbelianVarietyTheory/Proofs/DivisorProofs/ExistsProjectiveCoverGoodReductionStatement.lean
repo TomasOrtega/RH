@@ -9,8 +9,10 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.Mean4 GlobalTheor
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagLines.main | exact GlobalTheory.FlagLines.main | (intros; apply GlobalTheory.FlagLines.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagLines.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsProjectiveCoverGoodReduction.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.exists_projective_cover_good_reduction : GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.CovHt.HypothesesH → ∀ (D : D7) (O : Setup D), O.Core → ∀ (c : O.s.Comp) (P : Finset ℕ) (M : O.LatModel P c)
   (q : ℕ) [Fact q.Prime], q ∉ P → ¬ q ∣ (discr D.host.E).natAbs →

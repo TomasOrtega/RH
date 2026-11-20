@@ -11,8 +11,10 @@ open GlobalTheory
 attribute [local instance] Over.cartesianMonoidalCategory
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UPoinc.exists_grpPullback_of_generic_compat | exact GlobalTheory.UPoinc.exists_grpPullback_of_generic_compat | (intros; apply GlobalTheory.UPoinc.exists_grpPullback_of_generic_compat <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UPoinc.exists_grpPullback_of_generic_compat` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsGrpPullbackCompleteDVROfGenericCompat.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.exists_grpPullback_completeDVR_of_generic_compat : ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], CDvr V → ∀ (G₁ : Over (Sp V)) [GrpObj G₁] [IsCommMonObj G₁], IsSemiAbelian G₁ → ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (ξ : Sp V ⟶ S) (GK : Over (Sp (FractionRing V))) [GrpObj GK] (φ : GK.left ⟶ G₁.left) (γ : GK.left ⟶ G.left), IsGrpPullback GK G₁ (jK V) φ → IsGrpPullback GK G (jK V ≫ ξ) γ → ∃ β : G₁.left ⟶ G.left, IsGrpPullback G₁ G ξ β ∧ φ ≫ β = γ ∧ ∀ (f₁ : G₁ ⟶ G₁) (f : G ⟶ G) (fK : GK ⟶ GK), fK.left ≫ φ = φ ≫ f₁.left → fK.left ≫ γ = γ ≫ f.left → f₁.left ≫ β = β ≫ f.left := by
   first | exact @GlobalTheory.UPoinc.exists_grpPullback_of_generic_compat | exact GlobalTheory.UPoinc.exists_grpPullback_of_generic_compat | (intros; apply GlobalTheory.UPoinc.exists_grpPullback_of_generic_compat <;> assumption)

@@ -8,8 +8,10 @@ open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalT
 open GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.ProjVar
 open GlobalTheory.FlagCls
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagCls.flagMat_change_frame | exact GlobalTheory.FlagCls.flagMat_change_frame | (intros; apply GlobalTheory.FlagCls.flagMat_change_frame <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagCls.flagMat_change_frame` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFlagMatrixChangeOfFrame.lean&line=29#L29)
 -/
 theorem _root_.GlobalTheory.T.flag_matrix_change_of_frame : ∀ (B Y : Scheme.{0}) (M : B.Modules) (r : ℕ) (hM : IsVB M r) (π : Y ⟶ B) (fl : Vert.Flag ((Scheme.Modules.pullback π).obj M) r) (V : B.Opens) (f : Fin r → Γ(M, V)) (hf : IsFrame f) (V' : B.Opens) (f' : Fin r → Γ(M, V')) (hf' : IsFrame f') (K : Type) [CommRing K] (y : Sp K ⟶ Y) (x : Sp K ⟶ B) (hxx : ⊤ ≤ x ⁻¹ᵁ (V ⊓ V')) (A : Matrix (Fin r) (Fin r) K), y ≫ π = x → FlagMat hM π fl hf' y A → IsUnit (Matrix.of fun a b => TangentOrigin.evalPt x (V ⊓ V') hxx (trCo hf f' b a)).det ∧ FlagMat hM π fl hf y (A * Matrix.of fun a b => TangentOrigin.evalPt x (V ⊓ V') hxx (trCo hf f' b a)) := by
   first | exact @GlobalTheory.FlagCls.flagMat_change_frame | exact GlobalTheory.FlagCls.flagMat_change_frame | (intros; apply GlobalTheory.FlagCls.flagMat_change_frame <;> assumption)

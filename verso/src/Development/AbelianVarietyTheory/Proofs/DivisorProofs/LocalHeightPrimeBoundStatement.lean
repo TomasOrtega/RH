@@ -15,8 +15,10 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory GlobalTheory.Cart
 open scoped Classical
 open GlobalTheory.EqHalf
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EqHalf.NormWhole.norm_whole | exact GlobalTheory.EqHalf.NormWhole.norm_whole | (intros; apply GlobalTheory.EqHalf.NormWhole.norm_whole <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EqHalf.NormWhole.norm_whole` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLocalHeightPrimeBound.lean&line=219#L219)
 -/
 theorem _root_.GlobalTheory.T.local_height_prime_bound : Hypotheses2 → HypothesesH → GlobalTheory.Published.RegularAlteration → GlobalTheory.Published.ScholzeWeinsteinB → GlobalTheory.Published.PrismaticDieudonnePerfd →
     ∀ (D : D7) (O : Setup D), O.Core → ∀ (T : Finset ℕ) (R : ℝ), 2 ≤ R → ∀ p : ℕ, p.Prime → p ∈ T → ∀ (c : O.s.Comp)

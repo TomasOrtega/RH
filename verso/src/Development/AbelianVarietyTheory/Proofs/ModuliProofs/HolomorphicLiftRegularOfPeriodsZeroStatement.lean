@@ -10,8 +10,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj TensorProduct ContDiff
 open GlobalTheory.KS
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KS.regular_of_periods_zero | exact GlobalTheory.KS.regular_of_periods_zero | (intros; apply GlobalTheory.KS.regular_of_periods_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KS.regular_of_periods_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FModuliProofs%2FHolomorphicLiftRegularOfPeriodsZero.lean&line=179#L179)
 -/
 theorem _root_.GlobalTheory.T.holomorphic_lift_regular_of_periods_zero : Out.Laws → ∀ (P₀ : Out.PolAV (Sp ℂ)) (u : HolUnif P₀.A P₀.L P₀.g) (Hm : Matrix (Fin P₀.g) (Fin P₀.g) ℂ) (χ : u.Λ → ℂ), GoodU u Hm χ → ∀ (R : Type) [CommRing R] (x₀ : R →+* ℂ) (X : Scheme.{0}) (p : X ⟶ Sp R) (m : P₀.A.left ⟶ X), Smooth p → IsPullback m P₀.A.hom p (spMap x₀) → ∀ D s, IsDer x₀ D → KSRel u p m D 0 s → ∀ W₀, IsAffineOpen W₀ → ∀ W, W ≤ W₀ → ∀ f : Γ(X, W), ∃ a : Γ(P₀.A.left, m ⁻¹ᵁ W), ∀ z ∈ dom u m W, valAt' (u.ex z).left (m ⁻¹ᵁ W) a = s z W f := by
   first | exact @GlobalTheory.KS.regular_of_periods_zero | exact GlobalTheory.KS.regular_of_periods_zero | (intros; apply GlobalTheory.KS.regular_of_periods_zero <;> assumption)

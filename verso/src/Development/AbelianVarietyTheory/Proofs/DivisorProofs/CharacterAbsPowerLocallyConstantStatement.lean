@@ -11,8 +11,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LocConstChar.isLocallyConstant_char_absPow | exact GlobalTheory.LocConstChar.isLocallyConstant_char_absPow | (intros; apply GlobalTheory.LocConstChar.isLocallyConstant_char_absPow <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LocConstChar.isLocallyConstant_char_absPow` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCharacterAbsPowerLocallyConstant.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.character_abs_power_locally_constant : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (ν : Chr F E), Continuous ν →
     ∀ (z : ℕ) (v : Pl F), IsLocallyConstant (fun l : idelesAt E (evFin F v) => (ν l.1 : ℂ) * ((absE F E l.1 : ℝ) : ℂ) ^ z) := by

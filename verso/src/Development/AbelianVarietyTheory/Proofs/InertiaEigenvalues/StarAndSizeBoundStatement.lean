@@ -10,8 +10,10 @@ import Formalism.SharpRestriction.LevelLetterCocycles.ArcLiftingSetup
 import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.BaseSizes
 open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations GlobalTheory.NLink
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.NLink.rowsAD_in_setting | exact GlobalTheory.NLink.rowsAD_in_setting | (intros; apply GlobalTheory.NLink.rowsAD_in_setting <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.NLink.rowsAD_in_setting` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FStarAndSizeBound.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.star_and_size_bound : Hypotheses₂ → ∀ (D : D7) (L : SizeData₂ D) (P : ParameterChoice' D L) (nch : NChoice D) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F) (X : KillingConditions.HubData D) (C₂ : ℝ), Setup L nch HW X C₂ → 1 ≤ C₂ → WachCoordinates.Conclusion2 D C₂ → KillingConditions.JointParametersHubConditions L HW X (rowC C₂) → KillingConditions.StarAD L X ∧ KillingConditions.BBLe L X 7200 := by
   first | exact @GlobalTheory.NLink.rowsAD_in_setting | exact GlobalTheory.NLink.rowsAD_in_setting | (intros; apply GlobalTheory.NLink.rowsAD_in_setting <;> assumption)

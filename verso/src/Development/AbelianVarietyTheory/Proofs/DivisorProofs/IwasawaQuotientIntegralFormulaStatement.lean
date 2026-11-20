@@ -4,8 +4,10 @@ import Mathlib
 open MeasureTheory
 open scoped NNReal ENNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EquivAEMeas.aemeasurable_of_equivariant | exact GlobalTheory.EquivAEMeas.aemeasurable_of_equivariant | (intros; apply GlobalTheory.EquivAEMeas.aemeasurable_of_equivariant <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EquivAEMeas.aemeasurable_of_equivariant` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIwasawaQuotientIntegralFormula.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.iwasawa_quotient_integral_formula : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G]
     [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G] (P K : Subgroup G) (μG : Measure G) (μP : Measure P) (μK : Measure K) (δ : P → ℝ≥0) (U : G → ℝ≥0∞),

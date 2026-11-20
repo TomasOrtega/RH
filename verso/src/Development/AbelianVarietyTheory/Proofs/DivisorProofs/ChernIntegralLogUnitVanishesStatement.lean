@@ -17,8 +17,10 @@ open CategoryTheory AlgebraicGeometry GlobalTheory GlobalTheory.Mean4O GlobalThe
 open GlobalTheory.Points ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ArInt.chInt_logSq_unit_eq_zero | exact GlobalTheory.ArInt.chInt_logSq_unit_eq_zero | (intros; apply GlobalTheory.ArInt.chInt_logSq_unit_eq_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ArInt.chInt_logSq_unit_eq_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FChernIntegralLogUnitVanishes.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.chern_integral_log_unit_vanishes : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ),
     IsArithVar p D → ∀ (a : Γ(X, ⊤)ˣ) (ι : Type) [Fintype ι] (L : ι → HermLB p) (n : ι → ℤ),

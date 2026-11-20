@@ -13,8 +13,10 @@ open NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRes
 open AlgebraicGeometry CategoryTheory Limits ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.Frames GlobalTheory.FrameUnif
 open scoped Matrix nonZeroDivisors
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FrameUnif.exists_framesOK | exact GlobalTheory.FrameUnif.exists_framesOK | (intros; apply GlobalTheory.FrameUnif.exists_framesOK <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FrameUnif.exists_framesOK` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUnitaryExistence%2FExistsFramedPointsAllNormalisationsFamilyUnif.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.exists_framedPoints_all_normalisations_familyUnif : Out.SecBaseChangeSt → Out.SecTwistSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (g : ℕ) (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)) (F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) (fun j => relab c σ (e j).1)) (r : ℕ) (M : ModelsOf F r), GoodEmb c σ → ModelBase M → NegXi M → ∃ un, FramesOK e F M un := by
   first | exact @GlobalTheory.FrameUnif.exists_framesOK | exact GlobalTheory.FrameUnif.exists_framesOK | (intros; apply GlobalTheory.FrameUnif.exists_framesOK <;> assumption)

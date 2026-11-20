@@ -9,6 +9,7 @@ const startModules = [
 ];
 const proofLabels = {
   authored: "English proof",
+  citation: "Proof by reference",
   translation: "Source translation",
   "source gap": "Proof source",
 };
@@ -96,10 +97,16 @@ function breadcrumbs(folder) {
   return nav;
 }
 
-function renderProse(text) {
+function renderProse(text, allowCitation) {
   const prose = element("div", undefined, { class: "proof-narrative" });
   for (const block of text.split(/\n\n+/)) {
     const paragraph = element("p");
+    const citation = allowCitation && block.match(/^\[Source theorem\]\((\?module=[\w%+.-]+&line=([1-9]\d*)#L\2)\)$/);
+    if (citation) {
+      paragraph.append(link("Source theorem", citation[1]));
+      prose.append(paragraph);
+      continue;
+    }
     for (const part of block.split(/(\x60[^\x60\n]+\x60)/)) {
       if (part.startsWith("\x60") && part.endsWith("\x60") && part.length > 2) {
         paragraph.append(element("code", part.slice(1, -1)));
@@ -128,7 +135,7 @@ function proofCard(path, source, proof, open) {
     body.append(
       codeBlock(source.slice(proof.start, proof.statementEnd).trimEnd(), "statement"),
       element("h3", proofLabels[proof.status]),
-      renderProse(proof.prose),
+      renderProse(proof.prose, proof.status === "citation"),
       raw,
       link("Link to line " + proof.line, url({ module: path, line: proof.line }, "#" + anchor), { class: "proof-link" }),
     );

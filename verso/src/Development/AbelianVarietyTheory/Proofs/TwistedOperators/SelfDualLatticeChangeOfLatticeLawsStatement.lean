@@ -21,8 +21,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup (coefPlus Cols Si
 open GlobalTheory.SepRows GlobalTheory.CoreOnto
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ReLatPf.reLatLaw_holds | exact GlobalTheory.ReLatPf.reLatLaw_holds | (intros; apply GlobalTheory.ReLatPf.reLatLaw_holds <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ReLatPf.reLatLaw_holds` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FSelfDualLatticeChangeOfLatticeLaws.lean&line=39#L39)
 -/
 theorem _root_.GlobalTheory.T.selfDualLattice_changeOfLattice_laws : ∀ D : D7, ReLatLaw D := by
   first | exact @GlobalTheory.ReLatPf.reLatLaw_holds | exact GlobalTheory.ReLatPf.reLatLaw_holds | (intros; apply GlobalTheory.ReLatPf.reLatLaw_holds <;> assumption)

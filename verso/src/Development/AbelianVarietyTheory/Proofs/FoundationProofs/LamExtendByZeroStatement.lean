@@ -8,8 +8,10 @@ import CompanionTheory.EightfoldTheory.VariationTheory.AutomorphicForms.Newform
 open UpperHalfPlane Complex MeasureTheory CongruenceSubgroup GlobalTheory.EisM UpperTheory.V.Af Filter Topology
 open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.lam_extend_by_zero | exact GlobalTheory.lam_extend_by_zero | (intros; apply GlobalTheory.lam_extend_by_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.lam_extend_by_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FLamExtendByZero.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.exists_lam_eq_and_vanishes_off_character : ∀ (k L N : ℕ) (χ₀ : DirichletCharacter ℂ N) (B : ℕ) (c : ℕ → ℂ), 0 < L → N ∣ L → ∃ (B' : ℕ) (c' : ℕ → ℂ), (∀ a, MF k L (ch χ₀) a → lam B' c' a = lam B c a) ∧ ∀ (ε : DirichletCharacter ℂ N) (a : ℕ → ℂ), ε ≠ χ₀ → MF k L (ch ε) a → lam B' c' a = 0 := by
   first | exact @GlobalTheory.lam_extend_by_zero | exact GlobalTheory.lam_extend_by_zero | (intros; apply GlobalTheory.lam_extend_by_zero <;> assumption)

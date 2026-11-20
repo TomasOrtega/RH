@@ -8,8 +8,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.isPullback_iSup_of_forall | exact GlobalTheory.Mum.isPullback_iSup_of_forall | (intros; apply GlobalTheory.Mum.isPullback_iSup_of_forall <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.isPullback_iSup_of_forall` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsPullbackRestrictISupOfForallRestrict.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.isPullback_restrict_iSup_of_forall_restrict : ∀ (P' X T S : Scheme.{0}) (a : X ⟶ P') (p : X ⟶ S) (q : P' ⟶ T) (π : S ⟶ T), a ≫ q = p ≫ π → ∀ (I : Type) (V : I → P'.Opens), (∀ i, IsPullback (a ∣_ V i) ((a ⁻¹ᵁ V i).ι ≫ p) ((V i).ι ≫ q) π) → IsPullback (a ∣_ (⨆ i, V i)) ((a ⁻¹ᵁ (⨆ i, V i)).ι ≫ p) ((⨆ i, V i).ι ≫ q) π := by
   first | exact @GlobalTheory.Mum.isPullback_iSup_of_forall | exact GlobalTheory.Mum.isPullback_iSup_of_forall | (intros; apply GlobalTheory.Mum.isPullback_iSup_of_forall <;> assumption)

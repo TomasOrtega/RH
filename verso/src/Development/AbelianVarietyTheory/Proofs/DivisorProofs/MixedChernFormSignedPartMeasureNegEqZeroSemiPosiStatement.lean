@@ -13,8 +13,10 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.R
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points GlobalTheory.CechPic GlobalTheory.ChartGlue GlobalTheory.Mix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mix.part_neg_eq_zero_of_semiPosReg | exact GlobalTheory.Mix.part_neg_eq_zero_of_semiPosReg | (intros; apply GlobalTheory.Mix.part_neg_eq_zero_of_semiPosReg <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mix.part_neg_eq_zero_of_semiPosReg` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FMixedChernFormSignedPartMeasureNegEqZeroSemiPosi.lean&line=69#L69)
 -/
 theorem _root_.GlobalTheory.T.mixedChernFormSignedPartMeasure_neg_eq_zero_semiPositive : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ) [SecondCountableTopology (CxPts p σ)] (D : ℕ) (L : Fin D → MLine p σ), (∀ i, (L i).φ.SemiPosReg D) → part L (-1) = 0 := by
   first | exact @GlobalTheory.Mix.part_neg_eq_zero_of_semiPosReg | exact GlobalTheory.Mix.part_neg_eq_zero_of_semiPosReg | (intros; apply GlobalTheory.Mix.part_neg_eq_zero_of_semiPosReg <;> assumption)

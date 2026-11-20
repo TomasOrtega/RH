@@ -18,8 +18,10 @@ open GlobalTheory.AbLaw
 open GlobalTheory.KeyPow GlobalTheory.KeyKa
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KaExists.kaSt | exact GlobalTheory.KaExists.kaSt | (intros; apply GlobalTheory.KaExists.kaSt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KaExists.kaSt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FThetaLawProofs%2FExistsIntegralKeyInvariantRuleCharZero.lean&line=160#L160)
 -/
 theorem _root_.GlobalTheory.T.exists_integralKeyInvariantRule_charZero : Out.Laws → ThetaUnifAV → GlobalTheory.TorusAlgebraic → KeyDesc → KaSt := by
   first | exact @GlobalTheory.KaExists.kaSt | exact GlobalTheory.KaExists.kaSt | (intros; apply GlobalTheory.KaExists.kaSt <;> assumption)

@@ -13,8 +13,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Ds
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX NumberField IsDedekindDomain GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw GlobalTheory.HeightCounting GlobalTheory.HeightCounting.Up
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeRec.factG
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mem.LamPosTw.eigenvalue_twistedWeight_pos | exact GlobalTheory.Mem.LamPosTw.eigenvalue_twistedWeight_pos | (intros; apply GlobalTheory.Mem.LamPosTw.eigenvalue_twistedWeight_pos <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mem.LamPosTw.eigenvalue_twistedWeight_pos` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FTwistedPlaceWeightPositive.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.twisted_place_weight_positive : PrN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AtMem hL fun _ _ _ _ w Z _ _ t nch n c => ∀ v, TwistedAt (w.D Z) v → ∀ j, 1 ≤ j → j ≤ (w.D Z).R.m → ∀ σ, (w.D Z).what₂.isot j σ ≠ ⊥ → 0 < (w.D Z).what₂.lamP ((w.D Z).what₂.muTw v) j σ := by
   first | exact @GlobalTheory.Mem.LamPosTw.eigenvalue_twistedWeight_pos | exact GlobalTheory.Mem.LamPosTw.eigenvalue_twistedWeight_pos | (intros; apply GlobalTheory.Mem.LamPosTw.eigenvalue_twistedWeight_pos <;> assumption)

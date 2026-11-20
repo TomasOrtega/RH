@@ -10,8 +10,10 @@ open Classical
 open ReciprocityTheory.ChartRestriction.G.Out
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnitTheta.closure_unit_theta | exact GlobalTheory.UnitTheta.closure_unit_theta | (intros; apply GlobalTheory.UnitTheta.closure_unit_theta <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnitTheta.closure_unit_theta` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDegenerationProofs%2FUnitThetaConstantsGenerateIntegralTorsion.lean&line=219#L219)
 -/
 theorem _root_.GlobalTheory.T.unitThetaConstants_generate_integralTorsion : Laws → Laws2 → UTorsSt → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀) (l : u.Lab), (∀ a : o, ‖y₀ (algebraMap o S.R a)‖ ≤ 1) → (0 < S.delta y₀ ∧ AddSubgroup.closure {x | ‖y₀ ⟨S.th x, S.th_mem x⟩‖ = S.delta y₀} = l.yy.ker) := by
   first | exact @GlobalTheory.UnitTheta.closure_unit_theta | exact GlobalTheory.UnitTheta.closure_unit_theta | (intros; apply GlobalTheory.UnitTheta.closure_unit_theta <;> assumption)

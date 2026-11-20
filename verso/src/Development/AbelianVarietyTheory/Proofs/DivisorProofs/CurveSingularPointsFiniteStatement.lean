@@ -7,8 +7,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open GlobalTheory GlobalTheory.CxPts GlobalTheory.VB
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CurvePID.finite_not_isPrincipalIdealRing | exact GlobalTheory.CurvePID.finite_not_isPrincipalIdealRing | (intros; apply GlobalTheory.CurvePID.finite_not_isPrincipalIdealRing <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CurvePID.finite_not_isPrincipalIdealRing` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCurveSingularPointsFinite.lean&line=62#L62)
 -/
 theorem _root_.GlobalTheory.T.curve_singular_points_finite : ∀ (κ : Type) [Field κ] [CharZero κ] (C : Scheme.{0}) [Algebra κ Γ(C, ⊤)] [IsIntegral C], IsProjCurve κ C → {x : C | ¬ IsPrincipalIdealRing (C.presheaf.stalk x)}.Finite := by
   first | exact @GlobalTheory.CurvePID.finite_not_isPrincipalIdealRing | exact GlobalTheory.CurvePID.finite_not_isPrincipalIdealRing | (intros; apply GlobalTheory.CurvePID.finite_not_isPrincipalIdealRing <;> assumption)

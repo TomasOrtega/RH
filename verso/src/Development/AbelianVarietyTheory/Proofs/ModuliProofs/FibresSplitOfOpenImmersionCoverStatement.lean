@@ -12,8 +12,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj TensorProduct Pointwise
 open GlobalTheory.Models GlobalTheory.ModelSum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.splitFib_of_openCover | exact GlobalTheory.splitFib_of_openCover | (intros; apply GlobalTheory.splitFib_of_openCover <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.splitFib_of_openCover` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FModuliProofs%2FFibresSplitOfOpenImmersionCover.lean&line=53#L53)
 -/
 theorem _root_.GlobalTheory.T.fibresSplit_of_openImmersion_cover : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Z : Scheme.{0}) (t : SAB H Z) (I : Type) (Y : I → Scheme.{0}) (f : ∀ i, Y i ⟶ Z) (u : ∀ i, SAB H (Y i)) (_ : ∀ i, SABMap (u i) t (f i)), (∀ i, IsOpenImmersion (f i)) → (∀ z : Z, ∃ i, z ∈ Set.range (f i)) → (∀ i, SplitFib (u i).G) → SplitFib t.G := by
   first | exact @GlobalTheory.splitFib_of_openCover | exact GlobalTheory.splitFib_of_openCover | (intros; apply GlobalTheory.splitFib_of_openCover <;> assumption)

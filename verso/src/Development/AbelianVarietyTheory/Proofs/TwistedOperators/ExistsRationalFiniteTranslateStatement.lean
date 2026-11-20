@@ -17,8 +17,10 @@ open scoped TensorProduct
 open GlobalTheory.MovedDict Formalism.L2.Ker GlobalTheory.SignedHC
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MovedKappaDec.exists_dec | exact GlobalTheory.MovedKappaDec.exists_dec | (intros; apply GlobalTheory.MovedKappaDec.exists_dec <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MovedKappaDec.exists_dec` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsRationalFiniteTranslate.lean&line=48#L48)
 -/
 theorem _root_.GlobalTheory.T.exists_rational_finite_translate : GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) → ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type}
     {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}

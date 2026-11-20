@@ -15,8 +15,10 @@ open GlobalTheory.RayEv (Ray)
 open GlobalTheory.Toroidal GlobalTheory.LogKS GlobalTheory.LogKSChart GlobalTheory.Heat
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BalProj.signature_count | exact GlobalTheory.BalProj.signature_count | (intros; apply GlobalTheory.BalProj.signature_count <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BalProj.signature_count` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCmTypeSignatureSumEqTwiceDimension.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.cmType_signature_sum_eq_twice_dimension : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (p q : ℕ), ∑ τ : E →+* ℂ, (if τ (H.rt : E) = H.rt0 then p else q) * (if NumberField.ComplexEmbedding.conjugate τ (H.rt : E) = H.rt0 then p else q) = 2 * (Module.finrank ℚ E / 2 * p * q) := by
   first | exact @GlobalTheory.BalProj.signature_count | exact GlobalTheory.BalProj.signature_count | (intros; apply GlobalTheory.BalProj.signature_count <;> assumption)

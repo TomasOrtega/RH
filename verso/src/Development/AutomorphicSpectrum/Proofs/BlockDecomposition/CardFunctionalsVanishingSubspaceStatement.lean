@@ -3,8 +3,10 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CardFunctionals
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MemRiemannRochSpaceIffRegularAtEverywhere
 open Matrix Classical PositivityTheory.Rg.Rs GlobalTheory.CompanionTheory.GLFirstBasisOrbit
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.GapOpCount.card_forms_vanishing_missing_line | exact GlobalTheory.CompanionTheory.GapOpCount.card_forms_vanishing_missing_line | (intros; apply GlobalTheory.CompanionTheory.GapOpCount.card_forms_vanishing_missing_line <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.GapOpCount.card_forms_vanishing_missing_line` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FCardFunctionalsVanishingSubspace.lean&line=7#L7)
 -/
 theorem _root_.GlobalTheory.T.card_functionals_vanishing_subspace : ∀ (k : Type) [Field k] [Fintype k] (n j : ℕ) (M : Submodule k (Fin (n + 1) → k)), e0 k n ∉ M →
   Module.finrank k M + (j + 1) = n + 1 →

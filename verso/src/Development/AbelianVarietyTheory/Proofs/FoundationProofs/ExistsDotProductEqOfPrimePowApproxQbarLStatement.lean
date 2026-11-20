@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EqZeroOfForallNo
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.HV GlobalTheory.Ord2
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.exists_dotProduct_eq_of_approx_prime_pow | exact GlobalTheory.exists_dotProduct_eq_of_approx_prime_pow | (intros; apply GlobalTheory.exists_dotProduct_eq_of_approx_prime_pow <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.exists_dotProduct_eq_of_approx_prime_pow` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FExistsDotProductEqOfPrimePowApproxQbarL.lean&line=48#L48)
 -/
 theorem _root_.GlobalTheory.T.exists_dotProduct_eq_of_primePow_approx_qbarL : ∀ (l : ℕ) [Fact l.Prime] (X : Type) (m : ℕ) (M : X → Fin m → Qbar l) (z : X → Qbar l), (∀ n : ℕ, ∃ y : Fin m → Qbar l, ∀ x, ‖z x - M x ⬝ᵥ y‖ ≤ ‖((l : ℕ) : Qbar l) ^ n‖) → ∃ y : Fin m → Qbar l, ∀ x, z x = M x ⬝ᵥ y := by
   first | exact @GlobalTheory.exists_dotProduct_eq_of_approx_prime_pow | exact GlobalTheory.exists_dotProduct_eq_of_approx_prime_pow | (intros; apply GlobalTheory.exists_dotProduct_eq_of_approx_prime_pow <;> assumption)

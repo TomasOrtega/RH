@@ -19,8 +19,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.TypeSum.CoefClos
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TypeSum.DerFamCont.continuousOn_of_isDerFam | exact GlobalTheory.TypeSum.DerFamCont.continuousOn_of_isDerFam | (intros; apply GlobalTheory.TypeSum.DerFamCont.continuousOn_of_isDerFam <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TypeSum.DerFamCont.continuousOn_of_isDerFam` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FHeightProofs%2FContinuousOnRightDerivativeFamilyModerateGrowth.lean&line=166#L166)
 -/
 theorem _root_.GlobalTheory.T.continuousOn_rightDerivativeFamily_moderateGrowth : ∀ (n : ℕ) (ε : Fin n → Bool) (N : ℕ) (F : List (Mx n) → Mx n → ℂ), IsDerFam ε F → FamGrowth ε N F →
     ∀ l : List (Mx n), (∀ Y ∈ l, Y ∈ lieSet ε) → ContinuousOn (F l) (UJset ε) := by

@@ -11,8 +11,10 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G Recip
 open scoped Classical
 open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalTheory.FlagAr GlobalTheory.ShFam.Pad GlobalTheory.VB
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagLiftComp.liftComp | exact GlobalTheory.FlagLiftComp.liftComp | (intros; apply GlobalTheory.FlagLiftComp.liftComp <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagLiftComp.liftComp` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFlagPiecePullbackCompIso.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.flag_piece_pullback_comp_iso : ∀ {B T Y₁ Y₂ : Scheme.{0}} (g : T ⟶ B) (π₁ : Y₁ ⟶ B) (π₂ : Y₂ ⟶ B) (E : B.Modules)
     (F' : T.Modules) (F₁ : Y₁.Modules) (F₂ : Y₂.Modules) (ι' : F' ⟶ (Scheme.Modules.pullback g).obj E)

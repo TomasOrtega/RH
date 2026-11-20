@@ -18,8 +18,10 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open scoped TensorProduct
 open Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnipCol.conj_sub_one_mulVec_mem | exact GlobalTheory.UnipCol.conj_sub_one_mulVec_mem | (intros; apply GlobalTheory.UnipCol.conj_sub_one_mulVec_mem <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnipCol.conj_sub_one_mulVec_mem` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FUnipotentRadicalConjugateDisplacementSpan.lean&line=47#L47)
 -/
 theorem _root_.GlobalTheory.T.unipotent_radical_conjugate_displacement_span : ∀ {K : Type} [Field K] {α : Type} {m : α → Type} [Fintype α] [LinearOrder α]
     [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] {N : ℕ} (e : (Σ a, m a) ≃ Fin N) (u : GL (Fin N) K),

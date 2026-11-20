@@ -7,8 +7,10 @@ open ReciprocityTheory.ChartRestriction.G.Semi (IsAbelianScheme LB RigLB Cubical
 open GlobalTheory GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.DeRham GlobalTheory.PDiv GlobalTheory.PtExt
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PtExt.NatConst.const_of_natural | exact GlobalTheory.PtExt.NatConst.const_of_natural | (intros; apply GlobalTheory.PtExt.NatConst.const_of_natural <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PtExt.NatConst.const_of_natural` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FNaturalPointwiseCochainConstOfGlobalSectionsBase.lean&line=73#L73)
 -/
 theorem _root_.GlobalTheory.T.natural_pointwiseCochain_const_of_globalSections_base : ∀ (R : Type) [CommRing R] (X : Over (Sp R)) (K : Type) (W : K → X.left.Opens), ⨆ i, W i = ⊤ → Function.Surjective X.hom.appTop.hom → ∀ k : Fn0 X, IsCob W (Fn1.zero X) k → ∃ r : R, ∀ (D : Type) [CommRing D] [Algebra R D] (x : Pt X D), Sm W x → k D x = algebraMap R D r := by
   first | exact @GlobalTheory.PtExt.NatConst.const_of_natural | exact GlobalTheory.PtExt.NatConst.const_of_natural | (intros; apply GlobalTheory.PtExt.NatConst.const_of_natural <;> assumption)

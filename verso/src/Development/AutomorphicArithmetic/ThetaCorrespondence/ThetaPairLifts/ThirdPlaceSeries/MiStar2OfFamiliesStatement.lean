@@ -17,8 +17,10 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Unf GlobalTheory.MiS
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.MiTop GlobalTheory.SeeSaw GlobalTheory.Fam ValuativeRel IsLocalRing GlobalTheory.FinPl
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.MiTop.miStar2_of_bot_lev_fam_served_puNZ | exact _root_.GlobalTheory.MiTop.miStar2_of_bot_lev_fam_served_puNZ | (intros; apply _root_.GlobalTheory.MiTop.miStar2_of_bot_lev_fam_served_puNZ <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MiTop.miStar2_of_bot_lev_fam_served_puNZ` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicArithmetic%2FThetaCorrespondence%2FThetaPairLifts%2FThirdPlaceSeries%2FMiStar2OfFamilies.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.mi_star2_of_pu_nz : GlobalTheory.Published.DiscreteSeriesClassification → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.HarishChandraModules → ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.MiTop.BottomHypotheses W → _root_.GlobalTheory.MiS.LevelHypothesis W → _root_.GlobalTheory.MiTop.FamilyAllConditions W → _root_.GlobalTheory.MiTop.FamilyServedCondition W → PuNZ D → (_root_.GlobalTheory.MiS.packageCoefficientSpace W).MIstar2 (W.Q.F.eV (_root_.GlobalTheory.MiS.packageCoefficientSpace W).zs) W.Q.sEE := by
   first | exact @_root_.GlobalTheory.MiTop.miStar2_of_bot_lev_fam_served_puNZ | exact _root_.GlobalTheory.MiTop.miStar2_of_bot_lev_fam_served_puNZ | (intros; apply _root_.GlobalTheory.MiTop.miStar2_of_bot_lev_fam_served_puNZ <;> assumption)

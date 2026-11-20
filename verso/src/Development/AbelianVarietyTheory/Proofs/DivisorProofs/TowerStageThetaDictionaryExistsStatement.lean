@@ -22,8 +22,10 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.StageDict.stage_dictionary | exact GlobalTheory.StageDict.stage_dictionary | (intros; apply GlobalTheory.StageDict.stage_dictionary <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.StageDict.stage_dictionary` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTowerStageThetaDictionaryExists.lean&line=35#L35)
 -/
 theorem _root_.GlobalTheory.T.towerStage_thetaDictionary_exists : GBig fun {D} {T} {Lc} {sc} G μ₀ _ _ _ => ∀ (W : G.Weil) (S : GridChoice W Set.univ), IsStdChar D W.ψ (-1) →
     NumbersIn D.what₂.embLL S μ₀ → ∀ (i j : Fin D.R.m) (p q : ℕ) (A A' WW : HSp D) (X : Tri T A A' WW), GlobalTheory.SqTower.IsStageC W i j p q X →

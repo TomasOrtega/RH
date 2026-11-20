@@ -9,8 +9,10 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open scoped TensorProduct Matrix
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DblVac.KD_blocks_keep | exact GlobalTheory.DblVac.KD_blocks_keep | (intros; apply GlobalTheory.DblVac.KD_blocks_keep <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DblVac.KD_blocks_keep` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FDoubledVacuumLatticeStabilizerBlocksKeepLattice.lean&line=43#L43)
 -/
 theorem _root_.GlobalTheory.T.doubledVacuumLatticeStabilizer_blocks_keep_lattice : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {d : ℕ} (W : Spc F E d) (v : Pl F), ∀ g ∈ GlobalTheory.DblVac.KD σ W v,
   (∀ z ∈ GlobalTheory.InertSph.latAt W v, (GlobalTheory.DblVac.matD g).toBlocks₁₁ *ᵥ z ∈ GlobalTheory.InertSph.latAt W v) ∧

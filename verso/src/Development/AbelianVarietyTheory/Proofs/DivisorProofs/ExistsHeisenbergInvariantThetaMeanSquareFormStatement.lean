@@ -8,8 +8,10 @@ open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHeck
 open Formalism.IndefR.DatumF MeasureTheory GlobalTheory.FinWeil
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThetaMeanSquareF.exists_invariant_form | exact GlobalTheory.ThetaMeanSquareF.exists_invariant_form | (intros; apply GlobalTheory.ThetaMeanSquareF.exists_invariant_form <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThetaMeanSquareF.exists_invariant_form` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsHeisenbergInvariantThetaMeanSquareForm.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.exists_heisenbergInvariant_thetaMeanSquare_form : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

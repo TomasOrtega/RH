@@ -8,8 +8,10 @@ open GlobalTheory.WeilM GlobalTheory.SplitFlip
 open scoped Matrix
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LiftLowerLoc.form_eq_zero | exact GlobalTheory.LiftLowerLoc.form_eq_zero | (intros; apply GlobalTheory.LiftLowerLoc.form_eq_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LiftLowerLoc.form_eq_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFrobeniusUnitaryCharUnique.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.frobenius_unitary_char_unique : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (a b : ℕ)
     (ν β : kˣ →* ℂˣ) (ϖ : kˣ), GlobalTheory.SplitFlip.IsUnif ϖ → GlobalTheory.SmGL.IsSmoothChar ν → GlobalTheory.SmGL.IsUnitaryChar ν →

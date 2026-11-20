@@ -14,8 +14,10 @@ open scoped ContDiff Real CategoryTheory.Obj
 open GlobalTheory GlobalTheory.TorsionForm
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PeriodChart.dualRiemann_half_form_eq | exact GlobalTheory.PeriodChart.dualRiemann_half_form_eq | (intros; apply GlobalTheory.PeriodChart.dualRiemann_half_form_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PeriodChart.dualRiemann_half_form_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRiemannDataLinearChart.lean&line=40#L40)
 -/
 theorem _root_.GlobalTheory.T.riemann_data_linear_chart : ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k) (P : PPAS S)
     (h : VMetric p (omega P.A) P.g), P.IsDualRiemann (1 / 2) h → ∀ (σ : k →+* ℂ) (s : CxPts p σ)

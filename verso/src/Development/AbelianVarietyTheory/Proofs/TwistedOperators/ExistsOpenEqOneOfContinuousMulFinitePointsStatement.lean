@@ -12,8 +12,10 @@ open scoped ContDiff ComplexOrder
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.OpenKer.eq_one_on_finite_of_mul | exact GlobalTheory.OpenKer.eq_one_on_finite_of_mul | (intros; apply GlobalTheory.OpenKer.eq_one_on_finite_of_mul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.OpenKer.eq_one_on_finite_of_mul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsOpenEqOneOfContinuousMulFinitePoints.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.exists_open_eq_one_of_continuous_mul_finitePoints : ∀ {D : D7} (T : HSp D) (K : Subgroup (GA D T)), IsOpen (K : Set (GA D T)) → ∀ F : GA D T → ℂ, Continuous F → F 1 = 1 → (∀ a ∈ K, a ∈ GfC T → ∀ b ∈ K, b ∈ GfC T → F (a * b) = F a * F b) → ∃ U : Subgroup (GA D T), IsOpen (U : Set (GA D T)) ∧ ∀ k ∈ U, k ∈ GfC T → F k = 1 := by
   first | exact @GlobalTheory.OpenKer.eq_one_on_finite_of_mul | exact GlobalTheory.OpenKer.eq_one_on_finite_of_mul | (intros; apply GlobalTheory.OpenKer.eq_one_on_finite_of_mul <;> assumption)

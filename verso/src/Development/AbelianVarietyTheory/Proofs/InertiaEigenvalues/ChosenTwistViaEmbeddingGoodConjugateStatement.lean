@@ -14,8 +14,10 @@ open GlobalTheory.PlaceRead
 open GlobalTheory.HeightCounting.Up (PrN)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PlaceRead.twVia_good | exact GlobalTheory.PlaceRead.twVia_good | (intros; apply GlobalTheory.PlaceRead.twVia_good <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PlaceRead.twVia_good` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FChosenTwistViaEmbeddingGoodConjugate.lean&line=68#L68)
 -/
 theorem _root_.GlobalTheory.T.chosen_twist_via_embedding_good_conjugate : ∀ (D : D7) (c : NChoice D) (w : D.what₂.places.Pl) (ρ : Setup D.ntw), ρ.Good → TwOK (c.twI w) (c.k' w) (c.Q w) (chr c w) → ∀ (j : Fin D.R.m) (ι : KE c w →+* ℂ),
   (twVia ρ ι).Good ∧ (ρ.B (c.twI w) j (c.sd w)).admitted (twVia ρ ι).Q ∧ ∀ τ : ℂ ≃+* ℂ, ConjChar τ (twVia ρ ι) (twVia ρ ((τ : ℂ →+* ℂ).comp ι)) := by

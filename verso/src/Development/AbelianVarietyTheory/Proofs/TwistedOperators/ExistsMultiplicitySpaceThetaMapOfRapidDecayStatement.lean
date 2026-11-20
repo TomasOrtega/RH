@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Ex
 open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S NumberField Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Cx
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DefLift.ThetaMap.ex_thF_of_weak | exact GlobalTheory.DefLift.ThetaMap.ex_thF_of_weak | (intros; apply GlobalTheory.DefLift.ThetaMap.ex_thF_of_weak <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DefLift.ThetaMap.ex_thF_of_weak` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsMultiplicitySpaceThetaMapOfRapidDecay.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.exists_multiplicitySpaceThetaMap_of_rapidDecay : GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), R.toLevCh.Is A.μ0 → R.IsFam → R.IsModels → R.IsThPW → R.ex_ioP → R.ex_thF := by
   first | exact @GlobalTheory.DefLift.ThetaMap.ex_thF_of_weak | exact GlobalTheory.DefLift.ThetaMap.ex_thF_of_weak | (intros; apply GlobalTheory.DefLift.ThetaMap.ex_thF_of_weak <;> assumption)

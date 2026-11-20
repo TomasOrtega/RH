@@ -17,8 +17,10 @@ open GlobalTheory.Hk3
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SplitExist.split_exist | exact GlobalTheory.SplitExist.split_exist | (intros; apply GlobalTheory.SplitExist.split_exist <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SplitExist.split_exist` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FExistsUnitaryElementaryDivisorsSplitPrime.lean&line=53#L53)
 -/
 theorem _root_.GlobalTheory.T.exists_unitary_elementaryDivisors_splitPrime : ∀ {D : D7} (V : HSp D) (P : HeightOneSpectrum (𝓞 D.host.E)) (e : Formalism.L2.Theta.AE D) (ϖ : 𝓞 D.host.E) (d : List ℤ), Formalism.L2.NTheta.IsIdemAt e P → ϖ ∈ P.asIdeal → ϖ ∉ P.asIdeal ^ 2 → d.length = V.rank → ∃ g : GA D V, SuppF V (e + cA D e) g ∧ DivAt V e (ϖ : D.host.E) d g := by
   first | exact @GlobalTheory.SplitExist.split_exist | exact GlobalTheory.SplitExist.split_exist | (intros; apply GlobalTheory.SplitExist.split_exist <;> assumption)

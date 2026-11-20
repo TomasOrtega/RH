@@ -7,8 +7,10 @@ open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.UC
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CDimAlg.ringKrullDim_add_trdeg_of_isComplAt | exact GlobalTheory.CDimAlg.ringKrullDim_add_trdeg_of_isComplAt | (intros; apply GlobalTheory.CDimAlg.ringKrullDim_add_trdeg_of_isComplAt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CDimAlg.ringKrullDim_add_trdeg_of_isComplAt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRingKrullDimAddTrdegCompletionPolynomial.lean&line=40#L40)
 -/
 theorem _root_.GlobalTheory.T.ringKrullDim_add_trdeg_completion_polynomial : ∀ (F W R : Type) [Field F] [CommRing W] [IsDomain W] [IsLocalRing W] [CommRing R] [IsLocalRing R] (b : F →+* W), b.EssFiniteType → ∀ (I : Type) [Fintype I] (ψ : MvPolynomial I W →+* R), GlobalTheory.TChart.IsComplAt ψ → IsLocalHom (ψ.comp MvPolynomial.C) → ∀ bR : F →+* R, (ψ.comp MvPolynomial.C).comp b = bR → ((residue R).comp bR).EssFiniteType ∧ ∀ a t : ℕ, ringKrullDim W = a → (letI := ((residue W).comp b).toAlgebra; Algebra.trdeg F (ResidueField W) = t) → ∃ a' t' : ℕ, ringKrullDim R = a' ∧ (letI := ((residue R).comp bR).toAlgebra; Algebra.trdeg F (ResidueField R) = t') ∧ a' + t' = a + t + Fintype.card I := by
   first | exact @GlobalTheory.CDimAlg.ringKrullDim_add_trdeg_of_isComplAt | exact GlobalTheory.CDimAlg.ringKrullDim_add_trdeg_of_isComplAt | (intros; apply GlobalTheory.CDimAlg.ringKrullDim_add_trdeg_of_isComplAt <;> assumption)

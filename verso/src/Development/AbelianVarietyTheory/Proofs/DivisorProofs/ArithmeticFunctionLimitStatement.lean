@@ -11,8 +11,10 @@ open scoped Classical
 open GlobalTheory.CovTestDR GlobalTheory.VdmRec GlobalTheory.MetFam GlobalTheory.ShFam GlobalTheory.Toroidal GlobalTheory.CxPts
 open scoped ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MetFam.MixedCont.tendsto_isArFun | exact GlobalTheory.MetFam.MixedCont.tendsto_isArFun | (intros; apply GlobalTheory.MetFam.MixedCont.tendsto_isArFun <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MetFam.MixedCont.tendsto_isArFun` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FArithmeticFunctionLimit.lean&line=81#L81)
 -/
 theorem _root_.GlobalTheory.T.arithmetic_function_limit : ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → GenSmooth p D → ∀ t : ℝ → ℝ, Tendsto t atTop (𝓝 0) → ∀ (ι : Type) [Fintype ι] (L : ℝ → ι → HermLB p) (L₀ : ι → HermLB p), (∀ i, LFam t (fun R => L R i) (L₀ i)) → ∀ (Φ : ℝ → MvPolynomial ι ℝ →ₗ[ℝ] ℝ) (Φ₀ : MvPolynomial ι ℝ →ₗ[ℝ] ℝ), (∀ R, IsArFun (L R) D (Φ R)) → IsArFun L₀ D Φ₀ → ∀ P, Tendsto (fun R => Φ R P) atTop (𝓝 (Φ₀ P)) := by
   first | exact @GlobalTheory.MetFam.MixedCont.tendsto_isArFun | exact GlobalTheory.MetFam.MixedCont.tendsto_isArFun | (intros; apply GlobalTheory.MetFam.MixedCont.tendsto_isArFun <;> assumption)

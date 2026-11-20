@@ -8,8 +8,10 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions Formalism.L2 Forma
   GlobalTheory.CompHS GlobalTheory.HSApp
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RunSizes.gaps_large | exact GlobalTheory.RunSizes.gaps_large | (intros; apply GlobalTheory.RunSizes.gaps_large <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RunSizes.gaps_large` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRunSizesQuotientGapsLarge.lean&line=211#L211)
 -/
 theorem _root_.GlobalTheory.T.runSizes_quotientGaps_large : Closed FamHyp fun Fm _ => ∃ x0 : ℝ, ∀ (x : ℝ) (hx : Fm.x1 < x), x0 ≤ x → ∀ ι : Fm.Ix x,
     1 ≤ (Fm.D x ι).R.f * (Fm.D x ι).R.r.choose 2 ∧

@@ -8,8 +8,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.EndLoc
 open scoped CategoryTheory.Obj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EndLoc.formallyUnramified_homFixRep | exact GlobalTheory.EndLoc.formallyUnramified_homFixRep | (intros; apply GlobalTheory.EndLoc.formallyUnramified_homFixRep; all_goals assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EndLoc.formallyUnramified_homFixRep` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFormallyUnramifiedHomWithFixedPullbackScheme.lean&line=57#L57)
 -/
 theorem _root_.GlobalTheory.T.formallyUnramified_homWithFixedPullback_scheme : ∀ (S : Scheme.{0}) (A B : Over S) [GrpObj A] [IsCommMonObj A] [GrpObj B] [IsCommMonObj B] (L : LB A.left) (M : LB B.left) (R : HomFixRep A B L M), IsAbelianScheme A → IsAbelianScheme B → FormallyUnramified R.π := by
   first | exact @GlobalTheory.EndLoc.formallyUnramified_homFixRep | exact GlobalTheory.EndLoc.formallyUnramified_homFixRep | (intros; apply GlobalTheory.EndLoc.formallyUnramified_homFixRep; all_goals assumption)

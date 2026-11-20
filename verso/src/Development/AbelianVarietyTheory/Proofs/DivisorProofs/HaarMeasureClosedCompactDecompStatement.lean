@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HaarMeasureClosedCo
 import Mathlib
 open MeasureTheory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.lintegral_haar_eq_mul_iterated_closed_compact | exact GlobalTheory.lintegral_haar_eq_mul_iterated_closed_compact | (intros; apply GlobalTheory.lintegral_haar_eq_mul_iterated_closed_compact <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.lintegral_haar_eq_mul_iterated_closed_compact` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHaarMeasureClosedCompactDecomp.lean&line=161#L161)
 -/
 theorem _root_.GlobalTheory.T.haar_measure_closed_compact_decomp : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G]
     [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsHaarMeasure] [μ.IsMulRightInvariant]

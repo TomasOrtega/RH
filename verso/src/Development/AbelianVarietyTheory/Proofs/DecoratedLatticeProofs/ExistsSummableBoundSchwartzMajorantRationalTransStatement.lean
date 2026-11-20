@@ -15,8 +15,10 @@ open GlobalTheory.Core.Rk.SW
 open scoped ContDiff
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Unf.MajLoc.summable_bound | exact GlobalTheory.Unf.MajLoc.summable_bound | (intros; apply GlobalTheory.Unf.MajLoc.summable_bound <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Unf.MajLoc.summable_bound` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FExistsSummableBoundSchwartzMajorantRationalTrans.lean&line=67#L67)
 -/
 theorem _root_.GlobalTheory.T.exists_summable_bound_schwartz_majorant_rational_translates : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ m n : ℕ, ∃ N : ℕ, ∀ K Q : Set (Mx D m n), IsCompact K → IsCompact Q → ∃ b : Matrix (Fin m) (Fin n) D.host.E → ℝ, Summable b ∧ ∀ x ∈ Q, ∀ ξ, GlobalTheory.Unf.maj θ K N (x + rat ξ) ≤ b ξ := by
   first | exact @GlobalTheory.Unf.MajLoc.summable_bound | exact GlobalTheory.Unf.MajLoc.summable_bound | (intros; apply GlobalTheory.Unf.MajLoc.summable_bound <;> assumption)

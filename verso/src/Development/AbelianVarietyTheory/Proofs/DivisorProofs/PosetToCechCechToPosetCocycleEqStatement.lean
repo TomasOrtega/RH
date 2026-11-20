@@ -7,8 +7,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GlobalTheory.KS (rsT IsCoc IsCob)
 open GlobalTheory.CatCoh GlobalTheory.CechDR GlobalTheory.CechCmp
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CechCmp.toCech_toPos | exact GlobalTheory.CechCmp.toCech_toPos | (intros; apply GlobalTheory.CechCmp.toCech_toPos <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CechCmp.toCech_toPos` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPosetToCechCechToPosetCocycleEq.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.posetToCech_cechToPoset_cocycle_eq : ∀ (I : Type) [Finite I] (X : Scheme.{0}) (R : Type) [CommRing R] (s : X ⟶ Sp R) (U : I → X.Opens) (hU : ∀ i, IsAffineOpen (U i)) (hinf : ∀ V W : X.Opens, IsAffineOpen V → IsAffineOpen W → IsAffineOpen (V ⊓ W)), ∀ c : GlobalTheory.KS.C1 U, IsCoc U c → toCech s U hU hinf (toPos s U hU hinf c) = c := by
   first | exact @GlobalTheory.CechCmp.toCech_toPos | exact GlobalTheory.CechCmp.toCech_toPos | (intros; apply GlobalTheory.CechCmp.toCech_toPos <;> assumption)

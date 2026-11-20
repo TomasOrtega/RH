@@ -10,8 +10,10 @@ open GlobalTheory GlobalTheory.ZM GlobalTheory.ZH GlobalTheory.UMin GlobalTheory
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IntOverCdvr.isIntegralElem_of_val_nonneg | exact GlobalTheory.IntOverCdvr.isIntegralElem_of_val_nonneg | (intros; apply GlobalTheory.IntOverCdvr.isIntegralElem_of_val_nonneg <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IntOverCdvr.isIntegralElem_of_val_nonneg` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsIntegralElemOfValNonnegOverCompleteDVR.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.isIntegralElem_of_val_nonneg_over_completeDVR : ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], GlobalTheory.LN.CDvr V → ∀ (ϖ : V), Irreducible ϖ → ∀ (F : Type) [Field F] [Algebra (FractionRing V) F] [Algebra.IsAlgebraic (FractionRing V) F] (v : AddValuation F (WithTop ℚ)), ReciprocityTheory.ChartRestriction.G.DVR.ValOver ϖ F v → ∀ z : F, 0 ≤ v z → ((algebraMap (FractionRing V) F).comp (algebraMap V (FractionRing V))).IsIntegralElem z := by
   first | exact @GlobalTheory.IntOverCdvr.isIntegralElem_of_val_nonneg | exact GlobalTheory.IntOverCdvr.isIntegralElem_of_val_nonneg | (intros; apply GlobalTheory.IntOverCdvr.isIntegralElem_of_val_nonneg <;> assumption)

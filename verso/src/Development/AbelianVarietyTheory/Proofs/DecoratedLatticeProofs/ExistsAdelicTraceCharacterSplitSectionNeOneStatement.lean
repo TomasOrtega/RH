@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsAdel
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsSumFrame
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR.Datum Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.FinPl ValuativeRel NumberField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FinPl.CharNontriv.exists_psiE_sec_ne_one | exact GlobalTheory.FinPl.CharNontriv.exists_psiE_sec_ne_one | (intros; apply GlobalTheory.FinPl.CharNontriv.exists_psiE_sec_ne_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FinPl.CharNontriv.exists_psiE_sec_ne_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FExistsAdelicTraceCharacterSplitSectionNeOne.lean&line=30#L30)
 -/
 theorem _root_.GlobalTheory.T.exists_adelicTraceCharacter_splitSection_ne_one : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : SplitPt D k) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∃ a : k, GlobalTheory.MixPer.psiE ψ (p.sec a) ≠ 1 := by
   first | exact @GlobalTheory.FinPl.CharNontriv.exists_psiE_sec_ne_one | exact GlobalTheory.FinPl.CharNontriv.exists_psiE_sec_ne_one | (intros; apply GlobalTheory.FinPl.CharNontriv.exists_psiE_sec_ne_one <;> assumption)

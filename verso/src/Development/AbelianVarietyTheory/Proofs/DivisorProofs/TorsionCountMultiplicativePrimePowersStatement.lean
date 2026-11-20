@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionCountMultipl
 import Mathlib
 open NumberField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.card_primaryTorsion_mul_blocks | exact GlobalTheory.card_primaryTorsion_mul_blocks | (intros; apply GlobalTheory.card_primaryTorsion_mul_blocks <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.card_primaryTorsion_mul_blocks` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTorsionCountMultiplicativePrimePowers.lean&line=106#L106)
 -/
 theorem _root_.GlobalTheory.T.torsion_count_multiplicative_prime_powers : ∀ (F : Type) [Field F] [NumberField F] (M : Type) [AddCommGroup M] [Module (𝓞 F) M] (N : ℕ), 1 ≤ N →
     (∀ j : ℕ, Finite {x : M // (N ^ j) • x = 0}) →

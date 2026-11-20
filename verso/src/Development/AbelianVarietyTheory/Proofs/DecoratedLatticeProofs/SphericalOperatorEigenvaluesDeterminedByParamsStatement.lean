@@ -7,8 +7,10 @@ open scoped TensorProduct InnerProductSpace ComplexConjugate
 open GlobalTheory.ChainOnto
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ParamEigen.eig_of_param | exact GlobalTheory.ParamEigen.eig_of_param | (intros; apply GlobalTheory.ParamEigen.eig_of_param <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ParamEigen.eig_of_param` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FSphericalOperatorEigenvaluesDeterminedByParams.lean&line=165#L165)
 -/
 theorem _root_.GlobalTheory.T.sphericalOperator_eigenvalues_determined_by_params : ∀ (D : D7) (V : HSp D) (J : Set (GA D V)) (χ : GA D V → ℂ) (Sb : Finset (HeightOneSpectrum (𝓞 D.host.F))), SphOff J χ Sb → ∀ B : GlobalTheory.LFun.Fam D.host.E, ∃ a : HeightOneSpectrum (𝓞 D.host.E) → List ℤ → ℂ, ∀ f : GA D V → ℂ, GlobalTheory.LFun.IsParamFunV V Sb f B → ∀ P d R, Hecke₂ V J χ Sb P d R → heckeLin V R f = a P d • f := by
   first | exact @GlobalTheory.ParamEigen.eig_of_param | exact GlobalTheory.ParamEigen.eig_of_param | (intros; apply GlobalTheory.ParamEigen.eig_of_param <;> assumption)

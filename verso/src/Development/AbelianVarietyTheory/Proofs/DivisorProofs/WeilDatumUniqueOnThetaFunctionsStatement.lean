@@ -5,8 +5,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open scoped TensorProduct ComplexOrder
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WeilUniq.weilDatum_unique | exact GlobalTheory.WeilUniq.weilDatum_unique | (intros; apply GlobalTheory.WeilUniq.weilDatum_unique <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WeilUniq.weilDatum_unique` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FWeilDatumUniqueOnThetaFunctions.lean&line=83#L83)
 -/
 theorem _root_.GlobalTheory.T.weilDatum_unique_on_thetaFunctions : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om om' : (GA D S × GA D T →* Module.End ℂ (WO S T → ℂ))), IsWeilDatumO ψ S T χS χT om → IsWeilDatumO ψ S T χS χT om' → ∀ p f, IsThetaFunO ψ S T f → om p f = om' p f := by
   first | exact @GlobalTheory.WeilUniq.weilDatum_unique | exact GlobalTheory.WeilUniq.weilDatum_unique | (intros; apply GlobalTheory.WeilUniq.weilDatum_unique <;> assumption)

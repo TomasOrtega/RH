@@ -8,8 +8,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.HTLat GlobalTheory.Published GlobalTheory.Published.AbVarRed IsLocalRing
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.properOfInfinitelyManyLargeTorsionCounts | exact GlobalTheory.properOfInfinitelyManyLargeTorsionCounts | (intros; apply GlobalTheory.properOfInfinitelyManyLargeTorsionCounts <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.properOfInfinitelyManyLargeTorsionCounts` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FProperOfInfinitelyManyLargeTorsionCounts.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.isProper_of_infinitely_many_large_torsion : ∀ (k : Type) [Field k] [IsAlgClosed k] (G : Over (Sp k)) [GrpObj G], GlobalTheory.SS.SmConn G → ∀ g : ℕ, SmoothOfRelativeDimension g G.hom → ∀ C : ℕ, {m : ℕ | (m : k) ≠ 0 ∧ ∃ s : Finset (𝟙_ (Over (Sp k)) ⟶ G), (∀ x ∈ s, x ^ m = 1) ∧ m ^ (2 * g) ≤ C * s.card}.Infinite → IsProper G.hom := by
   first | exact @GlobalTheory.properOfInfinitelyManyLargeTorsionCounts | exact GlobalTheory.properOfInfinitelyManyLargeTorsionCounts | (intros; apply GlobalTheory.properOfInfinitelyManyLargeTorsionCounts <;> assumption)

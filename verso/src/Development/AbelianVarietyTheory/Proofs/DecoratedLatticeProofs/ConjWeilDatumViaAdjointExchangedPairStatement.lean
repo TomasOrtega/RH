@@ -11,8 +11,10 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Unf
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ConjAdjWeil.isWeilDatumO_conjAdjoint | exact GlobalTheory.ConjAdjWeil.isWeilDatumO_conjAdjoint | (intros; apply GlobalTheory.ConjAdjWeil.isWeilDatumO_conjAdjoint <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ConjAdjWeil.isWeilDatumO_conjAdjoint` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FConjWeilDatumViaAdjointExchangedPair.lean&line=76#L76)
 -/
 theorem _root_.GlobalTheory.T.conj_weil_datum_via_adjoint_exchanged_pair : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : Om S T), IsWeilDatumO ψ S T χS χT om → IsWeilDatumO ψ T S χT χS (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.conjAdjoint om) := by
   first | exact @GlobalTheory.ConjAdjWeil.isWeilDatumO_conjAdjoint | exact GlobalTheory.ConjAdjWeil.isWeilDatumO_conjAdjoint | (intros; apply GlobalTheory.ConjAdjWeil.isWeilDatumO_conjAdjoint <;> assumption)

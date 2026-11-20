@@ -6,8 +6,10 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory GlobalTheory.Cart
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LatChain.coh_gens | exact GlobalTheory.LatChain.coh_gens | (intros; apply GlobalTheory.LatChain.coh_gens <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LatChain.coh_gens` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLocalGeneratorsCohereNearPoint.lean&line=34#L34)
 -/
 theorem _root_.GlobalTheory.T.local_generators_cohere_near_point : ∀ (X : Scheme.{0}) [IsIntegral X] (p k a N : ℕ) (M : X → Matrix (Fin N) (Fin N) X.functionField) (c : X → Fin N → X.functionFieldˣ) (j : Fin N) (γ : X.functionField), γ ≠ 0 → (∀ x, Ov p x → RegAt x γ ∧ RegAt x ((p : X.functionField) ^ a / γ)) → Coh p (k + 1 + a) M c → ∀ x, Ov p x → ∀ᶠ z in 𝓝 x, Ov p z → (∀ i s, Lc (loc z) (gens γ (fun l => (M x)⁻¹ l j) i) (gens γ (fun l => (M z)⁻¹ l j) i s) ∧ Lc (loc z) (gens γ (fun l => (M z)⁻¹ l j) i) (gens γ (fun l => (M x)⁻¹ l j) i s)) ∧ ∀ i : Fin N, UnitAt z ((c x i : X.functionField) / c z i) ∧ Lc (loc z) (gens γ (fun l => (M z)⁻¹ l j) i.succ) ((M x)⁻¹ i j - (c x i : X.functionField) / c z i * (M z)⁻¹ i j) := by
   first | exact @GlobalTheory.LatChain.coh_gens | exact GlobalTheory.LatChain.coh_gens | (intros; apply GlobalTheory.LatChain.coh_gens <;> assumption)

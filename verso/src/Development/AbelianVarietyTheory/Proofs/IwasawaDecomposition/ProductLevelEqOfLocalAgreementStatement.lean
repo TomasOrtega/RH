@@ -12,8 +12,10 @@ open GlobalTheory.LevCmp
 open GlobalTheory.TwistChoice (Reading ReadsAt)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LevCmp.levEq_of_agree | exact GlobalTheory.LevCmp.levEq_of_agree | (intros; apply GlobalTheory.LevCmp.levEq_of_agree <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LevCmp.levEq_of_agree` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FProductLevelEqOfLocalAgreement.lean&line=119#L119)
 -/
 theorem _root_.GlobalTheory.T.productLevel_eq_of_local_agreement : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (J J' : Subgroup (GAf L n)) (χ : J →* ℂˣ) (χ' : J' →* ℂˣ) (S : Set (HeightOneSpectrum (𝓞 (maximalRealSubfield L)))), S.Finite → NG.IsProdLevel J → NG.IsProdLevel J' → NG.HypOutside J χ S → NG.HypOutside J' χ' S → (∀ u ∈ S, ∀ κ, TrivOutside {u} κ → (κ ∈ J ↔ κ ∈ J') ∧ ∀ (h : κ ∈ J) (h' : κ ∈ J'), χ ⟨κ, h⟩ = χ' ⟨κ, h'⟩) → LevEq J χ J' χ' := by
   first | exact @GlobalTheory.LevCmp.levEq_of_agree | exact GlobalTheory.LevCmp.levEq_of_agree | (intros; apply GlobalTheory.LevCmp.levEq_of_agree <;> assumption)

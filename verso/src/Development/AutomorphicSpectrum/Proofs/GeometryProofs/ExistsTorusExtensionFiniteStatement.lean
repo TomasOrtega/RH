@@ -12,8 +12,10 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar
 open scoped CategoryTheory.Obj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.exists_finite_torusExtension_fibre | exact GlobalTheory.CompanionTheory.Ar.exists_finite_torusExtension_fibre | (intros; apply GlobalTheory.CompanionTheory.Ar.exists_finite_torusExtension_fibre <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.exists_finite_torusExtension_fibre` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FExistsTorusExtensionFinite.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.exists_torus_extension_finite : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G], IsSemiAbelian G → ∀ (L : Type) [Field L] [CharZero L] (z : Sp L ⟶ S), ∃ (L' : Type) (_ : Field L') (_ : Algebra L L'), FiniteDimensional L L' ∧ Nonempty (TorusExtension ((Over.pullback (spMap (algebraMap L L') ≫ z)).obj G)) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.exists_finite_torusExtension_fibre | exact GlobalTheory.CompanionTheory.Ar.exists_finite_torusExtension_fibre | (intros; apply GlobalTheory.CompanionTheory.Ar.exists_finite_torusExtension_fibre <;> assumption)

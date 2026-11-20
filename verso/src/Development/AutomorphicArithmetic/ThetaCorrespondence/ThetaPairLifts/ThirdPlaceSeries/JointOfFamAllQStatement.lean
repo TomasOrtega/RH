@@ -16,8 +16,10 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Unf GlobalTheory.MiS
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.MiTop GlobalTheory.SeeSaw GlobalTheory.Fam ValuativeRel IsLocalRing GlobalTheory.FinPl
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.MiTop.joint_of_famAllQ_alt | exact _root_.GlobalTheory.MiTop.joint_of_famAllQ_alt | (intros; apply _root_.GlobalTheory.MiTop.joint_of_famAllQ_alt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MiTop.joint_of_famAllQ_alt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicArithmetic%2FThetaCorrespondence%2FThetaPairLifts%2FThirdPlaceSeries%2FJointOfFamAllQ.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.joint_of_famAllQ_of_servedQ : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.HarishChandraModules → ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.MiTop.FamilyAllConditions W → _root_.GlobalTheory.MiTop.FamilyServedCondition W → _root_.GlobalTheory.MiTop.JointCondition W := by
   first | exact @_root_.GlobalTheory.MiTop.joint_of_famAllQ_alt | exact _root_.GlobalTheory.MiTop.joint_of_famAllQ_alt | (intros; apply _root_.GlobalTheory.MiTop.joint_of_famAllQ_alt <;> assumption)

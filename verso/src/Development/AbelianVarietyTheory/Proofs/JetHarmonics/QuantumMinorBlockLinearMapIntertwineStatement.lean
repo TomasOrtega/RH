@@ -7,8 +7,10 @@ import Formalism.RealPlaceAnalysis.StatementKT
 open BranchingSupport Formalism.FourierDecayAlt Formalism.FourierDecayAlt.ThreeDimData Matrix MeasureTheory Finset
 open scoped InnerProductSpace ENNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.qminor_block_intertwine | exact GlobalTheory.qminor_block_intertwine | (intros; apply GlobalTheory.qminor_block_intertwine <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.qminor_block_intertwine` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FJetHarmonics%2FQuantumMinorBlockLinearMapIntertwine.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.quantumMinor_block_linearMap_intertwine : ∀ (M Wp : Type) [AddCommGroup M] [Module ℂ M] [AddCommGroup Wp] [Module ℂ Wp] (n m : ℕ) (E : Fin n → Fin n → Module.End ℂ M) (l : M →ₗ[ℂ] Wp) (w : Fin m → Fin n) (Pop : Fin m → Fin m → Wp → Wp), Function.Injective w → (∀ i j v, l (E (w i) (w j) v) = Pop i j (l v)) → ∀ u v, l (Formalism.REAL.qminor E w w u v) = Formalism.FourierDecayAlt.Q.qmF Pop id id u (l v) := by
   first | exact @GlobalTheory.qminor_block_intertwine | exact GlobalTheory.qminor_block_intertwine | (intros; apply GlobalTheory.qminor_block_intertwine <;> assumption)

@@ -5,8 +5,10 @@ open Matrix Complex NumberField GlobalTheory.SW Filter Topology
 open ReciprocityTheory.ChartRestriction.G.FD (cc herm)
 open scoped ComplexConjugate ComplexOrder Real
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SW.theta_eis_bounded | exact GlobalTheory.SW.theta_eis_bounded | (intros; apply GlobalTheory.SW.theta_eis_bounded <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SW.theta_eis_bounded` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSiegelThetaTransformation%2FHermitianThetaEisensteinConvergeBounded.lean&line=285#L285)
 -/
 theorem _root_.GlobalTheory.T.hermitianTheta_eisenstein_converge_bounded : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Finset (E →+* ℂ)), IsType Ψ → ∀ (n N : ℕ), Even n → 4 * N < n → ∀ (R : ℕ) (δ : ℝ), 0 < R → 0 < δ → ∃ C : ℝ, ∀ φ : Matrix (Fin n) (Fin N) E → ℂ, HasLevel R φ → ∀ B : ℝ, (∀ x, ‖φ x‖ ≤ B) → ∀ Z ∈ HnGe Ψ N δ, (Summable fun U : Lag E N => ‖eisTerm Ψ U.2.choose φ Z 0 0‖) ∧ ‖thH Ψ φ Z 0 0‖ ≤ C * B ∧ ‖eis Ψ φ Z 0 0‖ ≤ C * B := by
   first | exact @GlobalTheory.SW.theta_eis_bounded | exact GlobalTheory.SW.theta_eis_bounded | (intros; apply GlobalTheory.SW.theta_eis_bounded <;> assumption)

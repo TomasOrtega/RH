@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.An
 open AlgebraicGeometry MvPolynomial GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts GlobalTheory.ChartGlue GlobalTheory.FlagBundle GlobalTheory.HermFrame GlobalTheory.GoodMetric
 open ReciprocityTheory.L2DbarEstimates (V)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GoodMetric.hasChernIntegral_top_of_chernWeil | exact GlobalTheory.GoodMetric.hasChernIntegral_top_of_chernWeil | (intros; apply GlobalTheory.GoodMetric.hasChernIntegral_top_of_chernWeil <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GoodMetric.hasChernIntegral_top_of_chernWeil` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FChernFormIntegrableComplexPointsOfChernWeil.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.chernForm_integrable_complexPoints_of_chernWeil : GlobalTheory.Published.ChernWeilNumbers → ∀ (F : Type) [Field F] (σ : F →+* ℂ) (X : Var F) (ι : Type) [Fintype ι] (m : ι → ℕ) (E : Fr (ratOf X) m 0) (H : Mat m X.Fn → CxPts X.str σ → Mat m ℂ), IsMetricOn E ⊤ H → ∀ R : MvPolynomial (ι × ℕ) ℝ, ∃ t : ℝ, HasChernIntegral E ⊤ H R t := by
   first | exact @GlobalTheory.GoodMetric.hasChernIntegral_top_of_chernWeil | exact GlobalTheory.GoodMetric.hasChernIntegral_top_of_chernWeil | (intros; apply GlobalTheory.GoodMetric.hasChernIntegral_top_of_chernWeil <;> assumption)

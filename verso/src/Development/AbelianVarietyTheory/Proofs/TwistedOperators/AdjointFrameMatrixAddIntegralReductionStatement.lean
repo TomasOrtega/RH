@@ -16,8 +16,10 @@ open Formalism.L2.DIV (kP Pl LevelP)
 open Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FrameAdjAdd.frMapAdj_add_isIntM_redM | exact GlobalTheory.FrameAdjAdd.frMapAdj_add_isIntM_redM | (intros; apply GlobalTheory.FrameAdjAdd.frMapAdj_add_isIntM_redM <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FrameAdjAdd.frMapAdj_add_isIntM_redM` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FAdjointFrameMatrixAddIntegralReduction.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.adjointFrameMatrix_add_integral_reduction : ∀ {D : D7} (S T : HSp D) (βS : GL (Fin S.rank) (Formalism.IndefR.Datum.EAf D)) (βT : GL (Fin T.rank) (Formalism.IndefR.Datum.EAf D)) (x y : WO S T),
   IsIntM (frMapAdj S T βS βT x) → IsIntM (frMapAdj S T βS βT y) →

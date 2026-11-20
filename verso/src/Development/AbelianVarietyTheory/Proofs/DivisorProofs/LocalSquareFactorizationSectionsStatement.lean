@@ -13,8 +13,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.unit_mul_sq_spread | exact GlobalTheory.Mum.unit_mul_sq_spread | (intros; apply GlobalTheory.Mum.unit_mul_sq_spread <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.unit_mul_sq_spread` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLocalSquareFactorizationSections.lean&line=43#L43)
 -/
 theorem _root_.GlobalTheory.T.local_square_factorization_sections : ∀ (X : Scheme.{0}) (L2 : LB X) (h : L2.Sec) (x : X) (j₀ : L2.ι) (hx : x ∈ L2.U j₀) (u : (X.presheaf.stalk x)ˣ) (a : X.presheaf.stalk x), a ≠ 0 → (X.presheaf.germ (L2.U j₀) x hx).hom (h.f j₀) = u * a ^ 2 → ∃ V : X.Opens, x ∈ V ∧ ∃ a : Γ(X, V), a ≠ 0 ∧ ∀ j, ∃ u : Γ(X, V ⊓ L2.U j)ˣ, (X.presheaf.map (homOfLE inf_le_right).op).hom (h.f j) = (u : Γ(X, V ⊓ L2.U j)) * (X.presheaf.map (homOfLE inf_le_left).op).hom a ^ 2 := by
   first | exact @GlobalTheory.Mum.unit_mul_sq_spread | exact GlobalTheory.Mum.unit_mul_sq_spread | (intros; apply GlobalTheory.Mum.unit_mul_sq_spread <;> assumption)

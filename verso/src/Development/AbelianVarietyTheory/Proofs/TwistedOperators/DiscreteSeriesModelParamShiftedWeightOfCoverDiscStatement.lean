@@ -15,8 +15,10 @@ open scoped TensorProduct InnerProductSpace ComplexConjugate
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.ArchRec
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ArchRec.Direct.directBridge | exact GlobalTheory.ArchRec.Direct.directBridge | (intros; apply GlobalTheory.ArchRec.Direct.directBridge <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ArchRec.Direct.directBridge` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FDiscreteSeriesModelParamShiftedWeightOfCoverDisc.lean&line=127#L127)
 -/
 theorem _root_.GlobalTheory.T.discreteSeriesModelParamShiftedWeight_of_coverDiscreteSeries : ∀ D : D7, GlobalTheory.IndefiniteRowSideFullHecke.BarMatrix.ModelsAreCoverSeries D → DirectBridge D := by
   first | exact @GlobalTheory.ArchRec.Direct.directBridge | exact GlobalTheory.ArchRec.Direct.directBridge | (intros; apply GlobalTheory.ArchRec.Direct.directBridge <;> assumption)

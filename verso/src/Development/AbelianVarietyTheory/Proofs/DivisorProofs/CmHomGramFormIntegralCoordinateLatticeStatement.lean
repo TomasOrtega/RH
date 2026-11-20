@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLinearHomProd
 open NumberField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlatCM.GramInt.gram_integral | exact GlobalTheory.FlatCM.GramInt.gram_integral | (intros; apply GlobalTheory.FlatCM.GramInt.gram_integral <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlatCM.GramInt.gram_integral` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCmHomGramFormIntegralCoordinateLattice.lean&line=130#L130)
 -/
 theorem _root_.GlobalTheory.T.cmHomGramForm_integral_coordinateLattice : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E),
     GlobalTheory.IndefiniteRowSideFullHecke.EigenvectorLieDegree.IsHostField H → ∀ (K : Type) [Field K] [NumberField K] (ρ : 𝓞 K) (σ₁ : K →+* ℂ) (p : ℕ)

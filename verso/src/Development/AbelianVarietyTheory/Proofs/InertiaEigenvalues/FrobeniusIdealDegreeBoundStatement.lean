@@ -2,8 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FrobeniusIdealDegreeBound
 open scoped PowerSeries Pointwise
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.frobenius_ideal_degree_bound | exact GlobalTheory.frobenius_ideal_degree_bound | (intros; apply GlobalTheory.frobenius_ideal_degree_bound <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.frobenius_ideal_degree_bound` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FFrobeniusIdealDegreeBound.lean&line=127#L127)
 -/
 theorem _root_.GlobalTheory.T.X_pow_mem_map_sup_span_pow_of_frobenius_bound : ∀ {O : Type} [CommRing O] (l : ℕ), 2 ≤ l → ∀ (φ : O⟦X⟧ →ₐ[O] O⟦X⟧), (∀ (f : O⟦X⟧) (m : ℕ), PowerSeries.coeff m (φ f) = if l ∣ m then PowerSeries.coeff (m / l) f else 0) → ∀ (a e h b : ℕ) [NeZero a] (I : ZMod a → Ideal O⟦X⟧), 1 ≤ b → h + b ≤ l → (∀ τ, ∃ s : ℕ, PowerSeries.X ^ s ∈ I τ ⊔ Ideal.span {(l : O⟦X⟧) ^ b}) → (∀ τ, ∀ x ∈ I τ, (PowerSeries.X ^ e + (l : O⟦X⟧)) ^ h * x ∈ (I (τ - 1)).map φ) → ∀ τ, (PowerSeries.X : O⟦X⟧) ^ (e * (h + b)) ∈ (I τ).map φ ⊔ Ideal.span {(l : O⟦X⟧) ^ b} := by
   first | exact @GlobalTheory.frobenius_ideal_degree_bound | exact GlobalTheory.frobenius_ideal_degree_bound | (intros; apply GlobalTheory.frobenius_ideal_degree_bound <;> assumption)

@@ -7,8 +7,10 @@ open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj Alg
 open scoped CategoryTheory.Obj
 open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.KillsAdic.killsOver_of_forall_pow | exact GlobalTheory.CompanionTheory.Ar.KillsAdic.killsOver_of_forall_pow | (intros; apply GlobalTheory.CompanionTheory.Ar.KillsAdic.killsOver_of_forall_pow <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.KillsAdic.killsOver_of_forall_pow` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FKillsOverOfAdicCompletion.lean&line=76#L76)
 -/
 theorem _root_.GlobalTheory.T.killsOver_of_adic_completion : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsSeparated G.hom] (X : Type) [AddCommGroup X] (u : splitTorus S X ⟶ G) (Y : AddSubgroup X) (R : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] (b : Sp R ⟶ S), (∀ n : ℕ, KillsOver u Y (spMap (Ideal.Quotient.mk (IsLocalRing.maximalIdeal R ^ (n + 1))) ≫ b)) → KillsOver u Y b := by
   first | exact @GlobalTheory.CompanionTheory.Ar.KillsAdic.killsOver_of_forall_pow | exact GlobalTheory.CompanionTheory.Ar.KillsAdic.killsOver_of_forall_pow | (intros; apply GlobalTheory.CompanionTheory.Ar.KillsAdic.killsOver_of_forall_pow <;> assumption)

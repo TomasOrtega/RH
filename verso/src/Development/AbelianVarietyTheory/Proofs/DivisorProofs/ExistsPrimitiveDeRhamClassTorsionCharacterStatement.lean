@@ -11,8 +11,10 @@ open ReciprocityTheory.ChartRestriction.G.Semi (IsAbelianScheme LB RigLB Cubical
 open GlobalTheory GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.DeRham GlobalTheory.PDiv GlobalTheory.PtExt
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PtExt.exists_dat_chi_eq | exact GlobalTheory.PtExt.exists_dat_chi_eq | (intros; apply GlobalTheory.PtExt.exists_dat_chi_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PtExt.exists_dat_chi_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsPrimitiveDeRhamClassTorsionCharacter.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.exists_primitive_deRham_class_torsion_character : ∀ (p : ℕ) [Fact p.Prime]  (R : Type) [CommRing R] (N : ℕ), (p : R) ^ N = 0 → ∀ (A : Over (Sp R)) [GrpObj A], IsAbelianScheme A → AllPrim (dp0 R) (𝟙 _) A → Function.Surjective (toH1O (A.hom ≫ 𝟙 _)) → ∀ (G : PDivGroup p R) (t : G.TorsionTower A) (b : Fn0 A), IsTorsChar (p ^ N) b → ∃ (c : primDR A) (d : Dat t c), ∀ (D : Type) [CommRing D] [Algebra R D] (x : Pt A D), x ^ (p ^ N) = 1 → chi (p ^ N) d.g D x = b D x := by
   first | exact @GlobalTheory.PtExt.exists_dat_chi_eq | exact GlobalTheory.PtExt.exists_dat_chi_eq | (intros; apply GlobalTheory.PtExt.exists_dat_chi_eq <;> assumption)

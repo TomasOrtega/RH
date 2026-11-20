@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LocalBasisRep
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Col Formalism.L2.DIV Formalism.L2.Ker Formalism.UG Formalism.L2.Forms GlobalTheory.Mem GlobalTheory.Mem.Chr GlobalTheory.Mem.Col2 GlobalTheory.Mem.Col2.TC Matrix
 attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PerQ.Co.latCo_mem_intSpan | exact GlobalTheory.PerQ.Co.latCo_mem_intSpan | (intros; apply GlobalTheory.PerQ.Co.latCo_mem_intSpan <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PerQ.Co.latCo_mem_intSpan` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FGlobalInterpolation%2FLastStepIntegralFormLocalCoordsMemIntegralSpan.lean&line=86#L86)
 -/
 theorem _root_.GlobalTheory.T.lastStepIntegralForm_localCoords_mem_integralSpan : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (l0 : I.Law0 l) (u : B.Word) (a : I.ι) (w : B.places.Pl), ∀ x ∈ ((I.tw l l0 Z).fm u a).S (I.rec7 l Z).R.m w, ∀ c, GlobalTheory.PerQ.Co.coM I u a w c (((I.tw l l0 Z).fm u a).emb (I.rec7 l Z).R.m x (((I.tw l l0 Z).fm u a).til c)) ∈ Formalism.MainNotions.product_first_zeroth_parts.IntSpan (I.rec7 l Z) w (((I.rec7 l Z).fm u).lam (I.rec7 l Z).R.m) := by
   first | exact @GlobalTheory.PerQ.Co.latCo_mem_intSpan | exact GlobalTheory.PerQ.Co.latCo_mem_intSpan | (intros; apply GlobalTheory.PerQ.Co.latCo_mem_intSpan <;> assumption)

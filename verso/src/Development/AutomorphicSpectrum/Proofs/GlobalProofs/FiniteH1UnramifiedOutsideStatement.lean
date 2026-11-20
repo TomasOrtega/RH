@@ -5,8 +5,10 @@ import GroundTheory.ProfiniteCohomology.RestrictedRamification.IsUnramifiedOutsi
 import GroundTheory.ProfiniteCohomology.ContinuousCochains
 open NumberField IsDedekindDomain CategoryTheory GroundTheory.ProfCoh ReciprocityTheory.Gal Formalism.ConjugateSelfDual
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.GSFin.finite_cohomology_one | exact GlobalTheory.CompanionTheory.GSFin.finite_cohomology_one | (intros; apply GlobalTheory.CompanionTheory.GSFin.finite_cohomology_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.GSFin.finite_cohomology_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGlobalProofs%2FFiniteH1UnramifiedOutside.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.finite_H1_unramified_outside : ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (r : ℕ) (S : Finset (HeightOneSpectrum (𝓞 F))), ContainsAbove S l → ∀ (A : Rep.{0} (ULift.{0} ℤ) (galUnramifiedOutside F Ω (S : Set (HeightOneSpectrum (𝓞 F))))) [IsDiscreteRep A], Finite A.V → (∀ a : A.V, (l ^ r) • a = 0) → Finite (cohomology A 1) := by
   first | exact @GlobalTheory.CompanionTheory.GSFin.finite_cohomology_one | exact GlobalTheory.CompanionTheory.GSFin.finite_cohomology_one | (intros; apply GlobalTheory.CompanionTheory.GSFin.finite_cohomology_one <;> assumption)

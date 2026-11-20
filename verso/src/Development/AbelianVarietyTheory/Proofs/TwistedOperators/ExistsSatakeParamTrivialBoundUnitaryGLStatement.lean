@@ -10,8 +10,10 @@ open GlobalTheory.LGrp (IsUnitarisable IsIrrSmooth bcParam)
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FinZeta.ParGL.exists_isSatVecGL_bound | exact GlobalTheory.FinZeta.ParGL.exists_isSatVecGL_bound | (intros; apply GlobalTheory.FinZeta.ParGL.exists_isSatVecGL_bound <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FinZeta.ParGL.exists_isSatVecGL_bound` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsSatakeParamTrivialBoundUnitaryGL.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.exists_satakeParam_trivialBound_unitaryGL : ∀ (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (GL (Fin n) (w.adicCompletion E)) V), IsUnitarisable ρ → ∀ x : V, x ≠ 0 → x ∈ fixed ρ (KGL w n) → (∀ h ∈ Hecke ℂ (KGL w n), ∃ c : ℂ, heckeVec ρ (KGL w n) h x = c • x) → ∃ B, IsSatVecGL w ρ x B ∧ ∀ β ∈ B, ‖(β : ℂ)‖ ≤ (qV E w : ℝ) ^ (((n : ℝ) - 1) / 2) ∧ ‖((β⁻¹ : ℂˣ) : ℂ)‖ ≤ (qV E w : ℝ) ^ (((n : ℝ) - 1) / 2) := by
   first | exact @GlobalTheory.FinZeta.ParGL.exists_isSatVecGL_bound | exact GlobalTheory.FinZeta.ParGL.exists_isSatVecGL_bound | (intros; apply GlobalTheory.FinZeta.ParGL.exists_isSatVecGL_bound <;> assumption)

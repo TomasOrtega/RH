@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.OverExtAlgebra
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemRangeOfValNonneg
 open GlobalTheory.UnitLemma GlobalTheory.UnitLemma.Unr Polynomial
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnitLemma.Unr.trace_int | exact GlobalTheory.UnitLemma.Unr.trace_int | (intros; apply GlobalTheory.UnitLemma.Unr.trace_int <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnitLemma.Unr.trace_int` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FExistsIntegralTraceUnramifiedQuadraticLocalExt.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.exists_integral_trace_unramifiedQuadraticLocalExt : ∀ (K K' : UQ) (d : ℕ) (φ : K.E →+* K'.E), IsUnrExt K K' d φ → ∀ y : K'.O, ∃ a : K.O, @Algebra.trace K.E K'.E _ _ φ.toAlgebra (algebraMap K'.O K'.E y) = algebraMap K.O K.E a := by
   first | exact @GlobalTheory.UnitLemma.Unr.trace_int | exact GlobalTheory.UnitLemma.Unr.trace_int | (intros; apply GlobalTheory.UnitLemma.Unr.trace_int <;> assumption)

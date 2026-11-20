@@ -18,8 +18,10 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UMLeviMulUMLevi
 open Matrix GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.BZMir GlobalTheory.BZMir.Leib GlobalTheory.RgGu.Leib GlobalTheory.CompanionTheory.Rodier GlobalTheory.CompanionTheory.BZPsiPG
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.BZPsiPG.FibInvK.fibV_mul_right_eq | exact GlobalTheory.CompanionTheory.BZPsiPG.FibInvK.fibV_mul_right_eq | (intros; apply GlobalTheory.CompanionTheory.BZPsiPG.FibInvK.fibV_mul_right_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.BZPsiPG.FibInvK.fibV_mul_right_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FFibreIntegralVanishingOpenSubgroup.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.fibre_integral_vanishing_open_subgroup : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (i t : ℕ) {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] (τ : Representation ℂ (Mir k i) V) (σ : Representation ℂ (GL (Fin t) k) W) (c : kˣ) (K₁ : Subgroup (GL (Fin (i + t)) k)) (hK : K₁ ≤ GlobalTheory.SplitWeil.KO k (Fin (i + t))) (z : V ⊗[ℂ] W) (b : cIndSpace (HPG k i t) (hRep τ σ)), (∀ (h : HPG k i t) (β : Mir k (i + t)), β ∈ GlobalTheory.CompanionTheory.BZPsiPG.FibOnto.Bgrp (i + t) c K₁ hK → b.1.1.1 ((h : Mir k (i + t)) * β) = hRep τ σ h z) → (∀ p : Mir k (i + t), (¬ ∃ h : HPG k i t, ∃ β ∈ GlobalTheory.CompanionTheory.BZPsiPG.FibOnto.Bgrp (i + t) c K₁ hK, p = (h : Mir k (i + t)) * β) → b.1.1.1 p = 0) → ∀ b' ∈ K₁, ∀ g : GL (Fin (i + t)) k, fibV b (g * b') = fibV b g := by
   first | exact @GlobalTheory.CompanionTheory.BZPsiPG.FibInvK.fibV_mul_right_eq | exact GlobalTheory.CompanionTheory.BZPsiPG.FibInvK.fibV_mul_right_eq | (intros; apply GlobalTheory.CompanionTheory.BZPsiPG.FibInvK.fibV_mul_right_eq <;> assumption)

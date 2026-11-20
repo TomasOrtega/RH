@@ -2,8 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EchelonLowerTriangularOfIsUnit
 import Mathlib
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.echelon_lowerTriangular | exact GlobalTheory.echelon_lowerTriangular | (intros; apply GlobalTheory.echelon_lowerTriangular <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.echelon_lowerTriangular` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FEchelonLowerTriangularOfIsUnit.lean&line=106#L106)
 -/
 theorem _root_.GlobalTheory.T.echelon_lower_triangular_of_isUnit : ∀ {K : Type} [Field K] (m : ℕ) (M : Matrix (Fin m) (Fin m) K), IsUnit M → ∃ (g : Matrix (Fin m) (Fin m) K) (s : Fin (m.choose 2) → K), IsUnit g ∧ g.transpose.BlockTriangular id ∧ ∀ i j, (g * M) i j = 0 ∨ (g * M) i j = 1 ∨ (g * M) i j ∈ Set.range s := by
   first | exact @GlobalTheory.echelon_lowerTriangular | exact GlobalTheory.echelon_lowerTriangular | (intros; apply GlobalTheory.echelon_lowerTriangular <;> assumption)

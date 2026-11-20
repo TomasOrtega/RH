@@ -19,8 +19,10 @@ open Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BotIntertw.bottom_intertwining | exact GlobalTheory.BotIntertw.bottom_intertwining | (intros; apply GlobalTheory.BotIntertw.bottom_intertwining <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BotIntertw.bottom_intertwining` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FBottomTriangleConstantExists.lean&line=145#L145)
 -/
 theorem _root_.GlobalTheory.T.bottom_triangle_constant_exists : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
     (∀ D, GlobalTheory.NormSum.Inp D) → GlobalTheory.SqTop.BotSmall →

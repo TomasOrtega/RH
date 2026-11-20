@@ -22,8 +22,10 @@ open ValuativeRel
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.heisenbergEigen_proportional | exact GlobalTheory.heisenbergEigen_proportional | (intros; apply GlobalTheory.heisenbergEigen_proportional <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.heisenbergEigen_proportional` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHeisenbergEigenProportionalLocalField.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.heisenbergEigen_proportional_localField : ∀ {k : Type} [Field k] {κ : Type} [Fintype κ] (ψk : AddChar k ℂ) (Λ : AddSubgroup ((κ → k) × (κ → k)))
     (χ : (κ → k) × (κ → k) → ℂ) (f g : (κ → k) → ℂ),

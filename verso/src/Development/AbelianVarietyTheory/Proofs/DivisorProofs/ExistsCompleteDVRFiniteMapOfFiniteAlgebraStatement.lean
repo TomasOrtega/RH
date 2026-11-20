@@ -11,8 +11,10 @@ open GlobalTheory.Poinc Formalism.L2.Pj
 attribute [local instance] Over.cartesianMonoidalCategory
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CdvrFiniteAlgebra.exists_cdvr_map_of_finite | exact GlobalTheory.CdvrFiniteAlgebra.exists_cdvr_map_of_finite | (intros; apply GlobalTheory.CdvrFiniteAlgebra.exists_cdvr_map_of_finite <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CdvrFiniteAlgebra.exists_cdvr_map_of_finite` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsCompleteDVRFiniteMapOfFiniteAlgebra.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.exists_completeDVR_finite_map_of_finiteAlgebra : ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], GlobalTheory.LN.CDvr V →
     ∀ (R₁ : Type) [CommRing R₁] [Algebra (FractionRing V) R₁], Module.Finite (FractionRing V) R₁ → Nontrivial R₁ →

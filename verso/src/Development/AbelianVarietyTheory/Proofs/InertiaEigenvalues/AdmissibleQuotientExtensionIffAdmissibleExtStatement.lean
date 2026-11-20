@@ -18,8 +18,10 @@ open ReciprocityTheory.Def (Z1 B1 H1)
 open TensorProduct
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AdmQuotExt.admissible_quotientExtension_iff_admissible_ext' | exact GlobalTheory.AdmQuotExt.admissible_quotientExtension_iff_admissible_ext' | (intros; apply GlobalTheory.AdmQuotExt.admissible_quotientExtension_iff_admissible_ext' <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AdmQuotExt.admissible_quotientExtension_iff_admissible_ext'` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FAdmissibleQuotientExtensionIffAdmissibleExt.lean&line=53#L53)
 -/
 theorem _root_.GlobalTheory.T.admissible_quotientExtension_iff_admissible_ext : ∀ {l : ℕ} [Fact l.Prime] {P : LocPrime l} (S : TopSit P) (jT : ZMod S.n → ℤ → ℤ),
     (∀ i a, ((S.D.Ut i).count a : ℤ) = jT i a) →

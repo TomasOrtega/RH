@@ -14,8 +14,10 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
   GlobalTheory.UAut GlobalTheory.SiegelSet GlobalTheory.ThK.SquareIntegrability GlobalTheory.CuspBlock GlobalTheory.LFun.SplitTie
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DoubleCosetFinite.exists_finset_parab_mul_mul | exact GlobalTheory.DoubleCosetFinite.exists_finset_parab_mul_mul | (intros; apply GlobalTheory.DoubleCosetFinite.exists_finset_parab_mul_mul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DoubleCosetFinite.exists_finset_parab_mul_mul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FParabolicFiniteOpenDecomposition.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.parabolic_finite_open_decomposition : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {α n : Type} [Fintype α] [LinearOrder α] {m : α → Type} [∀ a, Fintype (m a)]

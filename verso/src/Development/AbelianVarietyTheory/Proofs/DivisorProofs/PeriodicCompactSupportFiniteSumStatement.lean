@@ -16,8 +16,10 @@ open GlobalTheory.Doubling (absE)
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EvAdm.eq_sum_coset_indicator_scaledInt | exact GlobalTheory.EvAdm.eq_sum_coset_indicator_scaledInt | (intros; apply GlobalTheory.EvAdm.eq_sum_coset_indicator_scaledInt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EvAdm.eq_sum_coset_indicator_scaledInt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPeriodicCompactSupportFiniteSum.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.periodic_compact_support_finite_sum : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (d : F), d ≠ 0 →
     ∀ g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ, HasCompactSupport g →

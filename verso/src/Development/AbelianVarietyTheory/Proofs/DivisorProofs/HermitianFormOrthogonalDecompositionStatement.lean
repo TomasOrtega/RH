@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeSocleOverOfSimple
 open scoped Topology
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.exists_orthogonal_proj_of_finite_mod_radical | exact GlobalTheory.exists_orthogonal_proj_of_finite_mod_radical | (intros; apply GlobalTheory.exists_orthogonal_proj_of_finite_mod_radical <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.exists_orthogonal_proj_of_finite_mod_radical` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHermitianFormOrthogonalDecomposition.lean&line=70#L70)
 -/
 theorem _root_.GlobalTheory.T.hermitian_form_orthogonal_decomposition : ∀ {V : Type} [AddCommGroup V] [Module ℂ V] (B : V → V → ℂ) (D : Submodule ℂ V),
     (∀ x ∈ D, ∀ y ∈ D, ∀ z ∈ D, B (x + y) z = B x z + B y z) →

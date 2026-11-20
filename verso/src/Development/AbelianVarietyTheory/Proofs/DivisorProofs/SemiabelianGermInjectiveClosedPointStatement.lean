@@ -13,8 +13,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.LocalInj.base_to_stalk_injective | exact GlobalTheory.Mum.LocalInj.base_to_stalk_injective | (intros; apply GlobalTheory.Mum.LocalInj.base_to_stalk_injective <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.LocalInj.base_to_stalk_injective` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSemiabelianGermInjectiveClosedPoint.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.semiabelian_germ_injective_closed_point : ∀ (R' : Type) [CommRing R'] [IsDomain R'] [IsLocalRing R'], AdmBase R' (maximalIdeal R') → ∀ (G₁ : Over (Sp R')) [GrpObj G₁] [IsCommMonObj G₁], IsSemiAbelian G₁ → ∀ x : G₁.left, Function.Injective ((G₁.left.presheaf.germ ⊤ x trivial).hom.comp ((G₁.hom.appTop).hom.comp (Scheme.ΓSpecIso (CommRingCat.of R')).inv.hom)) := by
   first | exact @GlobalTheory.Mum.LocalInj.base_to_stalk_injective | exact GlobalTheory.Mum.LocalInj.base_to_stalk_injective | (intros; apply GlobalTheory.Mum.LocalInj.base_to_stalk_injective <;> assumption)

@@ -15,8 +15,10 @@ open ReciprocityTheory.L2DbarEstimates (V)
 open Filter Topology
 open scoped ContDiff
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThetaRR.gdeg_det_rank_zero | exact GlobalTheory.ThetaRR.gdeg_det_rank_zero | (intros; apply GlobalTheory.ThetaRR.gdeg_det_rank_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThetaRR.gdeg_det_rank_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDegreeDetZeroRankMetric.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.degree_det_zero_rank_metric : ∀ (HC : GlobalTheory.Published.ArCalc) {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k} (hp : IsArithVar p 1) {E : X.Modules} {h : VMetric p E 0} (H : h.IsCInf), gdeg (VMetric.det H) 1 = 0 := by
   first | exact @GlobalTheory.ThetaRR.gdeg_det_rank_zero | exact GlobalTheory.ThetaRR.gdeg_det_rank_zero | (intros; apply GlobalTheory.ThetaRR.gdeg_det_rank_zero <;> assumption)

@@ -13,8 +13,10 @@ open Formalism.UG (IsUnifV qV IsUnramInv GU KU IsInertAt Hecke IsCommensurated T
 open Formalism.MainNotions.SchurIrreducible (IsSplit)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChainOnto.step_chars_unrAt | exact GlobalTheory.ChainOnto.step_chars_unrAt | (intros; apply GlobalTheory.ChainOnto.step_chars_unrAt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChainOnto.step_chars_unrAt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FThetaChainStepCharsUnramifiedOffS.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.thetaChain_step_chars_unramified_off_S : ∀ (D : D7) (c : Com D), c.Is → ∀ k < D.R.m, ∀ v ∉ c.S, ∀ w : HeightOneSpectrum (𝓞 D.host.E), w.under (𝓞 D.host.F) = v → UnrAt (c.chS (k + 1)) w ∧ UnrAt (c.chT (k + 1)) w := by
   first | exact @GlobalTheory.ChainOnto.step_chars_unrAt | exact GlobalTheory.ChainOnto.step_chars_unrAt | (intros; apply GlobalTheory.ChainOnto.step_chars_unrAt <;> assumption)

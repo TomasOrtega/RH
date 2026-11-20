@@ -19,8 +19,10 @@ open GlobalTheory.Poinc.Sep
 open GlobalTheory.UT.CoefBasic
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GSep.FrameExpEx.exists_frExp | exact GlobalTheory.GSep.FrameExpEx.exists_frExp | (intros; apply GlobalTheory.GSep.FrameExpEx.exists_frExp <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GSep.FrameExpEx.exists_frExp` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FThetaMemberExistsFrameExponent.lean&line=72#L72)
 -/
 theorem _root_.GlobalTheory.T.thetaMember_exists_frame_exponent : ∀ (I : Type) (X₁ : GlobalTheory.GSep.GSet) (z₁ : X₁.M.Z) (act : I → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)) (x₀ : X₁.S.Gam), X₁.M.Div X₁.S.th x₀ z₁ → ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (Y : Type) [AddCommGroup Y] (t : Y → V) (δ : I → Y → Y) (𝔪 : GlobalTheory.GSep.GMem X₁ z₁ act V ev Y t δ), ∀ a ∈ X₁.S.HH X₁.M z₁, ∀ τ ∈ X₁.S.TT X₁.M z₁, ∃ e : ℕ, GlobalTheory.GSep.TransTerms.FrExp 𝔪 a τ e := by
   first | exact @GlobalTheory.GSep.FrameExpEx.exists_frExp | exact GlobalTheory.GSep.FrameExpEx.exists_frExp | (intros; apply GlobalTheory.GSep.FrameExpEx.exists_frExp <;> assumption)

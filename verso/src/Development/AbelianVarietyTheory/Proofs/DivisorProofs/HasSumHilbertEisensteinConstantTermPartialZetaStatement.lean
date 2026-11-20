@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.OmegaFactorization
 open scoped nonZeroDivisors
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EisConstTerm.hasSum_constTerm | exact GlobalTheory.EisConstTerm.hasSum_constTerm | (intros; apply GlobalTheory.EisConstTerm.hasSum_constTerm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EisConstTerm.hasSum_constTerm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHasSumHilbertEisensteinConstantTermPartialZeta.lean&line=108#L108)
 -/
 theorem _root_.GlobalTheory.T.hasSum_hilbertEisenstein_constantTerm_partialZeta : ∀ (F : Type) [Field F] [NumberField F] [NumberField.IsTotallyReal F] (𝔞 𝔟 : GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Frac F) (s : ℕ), 1 ≤ s →
   ∀ (D : (Ideal (NumberField.RingOfIntegers F))⁰), (D : Ideal (NumberField.RingOfIntegers F)) = differentIdeal ℤ (NumberField.RingOfIntegers F) →

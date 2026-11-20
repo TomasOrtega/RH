@@ -8,8 +8,10 @@ open GlobalTheory.ChainFr GlobalTheory.SepRows GlobalTheory.SepPer Matrix
 open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FibreAtTau.isClosed_atP_and_isClosed_offP | exact GlobalTheory.FibreAtTau.isClosed_atP_and_isClosed_offP | (intros; apply GlobalTheory.FibreAtTau.isClosed_atP_and_isClosed_offP <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FibreAtTau.isClosed_atP_and_isClosed_offP` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FIsClosedUnipotentRadicalAtRealPlaceTrivialAtPlac.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.isClosed_unipotentRadical_atRealPlace_trivialAtPlace : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) (r : ℕ) (C : Matrix (Fin V.rank) (Fin r) D.host.E) (τ : D.what₂.Tau), IsClosed (GlobalTheory.FibreAtTau.atP θ V C τ : Set (NI V C)) ∧ IsClosed (GlobalTheory.FibreAtTau.offP θ V C τ : Set (NI V C)) := by
   first | exact @GlobalTheory.FibreAtTau.isClosed_atP_and_isClosed_offP | exact GlobalTheory.FibreAtTau.isClosed_atP_and_isClosed_offP | (intros; apply GlobalTheory.FibreAtTau.isClosed_atP_and_isClosed_offP <;> assumption)

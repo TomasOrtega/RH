@@ -9,8 +9,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option autoImplicit false
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.artinianLocal_finiteLength_and_socle_element | exact GlobalTheory.artinianLocal_finiteLength_and_socle_element | (intros; apply GlobalTheory.artinianLocal_finiteLength_and_socle_element <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.artinianLocal_finiteLength_and_socle_element` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FArtinianLocalFiniteLengthAndSocleElement.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.isArtinianLocal_length_finite_and_exists_socle_elem : ∀ (R : Type) [CommRing R] [IsArtinianRing R] [IsLocalRing R], (∃ n : ℕ, Module.length R R = n) ∧ (¬ IsField R → ∃ t : R, t ≠ 0 ∧ (∀ a ∈ IsLocalRing.maximalIdeal R, a * t = 0) ∧ Module.length (R ⧸ Ideal.span {t}) (R ⧸ Ideal.span {t}) < Module.length R R) := by
   first | exact @GlobalTheory.artinianLocal_finiteLength_and_socle_element | exact GlobalTheory.artinianLocal_finiteLength_and_socle_element | (intros; apply GlobalTheory.artinianLocal_finiteLength_and_socle_element <;> assumption)

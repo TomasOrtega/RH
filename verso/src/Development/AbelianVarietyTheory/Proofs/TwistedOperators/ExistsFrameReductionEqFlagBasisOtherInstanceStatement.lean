@@ -12,8 +12,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SeeConjRead
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SeeConjRead.exists_frame_redIs | exact GlobalTheory.SeeConjRead.exists_frame_redIs | (intros; apply GlobalTheory.SeeConjRead.exists_frame_redIs <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SeeConjRead.exists_frame_redIs` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsFrameReductionEqFlagBasisOtherInstance.lean&line=45#L45)
 -/
 theorem _root_.GlobalTheory.T.exists_frame_reduction_eq_flagBasis_otherInstance : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D), R.toLevCh.Is A.μ0 → R.IsGrp F → ∃ β : GL (Fin (Yc D 0).rank) (EAf D), IsFrame β (Formalism.L2.Herm.crdLat (Yc D 0) (Yc D 0).L0) ∧ ∀ PP ∈ R.Pg, RedIs β PP (flagAt X h PP) := by
   first | exact @GlobalTheory.SeeConjRead.exists_frame_redIs | exact GlobalTheory.SeeConjRead.exists_frame_redIs | (intros; apply GlobalTheory.SeeConjRead.exists_frame_redIs <;> assumption)

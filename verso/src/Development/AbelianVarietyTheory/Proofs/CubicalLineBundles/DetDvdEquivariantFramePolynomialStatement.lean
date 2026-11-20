@@ -13,8 +13,10 @@ open scoped ComplexOrder
 open GlobalTheory GlobalTheory.CM GlobalTheory.Frames GlobalTheory.LamT
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FrameDet.det_dvd_of_equivariant | exact GlobalTheory.FrameDet.det_dvd_of_equivariant | (intros; apply GlobalTheory.FrameDet.det_dvd_of_equivariant <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FrameDet.det_dvd_of_equivariant` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FCubicalLineBundles%2FDetDvdEquivariantFramePolynomial.lean&line=29#L29)
 -/
 theorem _root_.GlobalTheory.T.det_dvd_equivariant_framePolynomial : ∀ (K : Type) [Field K] [Infinite K] (B : Type) [Fintype B] [DecidableEq B] (m : B → ℕ) (P : MvPolynomial (FrVar m) K) (a : ∀ b, Fin (m b) → ℕ), (∀ (X : ∀ b, Matrix (Fin (m b)) (Fin (m b)) K) (b : B) (t : Matrix (Fin (m b)) (Fin (m b)) K), (∀ b', (X b').det ≠ 0) → t.det ≠ 0 → t.BlockTriangular id → evalFr P (Function.update X b (X b * t)) = (∏ i, t i i ^ (a b i)) * evalFr P X) → ∀ b : B, (∀ i, 1 ≤ a b i) → ∃ Q : MvPolynomial (FrVar m) K, P = (Matrix.of fun i k : Fin (m b) => (MvPolynomial.X ⟨b, (k, i)⟩ : MvPolynomial (FrVar m) K)).det * Q := by
   first | exact @GlobalTheory.FrameDet.det_dvd_of_equivariant | exact GlobalTheory.FrameDet.det_dvd_of_equivariant | (intros; apply GlobalTheory.FrameDet.det_dvd_of_equivariant <;> assumption)

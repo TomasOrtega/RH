@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RestrictionSubmodul
 open scoped TensorProduct
 open GlobalTheory.SmGL GlobalTheory.PRep GlobalTheory.IndLineGL GlobalTheory.LocTypeGood
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LocTypeExt.eigenMap_mem_imgSpan | exact GlobalTheory.LocTypeExt.eigenMap_mem_imgSpan | (intros; apply GlobalTheory.LocTypeExt.eigenMap_mem_imgSpan <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LocTypeExt.eigenMap_mem_imgSpan` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRepresentationRestrictionIntertwinerExists.lean&line=77#L77)
 -/
 theorem _root_.GlobalTheory.T.representation_restriction_intertwiner_exists : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (n m : ℕ) (e : (Σ i : Fin 3, Fin (blk3 m i)) ≃ Fin n)

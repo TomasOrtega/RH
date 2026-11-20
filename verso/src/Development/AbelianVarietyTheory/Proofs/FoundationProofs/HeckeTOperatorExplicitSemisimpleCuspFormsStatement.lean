@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.PetEqRelIndexMul
 open UpperHalfPlane ModularForm CongruenceSubgroup MeasureTheory
 open scoped MatrixGroups ModularForm Manifold
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Hk.Semisimple.heckeT_semisimple | exact GlobalTheory.Hk.Semisimple.heckeT_semisimple | (intros; apply GlobalTheory.Hk.Semisimple.heckeT_semisimple <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Hk.Semisimple.heckeT_semisimple` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FHeckeTOperatorExplicitSemisimpleCuspForms.lean&line=120#L120)
 -/
 theorem _root_.GlobalTheory.T.heckeTOperatorExplicit_semisimple_cuspForms : ∀ (N l q : ℕ) (k : ℤ) (σ : SL(2, ℤ)) (c : ℂ) (n : ℕ), 0 < N → 0 < l → q.Prime → ¬ q ∣ N * l → GlobalTheory.Hk.IsDia N l q σ → ∀ f : CuspForm (GlobalTheory.Hk.lev N l) k, (fun h => GlobalTheory.Hk.heckeT k q σ h - c • h)^[n] ⇑f = 0 → GlobalTheory.Hk.heckeT k q σ ⇑f = c • ⇑f := by
   first | exact @GlobalTheory.Hk.Semisimple.heckeT_semisimple | exact GlobalTheory.Hk.Semisimple.heckeT_semisimple | (intros; apply GlobalTheory.Hk.Semisimple.heckeT_semisimple <;> assumption)

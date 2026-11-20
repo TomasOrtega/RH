@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.Bh
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BKReal GlobalTheory.Per GlobalTheory.BSP
 open scoped Formalism.Per NNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BSP.equivariant_matrix_over_bk | exact GlobalTheory.BSP.equivariant_matrix_over_bk | (intros; apply GlobalTheory.BSP.equivariant_matrix_over_bk <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BSP.equivariant_matrix_over_bk` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FEquivariantLatticeMatrixOverBreuilKisin.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.equivariant_latticeMatrix_over_breuilKisin : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (d d' : ℕ) (S : Strat bk d) (S' : Strat bk d') (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) ℤ_[l]) (ρ' : ↥(GK K) → Matrix (Fin d') (Fin d') ℤ_[l]) (T : Matrix (Fin d) (Fin d) (WCb l)) (T' : Matrix (Fin d') (Fin d') (WCb l)), MReal S ρ T → MReal S' ρ' T' → ∀ f : Matrix (Fin d') (Fin d) ℤ_[l], (∀ g, f * ρ g = ρ' g * f) → ∃ Y : Matrix (Fin d') (Fin d) bk.S, T' * Y.map bk.evW = zW f * T := by
   first | exact @GlobalTheory.BSP.equivariant_matrix_over_bk | exact GlobalTheory.BSP.equivariant_matrix_over_bk | (intros; apply GlobalTheory.BSP.equivariant_matrix_over_bk <;> assumption)

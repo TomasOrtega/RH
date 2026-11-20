@@ -29,8 +29,10 @@ open GlobalTheory.HSApp
 set_option synthInstance.maxHeartbeats 400000
 open GlobalTheory.LamT (CMPt)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CovData.exists_dataX_good | exact GlobalTheory.CovData.exists_dataX_good | (intros; apply GlobalTheory.CovData.exists_dataX_good <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CovData.exists_dataX_good` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGoodCoverComponentExtendsToRankOneCuspData.lean&line=79#L79)
 -/
 theorem _root_.GlobalTheory.T.goodCover_component_extends_to_rankOne_cusp_data : ∀ (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ), Y.Good e o →
     ∀ σ, GoodEmb Y.d.c₂ σ → ∀ k : (Y.U σ).Comp, ∃ (Xx : FD.DataX D.host.E D.R.r)

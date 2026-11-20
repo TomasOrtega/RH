@@ -9,8 +9,10 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Unf GlobalTheory.See
 open scoped TensorProduct Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Fam.IdemSplitTw.idem_eq_add_twist | exact GlobalTheory.Fam.IdemSplitTw.idem_eq_add_twist | (intros; apply GlobalTheory.Fam.IdemSplitTw.idem_eq_add_twist <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Fam.IdemSplitTw.idem_eq_add_twist` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FTrueGeometryTwistQuadraticLevel.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.true_geometry_twist_quadratic_level : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (a : GeoAll W u), a.Is → a.True → ∀ t (J : QJ a t), J.Reads → ∃ e₀ : AE (I.rec7 l Z), IsIdemSum e₀ ((B.primes X).vT u ∪ (B.primes X).vGs) ∧ J.A.e = e₀ + ∑ i, (J.G i).q.e := by
   first | exact @GlobalTheory.Fam.IdemSplitTw.idem_eq_add_twist | exact GlobalTheory.Fam.IdemSplitTw.idem_eq_add_twist | (intros; apply GlobalTheory.Fam.IdemSplitTw.idem_eq_add_twist <;> assumption)

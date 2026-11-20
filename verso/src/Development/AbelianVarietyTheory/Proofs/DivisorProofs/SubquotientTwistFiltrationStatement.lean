@@ -14,8 +14,10 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
   GlobalTheory.UAut GlobalTheory.SiegelSet GlobalTheory.ThK.SquareIntegrability GlobalTheory.CuspBlock GlobalTheory.LFun.SplitTie
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SmGL.exists_step_subquotient_ne_zero_of_filtration | exact GlobalTheory.SmGL.exists_step_subquotient_ne_zero_of_filtration | (intros; apply GlobalTheory.SmGL.exists_step_subquotient_ne_zero_of_filtration <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SmGL.exists_step_subquotient_ne_zero_of_filtration` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSubquotientTwistFiltration.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.subquotient_twist_filtration : ∀ {G H V : Type} [Group G] [Group H] [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V)
     (χ : G →* ℂˣ) (φ : H →* G) (n : ℕ) (S : Fin (n + 1) → Subrepresentation ρ), Monotone S → S 0 = ⊥ →

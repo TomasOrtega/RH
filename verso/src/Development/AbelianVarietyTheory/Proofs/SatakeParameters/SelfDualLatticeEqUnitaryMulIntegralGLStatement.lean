@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SelfDualOne
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LatticeModelVacuumTranslateClassesIndependent
 open Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Hk3.HoweG.selfDual_eq_unitary_mul_int | exact GlobalTheory.Hk3.HoweG.selfDual_eq_unitary_mul_int | (intros; apply GlobalTheory.Hk3.HoweG.selfDual_eq_unitary_mul_int <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Hk3.HoweG.selfDual_eq_unitary_mul_int` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FSelfDualLatticeEqUnitaryMulIntegralGL.lean&line=28#L28)
 -/
 theorem _root_.GlobalTheory.T.selfDual_lattice_eq_unitary_mul_integralGL : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : L) (σ : L →+* L) (q n : ℕ) (JS : GL (Fin n) L),
     Formalism.UG.IsUnramInv ϖ σ q → Odd q → JS ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.intL L) →

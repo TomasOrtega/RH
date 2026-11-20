@@ -14,8 +14,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle (Tri)
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.OneParamOrbit.orbit_finiteDimensional | exact GlobalTheory.OneParamOrbit.orbit_finiteDimensional | (intros; apply GlobalTheory.OneParamOrbit.orbit_finiteDimensional <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.OneParamOrbit.orbit_finiteDimensional` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FOneParamSubgroupFockOrbitFiniteDimensional.lean&line=65#L65)
 -/
 theorem _root_.GlobalTheory.T.oneParamSubgroup_fockOrbit_finiteDimensional : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
     ∀ (M X : HSp D) (A : GlobalTheory.ChainFr.Fr M) (B : GlobalTheory.ChainFr.Fr X) (χ χ' : (AE D)ˣ →* Circle) (ω : GlobalTheory.Grid.WRep M X),

@@ -2,11 +2,11 @@ from collections import Counter
 import gzip
 import json
 from pathlib import Path
-import re
 import shutil
 from tempfile import TemporaryDirectory
 
-from proofs import extract_claims, mask_non_code, remove_notes
+from citations import citations
+from proofs import IMPORT, extract_claims, mask_non_code, remove_notes
 
 
 HERE = Path(__file__).resolve().parent
@@ -14,7 +14,6 @@ EXTRACTED = HERE.parent / "extracted" / "lean" / "src"
 COPY = HERE / "src"
 SITE = HERE / "_out" / "html-single"
 PACK_SIZE = 2 * 1024 * 1024
-IMPORT = re.compile(r"^[ \t]*(?:(?:public|meta) +)*import +(?:all +)?(\S+)", re.MULTILINE)
 
 
 def json_bytes(value):
@@ -43,6 +42,13 @@ def pack_module(path, relative, counts):
     claims = list(extract_claims(source, masked))
     if [claim.start for claim in claims] != [offset for offset, _, _ in notes]:
         raise ValueError(f"{relative}: expected a proof note for each declaration")
+    cited_claims = [
+        claim for claim, (_, status, _) in zip(claims, notes) if status == "citation"
+    ]
+    if cited_claims:
+        written = {offset: prose for offset, status, prose in notes if status == "citation"}
+        if written != dict(citations(EXTRACTED, source, masked, cited_claims)):
+            raise ValueError(f"{relative}: a cited theorem no longer matches its declaration")
     positions = utf16_offsets(source, claims)
     proofs = []
     for claim, (_, status, prose) in zip(claims, notes):

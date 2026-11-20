@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SymmBilinFormEqZero
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnimodMod
 open IsLocalRing GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.Poinc
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Poinc.symm_eq_zero_of_qW_lifts | exact GlobalTheory.Poinc.symm_eq_zero_of_qW_lifts | (intros; apply GlobalTheory.Poinc.symm_eq_zero_of_qW_lifts <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Poinc.symm_eq_zero_of_qW_lifts` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSymmBilinFormEqZeroOfWeightedQuadraticSumLifts.lean&line=104#L104)
 -/
 theorem _root_.GlobalTheory.T.symm_bilinForm_eq_zero_of_weightedQuadraticSum_lifts : ∀ (W : Matrix (Fin 8) (Fin 8) ℤ), PosW W → ∀ (N : ℕ) [NeZero N], 3 ≤ N → ∀ r : ℕ, (∃ ε : Fin 8 → ℤ, Nat.Coprime N (2 * (∑ u, ∑ v, W u v * ε u * ε v).natAbs)) → ∀ μ : (Fin 8 → Fin r → ZMod N) → (Fin 8 → Fin r → ℤ), (∀ c u i, ((μ c u i : ℤ) : ZMod N) = c u i) → ∀ b : LinearMap.BilinForm ℤ (Fin r → ℤ), (∀ x y, b x y = b y x) → (∀ c, qW W b (μ c) = 0) → b = 0 := by
   first | exact @GlobalTheory.Poinc.symm_eq_zero_of_qW_lifts | exact GlobalTheory.Poinc.symm_eq_zero_of_qW_lifts | (intros; apply GlobalTheory.Poinc.symm_eq_zero_of_qW_lifts <;> assumption)

@@ -12,8 +12,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LatticeNormTransport (upIdele IsLat
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option autoImplicit false
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ConjArith.form_eq_div | exact GlobalTheory.ConjArith.form_eq_div | (intros; apply GlobalTheory.ConjArith.form_eq_div <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ConjArith.form_eq_div` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRationalFunctionRatioDetermined.lean&line=71#L71)
 -/
 theorem _root_.GlobalTheory.T.rational_function_ratio_determined : ∀ (S : Type) (f f' : S → ℝ) (A : ℝ), 0 < A → (∀ s, ∃ n : ℤ, f' s = n) →
     (∀ k : ℕ, 0 < k → ∃ (a : ℤ) (b : ℕ), 0 < b ∧ Nat.Coprime b k ∧ IsCoprime a (k : ℤ) ∧

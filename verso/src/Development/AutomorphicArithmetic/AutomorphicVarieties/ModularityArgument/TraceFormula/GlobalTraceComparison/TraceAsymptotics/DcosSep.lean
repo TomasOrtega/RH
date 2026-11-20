@@ -128,8 +128,10 @@ private theorem sep_of_dcos {E : Type} [Field E] [NumberField E] [IsCMField E] (
 end UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm
 
 open UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm in
-/- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.DoubleCosetSeparation.dcosSep`.
+/- English proof (citation)
+Apply `UpperTheory.Reformulated.B.DoubleCosetSeparation.dcosSep` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicArithmetic%2FIntegralCasts%2FCapelliIdentities%2FDoubleCosetSeparation.lean&line=78#L78)
 -/
 theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.dcosSep :
     UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.DcosSep :=

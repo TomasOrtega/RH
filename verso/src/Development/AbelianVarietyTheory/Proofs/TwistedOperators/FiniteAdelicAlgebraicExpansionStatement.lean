@@ -17,8 +17,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle (Tri)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RowEx MeasureTheory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MovedAlg.moved_translate_algComb | exact GlobalTheory.MovedAlg.moved_translate_algComb | (intros; apply GlobalTheory.MovedAlg.moved_translate_algComb <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MovedAlg.moved_translate_algComb` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FFiniteAdelicAlgebraicExpansion.lean&line=29#L29)
 -/
 theorem _root_.GlobalTheory.T.finite_adelic_algebraic_expansion : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →

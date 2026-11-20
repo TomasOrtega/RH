@@ -4,8 +4,10 @@ import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.IsSplitGau
 import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.GapCondExample
 open GlobalTheory.CompanionTheory.Ar.Crv
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Crv.EigDual.eig_dual_deg | exact GlobalTheory.CompanionTheory.Ar.Crv.EigDual.eig_dual_deg | (intros; apply GlobalTheory.CompanionTheory.Ar.Crv.EigDual.eig_dual_deg <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Crv.EigDual.eig_dual_deg` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FAlgebraProofs%2FDualEigenSubDegreeTranspose.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.dual_eigen_sub_degree_transpose : ∀ (K : Type) [Field K] (C : ACurve K) (d : ℕ) (L : C.I → AddSubgroup (Fin d → K)) (O k S : Type) [CommRing O] [Field k] [Algebra k K] [Fintype S] [DecidableEq S] (χ : S → (O →+* k)), IsSplit χ → (∀ i (c : k), C.v i (algebraMap k K c) ≤ 1) → ∀ ρ : O →+* Matrix (Fin d) (Fin d) K, IsBun C L → (∀ a, IsHom C L L (Matrix.toLin' (ρ a))) → ∀ s, subDeg C (dotDual C L) (eig (fun a => Matrix.toLin' (ρ a).transpose) (fun a => algebraMap k K (χ s a))) = - subDeg C L (eig (fun a => Matrix.toLin' (ρ a)) (fun a => algebraMap k K (χ s a))) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Crv.EigDual.eig_dual_deg | exact GlobalTheory.CompanionTheory.Ar.Crv.EigDual.eig_dual_deg | (intros; apply GlobalTheory.CompanionTheory.Ar.Crv.EigDual.eig_dual_deg <;> assumption)

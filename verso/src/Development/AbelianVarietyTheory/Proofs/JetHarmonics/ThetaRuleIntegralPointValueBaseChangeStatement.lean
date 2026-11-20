@@ -15,8 +15,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory GlobalTheory.PowGerm GlobalTheory.PtTie
 open ReciprocityTheory.ChartRestriction.G.TB (colM dAct)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThetaRuleValue.evI_baseChange | exact GlobalTheory.ThetaRuleValue.evI_baseChange | (intros; apply GlobalTheory.ThetaRuleValue.evI_baseChange <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThetaRuleValue.evI_baseChange` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FJetHarmonics%2FThetaRuleIntegralPointValueBaseChange.lean&line=75#L75)
 -/
 theorem _root_.GlobalTheory.T.thetaRule_integralPoint_value_baseChange : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), letI := H.starRing; ∀ (nab : NabV Xo c), IsNab Xo c nab → ∀ (T T' : CDVR) (io : c.F →+* T.Fr) (io' : c.F →+* T'.Fr) (y : IntFr Xo c T io) (y' : IntFr Xo c T' io'), letI := io.toAlgebra; letI := io'.toAlgebra; ∀ φ : T.Fr →ₐ[c.F] T'.Fr, FrMap φ y.1 y'.1 → ∀ (a : ((E →+* ℂ) × ℕ → ℕ)) (n : ℕ), ∀ f ∈ thGen Xo c nab a n, φ (evI y f) = evI y' f := by
   first | exact @GlobalTheory.ThetaRuleValue.evI_baseChange | exact GlobalTheory.ThetaRuleValue.evI_baseChange | (intros; apply GlobalTheory.ThetaRuleValue.evI_baseChange <;> assumption)

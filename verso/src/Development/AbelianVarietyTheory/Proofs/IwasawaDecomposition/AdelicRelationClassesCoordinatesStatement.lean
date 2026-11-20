@@ -6,8 +6,10 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mem.Col2.HAt.adOf_of_adC | exact GlobalTheory.Mem.Col2.HAt.adOf_of_adC | (intros; apply GlobalTheory.Mem.Col2.HAt.adOf_of_adC <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mem.Col2.HAt.adOf_of_adC` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FAdelicRelationClassesCoordinates.lean&line=111#L111)
 -/
 theorem _root_.GlobalTheory.T.adelic_relation_classes_coordinates : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (H : Formalism.L2.Herm.HermColsCh (I.rec7 l Z)) (F : ∀ u, FormsTiedSym (I.rec7 l Z) u (H.Ch u) (H.chOf u)), (∀ u, I.StdF l Z u (F u) ∧ I.StdLvC l Z u (F u)) → CarH H F → ∀ u i (hi : i ≤ (I.rec7 l Z).R.m) v (c c' : ((I.rec7 l Z).mem u).C.cls i) (γ : UJ (sigD (I.rec7 l Z) : (I.rec7 l Z).host.E →+* (I.rec7 l Z).host.E) (gramN (I.rec7 l Z) i hi)), AdC (F u) i hi c c' γ.1 ((F u).atT.eV v).1 → AdOf H u i c c' (gx i hi γ) v := by
   first | exact @GlobalTheory.Mem.Col2.HAt.adOf_of_adC | exact GlobalTheory.Mem.Col2.HAt.adOf_of_adC | (intros; apply GlobalTheory.Mem.Col2.HAt.adOf_of_adC <;> assumption)

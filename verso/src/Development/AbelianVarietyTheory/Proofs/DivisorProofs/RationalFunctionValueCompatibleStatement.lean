@@ -9,8 +9,10 @@ open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalT
 open GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.ProjVar
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RatValPull.regAt_ratVal_pull | exact GlobalTheory.RatValPull.regAt_ratVal_pull | (intros; apply GlobalTheory.RatValPull.regAt_ratVal_pull <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RatValPull.regAt_ratVal_pull` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRationalFunctionValueCompatible.lean&line=44#L44)
 -/
 theorem _root_.GlobalTheory.T.rational_function_value_compatible : ∀ {k : Type} [CommRing k] {X G : Scheme.{0}} [IsIntegral X] [IsIntegral G] (qX : X ⟶ Sp k) (πG : G ⟶ X)
     (φ : X.functionField →+* G.functionField)

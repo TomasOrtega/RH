@@ -13,8 +13,10 @@ open GlobalTheory.CxForm (IsRegVar hermMat eval₂ bas relCot dRel IsRelAcyclic)
 open GlobalTheory GlobalTheory.TorsionForm
 open scoped ContDiff Real CategoryTheory.Obj ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RelCotAb.ev_divMap_pairPt_periodChart | exact GlobalTheory.RelCotAb.ev_divMap_pairPt_periodChart | (intros; apply GlobalTheory.RelCotAb.ev_divMap_pairPt_periodChart <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RelCotAb.ev_divMap_pairPt_periodChart` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPeriodChartTranslationLift.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.period_chart_translation_lift : ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k) (D : ℕ) (A : Over S) [GrpObj A]
     [QuasiSeparated A.hom] (g : ℕ) (w : VMetric p (omega A) g) (σ : k →+* ℂ) (c : AlgChart p σ D)

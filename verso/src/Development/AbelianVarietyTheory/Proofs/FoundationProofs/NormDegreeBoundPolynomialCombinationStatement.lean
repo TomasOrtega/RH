@@ -2,8 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NormDegreeBoundPolynomialCombination
 open Polynomial
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.NormDegree.natDegree_norm_of_coord_degree | exact GlobalTheory.NormDegree.natDegree_norm_of_coord_degree | (intros; apply GlobalTheory.NormDegree.natDegree_norm_of_coord_degree <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.NormDegree.natDegree_norm_of_coord_degree` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FNormDegreeBoundPolynomialCombination.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.norm_degree_bound_polynomial_combination : ∀ (k A : Type) [Field k] [Infinite k] [CommRing A] [IsDomain A] [Algebra k[X] A] (n : ℕ) (b : Module.Basis (Fin n) k[X] A), ∃ (c : ℕ) (lam : Fin n → k),
  (∀ (d : ℕ) (p : Fin n → k[X]), (∀ i, (p i).natDegree ≤ d) → (Algebra.norm k[X] (∑ i, p i • b i)).natDegree ≤ n * d + c) ∧

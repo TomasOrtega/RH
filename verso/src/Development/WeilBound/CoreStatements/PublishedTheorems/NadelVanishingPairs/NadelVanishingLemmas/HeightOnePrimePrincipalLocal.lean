@@ -9,8 +9,10 @@ open CategoryTheory Limits AlgebraicGeometry TopologicalSpace Filter
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.CechPic GlobalTheory.QCoh GlobalTheory.Discrepancy GlobalTheory.LogPair
-/- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.heightOne_prime_locallyPrincipal_of_factorial_localization | exact _root_.GlobalTheory.heightOne_prime_locallyPrincipal_of_factorial_localization | (intros; apply _root_.GlobalTheory.heightOne_prime_locallyPrincipal_of_factorial_localization <;> …`.
+/- English proof (citation)
+Apply `GlobalTheory.heightOne_prime_locallyPrincipal_of_factorial_localization` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHeightOnePrimePrincipalLocal.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.height_one_prime_principal_local : ∀ (R S : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [CommRing S] [IsDomain S] [Algebra R S] (p P : Ideal R) [p.IsPrime] [IsLocalization.AtPrime S p] [UniqueFactorizationMonoid S], P.IsPrime → P ≤ p → P ≠ ⊥ → (∀ Q : Ideal R, Q.IsPrime → Q ≠ ⊥ → Q ≤ P → Q = P) → ∃ a ∈ P, a ≠ 0 ∧ ∃ t ∉ p, ∀ g ∈ P, ∃ r, t * g = a * r := by
   first | exact @_root_.GlobalTheory.heightOne_prime_locallyPrincipal_of_factorial_localization | exact _root_.GlobalTheory.heightOne_prime_locallyPrincipal_of_factorial_localization | (intros; apply _root_.GlobalTheory.heightOne_prime_locallyPrincipal_of_factorial_localization <;> assumption)

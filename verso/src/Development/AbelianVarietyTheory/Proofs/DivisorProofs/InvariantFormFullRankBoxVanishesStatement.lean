@@ -8,8 +8,10 @@ open scoped Matrix
 open GlobalTheory.WeilM GlobalTheory.FullRankCoinv
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RankChart.chart_form_eq_zero | exact GlobalTheory.RankChart.chart_form_eq_zero | (intros; apply GlobalTheory.RankChart.chart_form_eq_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RankChart.chart_form_eq_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FInvariantFormFullRankBoxVanishes.lean&line=67#L67)
 -/
 theorem _root_.GlobalTheory.T.invariant_form_full_rank_box_vanishes : GlobalTheory.ThK.KP → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (n ρ d : ℕ) (T : Type) [Fintype T] [DecidableEq T] (ν : kˣ →* ℂˣ) (ϖ : kˣ), n < d → ρ < n → GlobalTheory.SmGL.IsSmoothChar ν → GlobalTheory.SmGL.IsUnitaryChar ν → (∀ m : ℕ, 0 < m → ∀ r : ℝ, ((ν ϖ : ℂ)) ^ m ≠ (r : ℂ)) →

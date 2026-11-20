@@ -7,8 +7,10 @@ open Formalism.MainNotions.DIV.Cons (intO)
 open scoped TensorProduct
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.flat_of_quasiFinite_of_flat_fibres | exact GlobalTheory.flat_of_quasiFinite_of_flat_fibres | (intros; apply GlobalTheory.flat_of_quasiFinite_of_flat_fibres <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.flat_of_quasiFinite_of_flat_fibres` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FFlatOfQuasiFiniteOfFlatFibres.lean&line=64#L64)
 -/
 theorem _root_.GlobalTheory.T.flat_of_quasiFinite_of_flat_fibres' : ∀ (R A B : Type) [CommRing R] [CommRing A] [CommRing B] [Algebra R A] [Algebra R B] [Algebra A B] [IsScalarTower R A B] [Algebra.FinitePresentation A B] [Algebra.QuasiFinite A B] [Module.Flat R B], (∀ (k C : Type) [Field k] [CommRing C] [Algebra A C] (t : R →+* k) (h : k →+* C), (algebraMap A C).comp (algebraMap R A) = h.comp t → Module.Flat C (C ⊗[A] B)) → Module.Flat A B := by
   first | exact @GlobalTheory.flat_of_quasiFinite_of_flat_fibres | exact GlobalTheory.flat_of_quasiFinite_of_flat_fibres | (intros; apply GlobalTheory.flat_of_quasiFinite_of_flat_fibres <;> assumption)

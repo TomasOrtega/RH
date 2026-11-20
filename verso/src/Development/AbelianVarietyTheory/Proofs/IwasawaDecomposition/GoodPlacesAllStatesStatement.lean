@@ -12,8 +12,10 @@ open GlobalTheory.LevCmp
 open GlobalTheory.TwistChoice (Reading ReadsAt)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TypePlacesCover.gPlaces_all | exact GlobalTheory.TypePlacesCover.gPlaces_all | (intros; apply GlobalTheory.TypePlacesCover.gPlaces_all <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TypePlacesCover.gPlaces_all` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FGoodPlacesAllStates.lean&line=103#L103)
 -/
 theorem _root_.GlobalTheory.T.good_places_all_states : ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AllSt fun _ _ _ _ _ _ x => LA hL x → GPlaces (Dof x) := by
   first | exact @GlobalTheory.TypePlacesCover.gPlaces_all | exact GlobalTheory.TypePlacesCover.gPlaces_all | (intros; apply GlobalTheory.TypePlacesCover.gPlaces_all <;> assumption)

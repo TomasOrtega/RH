@@ -12,8 +12,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InLat2
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.KFinLoc
 open scoped TensorProduct Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.InertBigCell.iotaW_adelic_place | exact GlobalTheory.InertBigCell.iotaW_adelic_place | (intros; apply GlobalTheory.InertBigCell.iotaW_adelic_place <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.InertBigCell.iotaW_adelic_place` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FInertCompletionToAdelesProperties.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.inertCompletionToAdeles_properties : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {v : Pl F}
     {w : HeightOneSpectrum (𝓞 E)} (hw : Formalism.UG.IsInertAt F E v w),

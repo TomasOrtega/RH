@@ -9,8 +9,10 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ConeEulerConst.cone_pure_eq_const_smul | exact GlobalTheory.ConeEulerConst.cone_pure_eq_const_smul | (intros; apply GlobalTheory.ConeEulerConst.cone_pure_eq_const_smul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ConeEulerConst.cone_pure_eq_const_smul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTriplePairPeriodIdentityCaseB.lean&line=39#L39)
 -/
 theorem _root_.GlobalTheory.T.triple_pair_period_identity_case_b : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a b : ℕ) (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b))

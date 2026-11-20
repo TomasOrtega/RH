@@ -14,8 +14,10 @@ open scoped TensorProduct ContDiff
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BiDeriv.isBiTheta_dLine | exact GlobalTheory.BiDeriv.isBiTheta_dLine | (intros; apply GlobalTheory.BiDeriv.isBiTheta_dLine <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BiDeriv.isBiTheta_dLine` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FIsJointlySmoothBiThetaHeisenbergDeriv.lean&line=42#L42)
 -/
 theorem _root_.GlobalTheory.T.isJointlySmoothBiTheta_heisenbergDeriv : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (A S A' : HSp D) (G : WO A S → WO S A' → ℂ), IsBiTheta ψ A S A' G → (∀ M : ℝ →+ WO A S, Continuous M → (∀ s, (M s).map (finPart D) = 0) → IsBiTheta ψ A S A' fun u v => GlobalTheory.WeilVacMove.dLine ψ A S M (fun u' => G u' v) u) ∧ ∀ M' : ℝ →+ WO S A', Continuous M' → (∀ s, (M' s).map (finPart D) = 0) → IsBiTheta ψ A S A' fun u v => GlobalTheory.WeilVacMove.dLine ψ S A' M' (G u) v := by
   first | exact @GlobalTheory.BiDeriv.isBiTheta_dLine | exact GlobalTheory.BiDeriv.isBiTheta_dLine | (intros; apply GlobalTheory.BiDeriv.isBiTheta_dLine <;> assumption)

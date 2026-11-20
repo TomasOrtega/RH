@@ -14,8 +14,10 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Unf GlobalTheory.See
 open scoped TensorProduct Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Fam.pg_qAll_under_inj | exact GlobalTheory.Fam.pg_qAll_under_inj | (intros; apply GlobalTheory.Fam.pg_qAll_under_inj <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Fam.pg_qAll_under_inj` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FLevelPlacesUnderEq.lean&line=61#L61)
 -/
 theorem _root_.GlobalTheory.T.level_places_under_eq : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex), PkHyp W → ∀ PP PP' : Pl D.host.E, (PP ∈ (pk W).Pg ∨ QAll W PP) → (PP' ∈ (pk W).Pg ∨ QAll W PP') → PP.under (𝓞 D.host.F) = PP'.under (𝓞 D.host.F) → PP = PP' := by
   first | exact @GlobalTheory.Fam.pg_qAll_under_inj | exact GlobalTheory.Fam.pg_qAll_under_inj | (intros; apply GlobalTheory.Fam.pg_qAll_under_inj <;> assumption)

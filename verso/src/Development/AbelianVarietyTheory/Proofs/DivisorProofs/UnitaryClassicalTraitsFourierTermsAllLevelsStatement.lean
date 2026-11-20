@@ -10,8 +10,10 @@ open GlobalTheory.UPoinc
 open GlobalTheory
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UPoinc.four_of_classical | exact GlobalTheory.UPoinc.four_of_classical | (intros; apply GlobalTheory.UPoinc.four_of_classical <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UPoinc.four_of_classical` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FUnitaryClassicalTraitsFourierTermsAllLevels.lean&line=34#L34)
 -/
 theorem _root_.GlobalTheory.T.unitary_classicalTraits_fourierTerms_all_levels : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H), 1 ≤ Dw.p + Dw.q → ∀ (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (C : UCompact Xo c) (X₁ : USetup C) (p : ℕ) [Fact p.Prime] (z₁ : X₁.M.Z) (Φ : FPre (H.bar : 𝓞 E → 𝓞 E) (min Dw.p Dw.q) p (X₁.M.Z.presheaf.stalk z₁)), (∀ y, ∃ t : UCTrait X₁ p z₁, (∀ a, Φ.ev y a = t.val a) ∧ ∃ e : Φ.X y ≃ₗ[𝓞 E] t.T.P.D.toPre.X, ∀ a b, Φ.sc y * Φ.β y a b = t.sc * t.T.be (e a) (e b)) → Φ.Four !![(1 : ℤ)] (X₁.S.r * X₁.S.N) := by
   first | exact @GlobalTheory.UPoinc.four_of_classical | exact GlobalTheory.UPoinc.four_of_classical | (intros; apply GlobalTheory.UPoinc.four_of_classical <;> assumption)

@@ -14,8 +14,10 @@ open GlobalTheory.RootEx GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Spl
 open scoped TensorProduct Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.SymReadEx.exists_symData_symRead | exact _root_.GlobalTheory.SymReadEx.exists_symData_symRead | (intros; apply _root_.GlobalTheory.SymReadEx.exists_symData_symRead <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SymReadEx.exists_symData_symRead` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicArithmetic%2FThetaCorrespondence%2FThetaPairLifts%2FThirdPlaceSeries%2FExistsSymRead.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.exists_symData_symRead_at_type_places : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex) (u : D.what₂.Word), _root_.GlobalTheory.Fam.PackageHypotheses W → GlobalTheory.Core.Mi.IsTypePlaces (_root_.GlobalTheory.Fam.pk_z W).Pg → ∀ (a : XGeo D) (l : ∀ PP : (_root_.GlobalTheory.Fam.pk_z W).Pg, LocX a (_root_.GlobalTheory.Fam.pk_z W).βX PP.1), ∃ S : ∀ PP, SymData (l PP).k (l PP).s D.R.k, _root_.GlobalTheory.Fam.SymReadAlt W l S := by
   first | exact @_root_.GlobalTheory.SymReadEx.exists_symData_symRead | exact _root_.GlobalTheory.SymReadEx.exists_symData_symRead | (intros; apply _root_.GlobalTheory.SymReadEx.exists_symData_symRead <;> assumption)

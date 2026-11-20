@@ -27,8 +27,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GroundTheory.Heights₂.Heights TensorProduct
 open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Sl
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Sl.isFn_differentiable | exact GlobalTheory.CompanionTheory.Ar.Sl.isFn_differentiable | (intros; apply GlobalTheory.CompanionTheory.Ar.Sl.isFn_differentiable <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Sl.isFn_differentiable` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FThetaFunctionDifferentiable.lean&line=31#L31)
 -/
 theorem _root_.GlobalTheory.T.theta_function_differentiable : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (P : RigLB G) (z : Sp ℂ ⟶ S) (g : ℕ) (a : ArchFrame P z g) (n : ℕ) (s : Out.H0 P.L n) (θ : (Fin g → ℂ) → ℂ), a.IsFn s θ → Differentiable ℂ θ := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Sl.isFn_differentiable | exact GlobalTheory.CompanionTheory.Ar.Sl.isFn_differentiable | (intros; apply GlobalTheory.CompanionTheory.Ar.Sl.isFn_differentiable <;> assumption)

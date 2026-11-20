@@ -10,8 +10,10 @@ open GroundTheory.Global.AdicLiesOver
 open scoped ValuativeRel
 open GlobalTheory.CompanionTheory.DualHol
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.QuadPlace.finrank_eq_two_of_ne_refl | exact GlobalTheory.CompanionTheory.QuadPlace.finrank_eq_two_of_ne_refl | (intros; apply GlobalTheory.CompanionTheory.QuadPlace.finrank_eq_two_of_ne_refl <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.QuadPlace.finrank_eq_two_of_ne_refl` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FNontrivialGaloisPlaceDegreeTwo.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.nontrivial_galois_place_degree_two : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 → ∀ (v : Pl) (w : PlK K) (_ : w.asIdeal.LiesOver v.asIdeal) (σ : Kv K w ≃ₐ[Qv v] Kv K w), σ ≠ AlgEquiv.refl → Module.finrank (Qv v) (Kv K w) = 2 := by
   first | exact @GlobalTheory.CompanionTheory.QuadPlace.finrank_eq_two_of_ne_refl | exact GlobalTheory.CompanionTheory.QuadPlace.finrank_eq_two_of_ne_refl | (intros; apply GlobalTheory.CompanionTheory.QuadPlace.finrank_eq_two_of_ne_refl <;> assumption)

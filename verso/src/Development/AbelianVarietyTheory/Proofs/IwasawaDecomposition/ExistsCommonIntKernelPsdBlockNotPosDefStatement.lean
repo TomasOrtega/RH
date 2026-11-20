@@ -16,8 +16,10 @@ open MonoidalCategory CartesianMonoidalCategory MonObj GlobalTheory.ShFam.Hor.Lo
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.intPsd_common_kernel_of_sum_not_posDef | exact GlobalTheory.intPsd_common_kernel_of_sum_not_posDef | (intros; apply GlobalTheory.intPsd_common_kernel_of_sum_not_posDef <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.intPsd_common_kernel_of_sum_not_posDef` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsCommonIntKernelPsdBlockNotPosDef.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.exists_common_int_kernel_psd_block_not_posDef : ∀ (a g rk : ℕ) (B : Fin a → Matrix (Fin g) (Fin g) ℤ), (∀ k, ((B k).map (Int.cast : ℤ → ℝ)).PosSemidef) → (∀ k (j l : Fin g), (rk ≤ j.val ∨ rk ≤ l.val) → B k j l = 0) → ¬ (((∑ k, B k).map (Int.cast : ℤ → ℝ)).submatrix (Subtype.val : {j : Fin g // j.val < rk} → Fin g) Subtype.val).PosDef → ∃ v : Fin g → ℤ, v ≠ 0 ∧ (∀ j : Fin g, rk ≤ j.val → v j = 0) ∧ ∀ k, (B k).mulVec v = 0 := by
   first | exact @GlobalTheory.intPsd_common_kernel_of_sum_not_posDef | exact GlobalTheory.intPsd_common_kernel_of_sum_not_posDef | (intros; apply GlobalTheory.intPsd_common_kernel_of_sum_not_posDef <;> assumption)

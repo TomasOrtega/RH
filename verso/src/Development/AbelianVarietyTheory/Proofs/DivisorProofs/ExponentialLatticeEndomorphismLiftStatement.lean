@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.MapSmulOfIsHausdorf
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TateLatticeSpans
 open scoped TensorProduct NumberField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TorusTateFree.tate_free_of_lattice | exact GlobalTheory.TorusTateFree.tate_free_of_lattice | (intros; apply GlobalTheory.TorusTateFree.tate_free_of_lattice <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TorusTateFree.tate_free_of_lattice` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExponentialLatticeEndomorphismLift.lean&line=141#L141)
 -/
 theorem _root_.GlobalTheory.T.exponential_lattice_endomorphism_lift : ∀ (E : Type) [Field E] [NumberField E] (ℓ : ℕ) [Fact ℓ.Prime] (W : Type) [AddCommGroup W] [Module ℂ W]
     (ρ : 𝓞 E →+* Module.End ℂ W) (M : Type) [CommGroup M] (ex : W → M), (∀ z w, ex (z + w) = ex z * ex w) →

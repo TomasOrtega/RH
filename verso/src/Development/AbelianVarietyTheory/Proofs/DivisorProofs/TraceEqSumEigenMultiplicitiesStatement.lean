@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.SandwichMaps
 open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.trace_eq_sum_eigenspaces | exact GlobalTheory.trace_eq_sum_eigenspaces | (intros; apply GlobalTheory.trace_eq_sum_eigenspaces <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.trace_eq_sum_eigenspaces` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTraceEqSumEigenMultiplicities.lean&line=7#L7)
 -/
 theorem _root_.GlobalTheory.T.trace_eq_sum_eigen_multiplicities : ∀ (C : Type) [Field C] (O : Type) [CommRing O] [Algebra O C] (Λ : Type) [CommRing Λ] (h : ℕ) (ρ : Λ → Matrix (Fin h) (Fin h) O), iSupIndep (fun σ : Λ →+* O => eig C ρ σ) → (⨆ σ : Λ →+* O, eig C ρ σ) = ⊤ → {σ : Λ →+* O | eig C ρ σ ≠ ⊥}.Finite ∧ ∀ S : Finset (Λ →+* O), (∀ σ, eig C ρ σ ≠ ⊥ → σ ∈ S) → ∀ a : Λ, algebraMap O C (ρ a).trace = ∑ σ ∈ S, (Module.finrank C (eig C ρ σ) : C) * algebraMap O C (σ a) := by
   first | exact @GlobalTheory.trace_eq_sum_eigenspaces | exact GlobalTheory.trace_eq_sum_eigenspaces | (intros; apply GlobalTheory.trace_eq_sum_eigenspaces <;> assumption)

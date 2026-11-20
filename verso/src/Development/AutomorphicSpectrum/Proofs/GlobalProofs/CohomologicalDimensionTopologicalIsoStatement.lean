@@ -8,8 +8,10 @@ import Development.AutomorphicSpectrum.Proofs.GlobalProofs.IsDiscreteRepResMuROr
 open NumberField IsDedekindDomain CategoryTheory GroundTheory.ProfCoh GroundTheory.Global FiniteSubfield ReciprocityTheory.Gal Formalism.ConjugateSelfDual GlobalTheory.CompanionTheory.GSCd GroundTheory.Global.IdeleGroup GroundTheory.Global.SemiLocal GroundTheory.Global.AdeleBaseChange
 open scoped DirectSum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.GSCd.Transport.exists_gs_transport | exact GlobalTheory.CompanionTheory.GSCd.Transport.exists_gs_transport | (intros; apply GlobalTheory.CompanionTheory.GSCd.Transport.exists_gs_transport <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.GSCd.Transport.exists_gs_transport` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGlobalProofs%2FCohomologicalDimensionTopologicalIso.lean&line=272#L272)
 -/
 theorem _root_.GlobalTheory.T.galois_unramified_outside_descends_finite : ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) (S : Finset (HeightOneSpectrum (𝓞 F))), ContainsAbove S l → ∃ (K : FiniteSubfield) (S' : Finset (HeightOneSpectrum (𝓞 K.1))), ContainsAbove S' l ∧ Nonempty (galUnramifiedOutside F Ω (S : Set (HeightOneSpectrum (𝓞 F))) ≃ₜ* Gs K S') := by
   first | exact @GlobalTheory.CompanionTheory.GSCd.Transport.exists_gs_transport | exact GlobalTheory.CompanionTheory.GSCd.Transport.exists_gs_transport | (intros; apply GlobalTheory.CompanionTheory.GSCd.Transport.exists_gs_transport <;> assumption)

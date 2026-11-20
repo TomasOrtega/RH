@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.IsobaricDiscr
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.RankOneUnitary
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal NumberField IsDedekindDomain Polynomial
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RepConjUniq.main | exact GlobalTheory.RepConjUniq.main | (intros; apply GlobalTheory.RepConjUniq.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RepConjUniq.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FHeckeGaloisRepQbarConjugateUnique.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.heckeGaloisRepQbar_conjugate_unique : ∀ D : D7, SumRepresentations.adm5 D → ∀ (i : D.nd.Loc) (x : D.nd.X i) (ρ ρ' : Formalism.ConjugateSelfDual.G D.host.E D.nd.Om →* GL (Fin D.R.nV) (Qbar (D.nd.l i))), SumRepresentations.At.IsHeckeGaloisQ D.nd D.naut i x ρ → SumRepresentations.At.IsHeckeGaloisQ D.nd D.naut i x ρ' → ∃ Pm : GL (Fin D.R.nV) (Qbar (D.nd.l i)), ∀ g, ρ' g = Pm⁻¹ * ρ g * Pm := by
   first | exact @GlobalTheory.RepConjUniq.main | exact GlobalTheory.RepConjUniq.main | (intros; apply GlobalTheory.RepConjUniq.main <;> assumption)

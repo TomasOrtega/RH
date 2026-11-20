@@ -4,8 +4,10 @@ import Mathlib
 import Formalism.LocalToGlobal.Columns.FiniteSumNonzeroLargeDepth
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.L2.DIV Formalism.L2.Col
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.decoSet_liftFr_lifts_level | exact GlobalTheory.decoSet_liftFr_lifts_level | (intros; apply GlobalTheory.decoSet_liftFr_lifts_level <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.decoSet_liftFr_lifts_level` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FDecorationLiftStdLatticeReduction.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.decoration_lift_std_lattice_reduction : ∀ (E : Type) [Field E] [NumberField E] [StarRing E] (n : ℕ) (ST SG : Finset (HeightOneSpectrum (𝓞 E))) (d : DecoSet E n ST SG) (w : SG), (∀ x, d.1.liftFr w x ∈ d.1.at w.1 ↔ x ∈ stdAt E n w.1) ∧ ∀ x ∈ stdAt E n w.1, d.1.be w (d.1.liftFr w x) = redV w.1 x := by
   first | exact @GlobalTheory.decoSet_liftFr_lifts_level | exact GlobalTheory.decoSet_liftFr_lifts_level | (intros; apply GlobalTheory.decoSet_liftFr_lifts_level <;> assumption)

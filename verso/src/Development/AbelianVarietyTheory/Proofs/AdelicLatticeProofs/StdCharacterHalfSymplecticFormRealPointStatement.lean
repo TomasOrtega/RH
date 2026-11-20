@@ -6,8 +6,10 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.FockCompare GlobalTheory.VacUnique
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.OrientedChar.char_symplOH | exact GlobalTheory.OrientedChar.char_symplOH | (intros; apply GlobalTheory.OrientedChar.char_symplOH <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.OrientedChar.char_symplOH` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FAdelicLatticeProofs%2FStdCharacterHalfSymplecticFormRealPoint.lean&line=91#L91)
 -/
 theorem _root_.GlobalTheory.T.stdCharacter_halfSymplecticForm_realPoint : ∀ (D : D7) (θ : InfFam D) (ψ : AddChar (AF D.host.F) ℂ), IsInfFam θ → IsStdChar D ψ (-1) → ∀ (S T : HSp D) (x y : WO S T), (x.map (finPart D) = 0 ∨ y.map (finPart D) = 0) → ψ (symplOH S T x y) = Complex.exp (-(Real.pi * Complex.I) * (omO S T (piW θ T S x) (piW θ T S y) : ℂ)) := by
   first | exact @GlobalTheory.OrientedChar.char_symplOH | exact GlobalTheory.OrientedChar.char_symplOH | (intros; apply GlobalTheory.OrientedChar.char_symplOH <;> assumption)

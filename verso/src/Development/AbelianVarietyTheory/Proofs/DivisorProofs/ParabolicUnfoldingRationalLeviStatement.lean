@@ -8,8 +8,10 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.ThK.DescB
 open GlobalTheory.Doubling (absE)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnipCTLevi.constantTerm_levi | exact GlobalTheory.UnipCTLevi.constantTerm_levi | (intros; apply GlobalTheory.UnipCTLevi.constantTerm_levi <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnipCTLevi.constantTerm_levi` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FParabolicUnfoldingRationalLevi.lean&line=59#L59)
 -/
 theorem _root_.GlobalTheory.T.parabolic_unfolding_rational_levi : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (n n₁ : ℕ) (Y : Spc F E n) (Y₁ : Spc F E n₁) (H : Plane E n n₁) (f : UA σ Y.J → ℂ),

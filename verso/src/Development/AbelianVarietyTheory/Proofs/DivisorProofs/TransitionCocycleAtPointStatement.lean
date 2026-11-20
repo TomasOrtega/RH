@@ -7,8 +7,10 @@ open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalT
 open Formalism.MainNotions.DIV.Cons (intO)
 open GlobalTheory.ArLieBase
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ArLieBase.trCo_chain | exact GlobalTheory.ArLieBase.trCo_chain | (intros; apply GlobalTheory.ArLieBase.trCo_chain <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ArLieBase.trCo_chain` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTransitionCocycleAtPoint.lean&line=46#L46)
 -/
 theorem _root_.GlobalTheory.T.transition_cocycle_at_point : ∀ {X : Scheme.{0}} {M : X.Modules} {r : ℕ} {U₁ U₂ U₃ : X.Opens} {f₁ : Fin r → Γ(M, U₁)} {f₂ : Fin r → Γ(M, U₂)} (h₁ : VB.IsFrame f₁) (h₂ : VB.IsFrame f₂) (f₃ : Fin r → Γ(M, U₃)) {K : Type} [CommRing K] (x : Sp K ⟶ X) (h₁₂ : ⊤ ≤ x ⁻¹ᵁ (U₁ ⊓ U₂)) (h₂₃ : ⊤ ≤ x ⁻¹ᵁ (U₂ ⊓ U₃)) (h₁₃ : ⊤ ≤ x ⁻¹ᵁ (U₁ ⊓ U₃)) (c a : Fin r), ∑ b, TangentOrigin.evalPt x _ h₁₂ (trCo h₁ f₂ c b) * TangentOrigin.evalPt x _ h₂₃ (trCo h₂ f₃ b a) = TangentOrigin.evalPt x _ h₁₃ (trCo h₁ f₃ c a) := by
   first | exact @GlobalTheory.ArLieBase.trCo_chain | exact GlobalTheory.ArLieBase.trCo_chain | (intros; apply GlobalTheory.ArLieBase.trCo_chain <;> assumption)

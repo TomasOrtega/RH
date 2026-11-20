@@ -15,8 +15,10 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 open GlobalTheory.FlatModel
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlatModel.exists_iTie | exact GlobalTheory.FlatModel.exists_iTie | (intros; apply GlobalTheory.FlatModel.exists_iTie <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlatModel.exists_iTie` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPAdicPointFrameMap.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.p_adic_point_frame_map : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H)
     (l' : Level H) (Xo' : Moduli Dw l') (c' : Coeff l') (W : ValuationSubring ℂ) (Y : Model Xo' c' (c'.V W).subtype)

@@ -6,8 +6,10 @@ import Formalism.SharpRestriction.LevelLetterCocycles.LocalSituation
 import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N TensorProduct Module
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TateDualTied.main | exact GlobalTheory.TateDualTied.main | (intros; apply GlobalTheory.TateDualTied.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TateDualTied.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FDeRhamFiltrationDuality.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.de_rham_filtration_duality : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ K : FinExt l, drDualCore (P.PD K) ∧ Formalism.MainNotions.LocalSituation.filDualCore (P.PD K) := by
   first | exact @GlobalTheory.TateDualTied.main | exact GlobalTheory.TateDualTied.main | (intros; apply GlobalTheory.TateDualTied.main <;> assumption)

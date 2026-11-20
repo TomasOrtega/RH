@@ -18,8 +18,10 @@ set_option maxHeartbeats 800000
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TieLift.lift_principal | exact GlobalTheory.TieLift.lift_principal | (intros; apply GlobalTheory.TieLift.lift_principal <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TieLift.lift_principal` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLevelZeroLiftExists.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.level_zero_lift_exists : AtTw fun Fm x hx i p w j => ∀ g0 : G0 (R2 p).Pg (Fm.D x i).R.r,
   ∃ κ', Formalism.IndefR.Lev.IsLevelLift (Wc (Fm.D x i) j) ((R2 p).βW j) ((R2 p).datWp j (R2 p).triv) g0 κ' := by

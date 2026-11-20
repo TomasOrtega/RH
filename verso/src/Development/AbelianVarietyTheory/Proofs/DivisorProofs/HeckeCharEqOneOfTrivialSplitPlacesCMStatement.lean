@@ -8,8 +8,10 @@ open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHeck
 open Formalism.IndefR.DatumF
 attribute [-instance] CStarMatrix.instHMulOfFintypeOfMulOfAddCommMonoid
 
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HeckeSplitGen.heckeChar_eq_one_of_split | exact GlobalTheory.HeckeSplitGen.heckeChar_eq_one_of_split | (intros; apply GlobalTheory.HeckeSplitGen.heckeChar_eq_one_of_split <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HeckeSplitGen.heckeChar_eq_one_of_split` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHeckeCharEqOneOfTrivialSplitPlacesCM.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.heckeChar_eq_one_of_trivial_splitPlaces_CM : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ ν : (AF F ⊗[F] E)ˣ →* Circle, IsHeckeCharF ν →

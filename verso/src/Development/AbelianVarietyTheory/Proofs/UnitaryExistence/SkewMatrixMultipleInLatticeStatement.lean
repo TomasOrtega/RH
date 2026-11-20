@@ -13,8 +13,10 @@ open NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRes
 open AlgebraicGeometry CategoryTheory Limits ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.Frames GlobalTheory.FrameUnif
 open scoped Matrix nonZeroDivisors
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CuspCentre.exists_nsmul_mem_zGam | exact GlobalTheory.CuspCentre.exists_nsmul_mem_zGam | (intros; apply GlobalTheory.CuspCentre.exists_nsmul_mem_zGam <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CuspCentre.exists_nsmul_mem_zGam` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUnitaryExistence%2FSkewMatrixMultipleInLattice.lean&line=108#L108)
 -/
 theorem _root_.GlobalTheory.T.skew_matrix_multiple_in_lattice : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r ρ : ℕ) (X : Data E r) (cu : FJ.CuspFD X ρ) (β : Matrix (Fin ρ) (Fin ρ) E), FJ.IsSkew β → ∃ n : ℕ, 0 < n ∧ n • β ∈ FJ.zGam X cu := by
   first | exact @GlobalTheory.CuspCentre.exists_nsmul_mem_zGam | exact GlobalTheory.CuspCentre.exists_nsmul_mem_zGam | (intros; apply GlobalTheory.CuspCentre.exists_nsmul_mem_zGam <;> assumption)

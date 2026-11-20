@@ -8,8 +8,10 @@ open Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainN
 open GlobalTheory.FunObj.SqNum GlobalTheory.NormSum
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LevelRed.exists_levelRed | exact GlobalTheory.LevelRed.exists_levelRed | (intros; apply GlobalTheory.LevelRed.exists_levelRed <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LevelRed.exists_levelRed` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsReductionMaxLevelUnitaryModIdeal.lean&line=82#L82)
 -/
 theorem _root_.GlobalTheory.T.exists_reduction_maxLevel_unitary_mod_ideal : ∀ (D : D7) (𝔪 : Ideal (𝓞 D.host.E)), 𝔪 ≠ ⊥ → ∀ N : ℕ,
     ∃ ρ : ↥(intG D N) →* GL (Fin N) (𝓞 D.host.E ⧸ 𝔪), ∀ (k : ↥(intG D N)) (i j : Fin N) (b : 𝓞 D.host.E),

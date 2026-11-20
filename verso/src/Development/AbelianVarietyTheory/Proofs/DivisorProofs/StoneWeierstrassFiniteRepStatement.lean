@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StoneWeierstrassFin
 import Mathlib
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.exists_equivariant_mem_subalgebra_of_compact | exact GlobalTheory.exists_equivariant_mem_subalgebra_of_compact | (intros; apply GlobalTheory.exists_equivariant_mem_subalgebra_of_compact <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.exists_equivariant_mem_subalgebra_of_compact` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FStoneWeierstrassFiniteRep.lean&line=53#L53)
 -/
 theorem _root_.GlobalTheory.T.stone_weierstrass_finite_rep : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G] (Q : Subgroup G), IsCompact (Q : Set G) →
     ∀ (d : ℕ) (ρ : Q →* Matrix (Fin d) (Fin d) ℂ), Continuous ρ → ∀ A : Subalgebra ℂ (G → ℂ), (∀ f ∈ A, Continuous f) → (∀ f ∈ A, star f ∈ A) →

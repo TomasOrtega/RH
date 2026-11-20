@@ -7,8 +7,10 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.Doubling GlobalTheory.ThK.Bot
 open Formalism.L2.Host (aboveF)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThK.Bot.DenProd.exists_hasProd_denInv | exact GlobalTheory.ThK.Bot.DenProd.exists_hasProd_denInv | (intros; apply GlobalTheory.ThK.Bot.DenProd.exists_hasProd_denInv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThK.Bot.DenProd.exists_hasProd_denInv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsAnalyticNonvanishingDenominator.lean&line=53#L53)
 -/
 theorem _root_.GlobalTheory.T.exists_analytic_nonvanishing_denominator : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ) (T : Finset (Pl F)),
     ∃ D : ℂ → ℂ, AnalyticOnNhd ℂ D {s | 0 < s.re} ∧ ∀ s : ℂ, 0 < s.re → D s ≠ 0 ∧ HasProd (fun v : {v : Pl F // v ∉ T} => denInv E n v.1 s) (D s) := by

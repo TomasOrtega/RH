@@ -14,8 +14,10 @@ open GlobalTheory.StepData GlobalTheory.SplitWeil
 open ValuativeRel
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PenLevOff.cut_mem_U | exact GlobalTheory.PenLevOff.cut_mem_U | (intros; apply GlobalTheory.PenLevOff.cut_mem_U <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PenLevOff.cut_mem_U` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FTrueGeometryRowStepValue.lean&line=183#L183)
 -/
 theorem _root_.GlobalTheory.T.true_geometry_row_step_value : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (a : GeoAll W u), a.Is → a.True → ∀ j (hj : j + 1 = B.R.m), ∀ t (J : QJ a t), J.Reads → ∀ (α : J.Ch j) t' (J' : QJ a t'), J'.Reads → ∀ (α' : J'.Ch j) (Q : Finset (GlobalTheory.FinPl.Pl (I.rec7 l Z))), (∀ p, GlobalTheory.PenBridge.plF J p → p ∈ Q) → (∀ p, GlobalTheory.PenBridge.plF J' p → p ∈ Q) → ∀ x ∈ J.A.U j (J.ι j α), GlobalTheory.FinPl.SetCut.cutG _ _ (GlobalTheory.FinPl.SetCut.one_sub_idemQ_mul_self Q) x ∈ J'.A.U j (J'.ι j α') := by
   first | exact @GlobalTheory.PenLevOff.cut_mem_U | exact GlobalTheory.PenLevOff.cut_mem_U | (intros; apply GlobalTheory.PenLevOff.cut_mem_U <;> assumption)

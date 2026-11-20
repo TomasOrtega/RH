@@ -6,8 +6,10 @@ import ReciprocityTheory.AnalyticForms.PotentialTheory.ContDiffAtOfIsPotential
 open MeasureTheory ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M GlobalTheory.IndefiniteRowSideFullHecke.BoundaryPolynomialFunctions GlobalTheory.LogResInt GlobalTheory.SNCComp
 open scoped ENNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SNCComp.CompAtlas.exists_isSNCAtlas | exact GlobalTheory.SNCComp.CompAtlas.exists_isSNCAtlas | (intros; apply GlobalTheory.SNCComp.CompAtlas.exists_isSNCAtlas <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SNCComp.CompAtlas.exists_isSNCAtlas` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSncComponentHolomorphicAtlas.lean&line=142#L142)
 -/
 theorem _root_.GlobalTheory.T.snc_component_holomorphic_atlas : ∀ (n : ℕ) (Y : Type) [TopologicalSpace Y] [CompactSpace Y] [T2Space Y]
     (B : FinHolAtlas (n + 1) Y) (X : Type) [TopologicalSpace X] (μ : Y → X) (q r : ℕ)

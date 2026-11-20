@@ -11,8 +11,10 @@ open Formalism.L2.Rows
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BigTop.PtAt.nmjT_at_tied | exact GlobalTheory.BigTop.PtAt.nmjT_at_tied | (intros; apply GlobalTheory.BigTop.PtAt.nmjT_at_tied <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BigTop.PtAt.nmjT_at_tied` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FLatticeFamilyAdoptionFourth.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.lattice_family_adoption_fourth : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : Formalism.MainNotions.G.Inst D L) (Gl : Formalism.MainNotions.G.LatInst D) (Kc : Formalism.MainNotions.G.Consts) (Y : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl Kc Y cX) (Rc : Formalism.L2.RecT ex) (P : RowSideFamily ex) (Dcf : ∀ Zs : DefSub P.A3.fam3.amb3, DefCols (P.A3.side3 P.Ps P.ψs Zs)) (Spf : ∀ Zs : DefSub P.A3.fam3.amb3, SPer (Dcf Zs)) (Zscf : DefSub P.A3.fam3.amb3 → IndefScale P.A3.fam3.base3) (S : Formalism.L2.SG.SpectralTiesReal.STiesR Rc) (B : RealTB Rc P Dcf Spf Zscf S) (_ : RealPins B.Q) (_ : RealRec B.Q), NChTie D ex.nch → DivRows3 D P.A3 P.P0 P.ψ0 P.Ps P.ψs P.Zs P.S0 P.S1 ex.p0 P.C P.NuC P.I → GlobalTheory.ExportPin.ClassSumPinT B.Q → NMjT B.Q B.Q.cG B.Q.Sx B.Q.nexp ex.nch := by
   first | exact @GlobalTheory.BigTop.PtAt.nmjT_at_tied | exact GlobalTheory.BigTop.PtAt.nmjT_at_tied | (intros; apply GlobalTheory.BigTop.PtAt.nmjT_at_tied <;> assumption)

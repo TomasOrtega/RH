@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermi
 import Development.AbelianVarietyTheory.Definitions.Foundations.NormSumPairRankZeroOfCurveCoordNorm
 open GlobalTheory.SumSize GlobalTheory.RowClaim
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GamLoss.finGamK | exact GlobalTheory.GamLoss.finGamK | (intros; apply GlobalTheory.GamLoss.finGamK <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GamLoss.finGamK` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFiniteGammaBound.lean&line=289#L289)
 -/
 theorem _root_.GlobalTheory.T.finite_gamma_bound : GlobalTheory.FunPr.Hypotheses₂ → FinGamK := by
   first | exact @GlobalTheory.GamLoss.finGamK | exact GlobalTheory.GamLoss.finGamK | (intros; apply GlobalTheory.GamLoss.finGamK <;> assumption)

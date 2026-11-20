@@ -14,8 +14,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (Base Spc Model Ch
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThetaRatInv.norm_thetaSum_schr_ratPair_add | exact GlobalTheory.ThetaRatInv.norm_thetaSum_schr_ratPair_add | (intros; apply GlobalTheory.ThetaRatInv.norm_thetaSum_schr_ratPair_add <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThetaRatInv.norm_thetaSum_schr_ratPair_add` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FNormAdelicThetaSumSchroedingerRationalPairInvari.lean&line=56#L56)
 -/
 theorem _root_.GlobalTheory.T.norm_adelicThetaSum_schroedinger_rationalPair_invariant : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsCharAF F ψ → ∀ (κ : Type) [Fintype κ] (Φ : (κ → AF F) → ℂ),
     ∀ γ ∈ GlobalTheory.WeilUnitaryTransport.ratPair F κ, ∀ w : (κ → AF F) × (κ → AF F),

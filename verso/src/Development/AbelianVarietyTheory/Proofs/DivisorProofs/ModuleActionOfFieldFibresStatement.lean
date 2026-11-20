@@ -11,8 +11,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.invertible_of_fibres_invertible | exact GlobalTheory.invertible_of_fibres_invertible | (intros; apply GlobalTheory.invertible_of_fibres_invertible <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.invertible_of_fibres_invertible` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FModuleActionOfFieldFibres.lean&line=29#L29)
 -/
 theorem _root_.GlobalTheory.T.module_action_of_field_fibres : ∀ (R O : Type) [CommRing R] [CommRing O] [Module.Free ℤ O] [Module.Finite ℤ O] (M : Type)
     [AddCommGroup M] [Module R M] [Module O M] [SMulCommClass R O M] [Module.Finite R M] [Module.Projective R M],

@@ -12,8 +12,10 @@ section
 open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Top GlobalTheory.Fc GlobalTheory.MiS GlobalTheory.Fam
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.Fam.MemberSizes.parameters_scale_size_bounds_of_member | exact _root_.GlobalTheory.Fam.MemberSizes.parameters_scale_size_bounds_of_member | (intros; apply _root_.GlobalTheory.Fam.MemberSizes.parameters_scale_size_bounds_of_member <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Fam.MemberSizes.parameters_scale_size_bounds_of_member` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicArithmetic%2FThetaCorrespondence%2FThetaPairLifts%2FThirdPlaceSeries%2FMemberSizes.lean&line=54#L54)
 -/
 theorem _root_.GlobalTheory.T.exists_constants_for_parameters_scale_bundle : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL) (F G H : ℝ → ℝ → ℝ), GlobalTheory.Fc.RowE (Bl.IsGoodE p.s) (_root_.GlobalTheory.Mem.Top.Bl.BundleLinkage p) (fun _ D O _ _ => ∃ C' Cl Cg CT : ℝ, F Cg CT ≤ C' ∧ G Cg CT ≤ Cl ∧ H Cg CT ≤ O.L.sc.L ∧ GlobalTheory.Core.Rk.HD D O.L.sc.L C' Cl Cg (1 / 4) 3 (1 / 2) CT ∧ GlobalTheory.Core.Rk.IsScaleWithBoundedGamma D O.L.sc.L C' ∧ (∀ u, GlobalTheory.Core.Rk.RankMu D u) ∧ GlobalTheory.Core.Rk.BigGap D ∧ 1 ≤ D.R.rS) := by
   first | exact @_root_.GlobalTheory.Fam.MemberSizes.parameters_scale_size_bounds_of_member | exact _root_.GlobalTheory.Fam.MemberSizes.parameters_scale_size_bounds_of_member | (intros; apply _root_.GlobalTheory.Fam.MemberSizes.parameters_scale_size_bounds_of_member <;> assumption)

@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzFourierSupe
 import Mathlib
 open MeasureTheory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.fourier_inversion_real_linear_forms | exact GlobalTheory.fourier_inversion_real_linear_forms | (intros; apply GlobalTheory.fourier_inversion_real_linear_forms <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.fourier_inversion_real_linear_forms` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSchwartzFourierSuperposition.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.schwartz_fourier_superposition : ∀ {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] (ψ : SchwartzMap V ℂ),
     ∃ (m : ℕ) (A : EuclideanSpace ℝ (Fin m) →L[ℝ] (V →L[ℝ] ℝ)) (φ : EuclideanSpace ℝ (Fin m) → ℂ),

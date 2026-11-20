@@ -14,8 +14,10 @@ open GlobalTheory.SmGL GlobalTheory.PRep GlobalTheory.IndLineGL
 open scoped GlobalTheory.IndLineGL
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IndLineGL.proportional_of_glInd | exact GlobalTheory.IndLineGL.proportional_of_glInd | (intros; apply GlobalTheory.IndLineGL.proportional_of_glInd <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IndLineGL.proportional_of_glInd` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FUnitaryCharInducedJacquet.lean&line=27#L27)
 -/
 theorem _root_.GlobalTheory.T.unitary_char_induced_jacquet : GlobalTheory.ThK.KP → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (a a' m : ℕ), m + 2 = a + a' → a' < a → ∀ (α₀ β₀ : kˣ →* ℂˣ), IsSmoothChar α₀ → IsSmoothChar β₀ →

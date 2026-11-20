@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.Contin
 open Filter Topology Set Metric MeasureTheory GlobalTheory.ChernReg
 open scoped ContDiff
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChernReg.contDiff_cutoff | exact GlobalTheory.ChernReg.contDiff_cutoff | (intros; apply GlobalTheory.ChernReg.contDiff_cutoff <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChernReg.contDiff_cutoff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FContDiffCutoff.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.contDiff_cutoff' : ContDiff ℝ ∞ GlobalTheory.ChernReg.cutoff := by
   first | exact @GlobalTheory.ChernReg.contDiff_cutoff | exact GlobalTheory.ChernReg.contDiff_cutoff | (intros; apply GlobalTheory.ChernReg.contDiff_cutoff <;> assumption)

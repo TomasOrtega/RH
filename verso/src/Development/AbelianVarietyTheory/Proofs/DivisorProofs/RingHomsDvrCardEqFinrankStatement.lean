@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IotaScalarOne
 open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps GlobalTheory.DetInv Matrix TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.card_ringHom_to_integers_eq_finrank | exact GlobalTheory.card_ringHom_to_integers_eq_finrank | (intros; apply GlobalTheory.card_ringHom_to_integers_eq_finrank <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.card_ringHom_to_integers_eq_finrank` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRingHomsDvrCardEqFinrank.lean&line=8#L8)
 -/
 theorem _root_.GlobalTheory.T.ring_homs_dvr_card_eq_finrank : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O], v.Integers O → ∀ (Λ : Type) [CommRing Λ] [IsDomain Λ] [IsDiscreteValuationRing Λ] [Algebra ℤ_[p] Λ] [Module.Finite ℤ_[p] Λ] [FaithfulSMul ℤ_[p] Λ], Finite (Λ →+* O) ∧ Nat.card (Λ →+* O) = Module.finrank ℤ_[p] Λ := by
   first | exact @GlobalTheory.card_ringHom_to_integers_eq_finrank | exact GlobalTheory.card_ringHom_to_integers_eq_finrank | (intros; apply GlobalTheory.card_ringHom_to_integers_eq_finrank <;> assumption)

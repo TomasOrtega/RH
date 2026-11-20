@@ -10,8 +10,10 @@ open GlobalTheory GlobalTheory.LieHt GlobalTheory.Cartier GlobalTheory.ThetaOnto
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MBLow.AbKey.exists_bKey | exact GlobalTheory.MBLow.AbKey.exists_bKey | (intros; apply GlobalTheory.MBLow.AbKey.exists_bKey <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MBLow.AbKey.exists_bKey` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsAbelianKeyValueNormOne.lean&line=99#L99)
 -/
 theorem _root_.GlobalTheory.T.exists_abelianKeyValue_norm_one : ∀ κ : Rule, Rule4 κ → ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [CharZero V] (D : DegPre V) (C : Type) [NontriviallyNormedField C] [IsUltrametricDist C] [CharZero C] [Algebra (FractionRing V) C], CExt V (IsLocalRing.maximalIdeal V) C → ∀ (N : NumD C) (ν : NumOf D C N), ν.IntN → ∀ vB : Fin D.P.g → (epsR V ⟶ D.P.A), IsLieBasis vB → ∃ k : C, BKey κ ν vB k ∧ ‖k‖ = 1 := by
   first | exact @GlobalTheory.MBLow.AbKey.exists_bKey | exact GlobalTheory.MBLow.AbKey.exists_bKey | (intros; apply GlobalTheory.MBLow.AbKey.exists_bKey <;> assumption)

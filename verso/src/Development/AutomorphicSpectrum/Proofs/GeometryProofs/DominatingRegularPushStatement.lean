@@ -13,8 +13,10 @@ open ReciprocityTheory.ChartRestriction.G.AI.I4 (imageZ IsPullHerm)
 open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter (pullHerm)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Chg.Stalk.regular_along_dominant | exact GlobalTheory.CompanionTheory.Ar.Chg.Stalk.regular_along_dominant | (intros; apply GlobalTheory.CompanionTheory.Ar.Chg.Stalk.regular_along_dominant <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Chg.Stalk.regular_along_dominant` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FDominatingRegularPush.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.dominating_regular_push : ∀ (X X₀ : Scheme.{0}) (Ω Ω₀ : Type) [Field Ω] [Field Ω₀] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (ξ₀ : Spec (CommRingCat.of Ω₀) ⟶ X₀) (h : X ⟶ X₀) (i : Ω₀ →+* Ω) (hd : GlobalTheory.CompanionTheory.Ar.Dominates ξ ξ₀ h i), IsCptGen ξ → (∀ (p : Cpt ξ) (a : Ω₀), a ∈ regAt ξ₀ (pushCpt hd p) → i a ∈ regAt ξ p) ∧ (∀ (p : Cpt ξ) (a : Ω₀), a ∈ regAt ξ₀ (pushCpt hd p) → unitAt ξ p (i a) → unitAt ξ₀ (pushCpt hd p) a) ∧ (∀ (z : Spec (CommRingCat.of ℂ) ⟶ X) (a : Ω₀) (r : ℂ), genPt ξ ⤳ centre z → ValAt ξ₀ (z ≫ h) a r → ValAt ξ z (i a) r) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Chg.Stalk.regular_along_dominant | exact GlobalTheory.CompanionTheory.Ar.Chg.Stalk.regular_along_dominant | (intros; apply GlobalTheory.CompanionTheory.Ar.Chg.Stalk.regular_along_dominant <;> assumption)

@@ -14,8 +14,10 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
   GlobalTheory.UAut GlobalTheory.SiegelSet GlobalTheory.ThK.SquareIntegrability GlobalTheory.CuspBlock GlobalTheory.LFun.SplitTie
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ColumnSep.exists_sub_evals_injective | exact GlobalTheory.ColumnSep.exists_sub_evals_injective | (intros; apply GlobalTheory.ColumnSep.exists_sub_evals_injective <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ColumnSep.exists_sub_evals_injective` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FBlockInducedRepIntertwining.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.block_induced_rep_intertwining : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {α β : Type} [Fintype α] [LinearOrder α] [Fintype β] [LinearOrder β] [DecidableEq β]

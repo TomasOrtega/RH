@@ -9,8 +9,10 @@ open GlobalTheory.ChainOnto
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChainOnto.QuotVal.val_quot_ne_one | exact GlobalTheory.ChainOnto.QuotVal.val_quot_ne_one | (intros; apply GlobalTheory.ChainOnto.QuotVal.val_quot_ne_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChainOnto.QuotVal.val_quot_ne_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FHeckeCharQuotientNeOneCompletelySplitPrime.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.heckeCharQuotient_ne_one_completelySplitPrime : ∀ (D : D7) (c : Com D), c.Is → ∀ i j : ℕ, 1 ≤ i → i < j → j ≤ D.R.m → ∀ p : ℕ, GlobalTheory.IndefiniteRowSideFullHecke.IteratedLiftChains.SplitsCompletely D p → ∀ w : HeightOneSpectrum (𝓞 D.host.E), (p : 𝓞 D.host.E) ∈ w.asIdeal → w.under (𝓞 D.host.F) ∉ c.S → GlobalTheory.LFun.val (F := D.host.F) (c.μ i * (c.μ j)⁻¹) w ≠ 1 := by
   first | exact @GlobalTheory.ChainOnto.QuotVal.val_quot_ne_one | exact GlobalTheory.ChainOnto.QuotVal.val_quot_ne_one | (intros; apply GlobalTheory.ChainOnto.QuotVal.val_quot_ne_one <;> assumption)

@@ -8,8 +8,10 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts G
 open GlobalTheory.FlagFibre (Low)
 open scoped Matrix ContDiff ComplexOrder ENNReal Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagCell2.pull_aeval_even | exact GlobalTheory.FlagCell2.pull_aeval_even | (intros; apply GlobalTheory.FlagCell2.pull_aeval_even <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagCell2.pull_aeval_even` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPullbackAevalEvenComplexForms.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.pullback_aeval_evenComplexForms : ∀ (n n' : ℕ) (L : V n →L[ℂ] V n') (κ : Type) (w : κ → Ev n) (w' : κ → Ev n') (P : MvPolynomial κ ℂ), (∀ x, (w x : Alt n) = pull L (w' x : Alt n')) → ((aeval w P : Ev n) : Alt n) = pull L ((aeval w' P : Ev n') : Alt n') := by
   first | exact @GlobalTheory.FlagCell2.pull_aeval_even | exact GlobalTheory.FlagCell2.pull_aeval_even | (intros; apply GlobalTheory.FlagCell2.pull_aeval_even <;> assumption)

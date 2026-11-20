@@ -7,8 +7,10 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 open MvPolynomial Formalism.GradedWeylDivisibility GlobalTheory.HighWtEmb
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HighWtEmb.exists_coefPoly | exact GlobalTheory.HighWtEmb.exists_coefPoly | (intros; apply GlobalTheory.HighWtEmb.exists_coefPoly <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HighWtEmb.exists_coefPoly` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsMatrixCoefficientPolySimpleSubquotient.lean&line=265#L265)
 -/
 theorem _root_.GlobalTheory.T.exists_matrixCoefficientPoly_simpleSubquotient : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (N : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] (lam : ι → ℕ → ℕ) (ϖ : O), Irreducible ϖ → (∀ τ, Antitone (res N (lam τ))) → GlobalTheory.HighWt.CoefIn O N lam → ∀ (Gm : Type) [AddCommGroup Gm] [Module (alg O N lam) Gm], SubQ O N lam ϖ Gm → ∀ w : ι → Fin N → ℕ, (∀ w' : ι → Fin N → ℕ, GlobalTheory.HighWt.JointWt O N lam Gm w' → GlobalTheory.HighWt.pot N w' ≤ GlobalTheory.HighWt.pot N w) → ∀ (φ : Gm →+ O ⧸ Ideal.span {ϖ}) (z₀ : Gm), φ z₀ ≠ 0 → (∀ τ (a : alg O N lam), IsProj O N lam τ (w τ) a → a • z₀ = z₀) → (∀ (c : O) (z : Gm), φ (algebraMap O (alg O N lam) c • z) = Ideal.Quotient.mk (Ideal.span {ϖ}) c * φ z) → (∀ τ (v : Fin N → ℕ) (a : alg O N lam), IsProj O N lam τ v a → v ≠ w τ → ∀ z, φ (a • z) = 0) → ∃ Pz : Gm →+ MvPolynomial (BVar N ι) (O ⧸ Ideal.span {ϖ}), (∀ (c : O) (z : Gm), Pz (algebraMap O (alg O N lam) c • z) = C (Ideal.Quotient.mk (Ideal.span {ϖ}) c) * Pz z) ∧ (∀ (g : ι → GL (Fin N) O) (z : Gm), Pz (grpA O N lam g • z) = blockSub (O ⧸ Ideal.span {ϖ}) N (fun τ => (((g τ)⁻¹ : GL (Fin N) O) : Matrix (Fin N) (Fin N) O).map (Ideal.Quotient.mk (Ideal.span {ϖ}))) (Pz z)) ∧ (∀ τ (v : Fin N → ℕ) (a : alg O N lam), IsProj O N lam τ v a → ∀ z, Pz (a • z) = weightedHomogeneousComponent (blockW N τ) v (Pz z)) ∧ (∀ z τ, toBlock (O ⧸ Ideal.span {ϖ}) N τ (Pz z) ∈ dualWeyl (MvPolynomial (OVar N τ) (O ⧸ Ideal.span {ϖ})) N N (w τ)) ∧ Pz z₀ ≠ 0 := by
   first | exact @GlobalTheory.HighWtEmb.exists_coefPoly | exact GlobalTheory.HighWtEmb.exists_coefPoly | (intros; apply GlobalTheory.HighWtEmb.exists_coefPoly <;> assumption)

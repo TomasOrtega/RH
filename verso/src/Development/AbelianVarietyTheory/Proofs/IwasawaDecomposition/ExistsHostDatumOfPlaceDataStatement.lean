@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.HostPi
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsUniqueHcharOfFiniteOrder
 open Formalism.BasicNotions Formalism.MainNotions Formalism.L2 Formalism.L2.Host GlobalTheory.Published GlobalTheory.Mem.HD
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HostDatumExists.exists_hostDatum | exact GlobalTheory.HostDatumExists.exists_hostDatum | (intros; apply GlobalTheory.HostDatumExists.exists_hostDatum <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HostDatumExists.exists_hostDatum` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsHostDatumOfPlaceData.lean&line=47#L47)
 -/
 theorem _root_.GlobalTheory.T.exists_hostDatum_of_place_data : GlobalArtinReciprocity → ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : G.Inst D L) (Gl : G.LatInst D) (K : G.Consts) (Y : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl K Y cX) (T : LinkedFamilyData ex), HostPins D ex.nch → ∀ B : PlacesOverCommonPrime D.host, ∃ hd : HostDatumC T, hd.d3b = B := by
   first | exact @GlobalTheory.HostDatumExists.exists_hostDatum | exact GlobalTheory.HostDatumExists.exists_hostDatum | (intros; apply GlobalTheory.HostDatumExists.exists_hostDatum <;> assumption)

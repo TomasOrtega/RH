@@ -12,8 +12,10 @@ open GlobalTheory.CxForm (IsRegVar hermMat eval₂ bas relCot dRel IsRelAcyclic)
 open GlobalTheory GlobalTheory.TorsionForm
 open scoped ContDiff Real CategoryTheory.Obj ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BaseKaehler.exists_kaehler | exact GlobalTheory.BaseKaehler.exists_kaehler | (intros; apply GlobalTheory.BaseKaehler.exists_kaehler <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BaseKaehler.exists_kaehler` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsPositiveArithmeticKaehlerForm.lean&line=88#L88)
 -/
 theorem _root_.GlobalTheory.T.exists_positive_arithmetic_kaehler_form : ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k) (D : ℕ) (h : IsRegVar p D), ∃ κ : h.Fld, h.IsArForm 1 κ ∧ ∀ σ, (h.atlas σ).del (κ σ) = 0 ∧ (h.atlas σ).dbar (κ σ) = 0 ∧ ∀ x, (hermMat (κ σ x)).PosDef := by
   first | exact @GlobalTheory.BaseKaehler.exists_kaehler | exact GlobalTheory.BaseKaehler.exists_kaehler | (intros; apply GlobalTheory.BaseKaehler.exists_kaehler <;> assumption)

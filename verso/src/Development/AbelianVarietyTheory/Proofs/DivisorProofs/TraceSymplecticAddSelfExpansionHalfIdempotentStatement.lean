@@ -19,8 +19,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (Base Spc Model Ha
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.VacExpand.symp_add_self_expand | exact GlobalTheory.VacExpand.symp_add_self_expand | (intros; apply GlobalTheory.VacExpand.symp_add_self_expand <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.VacExpand.symp_add_self_expand` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTraceSymplecticAddSelfExpansionHalfIdempotent.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.traceSymplectic_add_self_expansion_half_idempotent : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) {n d : ℕ} (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n)

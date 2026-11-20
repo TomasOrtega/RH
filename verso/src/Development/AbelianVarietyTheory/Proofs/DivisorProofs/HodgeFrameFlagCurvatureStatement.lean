@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.HermitianCurvatu
 open Matrix Complex ComplexConjugate GlobalTheory.HermFrame GlobalTheory.IndefiniteRowSideFullHecke.HodgeFrameGram
 open scoped ComplexOrder ContDiff
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HodgeHoriz.hodge_horiz | exact GlobalTheory.HodgeHoriz.hodge_horiz | (intros; apply GlobalTheory.HodgeHoriz.hodge_horiz <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HodgeHoriz.hodge_horiz` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHodgeFrameFlagCurvature.lean&line=99#L99)
 -/
 theorem _root_.GlobalTheory.T.hodge_frame_flag_curvature : GlobalTheory.IndefiniteRowSideFullHecke.HermitianCurvatureForms.SubQuotCurvature →
   ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ E] [IsScalarTower ℝ ℂ E]

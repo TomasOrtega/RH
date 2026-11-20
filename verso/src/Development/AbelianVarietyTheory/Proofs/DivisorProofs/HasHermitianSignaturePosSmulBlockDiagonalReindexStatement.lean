@@ -21,8 +21,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 open scoped nonZeroDivisors
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SigBlockSum.hasSig_smul_blk | exact GlobalTheory.SigBlockSum.hasSig_smul_blk | (intros; apply GlobalTheory.SigBlockSum.hasSig_smul_blk <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SigBlockSum.hasSig_smul_blk` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHasHermitianSignaturePosSmulBlockDiagonalReindex.lean&line=56#L56)
 -/
 theorem _root_.GlobalTheory.T.hasHermitianSignature_pos_smul_blockDiagonalReindexed : ∀ {a b d : ℕ} (e : Fin a ⊕ Fin b ≃ Fin d) (GA : Matrix (Fin a) (Fin a) ℂ) (GB : Matrix (Fin b) (Fin b) ℂ) {pa qa pb qb : ℕ} {κ : ℝ},
     0 < κ → Formalism.UG.HasSignature GA pa qa → Formalism.UG.HasSignature GB pb qb →

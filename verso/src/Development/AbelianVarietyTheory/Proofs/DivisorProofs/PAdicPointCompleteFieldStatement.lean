@@ -15,8 +15,10 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 open GlobalTheory.FlatModel
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlatModel.pt_isEig_of_lieTie | exact GlobalTheory.FlatModel.pt_isEig_of_lieTie | (intros; apply GlobalTheory.FlatModel.pt_isEig_of_lieTie <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlatModel.pt_isEig_of_lieTie` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPAdicPointCompleteField.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.p_adic_point_complete_field : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H)
     (l l' : Level H) (Xo : Moduli Dw l) (Xo' : Moduli Dw l') (c : Coeff l) (c' : Coeff l') (W : ValuationSubring ℂ)

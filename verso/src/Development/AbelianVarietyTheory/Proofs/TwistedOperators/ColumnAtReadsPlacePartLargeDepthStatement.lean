@@ -13,8 +13,10 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.Ro
 open Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ColAtPart.colAt_smul_of_mul_idem | exact GlobalTheory.ColAtPart.colAt_smul_of_mul_idem | (intros; apply GlobalTheory.ColAtPart.colAt_smul_of_mul_idem <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ColAtPart.colAt_smul_of_mul_idem` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FColumnAtReadsPlacePartLargeDepth.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.columnAt_reads_placePart_largeDepth : Big fun {D} _ _ _ _ {T} _ _ _ _ _ _ ch => ∀ (t : T) (w : locPl ch.G t) (eL e' : AE D), IsIdemSum eL {w.1} → e' * eL = eL → ∀ u : ∀ j : Fin D.R.m, WO (ch.G.V (.top j)) (ch.G.V (.top (j + 1))), ch.S.colAt t w.1 (fun j => e' • u j) = ch.S.colAt t w.1 u := by
   first | exact @GlobalTheory.ColAtPart.colAt_smul_of_mul_idem | exact GlobalTheory.ColAtPart.colAt_smul_of_mul_idem | (intros; apply GlobalTheory.ColAtPart.colAt_smul_of_mul_idem <;> assumption)

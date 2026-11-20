@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbsoluteSi
 open NumberField MeasureTheory ReciprocityTheory.GeometryOfNumbersTheory ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.LieHt
 open scoped ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LieHt.SemiFib.full_herm_conj_rho | exact GlobalTheory.LieHt.SemiFib.full_herm_conj_rho | (intros; apply GlobalTheory.LieHt.SemiFib.full_herm_conj_rho <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LieHt.SemiFib.full_herm_conj_rho` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSemiFibrationLieLatticeFull.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.semi_fibration_lie_lattice_full : ∀ (K : Type) [Field K] [NumberField K] (F : SemiFib K), Full F.lieLat ∧ (∃ h, F.IsHerm h) ∧ (∀ h, F.IsHerm h → GlobalTheory.Published.ConjInv h) ∧ (0 < F.P₀.g → ∃ ρ, F.IsRho ρ ∧ ∀ σ, 0 < ρ σ) := by
   first | exact @GlobalTheory.LieHt.SemiFib.full_herm_conj_rho | exact GlobalTheory.LieHt.SemiFib.full_herm_conj_rho | (intros; apply GlobalTheory.LieHt.SemiFib.full_herm_conj_rho <;> assumption)

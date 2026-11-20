@@ -16,8 +16,10 @@ open Formalism.DivisionValues (vw lw)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FunIsom.pairK_funEquiv_symm_le | exact GlobalTheory.FunIsom.pairK_funEquiv_symm_le | (intros; apply GlobalTheory.FunIsom.pairK_funEquiv_symm_le <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FunIsom.pairK_funEquiv_symm_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHermitianFockNormAdjugateSubstSymmLe.lean&line=192#L192)
 -/
 theorem _root_.GlobalTheory.T.hermitianFockNorm_adjugateSubst_symm_le : ∀ {ι : Type} [Fintype ι] {n : ℕ} (σ : ι → DomWeight n) (w : VV ℂ fun τ => (σ τ).dual),
     (pairK σ (fun _ => (1 : Matrix (Fin n) (Fin n) ℂ)) ((GlobalTheory.FunObj.funEquiv σ).symm w) ((GlobalTheory.FunObj.funEquiv σ).symm w)).re ≤

@@ -13,8 +13,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.SS
 open GlobalTheory.SS.ArcInf
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.exists_algHom_localizationAway_of_rational_points | exact GlobalTheory.exists_algHom_localizationAway_of_rational_points | (intros; apply GlobalTheory.exists_algHom_localizationAway_of_rational_points <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.exists_algHom_localizationAway_of_rational_points` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDegenerationProofs%2FExistsAlgHomLocalizationAwayOfRationalPoints.lean&line=30#L30)
 -/
 theorem _root_.GlobalTheory.T.exists_algHom_localizationAway_of_rational_points' : ∀ (k : Type) [Field k] [Infinite k] (A : Type) [CommRing A] [Algebra k A] (r : ℕ) (f : Fin r → A) (Pd : Polynomial k) (P : Fin r → Polynomial k) (ψ : k → (A →ₐ[k] k)), Algebra.adjoin k (Set.range f) = ⊤ → Pd ≠ 0 → (∀ t, t ≠ 0 → Pd.eval t ≠ 0 → ∀ i, ψ t (f i) * Pd.eval t = (P i).eval t) → ∃ χ : A →ₐ[k] Localization.Away (Polynomial.X * Pd), ∀ i, χ (f i) * algebraMap (Polynomial k) _ Pd = algebraMap (Polynomial k) _ (P i) := by
   first | exact @GlobalTheory.exists_algHom_localizationAway_of_rational_points | exact GlobalTheory.exists_algHom_localizationAway_of_rational_points | (intros; apply GlobalTheory.exists_algHom_localizationAway_of_rational_points <;> assumption)

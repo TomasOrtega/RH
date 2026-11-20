@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.Irreducibl
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.SegmentRepresentation
 open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.JHMult Zc Zc.Seg
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.SegExists.exists_isLSeg | exact GlobalTheory.CompanionTheory.SegExists.exists_isLSeg | (intros; apply GlobalTheory.CompanionTheory.SegExists.exists_isLSeg <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.SegExists.exists_isLSeg` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FExistsSegmentRepresentation.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.exists_segment_representation : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (Δ : Segment k), ∃ π : IrrRep (GL (Fin Δ.deg) k), IsLSeg Δ π.ρ := by
   first | exact @GlobalTheory.CompanionTheory.SegExists.exists_isLSeg | exact GlobalTheory.CompanionTheory.SegExists.exists_isLSeg | (intros; apply GlobalTheory.CompanionTheory.SegExists.exists_isLSeg <;> assumption)

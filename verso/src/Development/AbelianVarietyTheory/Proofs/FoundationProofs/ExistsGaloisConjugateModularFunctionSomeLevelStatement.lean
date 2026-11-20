@@ -9,8 +9,10 @@ open GlobalTheory.QFam GlobalTheory.WpFam GlobalTheory.KZ GlobalTheory.FN
 open ReciprocityTheory.ChartRestriction.L1 (DD jT IsMF)
 open ModularForm (E₄ E₆)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FN.exists_conj_of_inR | exact GlobalTheory.FN.exists_conj_of_inR | (intros; apply GlobalTheory.FN.exists_conj_of_inR <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FN.exists_conj_of_inR` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FExistsGaloisConjugateModularFunctionSomeLevel.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.exists_galoisConjugate_modularFunction_someLevel : ∀ (Ω : Type) [Field Ω] (ε : Ω →+* ℂ) (s : Ω ≃+* Ω) (f : ℍ → ℂ), InR ε.range f → ∃ f' : ℍ → ℂ, InR ε.range f' ∧ ∀ h h' : HahnSeries ℚ Ω, IsExp ε f h → IsExp ε f' h' → ∀ r, h'.coeff r = s (h.coeff r) := by
   first | exact @GlobalTheory.FN.exists_conj_of_inR | exact GlobalTheory.FN.exists_conj_of_inR | (intros; apply GlobalTheory.FN.exists_conj_of_inR <;> assumption)

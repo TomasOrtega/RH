@@ -5,8 +5,10 @@ open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep 
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BCT.Regroup.kernSum_eq_finsum_classes | exact GlobalTheory.BCT.Regroup.kernSum_eq_finsum_classes | (intros; apply GlobalTheory.BCT.Regroup.kernSum_eq_finsum_classes <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BCT.Regroup.kernSum_eq_finsum_classes` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FKernelSumEqFinsumRegularRationalClasses.lean&line=205#L205)
 -/
 theorem _root_.GlobalTheory.T.kernelSum_eq_finsum_regular_rationalClasses : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ n : ℕ, 1 ≤ n → ∀ (S : Set (Pl E)), IsSection S → ∀ (lam : InfinitePlace E → DomWeight n) (K' : ∀ w : Pl E, Subgroup (UL n w)), IsLevelFam (fun w : Pl E => MonoidHom.id (UL n w)) (KL n) K' → ∀ f : ∀ w : Pl E, UL n w → ℂ, IsTest (KL n) K' f → (∃ w ∈ S, ∀ y, f w y ≠ 0 → y.1.val.charpoly.Separable) → kernSum S lam K' f = ∑ᶠ c : TwCl (MonoidHom.id (UE E n)), if c.rep.1.val.charpoly.Separable then chW lam c.rep.1.val.charpoly * clsSum S K' f c.rep else 0 := by
   first | exact @GlobalTheory.BCT.Regroup.kernSum_eq_finsum_classes | exact GlobalTheory.BCT.Regroup.kernSum_eq_finsum_classes | (intros; apply GlobalTheory.BCT.Regroup.kernSum_eq_finsum_classes <;> assumption)

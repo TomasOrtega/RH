@@ -12,8 +12,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (Base Spc Model Ch
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WeilUnitaryTransport.isUnitaryOn_transport | exact GlobalTheory.WeilUnitaryTransport.isUnitaryOn_transport | (intros; apply GlobalTheory.WeilUnitaryTransport.isUnitaryOn_transport <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WeilUnitaryTransport.isUnitaryOn_transport` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTransportedWeilDatumIsUnitaryAdelicSchwartz.lean&line=137#L137)
 -/
 theorem _root_.GlobalTheory.T.transportedWeilDatum_isUnitary_adelicSchwartz : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (S T : HSp D) (χS χT : (AE D)ˣ →* Circle), IsHeckeChar D χS → IsHeckeChar D χT →

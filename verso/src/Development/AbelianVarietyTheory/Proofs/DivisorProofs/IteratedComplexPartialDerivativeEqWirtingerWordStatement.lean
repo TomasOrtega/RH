@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DifferentiableRisin
 open NumberField IsDedekindDomain GlobalTheory.CMVal GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization GlobalTheory.WeightTwoSum
 open scoped ContDiff nonZeroDivisors
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HoloWirt.iterD_eq_wirtWord | exact GlobalTheory.HoloWirt.iterD_eq_wirtWord | (intros; apply GlobalTheory.HoloWirt.iterD_eq_wirtWord <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HoloWirt.iterD_eq_wirtWord` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIteratedComplexPartialDerivativeEqWirtingerWord.lean&line=66#L66)
 -/
 theorem _root_.GlobalTheory.T.iteratedComplexPartialDerivative_eq_wirtingerWord : ∀ (I : Type) [Fintype I] [DecidableEq I] (U : Set (I → ℂ)) (g : (I → ℂ) → ℂ), IsOpen U → DifferentiableOn ℂ g U → ∀ (l : List I), ∀ z ∈ U, iterD l g z = wirtWord (l.map fun i => (i, false)) g z := by
   first | exact @GlobalTheory.HoloWirt.iterD_eq_wirtWord | exact GlobalTheory.HoloWirt.iterD_eq_wirtWord | (intros; apply GlobalTheory.HoloWirt.iterD_eq_wirtWord <;> assumption)

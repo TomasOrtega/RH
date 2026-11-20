@@ -10,8 +10,10 @@ import Formalism.LocalToGlobal.ProjectiveLattices.UnFree
 open AlgebraicGeometry CategoryTheory Limits NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.card_comp_le_periodSpaces | exact GlobalTheory.card_comp_le_periodSpaces | (intros; apply GlobalTheory.card_comp_le_periodSpaces <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.card_comp_le_periodSpaces` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FCuspFormEvaluations%2FCardCompLePeriodSpaces.lean&line=217#L217)
 -/
 theorem _root_.GlobalTheory.T.exists_familyUnif_isTypeFn_card_comp_le : Out.Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Formalism.L2.PjFree.Unf Xo c σ r), 1 ≤ r → Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf U → ∃ (g : ℕ) (ty : Fin g → (E →+* ℂ)) (F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) ty), IsTypeFn H D.p D.q ty ∧ Fintype.card U.Comp ≤ F.n := by
   first | exact @GlobalTheory.card_comp_le_periodSpaces | exact GlobalTheory.card_comp_le_periodSpaces | (intros; apply GlobalTheory.card_comp_le_periodSpaces <;> assumption)

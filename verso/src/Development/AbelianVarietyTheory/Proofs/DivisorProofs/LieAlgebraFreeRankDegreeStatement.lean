@@ -16,8 +16,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds (IsClassZe
 open TensorProduct
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Lie.free_finrank_of_isLocalRing | exact GlobalTheory.Lie.free_finrank_of_isLocalRing | (intros; apply GlobalTheory.Lie.free_finrank_of_isLocalRing <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Lie.free_finrank_of_isLocalRing` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLieAlgebraFreeRankDegree.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.lie_algebra_free_rank_degree : ∀ {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} (R : Type) [CommRing R] [IsLocalRing R] (X : Obj F 𝔠 (Sp R)),
     Module.Free R X.Lie ∧ Module.Finite R X.Lie ∧ Module.finrank R X.Lie = Module.finrank ℚ F := by

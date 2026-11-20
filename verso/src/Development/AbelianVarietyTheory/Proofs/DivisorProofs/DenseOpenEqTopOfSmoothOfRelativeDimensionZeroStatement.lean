@@ -17,8 +17,10 @@ open GlobalTheory.FlagMod (FlagCover)
 open GlobalTheory.FlagTan (dimFlag)
 open GlobalTheory.HSApp
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.dense_open_eq_top_of_smoothOfRelativeDimension_zero | exact GlobalTheory.dense_open_eq_top_of_smoothOfRelativeDimension_zero | (intros; apply GlobalTheory.dense_open_eq_top_of_smoothOfRelativeDimension_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.dense_open_eq_top_of_smoothOfRelativeDimension_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDenseOpenEqTopOfSmoothOfRelativeDimensionZero.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.dense_open_eq_univ_of_smooth_relDim_zero : ∀ (k : Type) [Field k] (Y : Scheme.{0}) (p : Y ⟶ Sp k), SmoothOfRelativeDimension 0 p → ∀ (U : Y.Opens), Dense (U : Set Y) → U = ⊤ := by
   first | exact @GlobalTheory.dense_open_eq_top_of_smoothOfRelativeDimension_zero | exact GlobalTheory.dense_open_eq_top_of_smoothOfRelativeDimension_zero | (intros; apply GlobalTheory.dense_open_eq_top_of_smoothOfRelativeDimension_zero <;> assumption)

@@ -6,8 +6,10 @@ open CategoryTheory AlgebraicGeometry
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.FlagZ GlobalTheory.ArInt Formalism.DegreeFormula GlobalTheory.Cartier
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagZ.curveDeg_restr_flDet_nonneg | exact GlobalTheory.FlagZ.curveDeg_restr_flDet_nonneg | (intros; apply GlobalTheory.FlagZ.curveDeg_restr_flDet_nonneg <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagZ.curveDeg_restr_flDet_nonneg` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFlagDeterminantNonnegCurveDegree.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.flag_determinant_nonneg_curve_degree : ∀ (ι : Type) [Fintype ι] (N : ℕ) (τ : ι) (l : Fin (N + 1)) (Z : Scheme.{0}) (i : Z ⟶ Fl ι N) [IsClosedImmersion i] [IsIntegral Z] [IsLocallyNoetherian Z], CharZero Γ(Z, ⊤) → topologicalKrullDim Z = 1 → ∃ (r : ((flDet τ l : GlobalTheory.HermLB (flStr ι N)).restr i).B.ι → Z.functionFieldˣ) (hr : IsRatSec ((flDet τ l : GlobalTheory.HermLB (flStr ι N)).restr i).B r), 0 ≤ ((flDet τ l : GlobalTheory.HermLB (flStr ι N)).restr i).curveDeg hr := by
   first | exact @GlobalTheory.FlagZ.curveDeg_restr_flDet_nonneg | exact GlobalTheory.FlagZ.curveDeg_restr_flDet_nonneg | (intros; apply GlobalTheory.FlagZ.curveDeg_restr_flDet_nonneg <;> assumption)

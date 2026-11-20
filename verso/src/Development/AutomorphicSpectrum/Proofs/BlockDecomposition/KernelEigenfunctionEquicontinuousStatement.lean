@@ -8,8 +8,10 @@ open NumberField IsDedekindDomain Matrix MeasureTheory Filter Topology Polynomia
 open GlobalTheory.CuspRep GlobalTheory.UnitaryBC PositivityTheory.Rg.Rs GlobalTheory.CompanionTheory.Conc
 open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Automorphic.AutomorphicForm
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Conc.translate_sq_mean_close | exact GlobalTheory.CompanionTheory.Conc.translate_sq_mean_close | (intros; apply GlobalTheory.CompanionTheory.Conc.translate_sq_mean_close <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Conc.translate_sq_mean_close` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FKernelEigenfunctionEquicontinuous.lean&line=170#L170)
 -/
 theorem _root_.GlobalTheory.T.kernel_eigenfunction_equicontinuous : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (N : ℕ) [MeasurableSpace (GA E N)] [BorelSpace (GA E N)] (μ : Measure (GA E N)) [μ.IsHaarMeasure] (α : GA E N → ℂ) (δ : ℝ) (F : Set (GA E N)), Continuous α → HasCompactSupport α → 0 < δ →
   IsFundamentalDomain (latticeGL E N) F μ → ∀ η : ℝ≥0∞, 0 < η → ∃ U ∈ 𝓝 (1 : GA E N), ∀ ψ : GA E N → ℂ, Continuous ψ →

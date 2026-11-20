@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.TwistStep
 open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations GlobalTheory.Pst GlobalTheory.PMon TensorProduct
 open scoped Formalism.Per
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PMon.no_fil_zero_neg_slope | exact GlobalTheory.PMon.no_fil_zero_neg_slope | (intros; apply GlobalTheory.PMon.no_fil_zero_neg_slope <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PMon.no_fil_zero_neg_slope` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FEqZeroOfFrobeniusPeriodicMemDeRhamFilZero.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.eq_zero_of_frobenius_periodic_mem_deRhamFil_zero : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI) (h d : ℕ), 0 < h → 0 < d → ∀ c : P.R.B, (l : P.R.B) ^ d * P.φB^[h] c = c → (∀ j < h, ev P j c ∈ Fil P 0) → c = 0 := by
   first | exact @GlobalTheory.PMon.no_fil_zero_neg_slope | exact GlobalTheory.PMon.no_fil_zero_neg_slope | (intros; apply GlobalTheory.PMon.no_fil_zero_neg_slope <;> assumption)

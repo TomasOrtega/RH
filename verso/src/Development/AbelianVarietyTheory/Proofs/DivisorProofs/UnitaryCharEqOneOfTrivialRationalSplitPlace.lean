@@ -7,8 +7,10 @@ open scoped TensorProduct Matrix
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
-/- English proof (translation)
-Apply the tactic sequence `first | exact @PositivityTheory.ThKW.character_trivial_of_rational_split | exact PositivityTheory.ThKW.character_trivial_of_rational_split | (intros; apply PositivityTheory.ThKW.character_trivial_of_rational_split <;> assumption)`.
+/- English proof (citation)
+Apply `PositivityTheory.ThKW.character_trivial_of_rational_split` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FWeilBound%2FThetaLifts%2FReductions%2FWeilPairs%2FUnitaryCharEqOneOfTrivialRationalSplitPlace.lean&line=225#L225)
 -/
 theorem _root_.GlobalTheory.T.unitaryChar_eq_one_of_trivial_rational_splitPlace : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →

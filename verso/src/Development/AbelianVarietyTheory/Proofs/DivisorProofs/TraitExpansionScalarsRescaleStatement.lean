@@ -11,8 +11,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.Trait.exp_rescale | exact GlobalTheory.Mum.Trait.exp_rescale | (intros; apply GlobalTheory.Mum.Trait.exp_rescale <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.Trait.exp_rescale` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTraitExpansionScalarsRescale.lean&line=75#L75)
 -/
 theorem _root_.GlobalTheory.T.trait_expansionScalars_rescale : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (C : LabCover D) (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W] (T : Trait C W) (k : ℕ) (s : SecK C.P.L.L C.α k) (F : IntFam (maximalIdeal R) D.toPre k) (a b : W) (u : Wˣ) (c₁ c₂ : R), a ≠ 0 → c₂ ≠ 0 → T.φ c₂ * (u : W) * a = T.φ c₁ * b → T.Exp a b s F → T.Exp 1 u (scal C.A.A.hom (algebraMap R (FractionRing R) c₁ / algebraMap R (FractionRing R) c₂) • s) F := by
   first | exact @GlobalTheory.Mum.Trait.exp_rescale | exact GlobalTheory.Mum.Trait.exp_rescale | (intros; apply GlobalTheory.Mum.Trait.exp_rescale <;> assumption)

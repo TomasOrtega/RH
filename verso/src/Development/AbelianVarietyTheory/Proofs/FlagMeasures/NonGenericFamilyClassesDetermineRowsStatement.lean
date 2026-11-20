@@ -6,8 +6,10 @@ open Formalism.L2.SG.HidaSetting Formalism.L2.SG.Full Formalism.L2.SG.RowsConc F
 open scoped Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.NGClass.ngClass_rows | exact GlobalTheory.NGClass.ngClass_rows | (intros; apply GlobalTheory.NGClass.ngClass_rows <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.NGClass.ngClass_rows` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FNonGenericFamilyClassesDetermineRows.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.nonGeneric_family_classes_determine_rows : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), ConcTie X Y → (∀ t ∈ (Y.tO u u').ngSet, t.G ≠ 0) ∧ (∀ t ∈ (Y.tO u u').ngSet, ∀ t' ∈ (Y.tO u u').ngSet, clsOf Y u u' t = clsOf Y u u' t' → (Y.tO u u').rowOf t = (Y.tO u u').rowOf t') ∧ ∀ t : TauC Y u u', (Y.tO u u').vec t ≠ 0 → t.relevant := by
   first | exact @GlobalTheory.NGClass.ngClass_rows | exact GlobalTheory.NGClass.ngClass_rows | (intros; apply GlobalTheory.NGClass.ngClass_rows <;> assumption)

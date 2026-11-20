@@ -6,8 +6,10 @@ import ReciprocityTheory.AnalyticForms.PotentialTheory.ContDiffAtOfIsPotential
 open MeasureTheory ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M GlobalTheory.IndefiniteRowSideFullHecke.BoundaryPolynomialFunctions GlobalTheory.LogResInt
 open scoped ENNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PFunBoundary.closure_superlevel_subset_compl | exact GlobalTheory.PFunBoundary.closure_superlevel_subset_compl | (intros; apply GlobalTheory.PFunBoundary.closure_superlevel_subset_compl <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PFunBoundary.closure_superlevel_subset_compl` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FBoundarySublevelClosureComplement.lean&line=43#L43)
 -/
 theorem _root_.GlobalTheory.T.boundary_sublevel_closure_complement : ∀ (d : ℕ) (X : Type) [TopologicalSpace X] (A : FinHolAtlas d X) (m : ℕ) (α : LocPot X)
     (Λ : Fin m → LocPot X) (σ : Fin m → X → X → ℂ) (c : ℝ),

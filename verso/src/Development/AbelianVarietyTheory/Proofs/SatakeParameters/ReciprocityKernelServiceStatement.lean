@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Ex
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ThetaChr
 open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.Bl GlobalTheory.Fc GlobalTheory.Svd
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Svd.servH_row_linkR | exact GlobalTheory.Svd.servH_row_linkR | (intros; apply GlobalTheory.Svd.servH_row_linkR <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Svd.servH_row_linkR` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FReciprocityKernelService.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.reciprocity_kernel_service : GlobalTheory.Published.GlobalArtinReciprocity → ∀ {hL : GlobalTheory.Published.LocalLanglandsGL} (p : Prm hL), Row (Bd := BdRec) (IsGoodE p.s) (LinkR p) (ServH (Bd := BdRec) fun _ _ _ R => R.T.ker) := by
   first | exact @GlobalTheory.Svd.servH_row_linkR | exact GlobalTheory.Svd.servH_row_linkR | (intros; apply GlobalTheory.Svd.servH_row_linkR <;> assumption)

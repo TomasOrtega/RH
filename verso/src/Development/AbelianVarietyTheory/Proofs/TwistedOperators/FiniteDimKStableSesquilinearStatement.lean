@@ -19,8 +19,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 open scoped TensorProduct
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KTypeAdm.finiteDimensional_typeSpan | exact GlobalTheory.KTypeAdm.finiteDimensional_typeSpan | (intros; apply GlobalTheory.KTypeAdm.finiteDimensional_typeSpan <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KTypeAdm.finiteDimensional_typeSpan` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FFiniteDimKStableSesquilinear.lean&line=37#L37)
 -/
 theorem _root_.GlobalTheory.T.finite_dim_K_stable_sesquilinear : GlobalTheory.FunPr.Hypotheses₂ → ∀ {D : D7} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D)
     (S : D.what₂.Tau → SPar) (M : Formalism.IndefR.Mult.DSModel V S), IsInfFam (D := D) θ →

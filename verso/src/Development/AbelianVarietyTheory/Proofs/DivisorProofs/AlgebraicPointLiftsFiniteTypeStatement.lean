@@ -9,8 +9,10 @@ open scoped CategoryTheory.Obj ComplexOrder
 open GlobalTheory GlobalTheory.CubeFib GlobalTheory.LieMet GlobalTheory.LieHt GlobalTheory.LocM.Frm GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.ShFam.Hor GlobalTheory.ShFam.Hor.LogCh GlobalTheory.Toroidal GlobalTheory.HeightParts GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.BdFib
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CovLift.exists_lift_of_locallyOfFiniteType | exact GlobalTheory.CovLift.exists_lift_of_locallyOfFiniteType | (intros; apply GlobalTheory.CovLift.exists_lift_of_locallyOfFiniteType <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CovLift.exists_lift_of_locallyOfFiniteType` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAlgebraicPointLiftsFiniteType.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.algebraic_point_lifts_finite_type : ∀ (V Y : Scheme.{0}) (π : V ⟶ Y), LocallyOfFiniteType π → ∀ (K : Type) [Field K] [IsAlgClosed K] (y : Sp K ⟶ Y) (u : V), π u = y (IsLocalRing.closedPoint K) → ∃ w : Sp K ⟶ V, w ≫ π = y := by
   first | exact @GlobalTheory.CovLift.exists_lift_of_locallyOfFiniteType | exact GlobalTheory.CovLift.exists_lift_of_locallyOfFiniteType | (intros; apply GlobalTheory.CovLift.exists_lift_of_locallyOfFiniteType <;> assumption)

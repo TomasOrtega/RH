@@ -8,8 +8,10 @@ open GlobalTheory GlobalTheory.VB GlobalTheory.Vert GlobalTheory.TriFrame Global
 open GlobalTheory.Twist (resM)
 open Formalism.MainNotions.DIV.Cons (intO SCF)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TriFrame.exists_local_scf_embedding | exact GlobalTheory.TriFrame.exists_local_scf_embedding | (intros; apply GlobalTheory.TriFrame.exists_local_scf_embedding <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TriFrame.exists_local_scf_embedding` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsSphericallyCompleteEmbedding.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.exists_spherically_complete_embedding : ∀ (p : ℕ), p.Prime → ∀ (R K : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [Field K] [Algebra R K] [IsFractionRing R K] [CharZero K], (p : R) ∈ maximalIdeal R → Cardinal.mk R ≤ Cardinal.continuum → ∃ (C : SCF p) (θ : K →+* ↥C.S), (∀ a, ‖θ (algebraMap R K a)‖ ≤ 1) ∧ ∀ a ∈ maximalIdeal R, ‖θ (algebraMap R K a)‖ < 1 := by
   first | exact @GlobalTheory.TriFrame.exists_local_scf_embedding | exact GlobalTheory.TriFrame.exists_local_scf_embedding | (intros; apply GlobalTheory.TriFrame.exists_local_scf_embedding <;> assumption)

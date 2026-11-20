@@ -6,8 +6,10 @@ open scoped Topology
 open GlobalTheory.CompanionTheory.MirPair
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.MirPair.ShearLat.main | exact GlobalTheory.CompanionTheory.MirPair.ShearLat.main | (intros; apply GlobalTheory.CompanionTheory.MirPair.ShearLat.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.MirPair.ShearLat.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FShearPreservesBoxMembership.lean&line=67#L67)
 -/
 theorem _root_.GlobalTheory.T.shear_preserves_box_membership : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ} (g : GL (Fin (n + 1)) k), ∃ r : kˣ, valuation k (r : k) < 1 ∧ ∀ b ∈ box (n + 1) r, ∀ (t : kˣ) (x : Fin (n + 1) → k), ((g : Matrix (Fin (n + 1)) (Fin (n + 1)) k) *ᵥ (((shearGL n b : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) *ᵥ x) ∈ box (n + 1) t ↔ (g : Matrix (Fin (n + 1)) (Fin (n + 1)) k) *ᵥ x ∈ box (n + 1) t) := by
   first | exact @GlobalTheory.CompanionTheory.MirPair.ShearLat.main | exact GlobalTheory.CompanionTheory.MirPair.ShearLat.main | (intros; apply GlobalTheory.CompanionTheory.MirPair.ShearLat.main <;> assumption)

@@ -18,8 +18,10 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 open GlobalTheory.FlatModel
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GenChartAlg.exists_algebra_of_genPt | exact GlobalTheory.GenChartAlg.exists_algebra_of_genPt | (intros; apply GlobalTheory.GenChartAlg.exists_algebra_of_genPt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GenChartAlg.exists_algebra_of_genPt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIntegralModelPointOverInclusion.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.integral_model_point_over_inclusion : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H)
     (l l' : Level H) (Xo : Moduli Dw l) (Xo' : Moduli Dw l') (c : Coeff l) (c' : Coeff l') (W : ValuationSubring ℂ)

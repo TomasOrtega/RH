@@ -18,8 +18,10 @@ open ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.TestFibre
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TestFibre.exists_secsOver | exact GlobalTheory.TestFibre.exists_secsOver | (intros; apply GlobalTheory.TestFibre.exists_secsOver <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TestFibre.exists_secsOver` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDegenerationProofs%2FExistsThetaSystemTestSectionsOnGeometricFibre.lean&line=29#L29)
 -/
 theorem _root_.GlobalTheory.T.exists_thetaSystem_test_sections_on_geometric_fibre : Laws → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀) (x : S.Gam → (TFK (R := u.V) (PadicAlgCl p) ⟶ u.A.A)), PtsOver u x → ∃ rig e th s, SecsOver u x rig e th s := by
   first | exact @GlobalTheory.TestFibre.exists_secsOver | exact GlobalTheory.TestFibre.exists_secsOver | (intros; apply GlobalTheory.TestFibre.exists_secsOver <;> assumption)

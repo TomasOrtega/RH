@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MeasurableMeromorph
 import Mathlib
 open MeasureTheory Filter Topology
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.measurable_eventually_of_meromorphic_family | exact GlobalTheory.measurable_eventually_of_meromorphic_family | (intros; apply GlobalTheory.measurable_eventually_of_meromorphic_family <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.measurable_eventually_of_meromorphic_family` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FMeasurableMeromorphicContinuation.lean&line=76#L76)
 -/
 theorem _root_.GlobalTheory.T.measurable_meromorphic_continuation : ∀ {X : Type} [MeasurableSpace X] (Eis : ℂ → X → ℂ) (c : ℝ),
     (∀ s₀ : ℂ, ∃ (k : ℕ) (U : Set ℂ) (Hol : ℂ → X → ℂ), U ∈ 𝓝 s₀ ∧

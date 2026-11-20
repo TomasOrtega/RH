@@ -9,8 +9,10 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ArchLocalAct.exists_op_of_KInf | exact GlobalTheory.ArchLocalAct.exists_op_of_KInf | (intros; apply GlobalTheory.ArchLocalAct.exists_op_of_KInf <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ArchLocalAct.exists_op_of_KInf` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsArchOperatorCompactUnitaryW.lean&line=173#L173)
 -/
 theorem _root_.GlobalTheory.T.exists_archOperator_compact_unitaryW : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d : ℕ) (Y : Spc F E n) (W : Spc F E d) (M : Model σ Y W) (om : Rep σ Y W) (χ₁ χ₂ : Chr F E),

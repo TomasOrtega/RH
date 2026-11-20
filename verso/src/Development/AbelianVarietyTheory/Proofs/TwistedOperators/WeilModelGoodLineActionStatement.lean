@@ -23,8 +23,10 @@ open GlobalTheory.AdelicU
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Twist.smoothLine_pure | exact GlobalTheory.Twist.smoothLine_pure | (intros; apply GlobalTheory.Twist.smoothLine_pure <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Twist.smoothLine_pure` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FWeilModelGoodLineAction.lean&line=25#L25)
 -/
 theorem _root_.GlobalTheory.T.weil_model_good_line_action : GlobalTheory.FunPr.Hypotheses₂ → ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
     {Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {Wd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d} (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ Y Wd) (ψ : AddChar (AF F) ℂ)

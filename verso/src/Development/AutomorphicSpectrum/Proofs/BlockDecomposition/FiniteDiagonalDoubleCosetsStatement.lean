@@ -5,8 +5,10 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 open GlobalTheory.BCT PositivityTheory.Rg.BcB.G8.Fin
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.OrbitCount.orbit_count | exact GlobalTheory.CompanionTheory.OrbitCount.orbit_count | (intros; apply GlobalTheory.CompanionTheory.OrbitCount.orbit_count <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.OrbitCount.orbit_count` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FFiniteDiagonalDoubleCosets.lean&line=395#L395)
 -/
 theorem _root_.GlobalTheory.T.finite_diagonal_double_cosets : ∀ (H : Type) [Group H] (Z L C : Subgroup H) (F : H × H → ℂ),
   (∀ x : H, Z ⊓ L.map (MulAut.conj x).toMonoidHom ≤ C ∧ (Z ⊓ L.map (MulAut.conj x).toMonoidHom).relIndex C ≠ 0) →

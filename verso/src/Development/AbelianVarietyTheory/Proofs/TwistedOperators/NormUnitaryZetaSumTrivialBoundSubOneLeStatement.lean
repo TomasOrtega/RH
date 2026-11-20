@@ -13,8 +13,10 @@ open GlobalTheory.LGrp (IsUnitarisable IsIrrSmooth bcParam)
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FinZeta.UnitaryBound.norm_zetaSum_sub_one_le | exact GlobalTheory.FinZeta.UnitaryBound.norm_zetaSum_sub_one_le | (intros; apply GlobalTheory.FinZeta.UnitaryBound.norm_zetaSum_sub_one_le <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FinZeta.UnitaryBound.norm_zetaSum_sub_one_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FNormUnitaryZetaSumTrivialBoundSubOneLe.lean&line=65#L65)
 -/
 theorem _root_.GlobalTheory.T.norm_unitaryZetaSum_trivialBound_sub_one_le : ∀ (q r t : ℕ), 2 ≤ q → r + 5 ≤ t → ∀ α : Fin (r / 2) → ℂˣ, GlobalTheory.IndefiniteRowSideFullHecke.TrivialParameterBound.TrivialBound q r α → ‖eulerFac (bcParam r α) (((q : ℂ) ^ (t + 1))⁻¹) * ∏ j ∈ Finset.range r, (1 - (-(q : ℂ)) ^ j * ((q : ℂ) ^ (r + t))⁻¹) - 1‖ ≤ 27 ^ r * ((q : ℝ) ^ 2)⁻¹ := by
   first | exact @GlobalTheory.FinZeta.UnitaryBound.norm_zetaSum_sub_one_le | exact GlobalTheory.FinZeta.UnitaryBound.norm_zetaSum_sub_one_le | (intros; apply GlobalTheory.FinZeta.UnitaryBound.norm_zetaSum_sub_one_le <;> assumption)

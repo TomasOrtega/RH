@@ -22,8 +22,10 @@ open GlobalTheory.HSApp
 set_option synthInstance.maxHeartbeats 400000
 open GlobalTheory.LamT (CMPt)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CoeffInt.coeff_valuation_le_one_almost_all | exact GlobalTheory.CoeffInt.coeff_valuation_le_one_almost_all | (intros; apply GlobalTheory.CoeffInt.coeff_valuation_le_one_almost_all <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CoeffInt.coeff_valuation_le_one_almost_all` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFramePolynomialCoeffIntegralAlmostAllPrimes.lean&line=36#L36)
 -/
 theorem _root_.GlobalTheory.T.framePolynomial_coeff_integral_almost_all_primes : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H)
     (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)] (z : CMPt Xo c) (f : ℕ) (La : ℝ), z.Good f La →

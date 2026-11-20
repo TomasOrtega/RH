@@ -11,8 +11,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Core.Rk.IP
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Core.Rk.IwArch.hasIwasawa_dblSp_arch | exact GlobalTheory.Core.Rk.IwArch.hasIwasawa_dblSp_arch | (intros; apply GlobalTheory.Core.Rk.IwArch.hasIwasawa_dblSp_arch <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Core.Rk.IwArch.hasIwasawa_dblSp_arch` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FIwasawaDoubledHermitianSpaceRealPlace.lean&line=290#L290)
 -/
 theorem _root_.GlobalTheory.T.iwasawa_doubled_hermitian_space_real_place : ∀ (D : D7) (A : HSp D) (a : GL (Fin A.rank) (AE D)), IsMaj A a → ∀ w : InfinitePlace D.host.F, HasIwasawa D.sp.cm.sig (dblSp A).gram (KArch D.sp.cm.sig (dblSp A).gram w (Formalism.UG.bc (compInf D.host.F D.host.E w) a)) := by
   first | exact @GlobalTheory.Core.Rk.IwArch.hasIwasawa_dblSp_arch | exact GlobalTheory.Core.Rk.IwArch.hasIwasawa_dblSp_arch | (intros; apply GlobalTheory.Core.Rk.IwArch.hasIwasawa_dblSp_arch <;> assumption)

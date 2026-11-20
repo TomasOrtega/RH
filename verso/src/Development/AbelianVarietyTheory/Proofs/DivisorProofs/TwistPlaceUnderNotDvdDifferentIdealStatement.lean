@@ -7,8 +7,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions Form
 open GlobalTheory.ChiGrid GlobalTheory.SqTop
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TwistPlDiff.under_not_dvd_differentIdeal | exact GlobalTheory.TwistPlDiff.under_not_dvd_differentIdeal | (intros; apply GlobalTheory.TwistPlDiff.under_not_dvd_differentIdeal <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TwistPlDiff.under_not_dvd_differentIdeal` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTwistPlaceUnderNotDvdDifferentIdeal.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.twist_place_under_not_dvd_differentIdeal : ∀ {D : D7} {T : Type} (Lc : LevCh D T) (μ₀ : T), Lc.Is μ₀ → ∀ (t : T), ∀ PP ∈ Lc.Q t, ¬ (PP.under (𝓞 D.host.F)).asIdeal ∣ differentIdeal ℤ (𝓞 D.host.F) := by
   first | exact @GlobalTheory.TwistPlDiff.under_not_dvd_differentIdeal | exact GlobalTheory.TwistPlDiff.under_not_dvd_differentIdeal | (intros; apply GlobalTheory.TwistPlDiff.under_not_dvd_differentIdeal <;> assumption)

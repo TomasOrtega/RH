@@ -6,8 +6,10 @@ open scoped TensorProduct Matrix
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RatDarboux.exists_rat_symplectic | exact GlobalTheory.RatDarboux.exists_rat_symplectic | (intros; apply GlobalTheory.RatDarboux.exists_rat_symplectic <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RatDarboux.exists_rat_symplectic` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDarbouxRationalBasisCompatible.lean&line=185#L185)
 -/
 theorem _root_.GlobalTheory.T.darboux_rational_basis_compatible : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (α β κ : Type) [Fintype α] [Fintype β]
   [Fintype κ] [DecidableEq κ] (Bf : Matrix α β (AE F E) → Matrix α β (AE F E) → AF F) (d₀ d₂ : Darboux Bf κ),

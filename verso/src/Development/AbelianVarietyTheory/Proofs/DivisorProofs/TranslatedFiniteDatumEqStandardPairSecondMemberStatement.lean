@@ -23,8 +23,10 @@ open GlobalTheory.BotMove
 open GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle GlobalTheory.Grid Formalism.L2.DIV Formalism.L2.Indef Formalism.IndefR.Mult MeasureTheory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BotMoveSnd.snd_moved | exact GlobalTheory.BotMoveSnd.snd_moved | (intros; apply GlobalTheory.BotMoveSnd.snd_moved <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BotMoveSnd.snd_moved` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTranslatedFiniteDatumEqStandardPairSecondMember.lean&line=105#L105)
 -/
 theorem _root_.GlobalTheory.T.translated_finite_datum_eq_standardPairSecondMember : ∀ {D : D7} {T : Type} {A A' WW : HSp D} (Y : Tri T A A' WW) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D)
     (α β : T → ((AE D)ˣ →* Circle)) (νH : T → HChar D.host.E) (S : T → Finset (Formalism.L2.DIV.Pl D.host.E)),

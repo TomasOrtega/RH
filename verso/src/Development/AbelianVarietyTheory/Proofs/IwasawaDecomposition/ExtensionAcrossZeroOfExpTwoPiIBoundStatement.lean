@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExtensionAcr
 import Mathlib
 open Metric Filter Topology Set
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.holomorphic_extension_of_exp_two_pi_I_bound | exact GlobalTheory.holomorphic_extension_of_exp_two_pi_I_bound | (intros; apply GlobalTheory.holomorphic_extension_of_exp_two_pi_I_bound <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.holomorphic_extension_of_exp_two_pi_I_bound` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExtensionAcrossZeroOfExpTwoPiIBound.lean&line=105#L105)
 -/
 theorem _root_.GlobalTheory.T.extension_across_zero_of_exp_two_pi_I_bound : ∀ (H : ℂ → ℂ) (r C : ℝ) (N : ℕ), 0 < r → DifferentiableOn ℂ H (Metric.ball (0 : ℂ) r \ {0}) → (∀ t ∈ Metric.ball (0 : ℂ) r, t ≠ 0 → ‖Complex.exp (2 * Real.pi * Complex.I * H t)‖ * ‖t‖ ^ N ≤ C) → ∃ G : ℂ → ℂ, DifferentiableOn ℂ G (Metric.ball (0 : ℂ) r) ∧ ∀ t ∈ Metric.ball (0 : ℂ) r, t ≠ 0 → G t = H t := by
   first | exact @GlobalTheory.holomorphic_extension_of_exp_two_pi_I_bound | exact GlobalTheory.holomorphic_extension_of_exp_two_pi_I_bound | (intros; apply GlobalTheory.holomorphic_extension_of_exp_two_pi_I_bound <;> assumption)

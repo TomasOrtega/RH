@@ -10,8 +10,10 @@ open Classical
 open ReciprocityTheory.ChartRestriction.G.Out
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GenSpread.exists_smoothOfRelativeDimension | exact GlobalTheory.GenSpread.exists_smoothOfRelativeDimension | (intros; apply GlobalTheory.GenSpread.exists_smoothOfRelativeDimension <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GenSpread.exists_smoothOfRelativeDimension` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDegenerationProofs%2FExistsSmoothOfRelativeDimensionSpreadFromGeneric.lean&line=72#L72)
 -/
 theorem _root_.GlobalTheory.T.exists_smoothOfRelativeDimension_spread_from_genericFibre : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [Field K] [Algebra R K] [IsFractionRing R K] (n : ℕ) (X X₀ : Scheme.{0}) (f : X ⟶ Sp R) (f₀ : X₀ ⟶ Sp K) (φ : X₀ ⟶ X), IsPullback φ f₀ f (spMap (algebraMap R K)) → IsProper f → SmoothOfRelativeDimension n f₀ → ∃ a : R, a ≠ 0 ∧ ∀ (R' : Type) [CommRing R'] (g : R →+* R'), IsUnit (g a) → ∀ (X' : Scheme.{0}) (π : X' ⟶ X) (f' : X' ⟶ Sp R'), IsPullback π f' f (spMap g) → SmoothOfRelativeDimension n f' := by
   first | exact @GlobalTheory.GenSpread.exists_smoothOfRelativeDimension | exact GlobalTheory.GenSpread.exists_smoothOfRelativeDimension | (intros; apply GlobalTheory.GenSpread.exists_smoothOfRelativeDimension <;> assumption)

@@ -9,8 +9,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GroundTheory.Heights₂.Heights TensorProduct
 open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Sl
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Sl.TorsRat.torsion_rational | exact GlobalTheory.CompanionTheory.Ar.Sl.TorsRat.torsion_rational | (intros; apply GlobalTheory.CompanionTheory.Ar.Sl.TorsRat.torsion_rational <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Sl.TorsRat.torsion_rational` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FExistsFullTorsionNumberField.lean&line=334#L334)
 -/
 theorem _root_.GlobalTheory.T.exists_full_torsion_number_field : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (L : Type) [Field L] [NumberField L] (D : PPData H L) (m : ℕ), 1 ≤ m → ∃ (K : Type) (_ : Field K) (_ : NumberField K) (_ : Algebra L K) (x : Fin (m ^ (2 * D.g)) → (Over.mk (spMap ((algebraMap L K).comp (algebraMap (𝓞 L) L))) ⟶ D.t.G)), (∀ i, x i ^ m = 1) ∧ ∀ (F : Type) [Field F] (f : K →+* F) (b : Sp F ⟶ Sp (𝓞 L)) (y : Over.mk b ⟶ D.t.G), b = spMap f ≫ spMap ((algebraMap L K).comp (algebraMap (𝓞 L) L)) → y ^ m = 1 → ∃! i, y.left = spMap f ≫ (x i).left := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Sl.TorsRat.torsion_rational | exact GlobalTheory.CompanionTheory.Ar.Sl.TorsRat.torsion_rational | (intros; apply GlobalTheory.CompanionTheory.Ar.Sl.TorsRat.torsion_rational <;> assumption)

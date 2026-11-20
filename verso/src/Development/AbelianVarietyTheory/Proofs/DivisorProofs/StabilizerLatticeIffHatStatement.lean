@@ -6,8 +6,10 @@ open Formalism.BasicNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVo
 open scoped TensorProduct ENNReal
 open GlobalTheory.TamSU GlobalTheory.SUVol GlobalTheory.UCls GlobalTheory.AdLat GlobalTheory.Published GlobalTheory.TamUnf
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KMStab.isKM_one_iff_stabHat_of_isSA | exact GlobalTheory.KMStab.isKM_one_iff_stabHat_of_isSA | (intros; apply GlobalTheory.KMStab.isKM_one_iff_stabHat_of_isSA <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KMStab.isKM_one_iff_stabHat_of_isSA` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FStabilizerLatticeIffHat.lean&line=50#L50)
 -/
 theorem _root_.GlobalTheory.T.stabilizer_lattice_iff_hat : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (G : Matrix (Fin r) (Fin r) E)
     (L : Set (Fin r → E)) (k : Matrix (Fin r) (Fin r) (RA (maximalRealSubfield E) E)), IsSA G k →

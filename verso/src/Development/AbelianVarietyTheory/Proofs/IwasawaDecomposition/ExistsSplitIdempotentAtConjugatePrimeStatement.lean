@@ -9,8 +9,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open Formalism.IndefR.RecTie Formalism.IndefR.Lev Formalism.L2.Rows GlobalTheory.Mem GlobalTheory.Mem.R3 GlobalTheory.Mem.Col2
 open GlobalTheory.Mem.R3.LiftBrg
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SplitEtaIdem.exists_isIdemAt_conjP | exact GlobalTheory.SplitEtaIdem.exists_isIdemAt_conjP | (intros; apply GlobalTheory.SplitEtaIdem.exists_isIdemAt_conjP <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SplitEtaIdem.exists_isIdemAt_conjP` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsSplitIdempotentAtConjugatePrime.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.exists_splitIdempotent_at_conjugatePrime : ∀ {D : D7} (Pb : Formalism.L2.DIV.Pl D.host.E) (Ut : Formalism.L2.Col.MhlUnif Pb), ∃ e : Formalism.L2.Theta.AE D, Formalism.L2.NTheta.IsIdemAt e (Formalism.L2.Col.conjPrime₂ Pb) := by
   first | exact @GlobalTheory.SplitEtaIdem.exists_isIdemAt_conjP | exact GlobalTheory.SplitEtaIdem.exists_isIdemAt_conjP | (intros; apply GlobalTheory.SplitEtaIdem.exists_isIdemAt_conjP <;> assumption)

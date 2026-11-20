@@ -7,8 +7,10 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.Sec
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField IsDedekindDomain
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.Reg
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Reg.BorelGroupoid.frBor_groupoid | exact GlobalTheory.Reg.BorelGroupoid.frBor_groupoid | (intros; apply GlobalTheory.Reg.BorelGroupoid.frBor_groupoid <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Reg.BorelGroupoid.frBor_groupoid` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FGenericRegularity%2FFrameBorelGroupoidProperties.lean&line=89#L89)
 -/
 theorem _root_.GlobalTheory.T.frameBorel_groupoid_properties : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ∀ (S : Type) [CommRing S] [Algebra c.F S], (∀ y : FrPt Xo c S, FrBor 1 y y) ∧ (∀ (t t' : Ix Dw → Sˣ) (y y' y'' : FrPt Xo c S), FrBor t y y' → FrBor t' y' y'' → FrBor (t * t') y y'') ∧ (∀ (t : Ix Dw → Sˣ) (y y' : FrPt Xo c S), FrBor t y y' → FrBor t⁻¹ y' y) ∧ ∀ (t t' : Ix Dw → Sˣ) (y y' : FrPt Xo c S), FrBor t y y' → FrBor t' y y' → t = t' := by
   first | exact @GlobalTheory.Reg.BorelGroupoid.frBor_groupoid | exact GlobalTheory.Reg.BorelGroupoid.frBor_groupoid | (intros; apply GlobalTheory.Reg.BorelGroupoid.frBor_groupoid <;> assumption)

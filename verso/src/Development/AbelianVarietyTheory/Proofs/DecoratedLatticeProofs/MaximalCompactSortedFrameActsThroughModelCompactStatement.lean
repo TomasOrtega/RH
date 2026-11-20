@@ -15,8 +15,10 @@ open Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR Formalism.IndefR.Links
 open scoped TensorProduct InnerProductSpace ComplexConjugate
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChainOnto.RealData.conj_mem_Kset_of_mem_Kinf | exact GlobalTheory.ChainOnto.RealData.conj_mem_Kset_of_mem_Kinf | (intros; apply GlobalTheory.ChainOnto.RealData.conj_mem_Kset_of_mem_Kinf <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChainOnto.RealData.conj_mem_Kset_of_mem_Kinf` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FMaximalCompactSortedFrameActsThroughModelCompact.lean&line=69#L69)
 -/
 theorem _root_.GlobalTheory.T.maximal_compact_sorted_frame_acts_through_model_compact : ∀ (D : D7) (θ : InfFam D) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (hV : V.SigOK) (k : GA D V), IsInfFam θ → k ∈ GlobalTheory.Cusp.Kinf θ V (GlobalTheory.ChainOnto.RealData.sortedFrame M hV) → ∀ τ, M.fr τ * infMat D.sp.cm.sig V.gram (θ τ) k * (M.fr τ)⁻¹ ∈ Formalism.REAL.Kset (M.ε τ) := by
   first | exact @GlobalTheory.ChainOnto.RealData.conj_mem_Kset_of_mem_Kinf | exact GlobalTheory.ChainOnto.RealData.conj_mem_Kset_of_mem_Kinf | (intros; apply GlobalTheory.ChainOnto.RealData.conj_mem_Kset_of_mem_Kinf <;> assumption)

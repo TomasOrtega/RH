@@ -9,8 +9,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz (schwartzA)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.denom_bound_mul | exact GlobalTheory.denom_bound_mul | (intros; apply GlobalTheory.denom_bound_mul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.denom_bound_mul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsDenominatorBoundMatrixMul.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.exists_denominator_bound_matrix_mul : ∀ (E κ ι : Type) [Field E] [NumberField E] [Fintype κ] [Fintype ι] (T : Matrix κ ι E), ∃ M : ℕ, 0 < M ∧ ∀ (L : ℕ) (x : ι → E), (∀ i, IsIntegral ℤ ((L : E) * x i)) → ∀ k, IsIntegral ℤ (((M * L : ℕ) : E) * ∑ i, T k i * x i) := by
   first | exact @GlobalTheory.denom_bound_mul | exact GlobalTheory.denom_bound_mul | (intros; apply GlobalTheory.denom_bound_mul <;> assumption)

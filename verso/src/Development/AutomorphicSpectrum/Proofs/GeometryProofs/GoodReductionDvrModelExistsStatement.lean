@@ -10,8 +10,10 @@ import Formalism.LocalToGlobal.ProjectiveLattices.CompHt
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField IsDedekindDomain
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Fl GlobalTheory.CompanionTheory.Ar.Flat GlobalTheory.CompanionTheory.Ar.Br
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Relay.good_reduction_dvr_model_exists | exact GlobalTheory.CompanionTheory.Relay.good_reduction_dvr_model_exists | (intros; apply GlobalTheory.CompanionTheory.Relay.good_reduction_dvr_model_exists <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Relay.good_reduction_dvr_model_exists` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FGoodReductionDvrModelExists.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.good_reduction_dvr_model_exists : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (p : Nat.Primes) (κ : c.F →+* ℂ_[p]), 1 ≤ D.p + D.q → l.GoodAt p → ∃ (O : Type) (_ : CommRing O) (_ : IsDomain O) (_ : IsDiscreteValuationRing O) (β : O →+* c.F) (Y : Model Xo c β), FracBase β ∧ (∀ x : c.F, ‖κ x‖ ≤ 1 ↔ x ∈ β.range) ∧ Y.SplitFibres ∧ Y.N3 := by
   first | exact @GlobalTheory.CompanionTheory.Relay.good_reduction_dvr_model_exists | exact GlobalTheory.CompanionTheory.Relay.good_reduction_dvr_model_exists | (intros; apply GlobalTheory.CompanionTheory.Relay.good_reduction_dvr_model_exists <;> assumption)

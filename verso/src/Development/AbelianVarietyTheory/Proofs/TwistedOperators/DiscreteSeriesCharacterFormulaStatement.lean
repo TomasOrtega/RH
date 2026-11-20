@@ -18,8 +18,10 @@ open GlobalTheory.AutomorphicL2Unitary (IsTopIrreducible)
 open GlobalTheory.HCChar GlobalTheory.Published GlobalTheory.Published.Langlands
 open scoped InnerProductSpace Topology ENNReal ComplexConjugate
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DSCharLowest.discreteSeriesCharacter_of_parameter | exact GlobalTheory.DSCharLowest.discreteSeriesCharacter_of_parameter | (intros; apply GlobalTheory.DSCharLowest.discreteSeriesCharacter_of_parameter <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DSCharLowest.discreteSeriesCharacter_of_parameter` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FDiscreteSeriesCharacterFormula.lean&line=38#L38)
 -/
 theorem _root_.GlobalTheory.T.discrete_series_character_formula : GlobalTheory.Published.IrreducibleUnitaryAdmissible → GlobalTheory.Published.KFiniteCoefficientsAnalytic → GlobalTheory.Published.CharacterRegularityFiniteLength → GlobalTheory.Published.DiscreteSeriesCharacterOfParameter → GlobalTheory.Dec.DSUnique → GlobalTheory.Published.DiscreteSeriesCharacter := by
   first | exact @GlobalTheory.DSCharLowest.discreteSeriesCharacter_of_parameter | exact GlobalTheory.DSCharLowest.discreteSeriesCharacter_of_parameter | (intros; apply GlobalTheory.DSCharLowest.discreteSeriesCharacter_of_parameter <;> assumption)

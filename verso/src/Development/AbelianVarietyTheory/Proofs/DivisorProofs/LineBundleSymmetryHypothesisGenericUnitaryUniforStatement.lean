@@ -9,8 +9,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UTraitHyp.hypS_generic | exact GlobalTheory.UTraitHyp.hypS_generic | (intros; apply GlobalTheory.UTraitHyp.hypS_generic <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UTraitHyp.hypS_generic` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLineBundleSymmetryHypothesisGenericUnitaryUnifor.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.lineBundleSymmetryHypothesis_generic_unitary_uniformised : ∀ (V : Type) [CommRing V] [IsDomain V] (I : Ideal V) (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (t : SAB H (Sp V)) (P : PELUnif I t), (letI := P.A.isAb.comm; GlobalTheory.ZH.HypS P.A.A P.A.L) := by
   first | exact @GlobalTheory.UTraitHyp.hypS_generic | exact GlobalTheory.UTraitHyp.hypS_generic | (intros; apply GlobalTheory.UTraitHyp.hypS_generic <;> assumption)

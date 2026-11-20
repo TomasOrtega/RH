@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.Po
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.ExistsCoprimePowOfMemIneKer
 open NumberField IsDedekindDomain Representation Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.Published GlobalTheory.Published.PoitouTate
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.TameDecomp.exists_frob_pow_mul_pow_mul_inertia | exact GlobalTheory.CompanionTheory.TameDecomp.exists_frob_pow_mul_pow_mul_inertia | (intros; apply GlobalTheory.CompanionTheory.TameDecomp.exists_frob_pow_mul_pow_mul_inertia <;> assumpti …`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.TameDecomp.exists_frob_pow_mul_pow_mul_inertia` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FDecompositionGroupFrobeniusFactor.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.decomposition_group_frobenius_factor : ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 F)), IsPlaceOver A v → ∀ φ : Dec (F := F) A, IsFrob (F := F) A (normV v) (φ : G F Ω) → ∀ N : ℕ, 0 < N → ∀ g : Dec (F := F) A, ∃ a < N, ∃ t i : Dec (F := F) A, (i : G F Ω) ∈ Ine (F := F) A ∧ g = φ ^ a * t ^ N * i := by
   first | exact @GlobalTheory.CompanionTheory.TameDecomp.exists_frob_pow_mul_pow_mul_inertia | exact GlobalTheory.CompanionTheory.TameDecomp.exists_frob_pow_mul_pow_mul_inertia | (intros; apply GlobalTheory.CompanionTheory.TameDecomp.exists_frob_pow_mul_pow_mul_inertia <;> assumption)

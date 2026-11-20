@@ -11,8 +11,10 @@ open Formalism.MainNotions.DIV.Cons (intO)
 open scoped Classical
 open GlobalTheory.LieFilt
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LieFilt.IntForm.norm_mul_le_one | exact GlobalTheory.LieFilt.IntForm.norm_mul_le_one | (intros; apply GlobalTheory.LieFilt.IntForm.norm_mul_le_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LieFilt.IntForm.norm_mul_le_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FMatrixRegularAdaptedLocal.lean&line=119#L119)
 -/
 theorem _root_.GlobalTheory.T.integral_adapted_triangular_bounded : ∀ {K : Type} [NormedField K] [IsUltrametricDist K] {κ : Type} [Fintype κ] (bl : κ → ℕ) {g : ℕ}
     (P : Matrix (Fin g) κ K) (w : κ ≃ Fin g), IntAdapted bl P → (∀ k : ℕ, ‖minor bl w k P‖ = 1) →

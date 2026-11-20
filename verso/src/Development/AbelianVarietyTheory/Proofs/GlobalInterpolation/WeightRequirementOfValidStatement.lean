@@ -8,8 +8,10 @@ import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.DisjointExcep
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.ThinScalesIffHostBound
 open Formalism.BasicNotions Formalism.BasicNotions.LevelStarExponents Formalism.MainNotions Formalism.MainNotions.Inhab Formalism.L2.GlobalTheoryTheory GlobalTheory.EX NumberField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EX.wreq_of_wok | exact GlobalTheory.EX.wreq_of_wok | (intros; apply GlobalTheory.EX.wreq_of_wok <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EX.wreq_of_wok` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FGlobalInterpolation%2FWeightRequirementOfValid.lean&line=32#L32)
 -/
 theorem _root_.GlobalTheory.T.weight_requirement_of_valid : ∀ (C : FC) (cD ch : ℝ) (p : Pt C) (R : Ranks) (H : Host R) (a b : R.A → ℤ) (M : ℕ) (c : Fin M → Fin (R.k - 2) → Bool) (u0 : ℕ), Std C → Val C cD ch p.L → p.From H a b c u0 → CanonInst p.ta.Gx → (∀ t, t ∉ H.TT → a t = 0 ∧ b t = 0) → WOK p.L.sc cD ch C.GK H a b → Formalism.MainNotions.AuxBlock8.WReq p.ta.Gx C.GK (G.aL p.L) (G.bL p.L) := by
   first | exact @GlobalTheory.EX.wreq_of_wok | exact GlobalTheory.EX.wreq_of_wok | (intros; apply GlobalTheory.EX.wreq_of_wok <;> assumption)

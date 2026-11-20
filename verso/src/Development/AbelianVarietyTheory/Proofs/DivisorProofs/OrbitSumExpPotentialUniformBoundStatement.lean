@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.UpperBounds.FreeBallIffOfDim
 open NumberField ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.AR.Inst ReciprocityTheory.ChartRestriction.G.AR.Up ReciprocityTheory.L2DbarEstimates MeasureTheory
 open scoped ENNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.OrbitSum.orbitSum_le | exact GlobalTheory.OrbitSum.orbitSum_le | (intros; apply GlobalTheory.OrbitSum.orbitSum_le <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.OrbitSum.orbitSum_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FOrbitSumExpPotentialUniformBound.lean&line=220#L220)
 -/
 theorem _root_.GlobalTheory.T.orbitSum_exp_potential_uniform_bound : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (x0 : Frame X.Ψ r), IsOrth X x0 → PropDisc X → ∀ s : ℝ, 0 < s → (∃ I : ℝ≥0∞, I < ⊤ ∧ ∀ x1 : Frame X.Ψ r, IsOrth X x1 → ∫⁻ z, ENNReal.ofReal (Real.exp (-(s * rhF X x1 z))) ∂muF X x1 ≤ I) → ∃ C : ℝ≥0∞, C < ⊤ ∧ ∀ x, IsOrth X x → ∑' γ : X.Γ, ENNReal.ofReal (Real.exp (-(s * GlobalTheory.Up.rhX X x0 (lact γ.1 x)))) ≤ C := by
   first | exact @GlobalTheory.OrbitSum.orbitSum_le | exact GlobalTheory.OrbitSum.orbitSum_le | (intros; apply GlobalTheory.OrbitSum.orbitSum_le <;> assumption)

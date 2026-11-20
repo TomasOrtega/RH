@@ -6,8 +6,10 @@ open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep 
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LeviDesc.det_adL_sq_mul_det_pow | exact GlobalTheory.LeviDesc.det_adL_sq_mul_det_pow | (intros; apply GlobalTheory.LeviDesc.det_adL_sq_mul_det_pow <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LeviDesc.det_adL_sq_mul_det_pow` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDetTwistedSylvesterSqMulDetPowEqResultantSq.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.det_twistedSylvester_sq_mul_det_pow_eq_resultant_sq : ∀ (k : Type) [Field k] (a b : ℕ) (A : GL (Fin a) k) (B : Matrix (Fin b) (Fin b) k), LinearMap.det (GlobalTheory.LeviDesc.adL A B) ^ 2 * A.val.det ^ (2 * b) = resultant A.val.charpoly B.charpoly ^ 2 := by
   first | exact @GlobalTheory.LeviDesc.det_adL_sq_mul_det_pow | exact GlobalTheory.LeviDesc.det_adL_sq_mul_det_pow | (intros; apply GlobalTheory.LeviDesc.det_adL_sq_mul_det_pow <;> assumption)

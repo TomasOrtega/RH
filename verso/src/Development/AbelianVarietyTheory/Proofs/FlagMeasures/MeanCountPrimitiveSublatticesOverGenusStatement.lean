@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.DiscreteSeriesUnitary�
 open NumberField Matrix GlobalTheory.Mass Formalism.HermitianLatticesTheory Formalism.BasicNotions Formalism.MainNotions.S
 open scoped ENNReal Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mass.PrimMeanRow.main | exact GlobalTheory.Mass.PrimMeanRow.main | (intros; apply GlobalTheory.Mass.PrimMeanRow.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mass.PrimMeanRow.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FMeanCountPrimitiveSublatticesOverGenus.lean&line=143#L143)
 -/
 theorem _root_.GlobalTheory.T.mean_count_primitive_sublattices_over_genus : ∀ c₀ : ℝ, 0 < c₀ → ∃ C₀ : ℝ, ∀ C : ℝ, C₀ ≤ C → ∀ (D : D7) (large₂ : SizeData₂ D) (u u' : D.what₂.Word) (C' Cl Cg cb Cu cT CT C0 A : ℝ), c₀ ≤ Cl → UnitaryVolumeMass.congruence_at_split_frobenius_holds D large₂ u u' C' Cl Cg cb Cu cT CT C0 A C := by
   first | exact @GlobalTheory.Mass.PrimMeanRow.main | exact GlobalTheory.Mass.PrimMeanRow.main | (intros; apply GlobalTheory.Mass.PrimMeanRow.main <;> assumption)

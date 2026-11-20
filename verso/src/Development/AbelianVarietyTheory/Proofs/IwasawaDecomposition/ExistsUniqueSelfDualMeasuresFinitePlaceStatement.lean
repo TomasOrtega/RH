@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.T2SpaceNumbe
 open NumberField IsDedekindDomain MeasureTheory Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.GaugeEx
 open scoped TensorProduct NNReal ENNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SelfDualFinite.existsUnique_selfDual_finite | exact GlobalTheory.SelfDualFinite.existsUnique_selfDual_finite | (intros; apply GlobalTheory.SelfDualFinite.existsUnique_selfDual_finite <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SelfDualFinite.existsUnique_selfDual_finite` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsUniqueSelfDualMeasuresFinitePlace.lean&line=318#L318)
 -/
 theorem _root_.GlobalTheory.T.existsUnique_selfDual_measures_finitePlace : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ ψ : AddChar (AF F) ℂ, IsCharAF F ψ → ∀ v : HeightOneSpectrum (𝓞 F), (∃! ν, SdR (Fv F v) (psiV F ψ v) ν) ∧ ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∃! μ, SdW F E σ M J (Fv F v) (psiV F ψ v) 1 μ := by
   first | exact @GlobalTheory.SelfDualFinite.existsUnique_selfDual_finite | exact GlobalTheory.SelfDualFinite.existsUnique_selfDual_finite | (intros; apply GlobalTheory.SelfDualFinite.existsUnique_selfDual_finite <;> assumption)

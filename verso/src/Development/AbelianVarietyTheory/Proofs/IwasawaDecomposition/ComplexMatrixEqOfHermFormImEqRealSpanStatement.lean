@@ -17,8 +17,10 @@ open MonoidalCategory CartesianMonoidalCategory MonObj GlobalTheory.ShFam.Hor.Lo
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.hermForm_eq_of_im_eq_on_span | exact GlobalTheory.hermForm_eq_of_im_eq_on_span | (intros; apply GlobalTheory.hermForm_eq_of_im_eq_on_span <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.hermForm_eq_of_im_eq_on_span` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FComplexMatrixEqOfHermFormImEqRealSpan.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.complexMatrix_eq_of_hermForm_im_eq_real_span : ∀ (g r : ℕ) (Hm Hm' : Matrix (Fin g) (Fin g) ℂ) (l : Fin r → Fin g → ℂ), Submodule.span ℝ (Set.range l) = ⊤ → (∀ i j, (hermForm Hm (l i) (l j)).im = (hermForm Hm' (l i) (l j)).im) → Hm = Hm' := by
   first | exact @GlobalTheory.hermForm_eq_of_im_eq_on_span | exact GlobalTheory.hermForm_eq_of_im_eq_on_span | (intros; apply GlobalTheory.hermForm_eq_of_im_eq_on_span <;> assumption)

@@ -16,8 +16,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle (Tri)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RowEx
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DictFree.dictAt_big | exact GlobalTheory.DictFree.dictAt_big | (intros; apply GlobalTheory.DictFree.dictAt_big <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DictFree.dictAt_big` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FDictionarySizeBound.lean&line=83#L83)
 -/
 theorem _root_.GlobalTheory.T.dictionary_size_bound : GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) → Big fun ch => GlobalTheory.SumSize.DictAt ch := by
   first | exact @GlobalTheory.DictFree.dictAt_big | exact GlobalTheory.DictFree.dictAt_big | (intros; apply GlobalTheory.DictFree.dictAt_big <;> assumption)

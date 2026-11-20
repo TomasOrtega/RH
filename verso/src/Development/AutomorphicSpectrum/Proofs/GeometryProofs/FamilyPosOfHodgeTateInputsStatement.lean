@@ -17,8 +17,10 @@ open GroundTheory.Heights₂.Heights.NumbersDVR (pointIdeal segreVec IsFlagFrame
 open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles (mseg fnField)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Num.FamEx.familyExistsPos_holds | exact GlobalTheory.CompanionTheory.Ar.Num.FamEx.familyExistsPos_holds | (intros; apply GlobalTheory.CompanionTheory.Ar.Num.FamEx.familyExistsPos_holds <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Num.FamEx.familyExistsPos_holds` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FFamilyPosOfHodgeTateInputs.lean&line=62#L62)
 -/
 theorem _root_.GlobalTheory.T.family_pos_of_hodge_tate_inputs : GlobalTheory.CompanionTheory.Ar.HT.FarguesHodgeTate → GlobalTheory.CompanionTheory.Ar.GR.QuotientByFiniteFlatStatement → GlobalTheory.CompanionTheory.Ar.GR.ZarhinStatement → GlobalTheory.CompanionTheory.Ar.GR.HodgeTateDatumStatement → GlobalTheory.CompanionTheory.Ar.GR.OrdinaryCurveStatement → GlobalTheory.CompanionTheory.Ar.Num.FamilyExistsPos := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Num.FamEx.familyExistsPos_holds | exact GlobalTheory.CompanionTheory.Ar.Num.FamEx.familyExistsPos_holds | (intros; apply GlobalTheory.CompanionTheory.Ar.Num.FamEx.familyExistsPos_holds <;> assumption)

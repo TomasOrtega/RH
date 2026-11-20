@@ -13,8 +13,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PsiRing.secIsMul_of_mult | exact GlobalTheory.PsiRing.secIsMul_of_mult | (intros; apply GlobalTheory.PsiRing.secIsMul_of_mult <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PsiRing.secIsMul_of_mult` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSecIsMulOfBaseMultipleThetaSection.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.secIsMul_of_baseMultiple_thetaSection : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (th g : GlobalTheory.UU.SecBT D (𝟙_ _) 1 0) (b : R), GlobalTheory.PsiRing.Mult D th g b → ReciprocityTheory.ChartRestriction.G.DVR.SecIsMul (𝟙_ _ ⊗ D.P.A).hom b g th := by
   first | exact @GlobalTheory.PsiRing.secIsMul_of_mult | exact GlobalTheory.PsiRing.secIsMul_of_mult | (intros; apply GlobalTheory.PsiRing.secIsMul_of_mult <;> assumption)

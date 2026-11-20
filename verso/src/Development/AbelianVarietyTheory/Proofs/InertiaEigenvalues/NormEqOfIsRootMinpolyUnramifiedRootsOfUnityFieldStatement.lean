@@ -10,8 +10,10 @@ open scoped Formalism.Per NNReal
 open Matrix
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.conj_norm_eq_of_minpoly_root | exact GlobalTheory.conj_norm_eq_of_minpoly_root | (intros; apply GlobalTheory.conj_norm_eq_of_minpoly_root <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.conj_norm_eq_of_minpoly_root` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FNormEqOfIsRootMinpolyUnramifiedRootsOfUnityField.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.norm_eq_of_isRoot_minpoly_unramifiedRootsOfUnityField : ∀ (l : ℕ) [Fact l.Prime] (a : ℕ) [NeZero a] (z z' : Om l),
     Polynomial.aeval z' (minpoly (↥(Kunr l a)) z) = 0 → ‖z'‖ = ‖z‖ := by

@@ -13,8 +13,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UT
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UT.symLift_acts_as_phi | exact GlobalTheory.UT.symLift_acts_as_phi | (intros; apply GlobalTheory.UT.symLift_acts_as_phi <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UT.symLift_acts_as_phi` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUniformizationProofs%2FSymmetricLiftOddOrderActsAsExpansionOperator.lean&line=69#L69)
 -/
 theorem _root_.GlobalTheory.T.symmetricLift_oddOrder_acts_as_expansionOperator : LL → AllUF fun {R} _ _ {I} {D} {A} {G} _ _ U F _ _ => ∀ (N : ℕ), Odd N → ∀ (p : QkPt D.toPre F N) x, QkToAkU U.toUnifPre F N p x → ∀ (θ : ThetaGrp A.A A.L (N : ℤ) (TFK (R := R) F)), SymLift A.A A.L N N x θ → ∀ (w₀ : W0 U.toUnifPre), w₀.IsGen → ∀ w, TXFrame N p w → ∀ t t' s s', U.ExpandsF F N w₀ t s → U.ExpandsF F N w₀ t' s' → IsActOf A.A A.L N θ t t' → PhiRel D.toPre F N p w s s' := by
   first | exact @GlobalTheory.UT.symLift_acts_as_phi | exact GlobalTheory.UT.symLift_acts_as_phi | (intros; apply GlobalTheory.UT.symLift_acts_as_phi <;> assumption)

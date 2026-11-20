@@ -8,8 +8,10 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CMTraceZero.exists_ne_zero_conj_neg | exact GlobalTheory.CMTraceZero.exists_ne_zero_conj_neg | (intros; apply GlobalTheory.CMTraceZero.exists_ne_zero_conj_neg <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CMTraceZero.exists_ne_zero_conj_neg` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsNeZeroConjNegOfCmExtension.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.exists_ne_zero_conj_neg_of_cmExtension : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∃ ξ₀ : E, ξ₀ ≠ 0 ∧ σ ξ₀ = -ξ₀ := by

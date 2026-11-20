@@ -8,8 +8,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.HTLat GlobalTheory.Published GlobalTheory.Published.AbVarRed IsLocalRing
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ProjField.isProjBy_of_isAbelianScheme | exact GlobalTheory.ProjField.isProjBy_of_isAbelianScheme | (intros; apply GlobalTheory.ProjField.isProjBy_of_isAbelianScheme <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ProjField.isProjBy_of_isAbelianScheme` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAbelianVarietyIsProjectiveOverRingByCharts.lean&line=119#L119)
 -/
 theorem _root_.GlobalTheory.T.abelianVariety_isProjectiveOverRingByCharts : ∀ (K : Type) [Field K] (A : Over (Sp K)) [GrpObj A], IsAbelianScheme A → GlobalTheory.AbLaw.IsProjBy A.hom := by
   first | exact @GlobalTheory.ProjField.isProjBy_of_isAbelianScheme | exact GlobalTheory.ProjField.isProjBy_of_isAbelianScheme | (intros; apply GlobalTheory.ProjField.isProjBy_of_isAbelianScheme <;> assumption)

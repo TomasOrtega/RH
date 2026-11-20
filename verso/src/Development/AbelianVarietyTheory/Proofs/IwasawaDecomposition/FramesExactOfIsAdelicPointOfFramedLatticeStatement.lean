@@ -6,8 +6,10 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 open scoped TensorProduct
 attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mem.Col2.ChEx.frExact_of_isPtOf | exact GlobalTheory.Mem.Col2.ChEx.frExact_of_isPtOf | (intros; apply GlobalTheory.Mem.Col2.ChEx.frExact_of_isPtOf <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mem.Col2.ChEx.frExact_of_isPtOf` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FFramesExactOfIsAdelicPointOfFramedLattice.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.framesExact_of_isAdelicPointOfFramedLattice : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] (hc : Formalism.BasicNotions.CMData F E) (n : ℕ) [NeZero n] {ST SG Q : Finset (Pl E)} {K : Type} [Field K] {Θ : LevQFam E K n Q} (q : QLoc hc n Q Θ), (∀ P : Q, conjPrime₂ P.1 ≠ P.1) → ∀ {g : GL (Fin n) (AfE F E)} {p : DecoF E n ST SG Q}, IsPtOf hc g p → g ∈ UAd hc n ∧ FrExact q g p := by
   first | exact @GlobalTheory.Mem.Col2.ChEx.frExact_of_isPtOf | exact GlobalTheory.Mem.Col2.ChEx.frExact_of_isPtOf | (intros; apply GlobalTheory.Mem.Col2.ChEx.frExact_of_isPtOf <;> assumption)

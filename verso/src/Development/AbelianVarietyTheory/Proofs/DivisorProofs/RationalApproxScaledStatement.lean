@@ -16,8 +16,10 @@ open scoped Classical
 open GlobalTheory.BoxLattice GlobalTheory.EvAdm
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BoxLattice.exists_ratFin_coset | exact GlobalTheory.BoxLattice.exists_ratFin_coset | (intros; apply GlobalTheory.BoxLattice.exists_ratFin_coset <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BoxLattice.exists_ratFin_coset` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRationalApproxScaled.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.rational_approx_scaled : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (a : F), a ≠ 0 →
     ∀ r : κ → FiniteAdeleRing (𝓞 F) F, ∃ ρ : κ → F, ratFin F κ ρ - r ∈ scaledInt F κ a := by

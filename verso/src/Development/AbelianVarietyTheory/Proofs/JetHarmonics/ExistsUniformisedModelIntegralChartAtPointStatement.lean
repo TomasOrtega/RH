@@ -17,8 +17,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.DIV.Cons Formalism.MainNotions.Gaps.EtaleWeightGaps
 open GlobalTheory.PtTie
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnifPoint.exists_uniformised_chart | exact GlobalTheory.UnifPoint.exists_uniformised_chart | (intros; apply GlobalTheory.UnifPoint.exists_uniformised_chart <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnifPoint.exists_uniformised_chart` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FJetHarmonics%2FExistsUniformisedModelIntegralChartAtPoint.lean&line=28#L28)
 -/
 theorem _root_.GlobalTheory.T.exists_uniformisedModel_integralChart_at_point : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (la : HeightOneSpectrum (𝓞 T.Q.c.F)) (y : T.PtA j la), letI := T.Q.H.starRing; ∃ (T' : CDVR) (io : T.Q.c.F →+* T'.Fr) (e : ℕ) (_ : OverLa la T'.V io e) (z : IntFr (T.Q.Xo j) T.Q.c T' io) (_ : z.IsAlg) (_ : T.G.lies j la T' io z (imgV y)) (C : IntegralChartA3 (T.Q.Xo j) T.Q.c T' io z) (P : PELUnif (maximalIdeal T'.V) C.I.G), FrTrunc C.I.G (𝟙 (Sp T'.V)) (chD C.ch) C.xT C.eT ∧ P.TorsionIso ∧ ∀ w : WeightFamilies.Wt D j, ∀ f ∈ T.th j w, vAtV y f = nval T'.V e (evI z f) := by
   first | exact @GlobalTheory.UnifPoint.exists_uniformised_chart | exact GlobalTheory.UnifPoint.exists_uniformised_chart | (intros; apply GlobalTheory.UnifPoint.exists_uniformised_chart <;> assumption)

@@ -13,8 +13,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (Base Spc Model Ch
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RatDarbouxTransfer.haar_fundDomain_transfer | exact GlobalTheory.RatDarbouxTransfer.haar_fundDomain_transfer | (intros; apply GlobalTheory.RatDarbouxTransfer.haar_fundDomain_transfer <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RatDarbouxTransfer.haar_fundDomain_transfer` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRationalDarbouxTransfersHaarFundamentalDomain.lean&line=108#L108)
 -/
 theorem _root_.GlobalTheory.T.rationalDarboux_transfers_haar_fundamentalDomain : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (S T : HSp D) (JA : Matrix (Fin T.rank) (Fin T.rank) D.host.E) (JB : Matrix (Fin S.rank) (Fin S.rank) D.host.E)

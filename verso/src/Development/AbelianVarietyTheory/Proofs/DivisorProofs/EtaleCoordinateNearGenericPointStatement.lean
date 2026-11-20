@@ -7,8 +7,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.CxPts GlobalTheory.VB
 open ReciprocityTheory.ChartRestriction.G.DVR.FlatBC (algX)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GenericEtale.exists_etale_coord_surface | exact GlobalTheory.GenericEtale.exists_etale_coord_surface | (intros; apply GlobalTheory.GenericEtale.exists_etale_coord_surface <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GenericEtale.exists_etale_coord_surface` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FEtaleCoordinateNearGenericPoint.lean&line=124#L124)
 -/
 theorem _root_.GlobalTheory.T.etale_coordinate_near_generic_point : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) [IsIntegral X], IsArithVar p 1 → ∃ (U : X.Opens) (x : Fin 1 → Γ(X, U)), IsAffineOpen U ∧ genericPoint X ∈ U ∧ (MvPolynomial.eval₂Hom (algX p U) x).Etale := by
   first | exact @GlobalTheory.GenericEtale.exists_etale_coord_surface | exact GlobalTheory.GenericEtale.exists_etale_coord_surface | (intros; apply GlobalTheory.GenericEtale.exists_etale_coord_surface <;> assumption)

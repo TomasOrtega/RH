@@ -6,8 +6,10 @@ import Formalism.LocalToGlobal.ProjectiveLattices.FibreUniformisationLevelTwo
 open NumberField Matrix ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.trace_form_scalar_norm_one | exact GlobalTheory.trace_form_scalar_norm_one | (intros; apply GlobalTheory.trace_form_scalar_norm_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.trace_form_scalar_norm_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FNormOneOfTraceFormPreserved.lean&line=8#L8)
 -/
 theorem _root_.GlobalTheory.T.norm_one_of_trace_form_preserved : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (hr : 0 < r) (ζ : E), (∀ u ∈ X.Λ, ∀ v ∈ X.Λ, Algebra.trace ℚ E (-X.ξ0 * (ζ * cc ζ * herm X.Gm u v)) = Algebra.trace ℚ E (-X.ξ0 * herm X.Gm u v)) → ζ * cc ζ = 1 := by
   first | exact @GlobalTheory.trace_form_scalar_norm_one | exact GlobalTheory.trace_form_scalar_norm_one | (intros; apply GlobalTheory.trace_form_scalar_norm_one <;> assumption)

@@ -12,8 +12,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.BoundaryPolynomialFunctions (IsProj
 open Formalism.BasicNotions Formalism.L2.Pj GlobalTheory.Toroidal GlobalTheory.ShFam GlobalTheory.ShFam.Hor GlobalTheory.Mean4O
 open scoped ContDiff ComplexOrder ENNReal Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BdFamily.contDiffAt_r | exact GlobalTheory.BdFamily.contDiffAt_r | (intros; apply GlobalTheory.BdFamily.contDiffAt_r <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BdFamily.contDiffAt_r` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FBoundaryDistanceSmoothInterior.lean&line=43#L43)
 -/
 theorem _root_.GlobalTheory.T.boundary_distance_smooth_interior : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (x : ToroidalCompactificationData s)
     (σ : κ.c.F →+* ℂ) (n : ℕ) (U : Set (V n)) (y : V n → CxPts (genStr s.T.Z) σ), IsOpen U →

@@ -9,8 +9,10 @@ open GlobalTheory.UPoinc
 open GlobalTheory
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UTraitPt.exists_uTrait_of_classicalPoint | exact GlobalTheory.UTraitPt.exists_uTrait_of_classicalPoint | (intros; apply GlobalTheory.UTraitPt.exists_uTrait_of_classicalPoint <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UTraitPt.exists_uTrait_of_classicalPoint` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsUnitaryTraitOfClassicalPoint.lean&line=144#L144)
 -/
 theorem _root_.GlobalTheory.T.exists_unitaryTrait_of_classicalPoint : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (C : UCompact Xo c) (X₁ : USetup C) (Y : RatModel X₁.o₁ X₁.Ω₁) (πY : Y.Z ⟶ X₁.M.Z) (p : ℕ) [Fact p.Prime] (y : Sp (OO p) ⟶ Y.Z), Set.range (gPt p ≫ y ≫ πY ≫ X₁.π) ⊆ Set.range C.i → ∃ (T : UTrait Xo c) (ι : FractionRing T.V →+* PadicAlgCl p) (j : T.V →+* OO p) (ξ : Sp T.V ⟶ Y.Z), (∀ x, ‖ι x‖ ≤ 1 ↔ x ∈ Set.range (algebraMap T.V (FractionRing T.V))) ∧ (∀ v, (j v : PadicAlgCl p) = ι (algebraMap T.V (FractionRing T.V) v)) ∧ IsLocalHom j ∧ spMap j ≫ ξ = y ∧ jK T.V ≫ ξ ≫ πY ≫ X₁.π = T.y ≫ C.i := by
   first | exact @GlobalTheory.UTraitPt.exists_uTrait_of_classicalPoint | exact GlobalTheory.UTraitPt.exists_uTrait_of_classicalPoint | (intros; apply GlobalTheory.UTraitPt.exists_uTrait_of_classicalPoint <;> assumption)

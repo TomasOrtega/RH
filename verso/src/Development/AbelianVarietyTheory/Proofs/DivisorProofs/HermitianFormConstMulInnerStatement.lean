@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Re
 open MeasureTheory GlobalTheory.RealWeil
 open scoped SchwartzMap
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.hermitian_form_eq_smul_l2 | exact GlobalTheory.hermitian_form_eq_smul_l2 | (intros; apply GlobalTheory.hermitian_form_eq_smul_l2 <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.hermitian_form_eq_smul_l2` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHermitianFormConstMulInner.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.hermitian_form_const_mul_inner : ∀ (n : ℕ) (B : Sch (Fin n) → Sch (Fin n) → ℂ), (∀ h h', B h' h = starRingEnd ℂ (B h h')) →
     (∀ h, 0 ≤ (B h h).re) →

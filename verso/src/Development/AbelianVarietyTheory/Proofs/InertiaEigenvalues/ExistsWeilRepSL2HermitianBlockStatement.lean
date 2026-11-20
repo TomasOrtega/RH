@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsWeilRepS
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsTestRep
 open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.weilSL2_hermitian | exact GlobalTheory.weilSL2_hermitian | (intros; apply GlobalTheory.weilSL2_hermitian <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.weilSL2_hermitian` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FExistsWeilRepSL2HermitianBlock.lean&line=27#L27)
 -/
 theorem _root_.GlobalTheory.T.exists_weilRepSL2_hermitianBlock : WeilEt → GammaOne → ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (r : ℕ) (M : Meas r F E) (ψ : AddChar F ℂ), IsStdChar ψ → ∃ W : SpecialLinearGroup (Fin 2) F → (Hn r F E → ℂ) → Hn r F E → ℂ, IsTestRep W ∧ ∀ f, IsTest f → (∀ t X, W (nS t) f X = ψ (t * Algebra.trace F E (star X.2.1 ⬝ᵥ X.2.1) / 2) * f X) ∧ W (wS F) f = fourU M ψ f := by
   first | exact @GlobalTheory.weilSL2_hermitian | exact GlobalTheory.weilSL2_hermitian | (intros; apply GlobalTheory.weilSL2_hermitian <;> assumption)

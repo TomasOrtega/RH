@@ -16,8 +16,10 @@ open GlobalTheory.BotSmallDict GlobalTheory.NormExact
 open scoped Pointwise
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BotCosetValue.stdSnd_coset_value | exact GlobalTheory.BotCosetValue.stdSnd_coset_value | (intros; apply GlobalTheory.BotCosetValue.stdSnd_coset_value <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BotCosetValue.stdSnd_coset_value` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FStandardPairSecondUnitBlockCosetRootOfUnity.lean&line=239#L239)
 -/
 theorem _root_.GlobalTheory.T.standardPairSecond_unitBlockCoset_rootOfUnity : ∀ {D : D7} (S T : HSp D), S.gram = 1 → T.gram = 1 → D.host.ccK = ⊤ →
     ∀ (βS : GL (Fin S.rank) (Lev.EAf D)), Formalism.L2.DIV.IsFrame βS (Formalism.L2.Col.stdLat D.host.E S.rank) →

@@ -19,8 +19,10 @@ open MonoidalCategory
 open ReciprocityTheory.ChartRestriction.G.Semi
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.lift_of_stalk_generic_flat | exact GlobalTheory.lift_of_stalk_generic_flat | (intros; apply GlobalTheory.lift_of_stalk_generic_flat <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.lift_of_stalk_generic_flat` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsLiftGeometricGenericPointStalkOfFlat.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.exists_lift_geometricGenericPoint_stalk_of_flat : ∀ {X' W : Scheme.{0}} [IsIntegral X'] (h : W ⟶ X') [Flat h] (q : W)
     [IsDomain (W.presheaf.stalk q)] {V : Scheme.{0}} [Nonempty V] (ℓ : V ⟶ X') [IsOpenImmersion ℓ]

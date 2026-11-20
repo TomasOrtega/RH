@@ -16,8 +16,10 @@ open GlobalTheory GlobalTheory.LieHt GlobalTheory.Cartier GlobalTheory.ThetaOnto
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TwistNZ.twistPull_nonzero | exact GlobalTheory.TwistNZ.twistPull_nonzero | (intros; apply GlobalTheory.TwistNZ.twistPull_nonzero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TwistNZ.twistPull_nonzero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTwistedPullbackNonvanishingOfPulledSection.lean&line=29#L29)
 -/
 theorem _root_.GlobalTheory.T.twistedPullback_nonvanishing_of_pulledSection : ∀ {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : LB A.left}, L.IsLB → ∀ {T : Over S} (ψ : T ⊗ A ⟶ T ⊗ A) (m : T ⊗ A ⟶ A) (hm : ψ ≫ snd T A = m) (a b : ℤ) (α : LB.Gen (LB.LinComb L (K := Fin 2) ![(snd T A).left, m.left] ![a, -b])) (s : LB.Sec (LPow A L b T)) (s' : LB.Sec (LPow A L a T)), IsTwistPull A L ψ m hm a b α s s' → ∀ p : (T ⊗ A).left, ψ.left.base p ∈ nonzeroLocus s → p ∈ nonzeroLocus s' := by
   first | exact @GlobalTheory.TwistNZ.twistPull_nonzero | exact GlobalTheory.TwistNZ.twistPull_nonzero | (intros; apply GlobalTheory.TwistNZ.twistPull_nonzero <;> assumption)

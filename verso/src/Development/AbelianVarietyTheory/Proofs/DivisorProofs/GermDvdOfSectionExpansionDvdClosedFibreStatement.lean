@@ -17,8 +17,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ClosedFibreDvd.germ_dvd_of_expT_dvd | exact GlobalTheory.ClosedFibreDvd.germ_dvd_of_expT_dvd | (intros; apply GlobalTheory.ClosedFibreDvd.germ_dvd_of_expT_dvd <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ClosedFibreDvd.germ_dvd_of_expT_dvd` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGermDvdOfSectionExpansionDvdClosedFibre.lean&line=102#L102)
 -/
 theorem _root_.GlobalTheory.T.germ_dvd_of_sectionExpansion_dvd_closedFibre : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegPre R) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (U : GlobalTheory.UU.PreU (maximalIdeal R) D A G) (σ : U.SecGT (𝟙_ _) 1) (f g : ∀ α, GlobalTheory.UU.SecBT D (𝟙_ _) 1 α) (q : R), U.ExpT (𝟙_ _) 1 σ f → (∀ α, ReciprocityTheory.ChartRestriction.G.DVR.SecIsMul (𝟙_ _ ⊗ D.P.A).hom q (f α) (g α)) → ∀ (x : (𝟙_ (Over (Sp R)) ⊗ G).left), (𝟙_ (Over (Sp R)) ⊗ G).hom x = closedPoint R → ∀ (j : Fin 1 → U.P.L.L.ι), x ∈ LB.wchart U.P.L.L (fun _ : Fin 1 => (snd (𝟙_ (Over (Sp R))) G).left) j → ∃ t, gs (𝟙 _) x (LB.wchart U.P.L.L (fun _ : Fin 1 => (snd (𝟙_ (Over (Sp R))) G).left) j) (σ.f j) = cst (𝟙_ (Over (Sp R)) ⊗ G).hom x q * t := by
   first | exact @GlobalTheory.ClosedFibreDvd.germ_dvd_of_expT_dvd | exact GlobalTheory.ClosedFibreDvd.germ_dvd_of_expT_dvd | (intros; apply GlobalTheory.ClosedFibreDvd.germ_dvd_of_expT_dvd <;> assumption)

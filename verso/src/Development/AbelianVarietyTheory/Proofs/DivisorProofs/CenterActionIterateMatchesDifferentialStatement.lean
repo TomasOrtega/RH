@@ -12,8 +12,10 @@ open NumberField IsDedekindDomain MeasureTheory Formalism.MainNotions.GlobalTheo
 open Matrix
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HCFinU.Central.zOp_eq_dop | exact GlobalTheory.HCFinU.Central.zOp_eq_dop | (intros; apply GlobalTheory.HCFinU.Central.zOp_eq_dop <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HCFinU.Central.zOp_eq_dop` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCenterActionIterateMatchesDifferential.lean&line=486#L486)
 -/
 theorem _root_.GlobalTheory.T.center_action_iterate_matches_differential : ∀ (I : Formalism.MainNotions.S.AutInst) (s : I.E →ₐ[I.F] I.E) (hs : s = I.cm.sig) (v : InfinitePlace I.F) (m : ℕ), ∃ z : List (ℝ → GlobalTheory.AdelicU.GAd s I.J) →₀ ℂ, GlobalTheory.UAut.IsCentral s I.J z ∧ ∀ (N : ℕ) (φ : GlobalTheory.AdelicU.GAd s I.J → ℂ), GlobalTheory.UAut.IsSm s I.J φ → (GlobalTheory.Dec.zOp I v m)^[N] (fun x => φ (GlobalTheory.HCFinU.bridgeS I s hs x)) = fun x => (GlobalTheory.UAut.dop z)^[N] φ (GlobalTheory.HCFinU.bridgeS I s hs x) := by
   first | exact @GlobalTheory.HCFinU.Central.zOp_eq_dop | exact GlobalTheory.HCFinU.Central.zOp_eq_dop | (intros; apply GlobalTheory.HCFinU.Central.zOp_eq_dop <;> assumption)

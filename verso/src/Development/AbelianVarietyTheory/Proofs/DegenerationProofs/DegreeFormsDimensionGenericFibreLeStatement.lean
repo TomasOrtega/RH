@@ -11,8 +11,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open ReciprocityTheory.ChartRestriction.G.Out GlobalTheory.ZH Classical
 attribute [local instance] SplitExt.free SplitExt.finite MvPolynomial.gradedAlgebra
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ZH.FormCount.hilb_generic_le | exact GlobalTheory.ZH.FormCount.hilb_generic_le | (intros; apply GlobalTheory.ZH.FormCount.hilb_generic_le <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ZH.FormCount.hilb_generic_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDegenerationProofs%2FDegreeFormsDimensionGenericFibreLe.lean&line=109#L109)
 -/
 theorem _root_.GlobalTheory.T.degreeFormsDimension_genericFibre_le : GlobalTheory.UT.LL → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀) (J : Type) [Fintype J] (σ : J → (u.H S.N).Sec) (d : ℕ), 1 ≤ d → hilb {w : J → PadicAlgCl p | ∃ a : Sp (PadicAlgCl p) ⟶ u.G.left, a ≫ u.G.hom = gPt p ≫ spMap u.j ∧ Crd (u.H S.N) σ a w} d ≤ (S.N * d) ^ S.g := by
   first | exact @GlobalTheory.ZH.FormCount.hilb_generic_le | exact GlobalTheory.ZH.FormCount.hilb_generic_le | (intros; apply GlobalTheory.ZH.FormCount.hilb_generic_le <;> assumption)

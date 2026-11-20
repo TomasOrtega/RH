@@ -13,8 +13,10 @@ open NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRes
 open AlgebraicGeometry CategoryTheory Limits ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.Frames GlobalTheory.FrameUnif
 open scoped Matrix nonZeroDivisors
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FrameUnif.exists_isNormUn | exact GlobalTheory.FrameUnif.exists_isNormUn | (intros; apply GlobalTheory.FrameUnif.exists_isNormUn <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FrameUnif.exists_isNormUn` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUnitaryExistence%2FExistsNormalisedFramedPointOnEachComponent.lean&line=25#L25)
 -/
 theorem _root_.GlobalTheory.T.exists_normalisedFramedPoint_on_each_component : Out.SecTwistSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (g : ℕ) (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)) (F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) (fun j => relab c σ (e j).1)) (r : ℕ) (M : ModelsOf F r) (k : Fin F.n) (T : ThetaData e F M k), ∃ un, IsNormUn T un := by
   first | exact @GlobalTheory.FrameUnif.exists_isNormUn | exact GlobalTheory.FrameUnif.exists_isNormUn | (intros; apply GlobalTheory.FrameUnif.exists_isNormUn <;> assumption)

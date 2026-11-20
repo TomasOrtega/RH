@@ -9,8 +9,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj TensorProduct
 open GlobalTheory.ZM
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CoverGlue.kTriv_of_cover | exact GlobalTheory.CoverGlue.kTriv_of_cover | (intros; apply GlobalTheory.CoverGlue.kTriv_of_cover <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CoverGlue.kTriv_of_cover` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FModuliProofs%2FThetaGroupKernelTrivialOfOpenCover.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.thetaGroupKernel_trivial_of_open_cover : ∀ (S : Scheme.{0}) (I : Type) (U : I → S.Opens) (A : Over S) [GrpObj A] (G : ∀ i, Over (U i).toScheme) [∀ i, GrpObj (G i)] (ψ : ∀ i, (G i).left ⟶ A.left), iSup U = ⊤ → (∀ i, IsGrpPullback (G i) A (U i).ι (ψ i)) → ∀ (L : LB A.left) (M : ∀ i, LB (G i).left), L.IsLB → (∀ i, (M i).IsLB) → (∀ i, LBIso (M i) (L.pull (ψ i))) → IsAbelianScheme A → (∀ i, IsAbelianScheme (G i)) → (∀ i, Out.KTriv (G i) (M i)) → Out.KTriv A L := by
   first | exact @GlobalTheory.CoverGlue.kTriv_of_cover | exact GlobalTheory.CoverGlue.kTriv_of_cover | (intros; apply GlobalTheory.CoverGlue.kTriv_of_cover <;> assumption)

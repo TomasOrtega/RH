@@ -12,8 +12,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.BoundaryPolynomialFunctions (IsProj
 open Formalism.BasicNotions Formalism.L2.Pj GlobalTheory.Toroidal GlobalTheory.ShFam GlobalTheory.ShFam.Hor GlobalTheory.Mean4O
 open scoped ContDiff ComplexOrder ENNReal Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IrrAn.irreducibleAnalytic_ptsOf | exact GlobalTheory.IrrAn.irreducibleAnalytic_ptsOf | (intros; apply GlobalTheory.IrrAn.irreducibleAnalytic_ptsOf <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IrrAn.irreducibleAnalytic_ptsOf` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FClosedIrreducibleAnalytic.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.closed_irreducible_analytic : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) [LocallyOfFiniteType p] (σ : k →+* ℂ) (d : ℕ) (R : AnRead p σ d) [CompactSpace (CxPts p σ)] (T : Set (Limits.pullback p (spMap σ) : Scheme.{0})), IsClosed T → IsIrreducible T → IsIrreducibleAnalytic R.finAtlas {y | (Limits.pullback.lift y.1 (𝟙 _) (y.2.trans (Category.id_comp _).symm) : Sp ℂ ⟶ Limits.pullback p (spMap σ)) (IsLocalRing.closedPoint ℂ) ∈ T} := by
   first | exact @GlobalTheory.IrrAn.irreducibleAnalytic_ptsOf | exact GlobalTheory.IrrAn.irreducibleAnalytic_ptsOf | (intros; apply GlobalTheory.IrrAn.irreducibleAnalytic_ptsOf <;> assumption)

@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.IntegralLocallyConstCochainModPow
 open GlobalTheory.K5
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.K5.algSpan_reprInd | exact GlobalTheory.K5.algSpan_reprInd | (intros; apply GlobalTheory.K5.algSpan_reprInd <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.K5.algSpan_reprInd` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FExistsMulLinearIndependentAlgebraicOverPadicInte.lean&line=47#L47)
 -/
 theorem _root_.GlobalTheory.T.exists_mul_linearIndependent_algebraicOverPadicIntegers : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [Algebra (O0 p) Ω], IsClo p Ω →
     ∀ y ∈ Submodule.span (O0 p) {x : Ω | IsAlgZp p x},

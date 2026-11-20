@@ -9,8 +9,10 @@ open GlobalTheory.DefFree GlobalTheory.DefLift Polynomial
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FreeOfCharacter.free_of_trace_eq_zero | exact GlobalTheory.FreeOfCharacter.free_of_trace_eq_zero | (intros; apply GlobalTheory.FreeOfCharacter.free_of_trace_eq_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FreeOfCharacter.free_of_trace_eq_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FFreeMonoidAlgebraOfCharacterVanishesOffOne.lean&line=61#L61)
 -/
 theorem _root_.GlobalTheory.T.free_monoidAlgebra_of_character_vanishes_off_one : ∀ (P M : Type) [Group P] [Finite P] [AddCommGroup M] [Module ℂ M] [FiniteDimensional ℂ M] (ρ : Representation ℂ P M), (∀ g : P, g ≠ 1 → LinearMap.trace ℂ M (ρ g) = 0) → ∃ N : ℕ, Nat.card P * N = Module.finrank ℂ M ∧ Nonempty (ρ.asModule ≃ₗ[MonoidAlgebra ℂ P] (Fin N → MonoidAlgebra ℂ P)) := by
   first | exact @GlobalTheory.FreeOfCharacter.free_of_trace_eq_zero | exact GlobalTheory.FreeOfCharacter.free_of_trace_eq_zero | (intros; apply GlobalTheory.FreeOfCharacter.free_of_trace_eq_zero <;> assumption)

@@ -11,8 +11,10 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Unf
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SkewPairing.skew_perfect | exact GlobalTheory.SkewPairing.skew_perfect | (intros; apply GlobalTheory.SkewPairing.skew_perfect <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SkewPairing.skew_perfect` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FSkewHermitianTracePairingStandardCharacterPerfec.lean&line=43#L43)
 -/
 theorem _root_.GlobalTheory.T.skewHermitian_tracePairing_standardCharacter_perfect : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (ρ : ℕ) (M : Matrix (Fin ρ) (Fin ρ) D.host.E), Mᴴ = -M → (∀ c : skewA D ρ, ψ (algebraMap D.host.F (AF D.host.F) (1 / 2) * Algebra.trace (AF D.host.F) (AE D) ((rat M : Mx D ρ ρ) ⬝ c.1).trace) = 1) → M = 0 := by
   first | exact @GlobalTheory.SkewPairing.skew_perfect | exact GlobalTheory.SkewPairing.skew_perfect | (intros; apply GlobalTheory.SkewPairing.skew_perfect <;> assumption)

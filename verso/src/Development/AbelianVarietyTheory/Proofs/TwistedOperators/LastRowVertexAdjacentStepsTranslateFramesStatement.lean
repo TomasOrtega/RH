@@ -12,8 +12,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 open GlobalTheory.TopLevelInv
 open GlobalTheory.FunObj.FiniteSupport
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.flatStep_vertex | exact GlobalTheory.flatStep_vertex | (intros; apply GlobalTheory.flatStep_vertex <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.flatStep_vertex` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FLastRowVertexAdjacentStepsTranslateFrames.lean&line=31#L31)
 -/
 theorem _root_.GlobalTheory.T.lastRowVertex_adjacentSteps_translate_frames : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] {a₀ a₁ a₂ b c c₀ c' : ℕ} (ν : Measure k) [ν.IsAddHaarMeasure] (hc₀ : c₀ = c + 1) (hc' : c' = c + 1)
     (h₁ : a₁ + c₀ = b) (h₂ : a₁ + (c + 1) = b) (h' : a₁ + c' = b) (g : GL (Fin b) k) (κ : GL (Fin a₁) k),

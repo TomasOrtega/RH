@@ -11,8 +11,10 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CharacterValue
 open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations GlobalTheory.Pass GlobalTheory.Cut
 open GlobalTheory.IndefiniteRowSideFullHecke.CongruenceModuleMatrices GlobalTheory.ConsExists GlobalTheory.SpanRing
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.hensel_roots_of_local_family | exact GlobalTheory.hensel_roots_of_local_family | (intros; apply GlobalTheory.hensel_roots_of_local_family <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.hensel_roots_of_local_family` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FHenselRootsOfLocalFamily.lean&line=37#L37)
 -/
 theorem _root_.GlobalTheory.T.exists_injective_roots_of_distinct_units_roots : ∀ {X O : Type} [CommRing O] [IsDomain O] [IsLocalRing O] [HenselianRing O (IsLocalRing.maximalIdeal O)] {t : ℕ} (T : Subalgebra O (X → O)), IsLocalRing T → ∀ (P : X → Polynomial O), (∀ j, (fun x => (P x).coeff j) ∈ T) → (∀ x, (P x).Monic ∧ (P x).natDegree = t) → ∀ (π : X) (d : Fin t → O), (∀ a b, a ≠ b → IsUnit (d a - d b)) → P π = ∏ c, (Polynomial.X - Polynomial.C (d c)) → ∀ x, ∃ β : Fin t → O, Function.Injective β ∧ P x = ∏ c, (Polynomial.X - Polynomial.C (β c)) := by
   first | exact @GlobalTheory.hensel_roots_of_local_family | exact GlobalTheory.hensel_roots_of_local_family | (intros; apply GlobalTheory.hensel_roots_of_local_family <;> assumption)

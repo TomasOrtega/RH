@@ -12,8 +12,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Core.Rk.IP
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SwSecMem.swSec_mem_degPS | exact GlobalTheory.SwSecMem.swSec_mem_degPS | (intros; apply GlobalTheory.SwSecMem.swSec_mem_degPS <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SwSecMem.swSec_mem_degPS` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FDoublingSiegelWeilSectionMemDegeneratePrincipalS.lean&line=51#L51)
 -/
 theorem _root_.GlobalTheory.T.doublingSiegelWeilSection_mem_degeneratePrincipalSeries : GlobalTheory.Published.WeilRepresentationUnitaryPair → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (A B : HSp D) (χB : (AE D)ˣ →* Circle) (omh : WRep (dblSp A) B), IsWeilDatumO ψ (dblSp A) B 1 χB omh → ∀ (ν : Measure (WO A B)) (𝓕 : Set (WO A B)), IsCovolOne (ratL B A) ν 𝓕 → ∀ φ, IsThetaFunO ψ (dblSp A) B φ → ∀ a : GL (Fin A.rank) (AE D), IsKFinVec omh (Khat A a) φ → swSec A B omh ν 𝓕 φ ∈ degPS A a χB⁻¹ (sZero A B) := by
   first | exact @GlobalTheory.SwSecMem.swSec_mem_degPS | exact GlobalTheory.SwSecMem.swSec_mem_degPS | (intros; apply GlobalTheory.SwSecMem.swSec_mem_degPS <;> assumption)

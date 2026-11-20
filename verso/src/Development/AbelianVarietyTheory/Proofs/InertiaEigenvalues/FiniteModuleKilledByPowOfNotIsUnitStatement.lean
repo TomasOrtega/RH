@@ -18,8 +18,10 @@ open ReciprocityTheory.Def (Z1 B1 H1)
 open TensorProduct
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.finite_module_killed_by_pow_of_not_isUnit | exact GlobalTheory.finite_module_killed_by_pow_of_not_isUnit | (intros; apply GlobalTheory.finite_module_killed_by_pow_of_not_isUnit <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.finite_module_killed_by_pow_of_not_isUnit` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FFiniteModuleKilledByPowOfNotIsUnit.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.exists_pow_smul_eq_zero_of_finite_of_not_isUnit : ∀ (O : Type) [CommRing O] [IsLocalRing O] (lam : O), ¬ IsUnit lam →
     ∀ (X : Type) [AddCommGroup X] [Module O X] [Finite X], ∃ a : ℕ, ∀ x : X, lam ^ a • x = 0 := by

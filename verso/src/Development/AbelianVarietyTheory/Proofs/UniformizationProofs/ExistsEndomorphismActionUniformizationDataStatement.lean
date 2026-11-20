@@ -13,8 +13,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UT
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EndData.exists_endU | exact GlobalTheory.EndData.exists_endU | (intros; apply GlobalTheory.EndData.exists_endU <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EndData.exists_endU` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUniformizationProofs%2FExistsEndomorphismActionUniformizationData.lean&line=157#L157)
 -/
 theorem _root_.GlobalTheory.T.exists_endomorphism_action_uniformization_data : LL → AllU fun {R} _ _ {I} {D} {A} {G} _ _ U => ∀ (aG : G ⟶ G) (aA : A.A ⟶ A.A), IsMonHom aG → IsMonHom aA → (Over.pullback (jK R)).map aG ≫ U.gen.hom = U.gen.hom ≫ aA → ∃ E : EndU U.toUnifPre, E.aG = aG ∧ E.aA = aA := by
   first | exact @GlobalTheory.EndData.exists_endU | exact GlobalTheory.EndData.exists_endU | (intros; apply GlobalTheory.EndData.exists_endU <;> assumption)

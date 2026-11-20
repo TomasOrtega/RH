@@ -13,8 +13,10 @@ open scoped TensorProduct GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMode
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SquareAgree.exists_isOver | exact GlobalTheory.SquareAgree.exists_isOver | (intros; apply GlobalTheory.SquareAgree.exists_isOver <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SquareAgree.exists_isOver` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsPlacewiseSeesawTripleOverHermitian.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.exists_placewise_seesaw_triple_over_hermitian : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsInfFam θ →
     ∀ (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁) (B : Fr X) (α β : (AE D)ˣ →* Circle), IsTriple W W₁ X α β →

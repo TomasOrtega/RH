@@ -6,8 +6,10 @@ import CompanionTheory.EightfoldTheory.VariationTheory.AutomorphicForms.Newform
 open UpperHalfPlane Complex MeasureTheory CongruenceSubgroup GlobalTheory.EisM UpperTheory.V.Af Filter Topology
 open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EisM.hsum_inv_of_stable | exact GlobalTheory.EisM.hsum_inv_of_stable | (intros; apply GlobalTheory.EisM.hsum_inv_of_stable <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EisM.hsum_inv_of_stable` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FHeckeCharacterSlashSumInvariantOfStable.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.heckeCharacterSlashSum_invariant_of_stable : ∀ (k L L' N : ℕ) (ε : DirichletCharacter ℂ N) (Δ : Set M2) (ι : Type) [Fintype ι] (β : ι → M2) (f : ℍ → ℂ), 1 ≤ k → N ∣ L → N ∣ L' → (∀ δ ∈ Δ, 0 < δ.det ∧ (N : ℤ) ∣ δ 1 0) → (∀ δ ∈ Δ, ∀ γ : SL(2, ℤ), (L' : ℤ) ∣ γ 1 0 → δ * (γ : M2) ∈ Δ) → LRep L Δ β → Inv k L (ch ε) f → Inv k L' (ch ε) (hsum k (ch ε) β f) := by
   first | exact @GlobalTheory.EisM.hsum_inv_of_stable | exact GlobalTheory.EisM.hsum_inv_of_stable | (intros; apply GlobalTheory.EisM.hsum_inv_of_stable <;> assumption)

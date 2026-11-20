@@ -9,8 +9,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.eq_of_specializes_of_fst_eq_of_snd_eq | exact GlobalTheory.Mum.eq_of_specializes_of_fst_eq_of_snd_eq | (intros; apply GlobalTheory.Mum.eq_of_specializes_of_fst_eq_of_snd_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.eq_of_specializes_of_fst_eq_of_snd_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FEqOfSpecializesSemiAbelianSquareSameProjections.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.eq_of_specializes_semiAbelian_square_same_projections : ∀ (R : Type) [CommRing R] [IsLocalRing R] (G : Over (Sp R)) [GrpObj G], IsSemiAbelian G → ∀ x : G.left, G.hom x = closedPoint R → IsClosed ({x} : Set G.left) → ∀ p q : (G ⊗ G).left, (fst G G).left p = x → (fst G G).left q = x → (snd G G).left p = (snd G G).left q → p ⤳ q → p = q := by
   first | exact @GlobalTheory.Mum.eq_of_specializes_of_fst_eq_of_snd_eq | exact GlobalTheory.Mum.eq_of_specializes_of_fst_eq_of_snd_eq | (intros; apply GlobalTheory.Mum.eq_of_specializes_of_fst_eq_of_snd_eq <;> assumption)

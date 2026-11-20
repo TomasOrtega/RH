@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.AddMonoidHomEqZ
 open NumberField IsDedekindDomain WeierstrassCurve GlobalTheory GlobalTheory.Published GlobalTheory.CMModel Formalism.L2.Th1.F
 open scoped IntermediateField BigOperators Topology
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CMModel.tangentSlope_mem | exact GlobalTheory.CMModel.tangentSlope_mem | (intros; apply GlobalTheory.CMModel.tangentSlope_mem <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CMModel.tangentSlope_mem` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTangentSlopeMem.lean&line=8#L8)
 -/
 theorem _root_.GlobalTheory.T.tangent_slope_mem_of_intV : ∀ (V : ValuationSubring ℂ) (a₄ a₆ r s t X Y : ℂ) (u : ℂˣ), IntV V ((⟨u, r, s, t⟩ : VariableChange ℂ) • (⟨0, 0, 0, a₄, a₆⟩ : WeierstrassCurve ℂ)) → (X - r) / (u : ℂ) ^ 2 ∈ V → (Y - t - s * (X - r)) / (u : ℂ) ^ 3 ∈ V → V.valuation (2 * Y) = V.valuation (u : ℂ) ^ 3 → ((3 * X ^ 2 + a₄) / (2 * Y) - s) / (u : ℂ) ∈ V := by
   first | exact @GlobalTheory.CMModel.tangentSlope_mem | exact GlobalTheory.CMModel.tangentSlope_mem | (intros; apply GlobalTheory.CMModel.tangentSlope_mem <;> assumption)

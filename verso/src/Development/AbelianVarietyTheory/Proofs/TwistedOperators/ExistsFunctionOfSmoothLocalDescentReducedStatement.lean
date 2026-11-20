@@ -6,8 +6,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.ThetaTrace GlobalTheory.HkFam GlobalTheory.Frames GlobalTheory.HeckeEx
 open GlobalTheory.IndefiniteRowSideFullHecke.FibrePushforwardExistenceTori (IsLinHom IsLieImg IsThGen IsHeckeIsog)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SmoothLocalDescent.exists_of_smooth_locally | exact GlobalTheory.SmoothLocalDescent.exists_of_smooth_locally | (intros; apply GlobalTheory.SmoothLocalDescent.exists_of_smooth_locally <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SmoothLocalDescent.exists_of_smooth_locally` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsFunctionOfSmoothLocalDescentReduced.lean&line=130#L130)
 -/
 theorem _root_.GlobalTheory.T.exists_function_of_smooth_local_descent_reduced : ∀ (K B : Type) [CommRing K] [CommRing B] [Algebra K B] [IsReduced B] (F : ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] [Algebra K Ω], (B →ₐ[K] Ω) → Ω), (∀ q : PrimeSpectrum B, ∃ (B' : Type) (_ : CommRing B') (_ : Algebra B B') (_ : Algebra K B') (_ : IsScalarTower K B B') (b' : B'), Algebra.Smooth B B' ∧ q ∈ Set.range (PrimeSpectrum.comap (algebraMap B B')) ∧ ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] [Algebra K Ω] (χ' : B' →ₐ[K] Ω), χ' b' = F Ω (χ'.comp (IsScalarTower.toAlgHom K B B'))) → ∃ b : B, ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] [Algebra K Ω] (χ : B →ₐ[K] Ω), χ b = F Ω χ := by
   first | exact @GlobalTheory.SmoothLocalDescent.exists_of_smooth_locally | exact GlobalTheory.SmoothLocalDescent.exists_of_smooth_locally | (intros; apply GlobalTheory.SmoothLocalDescent.exists_of_smooth_locally <;> assumption)

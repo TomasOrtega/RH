@@ -11,8 +11,10 @@ open ReciprocityTheory.L2DbarEstimates (V)
 open Filter Topology
 open scoped ContDiff
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PeriodChartLattice.ex_transl_eq | exact GlobalTheory.PeriodChartLattice.ex_transl_eq | (intros; apply GlobalTheory.PeriodChartLattice.ex_transl_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PeriodChartLattice.ex_transl_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPeriodChartLatticeInvariance.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.period_chart_lattice_invariance : ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k) (P : PPAS S) (h : VMetric p (omega P.A) P.g) (σ : k →+* ℂ) (c : AlgChart p σ 1) (τ : V 1 → Matrix (Fin P.g) (Fin P.g) ℂ) (ex : Pt (V 1) P.g → CxPts (P.A.hom ≫ p) σ), IsPeriodChart h c τ ex → ∀ l ∈ stdLat P.g, ∀ Q ∈ cov c.e.target P.g, ex (GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe.transl τ l Q) = ex Q := by
   first | exact @GlobalTheory.PeriodChartLattice.ex_transl_eq | exact GlobalTheory.PeriodChartLattice.ex_transl_eq | (intros; apply GlobalTheory.PeriodChartLattice.ex_transl_eq <;> assumption)

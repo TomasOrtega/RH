@@ -8,8 +8,10 @@ open GlobalTheory GlobalTheory.VB GlobalTheory.Vert GlobalTheory.TriFrame Global
 open GlobalTheory.Twist (resM)
 open Formalism.MainNotions.DIV.Cons (intO SCF)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SubLift.factor_of_frame | exact GlobalTheory.SubLift.factor_of_frame | (intros; apply GlobalTheory.SubLift.factor_of_frame <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SubLift.factor_of_frame` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsFactorizationThroughSubbundle.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.exists_factorization_through_subbundle : ∀ (X : Scheme.{0}) [IsIntegral X] (A : X.Opens) (G G' E : X.Modules) (i : G ⟶ E) (f : G' ⟶ E) (n : ℕ) (t : Fin n → Γ(G', A)), genericPoint X ∈ A → IsSubbundle i → IsFrame t → (∀ j, ∃ u : Γ(G, A), i.app A u = f.app A (t j)) → ∃ a : G' ⟶ G, a ≫ i = f := by
   first | exact @GlobalTheory.SubLift.factor_of_frame | exact GlobalTheory.SubLift.factor_of_frame | (intros; apply GlobalTheory.SubLift.factor_of_frame <;> assumption)

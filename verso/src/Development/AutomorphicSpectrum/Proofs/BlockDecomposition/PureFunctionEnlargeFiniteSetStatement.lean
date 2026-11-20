@@ -6,8 +6,10 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BoundedDenomina
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW NumberField IsDedekindDomain MeasureTheory Topology Filter GroundTheory.Global PositivityTheory.Rg.Base1 GlobalTheory.CompanionTheory.BasePsi
 open scoped ENNReal NNReal Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.BasePsi.Integrals.integrals_translates | exact GlobalTheory.CompanionTheory.BasePsi.Integrals.integrals_translates | (intros; apply GlobalTheory.CompanionTheory.BasePsi.Integrals.integrals_translates <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.BasePsi.Integrals.integrals_translates` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FPureFunctionEnlargeFiniteSet.lean&line=107#L107)
 -/
 theorem _root_.GlobalTheory.T.pure_function_enlarge_finite_set : ∀ (F : Type) [Field F] [NumberField F] (li : Measure (Ainf F)) (lam : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fv F v)),
     IsStdInf li → (∀ v, IsStdV v (lam v)) → ∀ (S T : Finset (HeightOneSpectrum (𝓞 F))) (G : Ainf F → ℝ)

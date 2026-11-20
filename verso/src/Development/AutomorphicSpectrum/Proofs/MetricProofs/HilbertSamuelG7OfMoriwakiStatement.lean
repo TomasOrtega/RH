@@ -13,8 +13,10 @@ import GroundTheory.HeightsAndTheta.Heights.Intersections.Statements
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StatementsPushDown
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.ArakelovGeometry Filter Topology NumberField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Giv.smallGenerated_count_upper_of_moriwakiHS | exact GlobalTheory.CompanionTheory.Ar.Giv.smallGenerated_count_upper_of_moriwakiHS | (intros; apply GlobalTheory.CompanionTheory.Ar.Giv.smallGenerated_count_upper_of_moriwakiHS <;> assum …`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Giv.smallGenerated_count_upper_of_moriwakiHS` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FHilbertSamuelG7OfMoriwaki.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.hilbert_samuel_G7_of_moriwaki : MoriwakiHSStatement → GroundTheory.Heights₂.Heights.HilbertSamuel.G7.Statement := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Giv.smallGenerated_count_upper_of_moriwakiHS | exact GlobalTheory.CompanionTheory.Ar.Giv.smallGenerated_count_upper_of_moriwakiHS | (intros; apply GlobalTheory.CompanionTheory.Ar.Giv.smallGenerated_count_upper_of_moriwakiHS <;> assumption)

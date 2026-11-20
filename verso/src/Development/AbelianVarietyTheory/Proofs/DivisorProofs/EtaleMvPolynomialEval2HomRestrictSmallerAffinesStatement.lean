@@ -15,8 +15,10 @@ open GlobalTheory.LogPole
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EtaleRestrict.etale_eval₂_res | exact GlobalTheory.EtaleRestrict.etale_eval₂_res | (intros; apply GlobalTheory.EtaleRestrict.etale_eval₂_res <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EtaleRestrict.etale_eval₂_res` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FEtaleMvPolynomialEval2HomRestrictSmallerAffines.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.etale_mvPolynomial_eval2Hom_restrict_smaller_affines : ∀ (X Y : Scheme.{0}) (q : Y ⟶ X) (ι : Type) (U U' : X.Opens) (hU' : U' ≤ U), IsAffineOpen U → IsAffineOpen U' → ∀ (W W' : Y.Opens) (hW' : W' ≤ W), IsAffineOpen W → IsAffineOpen W' → ∀ (hWU : W ≤ q ⁻¹ᵁ U) (hW'U' : W' ≤ q ⁻¹ᵁ U') (N : ι → Γ(Y, W)), (MvPolynomial.eval₂Hom (q.appLE U W hWU).hom N).Etale → (MvPolynomial.eval₂Hom (q.appLE U' W' hW'U').hom (fun a ↦ resG Y hW' (N a))).Etale := by
   first | exact @GlobalTheory.EtaleRestrict.etale_eval₂_res | exact GlobalTheory.EtaleRestrict.etale_eval₂_res | (intros; apply GlobalTheory.EtaleRestrict.etale_eval₂_res <;> assumption)

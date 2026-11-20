@@ -8,8 +8,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CharPowExp.charPow_expansion | exact GlobalTheory.CharPowExp.charPow_expansion | (intros; apply GlobalTheory.CharPowExp.charPow_expansion <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CharPowExp.charPow_expansion` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCharacterPolynomialCoefficientsInvariant.lean&line=26#L26)
 -/
 theorem _root_.GlobalTheory.T.character_polynomial_coefficients_invariant : ∀ (T : Type) [CommGroup T] (L : T → ℝ), (∀ x y, L (x * y) = L x + L y) → (∃ t, L t ≠ 0) → ∀ (N K : ℕ) (χ : Fin N → T →* ℂˣ) (c : Fin N → Fin (K + 1) → ℂ), Function.Injective χ → ∀ Φ : T → ℂ, (∀ t, Φ t = ∑ i, ∑ k, c i k * ((χ i t : ℂˣ) : ℂ) * ((L t : ℝ) : ℂ) ^ (k : ℕ)) → (∀ γ, L γ = 0 → (∀ t, Φ (γ * t) = Φ t) → ∀ i k, c i k ≠ 0 → χ i γ = 1) ∧ (∀ i k, c i k ≠ 0 → ∃ (n : ℕ) (s : Fin n → T) (b : Fin n → ℂ), ∀ t, ((χ i t : ℂˣ) : ℂ) = ∑ j, b j * Φ (s j * t)) ∧ ∀ (H : Subgroup T) (ψ₁ ψ₂ : T →* ℂˣ), (∃ x ∈ H, L x ≠ 0) → (∀ s, ∃ p q : ℂ, ∀ x ∈ H, Φ (x * s) = p * ((ψ₁ x : ℂˣ) : ℂ) + q * ((ψ₂ x : ℂˣ) : ℂ)) → ∀ i k, c i k ≠ 0 → (k : ℕ) = 0 ∧ ((∀ x ∈ H, χ i x = ψ₁ x) ∨ ∀ x ∈ H, χ i x = ψ₂ x) := by
   first | exact @GlobalTheory.CharPowExp.charPow_expansion | exact GlobalTheory.CharPowExp.charPow_expansion | (intros; apply GlobalTheory.CharPowExp.charPow_expansion <;> assumption)

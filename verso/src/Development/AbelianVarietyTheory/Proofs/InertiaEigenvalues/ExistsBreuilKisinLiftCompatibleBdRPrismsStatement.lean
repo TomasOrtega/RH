@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.Bh
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BKReal GlobalTheory.Per GlobalTheory.BSP GlobalTheory.MemLoc
 open scoped Formalism.Per NNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BSP.RingHomLiftCongruence.exists_lift | exact GlobalTheory.BSP.RingHomLiftCongruence.exists_lift | (intros; apply GlobalTheory.BSP.RingHomLiftCongruence.exists_lift <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BSP.RingHomLiftCongruence.exists_lift` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FExistsBreuilKisinLiftCompatibleBdRPrisms.lean&line=109#L109)
 -/
 theorem _root_.GlobalTheory.T.exists_breuilKisin_lift_compatible_bdR_prisms : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (C : Core l) (n : ℕ) (x : ↥(OL K)), ∃ (k : ℕ) (s : bk.S), aDp l (bk.ev s) - (l : Per.BdRp l) ^ k * C.o ((x : ↥K.1) : Om l) ∈ Per.FilP l n ∧ (∀ (B : Obj l ↥(OL K)) (f g : Hom bk.prism B), ∃ k : ℕ, BK.hf f bk.E ^ n ∣ (l : B.A) ^ k * (BK.hf f s - BK.hf g s)) := by
   first | exact @GlobalTheory.BSP.RingHomLiftCongruence.exists_lift | exact GlobalTheory.BSP.RingHomLiftCongruence.exists_lift | (intros; apply GlobalTheory.BSP.RingHomLiftCongruence.exists_lift <;> assumption)

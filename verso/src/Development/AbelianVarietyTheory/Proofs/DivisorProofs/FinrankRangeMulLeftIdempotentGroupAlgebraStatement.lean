@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankRangeMulLeft
 import Development.AbelianVarietyTheory.Definitions.Divisors.BadElt
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.ArithmeticCylinders GlobalTheory.BadCount Module
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BadCount.finrank_range_mulLeft_idem | exact GlobalTheory.BadCount.finrank_range_mulLeft_idem | (intros; apply GlobalTheory.BadCount.finrank_range_mulLeft_idem <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BadCount.finrank_range_mulLeft_idem` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFinrankRangeMulLeftIdempotentGroupAlgebra.lean&line=6#L6)
 -/
 theorem _root_.GlobalTheory.T.finrank_range_mulLeft_idempotent_groupAlgebra : ∀ (K H : Type) [Field K] [CharZero K] [Group H] [Finite H] (a : MonoidAlgebra K H), a * a = a → ((finrank K (LinearMap.range (LinearMap.mulLeft K a)) : ℕ) : K) = (Nat.card H : K) * a.coeff 1 := by
   first | exact @GlobalTheory.BadCount.finrank_range_mulLeft_idem | exact GlobalTheory.BadCount.finrank_range_mulLeft_idem | (intros; apply GlobalTheory.BadCount.finrank_range_mulLeft_idem <;> assumption)

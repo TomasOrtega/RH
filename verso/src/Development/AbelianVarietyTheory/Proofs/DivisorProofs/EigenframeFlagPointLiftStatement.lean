@@ -9,8 +9,10 @@ open Formalism.MainNotions.DIV.Cons (intO)
 open GlobalTheory.LieSmooth
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LieSmooth.basePt_definedOver | exact GlobalTheory.LieSmooth.basePt_definedOver | (intros; apply GlobalTheory.LieSmooth.basePt_definedOver <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LieSmooth.basePt_definedOver` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FEigenframeFlagPointLift.lean&line=77#L77)
 -/
 theorem _root_.GlobalTheory.T.eigenframe_flag_point_lift : ∀ {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {s : FinalTheorems S κ} (Φ : s.Flag) (y : Pt s) {K : Type} [Field K] [NumberField K] (io : K →+* Qb) (fK : κ.c.F →+* K) (yK : Sp K ⟶ gen s.T.Z), spMap io ≫ yK = y.y → yK ≫ genStr s.T.Z = spMap fK → ∀ g : EigFrame s.T.Z fK (yK ≫ genι s.T.Z), g.IsMap io y.frame → ∃ p : Sp K ⟶ (Φ.C (compPt s y)).Y.X, p ≫ (Φ.C (compPt s y)).π = yK ∧ (Φ.C (compPt s y)).Carries p g ∧ below p = basePt Φ y := by
   first | exact @GlobalTheory.LieSmooth.basePt_definedOver | exact GlobalTheory.LieSmooth.basePt_definedOver | (intros; apply GlobalTheory.LieSmooth.basePt_definedOver <;> assumption)

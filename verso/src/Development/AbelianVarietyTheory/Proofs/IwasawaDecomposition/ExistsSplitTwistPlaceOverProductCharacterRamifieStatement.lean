@@ -7,8 +7,10 @@ open Formalism.BasicNotions NumberField IsDedekindDomain Formalism.L2 Formalism.
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TwistSplitPlace.exists_splitPlace_of_mem_qPl | exact GlobalTheory.TwistSplitPlace.exists_splitPlace_of_mem_qPl | (intros; apply GlobalTheory.TwistSplitPlace.exists_splitPlace_of_mem_qPl <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TwistSplitPlace.exists_splitPlace_of_mem_qPl` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsSplitTwistPlaceOverProductCharacterRamifie.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.exists_splitTwistPlace_over_productCharacter_ramified : ∀ (D : D7) (T : Type) (L : LevCh D T) (μ0 : T), L.Is μ0 → ∀ (i : Fin D.R.m) (t : T), ∀ v ∈ qPl D (L.C.mu0 i * L.xiH t), ∃ s : ReciprocityTheory.Aut.SplitPlace D.host.E, s.v = v ∧ s.w ∈ L.Q t := by
   first | exact @GlobalTheory.TwistSplitPlace.exists_splitPlace_of_mem_qPl | exact GlobalTheory.TwistSplitPlace.exists_splitPlace_of_mem_qPl | (intros; apply GlobalTheory.TwistSplitPlace.exists_splitPlace_of_mem_qPl <;> assumption)

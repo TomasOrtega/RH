@@ -13,8 +13,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ (PS Pt ev pt comp1 FGLaw)
 open MvPolynomial (X)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IntChartExists.intChart_exists | exact GlobalTheory.IntChartExists.intChart_exists | (intros; apply GlobalTheory.IntChartExists.intChart_exists <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IntChartExists.intChart_exists` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFormalGroupCharts%2FExistsIntegralChartIntegralFramedPoint.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.exists_integral_chart_integral_framed_point : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)], IntegralChartExists Xo c ∧ ((∀ a : 𝓞 E, star a = H.bar a) → IntChartEx Xo c) ∧ ((∀ a : 𝓞 E, star a = H.bar a) → ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io), ∃ C : IntegralChartA3 Xo c T io y, FrTrunc C.I.G (𝟙 (Sp T.V)) (chD C.ch) C.xT C.eT) := by
   first | exact @GlobalTheory.IntChartExists.intChart_exists | exact GlobalTheory.IntChartExists.intChart_exists | (intros; apply GlobalTheory.IntChartExists.intChart_exists <;> assumption)

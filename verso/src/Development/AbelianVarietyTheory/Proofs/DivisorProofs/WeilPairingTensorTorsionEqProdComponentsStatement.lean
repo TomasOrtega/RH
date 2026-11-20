@@ -13,8 +13,10 @@ open GlobalTheory.Mum
 open GlobalTheory.Ex GlobalTheory.Mum.TensTor
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.TensTor.weilQk_tens | exact GlobalTheory.Mum.TensTor.weilQk_tens | (intros; apply GlobalTheory.Mum.TensTor.weilQk_tens <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.TensTor.weilQk_tens` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FWeilPairingTensorTorsionEqProdComponents.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.weil_pairing_tensor_torsion_eq_prod_components : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D D' : DegData R (maximalIdeal R)) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) (T : Tens D.toPre D'.toPre W) (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F] (N N' : NumD F) (ν : NumOf D.toPre F N) (ν' : NumOf D'.toPre F N') (k : ℕ), 0 < k → ∀ (p' q' : QkPt D'.toPre F k) (ps qs : Fin r → QkPt D.toPre F k), PtRel T ν ν' p' ps → PtRel T ν ν' q' qs → ∀ z : Fin r → Fin r → Fˣ, (∀ i j, WeilQkIs D.toPre F k (ps i) (qs j) (z i j : F)) → WeilQkIs D'.toPre F k p' q' ((∏ i, ∏ j, z i j ^ (W + W.transpose) i j : Fˣ) : F) := by
   first | exact @GlobalTheory.Mum.TensTor.weilQk_tens | exact GlobalTheory.Mum.TensTor.weilQk_tens | (intros; apply GlobalTheory.Mum.TensTor.weilQk_tens <;> assumption)

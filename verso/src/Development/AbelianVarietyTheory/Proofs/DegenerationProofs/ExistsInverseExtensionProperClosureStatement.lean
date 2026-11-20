@@ -6,8 +6,10 @@ open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj Alg
 open scoped CategoryTheory.Obj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.ZJ
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.exists_inv_extension | exact GlobalTheory.exists_inv_extension | (intros; apply GlobalTheory.exists_inv_extension <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.exists_inv_extension` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDegenerationProofs%2FExistsInverseExtensionProperClosure.lean&line=175#L175)
 -/
 theorem _root_.GlobalTheory.T.exists_inverse_extension_properClosure : ∀ C : Core, C.HasTests → SmoothOfRelativeDimension C.g C.GG.hom → C.TestCart → C.FibLaw → ∃ i : C.GG ⟶ C.GG, C.a ≫ i.left = (ι[C.A]).left ≫ C.a := by
   first | exact @GlobalTheory.exists_inv_extension | exact GlobalTheory.exists_inv_extension | (intros; apply GlobalTheory.exists_inv_extension <;> assumption)

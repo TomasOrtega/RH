@@ -6,8 +6,10 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermitianPlaneS
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes IsDedekindDomain NumberField GlobalTheory.Published GlobalTheory.CompanionTheory.PlaneSA Topology
 open scoped TensorProduct Quaternion
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.PlaneSA.closure_SAQ_mul | exact GlobalTheory.CompanionTheory.PlaneSA.closure_SAQ_mul | (intros; apply GlobalTheory.CompanionTheory.PlaneSA.closure_SAQ_mul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.PlaneSA.closure_SAQ_mul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FStrongApproxClosureMul.lean&line=36#L36)
 -/
 theorem _root_.GlobalTheory.T.strong_approx_closure_mul : ∀ {F : Type} [Field F] [NumberField F] (d β : F) (s : Pl F), ∀ x ∈ closure (SAQ d β s), ∀ y ∈ closure (SAQ d β s),
   x * y ∈ closure (SAQ d β s) := by

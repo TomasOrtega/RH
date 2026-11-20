@@ -9,8 +9,10 @@ open scoped ComplexOrder Classical
 open GlobalTheory.CompanionTheory.Ar.PB.WSq GlobalTheory.CompanionTheory.Ar.PB.WMan
 open GlobalTheory.CompanionTheory.Ar.PB.PFl
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.PB.PFl.AllKept.card_pIdx_of_all | exact GlobalTheory.CompanionTheory.Ar.PB.PFl.AllKept.card_pIdx_of_all | (intros; apply GlobalTheory.CompanionTheory.Ar.PB.PFl.AllKept.card_pIdx_of_all <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.PB.PFl.AllKept.card_pIdx_of_all` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FCardPIdxEqChoose.lean&line=45#L45)
 -/
 theorem _root_.GlobalTheory.T.card_pIdx_eq_choose : ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (keep : Ψ × Fin N → Prop), j ≤ N → (∀ p, keep p) → Nat.card (PIdx j keep) = Fintype.card Ψ * (j.choose 2 + (N - j).choose 2) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.PB.PFl.AllKept.card_pIdx_of_all | exact GlobalTheory.CompanionTheory.Ar.PB.PFl.AllKept.card_pIdx_of_all | (intros; apply GlobalTheory.CompanionTheory.Ar.PB.PFl.AllKept.card_pIdx_of_all <;> assumption)

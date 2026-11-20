@@ -12,8 +12,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StarMemAdelicSchwar
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.KFinLoc
 open scoped TensorProduct Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SplitConj.conj_to_sq | exact GlobalTheory.SplitConj.conj_to_sq | (intros; apply GlobalTheory.SplitConj.conj_to_sq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SplitConj.conj_to_sq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FUnipotentConjugateToSquare.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.adelicSchwartzSpace_le_span_pureTensors : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (d : ℕ) (W : Spc F E d) (v : Pl F), Formalism.MainNotions.SchurIrreducible.IsSplit (E := E) v → (2 : 𝓞 F) ∉ v.asIdeal →

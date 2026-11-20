@@ -8,8 +8,10 @@ open AlgebraicGeometry CategoryTheory Limits NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM GlobalTheory.SiegelTor GlobalTheory.TorRef GlobalTheory.ShFam GlobalTheory.Models GlobalTheory.SiegLoc GlobalTheory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SiegLoc.exists_cycAway_finite | exact GlobalTheory.SiegLoc.exists_cycAway_finite | (intros; apply GlobalTheory.SiegLoc.exists_cycAway_finite <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SiegLoc.exists_cycAway_finite` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsCyclotomicMapLocalization.lean&line=25#L25)
 -/
 theorem _root_.GlobalTheory.T.exists_cyclotomic_map_localization : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (l : Level H) (c : Coeff l) (n : ℕ) (R : Type) [CommRing R] (b : 𝓞 c.F →+* R) (ω : R →+* c.F), 3 ≤ n → n ∣ l.M → IsDedFrac ω → ω.comp b = algebraMap (𝓞 c.F) c.F → @IsLocalization.Away (𝓞 c.F) _ (n : 𝓞 c.F) R _ b.toAlgebra → ∃ κ : cycAway n →+* R, (∀ x, ((ω (κ x) : c.F) : ℂ) = (x : ℂ)) ∧ κ.Finite := by
   first | exact @GlobalTheory.SiegLoc.exists_cycAway_finite | exact GlobalTheory.SiegLoc.exists_cycAway_finite | (intros; apply GlobalTheory.SiegLoc.exists_cycAway_finite <;> assumption)

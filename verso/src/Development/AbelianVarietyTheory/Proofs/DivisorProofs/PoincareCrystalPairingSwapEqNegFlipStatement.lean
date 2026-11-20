@@ -10,8 +10,10 @@ open ReciprocityTheory.ChartRestriction.G.Semi (IsAbelianScheme LB)
 open GlobalTheory GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.DeRham GlobalTheory.PDiv GlobalTheory.PtExt
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.pairing_swap_eq_neg_flip | exact GlobalTheory.pairing_swap_eq_neg_flip | (intros; apply GlobalTheory.pairing_swap_eq_neg_flip <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.pairing_swap_eq_neg_flip` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPoincareCrystalPairingSwapEqNegFlip.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.poincareCrystalPairing_swap_eq_neg_flip : ∀ (R : Type) [CommRing R] (A B : Over (Sp R)) [GrpObj A] [GrpObj B] (P : LB (A ⊗ B).left), P.IsLB → ∀ φ : HdR A →ₗ[R] HdR B →ₗ[R] R, AbDual.IsCorrForm (dp0 R) (𝟙 _) A B P φ → AbDual.IsCorrForm (dp0 R) (𝟙 _) B A (AbDual.swap P) (-φ.flip) := by
   first | exact @GlobalTheory.pairing_swap_eq_neg_flip | exact GlobalTheory.pairing_swap_eq_neg_flip | (intros; apply GlobalTheory.pairing_swap_eq_neg_flip <;> assumption)

@@ -13,8 +13,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.matUnits_univ_of_idem | exact GlobalTheory.matUnits_univ_of_idem | (intros; apply GlobalTheory.matUnits_univ_of_idem <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.matUnits_univ_of_idem` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FEighthPowerOfMatrixUnitsIdempotentSplit.lean&line=32#L32)
 -/
 theorem _root_.GlobalTheory.T.eighthPower_of_matrixUnits_idempotent_split : ∀ {S : Scheme.{0}} (G H : Over S) [GrpObj G] [IsCommMonObj G] [GrpObj H] (E : Fin 8 → Fin 8 → (G ⟶ G)) (hE : ∀ a b, IsMonHom (E a b)) (hrel : ∀ a b c d, E a b ≫ E c d = if b = c then E a d else 1) (hsum : ∏ a, E a a = 𝟙 G) (i : H ⟶ G) (r : G ⟶ H) (hi : IsMonHom i) (hr : IsMonHom r) (hir : i ≫ r = 𝟙 H) (hri : r ≫ i = E 0 0), ∀ (T : Over S) (y : Fin 8 → (T ⟶ H)), ∃! x : T ⟶ G, ∀ a, x ≫ (E a 0 ≫ r) = y a := by
   first | exact @GlobalTheory.matUnits_univ_of_idem | exact GlobalTheory.matUnits_univ_of_idem | (intros; apply GlobalTheory.matUnits_univ_of_idem <;> assumption)

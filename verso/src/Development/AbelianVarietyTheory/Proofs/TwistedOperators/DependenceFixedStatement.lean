@@ -8,8 +8,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup (coefPlus Cols Si
 open GlobalTheory.SepRows
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DepthFix.depFixed | exact GlobalTheory.DepthFix.depFixed | (intros; apply GlobalTheory.DepthFix.depFixed <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DepthFix.depFixed` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FDependenceFixed.lean&line=500#L500)
 -/
 theorem _root_.GlobalTheory.T.dependence_fixed : DepFixed := by
   first | exact @GlobalTheory.DepthFix.depFixed | exact GlobalTheory.DepthFix.depFixed | (intros; apply GlobalTheory.DepthFix.depFixed <;> assumption)

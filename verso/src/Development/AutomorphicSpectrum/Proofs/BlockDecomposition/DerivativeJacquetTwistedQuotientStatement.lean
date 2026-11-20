@@ -5,8 +5,10 @@ import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.Mirabol
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WhitKerLeComapMap
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.BZMir GlobalTheory.CompanionTheory.BZNuPair
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.DerivQuot.exists_deriv_quot | exact GlobalTheory.CompanionTheory.DerivQuot.exists_deriv_quot | (intros; apply GlobalTheory.CompanionTheory.DerivQuot.exists_deriv_quot <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.DerivQuot.exists_deriv_quot` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FDerivativeJacquetTwistedQuotient.lean&line=142#L142)
 -/
 theorem _root_.GlobalTheory.T.derivative_jacquet_twisted_quotient : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle) (n j : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin (n + j + 1)) k) V) (hd : ∑ a, (![n, j + 1] a) = n + j + 1),

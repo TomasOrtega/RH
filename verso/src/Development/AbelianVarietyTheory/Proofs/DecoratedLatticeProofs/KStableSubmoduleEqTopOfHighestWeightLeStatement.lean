@@ -11,8 +11,10 @@ open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible Formalism.
 open Formalism.MainNotions.S (IsURepOn IsIrredOn IsKFin IsKStableOn IsWtOn IsKTypeOf IsDS IsSqIntOn UJset)
 open scoped InnerProductSpace
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HwSpan.eq_top_of_hwSub_le | exact GlobalTheory.HwSpan.eq_top_of_hwSub_le | (intros; apply GlobalTheory.HwSpan.eq_top_of_hwSub_le <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HwSpan.eq_top_of_hwSub_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FKStableSubmoduleEqTopOfHighestWeightLe.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.kStable_submodule_eq_top_of_highestWeight_le : ∀ (p q : ℕ) (M : GKMod p q) (N : Submodule ℂ M.V), KStable M.act N → (∀ μ, hwSub M.act μ ≤ N) → N = ⊤ := by
   first | exact @GlobalTheory.HwSpan.eq_top_of_hwSub_le | exact GlobalTheory.HwSpan.eq_top_of_hwSub_le | (intros; apply GlobalTheory.HwSpan.eq_top_of_hwSub_le <;> assumption)

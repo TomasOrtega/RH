@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IntMIffInt
 open Complex MeasureTheory GlobalTheory.UnitaryTheta
 open scoped BigOperators ComplexConjugate Real Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnitaryTheta.GaussPhase.gauss_phase | exact GlobalTheory.UnitaryTheta.GaussPhase.gauss_phase | (intros; apply GlobalTheory.UnitaryTheta.GaussPhase.gauss_phase <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnitaryTheta.GaussPhase.gauss_phase` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FUnitaryFiniteGaussSumPhaseRootOfUnity.lean&line=37#L37)
 -/
 theorem _root_.GlobalTheory.T.unitary_finite_gaussSum_phase_rootOfUnity : ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (H : Sesq V), IsPosHerm H → ∀ (a : V ≃ₗ[ℂ] V), (∀ z w, H (a z) (a w) = H z w) → ∀ (B : V →ₗ[ℂ] V), (∀ x, B x - a (B x) = x) → (∀ x, B (x - a x) = x) → ∀ (Λ Λ' : AddSubgroup V), Λ.FG → Λ' ≤ Λ → (Λ'.addSubgroupOf Λ).FiniteIndex → (∀ y ∈ Λ', a y ∈ Λ) → ∀ α : V → ℂ, IsSemichar H Λ α → (∀ y ∈ Λ', α (a y) = α y) → ∃ (M : Type) (_ : Fintype M) (s : M → V), (∀ m, s m ∈ Λ) ∧ (∀ x ∈ Λ, ∃! p : M × Λ', x = s p.1 - ((p.2 : V) - a p.2)) ∧ GlobalTheory.Phase.Ph (∑ m, α (s m) * cexp (-((π : ℂ) * I) * ((H (B (s m)) (s m)).im : ℂ))) := by
   first | exact @GlobalTheory.UnitaryTheta.GaussPhase.gauss_phase | exact GlobalTheory.UnitaryTheta.GaussPhase.gauss_phase | (intros; apply GlobalTheory.UnitaryTheta.GaussPhase.gauss_phase <;> assumption)

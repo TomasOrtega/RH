@@ -10,8 +10,10 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Unf
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Unf.jac_absConv | exact GlobalTheory.Unf.jac_absConv | (intros; apply GlobalTheory.Unf.jac_absConv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Unf.jac_absConv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FFourierJacobiInvariantFunctionIntegrable.lean&line=68#L68)
 -/
 theorem _root_.GlobalTheory.T.fourierJacobi_invariant_function_integrable : ∀ (D : D7) (ρ : ℕ) (J : JacLev D ρ) (K : GA D J.W → ℂ), Continuous K → (∀ γ ∈ GQ J.W ⊓ jacGrp J.d, ∀ h, K (γ * h) = K h) → ∀ h, AbsConv J.v0.μ J.v0.𝓕 J.vN.ν J.vN.𝓝 fun h' n => K (n.1 * J.d.emb0 h' * h) := by
   first | exact @GlobalTheory.Unf.jac_absConv | exact GlobalTheory.Unf.jac_absConv | (intros; apply GlobalTheory.Unf.jac_absConv <;> assumption)

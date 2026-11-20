@@ -15,8 +15,10 @@ open GlobalTheory.AbLaw
 open GlobalTheory.KeyKa
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KeyKa.exists_kaVal_of_isAlgClosed | exact GlobalTheory.KeyKa.exists_kaVal_of_isAlgClosed | (intros; apply GlobalTheory.KeyKa.exists_kaVal_of_isAlgClosed <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KeyKa.exists_kaVal_of_isAlgClosed` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FThetaLawProofs%2FExistsKeyInvariantAlgClosedTransversal.lean&line=34#L34)
 -/
 theorem _root_.GlobalTheory.T.exists_keyInvariant_algClosed_transversal : Out.Laws → ∀ (K : Type) [Field K] [IsAlgClosed K] (x : KeyIn K) (n l l' : ℕ) (al : ℕ → Matrix (Fin 4) (Fin 4) ℤ) (d : ℕ) (s : Fin x.P.g → RR x n) (z : Fin d → Pt x) (ch : Fin d → x.P.L.ι), admitted x.P.g n l l' al → ((degProd x.P.g n l l' : ℕ) : K) ≠ 0 → EtZ x s z ch → ∃ κ, KaVal x n l l' al s κ := by
   first | exact @GlobalTheory.KeyKa.exists_kaVal_of_isAlgClosed | exact GlobalTheory.KeyKa.exists_kaVal_of_isAlgClosed | (intros; apply GlobalTheory.KeyKa.exists_kaVal_of_isAlgClosed <;> assumption)

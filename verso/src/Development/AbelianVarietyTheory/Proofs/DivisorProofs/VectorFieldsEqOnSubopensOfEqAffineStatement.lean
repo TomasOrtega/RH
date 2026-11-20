@@ -14,8 +14,10 @@ open GlobalTheory.RayEv (Ray)
 open GlobalTheory.Toroidal GlobalTheory.LogKS GlobalTheory.RigChart GlobalTheory.Heat
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LogKS.isField_eq_of_affine | exact GlobalTheory.LogKS.isField_eq_of_affine | (intros; apply GlobalTheory.LogKS.isField_eq_of_affine <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LogKS.isField_eq_of_affine` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FVectorFieldsEqOnSubopensOfEqAffine.lean&line=42#L42)
 -/
 theorem _root_.GlobalTheory.T.vectorFields_eq_on_subopens_of_eq_affine : ∀ (Z : Scheme.{0}) (V : Z.Opens), IsAffineOpen V → ∀ (d₁ d₂ : ∀ O : Z.Opens, Γ(Z, O) → Γ(Z, O)), IsField V d₁ → IsField V d₂ → (∀ a, d₁ V a = d₂ V a) → ∀ O : Z.Opens, O ≤ V → ∀ f, d₁ O f = d₂ O f := by
   first | exact @GlobalTheory.LogKS.isField_eq_of_affine | exact GlobalTheory.LogKS.isField_eq_of_affine | (intros; apply GlobalTheory.LogKS.isField_eq_of_affine <;> assumption)

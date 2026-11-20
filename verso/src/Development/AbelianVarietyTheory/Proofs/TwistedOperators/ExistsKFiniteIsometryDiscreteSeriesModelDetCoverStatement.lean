@@ -15,8 +15,10 @@ open scoped TensorProduct InnerProductSpace ComplexConjugate
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.ArchRec
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ArchRec.KFiniteTie.exists_kTie | exact GlobalTheory.ArchRec.KFiniteTie.exists_kTie | (intros; apply GlobalTheory.ArchRec.KFiniteTie.exists_kTie <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ArchRec.KFiniteTie.exists_kTie` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsKFiniteIsometryDiscreteSeriesModelDetCover.lean&line=69#L69)
 -/
 theorem _root_.GlobalTheory.T.exists_kFiniteIsometry_discreteSeriesModel_detCover : ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (τ : D.what₂.Tau) (p q : ℕ) (T : GrpData p q) (R : DSRep T) (lam : Ix p q → ℚ) (c : ℚ) (br cj : Bool) (e : Ix p q ≃ Fin V.rank) (m : ℤ) (U : M.H τ → R.U.H), IsParam lam → IsOrd (M.ε τ) (M.lam τ) lam c (sg br cj) e → (m : ℚ) = 2 * c → Comparison₂ R M τ br cj e m U → (∀ x v, U x = R.ι v → (IsHighestUnit (M.ε τ) (M.lam τ) (M.σ τ) x ↔ UnitHW R (blattner lam) v)) → ∃ u, KTie R M τ lam c br cj e u := by
   first | exact @GlobalTheory.ArchRec.KFiniteTie.exists_kTie | exact GlobalTheory.ArchRec.KFiniteTie.exists_kTie | (intros; apply GlobalTheory.ArchRec.KFiniteTie.exists_kTie <;> assumption)

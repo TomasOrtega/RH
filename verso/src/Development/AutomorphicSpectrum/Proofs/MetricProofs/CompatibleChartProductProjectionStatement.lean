@@ -8,8 +8,10 @@ open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm 
 open scoped ComplexOrder Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.PB.ChartSwap.chart_swap | exact GlobalTheory.CompanionTheory.Ar.PB.ChartSwap.chart_swap | (intros; apply GlobalTheory.CompanionTheory.Ar.PB.ChartSwap.chart_swap <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.PB.ChartSwap.chart_swap` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FCompatibleChartProductProjection.lean&line=85#L85)
 -/
 theorem _root_.GlobalTheory.T.compatible_chart_product_projection : ∀ (e n : ℕ) (X Z : Type) [TopologicalSpace X] [TopologicalSpace Z] (A : FinHolAtlas e X) (Ab : FinHolAtlas n Z) (pr : X → Z) (ψ : OpenPartialHomeomorph X (Fin e → ℂ)) (kb : Fin Ab.n) (σ : Fin n ↪ Fin e) (ψb : OpenPartialHomeomorph Z (Fin n → ℂ)), IsCompatChart A ψ → IsCompatChart Ab ψb → (∀ x' ∈ ψ.source, pr x' ∈ (Ab.chart kb).source ∧ ∀ i, Ab.chart kb (pr x') i = ψ x' (σ i)) → ∃ ψ' : OpenPartialHomeomorph X (Fin e → ℂ), IsCompatChart A ψ' ∧ ψ'.source = ψ.source ∩ pr ⁻¹' ψb.source ∧ ∀ y ∈ ψ'.source, ∀ i, ψ' y (σ i) = ψb (pr y) i := by
   first | exact @GlobalTheory.CompanionTheory.Ar.PB.ChartSwap.chart_swap | exact GlobalTheory.CompanionTheory.Ar.PB.ChartSwap.chart_swap | (intros; apply GlobalTheory.CompanionTheory.Ar.PB.ChartSwap.chart_swap <;> assumption)

@@ -20,8 +20,10 @@ open scoped Pointwise
 open Formalism.IndefR.Datum
 open GlobalTheory.Grid
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WittLevi.witt_levi | exact GlobalTheory.WittLevi.witt_levi | (intros; apply GlobalTheory.WittLevi.witt_levi <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WittLevi.witt_levi` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FWittFrameTorusEqLeviElement.lean&line=199#L199)
 -/
 theorem _root_.GlobalTheory.T.wittFrame_torus_eq_levi_element : ∀ {D : D7} (θ : InfFam D), IsInfFam θ → ∀ (ε : Bool) (M : HSp D) (r : ℕ)
     (Xf Yf : Matrix (Fin M.rank) (Fin r) D.host.E), GlobalTheory.SiegelSet.IsWittFrame D.sp.cm.sig M.gram Xf Yf →

@@ -10,8 +10,10 @@ open scoped TensorProduct Matrix
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.ThetaOntoF.exists_thV_eqF_k | exact _root_.GlobalTheory.ThetaOntoF.exists_thV_eqF_k | (intros; apply _root_.GlobalTheory.ThetaOntoF.exists_thV_eqF_k <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThetaOntoF.exists_thV_eqF_k` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicArithmetic%2FFoundations%2FGaloisRepresentations%2FThetaParseval%2FThetaKernels%2FExistsThVEqFK.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.schrodinger_model_intertwining : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     _root_.UpperTheory.TP.W.GoodK σ B → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

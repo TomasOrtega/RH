@@ -7,8 +7,10 @@ open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj Alg
 open scoped CategoryTheory.Obj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.ZJ
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ZJ.DenseSplit.exists_dense_splitOn | exact GlobalTheory.ZJ.DenseSplit.exists_dense_splitOn | (intros; apply GlobalTheory.ZJ.DenseSplit.exists_dense_splitOn <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ZJ.DenseSplit.exists_dense_splitOn` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDegenerationProofs%2FExistsDenseClosedPointsChartSplitting.lean&line=37#L37)
 -/
 theorem _root_.GlobalTheory.T.exists_dense_closedPoints_chartSplitting : ∀ (C : Core) (L : C.Law), C.HasTests → C.HasCharts → letI := L.grp; letI := L.comm; ∀ z : C.Z, ∃ (R : Type) (_ : CommRing R) (_ : IsDomain R) (_ : IsNoetherianRing R) (t : Sp R ⟶ C.Z) (_ : IsImmersion t), t (⊥ : PrimeSpectrum R) = z ∧ ∃ (Ch : Charts ((Over.pullback t).obj C.GG).left) (d : ℕ) (c : Fin d → Ch.Cl) (Sg : Set (Sp R)), Dense Sg ∧ Ch.SplitOn c Sg ∧ ∀ x ∈ Sg, IsClosed ({t x} : Set C.Z) := by
   first | exact @GlobalTheory.ZJ.DenseSplit.exists_dense_splitOn | exact GlobalTheory.ZJ.DenseSplit.exists_dense_splitOn | (intros; apply GlobalTheory.ZJ.DenseSplit.exists_dense_splitOn <;> assumption)

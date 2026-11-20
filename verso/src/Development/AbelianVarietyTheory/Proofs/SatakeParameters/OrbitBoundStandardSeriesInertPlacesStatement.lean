@@ -9,8 +9,10 @@ open Formalism.L2.Th1.CM (MaximalUnramifiedExtension)
 open Formalism.L2.Th1.D (F1 F2 OwOK TrDual addC thetaInZ sumE)
 open Formalism.InvariantFactorPaths.G7 (UnrOK IsLawOfLog cob)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.OrbitBoundStdRec.orbit_bound_rec | exact GlobalTheory.OrbitBoundStdRec.orbit_bound_rec | (intros; apply GlobalTheory.OrbitBoundStdRec.orbit_bound_rec <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.OrbitBoundStdRec.orbit_bound_rec` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FOrbitBoundStandardSeriesInertPlaces.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.orbitBound_standardSeries_inertPlaces : ∀ (D : D7) (L : SizeData₂ D) (X : Inst D L) (K : Consts) (Ee : OrbitPlaces.Ent D), OrbitPlaces.Shape D L X Ee → (∀ u, ∀ i < D.R.m, ∀ t ∈ D.host.TT, Ee.row u i (false, t) 0 - Ee.row u i (false, t) 1 ≤ 2 * L.sc.a) → 5 ≤ K.dl1 → 4 ≤ K.dl2 → BeFam D Ee.ep Ee.be → (Ee.sg = fun _ _ => -1) → OrbitPlaces.OrbitBoundWithoutOperator Ee X K := by
   first | exact @GlobalTheory.OrbitBoundStdRec.orbit_bound_rec | exact GlobalTheory.OrbitBoundStdRec.orbit_bound_rec | (intros; apply GlobalTheory.OrbitBoundStdRec.orbit_bound_rec <;> assumption)

@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.InvariantRad
 open MeasureTheory GlobalTheory.IndefiniteRowSideFullHecke.InvariantRadonFibre
 open scoped ENNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.QuotientMeasureCompact.compactClause | exact GlobalTheory.QuotientMeasureCompact.compactClause | (intros; apply GlobalTheory.QuotientMeasureCompact.compactClause <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.QuotientMeasureCompact.compactClause` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FGlobalInterpolation%2FCompactSubgroupQuotientInvariantMeasure.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.compactSubgroup_quotient_invariant_measure : CompactClause := by
   first | exact @GlobalTheory.QuotientMeasureCompact.compactClause | exact GlobalTheory.QuotientMeasureCompact.compactClause | (intros; apply GlobalTheory.QuotientMeasureCompact.compactClause <;> assumption)

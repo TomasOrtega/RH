@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IwasawaGaugeDefinite
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MeasurableSetHsBall
 open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheory.Count GlobalTheory.FlagMeas GlobalTheory.IwConst
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IwConst.gau_definite_and_volume | exact GlobalTheory.IwConst.gau_definite_and_volume | (intros; apply GlobalTheory.IwConst.gau_definite_and_volume <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IwConst.gau_definite_and_volume` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FIwasawaGaugeDefiniteAndUnitBodyVolume.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.iwasawaGauge_definite_and_unitBody_volume : ∀ (n : ℕ), ∀ (dN dM dK dL : ℕ) (EN : Fin dN → Matrix (Fin n) (Fin n) ℂ) (EM : Fin dM → Matrix (Fin n) (Fin n) ℂ) (EK : Fin dK → Matrix (Fin n) (Fin n) ℂ) (EL : Fin dL → Matrix (Fin n) (Fin n) ℂ), IsON EN → IsON EM → IsON EK → IsON EL → LieRel EN EM EK EL → dK = dN + dL → (∀ v, gau EN EM EK EL v = 0 → v = 0) ∧ volume {v | gau EN EM EK EL v ≤ 1} = ENNReal.ofReal ((2 : ℝ) ^ ((dN : ℝ) / 2)) * ballVol (2 * dN + dM) * ballVol dL := by
   first | exact @GlobalTheory.IwConst.gau_definite_and_volume | exact GlobalTheory.IwConst.gau_definite_and_volume | (intros; apply GlobalTheory.IwConst.gau_definite_and_volume <;> assumption)

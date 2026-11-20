@@ -5,8 +5,10 @@ open AlgebraicGeometry CategoryTheory Limits NumberField IsLocalRing Topological
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R Formalism.L2.Pj
 open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFam GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.TorRef GlobalTheory.Cartier
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AbLocusOpenGlobal.isOpen_abLocus_gmod | exact GlobalTheory.AbLocusOpenGlobal.isOpen_abLocus_gmod | (intros; apply GlobalTheory.AbLocusOpenGlobal.isOpen_abLocus_gmod <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AbLocusOpenGlobal.isOpen_abLocus_gmod` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FIsOpenAbelianLocus.lean&line=77#L77)
 -/
 theorem _root_.GlobalTheory.T.isOpen_abelian_locus : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H} {Xo : Moduli D l} {c : Coeff l} (Z : GMod Xo c), IsOpen (abLocus Z.t.G) := by
   first | exact @GlobalTheory.AbLocusOpenGlobal.isOpen_abLocus_gmod | exact GlobalTheory.AbLocusOpenGlobal.isOpen_abLocus_gmod | (intros; apply GlobalTheory.AbLocusOpenGlobal.isOpen_abLocus_gmod <;> assumption)

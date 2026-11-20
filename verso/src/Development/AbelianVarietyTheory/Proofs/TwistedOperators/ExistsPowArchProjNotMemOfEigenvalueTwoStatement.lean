@@ -19,8 +19,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Chamber GlobalTheory.TruncKer GlobalTheory.Cusp
 open Polynomial
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Twist.exists_pow_projArch_not_mem_of_eigen_two | exact GlobalTheory.Twist.exists_pow_projArch_not_mem_of_eigen_two | (intros; apply GlobalTheory.Twist.exists_pow_projArch_not_mem_of_eigen_two <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Twist.exists_pow_projArch_not_mem_of_eigen_two` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsPowArchProjNotMemOfEigenvalueTwo.lean&line=26#L26)
 -/
 theorem _root_.GlobalTheory.T.exists_pow_archProj_not_mem_of_eigenvalue_two : ∀ (D : D7) (V : HSp D) (g : GF V) (x : V.V), x ≠ 0 → GlobalTheory.Cusp.ratAct D.sp.cm V g x = (2 : D.host.E) • x → ∀ (w : InfinitePlace D.host.F) (K : Set (GArch D.sp.cm.sig V.gram w)), IsCompact K → ∃ n : ℕ, projArch D.sp.cm.sig V.gram w (rat V (g ^ n)) ∉ K := by
   first | exact @GlobalTheory.Twist.exists_pow_projArch_not_mem_of_eigen_two | exact GlobalTheory.Twist.exists_pow_projArch_not_mem_of_eigen_two | (intros; apply GlobalTheory.Twist.exists_pow_projArch_not_mem_of_eigen_two <;> assumption)

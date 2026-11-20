@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.St
 import GroundTheory.AutomorphicForms.MultiplicityOne.Injective
 open NumberField IsDedekindDomain GlobalTheory.CuspRep Formalism.UG GlobalTheory.LFun Matrix MeasureTheory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.JSW.MirSemi.locSpan_rightInv | exact GlobalTheory.JSW.MirSemi.locSpan_rightInv | (intros; apply GlobalTheory.JSW.MirSemi.locSpan_rightInv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.JSW.MirSemi.locSpan_rightInv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSemiLocalSpanRightInvariantOfTrivialInfinityFins.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.semiLocalSpan_rightInvariant_of_trivial_infinity_finset : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (S : Finset (HeightOneSpectrum (𝓞 E))) (F₀ : GA E a → ℂ) (k : GA E a), GeneralLinearGroup.map (pInf E) k = 1 → (∀ w ∈ S, GeneralLinearGroup.map ((pLoc E w).comp (pFin E)) k = 1) → (∀ g, F₀ (g * k) = F₀ g) → ∀ F ∈ GlobalTheory.JSW.MirSemi.locSpan S F₀, ∀ g, F (g * k) = F g := by
   first | exact @GlobalTheory.JSW.MirSemi.locSpan_rightInv | exact GlobalTheory.JSW.MirSemi.locSpan_rightInv | (intros; apply GlobalTheory.JSW.MirSemi.locSpan_rightInv <;> assumption)

@@ -10,8 +10,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.exists_sumF_of_coeff | exact GlobalTheory.Mum.exists_sumF_of_coeff | (intros; apply GlobalTheory.Mum.exists_sumF_of_coeff <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.exists_sumF_of_coeff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsAdicSumFieldOfCoeffTendstoZero.lean&line=63#L63)
 -/
 theorem _root_.GlobalTheory.T.exists_adic_sum_field_of_coeff_tendsto_zero : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R], IsAdicComplete (maximalIdeal R) R → ∀ (F : Type) [Field F] [Algebra (FractionRing R) F] (Jx : Type) [Fintype Jx] (g : Jx → F) (Ix : Type) (c : Ix → Jx → R), (∀ n : ℕ, {i | ¬ ∀ k, c i k ∈ maximalIdeal R ^ n}.Finite) → ∃ s : F, GlobalTheory.UT.SumF (maximalIdeal R) F (fun i => ∑ k, algebraMap (FractionRing R) F (algebraMap R _ (c i k)) * g k) s := by
   first | exact @GlobalTheory.Mum.exists_sumF_of_coeff | exact GlobalTheory.Mum.exists_sumF_of_coeff | (intros; apply GlobalTheory.Mum.exists_sumF_of_coeff <;> assumption)

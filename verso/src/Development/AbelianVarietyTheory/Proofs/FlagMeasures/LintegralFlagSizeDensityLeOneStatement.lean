@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LintegralFlagSizeDen
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.IsGaugeAll
 open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheory.Count GlobalTheory.FlagMeas
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DensityIntegral.lintegral_dens_le_one | exact GlobalTheory.DensityIntegral.lintegral_dens_le_one | (intros; apply GlobalTheory.DensityIntegral.lintegral_dens_le_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DensityIntegral.lintegral_dens_le_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FLintegralFlagSizeDensityLeOne.lean&line=44#L44)
 -/
 theorem _root_.GlobalTheory.T.lintegral_flagSizeDensity_le_one : ∀ (n f a : ℕ) (j : Fin a → ℕ), 1 ≤ f → (∀ i, 1 ≤ j i) → 2 * ∑ i, j i + 1 ≤ n → ∫⁻ τ in simplexH a, ENNReal.ofReal (dens n f j τ) ≤ 1 := by
   first | exact @GlobalTheory.DensityIntegral.lintegral_dens_le_one | exact GlobalTheory.DensityIntegral.lintegral_dens_le_one | (intros; apply GlobalTheory.DensityIntegral.lintegral_dens_le_one <;> assumption)

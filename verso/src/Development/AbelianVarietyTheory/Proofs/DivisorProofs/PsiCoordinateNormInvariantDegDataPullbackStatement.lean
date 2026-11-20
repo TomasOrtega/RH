@@ -13,8 +13,10 @@ open GlobalTheory.Poinc
 open MonObj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnifTorsK.psiNormAt_pull | exact GlobalTheory.UnifTorsK.psiNormAt_pull | (intros; apply GlobalTheory.UnifTorsK.psiNormAt_pull <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnifTorsK.psiNormAt_pull` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPsiCoordinateNormInvariantDegDataPullback.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.psiCoordinate_norm_invariant_degData_pullback : ∀ (p : ℕ) [Fact p.Prime] (V V' : Type) [CommRing V] [IsDomain V] [IsLocalRing V] [CommRing V'] [IsDomain V'] [IsLocalRing V'] [Algebra (FractionRing V) (PadicAlgCl p)] [Algebra (FractionRing V') (PadicAlgCl p)] (φ : V →+* V'), (∀ v : V, algebraMap (FractionRing V) (PadicAlgCl p) (algebraMap V _ v) = algebraMap (FractionRing V') (PadicAlgCl p) (algebraMap V' _ (φ v))) → (∀ v : V', ‖algebraMap (FractionRing V') (PadicAlgCl p) (algebraMap V' _ v)‖ ≤ 1) → ∀ (D : DegPre V) (D' : DegPre V') (hD : IsPullDeg φ D D') (χ : D'.X) (r : ℝ), GlobalTheory.UnifTorsK.PsiNormAt p D (hD.xe χ) r ↔ GlobalTheory.UnifTorsK.PsiNormAt p D' χ r := by
   first | exact @GlobalTheory.UnifTorsK.psiNormAt_pull | exact GlobalTheory.UnifTorsK.psiNormAt_pull | (intros; apply GlobalTheory.UnifTorsK.psiNormAt_pull <;> assumption)

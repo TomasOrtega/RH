@@ -10,8 +10,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.LocMod GlobalTheory.SplitWeil ValuativeRel
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TensorLatO.isSBHalf_tensorAt_latO | exact GlobalTheory.TensorLatO.isSBHalf_tensorAt_latO | (intros; apply GlobalTheory.TensorLatO.isSBHalf_tensorAt_latO <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TensorLatO.isSBHalf_tensorAt_latO` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FSchwartzBruhatHalfTensorSplitPlaceSelfDual.lean&line=104#L104)
 -/
 theorem _root_.GlobalTheory.T.schwartzBruhatHalf_tensor_split_place_selfDual : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (M : Lat S) (M' : Lat T), IsSelfDualC S M → IsSelfDualC T M' → ∀ (P : LocPl ψ S T M M') (e : AE D), e * P.q.e = 0 → ∀ Φ : WO S T → ℂ, IsSBHalf e (latO S T (M : Set _) (M' : Set _) fun _ => True) Φ → ∀ Ψ ∈ SB (Matrix P.Y P.Y' P.k), IsSBHalf (e + P.q.e) (latO S T (M : Set _) (M' : Set _) fun _ => True) ((ofSplit P.q).tensorAt P.FS P.FT Φ Ψ) := by
   first | exact @GlobalTheory.TensorLatO.isSBHalf_tensorAt_latO | exact GlobalTheory.TensorLatO.isSBHalf_tensorAt_latO | (intros; apply GlobalTheory.TensorLatO.isSBHalf_tensorAt_latO <;> assumption)

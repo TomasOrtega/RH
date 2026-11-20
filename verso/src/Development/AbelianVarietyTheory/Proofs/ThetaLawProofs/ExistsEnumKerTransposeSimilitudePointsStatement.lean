@@ -14,8 +14,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.AbLaw
 open GlobalTheory.KeyKa
 
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KeyKa.exists_enum_ker_transpose | exact GlobalTheory.KeyKa.exists_enum_ker_transpose | (intros; apply GlobalTheory.KeyKa.exists_enum_ker_transpose <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KeyKa.exists_enum_ker_transpose` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FThetaLawProofs%2FExistsEnumKerTransposeSimilitudePoints.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.exists_enum_ker_transpose_similitude_points : Out.Laws → ∀ (K : Type) [Field K] [IsAlgClosed K] (x : KeyIn K) (m : ℕ) (al : Matrix (Fin 4) (Fin 4) ℤ), (m : K) ≠ 0 → al.transpose * al = (m : ℤ) • (1 : Matrix (Fin 4) (Fin 4) ℤ) → ∃ ξ : (Fin 4 → Fin (m ^ x.P.g)) → Fin 4 → Pt x, (∀ I I', I ≠ I' → ∀ p : Sp K, ∃ r, (ξ I r).left p ≠ (ξ I' r).left p) ∧ (∀ I c, (List.ofFn fun r : Fin 4 => ξ I r ^ al r c).prod = 1) := by
   first | exact @GlobalTheory.KeyKa.exists_enum_ker_transpose | exact GlobalTheory.KeyKa.exists_enum_ker_transpose | (intros; apply GlobalTheory.KeyKa.exists_enum_ker_transpose <;> assumption)

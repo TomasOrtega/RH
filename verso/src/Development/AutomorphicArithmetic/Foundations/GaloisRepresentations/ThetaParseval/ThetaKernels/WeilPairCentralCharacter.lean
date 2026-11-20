@@ -11,8 +11,10 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.WeilContF.continuous_transportF_apply_k | exact _root_.GlobalTheory.WeilContF.continuous_transportF_apply_k | (intros; apply _root_.GlobalTheory.WeilContF.continuous_transportF_apply_k <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WeilContF.continuous_transportF_apply_k` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicArithmetic%2FFoundations%2FGaloisRepresentations%2FThetaParseval%2FThetaKernels%2FContinuousTransportFApplyK.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.weil_pair_central_character : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     _root_.UpperTheory.TP.W.GoodK σ B → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

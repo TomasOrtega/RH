@@ -9,8 +9,10 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 open GlobalTheory.Doubling (absE)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SplitUniq.split2_unique_skew | exact GlobalTheory.SplitUniq.split2_unique_skew | (intros; apply GlobalTheory.SplitUniq.split2_unique_skew <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SplitUniq.split2_unique_skew` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSplitFunctionsAdaptedPlane.lean&line=119#L119)
 -/
 theorem _root_.GlobalTheory.T.split_functions_adapted_plane : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (W : Spc F E (a + a')) (d₁ : ℕ) (W₁ : Spc F E d₁) (H' : Plane E (a + a') d₁) (i₀ i₁ r s r₁ s₁ : ℕ) (X : Chars F E), B.IsGood σ → a' < a → W.IsSkew σ B r s → W₁.IsSkew σ B r₁ s₁ → H'.IsAdapted σ B W W₁ i₀ i₁ → ∀ f fa fb fa' fb' : UA σ W.J → ℂ, Split2 W₁ H' X f fa fb → Split2 W₁ H' X f fa' fb' → fa = fa' ∧ fb = fb' := by
   first | exact @GlobalTheory.SplitUniq.split2_unique_skew | exact GlobalTheory.SplitUniq.split2_unique_skew | (intros; apply GlobalTheory.SplitUniq.split2_unique_skew <;> assumption)

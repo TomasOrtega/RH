@@ -22,8 +22,10 @@ open scoped TensorProduct InnerProductSpace ComplexConjugate
 open GlobalTheory.EvenOnto
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EvenOnto.upNe_of_heckeForm | exact GlobalTheory.EvenOnto.upNe_of_heckeForm | (intros; apply GlobalTheory.EvenOnto.upNe_of_heckeForm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EvenOnto.upNe_of_heckeForm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FUpwardThetaLiftNeZeroOfLValueNeZero.lean&line=33#L33)
 -/
 theorem _root_.GlobalTheory.T.upwardThetaLift_ne_zero_of_lValue_ne_zero : ∀ D : D7, GlobalTheory.Core.Rk.IP.HeckeForm D → MetEx D → ZetaNe D → UpNe D := by
   first | exact @GlobalTheory.EvenOnto.upNe_of_heckeForm | exact GlobalTheory.EvenOnto.upNe_of_heckeForm | (intros; apply GlobalTheory.EvenOnto.upNe_of_heckeForm <;> assumption)

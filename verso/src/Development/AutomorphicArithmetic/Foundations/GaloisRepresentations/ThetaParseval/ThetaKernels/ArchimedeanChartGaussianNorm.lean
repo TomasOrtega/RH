@@ -11,8 +11,10 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open GlobalTheory.RealWeil GlobalTheory.RealWeilF
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.ThetaSmoothF.sm_of_thetaF_k | exact _root_.GlobalTheory.ThetaSmoothF.sm_of_thetaF_k | (intros; apply _root_.GlobalTheory.ThetaSmoothF.sm_of_thetaF_k <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThetaSmoothF.sm_of_thetaF_k` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicArithmetic%2FFoundations%2FGaloisRepresentations%2FThetaParseval%2FThetaKernels%2FContDiffHeisIotaK.lean&line=52#L52)
 -/
 theorem _root_.GlobalTheory.T.archimedean_chart_gaussian_norm : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E), _root_.UpperTheory.TP.W.GoodK σ B → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

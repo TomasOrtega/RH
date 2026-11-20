@@ -15,8 +15,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Core.Rk.IP
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Core.Rk.IP.globalFormAt_frameLat | exact GlobalTheory.Core.Rk.IP.globalFormAt_frameLat | (intros; apply GlobalTheory.Core.Rk.IP.globalFormAt_frameLat <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Core.Rk.IP.globalFormAt_frameLat` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FGlobalFormFrameLattice.lean&line=33#L33)
 -/
 theorem _root_.GlobalTheory.T.global_form_frame_lattice : GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.DoublingMethod → ∀ D : D7, SiegelWeilFock D → ∀ A : HSp D, GlobalFormAt A (frameLat A) := by
   first | exact @GlobalTheory.Core.Rk.IP.globalFormAt_frameLat | exact GlobalTheory.Core.Rk.IP.globalFormAt_frameLat | (intros; apply GlobalTheory.Core.Rk.IP.globalFormAt_frameLat <;> assumption)

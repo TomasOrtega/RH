@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.ModelDdcForms
 open ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M GlobalTheory.IndefiniteRowSideFullHecke.ModelDdcForms MeasureTheory
 open scoped ContDiff
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PoincareLocal.rTot_comparable_tSum | exact GlobalTheory.PoincareLocal.rTot_comparable_tSum | (intros; apply GlobalTheory.PoincareLocal.rTot_comparable_tSum <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PoincareLocal.rTot_comparable_tSum` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FBoundaryPotentialComparableTsum.lean&line=36#L36)
 -/
 theorem _root_.GlobalTheory.T.boundary_potential_comparable_tsum : ∀ {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X) {m : ℕ} (L : Fin m → LocPot X) (s : Fin m → X → X → ℂ) (D : Fin m → Set X) (ψ : OpenPartialHomeomorph X (Fin e → ℂ)) (σ : Fin m → Option (Fin e)), IsBoundary A L s D → IsAdaptedPolydisc A D ψ σ → ∃ C : ℝ, 0 < C ∧ ∀ z ∈ Metric.ball (0 : Fin e → ℂ) (1 / 2), ψ.symm z ∉ ⋃ i, D i → C⁻¹ * tSum σ z ≤ rTot L s (ψ.symm z) ∧ rTot L s (ψ.symm z) ≤ C * tSum σ z := by
   first | exact @GlobalTheory.PoincareLocal.rTot_comparable_tSum | exact GlobalTheory.PoincareLocal.rTot_comparable_tSum | (intros; apply GlobalTheory.PoincareLocal.rTot_comparable_tSum <;> assumption)

@@ -11,8 +11,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ConeBump.integral_indicator_disp_ne_zero | exact GlobalTheory.ConeBump.integral_indicator_disp_ne_zero | (intros; apply GlobalTheory.ConeBump.integral_indicator_disp_ne_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ConeBump.integral_indicator_disp_ne_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLocalCompactIdeleVolume.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.local_compact_idele_volume : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (X : Spc F E n) (x₀ : Fin n → E) (K : Subgroup (UA σ X.J)) (v : Pl F) (μK : Measure (KAt K (evFin F v)))

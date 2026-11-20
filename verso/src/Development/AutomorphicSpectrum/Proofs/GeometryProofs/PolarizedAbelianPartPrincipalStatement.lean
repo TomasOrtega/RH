@@ -15,8 +15,10 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsAbLift
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField TensorProduct Filter Topology Matrix
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Relay.polarized_abelian_part_principal | exact GlobalTheory.CompanionTheory.Relay.polarized_abelian_part_principal | (intros; apply GlobalTheory.CompanionTheory.Relay.polarized_abelian_part_principal <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Relay.polarized_abelian_part_principal` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FPolarizedAbelianPartPrincipal.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.polarized_abelian_part_principal : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (r : V →+* ℂ) (tV : SAB H (Sp V)), GlobalTheory.LN.CDvr V → Function.Surjective r → RingHom.ker r = IsLocalRing.maximalIdeal V → GlobalTheory.LN.PolAt tV (Out.jK V) → ∀ P : AbPart tV (spMap r), IsPrincipal P.tB := by
   first | exact @GlobalTheory.CompanionTheory.Relay.polarized_abelian_part_principal | exact GlobalTheory.CompanionTheory.Relay.polarized_abelian_part_principal | (intros; apply GlobalTheory.CompanionTheory.Relay.polarized_abelian_part_principal <;> assumption)

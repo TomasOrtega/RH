@@ -8,8 +8,10 @@ open scoped TensorProduct Matrix
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.AdelicU
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AdeleRing.bezout_units_idempotent | exact GlobalTheory.AdeleRing.bezout_units_idempotent | (intros; apply GlobalTheory.AdeleRing.bezout_units_idempotent <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AdeleRing.bezout_units_idempotent` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFiniteAdeleOrderBezout.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.finite_adele_order_bezout : ∀ (E : Type) [Field E] [NumberField E] (R : Set (FiniteAdeleRing (𝓞 E) E)), (∀ y, y ∈ R ↔ ∀ P : HeightOneSpectrum (𝓞 E), Valued.v (y P) ≤ 1) →
     (∀ a b : FiniteAdeleRing (𝓞 E) E, ∃ u ∈ R, ∃ v ∈ R, ∃ r ∈ R, ∃ r' ∈ R, a = r * (u * a + v * b) ∧ b = r' * (u * a + v * b)) ∧

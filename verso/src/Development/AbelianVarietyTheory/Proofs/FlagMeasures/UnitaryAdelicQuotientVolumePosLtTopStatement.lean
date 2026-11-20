@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnitaryAdelicQuotien
 import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.SameKindIsometric
 open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheory.Count GlobalTheory.FlagMeas
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagMeas.fundDom_volume_pos_lt_top | exact GlobalTheory.FlagMeas.fundDom_volume_pos_lt_top | (intros; apply GlobalTheory.FlagMeas.fundDom_volume_pos_lt_top <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagMeas.fundDom_volume_pos_lt_top` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FUnitaryAdelicQuotientVolumePosLtTop.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.unitary_adelic_quotient_volume_pos_lt_top : VolumeStep → ∀ (I : AutInst) (μf : Measure I.Gf) [SigmaFinite μf] [μf.IsHaarMeasure] (fund : Set I.GA), I.IsFundDom (I.muA μf) fund → ∀ p q : ℕ, HasSig I p q → 2 ≤ p → 0 < I.muA μf fund ∧ I.muA μf fund < ⊤ := by
   first | exact @GlobalTheory.FlagMeas.fundDom_volume_pos_lt_top | exact GlobalTheory.FlagMeas.fundDom_volume_pos_lt_top | (intros; apply GlobalTheory.FlagMeas.fundDom_volume_pos_lt_top <;> assumption)

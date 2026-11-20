@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.SameFo
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Col Formalism.L2.DIV GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Df
 attribute [local instance] GlobalTheory.Mem.Col2.starE
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mem.Df.mtHL_good_basis | exact GlobalTheory.Mem.Df.mtHL_good_basis | (intros; apply GlobalTheory.Mem.Df.mtHL_good_basis <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mem.Df.mtHL_good_basis` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FIntegralFormsHermLatticeGoodAndComplexBasis.lean&line=58#L58)
 -/
 theorem _root_.GlobalTheory.T.integralFormsHermLattice_good_and_complexBasis : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X) (hX : B.fields.Ok) (a : I.ι), (MtHL I hX a).Good ∧ (∃ j : (MtHL I hX a).V →ₛₗ[B.embLL] MtCx I a, ∀ x, j x = toCx I hX a x) ∧ LinearIndependent ℂ (fun i => toCx I hX a ((MtHL I hX a).b i)) ∧ Submodule.span ℂ (Set.range fun i => toCx I hX a ((MtHL I hX a).b i)) = ⊤ := by
   first | exact @GlobalTheory.Mem.Df.mtHL_good_basis | exact GlobalTheory.Mem.Df.mtHL_good_basis | (intros; apply GlobalTheory.Mem.Df.mtHL_good_basis <;> assumption)

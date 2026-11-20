@@ -11,8 +11,10 @@ open GlobalTheory.FlagFibre (Low uni dens)
 open ReciprocityTheory.L2DbarEstimates (V cHess)
 open scoped ContDiff ComplexOrder Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MixDens.total_eq_of_cells | exact GlobalTheory.MixDens.total_eq_of_cells | (intros; apply GlobalTheory.MixDens.total_eq_of_cells <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MixDens.total_eq_of_cells` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FArithmeticDensityPushforwardIntegral.lean&line=226#L226)
 -/
 theorem _root_.GlobalTheory.T.arithmetic_density_pushforward_integral : ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (π : Y ⟶ B) (w : π ≫ q = p) (ι : Type) [Fintype ι] (r : ι → ℕ) (d : ℕ) (e : Fin (d + 1) ≃ Option (Σ a, Low (r a))) (σ : k →+* ℂ) [IsIntegral Y], IsArithVar q 1 → IsArithVar p (d + 1) → Nonempty (AnRead q σ 1) → Nonempty (AnRead p σ (d + 1)) → ∀ (ρ : AlgChart p σ (d + 1) → CxPts p σ → ℝ) (g : AlgChart q σ 1 → CxPts q σ → ℝ), IsDens ρ → IsDens g → (∀ y : CxPts q σ, ∃ (c : AlgChart q σ 1) (c' : AlgChart p σ (d + 1)), y ∈ c.e.source ∧ IsCell e π w c c' ∧ ∀ z ∈ c.e.target, ∫ n : ∀ a, Low (r a) → ℂ, ρ c' (c'.e.symm (pt e z n)) = g c (c.e.symm z)) → total ρ = total g := by
   first | exact @GlobalTheory.MixDens.total_eq_of_cells | exact GlobalTheory.MixDens.total_eq_of_cells | (intros; apply GlobalTheory.MixDens.total_eq_of_cells <;> assumption)

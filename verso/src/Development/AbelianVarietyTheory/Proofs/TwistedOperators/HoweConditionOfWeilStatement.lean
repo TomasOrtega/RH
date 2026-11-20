@@ -12,8 +12,10 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HoweFockReal.howeCond_actT_coinv | exact GlobalTheory.HoweFockReal.howeCond_actT_coinv | (intros; apply GlobalTheory.HoweFockReal.howeCond_actT_coinv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HoweFockReal.howeCond_actT_coinv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FHoweConditionOfWeil.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.howe_condition_of_weil : GlobalTheory.Published.HoweDualityReal → GlobalTheory.FunPr.Hypotheses₂ →
   ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →

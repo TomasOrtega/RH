@@ -18,8 +18,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UT
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KeyIota.main | exact GlobalTheory.KeyIota.main | (intros; apply GlobalTheory.KeyIota.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KeyIota.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUniformizationProofs%2FEndomorphismTorusExtensionPeriodOfAdjoint.lean&line=68#L68)
 -/
 theorem _root_.GlobalTheory.T.endomorphism_torusExtension_period_of_adjoint : LL → TwistBCSpanStatement → TWM.VRatioGtStatement → TWStatement → UUStatement → AllUV fun {V} _ _ _ {ϖ} hϖ {D} Q {F} _ _ {v} hv {A} {G} _ _ U => ∀ E E' : EndU U.toUnifPre, Function.Injective E.h → Function.Injective E'.h → LBIso (cubeLB G ![fst G G ≫ E.aG, snd G G] U.LG.L) (cubeLB G ![fst G G, snd G G ≫ E'.aG] U.LG.L) → ∀ y (g g' : GtPtF D.toPre F), GtPtF.IsIota y g → E.Act g g' → GtPtF.IsIota (E'.h y) g' := by
   first | exact @GlobalTheory.KeyIota.main | exact GlobalTheory.KeyIota.main | (intros; apply GlobalTheory.KeyIota.main <;> assumption)

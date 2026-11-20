@@ -9,8 +9,10 @@ open PositivityTheory.Rg.BcB.G8 PositivityTheory.Rg.BcB.G8.Fin GlobalTheory.Comp
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.UnitTransport.unitConds_of_homeo | exact GlobalTheory.CompanionTheory.UnitTransport.unitConds_of_homeo | (intros; apply GlobalTheory.CompanionTheory.UnitTransport.unitConds_of_homeo <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.UnitTransport.unitConds_of_homeo` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FUnitConditionsOfEquiv.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.unit_conditions_of_equiv : ∀ {G G' : Type} [Group G] [TopologicalSpace G] [Group G'] [TopologicalSpace G'] (e : G ≃ₜ* G') (θ : G →* G) (θ' : G' →* G')
   (K : Subgroup G) (K' : Subgroup G') (d : G) (f : G → ℂ) (f' : G' → ℂ), (∀ x, e (θ x) = θ' (e x)) → (∀ x, x ∈ K ↔ e x ∈ K') →

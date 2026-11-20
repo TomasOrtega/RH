@@ -7,8 +7,10 @@ open scoped CategoryTheory.Obj
 open GlobalTheory GlobalTheory.CM
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PointAlg.exists_numberField_point_of_cmLat | exact GlobalTheory.PointAlg.exists_numberField_point_of_cmLat | (intros; apply GlobalTheory.PointAlg.exists_numberField_point_of_cmLat <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PointAlg.exists_numberField_point_of_cmLat` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FCubicalLineBundles%2FExistsNumberFieldPointOfCmPeriodLattice.lean&line=114#L114)
 -/
 theorem _root_.GlobalTheory.T.exists_numberField_point_of_cmPeriodLattice : CMCurve → CMPoint → ThetaUnifAV → Out.Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (FU : FamilyUnif Xo (algebraMap (KA l) ℂ) ty) (i : Fin FU.n) (Pe : (FU.Di i).La →+ (Fin g → ℂ)) (hP : IsPeriod (FU.Di i) ty Pe) (p q : ℕ), Nonempty (CMLat hP p q) → ∃ (K₁ : IntermediateField ℚ ℂ) (hk : KA l ≤ K₁) (y : Sp K₁ ⟶ Xo.X), FiniteDimensional ℚ K₁ ∧ y ≫ Xo.s = spMap (IntermediateField.inclusion hk).toRingHom ∧ spMap (algebraMap K₁ ℂ) ≫ y = FU.u i Pe := by
   first | exact @GlobalTheory.PointAlg.exists_numberField_point_of_cmLat | exact GlobalTheory.PointAlg.exists_numberField_point_of_cmLat | (intros; apply GlobalTheory.PointAlg.exists_numberField_point_of_cmLat <;> assumption)

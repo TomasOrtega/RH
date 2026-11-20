@@ -16,8 +16,10 @@ set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 800000
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WeilTwistExists.exists_isWeil | exact GlobalTheory.WeilTwistExists.exists_isWeil | (intros; apply GlobalTheory.WeilTwistExists.exists_isWeil <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WeilTwistExists.exists_isWeil` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FExistsWeilRepGoodTwist.lean&line=37#L37)
 -/
 theorem _root_.GlobalTheory.T.exists_weilRep_good_twist : ∀ (D : D7) (S T : HSp D) (B : Base S T), GlobalTheory.Published.WeilRepresentationUnitaryPair → B.Good → IsStdChar D B.F.ψ (-1) → ∀ t : Twist D Circle, t.Good → ∃ ω, B.IsWeil t.chi ω := by
   first | exact @GlobalTheory.WeilTwistExists.exists_isWeil | exact GlobalTheory.WeilTwistExists.exists_isWeil | (intros; apply GlobalTheory.WeilTwistExists.exists_isWeil <;> assumption)

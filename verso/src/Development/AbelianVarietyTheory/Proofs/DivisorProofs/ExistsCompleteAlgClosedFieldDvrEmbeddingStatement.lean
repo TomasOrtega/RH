@@ -9,8 +9,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompleteDvrToComplex.exists_complete_closed_field | exact GlobalTheory.CompleteDvrToComplex.exists_complete_closed_field | (intros; apply GlobalTheory.CompleteDvrToComplex.exists_complete_closed_field <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompleteDvrToComplex.exists_complete_closed_field` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsCompleteAlgClosedFieldDvrEmbedding.lean&line=42#L42)
 -/
 theorem _root_.GlobalTheory.T.exists_complete_algClosed_field_dvr_embedding : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [CharZero V], IsAdicComplete (IsLocalRing.maximalIdeal V) V → Finite (IsLocalRing.ResidueField V) → ∃ (C : Type) (_ : NontriviallyNormedField C) (_ : IsUltrametricDist C) (_ : CompleteSpace C) (_ : IsAlgClosed C) (_ : CharZero C) (_ : Algebra (FractionRing V) C), CExt V (IsLocalRing.maximalIdeal V) C ∧ Nonempty (C ≃+* ℂ) := by
   first | exact @GlobalTheory.CompleteDvrToComplex.exists_complete_closed_field | exact GlobalTheory.CompleteDvrToComplex.exists_complete_closed_field | (intros; apply GlobalTheory.CompleteDvrToComplex.exists_complete_closed_field <;> assumption)

@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsEqnI
 open CategoryTheory Limits AlgebraicGeometry TopologicalSpace Opposite
 open ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.IndefiniteRowSideFullHecke.SpecialFibreUnits GlobalTheory.Cartier
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DivGlue.glue | exact GlobalTheory.DivGlue.glue | (intros; apply GlobalTheory.DivGlue.glue <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DivGlue.glue` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsGlobalSectionUnitStalk.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.exists_global_section_unit_stalk : ∀ (Y Z : Scheme.{0}) (ι : Y ⟶ Z) (D : LB Z), D.IsLB → ∀ t : (D.pull ι).Gen, t.IsGen →
   ∀ (M : ℕ) (a : ∀ i, Γ(Z, D.U i)),

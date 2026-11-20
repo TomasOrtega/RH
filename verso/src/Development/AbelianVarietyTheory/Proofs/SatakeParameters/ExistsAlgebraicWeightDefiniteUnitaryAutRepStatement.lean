@@ -10,8 +10,10 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory.LocLanglands GlobalTheory.HeckeGal GlobalTheory.LocGL GlobalTheory.GalOfCusp
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open GlobalTheory.GalCut GlobalTheory.UnitaryBC GlobalTheory.Cong GlobalTheory.Published GlobalTheory.AboveL
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Cong.exists_weight_of_isAutRepU | exact GlobalTheory.Cong.exists_weight_of_isAutRepU | (intros; apply GlobalTheory.Cong.exists_weight_of_isAutRepU <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Cong.exists_weight_of_isAutRepU` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FExistsAlgebraicWeightDefiniteUnitaryAutRep.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.exists_algebraicWeight_definiteUnitaryAutRep : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a : ℕ) (U : Submodule ℂ (UA E a → ℂ)), IsAutRepU U → ∃ lam : (E →+* ℂ) → DomWeight a, ∀ τ, HasWeightAt U τ (lam τ) := by
   first | exact @GlobalTheory.Cong.exists_weight_of_isAutRepU | exact GlobalTheory.Cong.exists_weight_of_isAutRepU | (intros; apply GlobalTheory.Cong.exists_weight_of_isAutRepU <;> assumption)

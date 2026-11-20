@@ -9,8 +9,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.S Fo
 open scoped InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SeeConjPlaces.pg_not_isConjPl | exact GlobalTheory.SeeConjPlaces.pg_not_isConjPl | (intros; apply GlobalTheory.SeeConjPlaces.pg_not_isConjPl <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SeeConjPlaces.pg_not_isConjPl` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FLevelPlacesNotIsConjPlaceRealDat.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.levelPlaces_not_isConjPlace_realDat : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), R.toLevCh.Is A.μ0 → R.IsGrp F → ∀ PP ∈ R.Pg, ∀ PP' ∈ R.Pg, ¬ IsConjPl (D := D) PP PP' := by
   first | exact @GlobalTheory.SeeConjPlaces.pg_not_isConjPl | exact GlobalTheory.SeeConjPlaces.pg_not_isConjPl | (intros; apply GlobalTheory.SeeConjPlaces.pg_not_isConjPl <;> assumption)

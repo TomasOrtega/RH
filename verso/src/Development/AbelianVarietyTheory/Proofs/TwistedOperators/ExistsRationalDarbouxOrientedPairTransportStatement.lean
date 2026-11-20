@@ -14,8 +14,10 @@ open scoped TensorProduct GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMode
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SquareAgree.exists_darboux_transport | exact GlobalTheory.SquareAgree.exists_darboux_transport | (intros; apply GlobalTheory.SquareAgree.exists_darboux_transport <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SquareAgree.exists_darboux_transport` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsRationalDarbouxOrientedPairTransport.lean&line=117#L117)
 -/
 theorem _root_.GlobalTheory.T.exists_rational_darboux_orientedPair_transport : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsInfFam θ →
     ∀ (ε : Bool) (S X : HSp D) (A : Fr S) (B : Fr X) {d : ℕ} (e : Fin X.rank ≃ Fin d)

@@ -16,8 +16,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.ThetaDens
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThetaDens.contDiff_of_tendstoUniformly_words | exact GlobalTheory.ThetaDens.contDiff_of_tendstoUniformly_words | (intros; apply GlobalTheory.ThetaDens.contDiff_of_tendstoUniformly_words <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThetaDens.contDiff_of_tendstoUniformly_words` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FThetaWordLimitsSmoothAlongRealPoints.lean&line=75#L75)
 -/
 theorem _root_.GlobalTheory.T.theta_word_limits_smooth_along_real_points : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ θ : InfFam D, IsInfFam θ → ∀ (S T : HSp D) (u : ℕ → WO S T → ℂ), (∀ j, IsThetaFunO ψ S T (u j)) → ∀ F : List (D.what₂.Tau × Fin T.rank × Fin S.rank × Bool) → WO S T → ℂ, (∀ l, TendstoUniformly (fun j => GlobalTheory.Size.wordAct (GlobalTheory.Size.heisDer ψ θ) l (u j)) (F l) Filter.atTop) → ∀ (l : List (D.what₂.Tau × Fin T.rank × Fin S.rank × Bool)) (k : ℕ) (L : (Fin k → ℝ) →+ WO S T), Continuous L → (∀ t, (L t).map (finPart D) = 0) → ∀ w, ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) fun t => F l (w + L t) := by
   first | exact @GlobalTheory.ThetaDens.contDiff_of_tendstoUniformly_words | exact GlobalTheory.ThetaDens.contDiff_of_tendstoUniformly_words | (intros; apply GlobalTheory.ThetaDens.contDiff_of_tendstoUniformly_words <;> assumption)

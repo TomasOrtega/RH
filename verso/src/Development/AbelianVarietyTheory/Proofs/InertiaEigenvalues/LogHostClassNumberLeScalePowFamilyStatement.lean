@@ -10,8 +10,10 @@ import Formalism.SharpRestriction.LevelLetterCocycles.ArcLiftingSetup
 import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.BaseSizes
 open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations GlobalTheory.NLink
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.log_hE_le_pow | exact GlobalTheory.log_hE_le_pow | (intros; apply GlobalTheory.log_hE_le_pow <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.log_hE_le_pow` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FLogHostClassNumberLeScalePowFamily.lean&line=86#L86)
 -/
 theorem _root_.GlobalTheory.T.log_hostClassNumber_le_scale_pow_family : ∀ {eps : ℝ} (Fm : FamP eps), ∃ C x0 : ℝ, ∀ x ≥ x0, Fm.x1 < x → ∀ i : Fm.Ix x, Real.log (Formalism.MainNotions.N.hE (Fm.D x i).host : ℝ) ≤ C * x ^ C := by
   first | exact @GlobalTheory.log_hE_le_pow | exact GlobalTheory.log_hE_le_pow | (intros; apply GlobalTheory.log_hE_le_pow <;> assumption)

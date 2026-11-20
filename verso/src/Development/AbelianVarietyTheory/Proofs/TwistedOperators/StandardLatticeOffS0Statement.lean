@@ -9,8 +9,10 @@ open GlobalTheory.FinPl (Lat idAt idOff intAt grpAt grpOff MxAt latV latA InK Mo
 open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AscFin.stdAt_pcBF | exact GlobalTheory.AscFin.stdAt_pcBF | (intros; apply GlobalTheory.AscFin.stdAt_pcBF <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AscFin.stdAt_pcBF` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FStandardLatticeOffS0.lean&line=152#L152)
 -/
 theorem _root_.GlobalTheory.T.standard_lattice_off_S0 : OnStd fun {D} _ _ {sc} {G} W F => ∀ ρ (h : 2 * ρ + 2 ≤ D.R.m), ∀ v ∉ G.pl.S0, StdAt (F.dB ρ h) (F.dJ ρ h) (pcBF W F ρ h) (G.Λ (.grid (2 * ρ + 2) 0)) (G.Λ (.grid (2 * ρ + 1) 0)) v := by
   first | exact @GlobalTheory.AscFin.stdAt_pcBF | exact GlobalTheory.AscFin.stdAt_pcBF | (intros; apply GlobalTheory.AscFin.stdAt_pcBF <;> assumption)

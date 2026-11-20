@@ -9,8 +9,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.AllWt GlobalTheory.FlatLine GlobalTheory.SlopeRec GlobalTheory.CovTop GlobalTheory.BigTop GlobalTheory.RefSum GlobalTheory.FactorDepth GlobalTheory.CharDepth GlobalTheory.FGDepth GlobalTheory.PtTie GlobalTheory.PlaceInt
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RefAway.refExp_le_of_oscLe | exact GlobalTheory.RefAway.refExp_le_of_oscLe | (intros; apply GlobalTheory.RefAway.refExp_le_of_oscLe <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RefAway.refExp_le_of_oscLe` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FBaseLocusExponentLeOscillationNonTypePrime.lean&line=125#L125)
 -/
 theorem _root_.GlobalTheory.T.baseLocusExponent_le_oscillation_nonTypePrime : ∀ (D : D7) (T : Core D), LawsM T → ∀ (_ : ErrX D) (j : ℕ), InR D j → ∀ (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ) (cst : ℝ), Dom a n → LastPos (T.Q.Dw j) a → ∑ f : Lt1 (T.Q.Dw j), 2 * rk f ≤ n → 2 * D.R.r ≤ n → JetNum D (DF (T.Q.Dw j) a) cst → ∀ (q : ℕ) [Fact q.Prime], (∀ k, q ≠ D.host.g k) → ∀ b : ℝ, OscLe (T.Q.Xo j) T.Q.c q (gap (T.Q.Dw j) a) b → refExp_vp (T.U j) cst (wtZ a n) q ≤ (b : EReal) := by
   first | exact @GlobalTheory.RefAway.refExp_le_of_oscLe | exact GlobalTheory.RefAway.refExp_le_of_oscLe | (intros; apply GlobalTheory.RefAway.refExp_le_of_oscLe <;> assumption)

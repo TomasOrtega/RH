@@ -7,8 +7,10 @@ open NumberField IsDedekindDomain Matrix MeasureTheory Filter Topology Polynomia
 open GlobalTheory.CuspRep GlobalTheory.UnitaryBC PositivityTheory.Rg.Rs GlobalTheory.CompanionTheory.Conc
 open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Automorphic.AutomorphicForm
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.KillU.killU | exact GlobalTheory.CompanionTheory.KillU.killU | (intros; apply GlobalTheory.CompanionTheory.KillU.killU <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.KillU.killU` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FExistsExponentPolynomialDiscrete.lean&line=279#L279)
 -/
 theorem _root_.GlobalTheory.T.exists_exponent_polynomial_discrete : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (N r : ℕ), 0 < r → r < N → ∃ D : ℕ, ∀ V : Submodule ℂ (Sm E N), IsDiscrete V →
   (∀ τ : E →+* ℂ, ∃ m, HasInfCharGL V τ m) → ∀ φ ∈ V, ∃ p : ℂ[X], p.Monic ∧ p.natDegree ≤ D ∧ An.Kill r φ.1 p ∧

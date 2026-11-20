@@ -4,8 +4,10 @@ import Mathlib
 open MeasureTheory
 open scoped NNReal ENNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.bruhat_weight_exists | exact GlobalTheory.bruhat_weight_exists | (intros; apply GlobalTheory.bruhat_weight_exists <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.bruhat_weight_exists` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsPositiveAveragingFunction.lean&line=7#L7)
 -/
 theorem _root_.GlobalTheory.T.exists_positive_averaging_function : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G]
     [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G] (P K : Subgroup G) (μP : Measure P),

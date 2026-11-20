@@ -11,8 +11,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.ConjTwist GlobalTheory.GalTw ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlatLift.flat_eq_unit_smul_om | exact GlobalTheory.FlatLift.flat_eq_unit_smul_om | (intros; apply GlobalTheory.FlatLift.flat_eq_unit_smul_om <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlatLift.flat_eq_unit_smul_om` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FFlatVectorEqUnitMulCentralTranslateLiftVector.lean&line=52#L52)
 -/
 theorem _root_.GlobalTheory.T.flatVector_eq_unit_mul_centralTranslate_liftVector : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Hk3.Core R F → QGuard R → ∀ (i : Fin D.R.m) (t : T0), VStd D i → ∀ f, IsFlatVec R i t f → ∃ (z : GA D (Vc D i)) (c : ℂ), IsCentAt i (R.Q t) z ∧ UnitOff (GlobalTheory.TwistField.tupPrime R t) c ∧ f = c • R.ωP i t (z, 1) (R.vP i t) := by
   first | exact @GlobalTheory.FlatLift.flat_eq_unit_smul_om | exact GlobalTheory.FlatLift.flat_eq_unit_smul_om | (intros; apply GlobalTheory.FlatLift.flat_eq_unit_smul_om <;> assumption)

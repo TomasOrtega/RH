@@ -24,8 +24,10 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 open scoped Formalism.Per NNReal
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AinfRinv.rinv_mod_pow | exact GlobalTheory.AinfRinv.rinv_mod_pow | (intros; apply GlobalTheory.AinfRinv.rinv_mod_pow <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AinfRinv.rinv_mod_pow` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FAinfRightInverseUpToPowModLPow.lean&line=26#L26)
 -/
 theorem _root_.GlobalTheory.T.ainf_rightInverse_up_to_pow_mod_lPow : ∀ (l : ℕ) [Fact l.Prime] (d d' n M : ℕ) (τ : Ainf l) (Y Y' : Matrix (Fin d) (Fin d) (Ainf l)) (A : Matrix (Fin d) (Fin d') (Ainf l)) (Q : Matrix (Fin d') (Fin d) (Ainf l)), IsUnit (inclW l τ) → IsUnit (Y.map (inclW l)) → Y * Y' = τ ^ M • (1 : Matrix (Fin d) (Fin d) (Ainf l)) → (∀ i j, (l : WCb l) ^ n ∣ (Y.map (inclW l) * (A * Q).map (inclW l) - inclW l τ ^ M • (1 : Matrix (Fin d) (Fin d) (WCb l))) i j) → ∀ i j, (l : Ainf l) ^ n ∣ (A * (Q * Y) - τ ^ M • (1 : Matrix (Fin d) (Fin d) (Ainf l))) i j := by
   first | exact @GlobalTheory.AinfRinv.rinv_mod_pow | exact GlobalTheory.AinfRinv.rinv_mod_pow | (intros; apply GlobalTheory.AinfRinv.rinv_mod_pow <;> assumption)

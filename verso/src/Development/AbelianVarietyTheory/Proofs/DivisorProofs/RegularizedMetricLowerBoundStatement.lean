@@ -16,8 +16,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChernPotentialPosit
 open NumberField Formalism.BasicNotions Formalism.MainNotions ReciprocityTheory.GeometryOfNumbersTheory GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.Mean4 GlobalTheory.Mean4O GlobalTheory.LieHt GlobalTheory.HeightParts
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M GlobalTheory GlobalTheory.ShFam GlobalTheory.CxPts GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.FlagPoly
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RegCurvAlg.curv_lower | exact GlobalTheory.RegCurvAlg.curv_lower | (intros; apply GlobalTheory.RegCurvAlg.curv_lower <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RegCurvAlg.curv_lower` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRegularizedMetricLowerBound.lean&line=36#L36)
 -/
 theorem _root_.GlobalTheory.T.regularized_metric_lower_bound : HessSt → CentSt → OnCore fun D O x P => ∃ C t₀ : ℝ, 0 ≤ C ∧ 0 < t₀ ∧ ∀ t : ℝ, 0 < t → t ≤ t₀ →
     ∀ c σ (u : D.what₂.Tau → Fin O.N → ℝ), Dom u → ∀ ch : AlgChart (O.var c).str σ (O.var c).dim, ∀ y ∈ ch.e.source, ∀ ξ,

@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOfValILeOne
 
 open MeasureTheory ValuativeRel GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.IndefiniteRowSideFullHecke.StandardMaximalParabolic
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RadRev.stdMaxRad_le_unipRad | exact GlobalTheory.RadRev.stdMaxRad_le_unipRad | (intros; apply GlobalTheory.RadRev.stdMaxRad_le_unipRad <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RadRev.stdMaxRad_le_unipRad` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FStdMaxParabolicRadicalLeBlockUnipotentRadical.lean&line=78#L78)
 -/
 theorem _root_.GlobalTheory.T.stdMaxParabolicRadical_le_blockUnipotentRadical : ∀ (F : Type) [Field F] {r a b s : ℕ} (h : a + b = r) (d : Fin s → ℕ) (hd : ∑ i, d i = r),
     parab F (stdBlocks d hd) ≤ stdMaxParab F h → stdMaxRad F h ≤ unipRad F (stdBlocks d hd) := by

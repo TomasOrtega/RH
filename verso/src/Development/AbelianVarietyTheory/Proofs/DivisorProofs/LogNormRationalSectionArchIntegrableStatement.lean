@@ -9,8 +9,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxForm GlobalTheory.CxPts GlobalTheory.VB GlobalTheory.Cartier GlobalTheory.CovTest GlobalTheory.CovTest.SwapLine GlobalTheory.LineForm
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LogNormIntGen.archIntegrable | exact GlobalTheory.LogNormIntGen.archIntegrable | (intros; apply GlobalTheory.LogNormIntGen.archIntegrable <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LogNormIntGen.archIntegrable` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLogNormRationalSectionArchIntegrable.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.logNorm_rationalSection_archIntegrable : ∀ {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k} {D : ℕ}, IsArithVar p D → GenSmooth p D → ∀ (M N : HermLB p) {r : N.B.ι → X.functionFieldˣ} (hr : IsRatSec N.B r), M.ArchIntegrable N D hr := by
   first | exact @GlobalTheory.LogNormIntGen.archIntegrable | exact GlobalTheory.LogNormIntGen.archIntegrable | (intros; apply GlobalTheory.LogNormIntGen.archIntegrable <;> assumption)

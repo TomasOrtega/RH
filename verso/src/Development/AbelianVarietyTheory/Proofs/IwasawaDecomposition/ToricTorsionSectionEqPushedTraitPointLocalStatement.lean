@@ -15,8 +15,10 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TorSecLocal.toric_torsion_section_overLocal | exact GlobalTheory.TorSecLocal.toric_torsion_section_overLocal | (intros; apply GlobalTheory.TorSecLocal.toric_torsion_section_overLocal <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TorSecLocal.toric_torsion_section_overLocal` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FToricTorsionSectionEqPushedTraitPointLocal.lean&line=28#L28)
 -/
 theorem _root_.GlobalTheory.T.toricTorsionSection_eq_pushed_trait_point_local : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R]
     (t : SAB H (Sp R)) (P : PELUnif (maximalIdeal R) t) (k : ℕ)

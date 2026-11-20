@@ -19,8 +19,10 @@ open GlobalTheory.ConstRatio (NegIdx Factor)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.StageFactor.factor_stage | exact GlobalTheory.StageFactor.factor_stage | (intros; apply GlobalTheory.StageFactor.factor_stage <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.StageFactor.factor_stage` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsFactorOfStageTriangle.lean&line=101#L101)
 -/
 theorem _root_.GlobalTheory.T.exists_factor_of_stage_triangle : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
   GBig fun {D} T _ _ G μ₀ _ _ _ => ∀ (W : G.Weil) (S : GridChoice W Set.univ), IsStdChar D W.ψ (-1) →

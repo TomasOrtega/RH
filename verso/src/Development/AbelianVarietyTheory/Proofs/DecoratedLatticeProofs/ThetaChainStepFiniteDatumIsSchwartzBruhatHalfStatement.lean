@@ -8,8 +8,10 @@ open GlobalTheory.ChainOnto
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChainOnto.isSBHalf_stepDatum | exact GlobalTheory.ChainOnto.isSBHalf_stepDatum | (intros; apply GlobalTheory.ChainOnto.isSBHalf_stepDatum <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChainOnto.isSBHalf_stepDatum` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FThetaChainStepFiniteDatumIsSchwartzBruhatHalf.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.thetaChainStep_finiteDatum_isSchwartzBruhat_half : ∀ (D : D7) (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (Fin T.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ S.rank) (χ ξ : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) (Z : Finset (Pl D.host.E)) (e : AE D), IsSelfDualC S ΛS → IsSelfDualC T ΛT → Formalism.L2.DIV.IsFrame βS ΛS → Formalism.L2.DIV.IsFrame βT ΛT → IsIdemSum e Z → IsSBHalf e (latO S T ΛS ΛT fun _ => True) (fun x : WO S T => if IsHalf e x ∧ IsIntM (frMapO S T βS βT x) then omegaG L χ (fun PP => redM PP (frMapO S T βS βT x)) * omegaQ ∅ L.r ξ 1 (fun PP => redM PP (frMapO S T βS βT x)) else 0) := by
   first | exact @GlobalTheory.ChainOnto.isSBHalf_stepDatum | exact GlobalTheory.ChainOnto.isSBHalf_stepDatum | (intros; apply GlobalTheory.ChainOnto.isSBHalf_stepDatum <;> assumption)

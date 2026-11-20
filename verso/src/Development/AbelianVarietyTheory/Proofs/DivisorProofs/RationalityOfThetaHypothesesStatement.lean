@@ -46,8 +46,10 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Numb
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Mem GlobalTheory.Mem.Top GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.Col2 GlobalTheory.Mem.R3
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RowTestAssembly.rowTest_atDat_of_join | exact GlobalTheory.RowTestAssembly.rowTest_atDat_of_join | (intros; apply GlobalTheory.RowTestAssembly.rowTest_atDat_of_join <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RowTestAssembly.rowTest_atDat_of_join` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRationalityOfThetaHypotheses.lean&line=65#L65)
 -/
 theorem _root_.GlobalTheory.T.rationality_of_theta_hypotheses : GlobalTheory.Published.SiegelSetUnitary → GlobalTheory.Published.HoweDualityReal → GlobalTheory.Published.GreenCuspidal → GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.Mem.LiteralAutomorphy.JoinOut → GlobalTheory.Published.HeckeTateFunctionalEquation → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching → GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.FunctionalsSeparate → AtDat fun _ _ _ _ _ _ _ _ z => Formalism.IndefR.Rat.RowTest (z.R.toCx3 z.F) := by
   first | exact @GlobalTheory.RowTestAssembly.rowTest_atDat_of_join | exact GlobalTheory.RowTestAssembly.rowTest_atDat_of_join | (intros; apply GlobalTheory.RowTestAssembly.rowTest_atDat_of_join <;> assumption)

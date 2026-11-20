@@ -22,8 +22,10 @@ open GlobalTheory.Chain (ChainPar IsStepWeil IsVacVec ptOf expS expT)
 open GlobalTheory.PairLift (Inputs RulePar)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ipf.Aut.satEig_twist_add_seg | exact GlobalTheory.CompanionTheory.Ipf.Aut.satEig_twist_add_seg | (intros; apply GlobalTheory.CompanionTheory.Ipf.Aut.satEig_twist_add_seg <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ipf.Aut.satEig_twist_add_seg` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FTwistedProofs%2FGaussBinomialTwistedSumIdentity.lean&line=193#L193)
 -/
 theorem _root_.GlobalTheory.T.gaussBinomial_twisted_sum_identity : ∀ {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (a t k : ℕ) (B : Multiset ℂˣ) (x y : ℂˣ), B.card = a → k ≤ a + t → ∑ j ∈ Finset.range (min k a + 1), ((Ideal.absNorm w.asIdeal : ℂ) ^ ((a - j) * (k - j)) * (Formalism.L2.Col.gaussBin (Ideal.absNorm w.asIdeal) t (k - j) : ℂ) * ((x : ℂ) * ((Real.sqrt (Ideal.absNorm w.asIdeal) : ℂ) ^ a)⁻¹) ^ k * (((y : ℂ))⁻¹ * (Real.sqrt (Ideal.absNorm w.asIdeal) : ℂ) ^ (a + t)) ^ j) * GlobalTheory.LFun.satEig (Ideal.absNorm w.asIdeal) a B j = GlobalTheory.LFun.satEig (Ideal.absNorm w.asIdeal) (a + t) (B.map (x * y⁻¹ * ·) + seg w x t) k := by
   first | exact @GlobalTheory.CompanionTheory.Ipf.Aut.satEig_twist_add_seg | exact GlobalTheory.CompanionTheory.Ipf.Aut.satEig_twist_add_seg | (intros; apply GlobalTheory.CompanionTheory.Ipf.Aut.satEig_twist_add_seg <;> assumption)

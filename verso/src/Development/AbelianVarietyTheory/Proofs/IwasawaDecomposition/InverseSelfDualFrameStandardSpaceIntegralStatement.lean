@@ -9,8 +9,10 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Form
 open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.StdFrameInv.isIntM_inv | exact GlobalTheory.StdFrameInv.isIntM_inv | (intros; apply GlobalTheory.StdFrameInv.isIntM_inv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.StdFrameInv.isIntM_inv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FInverseSelfDualFrameStandardSpaceIntegral.lean&line=31#L31)
 -/
 theorem _root_.GlobalTheory.T.inverse_selfDual_frame_standard_space_integral : ∀ (D : D7) (i : Fin D.R.m) (β : GL (Fin (Vc D i).rank) (EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin (Vc D i).rank → D.host.E)), VStd D i → IsSDFrame (Vc D i) β Λ 1 → IsIntM (β⁻¹).val := by
   first | exact @GlobalTheory.StdFrameInv.isIntM_inv | exact GlobalTheory.StdFrameInv.isIntM_inv | (intros; apply GlobalTheory.StdFrameInv.isIntM_inv <;> assumption)

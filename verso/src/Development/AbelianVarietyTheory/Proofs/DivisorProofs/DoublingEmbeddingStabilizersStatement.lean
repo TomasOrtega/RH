@@ -12,8 +12,10 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 open GlobalTheory.Doubling
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DblHeightInt.integrable_hgt_rpow | exact GlobalTheory.DblHeightInt.integrable_hgt_rpow | (intros; apply GlobalTheory.DblHeightInt.integrable_hgt_rpow <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DblHeightInt.integrable_hgt_rpow` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDoublingEmbeddingStabilizers.lean&line=182#L182)
 -/
 theorem _root_.GlobalTheory.T.exists_integrable_hgtOf_rpow_doubling_embedding : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (n r s : ℕ) (W : Spc F E n), W.IsSkew σ B r s →

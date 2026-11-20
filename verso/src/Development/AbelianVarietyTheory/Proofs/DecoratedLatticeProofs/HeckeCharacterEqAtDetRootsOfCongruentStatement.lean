@@ -13,8 +13,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.KJInf Formalism.L2.Ker
 open GlobalTheory.SeeSaw GlobalTheory.Unf
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DetRootApprox.exists_root_same_value | exact GlobalTheory.DetRootApprox.exists_root_same_value | (intros; apply GlobalTheory.DetRootApprox.exists_root_same_value <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DetRootApprox.exists_root_same_value` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FHeckeCharacterEqAtDetRootsOfCongruent.lean&line=132#L132)
 -/
 theorem _root_.GlobalTheory.T.heckeCharacter_eq_at_det_roots_of_congruent : ∀ (D : D7) (c : (AE D)ˣ →* Circle), IsHeckeChar D c → ∃ N₀ : ℕ, ∀ (V : HSp D) {n : ℕ} (hn : V.rank = n) (g w : GA D V), w ∈ GfC V → (∀ (P : HeightOneSpectrum (𝓞 D.host.E)) (r s : Fin n), Valued.v (adAt D.host.F P (finM V hn w r s - (1 : Matrix (Fin n) (Fin n) (EF D)) r s)) ≤ WithZero.exp (-(N₀ : ℤ))) → ∀ x, IsDetRoot V g x → ∃ x₁, IsDetRoot V (g * w) x₁ ∧ c x₁ = c x := by
   first | exact @GlobalTheory.DetRootApprox.exists_root_same_value | exact GlobalTheory.DetRootApprox.exists_root_same_value | (intros; apply GlobalTheory.DetRootApprox.exists_root_same_value <;> assumption)

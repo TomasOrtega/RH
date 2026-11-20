@@ -16,8 +16,10 @@ open scoped TensorProduct GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMode
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AdelicLatticeIntegral.exists_finset_smul_mulVec_mem_closure | exact GlobalTheory.AdelicLatticeIntegral.exists_finset_smul_mulVec_mem_closure | (intros; apply GlobalTheory.AdelicLatticeIntegral.exists_finset_smul_mulVec_mem_closure <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AdelicLatticeIntegral.exists_finset_smul_mulVec_mem_closure` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsFinsetIntegralAdeleMulVecMemLatticeClosure.lean&line=53#L53)
 -/
 theorem _root_.GlobalTheory.T.exists_finset_integral_adele_mulVec_mem_lattice_closure : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ)
     (M : Matrix (Fin n) (Fin n) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E)) (L : Submodule (𝓞 E) (Fin n → E)), L.IsLattice E →

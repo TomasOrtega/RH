@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.EeProd
 import ReciprocityTheory.GaloisValuations.Global
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.KZ GlobalTheory.Glue
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThKill.th_kills_Fplus_discrete | exact GlobalTheory.ThKill.th_kills_Fplus_discrete | (intros; apply GlobalTheory.ThKill.th_kills_Fplus_discrete <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThKill.th_kills_Fplus_discrete` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FThetaKillsFplusDiscreteForm.lean&line=127#L127)
 -/
 theorem _root_.GlobalTheory.T.theta_kills_Fplus_discrete_form : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε) (A : ValuationSubring Ω),
   (∃ φ : ℂ → ℂ, X.an X.jK = (φ : Mero) ∧ DifferentiableOn ℂ φ Hs) → A.valuation (l : Ω) < 1 → ∀ (N w : ℕ) (F : Finset Ω), l ≠ 2 → ¬ l ∣ N → 1 ≤ N → Odd w → ∃ c : ℕ, ∀ b : X.Fn l, b ∈ X.B N l w →

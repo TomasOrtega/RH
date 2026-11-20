@@ -16,8 +16,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CenterVac.exists_center_char | exact GlobalTheory.CenterVac.exists_center_char | (intros; apply GlobalTheory.CenterVac.exists_center_char <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CenterVac.exists_center_char` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FExistsRealCentreCharacterOnDefiniteVacuum.lean&line=67#L67)
 -/
 theorem _root_.GlobalTheory.T.exists_realCentre_character_on_definiteVacuum : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsInfFam θ → ∀ (S T : HSp D) (x : DefSp S) (y : DefSp T), x.Is → y.Is → ∀ k : KerDat S T, k.Is ψ θ x y → ∃ c : GA D S → ℂ, ∀ z ∈ GinfC S, z ∈ Subgroup.center (GA D S) → ‖c z‖ = 1 ∧ k.om (z, 1) k.vac = c z • k.vac := by
   first | exact @GlobalTheory.CenterVac.exists_center_char | exact GlobalTheory.CenterVac.exists_center_char | (intros; apply GlobalTheory.CenterVac.exists_center_char <;> assumption)

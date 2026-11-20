@@ -11,8 +11,10 @@ open GlobalTheory.FinPl (Lat idAt idOff intAt grpAt grpOff MxAt latV latA InK Mo
 open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DepthIdeal.mem_dI_of_half | exact GlobalTheory.DepthIdeal.mem_dI_of_half | (intros; apply GlobalTheory.DepthIdeal.mem_dI_of_half <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DepthIdeal.mem_dI_of_half` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FIdealMembershipOffModulus.lean&line=161#L161)
 -/
 theorem _root_.GlobalTheory.T.ideal_membership_off_modulus : All fun {D} _ _ _ {G} _ _ => ∀ v ∈ G.pl.S0, ∀ e : AE D, IsIdemSum e G.pl.W0 → ∀ s ∈ idAt D (· = v), s ∈ GlobalTheory.SeeSaw.idV (GlobalTheory.SeeSaw.dI D * ((G.modul : Ideal (𝓞 D.host.E)) : GlobalTheory.SeeSaw.FI D)⁻¹) v → e * s ∈ GlobalTheory.SeeSaw.idV (FractionalIdeal.spanSingleton (𝓞 D.host.E)⁰ D.host.xi0 * D.host.AAbar) v → s ∈ GlobalTheory.SeeSaw.idV (GlobalTheory.SeeSaw.dI D) v := by
   first | exact @GlobalTheory.DepthIdeal.mem_dI_of_half | exact GlobalTheory.DepthIdeal.mem_dI_of_half | (intros; apply GlobalTheory.DepthIdeal.mem_dI_of_half <;> assumption)

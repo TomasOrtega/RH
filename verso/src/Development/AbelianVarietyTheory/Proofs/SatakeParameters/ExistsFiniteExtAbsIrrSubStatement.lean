@@ -4,8 +4,10 @@ import Mathlib
 import Formalism.SharpRestriction.LevelLetterCocycles.ExistsInertiaCharpolyFactorOfTameType
 open Formalism.MainNotions Formalism.MainNotions.N
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SplitField.exists_finite_ext_absIrrSub | exact GlobalTheory.SplitField.exists_finite_ext_absIrrSub | (intros; apply GlobalTheory.SplitField.exists_finite_ext_absIrrSub <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SplitField.exists_finite_ext_absIrrSub` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FExistsFiniteExtAbsIrrSub.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.exists_finiteDimensional_ext_irrSub_absIrr : ∀ {K Γ ι : Type} [Field K] [Group Γ] [Finite ι] {a : ℕ} (ρ : ι → (Γ →* GL (Fin a) K)), (∀ j, IsSSRep (mapRep (algebraMap K (AlgebraicClosure K)) (ρ j))) → ∃ (K' : Type) (_ : Field K') (_ : Algebra K K') (_ : FiniteDimensional K K'), ∀ j W, IsIrrSub (mapRep (algebraMap K K') (ρ j)) W → AbsIrrSub (mapRep (algebraMap K K') (ρ j)) W := by
   first | exact @GlobalTheory.SplitField.exists_finite_ext_absIrrSub | exact GlobalTheory.SplitField.exists_finite_ext_absIrrSub | (intros; apply GlobalTheory.SplitField.exists_finite_ext_absIrrSub <;> assumption)

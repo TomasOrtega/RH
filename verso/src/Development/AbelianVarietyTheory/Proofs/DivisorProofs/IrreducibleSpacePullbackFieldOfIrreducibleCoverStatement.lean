@@ -5,8 +5,10 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 open CategoryTheory Limits AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.irreducibleSpace_pullback_of_cover | exact GlobalTheory.irreducibleSpace_pullback_of_cover | (intros; apply GlobalTheory.irreducibleSpace_pullback_of_cover <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.irreducibleSpace_pullback_of_cover` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIrreducibleSpacePullbackFieldOfIrreducibleCover.lean&line=34#L34)
 -/
 theorem _root_.GlobalTheory.T.irreducibleSpace_pullback_field_of_irreducible_cover : ∀ {F : Type} [Field F] {X : Scheme.{0}} (h : X ⟶ Sp F) (k : Type) [Field k] (f : F →+* k) (U : X.Opens),
     IsIrreducible (U : Set X) →

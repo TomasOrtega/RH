@@ -11,8 +11,10 @@ open scoped Classical
 open GlobalTheory.CovTestDR GlobalTheory.VdmRec GlobalTheory.MetFam GlobalTheory.ShFam GlobalTheory.Toroidal GlobalTheory.CxPts
 open scoped ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DualEigenSum.form_dualGram_eq_sum | exact GlobalTheory.DualEigenSum.form_dualGram_eq_sum | (intros; apply GlobalTheory.DualEigenSum.form_dualGram_eq_sum <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DualEigenSum.form_dualGram_eq_sum` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDualGramHermitianFrame.lean&line=25#L25)
 -/
 theorem _root_.GlobalTheory.T.dual_gram_hermitian_frame : ∀ {ι : Type} [Fintype ι] [DecidableEq ι] (m : ι → ℕ) (g : ℕ) (Hm : Matrix (Fin g) (Fin g) ℂ), Hm.PosDef → ∑ i, m i = g → ∀ (z : ∀ i, Fin (m i) → Fin g → ℂ) (G : ∀ i, Matrix (Fin (m i)) (Fin (m i)) ℂ), (∀ i, (G i).PosDef) → (∀ i b b', G i b b' = (Real.pi : ℂ) * hermForm Hm (z i b') (z i b)) → (∀ i i' b b', i ≠ i' → hermForm Hm (z i b) (z i' b') = 0) → ∀ c c' : Fin g → ℂ, HermFrame.form (HermFrame.dualGram ((Real.pi : ℂ) • Hm)) c c' = ∑ i, HermFrame.form (G i)⁻¹ (fun b => ∑ a, z i b a * c a) (fun b => ∑ a, z i b a * c' a) := by
   first | exact @GlobalTheory.DualEigenSum.form_dualGram_eq_sum | exact GlobalTheory.DualEigenSum.form_dualGram_eq_sum | (intros; apply GlobalTheory.DualEigenSum.form_dualGram_eq_sum <;> assumption)

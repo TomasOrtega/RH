@@ -11,8 +11,10 @@ open CategoryTheory AlgebraicGeometry NumberField IsDedekindDomain MvPolynomial 
 open Formalism.BasicNotions Formalism.MainNotions GlobalTheory GlobalTheory.Cartier GlobalTheory.CechPic GlobalTheory.ArInt GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.Mean4O GlobalTheory.CoverNorm GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.VertForm GlobalTheory.TrivFlag GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.TrueCx GlobalTheory.ConstLat
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LatChain.powerSum_two_eq | exact GlobalTheory.LatChain.powerSum_two_eq | (intros; apply GlobalTheory.LatChain.powerSum_two_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LatChain.powerSum_two_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FInducedMetricArithmeticFunctionShift.lean&line=402#L402)
 -/
 theorem _root_.GlobalTheory.T.induced_metric_arithmetic_function_shift : Hypotheses2 → GlobalTheory.Published.RegularAlteration → ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (M : TrueGeo.Model Y) (ι : Type) [Fintype ι] (A : ι → Adl (cxSt F) Y) (L : ι → HermLB M.p) (m : ℕ+) (Ψ : MvPolynomial ι ℝ →ₗ[ℝ] ℝ), (∀ i, (A i).Induced M (L i) m 0) → (haveI := M.ar.isIntegral; IsArFun L Y.dim Ψ) → ∀ (N : ℕ) (s s' : Fin N → ι), (∀ a, A (s' a) = { A (s a) with lg := (A (s' a)).lg }) → ∀ S : Finset ℕ, (∀ p ∈ S, p.Prime ∧ ∃ n : ℕ, n ≠ 0 ∧ ∀ k : ℕ, RelFlag (fun a => A (s a)) (fun a => A (s' a)) p n k) → (∀ a v e y, resP v ∉ S → (A (s a)).lg v e y = (A (s' a)).lg v e y) → ∀ g : MvPolynomial ι ℝ, Ψ ((∑ a, X (s a) ^ 2 - ∑ a, X (s' a) ^ 2) * g) = 0 := by
   first | exact @GlobalTheory.LatChain.powerSum_two_eq | exact GlobalTheory.LatChain.powerSum_two_eq | (intros; apply GlobalTheory.LatChain.powerSum_two_eq <;> assumption)

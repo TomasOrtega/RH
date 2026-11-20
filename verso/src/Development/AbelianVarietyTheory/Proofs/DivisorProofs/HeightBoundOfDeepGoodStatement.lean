@@ -14,8 +14,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.EightDvdNCol
 import Development.AbelianVarietyTheory.Definitions.Divisors.QuoIff
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ToroidalCompactificationBis
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj Formalism.BasicNotions.TH Formalism.L2.Theta ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.AllWt GlobalTheory.CompHt GlobalTheory.CovTop GlobalTheory.BigTop GlobalTheory.CovHt
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CovHtAll.height_of_steps | exact GlobalTheory.CovHtAll.height_of_steps | (intros; apply GlobalTheory.CovHtAll.height_of_steps <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CovHtAll.height_of_steps` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHeightBoundOfDeepGood.lean&line=32#L32)
 -/
 theorem _root_.GlobalTheory.T.height_bound_of_deep_good : GlobalTheory.CovTop.HypothesesXH → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → HypothesesY → Hypotheses2 → HypothesesH → Known₂ → GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.SemiAbelianLieSeminegative → GlobalTheory.Published.ScholzeWeinsteinB → DeepGood → Size → Deg → FlatDeg → Height := by
   first | exact @GlobalTheory.CovHtAll.height_of_steps | exact GlobalTheory.CovHtAll.height_of_steps | (intros; apply GlobalTheory.CovHtAll.height_of_steps <;> assumption)

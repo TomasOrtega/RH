@@ -8,8 +8,10 @@ open GlobalTheory.ChainFr GlobalTheory.SepRows GlobalTheory.SepPer Matrix
 open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FibreAtTau.comm_and_inf_trivial | exact GlobalTheory.FibreAtTau.comm_and_inf_trivial | (intros; apply GlobalTheory.FibreAtTau.comm_and_inf_trivial <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FibreAtTau.comm_and_inf_trivial` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FUnipotentRadicalAtRealPlaceCommuteInfTrivial.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.unipotentRadical_atRealPlace_commute_inf_trivial : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) (r : ℕ) (C : Matrix (Fin V.rank) (Fin r) D.host.E) (τ : D.what₂.Tau), (∀ p ∈ GlobalTheory.FibreAtTau.atP θ V C τ, ∀ q ∈ GlobalTheory.FibreAtTau.offP θ V C τ, p * q = q * p) ∧ ∀ h, h ∈ GlobalTheory.FibreAtTau.atP θ V C τ → h ∈ GlobalTheory.FibreAtTau.offP θ V C τ → h = 1 := by
   first | exact @GlobalTheory.FibreAtTau.comm_and_inf_trivial | exact GlobalTheory.FibreAtTau.comm_and_inf_trivial | (intros; apply GlobalTheory.FibreAtTau.comm_and_inf_trivial <;> assumption)

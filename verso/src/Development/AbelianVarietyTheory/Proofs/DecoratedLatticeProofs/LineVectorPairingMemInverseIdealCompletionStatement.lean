@@ -20,8 +20,10 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Unf GlobalTheory.Spl
 open scoped TensorProduct nonZeroDivisors
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LineDual.line_pair_mem_idV | exact GlobalTheory.LineDual.line_pair_mem_idV | (intros; apply GlobalTheory.LineDual.line_pair_mem_idV <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LineDual.line_pair_mem_idV` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FLineVectorPairingMemInverseIdealCompletion.lean&line=110#L110)
 -/
 theorem _root_.GlobalTheory.T.lineVector_pairing_mem_inverseIdealCompletion : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S A L : HSp D) (o : OrthDec S A L)
     (ζ : Fin L.rank → D.host.E) (M : Lat S) (𝔠 : FI D) (v : Pl D), IsSelfDualC S M → LineId o ζ M 𝔠 v → 𝔠 ≠ 0 →

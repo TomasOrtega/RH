@@ -11,8 +11,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Core.Rk.IP
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Core.Rk.IP.holValueAt_eq_div_mul | exact GlobalTheory.Core.Rk.IP.holValueAt_eq_div_mul | (intros; apply GlobalTheory.Core.Rk.IP.holValueAt_eq_div_mul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Core.Rk.IP.holValueAt_eq_div_mul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FHolomorphicContinuationValueEqDivMul.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.holomorphicContinuationValue_eq_div_mul : ∀ (Z L d Y : ℂ → ℂ) (s₀ z l : ℂ) (s₁ : ℝ), 0 < s₀.re → s₁ < s₀.re → AnalyticOnNhd ℂ d (rightOf 0) → (∀ s : ℂ, 0 < s.re → d s ≠ 0) → DifferentiableOn ℂ Y (rightOf s₁) → EqRight Z (fun s => L s / d s * Y s) → HolValueAt Z s₀ z → HolValueAt L s₀ l → z = l / d s₀ * Y s₀ := by
   first | exact @GlobalTheory.Core.Rk.IP.holValueAt_eq_div_mul | exact GlobalTheory.Core.Rk.IP.holValueAt_eq_div_mul | (intros; apply GlobalTheory.Core.Rk.IP.holValueAt_eq_div_mul <;> assumption)

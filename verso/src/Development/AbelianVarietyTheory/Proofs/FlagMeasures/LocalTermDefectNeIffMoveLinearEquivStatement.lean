@@ -20,8 +20,10 @@ open scoped Pointwise ENNReal Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LocOver.bbne_move | exact GlobalTheory.LocOver.bbne_move | (intros; apply GlobalTheory.LocOver.bbne_move <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LocOver.bbne_move` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FLocalTermDefectNeIffMoveLinearEquiv.lean&line=58#L58)
 -/
 theorem _root_.GlobalTheory.T.localTermDefect_ne_iff_move_linearEquiv : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] {M : Formalism.MainNotions.S.Loc.Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : Formalism.MainNotions.S.Loc.HermSp M V) {r : ℕ} (g : V ≃ₗ[E] V) (t : Formalism.MainNotions.S.Loc.Term V M r), LocNG.BBne (H := H) (move g t) ↔ LocNG.BBne (H := H) t := by
   first | exact @GlobalTheory.LocOver.bbne_move | exact GlobalTheory.LocOver.bbne_move | (intros; apply GlobalTheory.LocOver.bbne_move <;> assumption)

@@ -11,8 +11,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (Base Spc Model Ch
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WeilSchrodingerSkew.main | exact GlobalTheory.WeilSchrodingerSkew.main | (intros; apply GlobalTheory.WeilSchrodingerSkew.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WeilSchrodingerSkew.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSkewHermitianNegTraceZeroInvHermitianUnimodular.lean&line=310#L310)
 -/
 theorem _root_.GlobalTheory.T.skewHermitian_neg_traceZero_inv_hermitian_unimodular : ∀ (D : D7) (B : Base D.host.F D.host.E), B.IsGood D.sp.cm.sig →
     ∀ (d : ℕ) (Y : Spc D.host.F D.host.E d) (r s : ℕ), Y.IsSkew D.sp.cm.sig B r s →

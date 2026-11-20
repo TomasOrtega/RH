@@ -11,8 +11,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThKPointCont.continuous_ev_rho_weil | exact GlobalTheory.ThKPointCont.continuous_ev_rho_weil | (intros; apply GlobalTheory.ThKPointCont.continuous_ev_rho_weil <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThKPointCont.continuous_ev_rho_weil` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FEvaluationTriplePeriodCaseASecond.lean&line=32#L32)
 -/
 theorem _root_.GlobalTheory.T.evaluation_triple_period_case_a_second : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' → ∀ e, IsEv B G.M G₁.M H.ι H'.ι (isoA H H') e →

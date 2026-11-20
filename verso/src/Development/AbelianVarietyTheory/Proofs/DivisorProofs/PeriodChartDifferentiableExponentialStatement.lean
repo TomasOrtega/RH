@@ -12,8 +12,10 @@ open GlobalTheory.CxForm (IsRegVar hermMat eval₂ bas relCot dRel IsRelAcyclic)
 open GlobalTheory GlobalTheory.TorsionForm
 open scoped ContDiff Real CategoryTheory.Obj ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TorsionForm.IsPeriodChart.continuousAt_and_differentiableAt | exact GlobalTheory.TorsionForm.IsPeriodChart.continuousAt_and_differentiableAt | (intros; apply GlobalTheory.TorsionForm.IsPeriodChart.continuousAt_and_differentiableAt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TorsionForm.IsPeriodChart.continuousAt_and_differentiableAt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPeriodChartDifferentiableExponential.lean&line=34#L34)
 -/
 theorem _root_.GlobalTheory.T.period_chart_differentiable_exponential : ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k) (A : Over S) [GrpObj A] (D' : ℕ) (h' : IsRegVar (A.hom ≫ p) D') (D g : ℕ) (w : VMetric p (omega A) g) (σ : k →+* ℂ) (c : AlgChart p σ D) (τ : V D → Matrix (Fin g) (Fin g) ℂ) (ex : Pt (V D) g → CxPts (A.hom ≫ p) σ), IsPeriodChart w c τ ex → ∀ P ∈ cov c.e.target g, ∀ x : (h'.atlas σ).Pt, x.pt = ex P → ContinuousAt ex P ∧ DifferentiableAt ℂ (x.ch ∘ ex) P := by
   first | exact @GlobalTheory.TorsionForm.IsPeriodChart.continuousAt_and_differentiableAt | exact GlobalTheory.TorsionForm.IsPeriodChart.continuousAt_and_differentiableAt | (intros; apply GlobalTheory.TorsionForm.IsPeriodChart.continuousAt_and_differentiableAt <;> assumption)

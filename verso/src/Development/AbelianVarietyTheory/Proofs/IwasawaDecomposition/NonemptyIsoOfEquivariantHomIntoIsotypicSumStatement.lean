@@ -19,8 +19,10 @@ open Formalism.IndefR.RecTie Formalism.IndefR.Lev Formalism.L2.Rows GlobalTheory
 attribute [local instance] Formalism.IndefR.principalLevelFrame.instCMHostI
 open GlobalTheory.CuspMult
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IsoRankMult.iso_of_hom_into_sum | exact GlobalTheory.IsoRankMult.iso_of_hom_into_sum | (intros; apply GlobalTheory.IsoRankMult.iso_of_hom_into_sum <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IsoRankMult.iso_of_hom_into_sum` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FNonemptyIsoOfEquivariantHomIntoIsotypicSum.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.nonempty_iso_of_equivariantHom_into_isotypicSum : ∀ (H S0 S X : Type) [Group H] [AddCommGroup S0] [Module ℂ S0] [AddCommGroup S] [Module ℂ S] [AddCommGroup X] [Module ℂ X] (σ0 : Representation ℂ H S0) (σ : Representation ℂ H S) (ρ : Representation ℂ H X) (C : Submodule ℂ X), σ0.IsIrreducible → σ.IsIrreducible → ∀ f ∈ homInto σ ρ (⨆ g ∈ homInto σ0 ρ C, LinearMap.range g), f ≠ 0 → Nonempty (σ.asModule ≃ₗ[MonoidAlgebra ℂ H] σ0.asModule) := by
   first | exact @GlobalTheory.IsoRankMult.iso_of_hom_into_sum | exact GlobalTheory.IsoRankMult.iso_of_hom_into_sum | (intros; apply GlobalTheory.IsoRankMult.iso_of_hom_into_sum <;> assumption)

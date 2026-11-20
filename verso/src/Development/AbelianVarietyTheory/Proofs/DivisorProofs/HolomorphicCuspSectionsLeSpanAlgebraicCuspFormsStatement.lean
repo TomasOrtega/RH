@@ -9,8 +9,10 @@ open NumberField IsDedekindDomain MeasureTheory Formalism.BasicNotions Formalism
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.OntoCore.holSub0_le_span_cuspA | exact GlobalTheory.OntoCore.holSub0_le_span_cuspA | (intros; apply GlobalTheory.OntoCore.holSub0_le_span_cuspA <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.OntoCore.holSub0_le_span_cuspA` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHolomorphicCuspSectionsLeSpanAlgebraicCuspForms.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.holomorphicCuspSections_le_span_algebraicCuspForms : ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j, InR D j → ∀ w : WeightFamilies.Wt D j, w.LastPos → 8 * D.R.f * D.R.r + 4 ≤ w.n → ∀ σ, GoodEmb T.Q.c σ → Formalism.L2.Pj.holSub0 (T.U j σ).X (laU (T.U j σ) (wtA w) w.n) ≤ Submodule.span ℂ (rdU (T.U j σ) '' (T.cuspA j (wtA w) w.n : Set (T.R j))) := by
   first | exact @GlobalTheory.OntoCore.holSub0_le_span_cuspA | exact GlobalTheory.OntoCore.holSub0_le_span_cuspA | (intros; apply GlobalTheory.OntoCore.holSub0_le_span_cuspA <;> assumption)

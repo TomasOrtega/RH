@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConvUAbsU
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemShellUIffDepth
 open MeasureTheory GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.SatakeBound GlobalTheory.WeylCell Formalism.UG GlobalTheory.WeylCell.WeylUnipotentShell
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WeylCell.WeylUnipotentShell.cellU_haar_rightInv | exact GlobalTheory.WeylCell.WeylUnipotentShell.cellU_haar_rightInv | (intros; apply GlobalTheory.WeylCell.WeylUnipotentShell.cellU_haar_rightInv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WeylCell.WeylUnipotentShell.cellU_haar_rightInv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FUnitaryWeylCellHaarRightTranslateInvariant.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.unitaryWeylCell_haar_rightTranslate_invariant : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : L)
     (σ : L →+* L) (q : ℕ), IsUnramInv ϖ σ q →

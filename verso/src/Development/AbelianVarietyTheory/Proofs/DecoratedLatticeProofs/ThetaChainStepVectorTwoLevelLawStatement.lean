@@ -7,8 +7,10 @@ open scoped TensorProduct InnerProductSpace ComplexConjugate
 open GlobalTheory.ChainOnto
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChainOnto.StepVecLawBoth.vecLaw | exact GlobalTheory.ChainOnto.StepVecLawBoth.vecLaw | (intros; apply GlobalTheory.ChainOnto.StepVecLawBoth.vecLaw <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChainOnto.StepVecLawBoth.vecLaw` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FThetaChainStepVectorTwoLevelLaw.lean&line=87#L87)
 -/
 theorem _root_.GlobalTheory.T.thetaChainStep_vector_twoLevel_law : ∀ D : D7, ForStep D fun _ _ s s' p => VecLaw p.ω (Lev.levG s.V s.β s.L) (Lev.levChi s.V s.β s.L) (Lev.levG s'.V s'.β s'.L) (fun κ => (Lev.levChi s'.V s'.β s'.L κ)⁻¹) p.f := by
   first | exact @GlobalTheory.ChainOnto.StepVecLawBoth.vecLaw | exact GlobalTheory.ChainOnto.StepVecLawBoth.vecLaw | (intros; apply GlobalTheory.ChainOnto.StepVecLawBoth.vecLaw <;> assumption)

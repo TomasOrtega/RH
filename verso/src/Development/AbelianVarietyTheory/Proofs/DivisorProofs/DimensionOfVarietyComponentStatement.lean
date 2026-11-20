@@ -8,8 +8,10 @@ open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalT
 open GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.ProjVar GlobalTheory.TwoLat GlobalTheory.FlagCov
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagEigDim.dim_eq_dimGr_add_sum | exact GlobalTheory.FlagEigDim.dim_eq_dimGr_add_sum | (intros; apply GlobalTheory.FlagEigDim.dim_eq_dimGr_add_sum <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagEigDim.dim_eq_dimGr_add_sum` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDimensionOfVarietyComponent.lean&line=29#L29)
 -/
 theorem _root_.GlobalTheory.T.dimension_of_variety_component : ∀ (D : D7) (O : Setup D), O.Core → ∀ c : O.s.Comp,
     dimGr D.what₂.Tau O.N O.j + ∑ σ : D.host.E →+* ℂ, O.S.Dw.mult σ * (O.S.Dw.mult σ - 1) / 2 = (O.var c).dim := by

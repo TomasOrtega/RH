@@ -19,8 +19,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero (sZero)
 open GlobalTheory.Mem.Th (CptF)
 open GlobalTheory.Core.Rk.IP (Pair Unram SphFun openOff integrand wcoef rcoef up)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.NormBigDict.normSq_eq_petersson | exact GlobalTheory.NormBigDict.normSq_eq_petersson | (intros; apply GlobalTheory.NormBigDict.normSq_eq_petersson <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.NormBigDict.normSq_eq_petersson` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDefiniteBottomThetaIntegralNormSqEqPetersson.lean&line=28#L28)
 -/
 theorem _root_.GlobalTheory.T.definiteBottom_thetaIntegral_normSq_eq_petersson : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GridData L sc} (W : G.Weil) (i j : Fin D.R.m)
     (A A' WW : HSp D) (X : Tri T A A' WW), IsBottomTri W i j X → ∀ (t : T) (P : PolF D WW.rank A.rank)

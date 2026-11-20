@@ -18,8 +18,10 @@ open GroundTheory.Heights₂.Heights TensorProduct
 open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Sl
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Metric.mean_sq_fixes_norm_const | exact GlobalTheory.CompanionTheory.Metric.mean_sq_fixes_norm_const | (intros; apply GlobalTheory.CompanionTheory.Metric.mean_sq_fixes_norm_const <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Metric.mean_sq_fixes_norm_const` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FThetaFunctionCanonicalForm.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.theta_function_canonical_form : ∀ (g : ℕ) (τ h Hm : Matrix (Fin g) (Fin g) ℂ) (a c : Fin g → ℝ) (Λ : Submodule ℤ (Fin g → ℂ))
     (θ : (Fin g → ℂ) → ℂ) (κ : ℂ) (b : ℝ),

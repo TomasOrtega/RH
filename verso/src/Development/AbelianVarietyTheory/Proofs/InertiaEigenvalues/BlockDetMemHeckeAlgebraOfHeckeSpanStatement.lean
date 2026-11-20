@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.ResidualConst
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemSpanRingCornerIdealModuleIff
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N GlobalTheory.IndefiniteRowSideFullHecke.CongruenceModuleMatrices GlobalTheory.SpanRing
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SpanRing.blockDet_mem | exact GlobalTheory.SpanRing.blockDet_mem | (intros; apply GlobalTheory.SpanRing.blockDet_mem <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SpanRing.blockDet_mem` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FBlockDetMemHeckeAlgebraOfHeckeSpan.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.blockDet_mem_heckeAlgebra_of_heckeSpan : ∀ {Γ X O : Type} [Group Γ] [CommRing O] {n : ℕ} (T : Subalgebra O (X → O)) (rep : X → (Γ →* GL (Fin n) O)), CharPolyIn T rep → ∀ (g : ℕ) (Θ : Fin g → Fin g → X → Matrix (Fin n) (Fin n) O), (∀ p q, InRing T rep (Θ p q)) → (fun x => Matrix.det (Matrix.of fun (pa qb : Fin g × Fin n) => Θ pa.1 qb.1 x pa.2 qb.2)) ∈ T := by
   first | exact @GlobalTheory.SpanRing.blockDet_mem | exact GlobalTheory.SpanRing.blockDet_mem | (intros; apply GlobalTheory.SpanRing.blockDet_mem <;> assumption)

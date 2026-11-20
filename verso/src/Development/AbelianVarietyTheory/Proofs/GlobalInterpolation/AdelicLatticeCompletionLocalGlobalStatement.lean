@@ -7,8 +7,10 @@ import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Afsplit
 open NumberField IsDedekindDomain Matrix Formalism.UG Formalism.BasicNotions GlobalTheory.IndefiniteRowSideFullHecke.SplittingProjection
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LatLocGlob.latS_local_global | exact GlobalTheory.LatLocGlob.latS_local_global | (intros; apply GlobalTheory.LatLocGlob.latS_local_global <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LatLocGlob.latS_local_global` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FGlobalInterpolation%2FAdelicLatticeCompletionLocalGlobal.lean&line=82#L82)
 -/
 theorem _root_.GlobalTheory.T.adelicLatticeCompletion_local_global : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (k : ℕ) (Λ : Submodule (𝓞 E) (Fin k → E)), Module.Finite (𝓞 E) Λ → (∀ u : Fin k → E ⊗[F] FiniteAdeleRing (𝓞 F) F, u ∈ latS (F := F) (FiniteAdeleRing (𝓞 F) F) (tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F)) Λ ↔ ∀ v : HeightOneSpectrum (𝓞 F), (fun i => prV (E := E) v (u i)) ∈ locLat v Λ) ∧ (Submodule.span E (Λ : Set (Fin k → E)) = ⊤ → ∀ x : Fin k → E, (∀ v : HeightOneSpectrum (𝓞 F), (fun i => inclE (F := F) (v.adicCompletion F) (x i)) ∈ locLat v Λ) → x ∈ Λ) ∧ ∀ a : E, (∀ v : HeightOneSpectrum (𝓞 F), inclE (F := F) (v.adicCompletion F) a ∈ intV E v) → a ∈ (algebraMap (𝓞 E) E).range := by
   first | exact @GlobalTheory.LatLocGlob.latS_local_global | exact GlobalTheory.LatLocGlob.latS_local_global | (intros; apply GlobalTheory.LatLocGlob.latS_local_global <;> assumption)

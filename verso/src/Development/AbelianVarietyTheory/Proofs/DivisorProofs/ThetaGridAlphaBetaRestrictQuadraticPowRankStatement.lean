@@ -18,8 +18,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (Base Spc Model Ha
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SquareResChars.resEta_alpha_beta | exact GlobalTheory.SquareResChars.resEta_alpha_beta | (intros; apply GlobalTheory.SquareResChars.resEta_alpha_beta <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SquareResChars.resEta_alpha_beta` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FThetaGridAlphaBetaRestrictQuadraticPowRank.lean&line=30#L30)
 -/
 theorem _root_.GlobalTheory.T.thetaGrid_alpha_beta_restrict_quadratic_pow_rank : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (_hL : L.Is μ₀) (t : T)
     (i j : Fin D.R.m), GlobalTheory.LFun.ResEta D.host.F D.host.E (alpha G t i j) (spW₁ G i j).rank ∧

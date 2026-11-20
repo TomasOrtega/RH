@@ -6,8 +6,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped Matrix
 open GlobalTheory.UPel.HT
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HTIso.nonempty_objMap_of_markedIsom | exact GlobalTheory.HTIso.nonempty_objMap_of_markedIsom | (intros; apply GlobalTheory.HTIso.nonempty_objMap_of_markedIsom <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HTIso.nonempty_objMap_of_markedIsom` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FNonemptyModuliMapOfMarkedPeriodIsometry.lean&line=88#L88)
 -/
 theorem _root_.GlobalTheory.T.nonempty_moduliMap_of_marked_period_isometry : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ) (σ : R →+* ℂ) (ρ : D.O →+* Matrix (Fin D.g) (Fin D.g) ℂ) (o o' : Obj b N (spMap σ)) h hL h' hL' (D' D'' : PLat D.O D.inv) t t' Q Q' e e' (w : D'.La ≃ₗ[D.O] D''.La) (u : (Fin D.g → ℂ) ≃ₗ[ℂ] (Fin D.g → ℂ)), 0 < N → UnifAt (o.fam h hL) σ ρ N D' t Q (𝟙 _) e → UnifAt (o'.fam h' hL') σ ρ N D'' t' Q' (𝟙 _) e' → IsMarkedIsom N D' D'' t t' w → (∀ x, Q' (w x) = u (Q x)) → Nonempty (ObjMap o o' (𝟙 _)) := by
   first | exact @GlobalTheory.HTIso.nonempty_objMap_of_markedIsom | exact GlobalTheory.HTIso.nonempty_objMap_of_markedIsom | (intros; apply GlobalTheory.HTIso.nonempty_objMap_of_markedIsom <;> assumption)

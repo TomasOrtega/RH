@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CentralOperatorComm
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CompFinEqZeroOfAt
 open NumberField MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.AdelicU GlobalTheory.SiegelSet GlobalTheory.UAut GlobalTheory.ThK.SquareIntegrability
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UAut.CentralComm.lineDer_dop_comm | exact GlobalTheory.UAut.CentralComm.lineDer_dop_comm | (intros; apply GlobalTheory.UAut.CentralComm.lineDer_dop_comm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UAut.CentralComm.lineDer_dop_comm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCentralOperatorCommutesLineDerivative.lean&line=119#L119)
 -/
 theorem _root_.GlobalTheory.T.central_operator_commutes_line_derivative : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (z : List (ℝ → GAd σ J) →₀ ℂ), IsCentral σ J z →

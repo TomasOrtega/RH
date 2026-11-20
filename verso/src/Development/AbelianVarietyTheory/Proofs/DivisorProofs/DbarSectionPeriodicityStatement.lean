@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DbarEqZeroOfHolomor
 open Matrix GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe GlobalTheory.TorsionForm GlobalTheory.TorsionForm.FlatAcyc
 open scoped Real ContDiff
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlatAcycShift.dbar_coeff_transl | exact GlobalTheory.FlatAcycShift.dbar_coeff_transl | (intros; apply GlobalTheory.FlatAcycShift.dbar_coeff_transl <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlatAcycShift.dbar_coeff_transl` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDbarSectionPeriodicity.lean&line=8#L8)
 -/
 theorem _root_.GlobalTheory.T.dbar_section_periodicity : ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {g : ℕ} {B : Set E}
     {τ : E → Matrix (Fin g) (Fin g) ℂ} {M : Submodule ℤ (Fl g)} {j : Fl g → Pt E g → ℂ}

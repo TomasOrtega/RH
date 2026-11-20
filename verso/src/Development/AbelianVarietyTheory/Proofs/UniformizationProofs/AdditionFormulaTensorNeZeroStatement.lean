@@ -12,8 +12,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UU
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.addition_tensor_ne_zero | exact GlobalTheory.addition_tensor_ne_zero | (intros; apply GlobalTheory.addition_tensor_ne_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.addition_tensor_ne_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUniformizationProofs%2FAdditionFormulaTensorNeZero.lean&line=58#L58)
 -/
 theorem _root_.GlobalTheory.T.additionFormula_tensor_ne_zero : ∀ (S : Scheme.{0}) (P : PolAV S) (F : Type) [Field F] (p : Spec (CommRingCat.of F) ⟶ S) (th : EA P p 1) (n : ℕ) (t t' : Fin n → EA P p 2), AddA P (Over.mk p) th.sec (fun i => (t i).sec) (fun i => (t' i).sec) → th ≠ 0 → ∑ i, TensorProduct.tmul F (t i) (t' i) ≠ 0 := by
   first | exact @GlobalTheory.addition_tensor_ne_zero | exact GlobalTheory.addition_tensor_ne_zero | (intros; apply GlobalTheory.addition_tensor_ne_zero <;> assumption)

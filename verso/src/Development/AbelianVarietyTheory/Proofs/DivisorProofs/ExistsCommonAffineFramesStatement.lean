@@ -8,8 +8,10 @@ open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalT
 open Formalism.MainNotions.DIV.Cons (intO)
 open GlobalTheory.ArLieBase
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CommonFrames.exists_common_affine_frames | exact GlobalTheory.CommonFrames.exists_common_affine_frames | (intros; apply GlobalTheory.CommonFrames.exists_common_affine_frames <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CommonFrames.exists_common_affine_frames` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsCommonAffineFrames.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.exists_common_affine_frames' : ∀ (X : Scheme.{0}) (M M' : X.Modules) (r : ℕ), IsVB M r → IsVB M' r → ∀ x : X, ∃ (V : X.Opens)
     (f : Fin r → Γ(M, V)) (f' : Fin r → Γ(M', V)), VB.IsFrame f ∧ VB.IsFrame f' ∧ IsAffineOpen V ∧ x ∈ V := by

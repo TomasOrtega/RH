@@ -6,8 +6,10 @@ open Formalism Formalism.MainNotions Formalism.BasicNotions Formalism.BasicNotio
 set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SummandDual.xdual | exact GlobalTheory.SummandDual.xdual | (intros; apply GlobalTheory.SummandDual.xdual <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SummandDual.xdual` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FPotentialFamilySummandRestriction.lean&line=204#L204)
 -/
 theorem _root_.GlobalTheory.T.potential_family_summand_restriction : ∀ (D : D7), FontaineAtPlacesOverL (D := D) → PotDRL D.loc → ∀ (i : D.nd.Loc)
     (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))), GoodR D.nd i r →

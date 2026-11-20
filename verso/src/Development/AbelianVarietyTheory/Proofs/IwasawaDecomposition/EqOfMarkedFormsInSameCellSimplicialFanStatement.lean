@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqOfMarkedFo
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqZeroOfIsOrbFormConst
 open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.TorRef GlobalTheory.PolFan
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PolFan.eq_of_orbMark_of_inRCone_cell | exact GlobalTheory.PolFan.eq_of_orbMark_of_inRCone_cell | (intros; apply GlobalTheory.PolFan.eq_of_orbMark_of_inRCone_cell <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PolFan.eq_of_orbMark_of_inRCone_cell` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FEqOfMarkedFormsInSameCellSimplicialFan.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.eq_of_markedForms_in_same_cell_simplicialFan : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (q : ℕ) (φ lab : InvFun (𝓞 E)), IsTwInv H φ → IsTwInv H lab →
   SimpLab H.bar q φ lab →

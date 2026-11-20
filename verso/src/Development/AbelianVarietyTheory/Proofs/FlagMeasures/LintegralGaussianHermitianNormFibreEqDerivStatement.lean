@@ -11,8 +11,10 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ContinuousGaussSp
 open MeasureTheory Matrix Filter Topology Formalism.BasicNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding GlobalTheory.CompactDualQuot GlobalTheory.GaugeQuot GlobalTheory.Mem.Vol.Scale
 open scoped ENNReal NNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GaussFibre.gauss_fibre | exact GlobalTheory.GaussFibre.gauss_fibre | (intros; apply GlobalTheory.GaussFibre.gauss_fibre <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GaussFibre.gauss_fibre` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FLintegralGaussianHermitianNormFibreEqDeriv.lean&line=165#L165)
 -/
 theorem _root_.GlobalTheory.T.lintegral_gaussian_hermitianNormFibre_eq_deriv : ∀ (P Q : ℕ) (fib : ℝ → Measure (Sp P Q)) (β d : ℝ), IsDxDq fib → β ≠ 0 → HasDerivAt (fun t : ℝ => ∫ y in {y : Sp P Q | qf y ≤ t}, gaussSp y) d β → ∫⁻ y, ENNReal.ofReal (gaussSp y) ∂(fib β) = ENNReal.ofReal (2 ^ (P + Q) * d) := by
   first | exact @GlobalTheory.GaussFibre.gauss_fibre | exact GlobalTheory.GaussFibre.gauss_fibre | (intros; apply GlobalTheory.GaussFibre.gauss_fibre <;> assumption)

@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.HTBasis
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ExpStar
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Formalism.MainNotions.LocalSituation GlobalTheory.Cyc
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Cyc.ExpKernel.ker_expStar | exact GlobalTheory.Cyc.ExpKernel.ker_expStar | (intros; apply GlobalTheory.Cyc.ExpKernel.ker_expStar <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Cyc.ExpKernel.ker_expStar` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FDualExponentialKernelCyclotomicCocycles.lean&line=244#L244)
 -/
 theorem _root_.GlobalTheory.T.dualExponential_kernel_cyclotomic_cocycles : ∀ (D : Formalism.BasicNotions.D7), adm2 D → ArchimedeanSignatureMatching D → ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ), Lev l s → ∀ (e : ℕ) (z : GQ l → ℚ_[l]), ExpStar D.loc (Gj K s) e z 0 → (0 < e → CobOn (Gj K s) (fun σ y => (((D.loc l).χQ σ ^ (-(e : ℤ)) : ℚ_[l]ˣ) : ℚ_[l]) * y) Set.univ z) ∧ (e = 0 → ∀ σ ∈ Gj K s, (∀ x : Om l, ‖x‖ ≤ 1 → ‖σ x - x‖ < 1) → z σ = 0) := by
   first | exact @GlobalTheory.Cyc.ExpKernel.ker_expStar | exact GlobalTheory.Cyc.ExpKernel.ker_expStar | (intros; apply GlobalTheory.Cyc.ExpKernel.ker_expStar <;> assumption)

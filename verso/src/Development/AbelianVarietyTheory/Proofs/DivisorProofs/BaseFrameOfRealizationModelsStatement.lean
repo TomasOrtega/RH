@@ -5,8 +5,10 @@ open NumberField IsDedekindDomain MeasureTheory Matrix Formalism.BasicNotions Fo
 open scoped TensorProduct InnerProductSpace ContDiff
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HolDict.BaseFrame.baseFrT_of_tieIn | exact GlobalTheory.HolDict.BaseFrame.baseFrT_of_tieIn | (intros; apply GlobalTheory.HolDict.BaseFrame.baseFrT_of_tieIn <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HolDict.BaseFrame.baseFrT_of_tieIn` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FBaseFrameOfRealizationModels.lean&line=262#L262)
 -/
 theorem _root_.GlobalTheory.T.base_frame_of_realization_models : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), R.IsModels → TieIn T R κ v₀ → BaseFrT T.toCore R := by
   first | exact @GlobalTheory.HolDict.BaseFrame.baseFrT_of_tieIn | exact GlobalTheory.HolDict.BaseFrame.baseFrT_of_tieIn | (intros; apply GlobalTheory.HolDict.BaseFrame.baseFrT_of_tieIn <;> assumption)

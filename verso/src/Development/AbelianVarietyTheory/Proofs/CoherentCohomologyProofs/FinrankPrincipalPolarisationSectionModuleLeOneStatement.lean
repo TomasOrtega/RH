@@ -8,8 +8,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.O
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory GlobalTheory.AbLaw
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PrincipalSections.finrank_secM_le_one | exact GlobalTheory.PrincipalSections.finrank_secM_le_one | (intros; apply GlobalTheory.PrincipalSections.finrank_secM_le_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PrincipalSections.finrank_secM_le_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FCoherentCohomologyProofs%2FFinrankPrincipalPolarisationSectionModuleLeOne.lean&line=126#L126)
 -/
 theorem _root_.GlobalTheory.T.finrank_principalPolarisation_sectionModule_le_one : ∀ (K : Type) [Field K] [IsAlgClosed K] (P : PolAV (Spec (CommRingCat.of K))), Module.finrank Γ((baseOver (Spec (CommRingCat.of K))).left, ⊤) (SecM P.A P.L 1 (baseOver (Spec (CommRingCat.of K)))) ≤ 1 := by
   first | exact @GlobalTheory.PrincipalSections.finrank_secM_le_one | exact GlobalTheory.PrincipalSections.finrank_secM_le_one | (intros; apply GlobalTheory.PrincipalSections.finrank_secM_le_one <;> assumption)

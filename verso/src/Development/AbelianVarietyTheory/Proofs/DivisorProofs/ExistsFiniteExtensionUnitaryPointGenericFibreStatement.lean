@@ -10,8 +10,10 @@ open GlobalTheory.UPoinc
 open GlobalTheory
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TraitSemi.exists_ext_semi | exact GlobalTheory.TraitSemi.exists_ext_semi | (intros; apply GlobalTheory.TraitSemi.exists_ext_semi <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TraitSemi.exists_ext_semi` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsFiniteExtensionUnitaryPointGenericFibre.lean&line=190#L190)
 -/
 theorem _root_.GlobalTheory.T.exists_finite_extension_unitary_point_generic_fibre : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H)
     (Xo : Moduli Dw l) (c : Coeff l) (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], GlobalTheory.Mum.Base V →

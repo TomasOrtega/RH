@@ -10,8 +10,10 @@ open Classical
 open ReciprocityTheory.ChartRestriction.G.Out
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GenSpread.exists_sym | exact GlobalTheory.GenSpread.exists_sym | (intros; apply GlobalTheory.GenSpread.exists_sym <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GenSpread.exists_sym` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDegenerationProofs%2FExistsSymmetricSpreadOutLineBundleAbelianScheme.lean&line=26#L26)
 -/
 theorem _root_.GlobalTheory.T.exists_symmetric_spread_out_lineBundle_abelian_scheme : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [Field K] [Algebra R K] [IsFractionRing R K] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (A : Over (Sp K)) [GrpObj A] [IsCommMonObj A] (φ : A.left ⟶ G.left) (L : LB G.left) (L₀ : LB A.left), IsAbelianScheme G → IsGrpPullback A G (spMap (algebraMap R K)) φ → L.IsLB → L₀.IsLB → LBIso L₀ (L.pull φ) → Out.Sym A L₀ → ∃ a : R, a ≠ 0 ∧ ∀ (R' : Type) [CommRing R'] (g : R →+* R'), IsUnit (g a) → ∀ (G' : Over (Sp R')) [GrpObj G'] [IsCommMonObj G'] (π : G'.left ⟶ G.left) (L' : LB G'.left), IsGrpPullback G' G (spMap g) π → L'.IsLB → LBIso L' (L.pull π) → Out.Sym G' L' := by
   first | exact @GlobalTheory.GenSpread.exists_sym | exact GlobalTheory.GenSpread.exists_sym | (intros; apply GlobalTheory.GenSpread.exists_sym <;> assumption)

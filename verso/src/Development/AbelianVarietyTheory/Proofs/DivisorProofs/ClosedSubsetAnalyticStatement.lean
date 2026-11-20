@@ -11,8 +11,10 @@ open Formalism.MainNotions.DIV.Cons (intO)
 open scoped Classical
 open GlobalTheory.LieFilt
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LieFilt.exists_regular_blockUni_change | exact GlobalTheory.LieFilt.exists_regular_blockUni_change | (intros; apply GlobalTheory.LieFilt.exists_regular_blockUni_change <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LieFilt.exists_regular_blockUni_change` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FClosedSubsetAnalytic.lean&line=103#L103)
 -/
 theorem _root_.GlobalTheory.T.matrix_regular_adapted_local : ∀ {F : Type} [Field F] [NumberField F] {X W : Scheme.{0}} {q : X ⟶ Sp (𝓞 F)} {s : W ⟶ Sp F} {jB : W ⟶ X} {d : ℕ},
     IsArithVar q d → ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X → IsPullback jB s q (spMap (algebraMap (𝓞 F) F)) →

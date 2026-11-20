@@ -8,8 +8,10 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts G
 open GlobalTheory.FlagFibre (Low)
 open scoped Matrix ContDiff ComplexOrder ENNReal Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagCell2.GenericCell.exists_inCell_genericPoint | exact GlobalTheory.FlagCell2.GenericCell.exists_inCell_genericPoint | (intros; apply GlobalTheory.FlagCell2.GenericCell.exists_inCell_genericPoint <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagCell2.GenericCell.exists_inCell_genericPoint` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsGenericPointFlagInCellOfFrame.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.exists_genericPoint_flag_in_cell_of_frame : ∀ (F : Type) [Field F] (X Y : Var F) (ι : Type) [Fintype ι] (m : ι → ℕ) (E : Fr (ratOf X) m 0) (E' : Fr (ratOf Y) m m) (φ : X.Fn →ₐ[F] Y.Fn) (f : Y.X ⟶ X.X), Refines E E' φ f → ∀ (z : X.X) (A : Mat m X.Fn), A ∈ E.S z → ∃ u : Cell m → Y.Fn, InCell E E' φ f A u (genericPoint Y.X) := by
   first | exact @GlobalTheory.FlagCell2.GenericCell.exists_inCell_genericPoint | exact GlobalTheory.FlagCell2.GenericCell.exists_inCell_genericPoint | (intros; apply GlobalTheory.FlagCell2.GenericCell.exists_inCell_genericPoint <;> assumption)

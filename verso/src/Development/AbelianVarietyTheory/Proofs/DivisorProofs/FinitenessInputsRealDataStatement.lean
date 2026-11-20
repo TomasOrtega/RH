@@ -21,8 +21,10 @@ open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues GlobalTheory.AdelicScalar GlobalTheory.LiftRows GlobalTheory.LowRow
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LowRowAdel.adelC_of_siegelWeil_of_doubling | exact GlobalTheory.LowRowAdel.adelC_of_siegelWeil_of_doubling | (intros; apply GlobalTheory.LowRowAdel.adelC_of_siegelWeil_of_doubling <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LowRowAdel.adelC_of_siegelWeil_of_doubling` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFinitenessInputsRealData.lean&line=54#L54)
 -/
 theorem _root_.GlobalTheory.T.finiteness_inputs_real_data : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.WeilSiegelFormulaUnitary → GlobalTheory.Published.SiegelWeilUnitaryConvergent → GlobalTheory.Published.DoublingMethod → GlobalTheory.Published.UnramifiedDoublingGL → GlobalTheory.Published.BernsteinZelevinskyFiniteness → GlobalTheory.Published.FormalDegreeCompactDual → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), (∃ L : SizeData₂ D, Nonempty (ParameterChoice' D L)) → StdV D → AdelC R F := by
   first | exact @GlobalTheory.LowRowAdel.adelC_of_siegelWeil_of_doubling | exact GlobalTheory.LowRowAdel.adelC_of_siegelWeil_of_doubling | (intros; apply GlobalTheory.LowRowAdel.adelC_of_siegelWeil_of_doubling <;> assumption)

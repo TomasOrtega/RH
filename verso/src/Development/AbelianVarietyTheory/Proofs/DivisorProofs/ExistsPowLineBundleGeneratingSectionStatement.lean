@@ -17,8 +17,10 @@ open CategoryTheory AlgebraicGeometry GlobalTheory GlobalTheory.Mean4O GlobalThe
 open GlobalTheory.Points ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PicOrderTors.gen_pow | exact GlobalTheory.PicOrderTors.gen_pow | (intros; apply GlobalTheory.PicOrderTors.gen_pow <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PicOrderTors.gen_pow` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsPowLineBundleGeneratingSection.lean&line=29#L29)
 -/
 theorem _root_.GlobalTheory.T.exists_pow_line_bundle_generating_section : ∀ (k : Type) [CommRing k] (k' : Type) [CommRing k'] [IsDomain k'] [Algebra k k'],
     IsArithVar (spMap (algebraMap k k')) 0 → ∀ (B : LB (Sp k')), B.IsLB →

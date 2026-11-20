@@ -11,8 +11,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FockLowWt.lowOne_le_wt | exact GlobalTheory.FockLowWt.lowOne_le_wt | (intros; apply GlobalTheory.FockLowWt.lowOne_le_wt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FockLowWt.lowOne_le_wt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLowIrreducibleEigenspaceSup.lean&line=106#L106)
 -/
 theorem _root_.GlobalTheory.T.low_irreducible_eigenspace_sup : ∀ (P Q R S : ℕ) (x : ℚ) (k k' : ℕ), x - Formalism.BasicNotions.TH.cPair R S = k → x + Formalism.BasicNotions.TH.cPair R S = k' →
     ∀ (r : Fin R) (s : Fin S), GlobalTheory.KFixIrr.lowOne P Q R S x (P * k + Q * k') ≤ ⨆ n : ℕ × ℕ,

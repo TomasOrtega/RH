@@ -10,8 +10,10 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Unf
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Unf.VolExist.measures_exist | exact GlobalTheory.Unf.VolExist.measures_exist | (intros; apply GlobalTheory.Unf.VolExist.measures_exist <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Unf.VolExist.measures_exist` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FUnfoldingLevelsAndStepsHaarMeasuresExist.lean&line=38#L38)
 -/
 theorem _root_.GlobalTheory.T.unfoldingLevelsAndSteps_haarMeasures_exist : ∀ D : D7, (∀ V : HSp D, Nonempty (Vol V)) ∧ (∀ (S S₀ : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ), Nonempty (VolN d)) ∧ (∀ m n, Nonempty (VolM D m n)) ∧ ∀ ρ, Nonempty (VolU D ρ) := by
   first | exact @GlobalTheory.Unf.VolExist.measures_exist | exact GlobalTheory.Unf.VolExist.measures_exist | (intros; apply GlobalTheory.Unf.VolExist.measures_exist <;> assumption)

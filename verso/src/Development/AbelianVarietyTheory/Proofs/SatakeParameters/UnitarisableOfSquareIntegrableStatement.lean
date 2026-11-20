@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.IsTemperedCoe
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.IsComplementaryProductOfIsCuspidal
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SqIntUnit.main | exact GlobalTheory.SqIntUnit.main | (intros; apply GlobalTheory.SqIntUnit.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SqIntUnit.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FUnitarisableOfSquareIntegrable.lean&line=53#L53)
 -/
 theorem _root_.GlobalTheory.T.unitarisable_of_square_integrable : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (N : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V), IsSmooth π → π.IsIrreducible → IsSqIntCoeff π → IsUnitarisable π := by
   first | exact @GlobalTheory.SqIntUnit.main | exact GlobalTheory.SqIntUnit.main | (intros; apply GlobalTheory.SqIntUnit.main <;> assumption)

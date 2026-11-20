@@ -10,8 +10,10 @@ open scoped TensorProduct Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.KJInf Formalism.L2.Ker
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BranchFamily.mult_one_families | exact GlobalTheory.BranchFamily.mult_one_families | (intros; apply GlobalTheory.BranchFamily.mult_one_families <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BranchFamily.mult_one_families` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FBranchingMultiplicityOneUnitaryFamilies.lean&line=231#L231)
 -/
 theorem _root_.GlobalTheory.T.branching_multiplicityOne_unitary_families : ∀ (ι : Type) [Fintype ι] (N n : ℕ) (hN : N = n + 1) (G : ι → Matrix (Fin N) (Fin N) ℂ) (G' : ι → Matrix (Fin n) (Fin n) ℂ) (lam : ι → DomWeight N) (sg : ι → DomWeight n), (∀ τ, Formalism.L2.Col.Br.Interlace hN (lam τ) (sg τ)) → ∀ T₀, BrEqv hN G G' lam sg T₀ → (∃ Φ ∈ ValC G lam, T₀ Φ ≠ 0) → ∀ T, BrEqv hN G G' lam sg T → ∃ c : ℂ, ∀ Φ ∈ ValC G lam, T Φ = c • T₀ Φ := by
   first | exact @GlobalTheory.BranchFamily.mult_one_families | exact GlobalTheory.BranchFamily.mult_one_families | (intros; apply GlobalTheory.BranchFamily.mult_one_families <;> assumption)

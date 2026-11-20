@@ -13,8 +13,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open IsDedekindDomain NumberField MeasureTheory GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.RowTest GlobalTheory.StdFrames GlobalTheory.RowClaim GlobalTheory.FlipRun
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DefCenChar.cusp_hasCen | exact GlobalTheory.DefCenChar.cusp_hasCen | (intros; apply GlobalTheory.DefCenChar.cusp_hasCen <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DefCenChar.cusp_hasCen` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsRealCentralCharacterDefiniteVertexMultipli.lean&line=129#L129)
 -/
 theorem _root_.GlobalTheory.T.exists_realCentralCharacter_definiteVertexMultiplicity : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (N : GlobalTheory.Grid.Node D) (ν : ℕ) (P : D.what₂.Tau → SPar), N.Is ν 0 P → ∃ χ : GA D N.V → ℂ, ∀ (F : N.Cusp θ) (v : SmT N.M), GlobalTheory.SeeSaw.HasCen N.V χ (F.1 v) := by
   first | exact @GlobalTheory.DefCenChar.cusp_hasCen | exact GlobalTheory.DefCenChar.cusp_hasCen | (intros; apply GlobalTheory.DefCenChar.cusp_hasCen <;> assumption)

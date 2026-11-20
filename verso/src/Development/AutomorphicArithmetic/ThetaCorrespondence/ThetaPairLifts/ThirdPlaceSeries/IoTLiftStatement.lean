@@ -13,8 +13,10 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Unf GlobalTheory.See
 open scoped TensorProduct Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.Fam.liftS_ptT_eq_cI_smul_ioT | exact _root_.GlobalTheory.Fam.liftS_ptT_eq_cI_smul_ioT | (intros; apply _root_.GlobalTheory.Fam.liftS_ptT_eq_cI_smul_ioT <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Fam.liftS_ptT_eq_cI_smul_ioT` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicArithmetic%2FThetaCorrespondence%2FThetaPairLifts%2FThirdPlaceSeries%2FIoTLift.lean&line=38#L38)
 -/
 theorem _root_.GlobalTheory.T.lift_s_last_eq_ci_succ_smul_io : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex) (u : D.what₂.Word), _root_.GlobalTheory.Fam.PackageHypotheses W → ∀ f : _root_.GlobalTheory.Fam.FamilyCharacter W u, f.RowOK → ∀ t j (h : j + 2 * 0 + 2 = D.R.m) (F : (f.t t).CT) P v, liftS ((f.t t).omT j h) f.c.volT.μ f.c.volT.𝓕 (F.1 v) ((f.t t).ptT j h P) = (f.t t).cI (j + 1) • ((f.t t).ioT j h F).1 (f.c.ItT j h P v) := by
   first | exact @_root_.GlobalTheory.Fam.liftS_ptT_eq_cI_smul_ioT | exact _root_.GlobalTheory.Fam.liftS_ptT_eq_cI_smul_ioT | (intros; apply _root_.GlobalTheory.Fam.liftS_ptT_eq_cI_smul_ioT <;> assumption)

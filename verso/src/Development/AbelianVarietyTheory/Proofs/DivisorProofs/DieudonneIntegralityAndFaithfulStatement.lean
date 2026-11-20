@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KerEqRangeOfRangeEq
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrobKerIdealLeAugIdeal
 open CategoryTheory TensorProduct Coalgebra Bialgebra GlobalTheory GlobalTheory.PDiv GlobalTheory.PDivGroup GlobalTheory.Dieu
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Dieu.Integrality.exists_pow_smul_and_faithful | exact GlobalTheory.Dieu.Integrality.exists_pow_smul_and_faithful | (intros; apply GlobalTheory.Dieu.Integrality.exists_pow_smul_and_faithful <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Dieu.Integrality.exists_pow_smul_and_faithful` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDieudonneIntegralityAndFaithful.lean&line=99#L99)
 -/
 theorem _root_.GlobalTheory.T.dieudonne_integrality_and_faithful : ∀ (p : ℕ) [Fact p.Prime] (T : Theory p) (k : Type) [Field k] [CharP k p] [PerfectRing k p] (G H : PDivGroup p k) (f : G ⟶ H), (∀ n : ℕ, (∀ m, ∃ m', T.map f m = p ^ n • m') → ∃ g : G ⟶ H, f = (p : ℤ_[p]) ^ n • g) ∧ (T.map f = 0 → f = 0) := by
   first | exact @GlobalTheory.Dieu.Integrality.exists_pow_smul_and_faithful | exact GlobalTheory.Dieu.Integrality.exists_pow_smul_and_faithful | (intros; apply GlobalTheory.Dieu.Integrality.exists_pow_smul_and_faithful <;> assumption)

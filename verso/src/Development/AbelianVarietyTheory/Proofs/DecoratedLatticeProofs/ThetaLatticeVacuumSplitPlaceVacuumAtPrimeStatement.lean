@@ -14,8 +14,10 @@ open Formalism.MainNotions.SchurIrreducible (IsSplit)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Hk3 (hyp IsVacAt UnrPl)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.VacSplit.isVacAt_of_vacFin | exact GlobalTheory.VacSplit.isVacAt_of_vacFin | (intros; apply GlobalTheory.VacSplit.isVacAt_of_vacFin <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.VacSplit.isVacAt_of_vacFin` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FThetaLatticeVacuumSplitPlaceVacuumAtPrime.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.theta_lattice_vacuum_split_place_vacuum_at_prime : ∀ (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) (w : HeightOneSpectrum (𝓞 D.host.E)), w.under (𝓞 D.host.F) = v → Formalism.DivisionValues.conjPl w ≠ w → ∀ (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (f : WO S T → ℂ), VacFin ψ S T v f → IsVacAt ψ S T w f := by
   first | exact @GlobalTheory.VacSplit.isVacAt_of_vacFin | exact GlobalTheory.VacSplit.isVacAt_of_vacFin | (intros; apply GlobalTheory.VacSplit.isVacAt_of_vacFin <;> assumption)

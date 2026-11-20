@@ -19,8 +19,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle (Tri)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RowEx MeasureTheory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BottomFieldDict.ker'_minorPol_eq_jet | exact GlobalTheory.BottomFieldDict.ker'_minorPol_eq_jet | (intros; apply GlobalTheory.BottomFieldDict.ker'_minorPol_eq_jet <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BottomFieldDict.ker'_minorPol_eq_jet` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FPeriodAlgebraicIdealExpansion.lean&line=189#L189)
 -/
 theorem _root_.GlobalTheory.T.period_algebraic_ideal_expansion : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →

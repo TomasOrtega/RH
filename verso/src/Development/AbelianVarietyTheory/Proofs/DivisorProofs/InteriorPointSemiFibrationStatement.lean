@@ -14,8 +14,10 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions ReciprocityTheory.
 open GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.LieRead
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LieRead.fibAt_interior | exact GlobalTheory.LieRead.fibAt_interior | (intros; apply GlobalTheory.LieRead.fibAt_interior <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LieRead.fibAt_interior` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FInteriorPointSemiFibration.lean&line=30#L30)
 -/
 theorem _root_.GlobalTheory.T.interior_point_semi_fibration : Hypotheses2 → HypothesesH → OnObj fun D O _ _ H _ => ∀ y : Pt O.s, y ∈ H.int → ∃ (K : Type) (_ : Field K) (_ : NumberField K) (F : SemiFib K) (ι : K →+* Qb), F.P₀.g = D.R.f * O.N ∧ FibTie O y F ι := by
   first | exact @GlobalTheory.LieRead.fibAt_interior | exact GlobalTheory.LieRead.fibAt_interior | (intros; apply GlobalTheory.LieRead.fibAt_interior <;> assumption)

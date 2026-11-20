@@ -9,8 +9,10 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor (Datum Level Moduli Coeff)
 open ReciprocityTheory.ChartRestriction.G.Pdiv.ChartF (AvFSt HTFSt UpFSt)
 open GlobalTheory.RunDepth GlobalTheory.CharDepth
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CharDepth.twoPlaces_host | exact GlobalTheory.CharDepth.twoPlaces_host | (intros; apply GlobalTheory.CharDepth.twoPlaces_host <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CharDepth.twoPlaces_host` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FJetHarmonics%2FHostFieldTwoConjugatePlacesOverTwo.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.hostField_two_conjugate_places_over_two : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E), H.d = D.host.d → ∀ (p : ℕ) [Fact p.Prime], p ∈ D.host.small → UpperTheory.Depth.SplitAt H.d p ∧ UpperTheory.Depth.SplitPlaces p H D.R.f (D.host.vdH p) ∧ 0 ≤ D.host.vdH p ∧ D.host.vdH p ≤ vd2 D := by
   first | exact @GlobalTheory.CharDepth.twoPlaces_host | exact GlobalTheory.CharDepth.twoPlaces_host | (intros; apply GlobalTheory.CharDepth.twoPlaces_host <;> assumption)

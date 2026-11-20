@@ -9,8 +9,10 @@ open GlobalTheory GlobalTheory.ZM GlobalTheory.ZH GlobalTheory.UMin GlobalTheory
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UMin.CrdSym.lbIso_symTup | exact GlobalTheory.UMin.CrdSym.lbIso_symTup | (intros; apply GlobalTheory.UMin.CrdSym.lbIso_symTup <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UMin.CrdSym.lbIso_symTup` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSymmetricCoordinatesO1FactorialPower.lean&line=66#L66)
 -/
 theorem _root_.GlobalTheory.T.symmetric_coordinates_O1_factorial_power : ∀ (k Ω o : Type) [CommRing k] [Field Ω] [Algebra k Ω] [CommRing o] (M : RatModel k Ω) (n : ℕ) (h : M.Z ⟶ PSpace k n) (g : M.Z ⟶ PSpace o n) (c : Fin (n + 1) → Ω), PCrd (M.pt ≫ h) c → PCrd (M.pt ≫ g) (symTup c) → LBIso ((ProjSpace.O1 o n).pull g) (lbPow ((ProjSpace.O1 k n).pull h) (n + 1).factorial) := by
   first | exact @GlobalTheory.UMin.CrdSym.lbIso_symTup | exact GlobalTheory.UMin.CrdSym.lbIso_symTup | (intros; apply GlobalTheory.UMin.CrdSym.lbIso_symTup <;> assumption)

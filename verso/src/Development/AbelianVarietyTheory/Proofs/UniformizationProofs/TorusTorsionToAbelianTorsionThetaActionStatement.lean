@@ -11,8 +11,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UU
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UU.Eqv.main | exact GlobalTheory.UU.Eqv.main | (intros; apply GlobalTheory.UU.Eqv.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UU.Eqv.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUniformizationProofs%2FTorusTorsionToAbelianTorsionThetaAction.lean&line=111#L111)
 -/
 theorem _root_.GlobalTheory.T.torusTorsion_to_abelianTorsion_theta_action : Laws → Laws2 → (AllPre fun {V} _ _ _ {D} {A} {_} _ _ U => ∀ N : ℕ, 1 ≤ N → ∃ m : {g : GtPtF D (Kbar V) // GtTors D N g} → (TFK (R := V) (Kbar V) ⟶ A.A), Function.Injective m ∧ (∀ g, U.Acts (Kbar V) N 0 g.1 (m g)) ∧ ∀ g g' g'', GtPtF.IsAdd g.1 g'.1 g''.1 → m g'' = m g * m g') := by
   first | exact @GlobalTheory.UU.Eqv.main | exact GlobalTheory.UU.Eqv.main | (intros; apply GlobalTheory.UU.Eqv.main <;> assumption)

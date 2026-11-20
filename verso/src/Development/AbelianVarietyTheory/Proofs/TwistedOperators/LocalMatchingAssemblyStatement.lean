@@ -19,8 +19,10 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.ZetaValueIdeals
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HeckeFunctionalEquationAbs
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.LevelPlusSubgroup
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RowClaim.Join.fiveClaims | exact GlobalTheory.RowClaim.Join.fiveClaims | (intros; apply GlobalTheory.RowClaim.Join.fiveClaims <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RowClaim.Join.fiveClaims` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FLocalMatchingAssembly.lean&line=33#L33)
 -/
 theorem _root_.GlobalTheory.T.local_matching_assembly : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching → GlobalTheory.SquareSt.WeilConvergence → GlobalTheory.SquareSt.LocalMatching → GlobalTheory.SquareSt.ThetaIntegralsAgree → GlobalTheory.RowClaim.SumOKK ∧ GlobalTheory.RowClaim.ConstK ∧ GlobalTheory.RowClaim.LinK ∧ GlobalTheory.RowClaim.Formula2K ∧ GlobalTheory.RowClaim.SumRatK := by
   first | exact @GlobalTheory.RowClaim.Join.fiveClaims | exact GlobalTheory.RowClaim.Join.fiveClaims | (intros; apply GlobalTheory.RowClaim.Join.fiveClaims <;> assumption)

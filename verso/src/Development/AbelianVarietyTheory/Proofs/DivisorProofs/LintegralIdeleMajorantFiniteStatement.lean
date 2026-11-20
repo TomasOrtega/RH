@@ -11,8 +11,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TateConv.majorant_inv_lintegral_lt_top | exact GlobalTheory.TateConv.majorant_inv_lintegral_lt_top | (intros; apply GlobalTheory.TateConv.majorant_inv_lintegral_lt_top <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TateConv.majorant_inv_lintegral_lt_top` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLintegralIdeleMajorantFinite.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.lintegral_idele_majorant_finite : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (μ : Measure (AE F E)ˣ), μ.IsHaarMeasure →
     ∀ s : ℝ, 1 < s → ∀ U : Set (Fin (Module.finrank F E) → Af F), IsCompact U → ∃ N : ℕ,

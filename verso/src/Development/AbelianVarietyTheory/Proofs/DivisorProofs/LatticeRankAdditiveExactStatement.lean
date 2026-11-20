@@ -8,8 +8,10 @@ import ReciprocityTheory.GeometryOfNumbers.LatticeCovolumes.InhabSt
 open NumberField MeasureTheory ReciprocityTheory.GeometryOfNumbersTheory ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.LieHt
 open scoped ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.latRank_eq_latRank_inf_ker_add_latRank_map | exact GlobalTheory.latRank_eq_latRank_inf_ker_add_latRank_map | (intros; apply GlobalTheory.latRank_eq_latRank_inf_ker_add_latRank_map <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.latRank_eq_latRank_inf_ker_add_latRank_map` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLatticeRankAdditiveExact.lean&line=61#L61)
 -/
 theorem _root_.GlobalTheory.T.lattice_rank_additive_exact : ∀ (K : Type) [Field K] [NumberField K] (m m' : ℕ) (q : (Fin m → K) →ₗ[K] (Fin m' → K)) (W : Submodule (𝓞 K) (Fin m → K)), latRank K W = latRank K (W ⊓ (LinearMap.ker q).restrictScalars (𝓞 K)) + latRank K (W.map (q.restrictScalars (𝓞 K))) := by
   first | exact @GlobalTheory.latRank_eq_latRank_inf_ker_add_latRank_map | exact GlobalTheory.latRank_eq_latRank_inf_ker_add_latRank_map | (intros; apply GlobalTheory.latRank_eq_latRank_inf_ker_add_latRank_map <;> assumption)

@@ -9,8 +9,10 @@ open GlobalTheory.PRep (IsAdmissible)
 open GlobalTheory.TrMult
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TraceEqTwo.traceEq_of_geomExpansion | exact GlobalTheory.TraceEqTwo.traceEq_of_geomExpansion | (intros; apply GlobalTheory.TraceEqTwo.traceEq_of_geomExpansion <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TraceEqTwo.traceEq_of_geomExpansion` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTraceEqualityOfGeomExpansion.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.trace_equality_of_geom_expansion : GeomExpansion → TraceEq := by
   first | exact @GlobalTheory.TraceEqTwo.traceEq_of_geomExpansion | exact GlobalTheory.TraceEqTwo.traceEq_of_geomExpansion | (intros; apply GlobalTheory.TraceEqTwo.traceEq_of_geomExpansion <;> assumption)

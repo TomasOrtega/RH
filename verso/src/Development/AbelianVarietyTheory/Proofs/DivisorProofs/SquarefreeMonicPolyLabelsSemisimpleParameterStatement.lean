@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraS
 
 open Polynomial GlobalTheory.IndefiniteRowSideFullHecke.LevelCuspCharacters GlobalTheory.ParamLabel
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ParamExists.param_exists | exact GlobalTheory.ParamExists.param_exists | (intros; apply GlobalTheory.ParamExists.param_exists <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ParamExists.param_exists` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSquarefreeMonicPolyLabelsSemisimpleParameter.lean&line=130#L130)
 -/
 theorem _root_.GlobalTheory.T.squarefree_monic_poly_labels_semisimple_parameter : ∀ (p : ℕ) [Fact p.Prime] (L : GlobalTheory.GLq.LabelDatum p) (r : ℕ) (f : (ZMod p)[X]), f.Monic → f.natDegree = r → f.coeff 0 ≠ 0 → Squarefree f → ∃ (s : SSParam p ℂ r) (x : Cyc s.1 → Fbar p), Labels L s x f := by
   first | exact @GlobalTheory.ParamExists.param_exists | exact GlobalTheory.ParamExists.param_exists | (intros; apply GlobalTheory.ParamExists.param_exists <;> assumption)

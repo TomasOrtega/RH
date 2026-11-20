@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TendstoLintegralPoi
 import Mathlib
 open MeasureTheory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.tendsto_lintegral_concKernel_mul_zero | exact GlobalTheory.tendsto_lintegral_concKernel_mul_zero | (intros; apply GlobalTheory.tendsto_lintegral_concKernel_mul_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.tendsto_lintegral_concKernel_mul_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTendstoLintegralPoissonKernelBoundary.lean&line=34#L34)
 -/
 theorem _root_.GlobalTheory.T.tendsto_lintegral_poisson_kernel_boundary : ∀ (M : Type) [TopologicalSpace M] [T2Space M] [MeasurableSpace M] [BorelSpace M] (ν : Measure M) (K : Set M) (v D : M → ℝ) (C : ENNReal),
     IsCompact K → ContinuousOn v K → ContinuousOn D K → (∀ z ∈ K, v z = 1 → D z = 0) → C ≠ ⊤ →

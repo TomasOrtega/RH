@@ -11,8 +11,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.ConjTwist GlobalTheory.GalTw ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HalfUniInt.half_int_iff | exact GlobalTheory.HalfUniInt.half_int_iff | (intros; apply GlobalTheory.HalfUniInt.half_int_iff <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HalfUniInt.half_int_iff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FFrameMatrixIntegralIffUniformiserMultipleOnHalf.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.frameMatrix_integral_iff_uniformiser_multiple_on_half : ∀ (D : D7) (S T : HSp D) (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D)) (Q : Finset (Pl D.host.E)) (e : AE D), IsIdemSum e Q → ∀ ϖ : 𝓞 D.host.E, ϖ ≠ 0 → (∀ PP ∈ Q, ϖ ∈ PP.asIdeal ∧ ϖ ∉ PP.asIdeal ^ 2) → ∀ x : WO S T, IsHalf e x → (IsIntM (frMapO S T βS βT x) ↔ IsIntM (frMapO S T βS βT (x.map fun w => incA D (ϖ : D.host.E) * w)) ∧ ∀ PP ∈ Q, redM PP (frMapO S T βS βT (x.map fun w => incA D (ϖ : D.host.E) * w)) = 0) := by
   first | exact @GlobalTheory.HalfUniInt.half_int_iff | exact GlobalTheory.HalfUniInt.half_int_iff | (intros; apply GlobalTheory.HalfUniInt.half_int_iff <;> assumption)

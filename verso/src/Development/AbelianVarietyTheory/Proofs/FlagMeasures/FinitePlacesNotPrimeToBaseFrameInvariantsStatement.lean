@@ -6,8 +6,10 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNo
 open scoped Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PrimeAlmostAll.primeTo_finite | exact GlobalTheory.PrimeAlmostAll.primeTo_finite | (intros; apply GlobalTheory.PrimeAlmostAll.primeTo_finite <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PrimeAlmostAll.primeTo_finite` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FFinitePlacesNotPrimeToBaseFrameInvariants.lean&line=51#L51)
 -/
 theorem _root_.GlobalTheory.T.finite_places_not_primeTo_baseFrameInvariants : ∀ (D : D7) (Z : LocDat D), ∀ (u u' : D.what₂.Word) (F00 : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F'0 : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)), Gval F00 F'0 ≠ 0 → ∀ FP : ∀ p : PlF D, LocNG.FPair (locH Z p) D.R.rS, (∀ p, AtBase Z p F00 F'0 (Tu D u) (Tu D u') (FP p)) → {p : PlF D | ¬ (FP p).PrimeTo}.Finite := by
   first | exact @GlobalTheory.PrimeAlmostAll.primeTo_finite | exact GlobalTheory.PrimeAlmostAll.primeTo_finite | (intros; apply GlobalTheory.PrimeAlmostAll.primeTo_finite <;> assumption)

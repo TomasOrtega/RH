@@ -9,8 +9,10 @@ open GlobalTheory.QFam GlobalTheory.WpFam GlobalTheory.KZ GlobalTheory.FN
 open ReciprocityTheory.ChartRestriction.L1 (DD jT IsMF)
 open ModularForm (E₄ E₆)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FNCongLift.cong_lift | exact GlobalTheory.FNCongLift.cong_lift | (intros; apply GlobalTheory.FNCongLift.cong_lift <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FNCongLift.cong_lift` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FSlTwoDiagConjCongruenceLiftLevel.lean&line=59#L59)
 -/
 theorem _root_.GlobalTheory.T.slTwoDiagConjCongruence_lift_level : ∀ (M N : ℕ) (d d' : ℤ), 0 < N → M ∣ N → (d : ZMod M) = d' → IsUnit (d' : ZMod N) → (∀ γ γ' : SL(2, ℤ), Cong M d γ γ' → ∃ γ'' : SL(2, ℤ), Cong N d' γ γ'' ∧ γ' * γ''⁻¹ ∈ CongruenceSubgroup.Gamma M) ∧ ∀ δ' ∈ CongruenceSubgroup.Gamma M, ∃ δ ∈ CongruenceSubgroup.Gamma M, Cong N d' δ δ' := by
   first | exact @GlobalTheory.FNCongLift.cong_lift | exact GlobalTheory.FNCongLift.cong_lift | (intros; apply GlobalTheory.FNCongLift.cong_lift <;> assumption)

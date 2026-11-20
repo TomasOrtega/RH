@@ -7,8 +7,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Relay.geometric_to_tangent_power_free | exact GlobalTheory.CompanionTheory.Relay.geometric_to_tangent_power_free | (intros; apply GlobalTheory.CompanionTheory.Relay.geometric_to_tangent_power_free <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Relay.geometric_to_tangent_power_free` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FGeometricToTangentPowerFree.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.geometric_to_tangent_power_free : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ∀ (X0 : Scheme.{0}) (t : SAB H X0), PowFns t → ∀ (k : Type) [Field k] (p : ℕ) [Fact p.Prime] [CharP k p] (x : Sp k ⟶ X0), GeomPF t x → TanPF t x p := by
   first | exact @GlobalTheory.CompanionTheory.Relay.geometric_to_tangent_power_free | exact GlobalTheory.CompanionTheory.Relay.geometric_to_tangent_power_free | (intros; apply GlobalTheory.CompanionTheory.Relay.geometric_to_tangent_power_free <;> assumption)

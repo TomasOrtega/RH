@@ -14,8 +14,10 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 open GlobalTheory.FlatModel
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlatModel.HTCong.pair_comb_congr | exact GlobalTheory.FlatModel.HTCong.pair_comb_congr | (intros; apply GlobalTheory.FlatModel.HTCong.pair_comb_congr <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlatModel.HTCong.pair_comb_congr` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPAdicPairingApproximation.lean&line=34#L34)
 -/
 theorem _root_.GlobalTheory.T.p_adic_pairing_approximation : ∀ (E : Type) [Field E] [NumberField E] (p : ℕ) [Fact p.Prime] [StarRing (𝓞 E)] (P : PtP E p) (n N g : ℕ) {J : Type}
     (ta : Fin N → P.T) (x : Fin g → LieG P.Gt) (h : Fin N → Fin g → 𝓞_ℂ_[p]) (Tc : J → Fin N → 𝓞_ℂ_[p])

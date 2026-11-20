@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.GalMapMul
 open GlobalTheory.EtC
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.integralClosure_maximal_residue_algClosed | exact GlobalTheory.integralClosure_maximal_residue_algClosed | (intros; apply GlobalTheory.integralClosure_maximal_residue_algClosed <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.integralClosure_maximal_residue_algClosed` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FIntegralClosureMaximalResidueOfAlgClosed.lean&line=7#L7)
 -/
 theorem _root_.GlobalTheory.T.integralClosure_maximal_residue_of_algClosed : ∀ (k K : Type) [Field k] [IsAlgClosed k] [Field K] (φ : k →+* K) (D : Subring K) (m₀ : Ideal D),
     φ.range ≤ D → m₀.IsMaximal → (∀ r : D, ∃ c : k, ∃ h : φ c ∈ D, r - ⟨φ c, h⟩ ∈ m₀) →

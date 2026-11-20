@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsGauss
 open GlobalTheory.PMon.Gauss
 open scoped Formalism.Per
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PMon.Gauss.vr_laws | exact GlobalTheory.PMon.Gauss.vr_laws | (intros; apply GlobalTheory.PMon.Gauss.vr_laws <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PMon.Gauss.vr_laws` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FAcrisValuationRadiusLaws.lean&line=36#L36)
 -/
 theorem _root_.GlobalTheory.T.acrisValuation_radius_laws : ∀ (l : ℕ) [Fact l.Prime] (r : ℝ), 0 < r → r ≤ 1 → (∀ x y : Formalism.Per.Acris l, x ≠ 0 → y ≠ 0 → vr l r (x * y) = vr l r x + vr l r y) ∧ (∀ x : Formalism.Per.Acris l, x ≠ 0 → φc l x ≠ 0 ∧ vr l r (φc l x) = l * vr l (r / l) x) ∧ (∀ (x : Formalism.Per.Acris l) (n : ℕ), x ≠ 0 → vr l r ((l : Formalism.Per.Acris l) ^ n * x) = n * r + vr l r x) ∧ ∀ x : Formalism.Per.Acris l, x ≠ 0 → vr l r x = -Real.logb l (gC l ((l : ℝ) ^ (-r)) x) := by
   first | exact @GlobalTheory.PMon.Gauss.vr_laws | exact GlobalTheory.PMon.Gauss.vr_laws | (intros; apply GlobalTheory.PMon.Gauss.vr_laws <;> assumption)

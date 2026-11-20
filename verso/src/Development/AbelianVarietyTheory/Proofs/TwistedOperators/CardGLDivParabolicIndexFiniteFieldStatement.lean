@@ -13,8 +13,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues GlobalTheory.Ade
 open Formalism.L2.DIV (kP Pl LevelP)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Twist.GLIndexLoc.index_loc | exact GlobalTheory.Twist.GLIndexLoc.index_loc | (intros; apply GlobalTheory.Twist.GLIndexLoc.index_loc <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Twist.GLIndexLoc.index_loc` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FCardGLDivParabolicIndexFiniteField.lean&line=43#L43)
 -/
 theorem _root_.GlobalTheory.T.card_GL_div_parabolic_index_finiteField : ∀ (κ : Type) [Field κ] [Finite κ] (n r t : ℕ), n = r + t → (Nat.card (GL (Fin n) κ) : ℝ) / ((Nat.card (GL (Fin t) κ) : ℝ) * (Nat.card κ : ℝ) ^ (r * t)) * ((Nat.card κ : ℝ) ^ (r ^ 2 + r * t))⁻¹ = ∏ i ∈ Finset.Ioc t n, (1 - ((Nat.card κ : ℝ) ^ i)⁻¹) := by
   first | exact @GlobalTheory.Twist.GLIndexLoc.index_loc | exact GlobalTheory.Twist.GLIndexLoc.index_loc | (intros; apply GlobalTheory.Twist.GLIndexLoc.index_loc <;> assumption)

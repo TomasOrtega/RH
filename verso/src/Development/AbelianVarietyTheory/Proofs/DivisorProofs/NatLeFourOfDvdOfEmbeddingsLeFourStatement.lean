@@ -7,8 +7,10 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open Formalism.IndefR.DatumF GlobalTheory.HeckeExtend
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.nat_le_four_of_dvd_of_embeddings_le_four | exact GlobalTheory.nat_le_four_of_dvd_of_embeddings_le_four | (intros; apply GlobalTheory.nat_le_four_of_dvd_of_embeddings_le_four <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.nat_le_four_of_dvd_of_embeddings_le_four` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FNatLeFourOfDvdOfEmbeddingsLeFour.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.nat_le_four_of_dvd_of_embeddings_le_four' : ∀ (F : Type) [Field F] [NumberField F] (y : F) (m : ℕ) (r : 𝓞 F), y ≠ 0 → y = m * r →
     (∀ φ : F →+* ℂ, ‖φ y‖ ≤ 4) → m ≤ 4 := by

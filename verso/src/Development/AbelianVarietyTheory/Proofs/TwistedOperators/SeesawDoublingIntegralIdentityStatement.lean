@@ -24,8 +24,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RegSo.exists_comb_mem_So | exact GlobalTheory.RegSo.exists_comb_mem_So | (intros; apply GlobalTheory.RegSo.exists_comb_mem_So <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RegSo.exists_comb_mem_So` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FSeesawDoublingIntegralIdentity.lean&line=444#L444)
 -/
 theorem _root_.GlobalTheory.T.seesaw_doubling_integral_identity : GlobalTheory.FunPr.Hypotheses₂ → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsInfFam θ →
     ∀ (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁) (B : Fr X) (α β : (AE D)ˣ →* Circle), IsTriple W W₁ X α β →

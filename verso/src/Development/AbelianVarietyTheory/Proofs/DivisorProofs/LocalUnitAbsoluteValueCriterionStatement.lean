@@ -14,8 +14,10 @@ open Formalism.MainNotions.DIV.Cons (intO)
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ShFam.Pad.w_mul_exp_cmp_iff | exact GlobalTheory.ShFam.Pad.w_mul_exp_cmp_iff | (intros; apply GlobalTheory.ShFam.Pad.w_mul_exp_cmp_iff <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ShFam.Pad.w_mul_exp_cmp_iff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLocalUnitAbsoluteValueCriterion.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.local_unit_absolute_value_criterion : ∀ (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (ε : GlobalTheory.TrueGeo.Ext v) [Fact (resP v).Prime] (k : ℕ) (gn : Fin k → ℝ), (∀ l, 0 < gn l) → ∀ b : AlgebraicClosure F, (ε.w b * Real.exp (-∑ l, (-Real.log (ε.w (resP v)) / Real.log (resP v)) * Real.log (gn l)) ≤ 1 ↔ ‖ioOf (resP v) ε b‖ ≤ ∏ l, gn l) ∧ (ε.w b * Real.exp (-∑ l, (-Real.log (ε.w (resP v)) / Real.log (resP v)) * Real.log (gn l)) = 1 ↔ ‖ioOf (resP v) ε b‖ = ∏ l, gn l) ∧ (ε.w b * Real.exp (-∑ l, (-Real.log (ε.w (resP v)) / Real.log (resP v)) * Real.log (gn l)) < 1 ↔ ‖ioOf (resP v) ε b‖ < ∏ l, gn l) := by
   first | exact @GlobalTheory.ShFam.Pad.w_mul_exp_cmp_iff | exact GlobalTheory.ShFam.Pad.w_mul_exp_cmp_iff | (intros; apply GlobalTheory.ShFam.Pad.w_mul_exp_cmp_iff <;> assumption)

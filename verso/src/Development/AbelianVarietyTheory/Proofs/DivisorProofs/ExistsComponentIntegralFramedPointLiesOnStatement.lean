@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.WedgeNrmLeOfWedgeNo
 import Development.AbelianVarietyTheory.Definitions.Divisors.CongModRefl
 open GlobalTheory.IndefiniteRowSideFullHecke.DifferentConjugateDefects NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.AllWt GlobalTheory.FlatLine GlobalTheory.FlatTw GlobalTheory.SlopeRec GlobalTheory.CovTop GlobalTheory.BigTop GlobalTheory.RefSum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IntFrComp.exists_liesOn | exact GlobalTheory.IntFrComp.exists_liesOn | (intros; apply GlobalTheory.IntFrComp.exists_liesOn <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IntFrComp.exists_liesOn` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsComponentIntegralFramedPointLiesOn.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.exists_component_integral_framedPoint_liesOn : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io), ∃ Z : Comp Xo c, (letI := io.toAlgebra; LiesOn Z y.1) := by
   first | exact @GlobalTheory.IntFrComp.exists_liesOn | exact GlobalTheory.IntFrComp.exists_liesOn | (intros; apply GlobalTheory.IntFrComp.exists_liesOn <;> assumption)

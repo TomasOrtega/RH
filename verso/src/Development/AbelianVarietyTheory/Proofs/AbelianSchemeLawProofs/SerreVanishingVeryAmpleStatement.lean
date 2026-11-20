@@ -7,8 +7,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.O
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.AbLaw
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AbLaw.serre_h1Zero_and_sections_polynomial | exact GlobalTheory.AbLaw.serre_h1Zero_and_sections_polynomial | (intros; apply GlobalTheory.AbLaw.serre_h1Zero_and_sections_polynomial <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AbLaw.serre_h1Zero_and_sections_polynomial` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FAbelianSchemeLawProofs%2FSerreVanishingVeryAmple.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.serre_vanishing_very_ample : (∀ (R : Type) [CommRing R] (X : Scheme.{0}) (f : X ⟶ Spec (CommRingCat.of R)) [IsNoetherianRing R] (H : LB X) (m : ℕ) (s : Fin (m + 1) → LB.Sec H), H.IsLB → VeryAmpleBy f H s → ∀ M : LB X, M.IsLB → ∃ t₀ : ℤ, ∀ t, t₀ ≤ t → FirstCohomologyVanishes (tw M H t)) ∧ (∀ (R : Type) [CommRing R] (X : Scheme.{0}) (f : X ⟶ Spec (CommRingCat.of R)) [IsNoetherianRing R] (H : LB X) (m : ℕ) (s : Fin (m + 1) → LB.Sec H), H.IsLB → VeryAmpleBy f H s → ∃ t₀ : ℕ, ∀ t : ℕ, t₀ ≤ t → ∀ σ : LB.Sec (pw H t), ∃ F : MvPolynomial (Fin (m + 1)) R, F.IsHomogeneous t ∧ ∀ k : H.ι, σ.f k = MvPolynomial.eval₂Hom (cst f (H.U k)) (fun j => (s j).f k) F) := by
   first | exact @GlobalTheory.AbLaw.serre_h1Zero_and_sections_polynomial | exact GlobalTheory.AbLaw.serre_h1Zero_and_sections_polynomial | (intros; apply GlobalTheory.AbLaw.serre_h1Zero_and_sections_polynomial <;> assumption)

@@ -13,8 +13,10 @@ open scoped ComplexConjugate Classical
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Dict
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Dict.isTheta1_of_reads_generator | exact GlobalTheory.Dict.isTheta1_of_reads_generator | (intros; apply GlobalTheory.Dict.isTheta1_of_reads_generator <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Dict.isTheta1_of_reads_generator` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSiegelThetaTransformation%2FFramedPointGeneratorIsThetaLevelOne.lean&line=33#L33)
 -/
 theorem _root_.GlobalTheory.T.framedPoint_generator_isThetaLevelOne : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) [Algebra c.F ℂ] (r g : ℕ) (X : Data E r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (e : Fin g ≃ Lt1 Dw) (x : Frame X.Ψ r) (L : Lt E r) (y : FrPt Xo c ℂ) (A : AnFib X bas idx e x L y), IsSympl X bas → x ∈ X.dom → SelfD X L → ∀ θ, A.Reads 1 y.s θ → IsTheta1 X bas idx (H.w0 : E) x L θ := by
   first | exact @GlobalTheory.Dict.isTheta1_of_reads_generator | exact GlobalTheory.Dict.isTheta1_of_reads_generator | (intros; apply GlobalTheory.Dict.isTheta1_of_reads_generator <;> assumption)

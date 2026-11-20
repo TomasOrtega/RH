@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ForcedContentBoundsP
 import Development.AbelianVarietyTheory.Definitions.Jets.DepthNumbersThresholdEq
 open Formalism.L2.FormalSeriesBounds Formalism.IncomingBounds Formalism.UnitaryBoundIntegral Formalism.L2.DIV Formalism.L2.Pj Formalism.BasicNotions GlobalTheory.GoodDepth NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ContentValue.main | exact GlobalTheory.ContentValue.main | (intros; apply GlobalTheory.ContentValue.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ContentValue.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FJetHarmonics%2FForcedContentBoundsProgrammeValueGoodPrime.lean&line=51#L51)
 -/
 theorem _root_.GlobalTheory.T.forcedContent_bounds_programmeValue_goodPrime : ∀ (N : NumDatum) (j l : ℕ), l.Prime → l ∉ N.H.small → l ≠ N.q → l ≠ N.d → l ≠ N.g 0 → l ≠ N.g 1 → (∀ z, 0 ≤ N.w j z) → (∀ z z', N.w j z' ≤ N.sc.X'' N.R.n * N.w j z) →
   0 ≤ N.FjP j l ∧ (Inert N l ∨ N.cls l = PrimeClass.splitK) ∧ ParOK (parOf N j l) ∧

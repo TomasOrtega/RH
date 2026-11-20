@@ -11,8 +11,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.unit_nonfield | exact GlobalTheory.Mum.unit_nonfield | (intros; apply GlobalTheory.Mum.unit_nonfield <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.unit_nonfield` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsUnitTraitScalarGenericFibreNonfield.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.isUnit_trait_scalar_genericFibre_nonfield : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (D : DegData R (maximalIdeal R)) (C : LabCover D) (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W] (T : Trait C W) (Z : Scheme.{0}) (p : Z ⟶ T.G.left) (p' : Z ⟶ C.A.A.left), p ≫ T.β = p' ≫ C.α → ¬ IsField R → ∀ b : W, b ≠ 0 → ∀ z : Z, IsUnit (gs p z ⊤ (scal T.G.hom b)) := by
   first | exact @GlobalTheory.Mum.unit_nonfield | exact GlobalTheory.Mum.unit_nonfield | (intros; apply GlobalTheory.Mum.unit_nonfield <;> assumption)

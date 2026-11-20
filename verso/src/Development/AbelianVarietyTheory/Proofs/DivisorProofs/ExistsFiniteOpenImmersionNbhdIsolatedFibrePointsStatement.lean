@@ -7,8 +7,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ZmtNbhd.exists_finite_openImmersion_nbhd | exact GlobalTheory.ZmtNbhd.exists_finite_openImmersion_nbhd | (intros; apply GlobalTheory.ZmtNbhd.exists_finite_openImmersion_nbhd <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ZmtNbhd.exists_finite_openImmersion_nbhd` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsFiniteOpenImmersionNbhdIsolatedFibrePoints.lean&line=38#L38)
 -/
 theorem _root_.GlobalTheory.T.exists_finite_openImmersion_nbhd_isolatedFibrePoints : ∀ (H X : Scheme.{0}) (φ : H ⟶ X), IsNoetherian X → IsSeparated φ → LocallyOfFiniteType φ → QuasiCompact φ → ∀ Z : Set H, (∀ z ∈ Z, ∃ O : H.Opens, z ∈ O ∧ ∀ w ∈ O, φ w = φ z → w = z) → ∃ (H' : H.Opens) (X' : Scheme.{0}) (ν : X' ⟶ X) (i : H'.toScheme ⟶ X'), Z ⊆ H' ∧ IsFinite ν ∧ IsOpenImmersion i ∧ i ≫ ν = H'.ι ≫ φ ∧ IsDominant i ∧ ∀ V : X'.Opens, Function.Injective (i.app V).hom := by
   first | exact @GlobalTheory.ZmtNbhd.exists_finite_openImmersion_nbhd | exact GlobalTheory.ZmtNbhd.exists_finite_openImmersion_nbhd | (intros; apply GlobalTheory.ZmtNbhd.exists_finite_openImmersion_nbhd <;> assumption)

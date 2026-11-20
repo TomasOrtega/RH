@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BlockBaseChange
 open NumberField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mem.R3.DefLatBC.defLat_of_blockBC | exact GlobalTheory.Mem.R3.DefLatBC.defLat_of_blockBC | (intros; apply GlobalTheory.Mem.R3.DefLatBC.defLat_of_blockBC <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mem.R3.DefLatBC.defLat_of_blockBC` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FBlockDataLevelFormsTransportFieldMap.lean&line=368#L368)
 -/
 theorem _root_.GlobalTheory.T.block_data_level_forms_transport_field_map : ∀ {K K' : Type} [Field K] [NumberField K] [StarRing K] [Field K'] [NumberField K'] [StarRing K']
   {G G' : Type} [Group G] [Fintype G] [Group G'] [Fintype G'] {Pl0 Pl0' : Type}

@@ -13,8 +13,10 @@ open ReciprocityTheory.PGsh ReciprocityTheory.PGsh.Up ReciprocityTheory.PGsh.Be2
 open ReciprocityTheory.ChartRestriction.G.Chart (sp spMap)
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChF.iRel_succ | exact GlobalTheory.ChF.iRel_succ | (intros; apply GlobalTheory.ChF.iRel_succ <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChF.iRel_succ` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUnramifiedDepth%2FTorusPointRelationSuccThickening.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.torus_point_relation_succ_thickening : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : Out.DegData R I) (A : Out.PolAV (Spec (CommRingCat.of (FractionRing R)))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (U : Out.UnifPre I D A G) (k : ℕ) (S : Type) [CommRing S] [Algebra R S] χ z, IRel (U.gt k) S χ z → IRel (U.gt (k + 1)) S χ z := by
   first | exact @GlobalTheory.ChF.iRel_succ | exact GlobalTheory.ChF.iRel_succ | (intros; apply GlobalTheory.ChF.iRel_succ <;> assumption)

@@ -4,8 +4,10 @@ import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.StageDa
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW GlobalTheory.CompanionTheory.SW.PiLocalization₂ NumberField IsDedekindDomain MeasureTheory Topology
 open scoped TensorProduct ENNReal NNReal Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.SW.PiLocalization₂.isHermND_blockOne_algebraMap | exact GlobalTheory.CompanionTheory.SW.PiLocalization₂.isHermND_blockOne_algebraMap | (intros; apply GlobalTheory.CompanionTheory.SW.PiLocalization₂.isHermND_blockOne_algebraMap <;> assum …`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.SW.PiLocalization₂.isHermND_blockOne_algebraMap` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=CompanionTheory%2FSpectralGeometry%2FLocalGlobalProofs%2FAdelicAnalysis%2FBlockOneScalarPreservesNondegenerate.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.block_one_scalar_preserves_nondegenerate : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ t : F, t ≠ 0 → IsHermND σ (blockOne (algebraMap F E t) J) := by
   first | exact @GlobalTheory.CompanionTheory.SW.PiLocalization₂.isHermND_blockOne_algebraMap | exact GlobalTheory.CompanionTheory.SW.PiLocalization₂.isHermND_blockOne_algebraMap | (intros; apply GlobalTheory.CompanionTheory.SW.PiLocalization₂.isHermND_blockOne_algebraMap <;> assumption)

@@ -12,8 +12,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Core.Rk.IP
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Core.Rk.exists_doubled_weilDatum | exact GlobalTheory.Core.Rk.exists_doubled_weilDatum | (intros; apply GlobalTheory.Core.Rk.exists_doubled_weilDatum <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Core.Rk.exists_doubled_weilDatum` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FExistsWeilDatumHermitianSpaceDoubled.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.exists_weilDatum_hermitianSpaceDoubled : GlobalTheory.Published.WeilRepresentationUnitaryPair → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (A B : HSp D) (χA χB : (AE D)ˣ →* Circle) (om : WRep A B), IsWeilDatumO ψ A B χA χB om → ∃ omh : WRep (dblSp A) B, IsWeilDatumO ψ (dblSp A) B 1 χB omh := by
   first | exact @GlobalTheory.Core.Rk.exists_doubled_weilDatum | exact GlobalTheory.Core.Rk.exists_doubled_weilDatum | (intros; apply GlobalTheory.Core.Rk.exists_doubled_weilDatum <;> assumption)

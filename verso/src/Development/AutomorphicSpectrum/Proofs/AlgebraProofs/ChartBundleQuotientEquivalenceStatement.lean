@@ -8,8 +8,10 @@ open MvPolynomial GlobalTheory.CompanionTheory.Ar.Num GroundTheory.Heights₂.He
 open ReciprocityTheory.ChartRestriction.G.Geo (ChartBundle chartRing)
 open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles (mseg mcIdeal chartMon joinCoord bcCoord pullDeg liftVar fnField ck rootNum SameGeneric LatLE IsPull IsPullBC IsSubQuot QuotIso IsFrobPres FlagModel modelDeg)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Num.QuotEquivIso.main | exact GlobalTheory.CompanionTheory.Ar.Num.QuotEquivIso.main | (intros; apply GlobalTheory.CompanionTheory.Ar.Num.QuotEquivIso.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Num.QuotEquivIso.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FAlgebraProofs%2FChartBundleQuotientEquivalence.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.chart_bundle_quotient_equivalence : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Ω : Type) [Field Ω] [Algebra O Ω] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (x : (Σ k, ι k) → Ω) (N N₁ : ℕ) (V : Type) [AddCommGroup V] [Module Ω V] (V₁ : Type) [AddCommGroup V₁] [Module Ω V₁] (E E' : ChartBundle O (mseg x) N V) (F F' : ChartBundle O (mseg x) N₁ V₁), QuotEquiv O x E.lat E'.lat F.lat F'.lat ↔ QuotIso O x E E' F F' := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Num.QuotEquivIso.main | exact GlobalTheory.CompanionTheory.Ar.Num.QuotEquivIso.main | (intros; apply GlobalTheory.CompanionTheory.Ar.Num.QuotEquivIso.main <;> assumption)

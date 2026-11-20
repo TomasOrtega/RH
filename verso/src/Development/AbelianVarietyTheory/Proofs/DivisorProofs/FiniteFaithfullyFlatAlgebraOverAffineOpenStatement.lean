@@ -8,8 +8,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.LBDescent
 open TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.finiteFlatSurj_affine_algebra | exact GlobalTheory.finiteFlatSurj_affine_algebra | (intros; apply GlobalTheory.finiteFlatSurj_affine_algebra <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.finiteFlatSurj_affine_algebra` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFiniteFaithfullyFlatAlgebraOverAffineOpen.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.finite_faithfullyFlat_algebra_over_affine_open : ∀ {X Y : Scheme.{0}} (f : X ⟶ Y) [IsFinite f] [Flat f] [Surjective f] [IsLocallyNoetherian Y] (V₀ : Y.Opens), IsAffineOpen V₀ →
     letI : Algebra Γ(Y, V₀) Γ(X, f ⁻¹ᵁ V₀) := (f.app V₀).hom.toAlgebra

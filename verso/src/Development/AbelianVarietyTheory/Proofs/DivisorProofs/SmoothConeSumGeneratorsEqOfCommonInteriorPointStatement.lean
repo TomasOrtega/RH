@@ -9,8 +9,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.TInj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TInj.coneSum_eq | exact GlobalTheory.TInj.coneSum_eq | (intros; apply GlobalTheory.TInj.coneSum_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TInj.coneSum_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSmoothConeSumGeneratorsEqOfCommonInteriorPoint.lean&line=111#L111)
 -/
 theorem _root_.GlobalTheory.T.smoothCone_sum_generators_eq_of_common_interiorPoint : ∀ (φ : InvFun ℤ) (X : Type) [AddCommGroup X] [Module.Finite ℤ X] (m m' : ℕ) (δ : Fin m → LinearMap.BilinForm ℤ X) (δ' : Fin m' → LinearMap.BilinForm ℤ X), IsCone id φ δ → IsCone id φ δ' → ∀ (c : Fin m → ℕ) (c' : Fin m' → ℕ), (∀ k, 0 < c k) → (∀ k, 0 < c' k) → ∑ k, c k • δ k = ∑ k, c' k • δ' k → ∑ k, δ k = ∑ k, δ' k := by
   first | exact @GlobalTheory.TInj.coneSum_eq | exact GlobalTheory.TInj.coneSum_eq | (intros; apply GlobalTheory.TInj.coneSum_eq <;> assumption)

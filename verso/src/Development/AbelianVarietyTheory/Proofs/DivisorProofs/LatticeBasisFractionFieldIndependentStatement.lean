@@ -14,8 +14,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds (IsClassZetaVals c_vp cE_vp a0)
 open TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EigDescentFrac.baseChange_eq_iSup_eigK | exact GlobalTheory.EigDescentFrac.baseChange_eq_iSup_eigK | (intros; apply GlobalTheory.EigDescentFrac.baseChange_eq_iSup_eigK <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EigDescentFrac.baseChange_eq_iSup_eigK` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLatticeBasisFractionFieldIndependent.lean&line=41#L41)
 -/
 theorem _root_.GlobalTheory.T.lattice_basis_fraction_field_independent : ∀ {E : Type} [Field E] [NumberField E] {c : Ideal (OF E)} {R : Type} [CommRing R] [IsDomain R]
     {L : Type} [Field L] [Algebra R L] (j : FractionRing R →+* L)

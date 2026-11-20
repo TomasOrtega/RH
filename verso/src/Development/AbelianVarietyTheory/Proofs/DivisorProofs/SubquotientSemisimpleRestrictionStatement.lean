@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsUnitarisableOfCharIff
 open GlobalTheory.PRep GlobalTheory.SmGL
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IrrSubImage.exists_irreducible_le_range | exact GlobalTheory.IrrSubImage.exists_irreducible_le_range | (intros; apply GlobalTheory.IrrSubImage.exists_irreducible_le_range <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IrrSubImage.exists_irreducible_le_range` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSubquotientSemisimpleRestriction.lean&line=200#L200)
 -/
 theorem _root_.GlobalTheory.T.subquotient_semisimple_restriction : ∀ (L H : Type) [Group L] [Group H] (s : H →* L) (X : Type) [AddCommGroup X]
     [Module ℂ X] (σ : Representation ℂ L X), GlobalTheory.SmGL.HasFiniteLength σ →

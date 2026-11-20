@@ -7,8 +7,10 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.Uni
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj TensorProduct
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.eq_of_norm_resultant_eq | exact GlobalTheory.eq_of_norm_resultant_eq | (intros; apply GlobalTheory.eq_of_norm_resultant_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.eq_of_norm_resultant_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FModuliProofs%2FEqOfNormResultantEq.lean&line=215#L215)
 -/
 theorem _root_.GlobalTheory.T.eq_of_norm_prod_aeval_eq_moduli : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ_[l] Ω] [Algebra.IsAlgebraic ℚ_[l] Ω] (a b : Multiset Ω) (P Q : Polynomial ℚ_[l]), P.map (algebraMap ℚ_[l] Ω) = (a.map fun x => Polynomial.X - Polynomial.C x).prod → Q.map (algebraMap ℚ_[l] Ω) = (b.map fun x => Polynomial.X - Polynomial.C x).prod → (∀ (F : Polynomial ℤ) (u v : ℚ_[l]), algebraMap ℚ_[l] Ω u = (a.map fun x => Polynomial.aeval x F).prod → algebraMap ℚ_[l] Ω v = (b.map fun x => Polynomial.aeval x F).prod → ‖u‖ = ‖v‖) → P = Q := by
   first | exact @GlobalTheory.eq_of_norm_resultant_eq | exact GlobalTheory.eq_of_norm_resultant_eq | (intros; apply GlobalTheory.eq_of_norm_resultant_eq <;> assumption)

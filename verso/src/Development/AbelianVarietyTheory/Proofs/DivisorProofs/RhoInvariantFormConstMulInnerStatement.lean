@@ -10,8 +10,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MulRealAdEqZero
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.WeilTr MeasureTheory
 open scoped Matrix ENNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ArchUniq.FormTransport.const_of_euclidean | exact GlobalTheory.ArchUniq.FormTransport.const_of_euclidean | (intros; apply GlobalTheory.ArchUniq.FormTransport.const_of_euclidean <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ArchUniq.FormTransport.const_of_euclidean` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRhoInvariantFormConstMulInner.lean&line=70#L70)
 -/
 theorem _root_.GlobalTheory.T.rho_invariant_form_const_mul_inner : (∀ (n : ℕ) (B : GlobalTheory.RealWeil.Sch (Fin n) → GlobalTheory.RealWeil.Sch (Fin n) → ℂ),
     (∀ h', ∃ L : GlobalTheory.RealWeil.Sch (Fin n) →L[ℂ] ℂ, ∀ h, B h h' = L h) →

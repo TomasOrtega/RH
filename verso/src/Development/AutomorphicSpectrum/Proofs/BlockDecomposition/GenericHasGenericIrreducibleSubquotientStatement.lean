@@ -5,8 +5,10 @@ import Development.WeilBound.RepresentationTheoryGL.GenericUnitaryGL.GenericUnli
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.RgGu
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.GenExists.exists_generic_subQuot | exact GlobalTheory.CompanionTheory.GenExists.exists_generic_subQuot | (intros; apply GlobalTheory.CompanionTheory.GenExists.exists_generic_subQuot <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.GenExists.exists_generic_subQuot` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FGenericHasGenericIrreducibleSubquotient.lean&line=85#L85)
 -/
 theorem _root_.GlobalTheory.T.generic_has_generic_irreducible_subquotient : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle), Continuous ψ → ∀ (N : ℕ) {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (GL (Fin N) k) V), IsSmooth ρ → GlobalTheory.SmGL.HasFiniteLength ρ → IsGenericFor ψ ρ → ∃ A B : Subrepresentation ρ, B ≤ A ∧ (subQuot A B).IsIrreducible ∧ IsSmooth (subQuot A B) ∧ IsGenericFor ψ (subQuot A B) := by
   first | exact @GlobalTheory.CompanionTheory.GenExists.exists_generic_subQuot | exact GlobalTheory.CompanionTheory.GenExists.exists_generic_subQuot | (intros; apply GlobalTheory.CompanionTheory.GenExists.exists_generic_subQuot <;> assumption)

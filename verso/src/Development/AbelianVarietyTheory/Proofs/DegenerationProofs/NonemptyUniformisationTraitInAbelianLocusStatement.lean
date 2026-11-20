@@ -9,8 +9,10 @@ open GlobalTheory GlobalTheory.Ex GlobalTheory.ThetaPtMove GlobalTheory.ConstFam
 open GlobalTheory.Ex.OneGen GlobalTheory.UT
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AbelianTrait.nonempty_pelUnif_of_abLocus | exact GlobalTheory.AbelianTrait.nonempty_pelUnif_of_abLocus | (intros; apply GlobalTheory.AbelianTrait.nonempty_pelUnif_of_abLocus <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AbelianTrait.nonempty_pelUnif_of_abLocus` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDegenerationProofs%2FNonemptyUniformisationTraitInAbelianLocus.lean&line=35#L35)
 -/
 theorem _root_.GlobalTheory.T.nonempty_uniformisation_trait_in_abelianLocus : GlobalTheory.LN.UDvrSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (S : Scheme.{0}) (t : SAB H S) (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W], GlobalTheory.LN.CDvr W → ∀ (χ : Sp W ⟶ S) (t' : SAB H (Sp W)) (_ : SABMap t' t χ), GlobalTheory.LN.PolAt t' (jK W) → Set.range χ ⊆ abLocus t.G → Nonempty (PELUnif (maximalIdeal W) t') := by
   first | exact @GlobalTheory.AbelianTrait.nonempty_pelUnif_of_abLocus | exact GlobalTheory.AbelianTrait.nonempty_pelUnif_of_abLocus | (intros; apply GlobalTheory.AbelianTrait.nonempty_pelUnif_of_abLocus <;> assumption)

@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InstPreorder
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BijectiveResidueCompEtaleHenselian
 open IsLocalRing GlobalTheory.Henselisation
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Henselisation.trans_system | exact GlobalTheory.Henselisation.trans_system | (intros; apply GlobalTheory.Henselisation.trans_system <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Henselisation.trans_system` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPointedEtaleNbhdTransitionMapDirectedSystem.lean&line=37#L37)
 -/
 theorem _root_.GlobalTheory.T.pointedEtaleNbhd_transitionMap_directedSystem : ∀ (R : Type) [CommRing R] [IsLocalRing R], (∀ (i : EtNbhd R) (x : i.B), EtNbhd.trans (le_refl i) x = x) ∧ ∀ (i j k : EtNbhd R) (hij : i ≤ j) (hjk : j ≤ k) (x : i.B), EtNbhd.trans hjk (EtNbhd.trans hij x) = EtNbhd.trans (hij.trans hjk) x := by
   first | exact @GlobalTheory.Henselisation.trans_system | exact GlobalTheory.Henselisation.trans_system | (intros; apply GlobalTheory.Henselisation.trans_system <;> assumption)

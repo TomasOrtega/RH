@@ -10,8 +10,10 @@ open scoped Topology PowerSeries.WithPiTopology
 set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 1600000
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WeakClosed.compactSpace_aTop | exact GlobalTheory.WeakClosed.compactSpace_aTop | (intros; apply GlobalTheory.WeakClosed.compactSpace_aTop <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WeakClosed.compactSpace_aTop` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FCompactSpaceATop.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.compactSpace_aTop' : ∀ {l : ℕ} [Fact l.Prime] {K LL : FinExt l} {e : ℕ} (bO : Module.Basis (Fin e) ℤ_[l] ↥(OL LL)), letI := aTop (K := K) bO; CompactSpace (AA K LL) := by
   first | exact @GlobalTheory.WeakClosed.compactSpace_aTop | exact GlobalTheory.WeakClosed.compactSpace_aTop | (intros; apply GlobalTheory.WeakClosed.compactSpace_aTop <;> assumption)

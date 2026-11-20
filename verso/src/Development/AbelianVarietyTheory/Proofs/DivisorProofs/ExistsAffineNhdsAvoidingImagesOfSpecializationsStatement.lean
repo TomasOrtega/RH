@@ -8,8 +8,10 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open ReciprocityTheory.ChartRestriction.G.DVR.FlatBC (algX)
 open GlobalTheory GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.QCoh GlobalTheory.Discrepancy GlobalTheory.PairStep
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BadOpen.exists_affine_nhds_avoid | exact GlobalTheory.BadOpen.exists_affine_nhds_avoid | (intros; apply GlobalTheory.BadOpen.exists_affine_nhds_avoid <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BadOpen.exists_affine_nhds_avoid` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsAffineNhdsAvoidingImagesOfSpecializations.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.exists_affine_nhds_avoiding_images_of_specializations : ∀ (X Y : Scheme.{0}) [IsIntegral X] (s : Y ⟶ X) [IsProper s] (T : Set Y) (σ : Y) (y : X) (N : CartierDiv X), T.Finite → (∀ v ∈ T, ∀ w : Y, v ⤳ w → σ ⤳ w → ¬ s w ⤳ y) → ∃ (U : X.Opens) (e : X.functionFieldˣ), IsAffineOpen U ∧ y ∈ U ∧ (∀ x ∈ U, N.IsEqn x e) ∧ ∀ v ∈ T, ∀ w : Y, v ⤳ w → σ ⤳ w → s w ∉ U := by
   first | exact @GlobalTheory.BadOpen.exists_affine_nhds_avoid | exact GlobalTheory.BadOpen.exists_affine_nhds_avoid | (intros; apply GlobalTheory.BadOpen.exists_affine_nhds_avoid <;> assumption)

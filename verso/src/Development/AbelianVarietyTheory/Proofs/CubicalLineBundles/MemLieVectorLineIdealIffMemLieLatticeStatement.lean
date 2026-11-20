@@ -8,8 +8,10 @@ open scoped CategoryTheory.Obj ComplexOrder
 open GlobalTheory GlobalTheory.CM GlobalTheory.LamF
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LamF.isVecLine_mem_iff_mem_lieLat | exact GlobalTheory.LamF.isVecLine_mem_iff_mem_lieLat | (intros; apply GlobalTheory.LamF.isVecLine_mem_iff_mem_lieLat <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LamF.isVecLine_mem_iff_mem_lieLat` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FCubicalLineBundles%2FMemLieVectorLineIdealIffMemLieLattice.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.mem_lieVector_line_ideal_iff_mem_lie_lattice : ∀ (K : Type) [Field K] [NumberField K] (A : Out.PolAV (Sp (𝓞 K))) (x : KeyIn K) (φ : x.P.A.left ⟶ A.A.left) (hf : IsPolFibre (algebraMap (𝓞 K) K) A x.P φ) (i : Fin x.P.g) (ℓ : MLine K), IsVecLine A x φ i ℓ → ∀ c : K, c ∈ ℓ.I ↔ (Pi.single i c : Fin x.P.g → K) ∈ (GenFib.mk x.P φ hf x.v x.basis : GenFib A).lieLat := by
   first | exact @GlobalTheory.LamF.isVecLine_mem_iff_mem_lieLat | exact GlobalTheory.LamF.isVecLine_mem_iff_mem_lieLat | (intros; apply GlobalTheory.LamF.isVecLine_mem_iff_mem_lieLat <;> assumption)

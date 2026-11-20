@@ -14,8 +14,10 @@ open NumberField Matrix MeasureTheory Filter Topology GlobalTheory.CuspRep Globa
 open scoped nonZeroDivisors ComplexConjugate
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DiffInt.integral_absDet_cpow_entire | exact GlobalTheory.DiffInt.integral_absDet_cpow_entire | (intros; apply GlobalTheory.DiffInt.integral_absDet_cpow_entire; all_goals assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DiffInt.integral_absDet_cpow_entire` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FIntegralAbsDetCpowBoundedShellEntire.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.integral_absDet_cpow_bounded_shell_entire : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (μ : Measure (GA E a)) (S : Set (GA E a)), NullMeasurableSet S μ → μ S < ⊤ → ∀ c : ℝ, 0 < c → (∀ g ∈ S, c ≤ (ideleModule E (GeneralLinearGroup.det g) : ℝ) ∧ (ideleModule E (GeneralLinearGroup.det g) : ℝ) ≤ 1) → ∀ F : GA E a → ℂ, Continuous F → ∀ C : ℝ, (∀ g, ‖F g‖ ≤ C) → Differentiable ℂ fun s : ℂ => ∫ g in S, F g * ((ideleModule E (GeneralLinearGroup.det g) : ℝ) : ℂ) ^ (s - 1) ∂μ := by
   first | exact @GlobalTheory.DiffInt.integral_absDet_cpow_entire | exact GlobalTheory.DiffInt.integral_absDet_cpow_entire | (intros; apply GlobalTheory.DiffInt.integral_absDet_cpow_entire; all_goals assumption)

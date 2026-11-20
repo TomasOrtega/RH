@@ -8,8 +8,10 @@ open CategoryTheory Limits AlgebraicGeometry IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Out
 open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Vert GlobalTheory.Twist
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DivPullStr.main | exact GlobalTheory.DivPullStr.main | (intros; apply GlobalTheory.DivPullStr.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DivPullStr.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPullbackVerticalDivisorIso.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.pullback_vertical_divisor_iso : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (B B' : GlobalTheory.Vert.Model O) (f : GlobalTheory.Vert.Model.Hom B' B) (I : B.effVert), Nonempty ((Scheme.Modules.pullback f.f).obj (divMod I.1) ≅ divMod (GlobalTheory.Vert.Model.effPull f.comp_str I).1) := by
   first | exact @GlobalTheory.DivPullStr.main | exact GlobalTheory.DivPullStr.main | (intros; apply GlobalTheory.DivPullStr.main <;> assumption)

@@ -22,8 +22,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle (Tri)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RowEx MeasureTheory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SplitAlgForm.exists_alg_form | exact GlobalTheory.SplitAlgForm.exists_alg_form | (intros; apply GlobalTheory.SplitAlgForm.exists_alg_form <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SplitAlgForm.exists_alg_form` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsAlgebraicInvariantFormVacuumSplitPlace.lean&line=51#L51)
 -/
 theorem _root_.GlobalTheory.T.exists_algebraicInvariantForm_vacuum_splitPlace : ∀ {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
     {sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ} {sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ}

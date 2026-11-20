@@ -9,8 +9,10 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestric
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.NilLift.isProper_and_geometricallyConnected_of_smooth_lift | exact GlobalTheory.NilLift.isProper_and_geometricallyConnected_of_smooth_lift | (intros; apply GlobalTheory.NilLift.isProper_and_geometricallyConnected_of_smooth_lift <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.NilLift.isProper_and_geometricallyConnected_of_smooth_lift` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsProperGeometricallyConnectedSmoothNilpotentLif.lean&line=26#L26)
 -/
 theorem _root_.GlobalTheory.T.isProper_geometricallyConnected_smooth_nilpotent_lift : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (π : R →+* R₀), Function.Surjective π → IsNilpotent (RingHom.ker π) →
     ∀ (X : Over (Sp R)) (X₀ : Over (Sp R₀)) (i : X₀.left ⟶ X.left), IsPullback i X₀.hom X.hom (spMap π) → Smooth X.hom →

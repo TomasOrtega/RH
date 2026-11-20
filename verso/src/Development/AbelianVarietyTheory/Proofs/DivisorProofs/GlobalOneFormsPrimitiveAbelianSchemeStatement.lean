@@ -11,8 +11,10 @@ open scoped TensorProduct
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.CechDR GlobalTheory.LiftSys GlobalTheory.Obs
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AbCoh.primF_of_isAbelianScheme | exact GlobalTheory.AbCoh.primF_of_isAbelianScheme | (intros; apply GlobalTheory.AbCoh.primF_of_isAbelianScheme <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AbCoh.primF_of_isAbelianScheme` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGlobalOneFormsPrimitiveAbelianScheme.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.globalOneForms_primitive_abelianScheme : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → GlobalTheory.AbCoh.PrimF A := by
   first | exact @GlobalTheory.AbCoh.primF_of_isAbelianScheme | exact GlobalTheory.AbCoh.primF_of_isAbelianScheme | (intros; apply GlobalTheory.AbCoh.primF_of_isAbelianScheme <;> assumption)

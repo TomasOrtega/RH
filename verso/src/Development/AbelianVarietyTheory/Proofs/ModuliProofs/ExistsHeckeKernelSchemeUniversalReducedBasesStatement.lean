@@ -9,8 +9,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 open GlobalTheory.HkFam
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HkFam.exists_kerScheme | exact GlobalTheory.HkFam.exists_kerScheme | (intros; apply GlobalTheory.HkFam.exists_kerScheme <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HkFam.exists_kerScheme` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FModuliProofs%2FExistsHeckeKernelSchemeUniversalReducedBases.lean&line=43#L43)
 -/
 theorem _root_.GlobalTheory.T.exists_heckeKernelScheme_universal_reduced_bases : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (𝔓 : Ideal (𝓞 E)) (p i : ℕ), admitted l 𝔓 p → ∃ Z : KerScheme Xo 𝔓 p i, EtSet Z.o₁.t.G Z.K := by
   first | exact @GlobalTheory.HkFam.exists_kerScheme | exact GlobalTheory.HkFam.exists_kerScheme | (intros; apply GlobalTheory.HkFam.exists_kerScheme <;> assumption)

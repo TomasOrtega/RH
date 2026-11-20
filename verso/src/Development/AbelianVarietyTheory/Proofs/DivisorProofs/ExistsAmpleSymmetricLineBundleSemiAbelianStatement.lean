@@ -7,8 +7,10 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.Toroidal GlobalTheory.LocM G
 open scoped CategoryTheory.Obj
 open GlobalTheory.Desc
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SymAmple.exists_ample_symmetric | exact GlobalTheory.SymAmple.exists_ample_symmetric | (intros; apply GlobalTheory.SymAmple.exists_ample_symmetric <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SymAmple.exists_ample_symmetric` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsAmpleSymmetricLineBundleSemiAbelian.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.exists_ample_symmetric_lineBundle_semiAbelian : ∀ (R : Type) [CommRing R] [IsRegularLocalRing R] [IsDomain R] (G : Over (Sp R)) [GrpObj G], IsSemiAbelian G → IsAbelianScheme ((Over.pullback (jK R)).obj G) → ∃ M : LB G.left, IsAmpleLB M ∧ LBIso (M.pull (GrpObj.inv : G ⟶ G).left) M := by
   first | exact @GlobalTheory.SymAmple.exists_ample_symmetric | exact GlobalTheory.SymAmple.exists_ample_symmetric | (intros; apply GlobalTheory.SymAmple.exists_ample_symmetric <;> assumption)

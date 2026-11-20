@@ -8,8 +8,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.HTLat GlobalTheory.Published GlobalTheory.Published.AbVarRed IsLocalRing
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SS.isProper_of_isQuot_of_finrank_eq_zero | exact GlobalTheory.SS.isProper_of_isQuot_of_finrank_eq_zero | (intros; apply GlobalTheory.SS.isProper_of_isQuot_of_finrank_eq_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SS.isProper_of_isQuot_of_finrank_eq_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsProperOfIsQuotOfFinrankEqZero.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.isProper_of_isQuot_abelian_of_finrank_eq_zero : ∀ (k : Type) [Field k] [IsAlgClosed k] (G : Over (Sp k)) [GrpObj G] (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (B : Over (Sp k)) [GrpObj B] (i : splitTorus (Sp k) X ⟶ G) (q : G ⟶ B), GlobalTheory.SS.IsQuot i q → IsAbelianScheme B → Module.finrank ℤ X = 0 → IsProper G.hom := by
   first | exact @GlobalTheory.SS.isProper_of_isQuot_of_finrank_eq_zero | exact GlobalTheory.SS.isProper_of_isQuot_of_finrank_eq_zero | (intros; apply GlobalTheory.SS.isProper_of_isQuot_of_finrank_eq_zero <;> assumption)

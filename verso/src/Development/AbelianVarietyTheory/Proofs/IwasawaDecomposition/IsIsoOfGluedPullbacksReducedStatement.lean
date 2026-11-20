@@ -11,8 +11,10 @@ open AlgebraicGeometry CategoryTheory Limits NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.ShFam GlobalTheory.LocM GlobalTheory.TorRef
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SchGlue.exists_glue_of_dense | exact GlobalTheory.SchGlue.exists_glue_of_dense | (intros; apply GlobalTheory.SchGlue.exists_glue_of_dense <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SchGlue.exists_glue_of_dense` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FIsIsoOfGluedPullbacksReduced.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.isIso_of_glued_pullbacks_reduced : ∀ {S X₀ : Scheme.{0}} {I : Type} (V X : I → Scheme.{0}) (κ : ∀ i, V i ⟶ S) (g : ∀ i, X i ⟶ V i)
     (B : I → I → Scheme.{0}) (a : ∀ i k, B i k ⟶ X i) (b : ∀ i k, B i k ⟶ X k) (j : ∀ i, X₀ ⟶ X i)

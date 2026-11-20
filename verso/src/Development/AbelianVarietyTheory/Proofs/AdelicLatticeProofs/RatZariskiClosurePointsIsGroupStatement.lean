@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.AdelicP
 open Matrix GlobalTheory.ClassFin
 open scoped Kronecker ComplexOrder TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ClassFin.pts_group | exact GlobalTheory.ClassFin.pts_group | (intros; apply GlobalTheory.ClassFin.pts_group <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ClassFin.pts_group` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FAdelicLatticeProofs%2FRatZariskiClosurePointsIsGroup.lean&line=62#L62)
 -/
 theorem _root_.GlobalTheory.T.ratZariskiClosurePoints_isGroup : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (Γ : Set (Matrix ι ι ℂ)), IsPre Γ → ∀ (R : Type) [CommRing R] [Algebra ℚ R], (1 : Matrix ι ι R) ∈ pts Γ R ∧ (∀ x ∈ pts Γ R, ∀ y ∈ pts Γ R, x * y ∈ pts Γ R) ∧ (∀ x ∈ pts Γ R, x.adjugate ∈ pts Γ R) ∧ ∀ x ∈ pts Γ R, x.det = 1 := by
   first | exact @GlobalTheory.ClassFin.pts_group | exact GlobalTheory.ClassFin.pts_group | (intros; apply GlobalTheory.ClassFin.pts_group <;> assumption)

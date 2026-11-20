@@ -8,8 +8,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.Irreducibl
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.StandardFunctorsFiniteLength
 open GlobalTheory.Published GlobalTheory.TheRec
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TheRec.recUnique_of_localConverse | exact GlobalTheory.TheRec.recUnique_of_localConverse | (intros; apply GlobalTheory.TheRec.recUnique_of_localConverse <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TheRec.recUnique_of_localConverse` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FReciprocityUniqueOf.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.reciprocity_unique_of : LocalLanglandsExists → LocalConverseGL → LanglandsExhaustionGL → IrreducibleAdmissibleGL → StandardFunctorsFiniteLength → RecUnique := by
   first | exact @GlobalTheory.TheRec.recUnique_of_localConverse | exact GlobalTheory.TheRec.recUnique_of_localConverse | (intros; apply GlobalTheory.TheRec.recUnique_of_localConverse <;> assumption)

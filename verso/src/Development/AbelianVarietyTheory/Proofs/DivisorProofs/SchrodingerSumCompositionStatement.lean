@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.CTSmallCone
 open scoped Matrix
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.schr_block_factor | exact GlobalTheory.schr_block_factor | (intros; apply GlobalTheory.schr_block_factor <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.schr_block_factor` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSchrodingerSumComposition.lean&line=30#L30)
 -/
 theorem _root_.GlobalTheory.T.schrodinger_sum_composition : ∀ {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R ℂ) {κ : Type} [Fintype κ]
     (a b c a' b' c' : (κ → R) × (κ → R)),

@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.ConductorExpo
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BK GlobalTheory.BKReal GlobalTheory.BKGal GlobalTheory.Per Matrix
 open scoped Formalism.Per
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BKReal.CrisBounded.bdd_crisToOD | exact GlobalTheory.BKReal.CrisBounded.bdd_crisToOD | (intros; apply GlobalTheory.BKReal.CrisBounded.bdd_crisToOD <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BKReal.CrisBounded.bdd_crisToOD` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FBddCrisToOD.lean&line=53#L53)
 -/
 theorem _root_.GlobalTheory.T.exists_pow_mul_crisToOD_sub_toOD_dvd : ∀ (l : ℕ) [Fact l.Prime] (e : ℕ) [NeZero e] (O K : Type) [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K] (ϖ : PiSys l e) (m : ℕ), ∃ N : ℕ, ∀ z : OCr l O, ∃ y : OA l O, ϖ.iAl O K (EIn l e _) ^ m ∣ (l : OD l O) ^ N * crisToOD l O z - toOD l O y := by
   first | exact @GlobalTheory.BKReal.CrisBounded.bdd_crisToOD | exact GlobalTheory.BKReal.CrisBounded.bdd_crisToOD | (intros; apply GlobalTheory.BKReal.CrisBounded.bdd_crisToOD <;> assumption)

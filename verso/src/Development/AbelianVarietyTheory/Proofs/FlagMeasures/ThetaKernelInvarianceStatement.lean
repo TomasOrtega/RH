@@ -7,8 +7,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.BesselData (hA vecA actV)
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Per.ThetaAut.theta_aut | exact GlobalTheory.Per.ThetaAut.theta_aut | (intros; apply GlobalTheory.Per.ThetaAut.theta_aut <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Per.ThetaAut.theta_aut` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FThetaKernelInvariance.lean&line=51#L51)
 -/
 theorem _root_.GlobalTheory.T.theta_kernel_invariance : ∀ (D : D7) (X : ThetaX D) (T : ThetaTied D X) (Wl : WeilTied D X T) (L A B : HSp D) (ι : A.V →ₗ[D.host.E] B.V) (d : FJDat L A B ι), 1 < A.rank → ∀ (Φ : X.Sch L A) (g : GA D A), ∀ n ∈ d.N, (∀ γ ∈ d.N, γ ∈ GQ B → d.theta Wl.ψ (omZ Wl L A Φ) (γ * n) g = d.theta Wl.ψ (omZ Wl L A Φ) n g) ∧ ∀ γ ∈ GQ A, ∀ δ, EmbRel B A ι δ γ → d.theta Wl.ψ (omZ Wl L A Φ) (δ * n * δ⁻¹) (γ * g) = d.theta Wl.ψ (omZ Wl L A Φ) n g := by
   first | exact @GlobalTheory.Per.ThetaAut.theta_aut | exact GlobalTheory.Per.ThetaAut.theta_aut | (intros; apply GlobalTheory.Per.ThetaAut.theta_aut <;> assumption)

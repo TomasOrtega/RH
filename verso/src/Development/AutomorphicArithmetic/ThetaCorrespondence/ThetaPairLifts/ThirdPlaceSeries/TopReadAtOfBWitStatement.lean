@@ -15,8 +15,10 @@ section
 open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Top GlobalTheory.Fc GlobalTheory.MiS GlobalTheory.Fam
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.TopVal.exists_read_at_pack_b_of_b_wit | exact _root_.GlobalTheory.TopVal.exists_read_at_pack_b_of_b_wit | (intros; apply _root_.GlobalTheory.TopVal.exists_read_at_pack_b_of_b_wit <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TopVal.exists_read_at_pack_b_of_b_wit` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicArithmetic%2FThetaCorrespondence%2FThetaPairLifts%2FThirdPlaceSeries%2FTopReadAtOfBWit.lean&line=74#L74)
 -/
 theorem _root_.GlobalTheory.T.exists_read_at_packB_of_bWit : ∀ {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL} {K : Ctx} (q : Bl.WPt p.s K) {c : ℝ} (b : _root_.GlobalTheory.Fc.BundleCondition (q.w.D q.Z) q.O c), _root_.GlobalTheory.Mem.Top.Bl.BundleWitness q b → Nonempty (Bl.RXs q.x.what₂) → ∀ u, ∃ j, _root_.GlobalTheory.Fam.LeadingReadAt (_root_.GlobalTheory.Fam.packB_alt b) u j 1 := by
   first | exact @_root_.GlobalTheory.TopVal.exists_read_at_pack_b_of_b_wit | exact _root_.GlobalTheory.TopVal.exists_read_at_pack_b_of_b_wit | (intros; apply _root_.GlobalTheory.TopVal.exists_read_at_pack_b_of_b_wit <;> assumption)

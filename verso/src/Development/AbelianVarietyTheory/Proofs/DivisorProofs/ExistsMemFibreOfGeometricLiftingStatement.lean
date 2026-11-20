@@ -8,8 +8,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.exists_mem_fibre_of_geometric_lifting | exact GlobalTheory.Mum.exists_mem_fibre_of_geometric_lifting | (intros; apply GlobalTheory.Mum.exists_mem_fibre_of_geometric_lifting <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.exists_mem_fibre_of_geometric_lifting` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsMemFibreOfGeometricLifting.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.exists_mem_fiber_of_geometric_lifting : ∀ (R : Type) [CommRing R] [IsLocalRing R] (S P' X : Scheme.{0}) (π : S ⟶ Sp R) (h : P' ⟶ Sp R) (a : X ⟶ P') (q : X ⟶ S), Surjective π → ∀ x : P', h x = closedPoint R → (∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] (ξ : Sp Ω ⟶ P') (s : Sp Ω ⟶ S), Set.range ξ = {x} → ξ ≫ h = s ≫ π → ∃ p : Sp Ω ⟶ X, p ≫ a = ξ ∧ p ≫ q = s) → ∃ z : X, a z = x := by
   first | exact @GlobalTheory.Mum.exists_mem_fibre_of_geometric_lifting | exact GlobalTheory.Mum.exists_mem_fibre_of_geometric_lifting | (intros; apply GlobalTheory.Mum.exists_mem_fibre_of_geometric_lifting <;> assumption)

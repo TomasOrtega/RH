@@ -11,8 +11,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero (swSec sZero)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.StdUnn.chart_mem_GF_iff | exact GlobalTheory.StdUnn.chart_mem_GF_iff | (intros; apply GlobalTheory.StdUnn.chart_mem_GF_iff <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.StdUnn.chart_mem_GF_iff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FStandardUnitaryChartMemRationalIff.lean&line=38#L38)
 -/
 theorem _root_.GlobalTheory.T.standardUnitaryChart_mem_rational_iff : ∀ (D : D7) (A : HSp D) (μ : D.host.E), IsSkew μ → ∀ κ : GA D (dblSp A) ≃* G D A.rank, IsChart A μ κ → ∀ g, g ∈ GQ (dblSp A) ↔ κ g ∈ GF D A.rank := by
   first | exact @GlobalTheory.StdUnn.chart_mem_GF_iff | exact GlobalTheory.StdUnn.chart_mem_GF_iff | (intros; apply GlobalTheory.StdUnn.chart_mem_GF_iff <;> assumption)

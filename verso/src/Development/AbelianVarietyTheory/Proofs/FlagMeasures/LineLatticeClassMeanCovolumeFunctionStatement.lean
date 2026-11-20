@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LineLatticeClassMean
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.IsLatMeasurableConst
 open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheory.Count GlobalTheory.FlagMeas GlobalTheory.FlagBase
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagBase.MeanCov.latMean_covAt | exact GlobalTheory.FlagBase.MeanCov.latMean_covAt | (intros; apply GlobalTheory.FlagBase.MeanCov.latMean_covAt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagBase.MeanCov.latMean_covAt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FLineLatticeClassMeanCovolumeFunction.lean&line=89#L89)
 -/
 theorem _root_.GlobalTheory.T.lineLatticeClassMean_covolume_function : ∀ (E : Type) [Field E] [NumberField E], IsTotallyComplex E → ∀ j : ℕ, 1 ≤ j → ∀ w : ℝ → ENNReal, Measurable w → latMean E j (fun L => w (covAt E j L)) = glVol E j * ∫⁻ t in Set.Ioi (0 : ℝ), w t / ENNReal.ofReal t := by
   first | exact @GlobalTheory.FlagBase.MeanCov.latMean_covAt | exact GlobalTheory.FlagBase.MeanCov.latMean_covAt | (intros; apply GlobalTheory.FlagBase.MeanCov.latMean_covAt <;> assumption)

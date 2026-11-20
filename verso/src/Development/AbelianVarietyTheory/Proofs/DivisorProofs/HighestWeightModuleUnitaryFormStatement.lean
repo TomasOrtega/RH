@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HighestWeightModule
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RestrActApply
 open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible GlobalTheory.FockAlg GlobalTheory.SteepMult
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnitaryTrick.exists_isUnitary | exact GlobalTheory.UnitaryTrick.exists_isUnitary | (intros; apply GlobalTheory.UnitaryTrick.exists_isUnitary <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnitaryTrick.exists_isUnitary` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHighestWeightModuleUnitaryForm.lean&line=322#L322)
 -/
 theorem _root_.GlobalTheory.T.highest_weight_module_unitary_form : ∀ (R S : ℕ) (W : Type) [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W]
     (actW : Mat R S →ₗ[ℂ] Module.End ℂ W) (Λ : Ix R S → ℚ) (v : W), IsKLieAct actW →

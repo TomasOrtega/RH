@@ -13,8 +13,10 @@ open GlobalTheory.RayEv (Ray)
 open GlobalTheory.Toroidal GlobalTheory.LogKS GlobalTheory.LogKSChart GlobalTheory.Heat
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SpThickening.existsUnique_decomp | exact GlobalTheory.SpThickening.existsUnique_decomp | (intros; apply GlobalTheory.SpThickening.existsUnique_decomp <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SpThickening.existsUnique_decomp` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsUniqueDualNumberThickeningOpenDecomp.lean&line=38#L38)
 -/
 theorem _root_.GlobalTheory.T.existsUnique_dualNumberThickening_open_decomp : ∀ (R : Type) [CommRing R] {Z P : Scheme.{0}} (h : Z ⟶ Sp R) (p₁ : P ⟶ Sp (DualNumber R)) (p₂ : P ⟶ Z), IsPullback p₂ p₁ h (spMap (algebraMap R (DualNumber R))) → ∀ (O : Z.Opens) (F : Γ(P, p₂ ⁻¹ᵁ O)), ∃! ab : Γ(Z, O) × Γ(Z, O), F = (p₂.app O).hom ab.1 + constFn p₁ _ DualNumber.eps * (p₂.app O).hom ab.2 := by
   first | exact @GlobalTheory.SpThickening.existsUnique_decomp | exact GlobalTheory.SpThickening.existsUnique_decomp | (intros; apply GlobalTheory.SpThickening.existsUnique_decomp <;> assumption)

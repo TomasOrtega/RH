@@ -8,8 +8,10 @@ open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.exists_finite_separable_torusExtension | exact GlobalTheory.exists_finite_separable_torusExtension | (intros; apply GlobalTheory.exists_finite_separable_torusExtension <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.exists_finite_separable_torusExtension` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FSemiabelianTorusAfterSeparable.lean&line=282#L282)
 -/
 theorem _root_.GlobalTheory.T.semiabelian_torus_after_separable : ∀ (k : Type) [Field k] (G : Over (Sp k)) [GrpObj G], IsSemiAbelian G → ∃ (k' : Type) (_ : Field k') (_ : Algebra k k'), FiniteDimensional k k' ∧ Algebra.IsSeparable k k' ∧ Nonempty (TorusExtension ((Over.pullback (spMap (algebraMap k k'))).obj G)) := by
   first | exact @GlobalTheory.exists_finite_separable_torusExtension | exact GlobalTheory.exists_finite_separable_torusExtension | (intros; apply GlobalTheory.exists_finite_separable_torusExtension <;> assumption)

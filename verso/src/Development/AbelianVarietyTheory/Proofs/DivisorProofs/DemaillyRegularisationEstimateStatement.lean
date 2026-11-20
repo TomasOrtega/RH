@@ -10,8 +10,10 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.QuasiPlurisubhar
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.LieAlgebraMaps
 open NumberField Formalism.BasicNotions Formalism.MainNotions ReciprocityTheory.GeometryOfNumbersTheory GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.Mean4 GlobalTheory.Mean4O GlobalTheory.LieHt GlobalTheory.HeightParts
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RegEst.regSt | exact GlobalTheory.RegEst.regSt | (intros; apply GlobalTheory.RegEst.regSt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RegEst.regSt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDemaillyRegularisationEstimate.lean&line=28#L28)
 -/
 theorem _root_.GlobalTheory.T.demailly_regularisation_estimate : Hypotheses2 → HypothesesH → GlobalTheory.Published.DemaillyRegularisation → RegSt := by
   first | exact @GlobalTheory.RegEst.regSt | exact GlobalTheory.RegEst.regSt | (intros; apply GlobalTheory.RegEst.regSt <;> assumption)

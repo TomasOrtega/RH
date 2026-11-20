@@ -9,8 +9,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThK.UnipRat.exists_rat_unip_coA | exact GlobalTheory.ThK.UnipRat.exists_rat_unip_coA | (intros; apply GlobalTheory.ThK.UnipRat.exists_rat_unip_coA <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThK.UnipRat.exists_rat_unip_coA` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRationalUnipotentCoordSurj.lean&line=100#L100)
 -/
 theorem _root_.GlobalTheory.T.rational_unipotent_coord_surj : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n n₁ : ℕ) (Y : Spc F E n) (Y₁ : Spc F E n₁) (H : Plane E n n₁), IsCMExt F E σ → (∀ i j, σ (Y.J j i) = -Y.J i j) → IsIsoPlane σ B H Y Y₁ → ∀ α : Fin n₁ → E, ∃ γ ∈ unip σ Y H, γ ∈ ratU σ Y.J ∧ coA σ Y.J H γ = fun j => inclR (F := F) (AF F) (α j) := by
   first | exact @GlobalTheory.ThK.UnipRat.exists_rat_unip_coA | exact GlobalTheory.ThK.UnipRat.exists_rat_unip_coA | (intros; apply GlobalTheory.ThK.UnipRat.exists_rat_unip_coA <;> assumption)

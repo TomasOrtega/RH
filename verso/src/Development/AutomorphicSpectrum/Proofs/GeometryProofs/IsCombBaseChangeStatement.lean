@@ -38,8 +38,10 @@ open scoped Matrix
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.CombMap.isCombAt_spMap | exact GlobalTheory.CompanionTheory.Ar.CombMap.isCombAt_spMap | (intros; apply GlobalTheory.CompanionTheory.Ar.CombMap.isCombAt_spMap <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.CombMap.isCombAt_spMap` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FIsCombBaseChange.lean&line=41#L41)
 -/
 theorem _root_.GlobalTheory.T.is_comb_base_change : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (S T : Type) [CommRing S] [CommRing T] (φ : S →+* T) (x : Sp S ⟶ Xo.X) (m : ℕ) (v : Fin m → (Sp (DualNumber S) ⟶ Xo.univ.t.G.left)) (cf : Fin m → S) (w : Sp (DualNumber S) ⟶ Xo.univ.t.G.left), IsCombAt x v cf w → IsCombAt (spMap φ ≫ x) (fun i => spMap (Formalism.L2.Pj.dualMap φ) ≫ v i) (fun i => φ (cf i)) (spMap (Formalism.L2.Pj.dualMap φ) ≫ w) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.CombMap.isCombAt_spMap | exact GlobalTheory.CompanionTheory.Ar.CombMap.isCombAt_spMap | (intros; apply GlobalTheory.CompanionTheory.Ar.CombMap.isCombAt_spMap <;> assumption)

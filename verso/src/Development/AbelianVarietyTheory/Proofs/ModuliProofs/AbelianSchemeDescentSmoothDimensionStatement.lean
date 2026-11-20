@@ -7,8 +7,10 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.Uni
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj TensorProduct
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FieldDescentAb.isAbelianScheme_and_relDim_descend | exact GlobalTheory.FieldDescentAb.isAbelianScheme_and_relDim_descend | (intros; apply GlobalTheory.FieldDescentAb.isAbelianScheme_and_relDim_descend <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FieldDescentAb.isAbelianScheme_and_relDim_descend` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FModuliProofs%2FAbelianSchemeDescentSmoothDimension.lean&line=85#L85)
 -/
 theorem _root_.GlobalTheory.T.abelian_scheme_descent_smooth_dimension : ∀ (K₀ K : Type) [Field K₀] [Field K] (i : K₀ →+* K) (A₀ : Over (Sp K₀)) (A : Over (Sp K)) [GrpObj A₀] [GrpObj A] (φ : A.left ⟶ A₀.left), IsGrpPullback A A₀ (spMap i) φ → IsAbelianScheme A → IsAbelianScheme A₀ ∧ ∀ g : ℕ, SmoothOfRelativeDimension g A.hom → SmoothOfRelativeDimension g A₀.hom := by
   first | exact @GlobalTheory.FieldDescentAb.isAbelianScheme_and_relDim_descend | exact GlobalTheory.FieldDescentAb.isAbelianScheme_and_relDim_descend | (intros; apply GlobalTheory.FieldDescentAb.isAbelianScheme_and_relDim_descend <;> assumption)

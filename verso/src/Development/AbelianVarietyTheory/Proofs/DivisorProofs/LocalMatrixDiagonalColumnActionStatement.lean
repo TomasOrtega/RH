@@ -9,8 +9,10 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open scoped TensorProduct
 open Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LeviBlockRealization.LocEmb.isPositionCentre_emb | exact GlobalTheory.LeviBlockRealization.LocEmb.isPositionCentre_emb | (intros; apply GlobalTheory.LeviBlockRealization.LocEmb.isPositionCentre_emb <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LeviBlockRealization.LocEmb.isPositionCentre_emb` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLocalMatrixDiagonalColumnAction.lean&line=64#L64)
 -/
 theorem _root_.GlobalTheory.T.local_matrix_diagonal_column_action : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin r) E)
     (v : HeightOneSpectrum (𝓞 F)) (x : GLoc σ J v) (e : (Fv F v ⊗[F] E)ˣ) (i : Fin r),

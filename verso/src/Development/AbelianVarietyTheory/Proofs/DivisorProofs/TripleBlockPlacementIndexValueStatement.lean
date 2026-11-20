@@ -18,8 +18,10 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open scoped TensorProduct
 open Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CuspBlock.tripPlace_symm_fst | exact GlobalTheory.CuspBlock.tripPlace_symm_fst | (intros; apply GlobalTheory.CuspBlock.tripPlace_symm_fst <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CuspBlock.tripPlace_symm_fst` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTripleBlockPlacementIndexValue.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.triple_block_placement_index_value : ∀ {l d N : ℕ} (h : l + d ≤ N) (k : Fin N),
     ((tripPlace h).symm k).1 = if k.val < l then 0 else if k.val < l + d then 1 else 2 := by

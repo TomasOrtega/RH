@@ -8,8 +8,10 @@ open IsDedekindDomain NumberField MeasureTheory
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.coefA_dual_coef_continuousOn | exact GlobalTheory.coefA_dual_coef_continuousOn | (intros; apply GlobalTheory.coefA_dual_coef_continuousOn <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.coefA_dual_coef_continuousOn` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FContragredientMatrixCoefficientContinuousOnUnita.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.contragredient_matrix_coefficient_continuousOn_unitary : ∀ (D : D7) (V : HSp D) (θ : InfFam D) (c : CoefA V), IsInfFam θ → c.Is → ∀ (τ : D.what₂.Tau) (f : Module.Dual ℂ c.W) (v : c.W), ContinuousOn (fun g => f (c.ρ (atTau θ V τ g)⁻¹ v)) (Formalism.QuantumDeterminants.UH (gramAt D V τ)) := by
   first | exact @GlobalTheory.coefA_dual_coef_continuousOn | exact GlobalTheory.coefA_dual_coef_continuousOn | (intros; apply GlobalTheory.coefA_dual_coef_continuousOn <;> assumption)

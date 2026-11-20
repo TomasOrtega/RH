@@ -7,8 +7,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SteinFact.stein_factorisation | exact GlobalTheory.SteinFact.stein_factorisation | (intros; apply GlobalTheory.SteinFact.stein_factorisation <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SteinFact.stein_factorisation` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSteinFactorisationConnectedFibres.lean&line=48#L48)
 -/
 theorem _root_.GlobalTheory.T.stein_factorisation_connected_fibres : ∀ (X Y : Scheme.{0}) (g : X ⟶ Y), IsLocallyNoetherian Y → IsProper g → ∃ (Y' : Scheme.{0}) (a : X ⟶ Y') (b : Y' ⟶ Y), a ≫ b = g ∧ IsFinite b ∧ IsProper a ∧ Surjective a ∧ (∀ V : Y'.Opens, Function.Bijective (a.app V).hom) ∧ ∀ y : Y', _root_.IsPreconnected {x : X | a x = y} := by
   first | exact @GlobalTheory.SteinFact.stein_factorisation | exact GlobalTheory.SteinFact.stein_factorisation | (intros; apply GlobalTheory.SteinFact.stein_factorisation <;> assumption)

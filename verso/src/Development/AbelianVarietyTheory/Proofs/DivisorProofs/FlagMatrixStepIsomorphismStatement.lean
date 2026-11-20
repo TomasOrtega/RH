@@ -8,8 +8,10 @@ open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalT
 open GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.ProjVar
 open GlobalTheory.FlagCls
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagCls.flagMat_of_stepIso | exact GlobalTheory.FlagCls.flagMat_of_stepIso | (intros; apply GlobalTheory.FlagCls.flagMat_of_stepIso <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagCls.flagMat_of_stepIso` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFlagMatrixStepIsomorphism.lean&line=47#L47)
 -/
 theorem _root_.GlobalTheory.T.flag_matrix_step_isomorphism : ∀ (B Y : Scheme.{0}) (M : B.Modules) (r : ℕ) (hM : IsVB M r) (π : Y ⟶ B) (fl : Vert.Flag ((Scheme.Modules.pullback π).obj M) r) (V : B.Opens) (f : Fin r → Γ(M, V)) (hf : IsFrame f) (K : Type) [Field K] (x : Sp K ⟶ B), ⊤ ≤ x ⁻¹ᵁ V → ∀ (fl' : Vert.Flag ((Scheme.Modules.pullback x).obj M) r) (A : Matrix (Fin r) (Fin r) K), FlagMat hM x fl' hf (𝟙 (Sp K)) A → ∀ (y : Sp K ⟶ Y) (w : y ≫ π = x), StepIso π fl fl' y w → FlagMat hM π fl hf y A := by
   first | exact @GlobalTheory.FlagCls.flagMat_of_stepIso | exact GlobalTheory.FlagCls.flagMat_of_stepIso | (intros; apply GlobalTheory.FlagCls.flagMat_of_stepIso <;> assumption)

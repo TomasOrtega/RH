@@ -11,8 +11,10 @@ open scoped TensorProduct InnerProductSpace
 open GlobalTheory.Hk3
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Hk3.TwoSidedInert.twoSided_of_inert | exact GlobalTheory.Hk3.TwoSidedInert.twoSided_of_inert | (intros; apply GlobalTheory.Hk3.TwoSidedInert.twoSided_of_inert <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Hk3.TwoSidedInert.twoSided_of_inert` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FTwoSidedHeckePartnerInertPrime.lean&line=50#L50)
 -/
 theorem _root_.GlobalTheory.T.twoSidedHeckePartner_inertPrime : HoweUnram → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Chain.LiftInteg D → Core R F → SchurAll R → ∀ t P, Good R t P → conjPl P = P → FixAll R t P → TwoSided R t P := by
   first | exact @GlobalTheory.Hk3.TwoSidedInert.twoSided_of_inert | exact GlobalTheory.Hk3.TwoSidedInert.twoSided_of_inert | (intros; apply GlobalTheory.Hk3.TwoSidedInert.twoSided_of_inert <;> assumption)

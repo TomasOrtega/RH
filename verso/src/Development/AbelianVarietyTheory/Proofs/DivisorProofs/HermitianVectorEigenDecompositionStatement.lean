@@ -6,8 +6,10 @@ open scoped Matrix
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.RealLift Formalism.BasicNotions.TH Matrix
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.hyperbolic_pair_of_cartan_isotropic | exact GlobalTheory.hyperbolic_pair_of_cartan_isotropic | (intros; apply GlobalTheory.hyperbolic_pair_of_cartan_isotropic <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.hyperbolic_pair_of_cartan_isotropic` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHermitianVectorEigenDecomposition.lean&line=8#L8)
 -/
 theorem _root_.GlobalTheory.T.hermitian_vector_eigen_decomposition : ∀ {n : ℕ} (M θ : Matrix (Fin n) (Fin n) ℂ) (x : Fin n → ℂ), Mᴴ = M → IsCartan M θ → x ≠ 0 →
     x ⬝ᵥ M *ᵥ star x = 0 →

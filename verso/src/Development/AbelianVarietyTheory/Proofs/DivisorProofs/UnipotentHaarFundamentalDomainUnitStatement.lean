@@ -8,8 +8,10 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.ThK.DescB
 open GlobalTheory.Doubling (absE)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnipFD.main | exact GlobalTheory.UnipFD.main | (intros; apply GlobalTheory.UnipFD.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnipFD.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FUnipotentHaarFundamentalDomainUnit.lean&line=31#L31)
 -/
 theorem _root_.GlobalTheory.T.unipotent_haar_fundamental_domain_unit : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {n n₁ : ℕ}
     (Y : Spc F E n) (H : Plane E n n₁),

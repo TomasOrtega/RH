@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ParameterLargeAllPo
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AtPtsImp
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.DIV Formalism.L2.Pj Formalism.IndefR Formalism.IndefR.Links GlobalTheory.BigTop GlobalTheory.BigOn GlobalTheory.ExpTie
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ExpTie.rows_big | exact GlobalTheory.ExpTie.rows_big | (intros; apply GlobalTheory.ExpTie.rows_big <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ExpTie.rows_big` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FParameterLargeAllPoints.lean&line=100#L100)
 -/
 theorem _root_.GlobalTheory.T.parameter_large_all_points : GlobalTheory.BigOn.AtPts fun Fm x _ i _ => ∀ j : Fin (Fm.D x i).R.m, ∃ X' A : ℝ, Formalism.CohomologicalDescent.LargeParameterEstimates.Rows (GlobalTheory.ExpTie.parOf (Fm.L x i) j) X' A ∧ Formalism.CohomologicalDescent.LargeParameterEstimates.Big (GlobalTheory.ExpTie.parOf (Fm.L x i) j).L (GlobalTheory.ExpTie.parOf (Fm.L x i) j).x X' A := by
   first | exact @GlobalTheory.ExpTie.rows_big | exact GlobalTheory.ExpTie.rows_big | (intros; apply GlobalTheory.ExpTie.rows_big <;> assumption)

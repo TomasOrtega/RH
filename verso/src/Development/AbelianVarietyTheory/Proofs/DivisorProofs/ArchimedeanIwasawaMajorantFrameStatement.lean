@@ -10,8 +10,10 @@ open scoped TensorProduct NNReal
 open Formalism.UG (cT bc)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IwArchLine.exists_q_k | exact GlobalTheory.IwArchLine.exists_q_k | (intros; apply GlobalTheory.IwArchLine.exists_q_k <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IwArchLine.exists_q_k` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FArchimedeanIwasawaMajorantFrame.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.archimedean_iwasawa_majorant_frame : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (x y : Matrix (Fin n) (Fin 1) E), cT (σ : E →+* E) x * J * x = 0 → cT (σ : E →+* E) y * J * x = 1 → ∀ (a : GL (Fin n) (AF F ⊗[F] E)), IsMajorantFrame σ J a → ∀ (w : InfinitePlace F) (g : GArch σ J w), ∃ q k : GArch σ J w, k ∈ stabArch σ J w (bc (compInf F E w) a) ∧ g = q * k ∧ ∃ β : GL (Fin 1) (w.Completion ⊗[F] E), (matHom _ σ J q).1 * x.map (inclR (F := F) w.Completion) = x.map (inclR (F := F) w.Completion) * β.1 := by
   first | exact @GlobalTheory.IwArchLine.exists_q_k | exact GlobalTheory.IwArchLine.exists_q_k | (intros; apply GlobalTheory.IwArchLine.exists_q_k <;> assumption)

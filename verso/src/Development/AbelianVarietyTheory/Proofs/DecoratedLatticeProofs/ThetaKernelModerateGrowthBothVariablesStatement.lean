@@ -11,8 +11,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Core.Rk.IP
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Core.Rk.ThetaGrowthBoth.thetaKO_modGrowth₂ | exact GlobalTheory.Core.Rk.ThetaGrowthBoth.thetaKO_modGrowth₂ | (intros; apply GlobalTheory.Core.Rk.ThetaGrowthBoth.thetaKO_modGrowth₂ <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Core.Rk.ThetaGrowthBoth.thetaKO_modGrowth₂` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FThetaKernelModerateGrowthBothVariables.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.theta_kernel_moderate_growth_both_variables : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : WRep S T), IsWeilDatumO ψ S T χS χT om → ∀ f, IsThetaFunO ψ S T f → GlobalTheory.Grow.ModGrowth₂ S T fun g h => thetaKO om g h f := by
   first | exact @GlobalTheory.Core.Rk.ThetaGrowthBoth.thetaKO_modGrowth₂ | exact GlobalTheory.Core.Rk.ThetaGrowthBoth.thetaKO_modGrowth₂ | (intros; apply GlobalTheory.Core.Rk.ThetaGrowthBoth.thetaKO_modGrowth₂ <;> assumption)

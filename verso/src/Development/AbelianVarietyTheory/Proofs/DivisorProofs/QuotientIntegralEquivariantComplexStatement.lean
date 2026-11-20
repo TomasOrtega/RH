@@ -4,8 +4,10 @@ import Mathlib
 open MeasureTheory
 open scoped NNReal ENNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.lintegral_translation_identity_to_complex | exact GlobalTheory.lintegral_translation_identity_to_complex | (intros; apply GlobalTheory.lintegral_translation_identity_to_complex <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.lintegral_translation_identity_to_complex` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FQuotientIntegralEquivariantComplex.lean&line=28#L28)
 -/
 theorem _root_.GlobalTheory.T.quotient_integral_equivariant_complex : ∀ (G : Type) [Group G] (P : Subgroup G) (X : Type) [MeasurableSpace X] (μ : Measure X) (a : X → G) (δ : P → ℝ≥0),
     (∀ Φ : G → ℝ≥0∞, (∀ (p : P) (g : G), Φ ((p : G) * g) = (δ p : ℝ≥0∞) * Φ g) →

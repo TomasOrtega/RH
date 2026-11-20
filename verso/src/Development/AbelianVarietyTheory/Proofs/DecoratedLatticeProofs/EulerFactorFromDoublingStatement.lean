@@ -16,8 +16,10 @@ open GlobalTheory.Core.Rk.IP
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Core.Rk.Exh GlobalTheory.RegSW
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Core.Rk.Exh.Top.downNe_of_hypotheses | exact GlobalTheory.Core.Rk.Exh.Top.downNe_of_hypotheses | (intros; apply GlobalTheory.Core.Rk.Exh.Top.downNe_of_hypotheses <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Core.Rk.Exh.Top.downNe_of_hypotheses` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FEulerFactorFromDoubling.lean&line=60#L60)
 -/
 theorem _root_.GlobalTheory.T.euler_factor_from_doubling : GlobalTheory.Published.DoublingMethod → GlobalTheory.Published.RegularisedSiegelWeilFirstTerm → GlobalTheory.IndefiniteRowSideFullHecke.SimplePoleTwistedLift.SimplePole → ∀ D : D7, EulerRight D → DownNe D := by
   first | exact @GlobalTheory.Core.Rk.Exh.Top.downNe_of_hypotheses | exact GlobalTheory.Core.Rk.Exh.Top.downNe_of_hypotheses | (intros; apply GlobalTheory.Core.Rk.Exh.Top.downNe_of_hypotheses <;> assumption)

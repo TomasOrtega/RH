@@ -4,8 +4,10 @@ import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomology
 open TensorProduct CrystallineSemistableComparison.D
 open scoped LaurentPolynomial
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.AicStep.aic_step | exact GlobalTheory.CompanionTheory.AicStep.aic_step | (intros; apply GlobalTheory.CompanionTheory.AicStep.aic_step <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.AicStep.aic_step` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FHenselPolynomialRefinement.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.hensel_polynomial_refinement : ∀ (B : Type) [CommRing B] (T : Type) [CommRing T] (π : B) (g : B →+* T), IsCompl π g → π ∈ nonZeroDivisors B → AIC B → VAL π → ∀ P : Polynomial T, P.Monic → 0 < P.natDegree → ∀ (M : ℕ) (a : B), P.eval (g a) ∈ Ideal.span {g π ^ (P.natDegree * M)} → ∃ a₁ : B, a₁ - a ∈ Ideal.span {π ^ M} ∧ P.eval (g a₁) ∈ Ideal.span {g π ^ (P.natDegree * (M + 1))} := by
   first | exact @GlobalTheory.CompanionTheory.AicStep.aic_step | exact GlobalTheory.CompanionTheory.AicStep.aic_step | (intros; apply GlobalTheory.CompanionTheory.AicStep.aic_step <;> assumption)

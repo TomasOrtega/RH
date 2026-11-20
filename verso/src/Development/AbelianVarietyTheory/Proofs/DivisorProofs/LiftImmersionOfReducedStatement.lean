@@ -9,8 +9,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.lift_immersion_of_reduced | exact GlobalTheory.Mum.lift_immersion_of_reduced | (intros; apply GlobalTheory.Mum.lift_immersion_of_reduced <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.lift_immersion_of_reduced` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLiftImmersionOfReduced.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.exists_lift_of_isReduced_of_isImmersion_range : ∀ (X Y P : Scheme.{0}) (f : X ⟶ P) (j : Y ⟶ P), IsReduced X → IsImmersion j → Set.range f ⊆ Set.range j → ∃ g : X ⟶ Y, g ≫ j = f := by
   first | exact @GlobalTheory.Mum.lift_immersion_of_reduced | exact GlobalTheory.Mum.lift_immersion_of_reduced | (intros; apply GlobalTheory.Mum.lift_immersion_of_reduced <;> assumption)

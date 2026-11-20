@@ -14,8 +14,10 @@ open GlobalTheory.SquareComm
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TripleAssembly.ReadDerB.read_lieDer | exact GlobalTheory.TripleAssembly.ReadDerB.read_lieDer | (intros; apply GlobalTheory.TripleAssembly.ReadDerB.read_lieDer <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TripleAssembly.ReadDerB.read_lieDer` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FSeesawWeilZetaIdentity.lean&line=56#L56)
 -/
 theorem _root_.GlobalTheory.T.seesaw_weil_zeta_identity : GlobalTheory.Published.HoweDualityReal → GlobalTheory.FunPr.Hypotheses₂ →
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →

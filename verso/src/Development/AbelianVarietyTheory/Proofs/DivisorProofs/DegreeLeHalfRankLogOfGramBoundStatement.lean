@@ -8,8 +8,10 @@ import ReciprocityTheory.GeometryOfNumbers.LatticeCovolumes.InhabSt
 open NumberField MeasureTheory ReciprocityTheory.GeometryOfNumbersTheory ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.LieHt
 open scoped ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TorusSlope.deg_le_half_log | exact GlobalTheory.TorusSlope.deg_le_half_log | (intros; apply GlobalTheory.TorusSlope.deg_le_half_log <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TorusSlope.deg_le_half_log` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDegreeLeHalfRankLogOfGramBound.lean&line=28#L28)
 -/
 theorem _root_.GlobalTheory.T.degree_le_half_rank_log_of_gram_bound : ∀ (K : Type) [Field K] [NumberField K] (m r : ℕ) (h : HermFam K (Fin m → K)) (ε : Fin r → Fin m → K) (C : ℝ), 0 < C → LinearIndependent K ε → (∀ σ : K →+* ℂ, ((C : ℂ) • h.gram σ ε - 1).PosSemidef) → ∀ W : Submodule (𝓞 K) (Fin m → K), W ≤ Submodule.span (𝓞 K) (Set.range ε) → deg h W ≤ (latRank K W : ℝ) / 2 * Real.log C := by
   first | exact @GlobalTheory.TorusSlope.deg_le_half_log | exact GlobalTheory.TorusSlope.deg_le_half_log | (intros; apply GlobalTheory.TorusSlope.deg_le_half_log <;> assumption)

@@ -17,8 +17,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UU
 open GlobalTheory.LN
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TowerAlg.nonempty_alg | exact GlobalTheory.TowerAlg.nonempty_alg | (intros; apply GlobalTheory.TowerAlg.nonempty_alg <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TowerAlg.nonempty_alg` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDegenerationProofs%2FNonemptyAlgebraisationFormalTowerAmple.lean&line=49#L49)
 -/
 theorem _root_.GlobalTheory.T.nonempty_algebraisation_formal_tower_ample : Laws → Laws2 → Ega → ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (I : Ideal R), admitted R I → ∀ (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (P : CP G) (X : Type) [AddCommGroup X] (T : TowerR I P X), RelAmple (T.l 0).Q.B (T.l 0).D.M.L.L → Nonempty T.Alg := by
   first | exact @GlobalTheory.TowerAlg.nonempty_alg | exact GlobalTheory.TowerAlg.nonempty_alg | (intros; apply GlobalTheory.TowerAlg.nonempty_alg <;> assumption)

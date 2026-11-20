@@ -7,8 +7,10 @@ open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCate
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Semi
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory GlobalTheory.AbLaw
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.VeryAmpleCharts.compact_quasiSeparated_isAffineOpen | exact GlobalTheory.VeryAmpleCharts.compact_quasiSeparated_isAffineOpen | (intros; apply GlobalTheory.VeryAmpleCharts.compact_quasiSeparated_isAffineOpen <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.VeryAmpleCharts.compact_quasiSeparated_isAffineOpen` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FCoherentCohomologyProofs%2FVeryAmpleCompactQuasiSeparatedAffineCharts.lean&line=46#L46)
 -/
 theorem _root_.GlobalTheory.T.veryAmple_compact_quasiSeparated_affine_charts : ∀ (R : Type) [CommRing R] (Y : Scheme.{0}) (f : Y ⟶ Spec (CommRingCat.of R)) (H : LB Y) (m : ℕ) (s : Fin (m + 1) → LB.Sec H), H.IsLB → VeryAmpleBy f H s → CompactSpace Y ∧ QuasiSeparatedSpace Y ∧ ∀ I : Finset (Fin (m + 1)), I.Nonempty → IsAffineOpen (⨅ i ∈ I, nonzeroLocus (s i)) := by
   first | exact @GlobalTheory.VeryAmpleCharts.compact_quasiSeparated_isAffineOpen | exact GlobalTheory.VeryAmpleCharts.compact_quasiSeparated_isAffineOpen | (intros; apply GlobalTheory.VeryAmpleCharts.compact_quasiSeparated_isAffineOpen <;> assumption)

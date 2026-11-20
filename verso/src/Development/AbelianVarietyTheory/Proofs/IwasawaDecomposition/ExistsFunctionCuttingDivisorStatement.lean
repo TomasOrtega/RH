@@ -7,8 +7,10 @@ open AlgebraicGeometry CategoryTheory Limits NumberField IsLocalRing Topological
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R Formalism.L2.Pj
 open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFam GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.TorRef
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SecIdeal.exists_local_generator_of_sec | exact GlobalTheory.SecIdeal.exists_local_generator_of_sec | (intros; apply GlobalTheory.SecIdeal.exists_local_generator_of_sec <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SecIdeal.exists_local_generator_of_sec` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsFunctionCuttingDivisor.lean&line=99#L99)
 -/
 theorem _root_.GlobalTheory.T.exists_function_cutting_divisor : ∀ {S S' : Scheme.{0}} (g : S' ⟶ S) (M : LB S) (Dv : GlobalTheory.EffCartierData S) (k N : ℕ)
     (σ : (lbPow (GlobalTheory.CechPic.tens (lbPow M k) (GlobalTheory.CechPic.dual Dv.lb)) N).Sec) (V : S'.Opens)

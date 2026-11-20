@@ -12,8 +12,10 @@ open GlobalTheory.FunObj GlobalTheory.ChiGrid GlobalTheory.SplitFlip GlobalTheor
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BigRouteIdent.kerBig_norm_le_thetaKO | exact GlobalTheory.BigRouteIdent.kerBig_norm_le_thetaKO | (intros; apply GlobalTheory.BigRouteIdent.kerBig_norm_le_thetaKO <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BigRouteIdent.kerBig_norm_le_thetaKO` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FBigRouteKernelNormLeConstMulThetaKernel.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.bigRoute_kernel_norm_le_const_mul_thetaKernel : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (hL : L.Is μ₀)
     (W : G.Weil) (B : Frames G) (ρ : RealMatch W) (t : T) (i j : Fin D.R.m) (hT : SquareTriple W t i j)

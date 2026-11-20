@@ -17,8 +17,10 @@ section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.RT GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Top GlobalTheory.Mem.Top.Bl GlobalTheory.Fc
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.ClassSumPinLink.pIota_classSumPin_alt | exact _root_.GlobalTheory.ClassSumPinLink.pIota_classSumPin_alt | (intros; apply _root_.GlobalTheory.ClassSumPinLink.pIota_classSumPin_alt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ClassSumPinLink.pIota_classSumPin_alt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicArithmetic%2FThetaCorrespondence%2FThetaPairLifts%2FThirdPlaceSeries%2FClassSumPinOfReadAt.lean&line=81#L81)
 -/
 theorem _root_.GlobalTheory.T.class_sum_divisibility_of_extensionWithLaw : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (N : _root_.GlobalTheory.Mem.Top.Bl.NormChoiceExtension hL) (S : SExt) (Γ : GeoP), (∀ K B f T w Z Wt p0 t nch n xd c, N K B f T w Z Wt p0 t nch n xd c → Nonempty (_root_.GlobalTheory.HeightCounting.Up.extensionWithLaw hL K B f T w Z Wt p0 t nch n xd c)) → ∀ (K : Ctx) (q : WPt (_root_.GlobalTheory.Mem.Top.Bl.parametersOfExtension N S Γ).s K) (c : ℝ) (b : _root_.GlobalTheory.Fc.BundleCondition (q.w.D q.Z) q.O c) (_ : _root_.GlobalTheory.Mem.Top.Bl.BundleWitness (p := _root_.GlobalTheory.Mem.Top.Bl.parametersOfExtension N S Γ) q b) (t : b.Comparison₂), _root_.GlobalTheory.Fc.Ind.IotaPointSummands _ _ c (b.part t) ∧ (_root_.GlobalTheory.Fc.Ind.DivisorPointSummands _ _ c (b.part t) → GlobalTheory.ExportPin.ClassSumPin (b.part t).pt) := by
   first | exact @_root_.GlobalTheory.ClassSumPinLink.pIota_classSumPin_alt | exact _root_.GlobalTheory.ClassSumPinLink.pIota_classSumPin_alt | (intros; apply _root_.GlobalTheory.ClassSumPinLink.pIota_classSumPin_alt <;> assumption)

@@ -21,8 +21,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.ClosedFibreImm.main | exact GlobalTheory.Mum.ClosedFibreImm.main | (intros; apply GlobalTheory.Mum.ClosedFibreImm.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.ClosedFibreImm.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FClosedFibreTorusCoordinatesIsImmersion.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.closedFibre_torusCoordinates_isImmersion : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (U : UnifPre (maximalIdeal R) D A G) (Y : Ext D.toPre) (ψ : Over.mk ((thickObj R (maximalIdeal R) 0 G).hom ≫ thick R (maximalIdeal R) 0) ⟶ Y.H), GlobalTheory.TorusCoord.IsPointOf (U.gt 0) (𝟙 (thickObj R (maximalIdeal R) 0 G).left) (Y.Φ _ ψ) → IsImmersion ψ.left := by
   first | exact @GlobalTheory.Mum.ClosedFibreImm.main | exact GlobalTheory.Mum.ClosedFibreImm.main | (intros; apply GlobalTheory.Mum.ClosedFibreImm.main <;> assumption)

@@ -11,8 +11,10 @@ open GlobalTheory.FlagTan (dimFlag)
 open GlobalTheory.HSApp
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompHS.exists_frPt_of_flagOpen | exact GlobalTheory.CompHS.exists_frPt_of_flagOpen | (intros; apply GlobalTheory.CompHS.exists_frPt_of_flagOpen <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompHS.exists_frPt_of_flagOpen` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsFramedPointOfCompactFlagSpaceOpenPart.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.exists_framedPoint_of_compactFlagSpaceOpenPart : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {Y : Model Xo c (RingHom.id c.F)} (X : FlagCover Y) (K : Type) [Field K] (z : Sp K ⟶ X.YY), ⊤ ≤ z ⁻¹ᵁ flagOpen X → ∃ io : c.F →+* K, letI := io.toAlgebra; ∃ P : FrPt Xo c K, X.ptY P = z := by
   first | exact @GlobalTheory.CompHS.exists_frPt_of_flagOpen | exact GlobalTheory.CompHS.exists_frPt_of_flagOpen | (intros; apply GlobalTheory.CompHS.exists_frPt_of_flagOpen <;> assumption)

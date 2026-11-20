@@ -15,8 +15,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UT ReciprocityTheory.ChartRestriction.G.DVR
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GtCoeff.exists_coeff_gt | exact GlobalTheory.GtCoeff.exists_coeff_gt | (intros; apply GlobalTheory.GtCoeff.exists_coeff_gt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GtCoeff.exists_coeff_gt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsIntegralCoefficientSectionCoordinateRig.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.exists_integral_coefficient_section_coordinate_rig : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (g : GtPt D (𝟙_ (Over (Sp R)))) (t : LB.Gen (LB.LinComb D.P.L ![(η[D.P.A]).left, g.b.left] (DegPre.lineε 1))), t.IsGen → ∀ (k : ℕ) (α : D.X) (s : D.SecB k α), ∃ a : R, ∀ (Z : Scheme.{0}) (r : Z ⟶ Sp R) (z : Z) (J : (Z ⟶ D.P.A.left) → D.P.L.ι), Good D.P.L z J → sval s (r ≫ g.b.left) z J * (val (g.s α) r z J).val * (val t r z J ^ k).val = Geo.Tor.cst r z a * (val (L := D.P.L) D.rig r z J ^ k).val := by
   first | exact @GlobalTheory.GtCoeff.exists_coeff_gt | exact GlobalTheory.GtCoeff.exists_coeff_gt | (intros; apply GlobalTheory.GtCoeff.exists_coeff_gt <;> assumption)

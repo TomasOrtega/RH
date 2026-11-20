@@ -11,8 +11,10 @@ open GlobalTheory
 attribute [local instance] Over.cartesianMonoidalCategory
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UTraitCen.exists_uTrait_cen | exact GlobalTheory.UTraitCen.exists_uTrait_cen | (intros; apply GlobalTheory.UTraitCen.exists_uTrait_cen <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UTraitCen.exists_uTrait_cen` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsUnitaryTraitCentredClosedPoint.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.exists_unitaryTrait_centred_closedPoint : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (C : UCompact Xo c) (X₁ : USetup C) (M : RatModel X₁.o₁ X₁.Ω₁) (U₀ : M.Z.Opens) (EE : M.Lat X₁.S.J) (out : ZHOut X₁.ρ M U₀ EE), X₁.S.admitted M U₀ → ∀ x : M.Z, IsClosed ({x} : Set M.Z) → ∃ (T : UTrait Xo c) (ξ : Sp T.V ⟶ M.Z), (∃ ξ₀ : Sp (FractionRing T.V) ⟶ U₀.toScheme, ξ₀ ≫ U₀.ι = jK T.V ≫ ξ ∧ X₁.Lies (ξ₀ ≫ out.u₀) T.y) ∧ ξ (IsLocalRing.closedPoint T.V) = x := by
   first | exact @GlobalTheory.UTraitCen.exists_uTrait_cen | exact GlobalTheory.UTraitCen.exists_uTrait_cen | (intros; apply GlobalTheory.UTraitCen.exists_uTrait_cen <;> assumption)

@@ -10,8 +10,10 @@ open GlobalTheory.Chain GlobalTheory.ChainFr GlobalTheory.PairLift GlobalTheory.
 open scoped TensorProduct InnerProductSpace ComplexConjugate
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChainOnto.StepExp.stepExpVac | exact GlobalTheory.ChainOnto.StepExp.stepExpVac | (intros; apply GlobalTheory.ChainOnto.StepExp.stepExpVac <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChainOnto.StepExp.stepExpVac` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FThetaChainStepWeilDatumNonzeroFockVacuum.lean&line=31#L31)
 -/
 theorem _root_.GlobalTheory.T.thetaChainStep_weilDatum_nonzero_fockVacuum : ∀ D : D7, GlobalTheory.ChainOnto.ForStep D fun c k s s' p => ∀ hk : k < D.R.m, IsWeilExp c.ψ s.V s'.V (expS D ⟨k, hk⟩) (expT D ⟨k, hk⟩) p.ω ∧ IsVacVec c.ψ c.θ s.M s'.M p.f := by
   first | exact @GlobalTheory.ChainOnto.StepExp.stepExpVac | exact GlobalTheory.ChainOnto.StepExp.stepExpVac | (intros; apply GlobalTheory.ChainOnto.StepExp.stepExpVac <;> assumption)

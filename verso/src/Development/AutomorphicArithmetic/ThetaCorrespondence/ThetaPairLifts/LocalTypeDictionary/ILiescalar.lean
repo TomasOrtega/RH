@@ -14,12 +14,16 @@ section Tensor
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {V W : ι → Type} [∀ i, AddCommGroup (V i)] [∀ i, Module ℂ (V i)]
   [∀ i, AddCommGroup (W i)] [∀ i, Module ℂ (W i)]
 end Tensor
-/- English proof (translation)
-The claim follows from `_root_.GlobalTheory.T.weil_lie_algebra_scalar_action`.
+/- English proof (citation)
+Apply `GlobalTheory.T.weil_lie_algebra_scalar_action` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicArithmetic%2FThetaCorrespondence%2FThetaPairLifts%2FLocalTypeDictionary%2FWeilLieAlgebraScalarAction.lean&line=55#L55)
 -/
 theorem i_liescalar_alt : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.RealLift.DerEx → GlobalTheory.RealLift.VacLine → GlobalTheory.RealLift.LieScalar := _root_.GlobalTheory.T.weil_lie_algebra_scalar_action
-/- English proof (translation)
-The claim follows from `_root_.GlobalTheory.T.real_lift_lie_second_order`.
+/- English proof (citation)
+Apply `GlobalTheory.T.real_lift_lie_second_order` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicArithmetic%2FThetaCorrespondence%2FThetaPairLifts%2FLocalTypeDictionary%2FLieSecondOrderOfRealLift.lean&line=60#L60)
 -/
 theorem lieSecond_of_lieScalar_of_vacLine : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.RealLift.DerEx → GlobalTheory.RealLift.FockEx → GlobalTheory.RealLift.VacLine → GlobalTheory.RealLift.LieScalar → GlobalTheory.RealLift.LieSecond := _root_.GlobalTheory.T.real_lift_lie_second_order
 section Helpers

@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilRepIntertwinesA
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DOpMemDStep
 open NumberField MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.AdelicU
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ArchPureAct.acts_pure | exact GlobalTheory.ArchPureAct.acts_pure | (intros; apply GlobalTheory.ArchPureAct.acts_pure <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ArchPureAct.acts_pure` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FWeilRepIntertwinesAction.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.weil_rep_intertwines_action : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (ψ : AddChar (AF F) ℂ) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (om : Rep σ X W), M.IsGood ψ →

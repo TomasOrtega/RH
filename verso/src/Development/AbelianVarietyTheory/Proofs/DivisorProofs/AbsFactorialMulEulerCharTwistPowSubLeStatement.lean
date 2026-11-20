@@ -14,8 +14,10 @@ open CategoryTheory Limits AlgebraicGeometry TopologicalSpace Filter Asymptotics
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Twist
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.abs_factorial_mul_chi_twist_lbPow_sub_le | exact GlobalTheory.abs_factorial_mul_chi_twist_lbPow_sub_le | (intros; apply GlobalTheory.abs_factorial_mul_chi_twist_lbPow_sub_le <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.abs_factorial_mul_chi_twist_lbPow_sub_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAbsFactorialMulEulerCharTwistPowSubLe.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.abs_factorial_mul_eulerChar_twist_pow_sub_le : ∀ (k : Type) [Field k] [Infinite k] (X : Scheme.{0}) [Algebra k Γ(X, ⊤)], IsProjOver (strHom k X) → ∀ (d : ℕ) (F : X.Modules) [IsFiniteQC F], suppDim F ≤ (d : ℕ) → ∀ L : LB X, L.IsLB → ∃ C : ℕ, ∀ m : ℕ, |(d.factorial : ℤ) * chi k (twist F (lbPow L m)) - interNum k F (fun _ : Fin d => L) * (m : ℤ) ^ d| ≤ C * ((d : ℤ) * ((m : ℤ) + 1) ^ (d - 1)) := by
   first | exact @GlobalTheory.abs_factorial_mul_chi_twist_lbPow_sub_le | exact GlobalTheory.abs_factorial_mul_chi_twist_lbPow_sub_le | (intros; apply GlobalTheory.abs_factorial_mul_chi_twist_lbPow_sub_le <;> assumption)

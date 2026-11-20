@@ -13,8 +13,10 @@ open scoped ComplexConjugate Classical
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Dict
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LevelTied.exists_levTie | exact GlobalTheory.LevelTied.exists_levTie | (intros; apply GlobalTheory.LevelTied.exists_levTie <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LevelTied.exists_levTie` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSiegelThetaTransformation%2FExistsClassicalLevelDataCoverSelfDual.lean&line=361#L361)
 -/
 theorem _root_.GlobalTheory.T.exists_classicalLevelData_coverSelfDual : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (n : ℕ) (d : DeltaDat Xo c n) (σ : c.F →+* ℂ) (r : ℕ) (X : Data E r) (hn : r ≤ n), r = Dw.p + Dw.q → SelfD X X.Λ → d.IsLev → ¬ 3 ∣ d.pd → ∀ (ph : (Fin n → LaJ Xo c d) → c.F) (ψ : (LaI Xo c d ≃ₗ[𝓞 E] LaI Xo c d) →* c.Fˣ) (x₀ : Fin n → LaJ Xo c d), d.PhiPin ph ψ x₀ → ∃ D : SW.Level X, LevTie d σ ph D hn := by
   first | exact @GlobalTheory.LevelTied.exists_levTie | exact GlobalTheory.LevelTied.exists_levTie | (intros; apply GlobalTheory.LevelTied.exists_levTie <;> assumption)

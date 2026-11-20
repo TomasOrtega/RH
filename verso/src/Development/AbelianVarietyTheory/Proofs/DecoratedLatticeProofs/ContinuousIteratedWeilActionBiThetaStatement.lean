@@ -9,8 +9,10 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.Un
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BiActCont.continuous_biAct | exact GlobalTheory.BiActCont.continuous_biAct | (intros; apply GlobalTheory.BiActCont.continuous_biAct <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BiActCont.continuous_biAct` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FContinuousIteratedWeilActionBiTheta.lean&line=143#L143)
 -/
 theorem _root_.GlobalTheory.T.continuous_iteratedWeilAction_biTheta : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (A S A' : HSp D) (χA χS χS' χA' : (AE D)ˣ →* Circle) (oma : Om A S) (omb : Om S A'), IsWeilDatumO ψ A S χA χS oma → IsWeilDatumO ψ S A' χS' χA' omb → ∀ C, IsBiTheta ψ A S A' C → Continuous fun x : (GA D A × GA D S) × (GA D S × GA D A') × WO A S × WO S A' => omb x.2.1 (fun v => oma x.1 (fun u => C u v) x.2.2.1) x.2.2.2 := by
   first | exact @GlobalTheory.BiActCont.continuous_biAct | exact GlobalTheory.BiActCont.continuous_biAct | (intros; apply GlobalTheory.BiActCont.continuous_biAct <;> assumption)

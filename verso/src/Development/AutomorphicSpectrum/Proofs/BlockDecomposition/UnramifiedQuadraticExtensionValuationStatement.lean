@@ -12,8 +12,10 @@ open Ad3 Ad3.K Ad3.K.QuadraticBaseChangeGL3 GlobalTheory.CompanionTheory.SphThet
 open scoped NumberField.AdeleRing ValuativeRel
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.SphTheta.UnramQuad.ord_unifUnit_of_residueCard_eq_sq | exact GlobalTheory.CompanionTheory.SphTheta.UnramQuad.ord_unifUnit_of_residueCard_eq_sq | (intros; apply GlobalTheory.CompanionTheory.SphTheta.UnramQuad.ord_unifUnit_of_residueCard_ …`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.SphTheta.UnramQuad.ord_unifUnit_of_residueCard_eq_sq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FUnramifiedQuadraticExtensionValuation.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.unramified_quadratic_extension_valuation : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] [CharZero F] (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] [MeasurableSpace E] [BorelSpace E] [Algebra F E] [ValuativeExtension F E], Module.finrank F E = 2 → Continuous (algebraMap F E) → residueCard E = residueCard F ^ 2 → GroundTheory.LocalField.ord (algebraMap F E (unifUnit F : F)) = 1 := by
   first | exact @GlobalTheory.CompanionTheory.SphTheta.UnramQuad.ord_unifUnit_of_residueCard_eq_sq | exact GlobalTheory.CompanionTheory.SphTheta.UnramQuad.ord_unifUnit_of_residueCard_eq_sq | (intros; apply GlobalTheory.CompanionTheory.SphTheta.UnramQuad.ord_unifUnit_of_residueCard_eq_sq <;> assumption)

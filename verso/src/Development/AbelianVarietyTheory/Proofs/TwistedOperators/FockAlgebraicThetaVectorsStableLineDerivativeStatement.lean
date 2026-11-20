@@ -14,8 +14,10 @@ open GlobalTheory.SquareComm
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SquareComm.LineDeriv.deriv_line_mem_algF | exact GlobalTheory.SquareComm.LineDeriv.deriv_line_mem_algF | (intros; apply GlobalTheory.SquareComm.LineDeriv.deriv_line_mem_algF <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SquareComm.LineDeriv.deriv_line_mem_algF` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FFockAlgebraicThetaVectorsStableLineDerivative.lean&line=73#L73)
 -/
 theorem _root_.GlobalTheory.T.fockAlgebraicThetaVectors_stable_lineDerivative : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
     ∀ (ε : Bool) (M X : HSp D) (A : Fr M) (B : Fr X), ∀ Φ ∈ algF ψ θ ε A B,

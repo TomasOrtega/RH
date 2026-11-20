@@ -11,8 +11,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero (swSec sZero)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.StdUnn.exists_transport_std | exact GlobalTheory.StdUnn.exists_transport_std | (intros; apply GlobalTheory.StdUnn.exists_transport_std <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.StdUnn.exists_transport_std` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FExistsWeilDatumTransportSchwartzBruhatStandard.lean&line=64#L64)
 -/
 theorem _root_.GlobalTheory.T.exists_weilDatum_transport_schwartzBruhat_standard : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (A B : HSp D) (χB : (AE D)ˣ →* Circle) (omh : GA D (dblSp A) × GA D B →* Module.End ℂ (WO (dblSp A) B → ℂ)), IsWeilDatumO ψ (dblSp A) B 1 χB omh → ∀ (ν : Measure (WO A B)) (𝓨 : Set (WO A B)), IsCovolOne (ratL B A) ν 𝓨 → ∀ θ : InfFam D, IsInfFam θ → ∀ κ : GA D (dblSp A) ≃* G D A.rank, ∃ omS : G D A.rank →* Module.End ℂ (schwartzA θ B.rank A.rank), IsTransport ψ θ A B ν 𝓨 omh κ omS := by
   first | exact @GlobalTheory.StdUnn.exists_transport_std | exact GlobalTheory.StdUnn.exists_transport_std | (intros; apply GlobalTheory.StdUnn.exists_transport_std <;> assumption)

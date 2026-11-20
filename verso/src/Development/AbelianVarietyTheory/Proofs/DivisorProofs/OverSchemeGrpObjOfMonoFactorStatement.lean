@@ -5,8 +5,10 @@ open AlgebraicGeometry CategoryTheory CategoryTheory.Limits MonoidalCategory Car
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.overScheme_grpObj_of_mono_factor | exact GlobalTheory.overScheme_grpObj_of_mono_factor | (intros; apply GlobalTheory.overScheme_grpObj_of_mono_factor <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.overScheme_grpObj_of_mono_factor` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FOverSchemeGrpObjOfMonoFactor.lean&line=52#L52)
 -/
 theorem _root_.GlobalTheory.T.exists_grpObj_isMonHom_of_mono_factor : ∀ (T : Scheme.{0}) (A K : Over T) [GrpObj A] (i : K ⟶ A), Mono i → (∃ m : K ⊗ K ⟶ K, m ≫ i = (i ⊗ₘ i) ≫ μ[A]) → (∃ e : 𝟙_ (Over T) ⟶ K, e ≫ i = η[A]) → (∃ v : K ⟶ K, v ≫ i = i ≫ ι[A]) → ∃ _ : GrpObj K, IsMonHom i := by
   first | exact @GlobalTheory.overScheme_grpObj_of_mono_factor | exact GlobalTheory.overScheme_grpObj_of_mono_factor | (intros; apply GlobalTheory.overScheme_grpObj_of_mono_factor <;> assumption)

@@ -18,8 +18,10 @@ set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 800000
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SplitDelta.places_split | exact GlobalTheory.SplitDelta.places_split | (intros; apply GlobalTheory.SplitDelta.places_split <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SplitDelta.places_split` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FAnticyclotomicTwistRamifiedPlacesSplit.lean&line=247#L247)
 -/
 theorem _root_.GlobalTheory.T.anticyclotomicTwist_ramified_places_split : ∀ (D : D7) (i : D.ntw.Tw), ∀ P ∈ D.ntw.pD i, Formalism.BasicNotions.IsSplitPl D.host P := by
   first | exact @GlobalTheory.SplitDelta.places_split | exact GlobalTheory.SplitDelta.places_split | (intros; apply GlobalTheory.SplitDelta.places_split <;> assumption)

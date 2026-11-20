@@ -9,8 +9,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open scoped GlobalTheory.VacAny
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ArchFourier.fourier_twice_sInf | exact GlobalTheory.ArchFourier.fourier_twice_sInf | (intros; apply GlobalTheory.ArchFourier.fourier_twice_sInf <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ArchFourier.fourier_twice_sInf` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FArchimedeanFourierInversionConstant.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.archimedean_fourier_inversion_constant : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] [MeasurableSpace (κ → mixedEmbedding.mixedSpace F)]
     [BorelSpace (κ → mixedEmbedding.mixedSpace F)] (μ : Measure (κ → mixedEmbedding.mixedSpace F)) [μ.IsAddHaarMeasure],

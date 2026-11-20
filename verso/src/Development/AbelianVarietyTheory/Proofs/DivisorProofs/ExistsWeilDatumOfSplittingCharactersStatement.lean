@@ -5,8 +5,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open scoped TensorProduct ComplexOrder
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WeilExist.exists_isWeilDatumO | exact GlobalTheory.WeilExist.exists_isWeilDatumO | (intros; apply GlobalTheory.WeilExist.exists_isWeilDatumO <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WeilExist.exists_isWeilDatumO` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsWeilDatumOfSplittingCharacters.lean&line=32#L32)
 -/
 theorem _root_.GlobalTheory.T.exists_weilDatum_of_splittingCharacters : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (χS χT : (AE D)ˣ →* Circle), (∃ η, IsEtaTilde D η) → IsHeckeChar D χS → IsHeckeChar D χT → ResEta D χS S.rank → ResEta D χT T.rank → ∃ om, IsWeilDatumO ψ S T χS χT om := by
   first | exact @GlobalTheory.WeilExist.exists_isWeilDatumO | exact GlobalTheory.WeilExist.exists_isWeilDatumO | (intros; apply GlobalTheory.WeilExist.exists_isWeilDatumO <;> assumption)

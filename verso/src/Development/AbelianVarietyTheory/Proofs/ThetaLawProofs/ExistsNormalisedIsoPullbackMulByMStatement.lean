@@ -14,8 +14,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.AbLaw
 open GlobalTheory.KeyKa
 
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KeyKa.exists_normalised_mulPull | exact GlobalTheory.KeyKa.exists_normalised_mulPull | (intros; apply GlobalTheory.KeyKa.exists_normalised_mulPull <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KeyKa.exists_normalised_mulPull` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FThetaLawProofs%2FExistsNormalisedIsoPullbackMulByM.lean&line=31#L31)
 -/
 theorem _root_.GlobalTheory.T.exists_normalised_iso_pullback_mul_by_m : Out.Laws → ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (x : KeyIn R) (m : ℕ), ∃ mu : LB.Gen (LB.LinComb x.P.L (K := Fin 2) ![((𝟙 x.P.A) ^ m).left, 𝟙 x.P.A.left] ![1, -(m : ℤ) ^ 2]), mu.IsGen ∧ ∀ (p : (𝟙_ (Over (Sp R))).left) J, Good x.P.L p J → val mu (eSec x.P.A) p J = val x.rig (𝟙 _) p J ^ (1 - (m : ℤ) ^ 2) := by
   first | exact @GlobalTheory.KeyKa.exists_normalised_mulPull | exact GlobalTheory.KeyKa.exists_normalised_mulPull | (intros; apply GlobalTheory.KeyKa.exists_normalised_mulPull <;> assumption)

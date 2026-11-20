@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.MemPowS
 open NumberField IsDedekindDomain Polynomial GlobalTheory.QNorm GlobalTheory.CNorm
 open scoped WithZero TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CNorm.sUnits_union_sup_finPow_eq_top | exact GlobalTheory.CNorm.sUnits_union_sup_finPow_eq_top | (intros; apply GlobalTheory.CNorm.sUnits_union_sup_finPow_eq_top <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CNorm.sUnits_union_sup_finPow_eq_top` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FAdelicLatticeProofs%2FSUnitsUnionSupPowersEqTopAtPlaces.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.sUnits_union_sup_powers_eq_top_at_places : ∀ (p : ℕ) (F : Type) [Field F] [NumberField F] [DecidableEq (HeightOneSpectrum (𝓞 F))] (S T : Finset (HeightOneSpectrum (𝓞 F))), p.Prime → AdmP p F S → Disjoint S T → (∀ v ∈ T, ∃ u ∈ sUnits F S, u ∉ powSub p (algebraMap F (v.adicCompletion F)) ∧ ∀ v' ∈ T, v' ≠ v → u ∈ powSub p (algebraMap F (v'.adicCompletion F))) → sUnits F (S ∪ T) ⊔ finPow p F T = ⊤ := by
   first | exact @GlobalTheory.CNorm.sUnits_union_sup_finPow_eq_top | exact GlobalTheory.CNorm.sUnits_union_sup_finPow_eq_top | (intros; apply GlobalTheory.CNorm.sUnits_union_sup_finPow_eq_top <;> assumption)

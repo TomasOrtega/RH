@@ -12,8 +12,10 @@ open Formalism.L2.Pj GlobalTheory.HTLat GlobalTheory.HTLat.OmegaRank GlobalTheor
 attribute [local instance] Over.cartesianMonoidalCategory
 attribute [local instance] algPadicInt algPadicField towerPadic factPadic GlobalTheory.PadicComplexHost.isAdicComplete
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlatModel.EigSpan.eigV_le_span | exact GlobalTheory.FlatModel.EigSpan.eigV_le_span | (intros; apply GlobalTheory.FlatModel.EigSpan.eigV_le_span <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlatModel.EigSpan.eigV_le_span` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLatticeDataTateSpan.lean&line=119#L119)
 -/
 theorem _root_.GlobalTheory.T.lattice_data_tate_span : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
     (Dw : Datum H) (p : ℕ) [Fact p.Prime] [StarRing (𝓞 E)] (P : PtP E p) (V : Type) [CommRing V]

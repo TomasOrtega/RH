@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Ex
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.InertialOrderFifteenCharAuxiliaryPrimeSpec
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.L2.Host Formalism.L2.NT Formalism.L2.TwC GlobalTheory.HeightCounting NumberField IsDedekindDomain Polynomial GlobalTheory.GalChar Neutral.B1 ReciprocityTheory.Neutral.Bridge.HCFR GlobalTheory.HeckeGal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IntNormFinExt.mem_OL_iff_norm_le_one | exact GlobalTheory.IntNormFinExt.mem_OL_iff_norm_le_one | (intros; apply GlobalTheory.IntNormFinExt.mem_OL_iff_norm_le_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IntNormFinExt.mem_OL_iff_norm_le_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FMemFiniteExtPadicRingOfIntegersIffNormLeOne.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.mem_finiteExtPadic_ringOfIntegers_iff_norm_le_one : ∀ (l : ℕ) [Fact l.Prime] (K : Loc.FinExt l) (x : ↥K.1), x ∈ Loc.OL K ↔ ‖(x : PadicAlgCl l)‖ ≤ 1 := by
   first | exact @GlobalTheory.IntNormFinExt.mem_OL_iff_norm_le_one | exact GlobalTheory.IntNormFinExt.mem_OL_iff_norm_le_one | (intros; apply GlobalTheory.IntNormFinExt.mem_OL_iff_norm_le_one <;> assumption)

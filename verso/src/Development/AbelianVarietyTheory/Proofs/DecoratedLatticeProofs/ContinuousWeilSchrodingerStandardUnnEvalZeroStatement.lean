@@ -13,8 +13,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift (RealMat IsFock
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.StdUnn.weilSch_apply_zero_continuous | exact GlobalTheory.StdUnn.weilSch_apply_zero_continuous | (intros; apply GlobalTheory.StdUnn.weilSch_apply_zero_continuous <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.StdUnn.weilSch_apply_zero_continuous` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FContinuousWeilSchrodingerStandardUnnEvalZero.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.continuous_weilSchrodinger_standardUnn_eval_zero : ∀ (D : D7) (n : ℕ) (V : HSp D) (ψ : AddChar (AF D.host.F) ℂ), IsCharAF D.host.F ψ → ∀ χ : (AE D)ˣ →* Circle, IsHeckeChar D χ → ResEta D χ V.rank → ∀ θ : InfFam D, IsInfFam θ → ∀ (μ : Measure (Mx D V.rank n)) (𝓕 : Set (Mx D V.rank n)), IsCovolOne (ratMx D V.rank n) μ 𝓕 → ∀ ω : G D n →* Module.End ℂ (schwartzA θ V.rank n), IsWeilSch ψ χ θ V μ ω → ∀ Φ : schwartzA θ V.rank n, Continuous fun g : G D n => (ω g Φ).1 0 := by
   first | exact @GlobalTheory.StdUnn.weilSch_apply_zero_continuous | exact GlobalTheory.StdUnn.weilSch_apply_zero_continuous | (intros; apply GlobalTheory.StdUnn.weilSch_apply_zero_continuous <;> assumption)

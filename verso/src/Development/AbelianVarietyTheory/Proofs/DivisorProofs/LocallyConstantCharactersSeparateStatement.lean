@@ -9,8 +9,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open Formalism.L2.Host (aboveF)
 open Formalism.UG (IsUnifV qV)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SBOrth.sesq_eq_zero_of_mul_eq_zero | exact GlobalTheory.SBOrth.sesq_eq_zero_of_mul_eq_zero | (intros; apply GlobalTheory.SBOrth.sesq_eq_zero_of_mul_eq_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SBOrth.sesq_eq_zero_of_mul_eq_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLocallyConstantCharactersSeparate.lean&line=97#L97)
 -/
 theorem _root_.GlobalTheory.T.locally_constant_characters_separate : ∀ (Z : Type) [TopologicalSpace Z] (β : (Z → ℂ) → (Z → ℂ) → ℂ),
     (∀ f ∈ SB Z, ∀ f' ∈ SB Z, ∀ g ∈ SB Z, β (f + f') g = β f g + β f' g) → (∀ f ∈ SB Z, ∀ g ∈ SB Z, ∀ g' ∈ SB Z, β f (g + g') = β f g + β f g') →

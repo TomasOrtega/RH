@@ -9,8 +9,10 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestric
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LiftGroupLaw.exists_grpObj_isAbelianScheme | exact GlobalTheory.LiftGroupLaw.exists_grpObj_isAbelianScheme | (intros; apply GlobalTheory.LiftGroupLaw.exists_grpObj_isAbelianScheme <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LiftGroupLaw.exists_grpObj_isAbelianScheme` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsGrpObjIsAbelianSchemeSmoothLiftNilpotent.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.exists_grpObj_isAbelianScheme_smoothLift_nilpotent : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (π : R →+* R₀), Function.Surjective π → IsNilpotent (RingHom.ker π) →
     ∀ (A₀ : Over (Sp R₀)) [GrpObj A₀], IsAbelianScheme A₀ →

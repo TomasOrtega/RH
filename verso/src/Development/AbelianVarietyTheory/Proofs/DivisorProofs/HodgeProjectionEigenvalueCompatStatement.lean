@@ -2,8 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HodgeProjectionEigenvalueCompat
 import Mathlib
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.eigenvector_mem_ker_of_ne_coord_char | exact GlobalTheory.eigenvector_mem_ker_of_ne_coord_char | (intros; apply GlobalTheory.eigenvector_mem_ker_of_ne_coord_char <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.eigenvector_mem_ker_of_ne_coord_char` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHodgeProjectionEigenvalueCompat.lean&line=5#L5)
 -/
 theorem _root_.GlobalTheory.T.hodge_projection_eigenvalue_compat : ∀ (W : Type 1) [AddCommGroup W] [Module ℂ W] (g : ℕ) (Λ : Submodule ℤ (Fin g → ℂ)) (P : Λ →+ W),
     Submodule.span ℂ (Set.range P) = ⊤ → ∀ (Q : W →ₗ[ℂ] (Fin g → ℂ)), (∀ x, Q (P x) = x) →

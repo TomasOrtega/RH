@@ -10,8 +10,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.Grothendie
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CanonicalOfAbelianDeRham
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CrysToDRBijective
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.abelianScheme_hom_lifting_nilpotent_dividedPowers | exact GlobalTheory.abelianScheme_hom_lifting_nilpotent_dividedPowers | (intros; apply GlobalTheory.abelianScheme_hom_lifting_nilpotent_dividedPowers <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.abelianScheme_hom_lifting_nilpotent_dividedPowers` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAbelianSchemeHomLiftingNilpotentDividedPowers.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.print_abelianLifting : GlobalTheory.Published.AbelianLifting := by
   first | exact @GlobalTheory.abelianScheme_hom_lifting_nilpotent_dividedPowers | exact GlobalTheory.abelianScheme_hom_lifting_nilpotent_dividedPowers | (intros; apply GlobalTheory.abelianScheme_hom_lifting_nilpotent_dividedPowers <;> assumption)

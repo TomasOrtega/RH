@@ -15,8 +15,10 @@ open scoped TensorProduct InnerProductSpace ComplexConjugate
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.ArchRec
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WittSign.signCompat_of_isWittLower | exact GlobalTheory.WittSign.signCompat_of_isWittLower | (intros; apply GlobalTheory.WittSign.signCompat_of_isWittLower <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WittSign.signCompat_of_isWittLower` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FSignCompatibleNumberingOfWittTowerLower.lean&line=265#L265)
 -/
 theorem _root_.GlobalTheory.T.signCompatibleNumbering_of_wittTower_lower : ∀ (D : D7) (T T' : HSp D) (i : ℕ) (τ : D.what₂.Tau) (fr : Mn T.rank) (ε : Fin T.rank → Bool) (fr' : Mn T'.rank) (ε' : Fin T'.rank → Bool) (r s : ℕ) (e : Ix r s ≃ Fin T.rank), IsWittLower T T' i → frᴴ * Formalism.REAL.Jm ε * fr = gramAt D T τ → IsUnit fr → fr'ᴴ * Formalism.REAL.Jm ε' * fr' = gramAt D T' τ → IsUnit fr' → SignCompat ε e → i ≤ r ∧ i ≤ s ∧ ∃ e' : Ix (r - i) (s - i) ≃ Fin T'.rank, SignCompat ε' e' := by
   first | exact @GlobalTheory.WittSign.signCompat_of_isWittLower | exact GlobalTheory.WittSign.signCompat_of_isWittLower | (intros; apply GlobalTheory.WittSign.signCompat_of_isWittLower <;> assumption)

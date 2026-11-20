@@ -14,8 +14,10 @@ open GlobalTheory GlobalTheory.USep
 open GlobalTheory.Poinc.ThetaOne GlobalTheory.Poinc.Sep GlobalTheory.UT GlobalTheory.FieldBaseChange
 open ReciprocityTheory.ChartRestriction.G.DVR GlobalTheory.Poinc.Sep.Frames GlobalTheory.UT.CoefBasic
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Poinc.Sep.PsiZero.psi_zero_mul_rigK | exact GlobalTheory.Poinc.Sep.PsiZero.psi_zero_mul_rigK | (intros; apply GlobalTheory.Poinc.Sep.PsiZero.psi_zero_mul_rigK <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Poinc.Sep.PsiZero.psi_zero_mul_rigK` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPsiZeroMulRigidificationKEqOne.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.psi_zero_mul_rigidificationK_eq_one : ∀ (V : Type) [CommRing V] [IsDomain V] (D : DegPre V), D.TauBimult →
     ∀ (Z : Scheme.{0}) (r : Z ⟶ (TK V).left) (z : Z) J, Good D.P.L z J →

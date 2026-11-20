@@ -13,8 +13,10 @@ open NumberField MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheor
 open GlobalTheory.Doubling (absE)
 open Formalism.UG (cT)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SelfDualExtend.exists_mem_hE_eq_of_integral | exact GlobalTheory.SelfDualExtend.exists_mem_hE_eq_of_integral | (intros; apply GlobalTheory.SelfDualExtend.exists_mem_hE_eq_of_integral <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SelfDualExtend.exists_mem_hE_eq_of_integral` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSelfDualLatticeIntegralProjection.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.self_dual_lattice_integral_projection : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (n : ℕ) (J : Matrix (Fin n) (Fin n) E), J.det ≠ 0 →

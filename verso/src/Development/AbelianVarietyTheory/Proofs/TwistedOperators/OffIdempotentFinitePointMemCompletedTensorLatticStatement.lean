@@ -10,8 +10,10 @@ open scoped TensorProduct ComplexConjugate Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LiftLevel.OffTens.partAt_finW_off_mem_hatA | exact GlobalTheory.LiftLevel.OffTens.partAt_finW_off_mem_hatA | (intros; apply GlobalTheory.LiftLevel.OffTens.partAt_finW_off_mem_hatA <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LiftLevel.OffTens.partAt_finW_off_mem_hatA` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FOffIdempotentFinitePointMemCompletedTensorLattic.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.offIdempotent_finitePoint_mem_completedTensorLattice : ∀ (D : D7) (S T : HSp D) (Pg Q : Finset (Formalism.L2.DIV.Pl D.host.E)) (e : AE D), IsIdemSum e (Pg ∪ Q) → ∀ (L : Lt D.host.E T.rank) (y : Matrix (Fin S.rank) (Fin T.rank) D.host.E), y ∈ tens (stdL D.host.E S.rank) L → GlobalTheory.LiftLevel.partAt (1 - e - cA D e) (finW S T y) ∈ hatA S T (tens (stdL D.host.E S.rank) (GlobalTheory.LiftLevel.liftI Pg Q • L)) := by
   first | exact @GlobalTheory.LiftLevel.OffTens.partAt_finW_off_mem_hatA | exact GlobalTheory.LiftLevel.OffTens.partAt_finW_off_mem_hatA | (intros; apply GlobalTheory.LiftLevel.OffTens.partAt_finW_off_mem_hatA <;> assumption)

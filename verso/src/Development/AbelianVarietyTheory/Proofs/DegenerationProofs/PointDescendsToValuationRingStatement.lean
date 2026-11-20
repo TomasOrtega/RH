@@ -10,8 +10,10 @@ open Classical
 open ReciprocityTheory.ChartRestriction.G.Out
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.point_descends_to_valuationRing | exact GlobalTheory.point_descends_to_valuationRing | (intros; apply GlobalTheory.point_descends_to_valuationRing <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.point_descends_to_valuationRing` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDegenerationProofs%2FPointDescendsToValuationRing.lean&line=31#L31)
 -/
 theorem _root_.GlobalTheory.T.point_descends_to_valuationRing' : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (W C : Type) [CommRing W] [IsLocalRing W] [Field C] (α : V →+* W) (β : W →+* C) (ga : FractionRing V →+* C), IsLocalHom α → Function.Injective β → β.comp α = ga.comp (algebraMap V (FractionRing V)) → ∀ (X : Scheme.{0}) (y : Sp W ⟶ X) (x : Sp (FractionRing V) ⟶ X), spMap β ≫ y = spMap ga ≫ x → ∃ h : Sp V ⟶ X, spMap α ≫ h = y ∧ jK V ≫ h = x := by
   first | exact @GlobalTheory.point_descends_to_valuationRing | exact GlobalTheory.point_descends_to_valuationRing | (intros; apply GlobalTheory.point_descends_to_valuationRing <;> assumption)

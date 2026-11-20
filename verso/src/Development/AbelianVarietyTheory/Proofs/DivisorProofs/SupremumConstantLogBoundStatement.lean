@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.BlockTheory.ExistenceTori.UnitaryHaarVol
 open NumberField MeasureTheory ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.AR.Inst ReciprocityTheory.ChartRestriction.G.AR.Up ReciprocityTheory.L2DbarEstimates GlobalTheory.LevGeo
 open scoped ENNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SupConstSize.supConst_size | exact GlobalTheory.SupConstSize.supConst_size | (intros; apply GlobalTheory.SupConstSize.supConst_size <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SupConstSize.supConst_size` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSupremumConstantLogBound.lean&line=288#L288)
 -/
 theorem _root_.GlobalTheory.T.supremum_constant_log_bound : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r d M : ℕ) (w L : ℝ), 2 ≤ r → 1 ≤ d → 1 ≤ M → 1 ≤ L → 1 ≤ w → Real.log (fdeg E * r) ≤ L → Real.log M ≤ 30 * L → Real.log (dE E) ≤ 4 * fdeg E * L → Real.log d ≤ 4 * L → Real.log w ≤ 2 * L → 1 ≤ supConst E r d M w ∧ Real.log (supConst E r d M w) ≤ 250 * (fdeg E : ℝ) ^ 2 * (r : ℝ) ^ 2 * L := by
   first | exact @GlobalTheory.SupConstSize.supConst_size | exact GlobalTheory.SupConstSize.supConst_size | (intros; apply GlobalTheory.SupConstSize.supConst_size <;> assumption)

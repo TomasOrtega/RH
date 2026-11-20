@@ -18,8 +18,10 @@ section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.Host Formalism.L2.NT NumberField IsDedekindDomain Polynomial GlobalTheory.HeightCounting GlobalTheory.RowTie GlobalTheory.SplitRead GlobalTheory.NPin
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.DepthZeroType.depthZero_tame_alt | exact _root_.GlobalTheory.DepthZeroType.depthZero_tame_alt | (intros; apply _root_.GlobalTheory.DepthZeroType.depthZero_tame_alt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DepthZeroType.depthZero_tame_alt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicArithmetic%2FThetaCorrespondence%2FThetaPairLifts%2FThirdPlaceSeries%2FDepthZeroTameAltBis.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.depthZeroG_of_rowMod : _root_.GlobalTheory.NRows.ThetaLocalInputsAlt → GlobalTheory.Published.DepthZeroSupport → ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D), (∀ i : D.nd.Loc, Nonempty (RowMod D P.rep (D.nd.j i))) → GlobalTheory.HubX.DepthZeroG D := by
   first | exact @_root_.GlobalTheory.DepthZeroType.depthZero_tame_alt | exact _root_.GlobalTheory.DepthZeroType.depthZero_tame_alt | (intros; apply _root_.GlobalTheory.DepthZeroType.depthZero_tame_alt <;> assumption)

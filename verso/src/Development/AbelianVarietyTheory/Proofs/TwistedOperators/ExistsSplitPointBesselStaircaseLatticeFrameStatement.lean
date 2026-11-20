@@ -12,8 +12,10 @@ open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 open ValuativeRel
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.StairFrame.frame_shape | exact GlobalTheory.StairFrame.frame_shape | (intros; apply GlobalTheory.StairFrame.frame_shape <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.StairFrame.frame_shape` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsSplitPointBesselStaircaseLatticeFrame.lean&line=448#L448)
 -/
 theorem _root_.GlobalTheory.T.exists_splitPoint_besselStaircaseLattice_frame : OnStd fun {D} _ _ {sc} {G} W F => ∀ σ (h : 2 * (σ + 1) + 2 ≤ D.R.m), ∀ v ∈ G.pl.S0,
   ∃ (k : Type) (_ : Field k) (_ : ValuativeRel k) (_ : TopologicalSpace k) (_ : IsNonarchimedeanLocalField k)

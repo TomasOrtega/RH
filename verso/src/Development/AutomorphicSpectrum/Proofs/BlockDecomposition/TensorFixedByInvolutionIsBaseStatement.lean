@@ -6,8 +6,10 @@ open NumberField IsDedekindDomain Matrix Formalism.MainNotions.GlobalTheoryTheor
 open Formalism.UG (cT)
 open scoped TensorProduct NNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.KFin.sigR_fixed_eq_algebraMap | exact GlobalTheory.CompanionTheory.KFin.sigR_fixed_eq_algebraMap | (intros; apply GlobalTheory.CompanionTheory.KFin.sigR_fixed_eq_algebraMap <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.KFin.sigR_fixed_eq_algebraMap` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FTensorFixedByInvolutionIsBase.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.tensor_fixed_by_involution_is_base : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}, IsCMExt F E σ → ∀ (K : Type) [Field K] [Algebra F K] (a : K ⊗[F] E), sigR K σ a = a → ∃ x : K, algebraMap K (K ⊗[F] E) x = a := by
   first | exact @GlobalTheory.CompanionTheory.KFin.sigR_fixed_eq_algebraMap | exact GlobalTheory.CompanionTheory.KFin.sigR_fixed_eq_algebraMap | (intros; apply GlobalTheory.CompanionTheory.KFin.sigR_fixed_eq_algebraMap <;> assumption)

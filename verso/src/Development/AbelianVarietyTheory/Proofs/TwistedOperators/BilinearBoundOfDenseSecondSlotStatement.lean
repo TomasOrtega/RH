@@ -2,8 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.BilinearBoundOfDenseSecondSlot
 import Mathlib
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.bilinear_bound_of_dense_right | exact GlobalTheory.bilinear_bound_of_dense_right | (intros; apply GlobalTheory.bilinear_bound_of_dense_right <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.bilinear_bound_of_dense_right` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FBilinearBoundOfDenseSecondSlot.lean&line=8#L8)
 -/
 theorem _root_.GlobalTheory.T.exists_seminorm_bound_of_dense_second_slot : ∀ {E : Type} [AddCommGroup E] [Module ℂ E] [UniformSpace E] [IsUniformAddGroup E] [CompleteSpace E] [T2Space E]
     {p : ℕ → Seminorm ℂ E}, WithSeminorms p →

@@ -8,8 +8,10 @@ open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalT
 open GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.ProjVar
 open GlobalTheory.FlagCls
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagCls.AdaptMat.flagMat_of_adapted | exact GlobalTheory.FlagCls.AdaptMat.flagMat_of_adapted | (intros; apply GlobalTheory.FlagCls.AdaptMat.flagMat_of_adapted <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagCls.AdaptMat.flagMat_of_adapted` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFlagMatrixOfAdaptedCoordinates.lean&line=59#L59)
 -/
 theorem _root_.GlobalTheory.T.flag_matrix_of_adapted_coordinates : ∀ (B Y : Scheme.{0}) (M : B.Modules) (r : ℕ) (hM : IsVB M r) (π : Y ⟶ B) (fl : Vert.Flag ((Scheme.Modules.pullback π).obj M) r) (V : B.Opens) (f : Fin r → Γ(M, V)) (hf : IsFrame f) (K : Type) [CommRing K] (y : Sp K ⟶ Y) (W : Y.Opens) (hWV : W ≤ π ⁻¹ᵁ V) (hy : ⊤ ≤ y ⁻¹ᵁ W) (s : Fin r → Γ((Scheme.Modules.pullback π).obj M, W)), Adapted fl s → FlagMat hM π fl hf y (Matrix.of fun i => coordAt hM π hf y hWV hy (s i)) := by
   first | exact @GlobalTheory.FlagCls.AdaptMat.flagMat_of_adapted | exact GlobalTheory.FlagCls.AdaptMat.flagMat_of_adapted | (intros; apply GlobalTheory.FlagCls.AdaptMat.flagMat_of_adapted <;> assumption)

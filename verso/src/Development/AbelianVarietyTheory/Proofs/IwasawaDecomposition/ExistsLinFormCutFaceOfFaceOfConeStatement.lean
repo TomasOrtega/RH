@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqZeroOfToRe
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsSmoothAdmissibleFanOfCellMultOneCMField
 open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.TorRef GlobalTheory.PolFan
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PolFan.exists_linForm_cut_face_of_face | exact GlobalTheory.PolFan.exists_linForm_cut_face_of_face | (intros; apply GlobalTheory.PolFan.exists_linForm_cut_face_of_face <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PolFan.exists_linForm_cut_face_of_face` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsLinFormCutFaceOfFaceOfCone.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.exists_linForm_cut_face_of_face_of_cone : ∀ {O : Type} [CommRing O] (bar : O → O) {X : Type} [AddCommGroup X] [Module O X] {m n p : ℕ}
     (δ : Fin m → LinearMap.BilinForm ℤ X) (γ : Fin n → LinearMap.BilinForm ℤ X) (γ' : Fin p → LinearMap.BilinForm ℤ X)

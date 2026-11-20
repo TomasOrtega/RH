@@ -12,8 +12,10 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Fo
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.HeightCounting.Up GlobalTheory.Mem.SRe GlobalTheory.Mem.R3.Rw
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.HeightCounting.Up.movable_prmR_nel_alt | exact _root_.GlobalTheory.HeightCounting.Up.movable_prmR_nel_alt | (intros; apply _root_.GlobalTheory.HeightCounting.Up.movable_prmR_nel_alt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HeightCounting.Up.movable_prmR_nel_alt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicArithmetic%2FThetaCorrespondence%2FThetaPairLifts%2FThirdPlaceSeries%2FSlotMvPrmRNel.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.slot_mv_extension_with_origin_geo_cl : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (cDep : ℝ) (Γ : GeoP), PositionMv (_root_.GlobalTheory.Mem.Top.Bl.parametersOfExtension (_root_.GlobalTheory.HeightCounting.Up.extensionWithOrigin hL cDep) SExt.none (geoCl Γ)).s := by
   first | exact @_root_.GlobalTheory.HeightCounting.Up.movable_prmR_nel_alt | exact _root_.GlobalTheory.HeightCounting.Up.movable_prmR_nel_alt | (intros; apply _root_.GlobalTheory.HeightCounting.Up.movable_prmR_nel_alt <;> assumption)

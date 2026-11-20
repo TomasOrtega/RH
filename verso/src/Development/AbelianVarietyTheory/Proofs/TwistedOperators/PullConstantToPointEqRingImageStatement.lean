@@ -7,8 +7,10 @@ open GlobalTheory.ThetaTrace GlobalTheory.HkFam GlobalTheory.Frames GlobalTheory
 open GlobalTheory.IndefiniteRowSideFullHecke.FibrePushforwardExistenceTori (IsLinHom IsLieImg IsThGen IsHeckeIsog)
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PullConst.pull_const_apply | exact GlobalTheory.PullConst.pull_const_apply | (intros; apply GlobalTheory.PullConst.pull_const_apply <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PullConst.pull_const_apply` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FPullConstantToPointEqRingImage.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.pull_constant_to_point_eq_ring_image : ∀ {T Ω : Type} [CommRing T] [CommRing Ω] (χ : T →+* Ω) {Y : Scheme.{0}} (q : Y ⟶ Sp T) (U : Y.Opens) (w : Sp Ω ⟶ Y) (h : ⊤ ≤ w ⁻¹ᵁ U), w ≫ q = spMap χ → ∀ a : T, (w.appLE U ⊤ h).hom ((q.appLE ⊤ U le_top).hom (toΓ T a)) = toΓ Ω (χ a) := by
   first | exact @GlobalTheory.PullConst.pull_const_apply | exact GlobalTheory.PullConst.pull_const_apply | (intros; apply GlobalTheory.PullConst.pull_const_apply <;> assumption)

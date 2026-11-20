@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.GgNone
 open ValuativeRel Formalism.MainNotions.S Formalism.MainNotions.S.Loc GlobalTheory.HL
 open scoped Pointwise ENNReal Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HL.CoordInnerSnd.transport | exact GlobalTheory.HL.CoordInnerSnd.transport | (intros; apply GlobalTheory.HL.CoordInnerSnd.transport <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HL.CoordInnerSnd.transport` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FFramePairCoordinatesTransportInnerLattices.lean&line=403#L403)
 -/
 theorem _root_.GlobalTheory.T.framePairCoordinates_transport_innerLattices : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] (M : Model F E), M.OK → ∀ {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M V) (r k : ℕ) (P : LocNG.FPair H r), ∀ (S : Frames M.L r k) (c : Coord P S), Function.Injective (c.inn P.B.f) ∧ (∀ L, P.B.IsInner L ↔ S.IsInner S.f' S.es' (c.inn P.B.f L)) ∧ (∀ A, S.IsInner S.f' S.es' A → ∃ L, A = c.inn P.B.f L) ∧ ∀ L, c.lat (P.B.LamStd L) = S.stdLat S.f' S.es' (c.inn P.B.f L) := by
   first | exact @GlobalTheory.HL.CoordInnerSnd.transport | exact GlobalTheory.HL.CoordInnerSnd.transport | (intros; apply GlobalTheory.HL.CoordInnerSnd.transport <;> assumption)

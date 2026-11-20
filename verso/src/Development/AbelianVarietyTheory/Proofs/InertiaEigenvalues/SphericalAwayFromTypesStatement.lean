@@ -13,8 +13,10 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeRec.factG
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RowSphOff.rowSph_overRows | exact GlobalTheory.RowSphOff.rowSph_overRows | (intros; apply GlobalTheory.RowSphOff.rowSph_overRows <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RowSphOff.rowSph_overRows` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FSphericalAwayFromTypes.lean&line=245#L245)
 -/
 theorem _root_.GlobalTheory.T.spherical_away_from_types : PrN → OverRows fun _ _ _ _ w Z _ _ z _ Y => ∀ (σ : (w.st Z).toD7.what₂.FT) (s : ReciprocityTheory.Aut.SplitPlace (w.st Z).toD7.host.E), (∀ k : Fin 2, s.w ∉ placesOver (w.st Z).toD7.host.E ((w.st Z).toD7.host.g k)) → ∃ τ, IsLocS (repOf Y σ).S s τ ∧ GlobalTheory.SmGL.IsSpherical τ.ρ := by
   first | exact @GlobalTheory.RowSphOff.rowSph_overRows | exact GlobalTheory.RowSphOff.rowSph_overRows | (intros; apply GlobalTheory.RowSphOff.rowSph_overRows <;> assumption)

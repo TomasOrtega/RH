@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolynomialThetaKern
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeviBlockSizesSum
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.AdelicU GlobalTheory.SmGL GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.LeviBlockExponent GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.UAut GlobalTheory.SiegelSet GlobalTheory.ThK.SquareIntegrability
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThetaSideK.theta_finite_sum_intertw | exact GlobalTheory.ThetaSideK.theta_finite_sum_intertw | (intros; apply GlobalTheory.ThetaSideK.theta_finite_sum_intertw <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThetaSideK.theta_finite_sum_intertw` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPolynomialThetaKernelGlExponents.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.polynomial_theta_kernel_gl_exponents : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)

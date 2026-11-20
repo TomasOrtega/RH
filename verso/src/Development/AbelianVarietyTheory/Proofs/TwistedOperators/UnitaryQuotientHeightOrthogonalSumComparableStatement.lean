@@ -8,8 +8,10 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Asc
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HtOrth.quotHeight_orthDec_cmp | exact GlobalTheory.HtOrth.quotHeight_orthDec_cmp | (intros; apply GlobalTheory.HtOrth.quotHeight_orthDec_cmp <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HtOrth.quotHeight_orthDec_cmp` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FUnitaryQuotientHeightOrthogonalSumComparable.lean&line=119#L119)
 -/
 theorem _root_.GlobalTheory.T.unitaryQuotientHeight_orthogonalSum_comparable : ∀ (D : D7) (S A B : HSp D) (o : OrthDec S A B), ∃ (C : ℝ) (a : ℕ), ∀ h, quotHeight A h ≤ C * quotHeight S (o.emb (h, 1)) ^ a ∧ quotHeight S (o.emb (h, 1)) ≤ C * quotHeight A h ^ a := by
   first | exact @GlobalTheory.HtOrth.quotHeight_orthDec_cmp | exact GlobalTheory.HtOrth.quotHeight_orthDec_cmp | (intros; apply GlobalTheory.HtOrth.quotHeight_orthDec_cmp <;> assumption)

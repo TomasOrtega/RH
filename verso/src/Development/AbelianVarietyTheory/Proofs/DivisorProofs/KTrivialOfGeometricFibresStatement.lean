@@ -20,8 +20,10 @@ open GlobalTheory.CechPic (Pic cls lam)
 open MonObj
 open scoped CategoryTheory.Obj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KTrivFibres.kTriv_of_geometricFibres | exact GlobalTheory.KTrivFibres.kTriv_of_geometricFibres | (intros; apply GlobalTheory.KTrivFibres.kTriv_of_geometricFibres <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KTrivFibres.kTriv_of_geometricFibres` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FKTrivialOfGeometricFibres.lean&line=46#L46)
 -/
 theorem _root_.GlobalTheory.T.k_trivial_of_geometric_fibres : ∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (A : Over S) [GrpObj A], IsAbelianScheme A → ∀ (M : LB A.left), M.IsLB → Out.RelAmple A M → (∀ (K : Type) [Field K] [IsAlgClosed K] (y : Sp K ⟶ S), Out.KTriv ((Over.pullback y).obj A) (M.pull (pullback.fst A.hom y))) → Out.KTriv A M := by
   first | exact @GlobalTheory.KTrivFibres.kTriv_of_geometricFibres | exact GlobalTheory.KTrivFibres.kTriv_of_geometricFibres | (intros; apply GlobalTheory.KTrivFibres.kTriv_of_geometricFibres <;> assumption)

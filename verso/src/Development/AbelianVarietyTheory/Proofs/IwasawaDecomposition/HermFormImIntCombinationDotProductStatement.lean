@@ -18,8 +18,10 @@ open MonoidalCategory CartesianMonoidalCategory MonObj GlobalTheory.ShFam.Hor.Lo
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ShFam.Hor.LogCh.Core.hermForm_im_intComb_dotProduct | exact GlobalTheory.ShFam.Hor.LogCh.Core.hermForm_im_intComb_dotProduct | (intros; apply GlobalTheory.ShFam.Hor.LogCh.Core.hermForm_im_intComb_dotProduct <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ShFam.Hor.LogCh.Core.hermForm_im_intComb_dotProduct` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FHermFormImIntCombinationDotProduct.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.hermForm_im_intCombination_dotProduct : ∀ (g r r₀ : ℕ) (Hm : Matrix (Fin g) (Fin g) ℂ) (l : Fin r → Fin g → ℂ) (w : Fin r₀ → Fin g → ℂ) (c : Matrix (Fin r₀) (Fin r) ℤ) (M : Matrix (Fin r) (Fin r) ℤ), (∀ i, w i = ∑ j, c i j • l j) → (∀ i j, (hermForm Hm (l i) (l j)).im = M i j) → ∀ u u' : Fin r₀ → ℤ, (hermForm Hm (∑ i, u i • w i) (∑ j, u' j • w j)).im = (((∑ i, u i • c i) ⬝ᵥ M *ᵥ (∑ i, u' i • c i) : ℤ) : ℝ) := by
   first | exact @GlobalTheory.ShFam.Hor.LogCh.Core.hermForm_im_intComb_dotProduct | exact GlobalTheory.ShFam.Hor.LogCh.Core.hermForm_im_intComb_dotProduct | (intros; apply GlobalTheory.ShFam.Hor.LogCh.Core.hermForm_im_intComb_dotProduct <;> assumption)

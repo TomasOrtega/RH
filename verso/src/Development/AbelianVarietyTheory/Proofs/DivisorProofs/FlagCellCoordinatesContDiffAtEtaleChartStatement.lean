@@ -8,8 +8,10 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts G
 open GlobalTheory.FlagFibre (Low)
 open scoped Matrix ContDiff ComplexOrder ENNReal Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagCell2.cellMap_contDiffAt | exact GlobalTheory.FlagCell2.cellMap_contDiffAt | (intros; apply GlobalTheory.FlagCell2.cellMap_contDiffAt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagCell2.cellMap_contDiffAt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFlagCellCoordinatesContDiffAtEtaleChart.lean&line=32#L32)
 -/
 theorem _root_.GlobalTheory.T.flagCellCoordinates_contDiffAt_etaleChart : ∀ (F : Type) [Field F] (σ : F →+* ℂ) (X Y : Var F) (ι : Type) [Fintype ι] (m : ι → ℕ) (E : Fr (ratOf X) m 0) (E' : Fr (ratOf Y) m m) (φ : X.Fn →ₐ[F] Y.Fn) (f : Y.X ⟶ X.X) (hf : f ≫ X.str = Y.str), Refines E E' φ f → ∀ (c : AlgChart X.str σ X.dim) (A : Mat m X.Fn) (u : Cell m → Y.Fn), ∀ (n : ℕ) (ε : Fin n ≃ Fin X.dim ⊕ Cell m) (x : (atlas Y σ).Pt), x.pt ∈ cellSet E E' φ f hf c A u → ContDiffAt ℂ 2 (cellMap ε f hf c u ∘ x.ch.symm) x.crd := by
   first | exact @GlobalTheory.FlagCell2.cellMap_contDiffAt | exact GlobalTheory.FlagCell2.cellMap_contDiffAt | (intros; apply GlobalTheory.FlagCell2.cellMap_contDiffAt <;> assumption)

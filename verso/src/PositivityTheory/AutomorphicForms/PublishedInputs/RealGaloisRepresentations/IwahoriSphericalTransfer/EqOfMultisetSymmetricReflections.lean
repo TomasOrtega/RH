@@ -9,8 +9,10 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory.LocLanglands GlobalTheory.HeckeGal GlobalTheory.LocGL GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Published UpperTheory.V.Af.Bc GlobalTheory.RealGal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Glob.symm_multiset_centre_unique | exact GlobalTheory.Glob.symm_multiset_centre_unique | (intros; apply GlobalTheory.Glob.symm_multiset_centre_unique <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Glob.symm_multiset_centre_unique` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=PositivityTheory%2FAutomorphicForms%2FPublishedInputs%2FRealGaloisRepresentations%2FIwahoriSphericalTransfer%2FSymmMultisetCentreUnique.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.eq_of_multiset_symmetric_reflections : ∀ (s : Multiset ℤ) (x y : ℤ), s ≠ 0 → s = s.map (x - ·) → s = s.map (y - ·) → x = y := by
   first | exact @GlobalTheory.Glob.symm_multiset_centre_unique | exact GlobalTheory.Glob.symm_multiset_centre_unique | (intros; apply GlobalTheory.Glob.symm_multiset_centre_unique <;> assumption)

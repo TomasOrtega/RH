@@ -10,8 +10,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.RigGlue.lbIso_of_same_descent | exact GlobalTheory.CompanionTheory.RigGlue.lbIso_of_same_descent | (intros; apply GlobalTheory.CompanionTheory.RigGlue.lbIso_of_same_descent <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.RigGlue.lbIso_of_same_descent` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=CompanionTheory%2FSpectralGeometry%2FLocalGlobalProofs%2FStableLattices%2FGeneratorCompatibilityCompositePullback.lean&line=38#L38)
 -/
 theorem _root_.GlobalTheory.T.lbIso_pull_of_generator_ratio_eq : ∀ {Z P Q : Scheme.{0}} (g : Z ⟶ P) (f : P ⟶ Q), Flat g → LocallyOfFinitePresentation g → Surjective g →
     ∀ (M : LB P), M.IsLB → ∀ (N : LB Q), N.IsLB → ∀ (τ : LB.Gen (M.pull g)), τ.IsGen →

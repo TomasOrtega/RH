@@ -11,8 +11,10 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocalGlobalAbo
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX NumberField IsDedekindDomain GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw GlobalTheory.HeightCounting GlobalTheory.HeightCounting.Up
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeRec.factG
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HeightCounting.Up.sizes_host_at_record | exact GlobalTheory.HeightCounting.Up.sizes_host_at_record | (intros; apply GlobalTheory.HeightCounting.Up.sizes_host_at_record <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HeightCounting.Up.sizes_host_at_record` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FEventuallySizesCongruencesHostFactsColumnChoices.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.eventually_sizes_congruences_hostFacts_columnChoices : EvLgG fun K B f _ => KPx B f → ∀ (T : TwDat B) (w : ColW B f T) (Z : w.Lt), 100 ≤ (w.D Z).R.r ∧ (∀ k, 2 * (w.D Z).R.r ≤ (w.D Z).host.g k) ∧ RootsLL (w.D Z) ∧ SphericalInertData.HypEFK (w.D Z) ∧ SphericalInertData.HypCM (w.D Z) ∧ (∀ j, 1 ≤ j → j ≤ (w.D Z).R.m → ((w.D Z).sp.V j).IsDefinite) ∧ ∃ w0, GlobalTheory.LamTie.PlacesOk (w.D Z).host (AbsolutelyIrreducibleSpan.q0 (w.D Z)) w0 := by
   first | exact @GlobalTheory.HeightCounting.Up.sizes_host_at_record | exact GlobalTheory.HeightCounting.Up.sizes_host_at_record | (intros; apply GlobalTheory.HeightCounting.Up.sizes_host_at_record <;> assumption)

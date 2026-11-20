@@ -16,8 +16,10 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.IntegralityCompare
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IntegralityCompare.weight_arith_step | exact GlobalTheory.IntegralityCompare.weight_arith_step | (intros; apply GlobalTheory.IntegralityCompare.weight_arith_step <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IntegralityCompare.weight_arith_step` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FChainStepWeightArithmetic.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.chainStep_weight_arithmetic : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l))
     (u : B.Word) (μ : I.ι) (i : ℕ), i < B.R.m →

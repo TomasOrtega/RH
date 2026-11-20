@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.Bh
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RestrictCrystallineDeRhamFiniteExt
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct GlobalTheory.Prism GlobalTheory.BK GlobalTheory.BKReal GlobalTheory.BKGal GlobalTheory.Per GlobalTheory.IndefiniteRowSideFullHecke.CrystallineSubrepresentation GlobalTheory.RegularRing
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Per.DcrisSpan.dcris_span | exact GlobalTheory.Per.DcrisSpan.dcris_span | (intros; apply GlobalTheory.Per.DcrisSpan.dcris_span <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Per.DcrisSpan.dcris_span` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FCrystallinePeriodsExtensionSpan.lean&line=46#L46)
 -/
 theorem _root_.GlobalTheory.T.crystallinePeriods_extension_span : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), IsStd P AI → ∀ (LL : FinExt l) (T : QLat LL) (K K'' : FinExt l), K.1 ≤ K''.1 → IsCrys (P.PD K) (T.ρ.comp (inclG K)) → DcrisK₀ (P.PD K'') (T.ρ.comp (inclG K'')) ≤ Submodule.span ↥(K0 K'') (↑(DcrisK₀ (P.PD K) (T.ρ.comp (inclG K))) : Set (P.R.B ⊗[ℚ_[l]] T.V)) := by
   first | exact @GlobalTheory.Per.DcrisSpan.dcris_span | exact GlobalTheory.Per.DcrisSpan.dcris_span | (intros; apply GlobalTheory.Per.DcrisSpan.dcris_span <;> assumption)

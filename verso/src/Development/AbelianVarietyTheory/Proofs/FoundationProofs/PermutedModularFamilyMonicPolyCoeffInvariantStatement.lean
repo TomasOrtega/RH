@@ -9,8 +9,10 @@ open GlobalTheory.QFam GlobalTheory.WpFam GlobalTheory.KZ GlobalTheory.FN
 open ReciprocityTheory.ChartRestriction.L1 (DD jT IsMF)
 open ModularForm (E₄ E₆)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.QFam.minpoly_coeff_invariant | exact GlobalTheory.QFam.minpoly_coeff_invariant | (intros; apply GlobalTheory.QFam.minpoly_coeff_invariant <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.QFam.minpoly_coeff_invariant` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FPermutedModularFamilyMonicPolyCoeffInvariant.lean&line=49#L49)
 -/
 theorem _root_.GlobalTheory.T.permutedModularFamily_monic_poly_coeff_invariant : ∀ (ι : Type) [Fintype ι] (act : ι → SL(2, ℤ) → ι) (k N : ℕ) (F : ι → ℍ → ℂ) (R : Subring ℂ), 0 < N → ActBij act → IsFam act k F → (∀ i, QAll (· ∈ R) N (F i)) → ∃ s : Fin (Fintype.card ι) → ℍ → ℂ, (∀ j : Fin (Fintype.card ι), (∀ γ : SL(2, ℤ), s j ∣[((k * (Fintype.card ι - j) : ℕ) : ℤ)] γ = s j) ∧ QAll (· ∈ R) N (s j)) ∧ ∀ i τ, F i τ ^ Fintype.card ι + ∑ j, s j τ * F i τ ^ (j : ℕ) = 0 := by
   first | exact @GlobalTheory.QFam.minpoly_coeff_invariant | exact GlobalTheory.QFam.minpoly_coeff_invariant | (intros; apply GlobalTheory.QFam.minpoly_coeff_invariant <;> assumption)

@@ -8,8 +8,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.app_injective_and_descent_of_affineOpens | exact GlobalTheory.Mum.app_injective_and_descent_of_affineOpens | (intros; apply GlobalTheory.Mum.app_injective_and_descent_of_affineOpens <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.app_injective_and_descent_of_affineOpens` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAppInjectiveDescentOfAffineOpens.lean&line=38#L38)
 -/
 theorem _root_.GlobalTheory.T.app_injective_descent_of_affineOpens : ∀ (Y Z : Scheme.{0}) (p : Z ⟶ Y), (∀ V : Y.Opens, IsAffineOpen V → (Function.Injective (p.app V).hom ∧ ∀ f : Γ(Z, p ⁻¹ᵁ V), (∀ h : pullback.snd p p ⁻¹ᵁ (p ⁻¹ᵁ V) = pullback.fst p p ⁻¹ᵁ (p ⁻¹ᵁ V), ((pullback.fst p p).app _).hom f = ((pullback.snd p p).appLE _ _ h.ge).hom f) → f ∈ Set.range (p.app V).hom)) → ∀ V : Y.Opens, (Function.Injective (p.app V).hom ∧ ∀ f : Γ(Z, p ⁻¹ᵁ V), (∀ h : pullback.snd p p ⁻¹ᵁ (p ⁻¹ᵁ V) = pullback.fst p p ⁻¹ᵁ (p ⁻¹ᵁ V), ((pullback.fst p p).app _).hom f = ((pullback.snd p p).appLE _ _ h.ge).hom f) → f ∈ Set.range (p.app V).hom) := by
   first | exact @GlobalTheory.Mum.app_injective_and_descent_of_affineOpens | exact GlobalTheory.Mum.app_injective_and_descent_of_affineOpens | (intros; apply GlobalTheory.Mum.app_injective_and_descent_of_affineOpens <;> assumption)

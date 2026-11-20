@@ -13,8 +13,10 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.R
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points GlobalTheory.CechPic GlobalTheory.ChartGlue GlobalTheory.Mix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mix.cycInt_update_tens | exact GlobalTheory.Mix.cycInt_update_tens | (intros; apply GlobalTheory.Mix.cycInt_update_tens <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mix.cycInt_update_tens` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPointClosureIntegralUpdateTensorAdditive.lean&line=43#L43)
 -/
 theorem _root_.GlobalTheory.T.pointClosureIntegral_update_tensor_additive : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ), IsProjOver p → ∀ (D : ℕ) (L : Fin D → MLine p σ) (i : Fin D) (A B : MLine p σ) (f : CxPts p σ → ℝ) (z : X), CycIntg (Function.update L i A) f z → CycIntg (Function.update L i B) f z → cycInt (Function.update L i (A.tens B)) f z = cycInt (Function.update L i A) f z + cycInt (Function.update L i B) f z := by
   first | exact @GlobalTheory.Mix.cycInt_update_tens | exact GlobalTheory.Mix.cycInt_update_tens | (intros; apply GlobalTheory.Mix.cycInt_update_tens <;> assumption)

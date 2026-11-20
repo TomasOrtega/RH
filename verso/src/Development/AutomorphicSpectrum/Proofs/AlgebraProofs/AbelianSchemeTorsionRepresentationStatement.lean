@@ -20,8 +20,10 @@ open ReciprocityTheory.ChartRestriction.G.Chart (sp spMap)
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.CompanionTheory.Ar.GR
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.GR.torsRep_nonempty_of_relAmple | exact GlobalTheory.CompanionTheory.Ar.GR.torsRep_nonempty_of_relAmple | (intros; apply GlobalTheory.CompanionTheory.Ar.GR.torsRep_nonempty_of_relAmple <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.GR.torsRep_nonempty_of_relAmple` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FAlgebraProofs%2FAbelianSchemeTorsionRepresentation.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.abelian_scheme_torsion_representation : ∀ (R : Type) [CommRing R] [IsLocalRing R] (p : ℕ), 1 ≤ p → ∀ (A : Over (Spec (CommRingCat.of R))) [GrpObj A] (L : LB A.left), IsAbelianScheme A → L.IsLB → Out.RelAmple A L → Nonempty (TorsRep A p) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.GR.torsRep_nonempty_of_relAmple | exact GlobalTheory.CompanionTheory.Ar.GR.torsRep_nonempty_of_relAmple | (intros; apply GlobalTheory.CompanionTheory.Ar.GR.torsRep_nonempty_of_relAmple <;> assumption)

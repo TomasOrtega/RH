@@ -15,8 +15,10 @@ open scoped TensorProduct InnerProductSpace ComplexConjugate
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.ArchRec
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ArchRec.BasisChange.ptAt_basis | exact GlobalTheory.ArchRec.BasisChange.ptAt_basis | (intros; apply GlobalTheory.ArchRec.BasisChange.ptAt_basis <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ArchRec.BasisChange.ptAt_basis` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FFockVectorsAdaptedBasisUnitarySubstitution.lean&line=362#L362)
 -/
 theorem _root_.GlobalTheory.T.fockVectors_adaptedBasis_unitary_substitution : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (τ : D.what₂.Tau), IsStdChar D ψ (-1) → IsInfFam θ → ∀ (sS frS : Mn S.rank) (εS : Fin S.rank → Bool) (sT frT : Mn T.rank) (εT : Fin T.rank → Bool), IsFrameOf (gramAt D S τ) sS εS frS → IsFrameOf (gramAt D T τ) sT εT frT → ∀ BS BT, IsAdapted (gramAt D S τ) sS BS → IsAdapted (gramAt D T τ) sT BT → ∃ ς : LPol T.rank S.rank ≃ₗ[ℂ] LPol T.rank S.rank, Graded ς ∧ (∀ P Q, fockIp (ς P) (ς Q) = fockIp P Q) ∧ ∀ f, IsThetaFunO ψ S T f → ∀ P, ptAt ψ θ S T τ sS sT BS BT f P = ptAt ψ θ S T τ sS sT frS⁻¹ frT⁻¹ f (ς P) := by
   first | exact @GlobalTheory.ArchRec.BasisChange.ptAt_basis | exact GlobalTheory.ArchRec.BasisChange.ptAt_basis | (intros; apply GlobalTheory.ArchRec.BasisChange.ptAt_basis <;> assumption)

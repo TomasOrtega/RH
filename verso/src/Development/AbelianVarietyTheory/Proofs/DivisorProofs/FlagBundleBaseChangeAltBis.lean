@@ -12,8 +12,10 @@ open scoped Classical
 open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalTheory.FlagAr GlobalTheory.ShFam.Pad GlobalTheory.VB
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagBaseChange.isFlagBundle_pullFlag | exact GlobalTheory.FlagBaseChange.isFlagBundle_pullFlag | (intros; apply GlobalTheory.FlagBaseChange.isFlagBundle_pullFlag <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagBaseChange.isFlagBundle_pullFlag` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsFlagBundlePullFlag.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.isFlagBundle_pullback' : ∀ (B Y B' : Scheme.{0}) (π : Y ⟶ B) (g : B' ⟶ B) (ι : Type) (E : ι → B.Modules) (r : ι → ℕ) (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (r a)), IsFlagBundle π E r fl → IsFlagBundle (Limits.pullback.snd π g) (fun a => (Scheme.Modules.pullback g).obj (E a)) r (fun a => GlobalTheory.FlagBaseChange.pullFlag π g (fl a)) := by
   first | exact @GlobalTheory.FlagBaseChange.isFlagBundle_pullFlag | exact GlobalTheory.FlagBaseChange.isFlagBundle_pullFlag | (intros; apply GlobalTheory.FlagBaseChange.isFlagBundle_pullFlag <;> assumption)

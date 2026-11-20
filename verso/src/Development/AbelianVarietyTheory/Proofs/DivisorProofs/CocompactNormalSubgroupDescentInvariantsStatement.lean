@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.ConstTermOnMulLeftOfNormalizer
 open MeasureTheory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Cusp.Shear.integral_section_eq_constTermOn | exact GlobalTheory.Cusp.Shear.integral_section_eq_constTermOn | (intros; apply GlobalTheory.Cusp.Shear.integral_section_eq_constTermOn <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Cusp.Shear.integral_section_eq_constTermOn` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCocompactNormalSubgroupDescentInvariants.lean&line=67#L67)
 -/
 theorem _root_.GlobalTheory.T.cocompact_normal_subgroup_descent_invariants : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [SecondCountableTopology G] [T2Space G]
     [LocallyCompactSpace G] [MeasurableSpace G] [BorelSpace G] (Γ N N' : Subgroup G) [DiscreteTopology Γ]

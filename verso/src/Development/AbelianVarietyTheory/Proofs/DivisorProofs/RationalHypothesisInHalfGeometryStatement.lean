@@ -8,8 +8,10 @@ open Formalism.IndefR.FWT GlobalTheory.BigTop GlobalTheory.OntoChain GlobalTheor
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RealGeo GlobalTheory.Unframe GlobalTheory.UnframePt
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnframePt.inGeo_geoHalf | exact GlobalTheory.UnframePt.inGeo_geoHalf | (intros; apply GlobalTheory.UnframePt.inGeo_geoHalf <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnframePt.inGeo_geoHalf` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRationalHypothesisInHalfGeometry.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.rational_hypothesis_in_half_geometry : GlobalTheory.Published.CuspRapidDecay → ∀ {eps : ℝ} (Fm : FamP eps) (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) (p : Pt Fm x hx i), p.Rows → More p → ∀ (t : (Fm.D x i).ntw.Tw) (j : Fin (Fm.D x i).R.m), RatHyp0 p.T p.R (F2 p) p.κ p.v₀ p.O t j → InGeo (geoHalf p) := by
   first | exact @GlobalTheory.UnframePt.inGeo_geoHalf | exact GlobalTheory.UnframePt.inGeo_geoHalf | (intros; apply GlobalTheory.UnframePt.inGeo_geoHalf <;> assumption)

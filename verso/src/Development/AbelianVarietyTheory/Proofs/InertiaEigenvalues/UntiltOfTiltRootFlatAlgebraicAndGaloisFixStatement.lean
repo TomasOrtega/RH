@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.Bh
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BKReal GlobalTheory.Per GlobalTheory.BSP
 open scoped Formalism.Per NNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BSP.rootT_flat_alg_and_fix | exact GlobalTheory.BSP.rootT_flat_alg_and_fix | (intros; apply GlobalTheory.BSP.rootT_flat_alg_and_fix <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BSP.rootT_flat_alg_and_fix` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FUntiltOfTiltRootFlatAlgebraicAndGaloisFix.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.untiltOfTiltRoot_flat_algebraic_and_galois_fix : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K), (∀ n : ℕ, ∃ z : Om l, ((GlobalTheory.MemLoc.rootT bk.flat n : OC l) : ℂ_[l]) = (z : ℂ_[l])) ∧ ∀ (g : GQ l) (y : OCb l), (∀ n : ℕ, Per.σO g (GlobalTheory.MemLoc.rootT bk.flat n) = GlobalTheory.MemLoc.rootT y n) → Per.σF g bk.flat = y := by
   first | exact @GlobalTheory.BSP.rootT_flat_alg_and_fix | exact GlobalTheory.BSP.rootT_flat_alg_and_fix | (intros; apply GlobalTheory.BSP.rootT_flat_alg_and_fix <;> assumption)

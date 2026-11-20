@@ -9,8 +9,10 @@ open GlobalTheory GlobalTheory.ZM GlobalTheory.ZH GlobalTheory.UMin GlobalTheory
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UMin.polFib_univ | exact GlobalTheory.UMin.polFib_univ | (intros; apply GlobalTheory.UMin.polFib_univ <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UMin.polFib_univ` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FUniversalTripleFibrePrincipallyPolarisedDimensio.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.universalTriple_fibre_principallyPolarised_dimension : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (R : Type) [CommRing R] (x : Sp R ⟶ Xo.X), PolFib Xo.univ.t.G Xo.univ.t.PP.L (Module.finrank ℚ E / 2 * (Dw.p + Dw.q)) x := by
   first | exact @GlobalTheory.UMin.polFib_univ | exact GlobalTheory.UMin.polFib_univ | (intros; apply GlobalTheory.UMin.polFib_univ <;> assumption)

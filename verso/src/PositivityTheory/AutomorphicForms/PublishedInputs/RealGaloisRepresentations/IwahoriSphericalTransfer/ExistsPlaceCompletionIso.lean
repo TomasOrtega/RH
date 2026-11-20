@@ -9,8 +9,10 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory.LocLanglands GlobalTheory.HeckeGal GlobalTheory.LocGL GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Published UpperTheory.V.Af.Bc GlobalTheory.RealGal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PlaceIsoDec.exists_placeIso_of_dec_le_range | exact GlobalTheory.PlaceIsoDec.exists_placeIso_of_dec_le_range | (intros; apply GlobalTheory.PlaceIsoDec.exists_placeIso_of_dec_le_range <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PlaceIsoDec.exists_placeIso_of_dec_le_range` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=PositivityTheory%2FAutomorphicForms%2FPublishedInputs%2FRealGaloisRepresentations%2FIwahoriSphericalTransfer%2FRamificationIdxEqOneAndInertiaDegEqOne.lean&line=152#L152)
 -/
 theorem _root_.GlobalTheory.T.exists_place_completion_iso : ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (K : Type) [Field K] [NumberField K] [Algebra F K] [Algebra K Ω] [IsScalarTower F K Ω] [IsAlgClosure K Ω] (v : HeightOneSpectrum (𝓞 F)) (A : ValuationSubring Ω), IsPlaceOver A v → Dec (F := F) A ≤ (res F Ω K).range → ∃ (w : HeightOneSpectrum (𝓞 K)) (_ : IsPlaceOver A w) (i : v.adicCompletion F ≃+* w.adicCompletion K), PlaceIso A v A w (RingEquiv.refl Ω) (algebraMap F K) i := by
   first | exact @GlobalTheory.PlaceIsoDec.exists_placeIso_of_dec_le_range | exact GlobalTheory.PlaceIsoDec.exists_placeIso_of_dec_le_range | (intros; apply GlobalTheory.PlaceIsoDec.exists_placeIso_of_dec_le_range <;> assumption)

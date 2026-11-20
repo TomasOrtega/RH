@@ -8,8 +8,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.intAt_of_intAt_fibreGeneric | exact GlobalTheory.Mum.intAt_of_intAt_fibreGeneric | (intros; apply GlobalTheory.Mum.intAt_of_intAt_fibreGeneric <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.intAt_of_intAt_fibreGeneric` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIntegralOfIntegralAtFibreGenericPoint.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.integral_of_integral_at_fibre_generic_point : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] (M : Modif R) (G : Over M.S), Smooth G.hom → QuasiCompact G.hom → GeometricallyIrreducible G.hom → ∀ (L : LB G.left), L.IsLB → ∀ (Y : Scheme.{0}) (α : Y ⟶ G.left) (t : Y ⟶ Sp (FractionRing R)), IsPullback α t G.hom M.gp → ∀ (k : ℕ) (s : SecK L α k) (x ζ : G.left), G.hom ζ = G.hom x → (∀ z, G.hom z = G.hom x → ζ ⤳ z) → IntAt L α s ζ → IntAt L α s x := by
   first | exact @GlobalTheory.Mum.intAt_of_intAt_fibreGeneric | exact GlobalTheory.Mum.intAt_of_intAt_fibreGeneric | (intros; apply GlobalTheory.Mum.intAt_of_intAt_fibreGeneric <;> assumption)

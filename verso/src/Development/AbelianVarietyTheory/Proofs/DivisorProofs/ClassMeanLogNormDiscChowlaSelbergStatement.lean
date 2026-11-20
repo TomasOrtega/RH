@@ -6,8 +6,10 @@ import Formalism.LocalRingCardinality.DataParams₂
 open NumberField GlobalTheory.CMVal GlobalTheory.IndefiniteRowSideFullHecke.LatticeNormTransport
 open scoped nonZeroDivisors
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ClassMeanDisc.classMean_log_norm_disc | exact GlobalTheory.ClassMeanDisc.classMean_log_norm_disc | (intros; apply GlobalTheory.ClassMeanDisc.classMean_log_norm_disc <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ClassMeanDisc.classMean_log_norm_disc` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FClassMeanLogNormDiscChowlaSelberg.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.classMean_log_norm_disc_chowlaSelberg : ∀ (D : Formalism.BasicNotions.D7) {K : Type} [Field K] [NumberField K] (φK : K →+* ℂ), Module.finrank ℚ K = 2 → discr K = -(D.host.d : ℤ) → 4 < D.host.d → ∀ (rep : ClassGroup (𝓞 K) → (FractionalIdeal (𝓞 K)⁰ K)ˣ) (L : ClassGroup (𝓞 K) → PeriodPair), (∀ c, ClassGroup.mk K (rep c) = c) → (∀ c, IsLatOf φK (rep c : FractionalIdeal (𝓞 K)⁰ K) (L c)) → (∑ c, Real.log (nrm (rep c : FractionalIdeal (𝓞 K)⁰ K) ^ 6 * ‖latDisc (L c)‖)) / (classNumber K : ℝ) = 12 * Real.log (2 * Real.pi) - 6 * Real.log D.host.d + 6 * Real.eulerMascheroniConstant - 6 * Formalism.BasicNotions.dlogL D 1 := by
   first | exact @GlobalTheory.ClassMeanDisc.classMean_log_norm_disc | exact GlobalTheory.ClassMeanDisc.classMean_log_norm_disc | (intros; apply GlobalTheory.ClassMeanDisc.classMean_log_norm_disc <;> assumption)

@@ -23,8 +23,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CovTop.bad_def_lift | exact GlobalTheory.CovTop.bad_def_lift | (intros; apply GlobalTheory.CovTop.bad_def_lift <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CovTop.bad_def_lift` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FBadAtTopLevel.lean&line=32#L32)
 -/
 theorem _root_.GlobalTheory.T.bad_at_top_level : Hypotheses2 → GlobalTheory.Published.GreenCuspidal → Gram → Lifts fun Fm x _ ι p i _ _ => (i : ℕ) + 1 = (Fm.D x ι).R.m → BadAt p i := by
   first | exact @GlobalTheory.CovTop.bad_def_lift | exact GlobalTheory.CovTop.bad_def_lift | (intros; apply GlobalTheory.CovTop.bad_def_lift <;> assumption)

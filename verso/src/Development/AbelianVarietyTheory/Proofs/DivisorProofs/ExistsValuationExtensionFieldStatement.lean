@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MapPairDetCovec
 open CategoryTheory Limits AlgebraicGeometry NumberField IsDedekindDomain
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.CompHt GlobalTheory.AllWt
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PlaceExt.exists_extend_compatible | exact GlobalTheory.PlaceExt.exists_extend_compatible | (intros; apply GlobalTheory.PlaceExt.exists_extend_compatible <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PlaceExt.exists_extend_compatible` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsValuationExtensionField.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.exists_valuation_extension_field : ∀ (F F' : IntermediateField ℚ ℂ) (hle : F ≤ F'), FiniteDimensional ℚ F' → ∀ (W : ValuationSubring ℂ) (K : Type) [Field K] [IsAlgClosed K] (O : ValuationSubring K) (g : F →+* K), (∀ x : F, (x : ℂ) ∈ W ↔ g x ∈ O) → ∃ g' : F' →+* K, (∀ x : F, g' (IntermediateField.inclusion hle x) = g x) ∧ ∀ x : F', (x : ℂ) ∈ W → g' x ∈ O := by
   first | exact @GlobalTheory.PlaceExt.exists_extend_compatible | exact GlobalTheory.PlaceExt.exists_extend_compatible | (intros; apply GlobalTheory.PlaceExt.exists_extend_compatible <;> assumption)

@@ -10,8 +10,10 @@ open GlobalTheory.FinPl (Lat idAt idOff intAt grpAt grpOff MxAt latV latA InK Mo
 open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AscFin.latRow_bessel_core_split | exact GlobalTheory.AscFin.latRow_bessel_core_split | (intros; apply GlobalTheory.AscFin.latRow_bessel_core_split <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AscFin.latRow_bessel_core_split` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FBesselDepthLatticeCoreSplitsAlongTargetWitt.lean&line=117#L117)
 -/
 theorem _root_.GlobalTheory.T.bessel_depth_lattice_core_splits_along_target_witt : OnStd fun {D} _ _ {sc} {G} W F => ∀ ρ (h : 2 * ρ + 2 ≤ D.R.m), ∀ w : WO (F.V₀ ρ) (G.V (.grid (2 * ρ + 1) 0)), (F.dB ρ h).ext0 (G.V (.grid (2 * ρ + 1) 0)) w ∈ latRow G (2 * ρ + 1) → (F.dB ρ h).ext0 (G.V (.grid (2 * ρ + 1) 0)) ((F.dJ ρ h).inc0 (F.V₀ ρ) ((F.dJ ρ h).p0 ⬝ w)) ∈ latRow G (2 * ρ + 1) := by
   first | exact @GlobalTheory.AscFin.latRow_bessel_core_split | exact GlobalTheory.AscFin.latRow_bessel_core_split | (intros; apply GlobalTheory.AscFin.latRow_bessel_core_split <;> assumption)

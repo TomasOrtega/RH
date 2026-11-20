@@ -22,8 +22,10 @@ open GlobalTheory.Doubling (absE)
 open GlobalTheory.ConeSmallMidJB
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MidLineWitt.exists_ratU_isotropic | exact GlobalTheory.MidLineWitt.exists_ratU_isotropic | (intros; apply GlobalTheory.MidLineWitt.exists_ratU_isotropic <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MidLineWitt.exists_ratU_isotropic` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRationalIsotropicVectorsTransitive.lean&line=111#L111)
 -/
 theorem _root_.GlobalTheory.T.rational_isotropic_vectors_transitive : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (x y z : Fin n → E), (∀ e, σ (σ e) = e) → (∀ i j, σ (J j i) = -J i j) → J.det ≠ 0 →

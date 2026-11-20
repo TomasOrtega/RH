@@ -15,8 +15,10 @@ open GlobalTheory.AbLaw
 open GlobalTheory.KeyKa
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KeyKa.KoszulEx.exists_kosVal | exact GlobalTheory.KeyKa.KoszulEx.exists_kosVal | (intros; apply GlobalTheory.KeyKa.KoszulEx.exists_kosVal <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KeyKa.KoszulEx.exists_kosVal` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FThetaLawProofs%2FExistsKoszulTorsionTransversalSplitZeros.lean&line=380#L380)
 -/
 theorem _root_.GlobalTheory.T.exists_koszulTorsion_transversal_split_zeros : Out.Laws → ∀ (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] (x : KeyIn R) (n l d : ℕ) (s : Fin x.P.g → RR x n) (b : ∀ j, Fin ((l - j * n) ^ x.P.g) → RR x (l - j * n)) (z : Fin d → Pt x) (ch : Fin d → x.P.L.ι), 1 ≤ n → x.P.g * n < l → (∀ j ≤ x.P.g, IsBasis x (b j)) → EtZ x s z ch → d = x.P.g.factorial * n ^ x.P.g ∧ ∃ t : Rˣ, KosVal x l s z ch b t := by
   first | exact @GlobalTheory.KeyKa.KoszulEx.exists_kosVal | exact GlobalTheory.KeyKa.KoszulEx.exists_kosVal | (intros; apply GlobalTheory.KeyKa.KoszulEx.exists_kosVal <;> assumption)

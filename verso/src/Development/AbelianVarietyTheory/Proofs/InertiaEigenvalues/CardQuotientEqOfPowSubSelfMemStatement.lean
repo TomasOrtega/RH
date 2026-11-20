@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardQuotientEq
 import Mathlib
 open NumberField IsDedekindDomain Polynomial
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.card_quotient_eq_of_pow_sub_self_mem | exact GlobalTheory.card_quotient_eq_of_pow_sub_self_mem | (intros; apply GlobalTheory.card_quotient_eq_of_pow_sub_self_mem <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.card_quotient_eq_of_pow_sub_self_mem` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FCardQuotientEqOfPowSubSelfMem.lean&line=6#L6)
 -/
 theorem _root_.GlobalTheory.T.card_quotient_eq_of_pow_sub_self_mem' : ∀ {R : Type} [CommRing R] (P : Ideal R) [P.IsMaximal] (q : ℕ) (ζ : R), 2 ≤ q → ζ ^ (q - 1) = 1 →
     (∀ j : ℕ, 0 < j → j < q - 1 → ζ ^ j - 1 ∉ P) → (∀ y : R, y ^ q - y ∈ P) → Nat.card (R ⧸ P) = q := by

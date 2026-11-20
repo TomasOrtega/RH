@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSmoothDetPair
 open scoped TensorProduct
 open GlobalTheory.SmGL GlobalTheory.PRep GlobalTheory.IndLineGL
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FiltStepCut.exists_prod_mem_range | exact GlobalTheory.FiltStepCut.exists_prod_mem_range | (intros; apply GlobalTheory.FiltStepCut.exists_prod_mem_range <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FiltStepCut.exists_prod_mem_range` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCompositionSeriesIntertwiningChain.lean&line=35#L35)
 -/
 theorem _root_.GlobalTheory.T.composition_series_intertwining_chain : ∀ (L J : Type) [Group L] [AddCommGroup J] [Module ℂ J] (ρ : Representation ℂ L J) (N : ℕ)
     (S : Fin (N + 1) → Subrepresentation ρ), Monotone S → S 0 = ⊥ → S (Fin.last N) = ⊤ →

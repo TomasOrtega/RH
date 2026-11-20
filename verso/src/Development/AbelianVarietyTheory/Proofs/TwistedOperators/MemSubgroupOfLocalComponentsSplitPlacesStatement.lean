@@ -20,8 +20,10 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.Ro
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RowAssemble.mem_of_loc | exact GlobalTheory.RowAssemble.mem_of_loc | (intros; apply GlobalTheory.RowAssemble.mem_of_loc <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RowAssemble.mem_of_loc` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FMemSubgroupOfLocalComponentsSplitPlaces.lean&line=86#L86)
 -/
 theorem _root_.GlobalTheory.T.mem_subgroup_of_localComponents_splitPlaces : ∀ {D : D7} (V : HSp D) (P : Finset (Pl D.host.E)) (e : AE D), IsIdemSum e P → ∀ (H : Subgroup (GA D V)) (r : GA D V), SuppAt e V r → (∀ w ∈ P, ∀ ew : AE D, Formalism.L2.NTheta.IsIdemAt ew w → ∃ h ∈ H, SuppAt ew V h ∧ GlobalTheory.StdFrames.loc w (Lev.finE V h) = GlobalTheory.StdFrames.loc w (Lev.finE V r)) → r ∈ H := by
   first | exact @GlobalTheory.RowAssemble.mem_of_loc | exact GlobalTheory.RowAssemble.mem_of_loc | (intros; apply GlobalTheory.RowAssemble.mem_of_loc <;> assumption)

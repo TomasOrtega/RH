@@ -12,8 +12,10 @@ open NumberField MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheor
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EisMidHt.ht_iwasawa | exact GlobalTheory.EisMidHt.ht_iwasawa | (intros; apply GlobalTheory.EisMidHt.ht_iwasawa <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EisMidHt.ht_iwasawa` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHeightFirstColumnPositive.lean&line=277#L277)
 -/
 theorem _root_.GlobalTheory.T.height_first_column_positive : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E) (L : Submodule (𝓞 E) (Fin n → E))

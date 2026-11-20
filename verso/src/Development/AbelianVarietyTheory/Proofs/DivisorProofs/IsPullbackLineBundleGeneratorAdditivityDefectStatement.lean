@@ -9,8 +9,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.CharKer
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CharKer.isPullGen_addGen | exact GlobalTheory.CharKer.isPullGen_addGen | (intros; apply GlobalTheory.CharKer.isPullGen_addGen <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CharKer.isPullGen_addGen` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsPullbackLineBundleGeneratorAdditivityDefect.lean&line=43#L43)
 -/
 theorem _root_.GlobalTheory.T.isPullbackLineBundleGenerator_additivityDefect : ∀ (S : Scheme.{0}) (A A' T : Over S) [MonObj A] [MonObj A'] (q : A ⟶ A') [IsMonHom q] (M : LB (A' ⊗ T).left) (e : ∀ k, Γ((A ⊗ T).left, (pmap q T).left ⁻¹ᵁ M.U k)ˣ), IsPullGen (pmap q T).left M e → IsPullGen (pmap2 q T).left (addBundle M) (addGen q M e) := by
   first | exact @GlobalTheory.CharKer.isPullGen_addGen | exact GlobalTheory.CharKer.isPullGen_addGen | (intros; apply GlobalTheory.CharKer.isPullGen_addGen <;> assumption)

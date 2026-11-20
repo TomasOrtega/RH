@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.Irreducibl
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.SegmentRepresentation
 open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.JHMult Zc Zc.Seg
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.LeviTensor.nonempty_equiv_piTensor | exact GlobalTheory.CompanionTheory.LeviTensor.nonempty_equiv_piTensor | (intros; apply GlobalTheory.CompanionTheory.LeviTensor.nonempty_equiv_piTensor <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.LeviTensor.nonempty_equiv_piTensor` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FLeviIrreducibleTensorDecomposition.lean&line=403#L403)
 -/
 theorem _root_.GlobalTheory.T.levi_irreducible_tensor_decomposition : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {s : ℕ} (d : Fin s → ℕ) (τ : IrrRep (Levi k fun a => Fin (d a))), ∃ σ : ∀ a, IrrCl (GL (Fin (d a)) k), Nonempty (τ.ρ.Equiv (piTensor fun a => (σ a).rep.ρ)) := by
   first | exact @GlobalTheory.CompanionTheory.LeviTensor.nonempty_equiv_piTensor | exact GlobalTheory.CompanionTheory.LeviTensor.nonempty_equiv_piTensor | (intros; apply GlobalTheory.CompanionTheory.LeviTensor.nonempty_equiv_piTensor <;> assumption)

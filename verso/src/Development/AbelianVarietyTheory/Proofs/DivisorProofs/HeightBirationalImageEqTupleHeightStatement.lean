@@ -13,8 +13,10 @@ open GlobalTheory.HSCore GlobalTheory.QCoh
 open GlobalTheory
 open Formalism.L2.Pj Formalism.NormVectorIdentities.Items
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HSCore.isHeight_imageHeight | exact GlobalTheory.HSCore.isHeight_imageHeight | (intros; apply GlobalTheory.HSCore.isHeight_imageHeight <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HSCore.isHeight_imageHeight` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHeightBirationalImageEqTupleHeight.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.height_birationalImage_eq_tuple_height : Quoted → ∀ (F : Type) [Field F] [NumberField F] (T : Tuple F) (V Ω : Type) [AddCommGroup V] [Module F V] [Module (𝓞 F) V] [IsScalarTower (𝓞 F) F V] [Field Ω] [Algebra F Ω] (Nm : (F →+* ℂ) → V → ℝ) (W : Submodule (𝓞 F) V) (ev : V →ₗ[F] Ω), IsTotallyComplex F → T.IsGeometric → T.Birational → CompHt.Presents T.toHermSys Nm W ev → T.IsHeight (CompHt.imageHeight Nm W ev T.D) := by
   first | exact @GlobalTheory.HSCore.isHeight_imageHeight | exact GlobalTheory.HSCore.isHeight_imageHeight | (intros; apply GlobalTheory.HSCore.isHeight_imageHeight <;> assumption)

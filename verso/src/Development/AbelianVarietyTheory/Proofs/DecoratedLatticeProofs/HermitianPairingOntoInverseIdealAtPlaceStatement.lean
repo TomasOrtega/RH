@@ -20,8 +20,10 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Unf GlobalTheory.Spl
 open scoped TensorProduct nonZeroDivisors
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SeeSaw.HzOnto.hz_onto | exact GlobalTheory.SeeSaw.HzOnto.hz_onto | (intros; apply GlobalTheory.SeeSaw.HzOnto.hz_onto <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SeeSaw.HzOnto.hz_onto` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FHermitianPairingOntoInverseIdealAtPlace.lean&line=123#L123)
 -/
 theorem _root_.GlobalTheory.T.hermitianPairing_onto_inverseIdeal_at_place : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S A L : HSp D) (o : OrthDec S A L)
     (ζ : Fin L.rank → D.host.E) (M : Lat S) (𝔠 : FI D) (v : Pl D), IsSelfDualC S M → LineId o ζ M 𝔠 v → 𝔠 ≠ 0 →

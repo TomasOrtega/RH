@@ -8,8 +8,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MixedLagr.rat_first_zero_dim | exact GlobalTheory.MixedLagr.rat_first_zero_dim | (intros; apply GlobalTheory.MixedLagr.rat_first_zero_dim <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MixedLagr.rat_first_zero_dim` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRationalLagrangianSubspaceExists.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.rational_lagrangian_subspace_exists : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W), Module.finrank F E = 2 →

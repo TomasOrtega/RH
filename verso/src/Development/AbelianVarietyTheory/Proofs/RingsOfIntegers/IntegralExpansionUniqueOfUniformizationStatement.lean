@@ -11,8 +11,10 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory Car
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.DVR
 attribute [local instance] Over.cartesianMonoidalCategory
 open scoped CategoryTheory.Obj
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ExpUniq.main | exact GlobalTheory.ExpUniq.main | (intros; apply GlobalTheory.ExpUniq.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ExpUniq.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FRingsOfIntegers%2FIntegralExpansionUniqueOfUniformization.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.integralExpansion_unique_of_uniformization : lemmaBSt.{0} → ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (D : DegData V (maximalIdeal V)) (A : PolAV (Spec (CommRingCat.of (FractionRing V)))) (G : Over (Spec (CommRingCat.of V))) [GrpObj G] [IsCommMonObj G] (U : UnifPre (maximalIdeal V) D A G) (k : ℕ) (σ : H0 U.LG.L k) (f g : ∀ α : D.toPre.X, D.toPre.SecB k α), (∀ e, U.ExpandsAt e k σ f) → (∀ e, U.ExpandsAt e k σ g) → f = g := by
   first | exact @GlobalTheory.ExpUniq.main | exact GlobalTheory.ExpUniq.main | (intros; apply GlobalTheory.ExpUniq.main <;> assumption)

@@ -6,8 +6,10 @@ import CompanionTheory.EightfoldTheory.VariationTheory.AutomorphicForms.Newform
 open UpperHalfPlane Complex MeasureTheory CongruenceSubgroup GlobalTheory.EisM UpperTheory.V.Af Filter Topology
 open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LatQ.lat_qexp | exact GlobalTheory.LatQ.lat_qexp | (intros; apply GlobalTheory.LatQ.lat_qexp <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LatQ.lat_qexp` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FRegularizedEisensteinLatticeSumQExpansion.lean&line=206#L206)
 -/
 theorem _root_.GlobalTheory.T.regularizedEisensteinLatticeSum_qExpansion : ∀ (j L : ℕ) (b : ℤ → ℂ) (φ : ZMod L → ℂ), 1 ≤ j → 0 < L → (∃ C : ℝ, ∀ x, ‖b x‖ ≤ C) → hat φ 0 = 0 → (∀ x y : ℤ, b (-x) * φ (-(y : ZMod L)) = (-1) ^ j * (b x * φ y)) → ∃ c : ℂ, PolyB (eis j c (hat φ) b) ∧ ∀ τ : ℍ, lat j 0 L (0, 1) (latF L b φ) τ = 2 * (-2 * π * Complex.I / L) ^ j / (j - 1).factorial * qs (eis j c (hat φ) b) τ := by
   first | exact @GlobalTheory.LatQ.lat_qexp | exact GlobalTheory.LatQ.lat_qexp | (intros; apply GlobalTheory.LatQ.lat_qexp <;> assumption)

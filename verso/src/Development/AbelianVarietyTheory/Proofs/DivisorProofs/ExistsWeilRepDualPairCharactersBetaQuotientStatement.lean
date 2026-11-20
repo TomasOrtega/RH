@@ -18,8 +18,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (Base Spc Model Ha
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WeilTripleW.exists_isWeil | exact GlobalTheory.WeilTripleW.exists_isWeil | (intros; apply GlobalTheory.WeilTripleW.exists_isWeil <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WeilTripleW.exists_isWeil` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsWeilRepDualPairCharactersBetaQuotient.lean&line=43#L43)
 -/
 theorem _root_.GlobalTheory.T.exists_weilRep_dualPair_characters_beta_quotient : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (_hL : L.Is μ₀) (t : T)
     (i j : Fin D.R.m), SquareStanding G t → ∀ (B : Base D.host.F D.host.E), B.IsGood D.sp.cm.sig →

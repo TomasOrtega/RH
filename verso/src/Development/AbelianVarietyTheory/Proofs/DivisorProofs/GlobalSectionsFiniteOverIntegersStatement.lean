@@ -17,8 +17,10 @@ open MvPolynomial GlobalTheory.ArInt
 open CategoryTheory AlgebraicGeometry GlobalTheory GlobalTheory.Mean4O GlobalTheory.HermLB
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GlobalFunFinite.moduleFinite_int | exact GlobalTheory.GlobalFunFinite.moduleFinite_int | (intros; apply GlobalTheory.GlobalFunFinite.moduleFinite_int <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GlobalFunFinite.moduleFinite_int` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGlobalSectionsFiniteOverIntegers.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.global_sections_finite_over_integers : ∀ (F : Type) [Field F] [NumberField F] (X : Scheme.{0}) (p : X ⟶ Sp (𝓞 F)),
     IsArithVar (spMap (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p ⊤)) 0 → Module.Finite ℤ Γ(X, ⊤) := by

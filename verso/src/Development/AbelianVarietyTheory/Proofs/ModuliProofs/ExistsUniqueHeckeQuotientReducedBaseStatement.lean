@@ -9,8 +9,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 open GlobalTheory.HkFam
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HkFam.existsUnique_heckeQuot | exact GlobalTheory.HkFam.existsUnique_heckeQuot | (intros; apply GlobalTheory.HkFam.existsUnique_heckeQuot <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HkFam.existsUnique_heckeQuot` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FModuliProofs%2FExistsUniqueHeckeQuotientReducedBase.lean&line=37#L37)
 -/
 theorem _root_.GlobalTheory.T.existsUnique_heckeQuotient_reducedBase : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (𝔓 : Ideal (𝓞 E)) (p i : ℕ) (S : Scheme.{0}) (s : S ⟶ Sp (KA l)) (o : Ob D l s) (C : Over S) (j : C ⟶ o.t.G), 1 ≤ D.p + D.q → admitted l 𝔓 p → IsReduced S → IsFinite C.hom → Etale C.hom → IsClosedImmersion j.left → HeckeSet D o.t 𝔓 p i (Set.range j.left) → ∃! f : S ⟶ Xo.X, f ≫ Xo.s = s ∧ ∃ (o' : Ob D l s) (_ : ObjMap o' Xo.univ f) (ψ : o.t.G ⟶ o'.t.G), IsIsog o o' p ψ ∧ IsPullback j (toUnit C) ψ η[o'.t.G] := by
   first | exact @GlobalTheory.HkFam.existsUnique_heckeQuot | exact GlobalTheory.HkFam.existsUnique_heckeQuot | (intros; apply GlobalTheory.HkFam.existsUnique_heckeQuot <;> assumption)

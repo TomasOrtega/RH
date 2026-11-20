@@ -3,8 +3,10 @@ import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.Definit
 import CompanionTheory.RealGroups.UnitaryAdmissibility.ArchimedeanUnitaryDual.StDefinite
 open CompanionTheory.Rg.Fl
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.DefiniteForm.stDefinite | exact GlobalTheory.CompanionTheory.DefiniteForm.stDefinite | (intros; apply GlobalTheory.CompanionTheory.DefiniteForm.stDefinite <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.DefiniteForm.stDefinite` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=CompanionTheory%2FSpectralGeometry%2FLocalGlobalProofs%2FStableLattices%2FDefinitenessStatement.lean&line=204#L204)
 -/
 theorem _root_.GlobalTheory.T.DefinitenessStatement : StDefinite := by
   first | exact @GlobalTheory.CompanionTheory.DefiniteForm.stDefinite | exact GlobalTheory.CompanionTheory.DefiniteForm.stDefinite | (intros; apply GlobalTheory.CompanionTheory.DefiniteForm.stDefinite <;> assumption)

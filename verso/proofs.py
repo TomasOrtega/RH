@@ -22,7 +22,8 @@ DECLARATION_NAME = re.compile(r"[ \t]*(«[^»]*»|[^\s({\[⦃⟨:]+)")
 CLAIM_KINDS = {"theorem", "lemma", "example", "axiom"}
 BODY_TOKEN = re.compile(r":=|\b(?:let|letI|have)\b|[({\[⟨⦃)}\]⟩⦄]|^[ \t]*\|", re.MULTILINE)
 PLACEHOLDER = re.compile(r"\b(?:sorry|admit|sorryAx)\b")
-NOTE = re.compile(r"^/- English proof \((authored|translation|source gap)\)\n(.*?)\n-/\n", re.MULTILINE | re.DOTALL)
+IMPORT = re.compile(r"^[ \t]*(?:(?:public|meta) +)*import +(?:all +)?(\S+)", re.MULTILINE)
+NOTE = re.compile(r"^/- English proof \((authored|citation|translation|source gap)\)\n(.*?)\n-/\n", re.MULTILINE | re.DOTALL)
 
 
 @dataclass(frozen=True)

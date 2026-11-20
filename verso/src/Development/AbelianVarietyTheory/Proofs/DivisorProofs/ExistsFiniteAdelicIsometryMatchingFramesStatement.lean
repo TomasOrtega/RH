@@ -10,8 +10,10 @@ open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.CuspMult
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FinIsoExists.exists_isFinIso | exact GlobalTheory.FinIsoExists.exists_isFinIso | (intros; apply GlobalTheory.FinIsoExists.exists_isFinIso <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FinIsoExists.exists_isFinIso` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsFiniteAdelicIsometryMatchingFrames.lean&line=55#L55)
 -/
 theorem _root_.GlobalTheory.T.exists_finiteAdelic_isometry_matching_frames : ∀ {D : D7} (V V' : HSp D) (β : GL (Fin V.rank) (EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (N : ℕ) (β' : GL (Fin V'.rank) (EAf D)) (Λ' : Submodule (𝓞 D.host.E) (Fin V'.rank → D.host.E)) (N' : ℕ) (Pg : Finset (Pl D.host.E)), V.rank = V'.rank → IsBaseFrame V β Λ N → IsBaseFrame V' β' Λ' N' → (∀ PP ∈ Pg, ∀ PP' ∈ Pg, ¬ IsConjPl PP PP') → ∃ j Φ, IsFinIso V V' β β' Pg j Φ := by
   first | exact @GlobalTheory.FinIsoExists.exists_isFinIso | exact GlobalTheory.FinIsoExists.exists_isFinIso | (intros; apply GlobalTheory.FinIsoExists.exists_isFinIso <;> assumption)

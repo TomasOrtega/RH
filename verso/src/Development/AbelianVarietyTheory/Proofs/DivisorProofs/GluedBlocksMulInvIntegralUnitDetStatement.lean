@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.IsSatFrame
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LogFGLDepthStagesLowAImports
 open MvPowerSeries ReciprocityTheory.PGsh ReciprocityTheory.ChartRestriction.G.Sh GlobalTheory.DepthStages
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GlueBlocks.glue_mul_glue_inv | exact GlobalTheory.GlueBlocks.glue_mul_glue_inv | (intros; apply GlobalTheory.GlueBlocks.glue_mul_glue_inv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GlueBlocks.glue_mul_glue_inv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGluedBlocksMulInvIntegralUnitDet.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.glued_blocks_mul_inv_integral_unit_det : ∀ (C : Type) [Field C] (v : AddValuation C (WithTop ℝ)) (d : ℕ) (ι : Type) (lab : Fin d → ι)
     (S : ι → Finset (Fin d)) (x y : ι → Matrix (Fin d) (Fin d) C),

@@ -9,8 +9,10 @@ open scoped Matrix CategoryTheory.Obj Topology
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.familyIsotropicDual_linearIndependent_and_card | exact GlobalTheory.familyIsotropicDual_linearIndependent_and_card | (intros; apply GlobalTheory.familyIsotropicDual_linearIndependent_and_card <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.familyIsotropicDual_linearIndependent_and_card` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FIsotropicDualFamilyLinearIndependentRankEqTwoMul.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.isotropicDual_family_linearIndependent_rank_eq_two_mul : ∀ (r d : ℕ) (M : Matrix (Fin r) (Fin r) ℝ) (e f : Fin d → Fin r → ℝ), (∀ i j, e i ⬝ᵥ M *ᵥ e j = 0) → (∀ i j, f i ⬝ᵥ M *ᵥ e j = if i = j then 1 else 0) → Submodule.span ℝ (Set.range (Sum.elim e f)) = ⊤ → LinearIndependent ℝ (Sum.elim e f) ∧ r = 2 * d := by
   first | exact @GlobalTheory.familyIsotropicDual_linearIndependent_and_card | exact GlobalTheory.familyIsotropicDual_linearIndependent_and_card | (intros; apply GlobalTheory.familyIsotropicDual_linearIndependent_and_card <;> assumption)

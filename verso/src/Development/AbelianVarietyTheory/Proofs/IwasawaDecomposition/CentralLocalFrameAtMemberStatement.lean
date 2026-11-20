@@ -16,8 +16,10 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CenterEqSum
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX NumberField IsDedekindDomain GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw GlobalTheory.HeightCounting GlobalTheory.HeightCounting.Up
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeRec.factG
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CenLocAt.frameAt_of_layer | exact GlobalTheory.CenLocAt.frameAt_of_layer | (intros; apply GlobalTheory.CenLocAt.frameAt_of_layer <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CenLocAt.frameAt_of_layer` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FCentralLocalFrameAtMember.lean&line=28#L28)
 -/
 theorem _root_.GlobalTheory.T.central_local_frame_at_member : ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AtMem hL fun _ _ _ _ w Z _ _ t _ _ c => ∀ (ad : MtAd t.r.Y c.a.all.gal.mt) (i : (w.st Z).toD7.nd.Loc) s k, t.r.Y.tup s = (w.st Z).toD7.nd.mu i → GlobalTheory.CenLocAt.FrameAt t.r.Y t.r.z.cG k (ad.PV k) s := by
   first | exact @GlobalTheory.CenLocAt.frameAt_of_layer | exact GlobalTheory.CenLocAt.frameAt_of_layer | (intros; apply GlobalTheory.CenLocAt.frameAt_of_layer <;> assumption)

@@ -4,8 +4,10 @@ import Mathlib
 open MeasureTheory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.integral_eq_tsum_of_const_on_partition_measure_one | exact GlobalTheory.integral_eq_tsum_of_const_on_partition_measure_one | (intros; apply GlobalTheory.integral_eq_tsum_of_const_on_partition_measure_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.integral_eq_tsum_of_const_on_partition_measure_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIntegralPiecewiseConstant.lean&line=6#L6)
 -/
 theorem _root_.GlobalTheory.T.integral_piecewise_constant : ∀ {X : Type} [MeasurableSpace X] (μ : Measure X) {ι : Type} [Countable ι] (S : ι → Set X),
     (∀ k, MeasurableSet (S k)) → Pairwise (Function.onFun Disjoint S) → (∀ x, ∃ k, x ∈ S k) → (∀ k, μ (S k) = 1) →

@@ -12,8 +12,10 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Form
 open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.OneMapCore.oneMapRowR_of_core_of_size | exact GlobalTheory.OneMapCore.oneMapRowR_of_core_of_size | (intros; apply GlobalTheory.OneMapCore.oneMapRowR_of_core_of_size <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.OneMapCore.oneMapRowR_of_core_of_size` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FOneMapAllTuplesOverCoreOfRankBound.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.oneMap_all_tuples_over_core_of_rankBound : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec) (O : ∀ i, OMDat T.toCore R i Unit (fun _ => A.μ0)) (ph : Fin D.R.m → ℂ), 8 * D.R.f * D.R.r + 4 ≤ D.R.nV → GlobalTheory.Hk3.Core R F → R.tup_mu_off → R.tup_mu_used → Nonempty (FWTie T R κ v₀) → IoExt R → ∀ i, OMPins T R κ v₀ O i → PhaseTie T R κ v₀ O ph i → OneMapRowR T R κ v₀ O ph i := by
   first | exact @GlobalTheory.OneMapCore.oneMapRowR_of_core_of_size | exact GlobalTheory.OneMapCore.oneMapRowR_of_core_of_size | (intros; apply GlobalTheory.OneMapCore.oneMapRowR_of_core_of_size <;> assumption)

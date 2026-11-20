@@ -10,8 +10,10 @@ open scoped ComplexConjugate Classical
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Dict
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Dict.thA_vacuum_hAct | exact GlobalTheory.Dict.thA_vacuum_hAct | (intros; apply GlobalTheory.Dict.thA_vacuum_hAct <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Dict.thA_vacuum_hAct` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSiegelThetaTransformation%2FThetaVacuumUnitaryColumnChangeUnitFactor.lean&line=216#L216)
 -/
 theorem _root_.GlobalTheory.T.thetaVacuum_unitary_column_change_unit_factor : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g : ℕ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → ∀ w : E, IsIntegral ℤ w → w + cc w = 1 → ∀ h : Matrix (Fin n) (Fin n) E, ccT h * h = 1 → ∀ Λ ∈ Vset E n 1, ∀ Λ' ∈ Vset E n 1, Moves h Λ Λ' → ∃ t : ℂ, ‖t‖ = 1 ∧ ∀ L : Lt E r, SelfD X L → ∀ v : TF n g, IsVac X bas w (tens (stdL E n) L) v → ∀ x ∈ X.dom, ∀ z : Fin n → Fin g → ℂ, thA X bas idx (unitv (projA X bas w (tens Λ' L) v)) x (hAct X idx h z) = t * thA X bas idx (unitv (projA X bas w (tens Λ L) v)) x z := by
   first | exact @GlobalTheory.Dict.thA_vacuum_hAct | exact GlobalTheory.Dict.thA_vacuum_hAct | (intros; apply GlobalTheory.Dict.thA_vacuum_hAct <;> assumption)

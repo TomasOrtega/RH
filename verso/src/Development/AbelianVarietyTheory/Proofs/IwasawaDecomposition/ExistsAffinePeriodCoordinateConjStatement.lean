@@ -6,8 +6,10 @@ import Formalism.LocalToGlobal.ProjectiveLattices.FibreUniformisationLevelTwo
 open NumberField Matrix ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.frame_col_top_letter | exact GlobalTheory.frame_col_top_letter | (intros; apply GlobalTheory.frame_col_top_letter <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.frame_col_top_letter` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsAffinePeriodCoordinateConj.lean&line=8#L8)
 -/
 theorem _root_.GlobalTheory.T.exists_affine_period_coordinate_conj : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (τ₁ : E →+* ℂ), τ₁ ∉ X.Ψ → ∀ (i : ℕ), X.p0 = i + 1 → ∃ κ : Frame X.Ψ r → Fin r → ℂ, ContinuousOn κ X.dom ∧ (∀ O : Set (Frame X.Ψ r), IsOpen O → O ⊆ X.dom → ∀ x ∈ O, ∀ ξ : Fin r → ℂ, ∀ᶠ t in nhdsWithin (0 : ℂ) {0}ᶜ, ∃ x' ∈ O, κ x' = κ x + t • ξ) ∧ ∀ x ∈ X.dom, ∀ v, Formalism.L2.PjFree.perFr X x v τ₁ i = κ x ⬝ᵥ Data.emb τ₁ v := by
   first | exact @GlobalTheory.frame_col_top_letter | exact GlobalTheory.frame_col_top_letter | (intros; apply GlobalTheory.frame_col_top_letter <;> assumption)

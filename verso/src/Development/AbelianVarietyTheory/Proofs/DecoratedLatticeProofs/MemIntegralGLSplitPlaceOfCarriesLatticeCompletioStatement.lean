@@ -11,8 +11,10 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.Un
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SplitInt.mem_KO_of_moves | exact GlobalTheory.SplitInt.mem_KO_of_moves | (intros; apply GlobalTheory.SplitInt.mem_KO_of_moves <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SplitInt.mem_KO_of_moves` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FMemIntegralGLSplitPlaceOfCarriesLatticeCompletio.lean&line=81#L81)
 -/
 theorem _root_.GlobalTheory.T.mem_integralGL_split_place_of_carries_latticeCompletion : ∀ {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (q : SplitPt D k) (S : HSp D) {Y : Type} [Fintype Y] [DecidableEq Y] (F : GlobalTheory.LocMod.Frame k S.rank Y) (N : Lat S) (P : Pl D → Prop), P q.v → IntIn q S F N → ∀ g : GA D S, Moves S g N N P → ∀ x : GL Y k, (mt S g).map q.pr = F.β * x.val * F.γ → x ∈ GlobalTheory.SplitWeil.KO k Y := by
   first | exact @GlobalTheory.SplitInt.mem_KO_of_moves | exact GlobalTheory.SplitInt.mem_KO_of_moves | (intros; apply GlobalTheory.SplitInt.mem_KO_of_moves <;> assumption)

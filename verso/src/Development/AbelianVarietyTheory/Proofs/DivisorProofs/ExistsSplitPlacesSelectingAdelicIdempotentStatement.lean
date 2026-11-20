@@ -16,8 +16,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open scoped TensorProduct Topology
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HalfIdem.exists_half_idem | exact GlobalTheory.HalfIdem.exists_half_idem | (intros; apply GlobalTheory.HalfIdem.exists_half_idem <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HalfIdem.exists_half_idem` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsSplitPlacesSelectingAdelicIdempotent.lean&line=250#L250)
 -/
 theorem _root_.GlobalTheory.T.exists_splitPlaces_selecting_adelicIdempotent : ∀ D : D7, ∃ ε : AE D, ε * ε = ε ∧ ε * cA D ε = 0 ∧ infPart D ε = 0 ∧ (∀ e, IsSplitIdem D e → (ε * e = e ∧ ε * cA D e = 0) ∨ (ε * e = 0 ∧ ε * cA D e = cA D e)) ∧ ∀ v η, NonSplitAt D v η → algebraMap (AF D.host.F) (AE D) η * ε = 0 := by
   first | exact @GlobalTheory.HalfIdem.exists_half_idem | exact GlobalTheory.HalfIdem.exists_half_idem | (intros; apply GlobalTheory.HalfIdem.exists_half_idem <;> assumption)

@@ -10,8 +10,10 @@ open scoped CategoryTheory.Obj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.SS
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SS.PowLocus.card_torsion_powLocus_le | exact GlobalTheory.SS.PowLocus.card_torsion_powLocus_le | (intros; apply GlobalTheory.SS.PowLocus.card_torsion_powLocus_le <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SS.PowLocus.card_torsion_powLocus_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDegenerationProofs%2FCardTorsionPullbackPowerLocusLe.lean&line=177#L177)
 -/
 theorem _root_.GlobalTheory.T.card_torsion_pullbackPowerLocus_le : ∀ (k : Type) [Field k] [IsAlgClosed k] (G : Over (Sp k)) [GrpObj G], SmConn G →  ∀ (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (B : Over (Sp k)) [GrpObj B] (i : splitTorus (Sp k) X ⟶ G) (q : G ⟶ B), IsQuot i q → IsAbelianScheme B → ∀ (L : LB G.left), AmpleCub G L → ∀ (F : G ⟶ G) (Q : ℕ), 2 ≤ Q → IsMonHom F → PullPow F.left L Q → i ≫ F = i ^ Q → ∃ C : ℕ, ∀ n, 1 ≤ n → Finite {x : (𝟙_ (Over (Sp k)) ⟶ G) // x ≫ F = x ^ Q ∧ x ^ n = 1} ∧ Nat.card {x : (𝟙_ (Over (Sp k)) ⟶ G) // x ≫ F = x ^ Q ∧ x ^ n = 1} ≤ C * n ^ Module.finrank ℤ X := by
   first | exact @GlobalTheory.SS.PowLocus.card_torsion_powLocus_le | exact GlobalTheory.SS.PowLocus.card_torsion_powLocus_le | (intros; apply GlobalTheory.SS.PowLocus.card_torsion_powLocus_le <;> assumption)

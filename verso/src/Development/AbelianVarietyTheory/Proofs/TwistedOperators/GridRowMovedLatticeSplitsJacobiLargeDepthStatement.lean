@@ -11,8 +11,10 @@ open IsDedekindDomain NumberField MeasureTheory Matrix GlobalTheory.ChiGrid Glob
 open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.RowUnf GlobalTheory.RowChain GlobalTheory.SeeSaw GlobalTheory.RowVal GlobalTheory.RowReal GlobalTheory.FinPl
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RowShape.rowN_monoAt | exact GlobalTheory.RowShape.rowN_monoAt | (intros; apply GlobalTheory.RowShape.rowN_monoAt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RowShape.rowN_monoAt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FGridRowMovedLatticeSplitsJacobiLargeDepth.lean&line=124#L124)
 -/
 theorem _root_.GlobalTheory.T.gridRowMovedLattice_splits_jacobi_largeDepth : Big fun {D} {Γ} _ _ {Pl0 T} {A} {Ks} _ _ _ {R} ch => ∀ n (hn : n < D.R.m) σ (h : D.R.m - 1 - n = 2 * σ) v, GlobalTheory.FinPl.MonoAt (rowJac ch.G n hn σ h) (GlobalTheory.RowShape.rowN ch.G n) (ch.G.Λ (.top n)) v := by
   first | exact @GlobalTheory.RowShape.rowN_monoAt | exact GlobalTheory.RowShape.rowN_monoAt | (intros; apply GlobalTheory.RowShape.rowN_monoAt <;> assumption)

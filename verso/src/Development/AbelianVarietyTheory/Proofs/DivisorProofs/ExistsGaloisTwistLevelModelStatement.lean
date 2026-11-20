@@ -8,8 +8,10 @@ open MvPolynomial Formalism.DegreeFormula Formalism.BasicNotions.DV Formalism.Ma
 open CategoryTheory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ShFam.GalCarry.carry | exact GlobalTheory.ShFam.GalCarry.carry | (intros; apply GlobalTheory.ShFam.GalCarry.carry <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ShFam.GalCarry.carry` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsGaloisTwistLevelModel.lean&line=88#L88)
 -/
 theorem _root_.GlobalTheory.T.exists_galois_twist_level_model : Hypotheses2 → HypothesesH → ∀ (D : D7) (O : Setup D), O.Core → ∀ h ∈ D.R.Psi,
     (∀ g ∈ D.R.Psi,

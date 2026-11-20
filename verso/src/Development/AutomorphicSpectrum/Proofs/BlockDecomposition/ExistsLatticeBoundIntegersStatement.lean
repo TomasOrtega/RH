@@ -3,8 +3,10 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsLatticeBo
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.LevelChainValuations.LatCDefs
 open GroundTheory.PAdicHodge Formalism.Per6 DividedPowers CrystallineSemistableComparison CrystallineSemistableComparison.Pb CrystallineSemistableComparison.Pb.Lat
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.LatCOK.exists_uniform_mem_sub | exact GlobalTheory.CompanionTheory.LatCOK.exists_uniform_mem_sub | (intros; apply GlobalTheory.CompanionTheory.LatCOK.exists_uniform_mem_sub <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.LatCOK.exists_uniform_mem_sub` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FExistsLatticeBoundIntegers.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.exists_lattice_bound_integers : ∀ (l : ℕ) [Fact l.Prime] (K : IntermediateField ℚ_[l] (PadicAlgCl l)) [FiniteDimensional ℚ_[l] K], ∃ M : ℕ, ∀ (k : ℕ) (a : OK l K), Lat.pk l k (Lat.kP l K a) ∈ Lat.sub (Lat.fk l k) (xi0 l) l M := by
   first | exact @GlobalTheory.CompanionTheory.LatCOK.exists_uniform_mem_sub | exact GlobalTheory.CompanionTheory.LatCOK.exists_uniform_mem_sub | (intros; apply GlobalTheory.CompanionTheory.LatCOK.exists_uniform_mem_sub <;> assumption)

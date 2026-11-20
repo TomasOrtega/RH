@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LatticeModelVacu
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DvdPowZeroIff
 open Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Hk3.IntWitt.hensel_step | exact GlobalTheory.Hk3.IntWitt.hensel_step | (intros; apply GlobalTheory.Hk3.IntWitt.hensel_step <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Hk3.IntWitt.hensel_step` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FUnitaryGroupHenselStepFamilies.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.unitaryGroup_hensel_step_families : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (ϖ : L) (σ : L →+* L) (q : ℕ),
     Formalism.UG.IsUnramInv ϖ σ q → Odd q → ∀ (n' : ℕ) (JT : GL (Fin n') L),

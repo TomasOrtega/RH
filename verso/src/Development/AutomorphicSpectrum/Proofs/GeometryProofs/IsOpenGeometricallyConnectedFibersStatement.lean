@@ -8,8 +8,10 @@ open CategoryTheory AlgebraicGeometry Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 attribute [local instance] Over.cartesianMonoidalCategory
 open scoped CategoryTheory.Obj CategoryTheory.MonObj
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Approx.isOpen_geometricallyConnected_fibres | exact GlobalTheory.CompanionTheory.Ar.Approx.isOpen_geometricallyConnected_fibres | (intros; apply GlobalTheory.CompanionTheory.Ar.Approx.isOpen_geometricallyConnected_fibres <;> assumpti …`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Approx.isOpen_geometricallyConnected_fibres` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FIsOpenGeometricallyConnectedFibers.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.isOpen_geometricallyConnected_fibers : ∀ (k : Type) [CommRing k] [IsNoetherianRing k] (G : Over (Sp k)) [GrpObj G] [IsCommMonObj G], Smooth G.hom → IsProper G.hom → IsOpen {x : PrimeSpectrum k | GeometricallyConnected (pullback.snd G.hom (spMap (algebraMap k x.asIdeal.ResidueField)))} := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Approx.isOpen_geometricallyConnected_fibres | exact GlobalTheory.CompanionTheory.Ar.Approx.isOpen_geometricallyConnected_fibres | (intros; apply GlobalTheory.CompanionTheory.Ar.Approx.isOpen_geometricallyConnected_fibres <;> assumption)

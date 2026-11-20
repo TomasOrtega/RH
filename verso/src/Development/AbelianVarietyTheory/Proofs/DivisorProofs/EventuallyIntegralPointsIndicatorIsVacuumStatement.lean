@@ -18,8 +18,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (Base Spc Model Ha
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.StdVacuum.eventually_isVac_indicator | exact GlobalTheory.StdVacuum.eventually_isVac_indicator | (intros; apply GlobalTheory.StdVacuum.eventually_isVac_indicator <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.StdVacuum.eventually_isVac_indicator` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FEventuallyIntegralPointsIndicatorIsVacuum.lean&line=168#L168)
 -/
 theorem _root_.GlobalTheory.T.eventually_integralPointsIndicator_isVacuum : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     {n d : ℕ} (X : Spc F E n) (Y : Spc F E d) (r s r' s' : ℕ), B.IsGood σ → X.IsHerm σ B r s → Y.IsSkew σ B r' s' →

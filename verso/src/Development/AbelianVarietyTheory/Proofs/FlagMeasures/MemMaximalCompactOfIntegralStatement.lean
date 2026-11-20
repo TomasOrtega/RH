@@ -14,8 +14,10 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsIntegralOfQuad
 open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL NumberField IsDedekindDomain
 open scoped Pointwise ENNReal Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HL.Frames.mem_K0_of_integral | exact GlobalTheory.HL.Frames.mem_K0_of_integral | (intros; apply GlobalTheory.HL.Frames.mem_K0_of_integral <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HL.Frames.mem_K0_of_integral` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FMemMaximalCompactOfIntegral.lean&line=54#L54)
 -/
 theorem _root_.GlobalTheory.T.mem_maximal_compact_of_integral : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E) (r k : ℕ) (S : Frames L r k) (h : S.GLV) (s si s' si' : Matrix (Fin (r + 1)) (Fin (r + 1)) E), h ∈ S.St → (∀ i j, s i j ∈ L.O) → (∀ i j, si i j ∈ L.O) → s * si = 1 → (∀ i j, s' i j ∈ L.O) → (∀ i j, si' i j ∈ L.O) → s' * si' = 1 → (∀ j, h (S.f j) = ∑ i, s i j • S.f i) → (∀ j, h (S.f' j) = ∑ i, s' i j • S.f' i) → h ∈ S.K0 := by
   first | exact @GlobalTheory.HL.Frames.mem_K0_of_integral | exact GlobalTheory.HL.Frames.mem_K0_of_integral | (intros; apply GlobalTheory.HL.Frames.mem_K0_of_integral <;> assumption)

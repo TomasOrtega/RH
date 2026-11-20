@@ -18,8 +18,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SquareAgree.KerPFin.kerPD_fin | exact GlobalTheory.SquareAgree.KerPFin.kerPD_fin | (intros; apply GlobalTheory.SquareAgree.KerPFin.kerPD_fin <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SquareAgree.KerPFin.kerPD_fin` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FSeesawUnfoldingAbsolute.lean&line=28#L28)
 -/
 theorem _root_.GlobalTheory.T.seesaw_unfolding_absolute : GlobalTheory.FunPr.Hypotheses₂ → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁))

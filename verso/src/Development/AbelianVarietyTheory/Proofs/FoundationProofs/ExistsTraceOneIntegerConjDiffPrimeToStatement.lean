@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HESmulRight
 open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.NormSum GlobalTheory.InertSign
 open scoped BigOperators
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TraceOne.exists_trace_one | exact GlobalTheory.TraceOne.exists_trace_one | (intros; apply GlobalTheory.TraceOne.exists_trace_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TraceOne.exists_trace_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FExistsTraceOneIntegerConjDiffPrimeTo.lean&line=53#L53)
 -/
 theorem _root_.GlobalTheory.T.exists_traceOne_integer_conj_diff_prime_to : ∀ (D : D7) (q : ℕ), q.Prime → ∃ w : 𝓞 D.host.E, w + sgO D w = 1 ∧ ∀ P : Ideal (𝓞 D.host.E), P.IsPrime → (q : 𝓞 D.host.E) ∈ P → w - sgO D w ∉ P := by
   first | exact @GlobalTheory.TraceOne.exists_trace_one | exact GlobalTheory.TraceOne.exists_trace_one | (intros; apply GlobalTheory.TraceOne.exists_trace_one <;> assumption)

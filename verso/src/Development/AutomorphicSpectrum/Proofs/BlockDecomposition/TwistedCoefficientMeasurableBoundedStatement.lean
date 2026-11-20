@@ -9,8 +9,10 @@ open Ad3.R (G2 Jd md KA LInv IsLoc2 pt pri dia2)
 open scoped NumberField.AdeleRing ValuativeRel
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.CtMeas.measurable_ctM_norm_le | exact GlobalTheory.CompanionTheory.CtMeas.measurable_ctM_norm_le | (intros; apply GlobalTheory.CompanionTheory.CtMeas.measurable_ctM_norm_le <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.CtMeas.measurable_ctM_norm_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FTwistedCoefficientMeasurableBounded.lean&line=58#L58)
 -/
 theorem _root_.GlobalTheory.T.twisted_coefficient_measurable_bounded : ∀ (K : Type) [Field K] [NumberField K] (c : HeckeCharacter K) (M : ∀ v : Pl, LM c v) (Sv : Finset Pl) (m : Pl →₀ ℤ),
   Measurable (fun u => ctM M Sv m u) ∧ ∀ u, ‖ctM M Sv m u‖ ≤ 1 := by

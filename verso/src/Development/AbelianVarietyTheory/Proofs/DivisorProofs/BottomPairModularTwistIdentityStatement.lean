@@ -27,8 +27,10 @@ open GlobalTheory.NormSum (Pair Tup)
 open Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BotRealInv.ker'_minorF_mul_real | exact GlobalTheory.BotRealInv.ker'_minorF_mul_real | (intros; apply GlobalTheory.BotRealInv.ker'_minorF_mul_real <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BotRealInv.ker'_minorF_mul_real` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FBottomPairModularTwistIdentity.lean&line=77#L77)
 -/
 theorem _root_.GlobalTheory.T.bottom_pair_modular_twist_identity : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
     (∀ D, GlobalTheory.NormSum.Inp D) → GlobalTheory.SqTop.BotSmall →

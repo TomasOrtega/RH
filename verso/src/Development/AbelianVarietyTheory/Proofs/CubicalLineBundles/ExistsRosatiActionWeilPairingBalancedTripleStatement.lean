@@ -9,8 +9,10 @@ open scoped CategoryTheory.Obj ComplexOrder
 open GlobalTheory GlobalTheory.CM GlobalTheory.LamF
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LamF.exists_oAct_rosatiConj | exact GlobalTheory.LamF.exists_oAct_rosatiConj | (intros; apply GlobalTheory.LamF.exists_oAct_rosatiConj <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LamF.exists_oAct_rosatiConj` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FCubicalLineBundles%2FExistsRosatiActionWeilPairingBalancedTriple.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.exists_rosatiAction_weilPairing_balanced_triple : Out.Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [StarRing (𝓞 E)] (H : Host E), (∀ a : 𝓞 E, star a = H.bar a) → ∀ (K : Type) [Field K] [NumberField K] (T : PAT H (Sp (𝓞 K))), ∃ oa : T.pol.OAct (𝓞 E), oa.act = T.t.act.act ∧ RosatiConj T.pol oa := by
   first | exact @GlobalTheory.LamF.exists_oAct_rosatiConj | exact GlobalTheory.LamF.exists_oAct_rosatiConj | (intros; apply GlobalTheory.LamF.exists_oAct_rosatiConj <;> assumption)

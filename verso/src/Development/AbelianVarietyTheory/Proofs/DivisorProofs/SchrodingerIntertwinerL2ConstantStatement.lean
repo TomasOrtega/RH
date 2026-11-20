@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUSplittingTrRep
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.WeilTr MeasureTheory
 open scoped Matrix ENNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SvNForm.schrodinger_intertwiner_l2_const | exact GlobalTheory.SvNForm.schrodinger_intertwiner_l2_const | (intros; apply GlobalTheory.SvNForm.schrodinger_intertwiner_l2_const <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SvNForm.schrodinger_intertwiner_l2_const` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSchrodingerIntertwinerL2Constant.lean&line=126#L126)
 -/
 theorem _root_.GlobalTheory.T.schrodinger_intertwiner_l2_constant : ∀ (F : Type) [Field F] [NumberField F] [Invertible (2 : mixedEmbedding.mixedSpace F)] (κ : Type) [Fintype κ]
     (ψ : AddChar (mixedEmbedding.mixedSpace F) ℂ),

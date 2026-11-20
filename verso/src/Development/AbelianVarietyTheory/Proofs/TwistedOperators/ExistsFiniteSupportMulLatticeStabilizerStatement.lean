@@ -21,8 +21,10 @@ open MeasureTheory GlobalTheory.SplitFlip GlobalTheory.SplitWeil GlobalTheory.St
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TruncAway.exists_trunc_mul_inK | exact GlobalTheory.TruncAway.exists_trunc_mul_inK | (intros; apply GlobalTheory.TruncAway.exists_trunc_mul_inK <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TruncAway.exists_trunc_mul_inK` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsFiniteSupportMulLatticeStabilizer.lean&line=30#L30)
 -/
 theorem _root_.GlobalTheory.T.exists_finiteSupport_mul_latticeStabilizer : ∀ {D : D7} (V : HSp D) (L : GlobalTheory.FinPl.Lat V), L.FG → Submodule.span D.host.E (L : Set (Fin V.rank → D.host.E)) = ⊤ →
   ∀ (S : Finset (HeightOneSpectrum (𝓞 D.host.F))) (b : GA D V), ∃ (b' : GA D V) (P : Finset (HeightOneSpectrum (𝓞 D.host.F))),

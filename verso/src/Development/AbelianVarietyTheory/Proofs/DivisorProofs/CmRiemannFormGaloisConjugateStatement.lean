@@ -12,8 +12,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LatticeNormTransport (upIdele IsLat
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option autoImplicit false
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ConjRiemannPos.exists_pos_pair | exact GlobalTheory.ConjRiemannPos.exists_pos_pair | (intros; apply GlobalTheory.ConjRiemannPos.exists_pos_pair <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ConjRiemannPos.exists_pos_pair` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCmRiemannFormGaloisConjugate.lean&line=31#L31)
 -/
 theorem _root_.GlobalTheory.T.cm_riemann_form_galois_conjugate : ∀ (K : Type) [Field K] [NumberField K] (d : ℕ) (δ : K) (io : K →+* ℂ), Module.finrank ℚ K = 2 → 0 < d → δ ^ 2 = -(d : K) →
     ∀ g : ℂ ≃+* ℂ, (∀ x, g (io x) = io x) → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [Algebra K E] (I : Type) [Fintype I]

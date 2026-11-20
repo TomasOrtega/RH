@@ -7,8 +7,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.HTLat GlobalTheory.Published.AbVarRed GlobalTheory.CechPic GlobalTheory.AV GlobalTheory.AV.AbVar
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AV.AbVar.topologicalKrullDim_eq_dim | exact GlobalTheory.AV.AbVar.topologicalKrullDim_eq_dim | (intros; apply GlobalTheory.AV.AbVar.topologicalKrullDim_eq_dim <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AV.AbVar.topologicalKrullDim_eq_dim` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTopologicalKrullDimEqDim.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.topologicalKrullDim_abVar_eq_dim : ∀ (K : Type) [Field K] (A : AbVar K), topologicalKrullDim A.X.left = (A.dim : ℕ) := by
   first | exact @GlobalTheory.AV.AbVar.topologicalKrullDim_eq_dim | exact GlobalTheory.AV.AbVar.topologicalKrullDim_eq_dim | (intros; apply GlobalTheory.AV.AbVar.topologicalKrullDim_eq_dim <;> assumption)

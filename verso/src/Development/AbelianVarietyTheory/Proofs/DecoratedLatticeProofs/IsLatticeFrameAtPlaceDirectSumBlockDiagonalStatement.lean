@@ -14,8 +14,10 @@ open GlobalTheory.LGrp (bcParam)
 open GlobalTheory.LFun (toCompl locMat locChar IsSplitChart IsInertChart IsFrameAt KGL IsSatVecGL IsSatVecU eulerFac UnrAt LvTw dv Fam)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LFun.isFrameAt_sumLat_blkGL | exact GlobalTheory.LFun.isFrameAt_sumLat_blkGL | (intros; apply GlobalTheory.LFun.isFrameAt_sumLat_blkGL <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LFun.isFrameAt_sumLat_blkGL` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FIsLatticeFrameAtPlaceDirectSumBlockDiagonal.lean&line=71#L71)
 -/
 theorem _root_.GlobalTheory.T.isLatticeFrameAtPlace_directSum_blockDiagonal : ∀ (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (n : ℕ) (L : Submodule (𝓞 E) (Fin n → E)) (a : GL (Fin n) (w.adicCompletion E)), IsFrameAt w L a → IsFrameAt w (sumLat finSumFinEquiv L L) (blkGL finSumFinEquiv (a, a)) := by
   first | exact @GlobalTheory.LFun.isFrameAt_sumLat_blkGL | exact GlobalTheory.LFun.isFrameAt_sumLat_blkGL | (intros; apply GlobalTheory.LFun.isFrameAt_sumLat_blkGL <;> assumption)

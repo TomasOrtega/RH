@@ -8,8 +8,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 open GlobalTheory.TopLevelInv
 open Formalism.IndefR.Fin.LevelGroupLemmas (resG detAt)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TopLevelInv.chrS_top_prod_locIdele | exact GlobalTheory.TopLevelInv.chrS_top_prod_locIdele | (intros; apply GlobalTheory.TopLevelInv.chrS_top_prod_locIdele <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TopLevelInv.chrS_top_prod_locIdele` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FTopPairSourceCharProdLocalIdeles.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.topPairSourceChar_prod_localIdeles : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) {t μ₀ : T}, L.Is μ₀ →
     ∀ (j : ℕ), j + 1 < D.R.m → ∀ y : ∀ w : locPl G t, (Kw w.1)ˣ,

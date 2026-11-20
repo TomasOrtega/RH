@@ -22,8 +22,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CovGminTop.gmin | exact GlobalTheory.CovGminTop.gmin | (intros; apply GlobalTheory.CovGminTop.gmin <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CovGminTop.gmin` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FMinimalGenusBound.lean&line=150#L150)
 -/
 theorem _root_.GlobalTheory.T.minimal_genus_bound : Hypotheses2 → Gram → DeepGood → Size → Gmin := by
   first | exact @GlobalTheory.CovGminTop.gmin | exact GlobalTheory.CovGminTop.gmin | (intros; apply GlobalTheory.CovGminTop.gmin <;> assumption)

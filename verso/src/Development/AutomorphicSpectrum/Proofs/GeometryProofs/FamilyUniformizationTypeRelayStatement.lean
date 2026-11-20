@@ -10,8 +10,10 @@ import Formalism.LocalToGlobal.ProjectiveLattices.CompHt
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField IsDedekindDomain
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Fl GlobalTheory.CompanionTheory.Ar.Flat GlobalTheory.CompanionTheory.Ar.Br
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Relay.family_uniformization_type_relay | exact GlobalTheory.CompanionTheory.Relay.family_uniformization_type_relay | (intros; apply GlobalTheory.CompanionTheory.Relay.family_uniformization_type_relay <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Relay.family_uniformization_type_relay` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FFamilyUniformizationTypeRelay.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.family_uniformization_type_relay : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (U : Set (Xo.XF c)), 1 ≤ D.p + D.q → IsClopen U → U.Nonempty → ∃ (g : ℕ) (ty : Fin g → (E →+* ℂ)) (FU : FamilyUnif Xo (algebraMap (KA l) ℂ) ty) (i : Fin FU.n), IsTypeFn H D.p D.q ty ∧ ∀ P (y : Sp ℂ ⟶ Xo.XF c), IsPeriod (FU.Di i) ty P → under y = FU.u i P → y ≫ pullback.snd _ _ = spMap (algebraMap c.F ℂ) → Set.range y ⊆ U := by
   first | exact @GlobalTheory.CompanionTheory.Relay.family_uniformization_type_relay | exact GlobalTheory.CompanionTheory.Relay.family_uniformization_type_relay | (intros; apply GlobalTheory.CompanionTheory.Relay.family_uniformization_type_relay <;> assumption)

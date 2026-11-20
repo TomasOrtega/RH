@@ -16,8 +16,10 @@ open GlobalTheory.BotSmallDict GlobalTheory.NormExact
 open scoped Pointwise
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BotSmallDict.cosetFn_isSBHalf | exact GlobalTheory.BotSmallDict.cosetFn_isSBHalf | (intros; apply GlobalTheory.BotSmallDict.cosetFn_isSBHalf <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BotSmallDict.cosetFn_isSBHalf` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHalfCosetIndicatorModIdealIsSchwartzBruhatHalf.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.halfCosetIndicatorModIdeal_isSchwartzBruhatHalf : ∀ {D : D7} (S T : HSp D) (LS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (LT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)),
     Submodule.IsLattice D.host.E LS → Submodule.IsLattice D.host.E LT → ∀ (a : Formalism.L2.Theta.AE D), infPart D a = 0 →

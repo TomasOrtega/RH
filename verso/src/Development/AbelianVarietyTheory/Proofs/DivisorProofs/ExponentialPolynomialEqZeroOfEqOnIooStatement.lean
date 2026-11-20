@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExponentialPolynomi
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemExpSolCons
 open NumberField MeasureTheory GlobalTheory.CuspRep GlobalTheory.HCF Topology
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HCF.expSol_eq_zero_of_eqOn_Ioo | exact GlobalTheory.HCF.expSol_eq_zero_of_eqOn_Ioo | (intros; apply GlobalTheory.HCF.expSol_eq_zero_of_eqOn_Ioo <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HCF.expSol_eq_zero_of_eqOn_Ioo` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExponentialPolynomialEqZeroOfEqOnIoo.lean&line=6#L6)
 -/
 theorem _root_.GlobalTheory.T.exponentialPolynomial_eq_zero_of_eqOn_Ioo : ∀ (l : List ℂ) (f : ℝ → ℂ), f ∈ expSol l → ∀ s t : ℝ, s < t → (∀ x ∈ Set.Ioo s t, f x = 0) → f = 0 := by
   first | exact @GlobalTheory.HCF.expSol_eq_zero_of_eqOn_Ioo | exact GlobalTheory.HCF.expSol_eq_zero_of_eqOn_Ioo | (intros; apply GlobalTheory.HCF.expSol_eq_zero_of_eqOn_Ioo <;> assumption)

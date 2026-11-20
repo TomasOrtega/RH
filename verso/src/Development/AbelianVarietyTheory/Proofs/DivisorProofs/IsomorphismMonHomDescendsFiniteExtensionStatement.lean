@@ -16,8 +16,10 @@ open GlobalTheory.Mum
 open GlobalTheory.ArcPull GlobalTheory.ArcQ
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IsoFinExt.exists_finite_iso | exact GlobalTheory.IsoFinExt.exists_finite_iso | (intros; apply GlobalTheory.IsoFinExt.exists_finite_iso <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IsoFinExt.exists_finite_iso` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsomorphismMonHomDescendsFiniteExtension.lean&line=62#L62)
 -/
 theorem _root_.GlobalTheory.T.isomorphism_mon_hom_descends_finite_extension : ∀ (K L : Type) [Field K] [CharZero K] [Field L] (β : K →+* L) (A₁ A₂ : Over (Sp K)) [GrpObj A₁] [GrpObj A₂], IsAbelianScheme A₁ → IsAbelianScheme A₂ → ∀ (f : (Over.pullback (spMap β)).obj A₁ ≅ (Over.pullback (spMap β)).obj A₂), IsMonHom f.hom → ∃ (K' : Type) (_ : Field K') (io : K →+* K') (Ω : Type) (_ : Field Ω) (j : L →+* Ω) (l : K' →+* Ω) (φ : (Over.pullback (spMap io)).obj A₁ ≅ (Over.pullback (spMap io)).obj A₂), io.Finite ∧ l.comp io = j.comp β ∧ IsMonHom φ.hom ∧ ∀ (Z : Scheme.{0}) (p : Z ⟶ pullback A₁.hom (spMap β)) (p' : Z ⟶ pullback A₁.hom (spMap io)) (t : Z ⟶ Sp Ω), p ≫ pullback.fst _ _ = p' ≫ pullback.fst _ _ → p ≫ pullback.snd _ _ = t ≫ spMap j → p' ≫ pullback.snd _ _ = t ≫ spMap l → p ≫ f.hom.left ≫ pullback.fst _ _ = p' ≫ φ.hom.left ≫ pullback.fst _ _ := by
   first | exact @GlobalTheory.IsoFinExt.exists_finite_iso | exact GlobalTheory.IsoFinExt.exists_finite_iso | (intros; apply GlobalTheory.IsoFinExt.exists_finite_iso <;> assumption)

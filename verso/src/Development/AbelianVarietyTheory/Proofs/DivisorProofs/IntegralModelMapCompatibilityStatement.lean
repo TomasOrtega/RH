@@ -16,8 +16,10 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 open GlobalTheory.FlatModel
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlatModel.secValAt_unique_generic | exact GlobalTheory.FlatModel.secValAt_unique_generic | (intros; apply GlobalTheory.FlatModel.secValAt_unique_generic <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlatModel.secValAt_unique_generic` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIntegralModelMapCompatibility.lean&line=123#L123)
 -/
 theorem _root_.GlobalTheory.T.integral_model_map_compatibility : GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.Published.CanonicalExtensionRankOne → GlobalTheory.Published.DeRhamCanonicalExtension →
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H)

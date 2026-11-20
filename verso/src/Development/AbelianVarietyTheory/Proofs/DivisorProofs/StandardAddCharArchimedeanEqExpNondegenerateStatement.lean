@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.StdBeta.stdBeta | exact GlobalTheory.StdBeta.stdBeta | (intros; apply GlobalTheory.StdBeta.stdBeta <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.StdBeta.stdBeta` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FStandardAddCharArchimedeanEqExpNondegenerate.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.standardAddChar_archimedean_eq_exp_nondegenerate : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ →
     ∃ β : mixedEmbedding.mixedSpace F →ₗ[ℝ] ℝ,

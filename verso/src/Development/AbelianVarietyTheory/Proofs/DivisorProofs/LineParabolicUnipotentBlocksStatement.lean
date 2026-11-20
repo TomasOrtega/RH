@@ -11,8 +11,10 @@ open GlobalTheory.SmGL GlobalTheory.PRep GlobalTheory.LeviBlockExponent GlobalTh
 open GlobalTheory.LineFrame
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LineFrame.unipRad_frame_blocks | exact GlobalTheory.LineFrame.unipRad_frame_blocks | (intros; apply GlobalTheory.LineFrame.unipRad_frame_blocks <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LineFrame.unipRad_frame_blocks` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLineParabolicUnipotentBlocks.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.line_parabolic_unipotent_blocks : ∀ (k : Type) [Field k] (N m : ℕ) (hr : N = m + 2) (h2 : 2 ≤ N) (n : GL (Fin N) k),
     n ∈ unipRad k (linePlace h2) →

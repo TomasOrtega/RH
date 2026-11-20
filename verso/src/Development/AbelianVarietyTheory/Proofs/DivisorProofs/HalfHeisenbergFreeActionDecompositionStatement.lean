@@ -24,8 +24,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DefHalf.free_half | exact GlobalTheory.DefHalf.free_half | (intros; apply GlobalTheory.DefHalf.free_half <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DefHalf.free_half` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHalfHeisenbergFreeActionDecomposition.lean&line=38#L38)
 -/
 theorem _root_.GlobalTheory.T.half_heisenberg_free_action_decomposition : Hypotheses2 → Gram → Lifts fun Fm x _ ι p i _ _ => (i : ℕ) + 1 = (Fm.D x ι).R.m → ∀ k : Fin 2,
     ∃ (X : Type) (_ : Fintype X) (_ : DecidableEq X) (_ : MulAction (GlobalTheory.BadCount.Inh.halfH (Fm.D x ι) k) X)

@@ -4,8 +4,10 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.IsProjOverCompOfIsClosedImmersion
 open AlgebraicGeometry CategoryTheory Limits ReciprocityTheory.ChartRestriction.G.Geo.Tor
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.isNormalScheme_sp_mvPolynomial | exact GlobalTheory.isNormalScheme_sp_mvPolynomial | (intros; apply GlobalTheory.isNormalScheme_sp_mvPolynomial <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.isNormalScheme_sp_mvPolynomial` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FIsNormalMvPolynomialOfIsNormal.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.isNormal_mvPolynomial_of_isNormal : ∀ (R : Type) [CommRing R] (r : ℕ), ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme (Sp R) → ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme (Sp (MvPolynomial (Fin r) R)) := by
   first | exact @GlobalTheory.isNormalScheme_sp_mvPolynomial | exact GlobalTheory.isNormalScheme_sp_mvPolynomial | (intros; apply GlobalTheory.isNormalScheme_sp_mvPolynomial <;> assumption)

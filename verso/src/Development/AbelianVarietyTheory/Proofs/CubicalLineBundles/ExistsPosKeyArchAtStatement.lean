@@ -9,8 +9,10 @@ open scoped CategoryTheory.Obj ComplexOrder
 open GlobalTheory GlobalTheory.CM GlobalTheory.LamF
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LamF.KeyArch.exists_pos_keyArchAt | exact GlobalTheory.LamF.KeyArch.exists_pos_keyArchAt | (intros; apply GlobalTheory.LamF.KeyArch.exists_pos_keyArchAt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LamF.KeyArch.exists_pos_keyArchAt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FCubicalLineBundles%2FExistsPosKeyArchAt.lean&line=30#L30)
 -/
 theorem _root_.GlobalTheory.T.exists_pos_keyArchAt' : ThetaUnifAV → ∀ (K : Type) [Field K] [NumberField K] (x : KeyIn K) (σ : K →+* ℂ), ∃ t n : ℝ, 0 < t ∧ 0 < n ∧ ∀ T abelian₂ : MLine K, T.n σ = t → abelian₂.n σ = n → KeyArchAt x T abelian₂ σ := by
   first | exact @GlobalTheory.LamF.KeyArch.exists_pos_keyArchAt | exact GlobalTheory.LamF.KeyArch.exists_pos_keyArchAt | (intros; apply GlobalTheory.LamF.KeyArch.exists_pos_keyArchAt <;> assumption)

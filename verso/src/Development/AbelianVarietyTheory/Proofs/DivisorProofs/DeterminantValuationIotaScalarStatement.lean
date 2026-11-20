@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IotaScalarOne
 open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps GlobalTheory.DetInv Matrix TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DetInv.lead_det_all | exact GlobalTheory.DetInv.lead_det_all | (intros; apply GlobalTheory.DetInv.lead_det_all <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DetInv.lead_det_all` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDeterminantValuationIotaScalar.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.determinant_valuation_iota_scalar : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O], v.Integers O → ∀ (ε : PreTilt O p), IsPrimitiveRoot (root ε).untilt p → ∀ (Λ : Type) [CommRing Λ] [IsDomain Λ] [IsDiscreteValuationRing Λ] [Algebra ℤ_[p] Λ] [Module.Finite ℤ_[p] Λ] [FaithfulSMul ℤ_[p] Λ], ∀ (N h : ℕ) , h = Module.finrank ℤ_[p] Λ * N → ∀ (D : Datum ε h Λ) (ψ : RL p O Λ →+* RL p O Λ) (Φ : FreeForm D N ψ) (σ : Λ →+* O) (f : RL p O Λ →+* O), IsTheta σ f → D.lieRank σ ≤ N ∧ ∃ c : C, c ≠ 0 ∧ Lead ((algebraMap O C).comp f) (inA (xi ε)) Φ.F.det (D.lieRank σ) c := by
   first | exact @GlobalTheory.DetInv.lead_det_all | exact GlobalTheory.DetInv.lead_det_all | (intros; apply GlobalTheory.DetInv.lead_det_all <;> assumption)

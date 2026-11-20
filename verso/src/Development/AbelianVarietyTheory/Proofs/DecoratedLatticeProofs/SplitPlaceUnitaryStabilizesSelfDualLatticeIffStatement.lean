@@ -21,8 +21,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.FinPl GlobalTheory.LatPair
 open scoped Pointwise
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FinPl.FrameLat.moves_iff_smul_eq | exact GlobalTheory.FinPl.FrameLat.moves_iff_smul_eq | (intros; apply GlobalTheory.FinPl.FrameLat.moves_iff_smul_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FinPl.FrameLat.moves_iff_smul_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FSplitPlaceUnitaryStabilizesSelfDualLatticeIff.lean&line=26#L26)
 -/
 theorem _root_.GlobalTheory.T.splitPlace_unitary_stabilizes_selfDual_lattice_iff : ∀ {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {p : GlobalTheory.FinPl.SplitPt D k} {S : HSp D} {n : Type} [Fintype n] [DecidableEq n] (β : GlobalTheory.FinPl.Frame p S n) (L : GlobalTheory.FinPl.Lat S) (Λ : Submodule 𝒪[k] (n → k)), IsSelfDualC S L → β.IsLat L Λ → ∀ (κ : GA D S) (g : GL n k), (mt S κ).map p.pr = β.b * g.val * β.b' → (GlobalTheory.FinPl.Moves S κ L L (· = p.v) ↔ g • Λ = Λ) := by
   first | exact @GlobalTheory.FinPl.FrameLat.moves_iff_smul_eq | exact GlobalTheory.FinPl.FrameLat.moves_iff_smul_eq | (intros; apply GlobalTheory.FinPl.FrameLat.moves_iff_smul_eq <;> assumption)

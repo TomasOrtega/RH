@@ -9,8 +9,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.CharKer
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CharKer.addGen_invariant | exact GlobalTheory.CharKer.addGen_invariant | (intros; apply GlobalTheory.CharKer.addGen_invariant <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CharKer.addGen_invariant` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAdditivityDefectGeneratorInvariantSameImage.lean&line=139#L139)
 -/
 theorem _root_.GlobalTheory.T.additivityDefect_generator_invariant_same_image : ∀ (S : Scheme.{0}) (A A' N T : Over S) [GrpObj A] [IsCommMonObj A] [GrpObj A'] [GrpObj N] (i : N ⟶ A) (q : A ⟶ A') [IsMonHom q] (χ : Γ((N ⊗ T).left, ⊤)ˣ) (M : LB (A' ⊗ T).left) (e : ∀ k, Γ((A ⊗ T).left, (pmap q T).left ⁻¹ᵁ M.U k)ˣ), IsMonHom i → IsPullback i (toUnit N) q η[A'] → IsCharacter χ → IsEquivGen i q χ M e → ∀ (Z : Scheme.{0}) (y₁ y₂ : Z ⟶ (A ⊗ (A ⊗ T)).left), y₁ ≫ (pmap2 q T).left = y₂ ≫ (pmap2 q T).left → ∀ (k : (addBundle M).ι) (W : Z.Opens) (h₁ : W ≤ y₁ ⁻¹ᵁ ((pmap2 q T).left ⁻¹ᵁ (addBundle M).U k)) (h₂ : W ≤ y₂ ⁻¹ᵁ ((pmap2 q T).left ⁻¹ᵁ (addBundle M).U k)), res h₁ (pullU y₁ _ (addGen q M e k)) = res h₂ (pullU y₂ _ (addGen q M e k)) := by
   first | exact @GlobalTheory.CharKer.addGen_invariant | exact GlobalTheory.CharKer.addGen_invariant | (intros; apply GlobalTheory.CharKer.addGen_invariant <;> assumption)

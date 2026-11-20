@@ -8,8 +8,10 @@ open CategoryTheory Limits AlgebraicGeometry TopologicalSpace Filter
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.CechPic GlobalTheory.QCoh GlobalTheory.Discrepancy GlobalTheory.LogPair
-/- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.Discrepancy.coeff_criterion_snc | exact _root_.GlobalTheory.Discrepancy.coeff_criterion_snc | (intros; apply _root_.GlobalTheory.Discrepancy.coeff_criterion_snc <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Discrepancy.coeff_criterion_snc` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FWeilBound%2FCoreStatements%2FPublishedTheorems%2FNadelVanishingPairs%2FNadelVanishingLemmas%2FKltOfSncCoefficients.lean&line=54#L54)
 -/
 theorem _root_.GlobalTheory.T.klt_of_snc_coefficients : ∀ (k : Type) [Field k] [CharZero k] (Y : Scheme.{0}) [IsIntegral Y] [IsLocallyNoetherian Y] (q : Y ⟶ Sp k) (n : ℕ) [SmoothOfRelativeDimension n q] (η : RatForms q n), η ≠ 0 → ∀ (K G : CartierDiv Y) (m : ℕ) (B : Closeds Y), 0 < m → IsDivOfForm K η → FinalTheorems.Snc (Scheme.IdealSheafData.vanishingIdeal B) → (G - m • K).supp ≤ B → ∀ (y : Y) (g : Y.functionFieldˣ), G.IsEqn y g → ∀ E : DivOver q, E.Through y → ((∀ w, w ⤳ y → (G - m • K).mult w < m) → -1 < discrep E η m g) ∧ ((∀ w, w ⤳ y → (G - m • K).mult w ≤ m) → -1 ≤ discrep E η m g) := by
   first | exact @_root_.GlobalTheory.Discrepancy.coeff_criterion_snc | exact _root_.GlobalTheory.Discrepancy.coeff_criterion_snc | (intros; apply _root_.GlobalTheory.Discrepancy.coeff_criterion_snc <;> assumption)

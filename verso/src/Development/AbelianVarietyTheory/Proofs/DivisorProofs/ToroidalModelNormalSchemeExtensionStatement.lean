@@ -10,8 +10,10 @@ open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalT
 open Formalism.MainNotions.DIV.Cons (intO)
 open GlobalTheory.ArLieBase
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TwoLat.exists_grChart | exact GlobalTheory.TwoLat.exists_grChart | (intros; apply GlobalTheory.TwoLat.exists_grChart <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TwoLat.exists_grChart` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FToroidalModelNormalSchemeExtension.lean&line=821#L821)
 -/
 theorem _root_.GlobalTheory.T.toroidal_model_normal_scheme_extension : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] [IsGalois ℚ E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H}

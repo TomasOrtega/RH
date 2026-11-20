@@ -9,8 +9,10 @@ open GlobalTheory GlobalTheory.LieHt GlobalTheory.Cartier GlobalTheory.ThetaOnto
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MBLow.hypS_of_isPolFibre | exact GlobalTheory.MBLow.hypS_of_isPolFibre | (intros; apply GlobalTheory.MBLow.hypS_of_isPolFibre <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MBLow.hypS_of_isPolFibre` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLineBundleSymmetryHypothesisBaseChange.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.lineBundleSymmetryHypothesis_baseChange : ∀ (K K' : Type) [Field K] [Field K'] (f : K →+* K') (P : PolAV (Sp K)) (P' : PolAV (Sp K')) (ψ : P'.A.left ⟶ P.A.left), IsPolFibre f P P' ψ → (letI := P.isAb.comm; GlobalTheory.ZH.HypS P.A P.L) → (letI := P'.isAb.comm; GlobalTheory.ZH.HypS P'.A P'.L) := by
   first | exact @GlobalTheory.MBLow.hypS_of_isPolFibre | exact GlobalTheory.MBLow.hypS_of_isPolFibre | (intros; apply GlobalTheory.MBLow.hypS_of_isPolFibre <;> assumption)

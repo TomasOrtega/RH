@@ -15,8 +15,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeR
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Rows Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Lev Formalism.IndefR.RecTie GlobalTheory.HeightCounting.Up.RealOfReading
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HeightCounting.Up.CoefficientAgreement.tied_cf | exact GlobalTheory.HeightCounting.Up.CoefficientAgreement.tied_cf | (intros; apply GlobalTheory.HeightCounting.Up.CoefficientAgreement.tied_cf <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HeightCounting.Up.CoefficientAgreement.tied_cf` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FCoefficientFieldEqLevel.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.coefficient_field_eq_level : PrN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AtMem hL fun _ _ _ _ w Z _ _ t _ _ _ => t.r.z.R.C = TC.cf w.I w.l Z := by
   first | exact @GlobalTheory.HeightCounting.Up.CoefficientAgreement.tied_cf | exact GlobalTheory.HeightCounting.Up.CoefficientAgreement.tied_cf | (intros; apply GlobalTheory.HeightCounting.Up.CoefficientAgreement.tied_cf <;> assumption)

@@ -8,8 +8,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MulRightMemSB
 open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.SplitFlip GlobalTheory.KSplit GlobalTheory.GJReg
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.StableRange.exists_mem_KO | exact GlobalTheory.StableRange.exists_mem_KO | (intros; apply GlobalTheory.StableRange.exists_mem_KO <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.StableRange.exists_mem_KO` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIntegralUnimodularCompletion.lean&line=92#L92)
 -/
 theorem _root_.GlobalTheory.T.integral_unimodular_completion : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ)
     (A S C D : Matrix (Fin n) (Fin n) k), A ∈ intM k (Fin n) (Fin n) → S ∈ intM k (Fin n) (Fin n) →

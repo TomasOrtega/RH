@@ -10,8 +10,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open scoped TensorProduct NNReal Matrix
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SliceSob.slice_sobolev | exact GlobalTheory.SliceSob.slice_sobolev | (intros; apply GlobalTheory.SliceSob.slice_sobolev <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SliceSob.slice_sobolev` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSobolevPointwiseBoundWords.lean&line=165#L165)
 -/
 theorem _root_.GlobalTheory.T.sobolev_pointwise_bound_words : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (ψ : AddChar (AF F) ℂ), IsStd ψ → ∃ (L : Finset (List ((κ → AF F) × (κ → AF F)))) (D : ℕ) (C : ℝ), (∀ l ∈ L, l.length ≤ D ∧ ∀ w ∈ l, IsArchUnit w) ∧ ∀ Φ ∈ schA F κ, ∀ x : κ → AF F, ‖Φ x‖ₑ ^ 2 ≤ ENNReal.ofReal C * ∑ l ∈ L, ∫⁻ y : κ → mixedEmbedding.mixedSpace F, ‖wordH ψ l Φ (x + GlobalTheory.SobClass.archInc F y)‖ₑ ^ 2 := by
   first | exact @GlobalTheory.SliceSob.slice_sobolev | exact GlobalTheory.SliceSob.slice_sobolev | (intros; apply GlobalTheory.SliceSob.slice_sobolev <;> assumption)

@@ -16,8 +16,10 @@ open GlobalTheory.BotSmallDict GlobalTheory.NormExact
 open scoped Pointwise
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SkewLevel.reads_level | exact GlobalTheory.SkewLevel.reads_level | (intros; apply GlobalTheory.SkewLevel.reads_level <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SkewLevel.reads_level` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLevelIndicatorReadsNormPowerUnitVector.lean&line=71#L71)
 -/
 theorem _root_.GlobalTheory.T.level_indicator_reads_norm_power_unit_vector : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) {a d : ℕ} (hS : S.rank = a) (hT : T.rank = d) (δ : ℂ),
     D.host.ccK = ⊤ → Setup ψ θ S T ⊤ δ 1 →

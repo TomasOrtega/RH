@@ -18,8 +18,10 @@ open GlobalTheory.ConstRatio (NegIdx Factor)
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SqStep.step_small | exact GlobalTheory.SqStep.step_small | (intros; apply GlobalTheory.SqStep.step_small <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SqStep.step_small` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FStageTriangleFactorStepSecond.lean&line=44#L44)
 -/
 theorem _root_.GlobalTheory.T.stage_triangle_factor_step_second : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
   GBig fun {D} T _ _ G μ₀ _ _ _ => ∀ (W : G.Weil) (S : GridChoice W Set.univ), IsStdChar D W.ψ (-1) →

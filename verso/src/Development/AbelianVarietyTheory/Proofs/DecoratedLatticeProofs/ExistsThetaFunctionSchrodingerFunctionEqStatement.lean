@@ -13,8 +13,10 @@ open GlobalTheory.Core.Rk.IP GlobalTheory.Core.Rk.SWLaw
 open GlobalTheory.Core.Rk.SW
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SchwOnto.schw_onto | exact GlobalTheory.SchwOnto.schw_onto | (intros; apply GlobalTheory.SchwOnto.schw_onto <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SchwOnto.schw_onto` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FExistsThetaFunctionSchrodingerFunctionEq.lean&line=26#L26)
 -/
 theorem _root_.GlobalTheory.T.exists_thetaFunction_schrodingerFunction_eq : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (A B : HSp D) (ν : Measure (WO A B)) (𝓨 : Set (WO A B)), IsCovolOne (ratL B A) ν 𝓨 → ∀ φ : Mx D B.rank A.rank → ℂ, GlobalTheory.IndefiniteRowSideFullHecke.SchwartzBruhatMixedFamilies.IsSchwartzBruhat φ → ∃ f, IsThetaFunO ψ (dblSp A) B f ∧ sch ψ A B ν 𝓨 f = φ := by
   first | exact @GlobalTheory.SchwOnto.schw_onto | exact GlobalTheory.SchwOnto.schw_onto | (intros; apply GlobalTheory.SchwOnto.schw_onto <;> assumption)

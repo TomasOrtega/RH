@@ -9,8 +9,10 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.bump_iterated_integral_ne_zero | exact GlobalTheory.bump_iterated_integral_ne_zero | (intros; apply GlobalTheory.bump_iterated_integral_ne_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.bump_iterated_integral_ne_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FContinuousKernelIntegralProd.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.continuous_kernel_integral_prod : ∀ {α β : Type} [TopologicalSpace α] [MeasurableSpace α] [BorelSpace α] [SecondCountableTopology α]
     [TopologicalSpace β] [MeasurableSpace β] [BorelSpace β] [SecondCountableTopology β]

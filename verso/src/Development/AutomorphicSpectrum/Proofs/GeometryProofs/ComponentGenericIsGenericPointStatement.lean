@@ -11,8 +11,10 @@ import Development.AutomorphicSpectrum.Statements.GeometryStatements.CardComapMu
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.GenPtModel.genPt_mem_genericPoints | exact GlobalTheory.CompanionTheory.Ar.GenPtModel.genPt_mem_genericPoints | (intros; apply GlobalTheory.CompanionTheory.Ar.GenPtModel.genPt_mem_genericPoints <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.GenPtModel.genPt_mem_genericPoints` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FComponentGenericIsGenericPoint.lean&line=26#L26)
 -/
 theorem _root_.GlobalTheory.T.component_generic_is_generic_point : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Tor.Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (Ω₀ : Type) [Field Ω₀] (ξ₀ : Spec (CommRingCat.of Ω₀) ⟶ Y.X), IsCptGen ξ₀ → GlobalTheory.CompanionTheory.Ar.genPt ξ₀ ∈ genericPoints Y.X := by
   first | exact @GlobalTheory.CompanionTheory.Ar.GenPtModel.genPt_mem_genericPoints | exact GlobalTheory.CompanionTheory.Ar.GenPtModel.genPt_mem_genericPoints | (intros; apply GlobalTheory.CompanionTheory.Ar.GenPtModel.genPt_mem_genericPoints <;> assumption)

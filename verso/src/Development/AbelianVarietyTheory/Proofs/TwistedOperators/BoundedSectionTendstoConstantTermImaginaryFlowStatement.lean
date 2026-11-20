@@ -6,8 +6,10 @@ open GlobalTheory.Dict (castFr)
 open GlobalTheory.FrameNorm (IsUnitFr)
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HeckeEx.bddSec_tendsto_constTerm | exact GlobalTheory.HeckeEx.bddSec_tendsto_constTerm | (intros; apply GlobalTheory.HeckeEx.bddSec_tendsto_constTerm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HeckeEx.bddSec_tendsto_constTerm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FBoundedSectionTendstoConstantTermImaginaryFlow.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.boundedSection_tendsto_constantTerm_imaginary_flow : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ), X.IsBddSec la P → ∀ ξ, X.IsIso ξ → ∀ x ∈ X.dom, (∀ t : ℝ, 0 ≤ t → X.flow ξ (fun _ => Complex.I * t) x ∈ X.dom) ∧ Filter.Tendsto (fun t : ℝ => P (X.flow ξ (fun _ => Complex.I * t) x)) Filter.atTop (nhds (X.fj la ξ 0 P x)) := by
   first | exact @GlobalTheory.HeckeEx.bddSec_tendsto_constTerm | exact GlobalTheory.HeckeEx.bddSec_tendsto_constTerm | (intros; apply GlobalTheory.HeckeEx.bddSec_tendsto_constTerm <;> assumption)

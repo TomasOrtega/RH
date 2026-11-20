@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.Jets.CmLatticeCommutatorPair
 open PowerSeries GlobalTheory.MomOne
 open scoped ComplexConjugate BigOperators Topology
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MomOne.AtAdd.at_add_and_mul | exact GlobalTheory.MomOne.AtAdd.at_add_and_mul | (intros; apply GlobalTheory.MomOne.AtAdd.at_add_and_mul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MomOne.AtAdd.at_add_and_mul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FJetHarmonics%2FMultiplicativeCoordAddAndComplexMul.lean&line=149#L149)
 -/
 theorem _root_.GlobalTheory.T.multiplicativeCoord_add_and_complexMul : ∀ (q : ℕ) [Fact q.Prime] (M : Mdl q) (ω : ℂ_[q]), M.MChart ω → (∀ ζ ζ' p p', M.At ω ζ p → M.At ω ζ' p' → M.At ω (ζ * ζ') (p + p')) ∧ ∀ (α : ℂ) (a : ℤ_[q]) (n k : ℕ) (ζ : ℂ_[q]) (p : ℂ), (∀ l ∈ M.L.lattice, α * l ∈ M.L.lattice) → M.ι α = zc a → ‖a - (k : ℤ_[q])‖ ≤ (q : ℝ) ^ (-(n : ℤ)) → ζ ^ (q ^ n) = 1 → M.At ω ζ p → M.At ω (ζ ^ k) (α * p) := by
   first | exact @GlobalTheory.MomOne.AtAdd.at_add_and_mul | exact GlobalTheory.MomOne.AtAdd.at_add_and_mul | (intros; apply GlobalTheory.MomOne.AtAdd.at_add_and_mul <;> assumption)

@@ -12,8 +12,10 @@ open GlobalTheory.Doubling (absE)
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LagrIntg.integrable_lagrForm | exact GlobalTheory.LagrIntg.integrable_lagrForm | (intros; apply GlobalTheory.LagrIntg.integrable_lagrForm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LagrIntg.integrable_lagrForm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSchrodingerLatticeSumIntegrable.lean&line=149#L149)
 -/
 theorem _root_.GlobalTheory.T.schrodinger_lattice_sum_integrable : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ → ∀ (κ : Type) [Fintype κ] (r : ℕ) (u : Fin r → (κ → F) × (κ → F)), LinearIndependent F (fun j => (u j).1) →
     ∀ μ : @Measure (Fin r → AF F) (borel _), @Measure.IsAddHaarMeasure _ _ _ (borel _) μ →

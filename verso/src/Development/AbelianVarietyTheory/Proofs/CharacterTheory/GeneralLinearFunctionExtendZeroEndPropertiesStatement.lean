@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.AbByPOfCo
 import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.InvariantSubspaceMobiusInverseRecEqOfFinrankLt
 open Polynomial GlobalTheory.CuspGL GlobalTheory.BI
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CuspGL.extZero_spec | exact GlobalTheory.CuspGL.extZero_spec | (intros; apply GlobalTheory.CuspGL.extZero_spec <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CuspGL.extZero_spec` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FCharacterTheory%2FGeneralLinearFunctionExtendZeroEndProperties.lean&line=87#L87)
 -/
 theorem _root_.GlobalTheory.T.generalLinearFunctionExtendZeroEnd_properties : ∀ (F : Type) [Field F] [Finite F] (d : ℕ) (χ : GL (Fin d) F → ℂ), (∀ x : GL (Fin d) F, extZero χ (Matrix.toLin' (x : Matrix (Fin d) (Fin d) F)) = χ x) ∧ (∀ g, ¬ IsUnit g → extZero χ g = 0) ∧ (∀ φ φ' : Module.End F (Fin d → F) → ℂ, ipGL φ φ' = ∑ᶠ x : GL (Fin d) F, φ (Matrix.toLin' (x : Matrix (Fin d) (Fin d) F)) * star (φ' (Matrix.toLin' (x : Matrix (Fin d) (Fin d) F)))) ∧ ((∀ g x : GL (Fin d) F, χ (x⁻¹ * g * x) = χ g) → IsClassFn (extZero χ)) := by
   first | exact @GlobalTheory.CuspGL.extZero_spec | exact GlobalTheory.CuspGL.extZero_spec | (intros; apply GlobalTheory.CuspGL.extZero_spec <;> assumption)

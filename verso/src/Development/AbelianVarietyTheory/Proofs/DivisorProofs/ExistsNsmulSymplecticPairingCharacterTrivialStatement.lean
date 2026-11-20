@@ -19,8 +19,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ClassFunctionSumIntegral (IsDefinit
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FinCharInt.char_sympl_nsmul_int | exact GlobalTheory.FinCharInt.char_sympl_nsmul_int | (intros; apply GlobalTheory.FinCharInt.char_sympl_nsmul_int <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FinCharInt.char_sympl_nsmul_int` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsNsmulSymplecticPairingCharacterTrivial.lean&line=152#L152)
 -/
 theorem _root_.GlobalTheory.T.exists_nsmul_symplecticPairing_character_trivial : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ), Continuous ψ → (∀ x, ‖ψ x‖ = 1) →
     ∀ (S T : HSp D) (A0 : WO S T), ∃ N : ℕ, 0 < N ∧ ∀ v : WO S T, (∀ i j, infPart D (v i j) = 0) →

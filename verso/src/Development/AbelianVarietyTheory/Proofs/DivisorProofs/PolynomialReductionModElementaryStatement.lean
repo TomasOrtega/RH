@@ -5,8 +5,10 @@ import Formalism.DegreeFormula.PointDegree.PermExpInj
 import Development.AbelianVarietyTheory.Definitions.Foundations.CurveCl
 open MvPolynomial Formalism.DegreeFormula GlobalTheory.FlagPoly
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ArtinSpan.artin_monomials_span | exact GlobalTheory.ArtinSpan.artin_monomials_span | (intros; apply GlobalTheory.ArtinSpan.artin_monomials_span <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ArtinSpan.artin_monomials_span` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPolynomialReductionModElementary.lean&line=120#L120)
 -/
 theorem _root_.GlobalTheory.T.polynomial_reduction_mod_elementary : ∀ (N : ℕ) (P : MvPolynomial (Fin N) ℝ), ∃ R ∈ Submodule.span ℝ {M : MvPolynomial (Fin N) ℝ | ∃ m : Fin N →₀ ℕ, (∀ i, m i ≤ (i : ℕ)) ∧ M = monomial m 1}, P - R ∈ Ideal.span ((fun k => esymm (Fin N) ℝ k) '' Set.Icc 1 N) := by
   first | exact @GlobalTheory.ArtinSpan.artin_monomials_span | exact GlobalTheory.ArtinSpan.artin_monomials_span | (intros; apply GlobalTheory.ArtinSpan.artin_monomials_span <;> assumption)

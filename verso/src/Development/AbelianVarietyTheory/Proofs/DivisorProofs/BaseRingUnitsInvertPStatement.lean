@@ -16,8 +16,10 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 open GlobalTheory.FlatModel
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CoeffUnit.isUnit_of_ne_zero | exact GlobalTheory.CoeffUnit.isUnit_of_ne_zero | (intros; apply GlobalTheory.CoeffUnit.isUnit_of_ne_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CoeffUnit.isUnit_of_ne_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FBaseRingUnitsInvertP.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.base_ring_units_invert_p : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (l' : Level H) (c' : Coeff l') (W : ValuationSubring ℂ) (p : ℕ), p.Prime → (p : ℂ) ∈ W.nonunits → ∀ (A : Type) [CommRing A] (β : c'.V W →+* A), IsUnit (p : A) → ∀ a : c'.V W, a ≠ 0 → IsUnit (β a) := by
   first | exact @GlobalTheory.CoeffUnit.isUnit_of_ne_zero | exact GlobalTheory.CoeffUnit.isUnit_of_ne_zero | (intros; apply GlobalTheory.CoeffUnit.isUnit_of_ne_zero <;> assumption)

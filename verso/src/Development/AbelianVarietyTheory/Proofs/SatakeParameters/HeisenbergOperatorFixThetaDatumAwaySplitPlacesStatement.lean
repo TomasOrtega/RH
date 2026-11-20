@@ -11,8 +11,10 @@ open scoped TensorProduct InnerProductSpace
 open GlobalTheory.Hk3
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Hk3.heisO_fix_thetaAt_off | exact GlobalTheory.Hk3.heisO_fix_thetaAt_off | (intros; apply GlobalTheory.Hk3.heisO_fix_thetaAt_off <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Hk3.heisO_fix_thetaAt_off` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FHeisenbergOperatorFixThetaDatumAwaySplitPlaces.lean&line=34#L34)
 -/
 theorem _root_.GlobalTheory.T.heisenbergOperator_fix_thetaDatum_away_splitPlaces : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (e : AE D) (Λ : AddSubgroup (WO S T)) (c : ℂ) (f₀ Φ f : WO S T → ℂ), IsThetaAt ψ (symplO S T) (heisO ψ S T) e Λ c f₀ Φ f → ∀ u : WO S T, (∀ i j, e * u i j = 0 ∧ cA D e * u i j = 0) → heisO ψ S T u f₀ = f₀ → heisO ψ S T u f = f := by
   first | exact @GlobalTheory.Hk3.heisO_fix_thetaAt_off | exact GlobalTheory.Hk3.heisO_fix_thetaAt_off | (intros; apply GlobalTheory.Hk3.heisO_fix_thetaAt_off <;> assumption)

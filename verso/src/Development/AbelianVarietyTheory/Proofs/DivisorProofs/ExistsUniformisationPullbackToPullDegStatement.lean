@@ -8,8 +8,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.UnifPull.exists_pull_of_deg | exact GlobalTheory.Mum.UnifPull.exists_pull_of_deg | (intros; apply GlobalTheory.Mum.UnifPull.exists_pull_of_deg <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.UnifPull.exists_pull_of_deg` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsUniformisationPullbackToPullDeg.lean&line=40#L40)
 -/
 theorem _root_.GlobalTheory.T.exists_uniformisation_pullback_to_pullDeg : ∀ (R R' : Type) [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] (I : Ideal R) (I' : Ideal R'),
     AdmBase R I → AdmBase R' I' → ∀ (φ : R →+* R'), Function.Injective φ → I.map φ ≤ I' →

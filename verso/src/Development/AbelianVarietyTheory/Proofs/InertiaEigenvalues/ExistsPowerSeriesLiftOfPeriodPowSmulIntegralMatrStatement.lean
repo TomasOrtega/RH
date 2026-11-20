@@ -6,8 +6,10 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 open scoped Formalism.Per NNReal
 open Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BSP.KisinFF.main | exact GlobalTheory.BSP.KisinFF.main | (intros; apply GlobalTheory.BSP.KisinFF.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BSP.KisinFF.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FExistsPowerSeriesLiftOfPeriodPowSmulIntegralMatr.lean&line=71#L71)
 -/
 theorem _root_.GlobalTheory.T.exists_powerSeries_lift_of_period_pow_smul_integral_matrix : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (τ : Ainf l), bk.IsPer τ → ∀ (d d' M : ℕ) (X : Matrix (Fin d') (Fin d) (WCb l)) (x : Matrix (Fin d') (Fin d) (Ainf l)), (∀ i j, X i j ∈ bk.OE) → x.map (inclW l) = inclW l τ ^ M • X → ∃ Y : Matrix (Fin d') (Fin d) bk.S, Y.map bk.evW = X := by
   first | exact @GlobalTheory.BSP.KisinFF.main | exact GlobalTheory.BSP.KisinFF.main | (intros; apply GlobalTheory.BSP.KisinFF.main <;> assumption)

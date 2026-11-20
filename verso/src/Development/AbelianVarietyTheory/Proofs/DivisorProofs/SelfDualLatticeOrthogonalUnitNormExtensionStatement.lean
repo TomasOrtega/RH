@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ValIrreduci
 open NumberField GlobalTheory.UnitaryBC IsDedekindDomain Matrix Polynomial GlobalTheory.CuspRep Formalism.UG GlobalTheory.BCT GlobalTheory.KapLat
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.selfDual_orthogonal_unit_step | exact GlobalTheory.selfDual_orthogonal_unit_step | (intros; apply GlobalTheory.selfDual_orthogonal_unit_step <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.selfDual_orthogonal_unit_step` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSelfDualLatticeOrthogonalUnitNormExtension.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.selfDual_lattice_orthogonal_unit_norm_extension : ∀ (K : GlobalTheory.UnitLemma.UQ) (V : Type) [AddCommGroup V] [Module K.E V] [Module K.O V] [IsScalarTower K.O K.E V]
     [FiniteDimensional K.E V] (h : V → V → K.E), (∀ y y' z, h (y + y') z = h y z + h y' z) →

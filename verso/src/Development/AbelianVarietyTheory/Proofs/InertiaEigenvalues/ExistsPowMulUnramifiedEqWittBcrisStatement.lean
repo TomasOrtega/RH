@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.Bh
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BKReal GlobalTheory.Per GlobalTheory.BSP GlobalTheory.MemLoc
 open scoped Formalism.Per NNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TeichmullerPowerUnit.exists_pow_mul_u_eq_aB | exact GlobalTheory.TeichmullerPowerUnit.exists_pow_mul_u_eq_aB | (intros; apply GlobalTheory.TeichmullerPowerUnit.exists_pow_mul_u_eq_aB <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TeichmullerPowerUnit.exists_pow_mul_u_eq_aB` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FExistsPowMulUnramifiedEqWittBcris.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.exists_pow_mul_unramified_eq_witt_bcris : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (C : Core l) (c : ↥(MaximalUnramifiedExtension l)), (c : Om l) ∈ K.1 → ∃ (n : ℕ) (w : Wq l bk.a), (l : Per.Bcris l) ^ n * C.u c = Per.aB l (wA l bk.a w) := by
   first | exact @GlobalTheory.TeichmullerPowerUnit.exists_pow_mul_u_eq_aB | exact GlobalTheory.TeichmullerPowerUnit.exists_pow_mul_u_eq_aB | (intros; apply GlobalTheory.TeichmullerPowerUnit.exists_pow_mul_u_eq_aB <;> assumption)

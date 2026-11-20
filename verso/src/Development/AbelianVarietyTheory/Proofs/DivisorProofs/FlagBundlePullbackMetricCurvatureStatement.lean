@@ -10,8 +10,10 @@ open NumberField MvPolynomial Filter Topology Formalism.BasicNotions Formalism.M
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.ArInt GlobalTheory.BlockPoint
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BlockPoint.OddTerm.arFun_pow_eq_oddHarm_mul | exact GlobalTheory.BlockPoint.OddTerm.arFun_pow_eq_oddHarm_mul | (intros; apply GlobalTheory.BlockPoint.OddTerm.arFun_pow_eq_oddHarm_mul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BlockPoint.OddTerm.arFun_pow_eq_oddHarm_mul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFlagBundlePullbackMetricCurvature.lean&line=134#L134)
 -/
 theorem _root_.GlobalTheory.T.flag_bundle_pullback_metric_curvature : ArCalc → ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) [IsIntegral B] [IsIntegral Y] (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (d : ℕ),
     IsArithVar q d → IsArithVar p (d + 1) → (∀ b : B, IsRegularLocalRing (B.presheaf.stalk b)) →

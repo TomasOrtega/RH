@@ -9,8 +9,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.UnrOutside
 open NumberField IsDedekindDomain Matrix MeasureTheory GlobalTheory.CuspRep GlobalTheory.JSW GroundTheory.Global.IdeleGroup Formalism.L2.Host Formalism.UG GlobalTheory.LFun
 open scoped ENNReal nonZeroDivisors Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CellDec.lastRow_sub_notMem_latt | exact GlobalTheory.CellDec.lastRow_sub_notMem_latt | (intros; apply GlobalTheory.CellDec.lastRow_sub_notMem_latt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CellDec.lastRow_sub_notMem_latt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FLastRowSubSingleNotMemLatticeOfNegExponent.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.lastRow_sub_single_not_mem_lattice_of_neg_exponent : ∀ (E : Type) [Field E] [NumberField E] (m : ℕ) (T : Finset (HeightOneSpectrum (𝓞 E)))
     (ϖ : ∀ w : HeightOneSpectrum (𝓞 E), (w.adicCompletion E)ˣ), (∀ w, IsUnifV E w (ϖ w : w.adicCompletion E)) →

@@ -8,8 +8,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open scoped TensorProduct NNReal Matrix
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LatScaleSum.thetaSum_norm_le_pow | exact GlobalTheory.LatScaleSum.thetaSum_norm_le_pow | (intros; apply GlobalTheory.LatScaleSum.thetaSum_norm_le_pow <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LatScaleSum.thetaSum_norm_le_pow` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAdelicThetaSumNormLePolynomialScale.lean&line=61#L61)
 -/
 theorem _root_.GlobalTheory.T.adelicThetaSum_norm_le_polynomial_scale : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ], ∃ (N₀ k : ℕ) (C : ℝ), ∀ (A : ℝ) (m : ℕ) (Ψ : (κ → AF F) → ℂ), 1 ≤ m →
     (∀ ξ : κ → F, ‖Ψ (fun i => algebraMap F (AF F) (ξ i))‖ * (1 + ‖fun i => evI F (algebraMap F (AF F) (ξ i))‖) ^ N₀ ≤ A) →

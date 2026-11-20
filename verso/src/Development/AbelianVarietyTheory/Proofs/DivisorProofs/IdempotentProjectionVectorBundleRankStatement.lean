@@ -17,8 +17,10 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Vert Globa
 open GlobalTheory.ChainParts
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChainParts.PartVB.main | exact GlobalTheory.ChainParts.PartVB.main | (intros; apply GlobalTheory.ChainParts.PartVB.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChainParts.PartVB.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIdempotentProjectionVectorBundleRank.lean&line=56#L56)
 -/
 theorem _root_.GlobalTheory.T.idempotent_projection_vector_bundle_rank : ∀ {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {B : Vert.Model O} {Λ : Type} [CommRing Λ] {n : ℕ} (c : Fin n → Γ(B.X, ⊤)) (a : Fin n → Λ) (hidem : ∀ M : AM B Λ, IsAdd M → eA M c a ≫ eA M c a = eA M c a) (P : EPres B Λ), ∃ r, GlobalTheory.VB.IsVB ((partF c a).obj P.E) r ∧ GlobalTheory.VB.IsVB ((partF c a).obj P.E') r ∧
       IsIso (B.genRes.map ((partF c a).map P.ψ)) := by

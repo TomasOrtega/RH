@@ -16,8 +16,10 @@ open scoped Classical
 open GlobalTheory.BoxLattice GlobalTheory.EvAdm
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PsiSplit.psi_split | exact GlobalTheory.PsiSplit.psi_split | (intros; apply GlobalTheory.PsiSplit.psi_split <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PsiSplit.psi_split` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FStandardCharacterDecompose.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.standard_character_decompose : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (ψ : AddChar (AF F) ℂ), IsStd ψ →
     ∀ (x : κ → AF F) (z : κ → F), ψ (x ⬝ᵥ fun i => algebraMap F (AF F) (z i)) =

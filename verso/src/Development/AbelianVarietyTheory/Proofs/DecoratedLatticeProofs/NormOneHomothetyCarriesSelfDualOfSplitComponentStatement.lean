@@ -9,8 +9,10 @@ open GlobalTheory.SeeSaw (idV dI FI)
 open ValuativeRel
 open GlobalTheory.Core.Mi.LatMatch
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Core.Mi.LatMatch.sMoves_of_wComp | exact GlobalTheory.Core.Mi.LatMatch.sMoves_of_wComp | (intros; apply GlobalTheory.Core.Mi.LatMatch.sMoves_of_wComp <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Core.Mi.LatMatch.sMoves_of_wComp` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FNormOneHomothetyCarriesSelfDualOfSplitComponent.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.normOneHomothety_carries_selfDual_of_splitComponent : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : SplitPt D k) (S : HSp D) (L L' : Lat S) (c : AE D) (g : GA D S), IsSelfDualC S L → IsSelfDualC S L' → NormOneAt p.v c → (∀ x : Fin S.rank → k, (fun i => p.sec (x i)) ∈ latV S L (· = p.v) ↔ (fun i => p.sec ((p.pr c • ((Formalism.L2.Theta.mt S g).map p.pr *ᵥ x)) i)) ∈ latV S L' (· = p.v)) → SMoves S c g L L' p.v := by
   first | exact @GlobalTheory.Core.Mi.LatMatch.sMoves_of_wComp | exact GlobalTheory.Core.Mi.LatMatch.sMoves_of_wComp | (intros; apply GlobalTheory.Core.Mi.LatMatch.sMoves_of_wComp <;> assumption)

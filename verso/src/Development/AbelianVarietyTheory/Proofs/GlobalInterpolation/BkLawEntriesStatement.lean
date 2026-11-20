@@ -12,8 +12,10 @@ import Formalism.LocalRingCardinality.DataBu
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.GoodReductionCondition
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.RT GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Top GlobalTheory.Mem.Top.Bl GlobalTheory.Fc
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Fc.DivLinked.at_hDivG_main | exact GlobalTheory.Fc.DivLinked.at_hDivG_main | (intros; apply GlobalTheory.Fc.DivLinked.at_hDivG_main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Fc.DivLinked.at_hDivG_main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FGlobalInterpolation%2FBkLawEntries.lean&line=100#L100)
 -/
 theorem _root_.GlobalTheory.T.bk_law_entries : GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CasselmanWallach → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (N : NExt hL) (S : SExt) (Γ : GeoP), (∀ (K : Ctx) (q : WPt (prmR N S Γ).s K), GlobalTheory.Mem.R3.Rw.BkLaw (q.w.D q.Z)) → RL.At (prmR N S Γ) (fun Q L => Row Q L (AtAll fun _ _ _ (b : Bundle _ _ _) => (b.B.Q.Rl.toCx3 b.B.Q.F).MIstar2 (b.B.Q.F.eV (b.B.Q.Rl.toCx3 b.B.Q.F).zs) b.B.Q.sEE)) → RL.At (prmR N S Γ) R1.DivisorConditionAtBundlePoints := by
   first | exact @GlobalTheory.Fc.DivLinked.at_hDivG_main | exact GlobalTheory.Fc.DivLinked.at_hDivG_main | (intros; apply GlobalTheory.Fc.DivLinked.at_hDivG_main <;> assumption)

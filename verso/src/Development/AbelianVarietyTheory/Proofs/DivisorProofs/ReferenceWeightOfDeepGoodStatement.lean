@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.WedgeNrmLeOfWedgeNo
 import Development.AbelianVarietyTheory.Definitions.Divisors.CongModRefl
 open GlobalTheory.IndefiniteRowSideFullHecke.DifferentConjugateDefects NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.AllWt GlobalTheory.FlatLine GlobalTheory.FlatTw GlobalTheory.SlopeRec GlobalTheory.CovTop GlobalTheory.BigTop GlobalTheory.RefSum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RefSum.refW_of_size | exact GlobalTheory.RefSum.refW_of_size | (intros; apply GlobalTheory.RefSum.refW_of_size <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RefSum.refW_of_size` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FReferenceWeightOfDeepGood.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.reference_weight_of_deep_good : Hypotheses2 → DeepGood → Size → FlatDeg → RefW := by
   first | exact @GlobalTheory.RefSum.refW_of_size | exact GlobalTheory.RefSum.refW_of_size | (intros; apply GlobalTheory.RefSum.refW_of_size <;> assumption)

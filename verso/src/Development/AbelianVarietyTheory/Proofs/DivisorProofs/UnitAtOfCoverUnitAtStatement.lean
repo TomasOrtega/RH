@@ -10,8 +10,10 @@ open CategoryTheory AlgebraicGeometry NumberField IsDedekindDomain ReciprocityTh
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.Mean4O GlobalTheory.CoverNorm
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.unitAt_of_unitAt_φ_cover | exact GlobalTheory.unitAt_of_unitAt_φ_cover | (intros; apply GlobalTheory.unitAt_of_unitAt_φ_cover <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.unitAt_of_unitAt_φ_cover` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FUnitAtOfCoverUnitAt.lean&line=46#L46)
 -/
 theorem _root_.GlobalTheory.T.unitAt_of_cover_unitAt : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (V : GlobalTheory.Mean4O.Cover Y) (g : Y.Fn) (x : Y.X),
     (∀ x' : V.G, V.π x' = x → UnitAt x' (V.φ g)) → UnitAt x g := by

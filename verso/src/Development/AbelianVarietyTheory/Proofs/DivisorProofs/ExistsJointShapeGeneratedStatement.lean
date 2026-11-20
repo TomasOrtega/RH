@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFockMap
 import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
 open scoped TensorProduct GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RealLift.GenLift.genBy_of_isLift | exact GlobalTheory.RealLift.GenLift.genBy_of_isLift | (intros; apply GlobalTheory.RealLift.GenLift.genBy_of_isLift <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RealLift.GenLift.genBy_of_isLift` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsJointShapeGenerated.lean&line=143#L143)
 -/
 theorem _root_.GlobalTheory.T.exists_joint_shape_generated : ∀ (P Q R S : ℕ) (x t : ℚ) (M : Formalism.BasicNotions.TH.GKMod R S) (pr : Formalism.BasicNotions.TH.Pol P Q R S →ₗ[ℂ] M.V), GlobalTheory.RealLift.IsLift x t M pr → Nontrivial M.V → ∃ μ' : Formalism.BasicNotions.TH.Ix R S → ℚ, Formalism.BasicNotions.TH.JointShape P Q R S (fun _ => x) μ' ∧ GlobalTheory.RealLift.GenBy M (fun c => μ' c + t) := by
   first | exact @GlobalTheory.RealLift.GenLift.genBy_of_isLift | exact GlobalTheory.RealLift.GenLift.genBy_of_isLift | (intros; apply GlobalTheory.RealLift.GenLift.genBy_of_isLift <;> assumption)

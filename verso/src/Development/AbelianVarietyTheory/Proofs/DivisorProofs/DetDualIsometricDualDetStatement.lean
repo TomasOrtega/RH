@@ -14,8 +14,10 @@ open GlobalTheory GlobalTheory.TorsionForm
 open scoped ContDiff Real CategoryTheory.Obj ComplexOrder
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HermVB.isometric_det_dual | exact GlobalTheory.HermVB.isometric_det_dual | (intros; apply GlobalTheory.HermVB.isometric_det_dual <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HermVB.isometric_det_dual` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDetDualIsometricDualDet.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.det_dual_isometric_dual_det : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (r : ℕ) (E : HermVB p r), E.dual.det.Isometric E.det.dual := by
   first | exact @GlobalTheory.HermVB.isometric_det_dual | exact GlobalTheory.HermVB.isometric_det_dual | (intros; apply GlobalTheory.HermVB.isometric_det_dual <;> assumption)

@@ -8,8 +8,10 @@ open ReciprocityTheory.L2DbarEstimates (V)
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts GlobalTheory.FlagBundle GlobalTheory.HermFrame GlobalTheory.GoodMetric GlobalTheory.CxForm GlobalTheory.LineForm GlobalTheory.ChernCalc
 open scoped Matrix ContDiff ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CurvSmooth.curvEv_entry_smooth | exact GlobalTheory.CurvSmooth.curvEv_entry_smooth | (intros; apply GlobalTheory.CurvSmooth.curvEv_entry_smooth <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CurvSmooth.curvEv_entry_smooth` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCurvatureMatrixEvenFormsEntriesSmoothCoefficient.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.curvatureMatrixEvenForms_entries_smooth_coefficients : ∀ (n : ℕ) (r : Type) [Fintype r] [DecidableEq r] (G : V n → Matrix r r ℂ) (v : V n), MContDiffAt ∞ G v → IsUnit (G v).det → ∀ i j, (∀ x, (curvEv G x i j : Alt n) = ∑ a, ∑ b, curv G x (coordVec a) (coordVec b) i j • (dz a * dzb b)) ∧ (∀ S, ContDiffAt ℝ ∞ (fun x => (bas n).repr ((curvEv G x i j : Alt n)) S) v) := by
   first | exact @GlobalTheory.CurvSmooth.curvEv_entry_smooth | exact GlobalTheory.CurvSmooth.curvEv_entry_smooth | (intros; apply GlobalTheory.CurvSmooth.curvEv_entry_smooth <;> assumption)

@@ -6,8 +6,10 @@ import CompanionTheory.EightfoldTheory.VariationTheory.AutomorphicForms.Newform
 open UpperHalfPlane Complex MeasureTheory CongruenceSubgroup GlobalTheory.EisM UpperTheory.V.Af Filter Topology
 open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EisM.cuspForm_of_CF | exact GlobalTheory.EisM.cuspForm_of_CF | (intros; apply GlobalTheory.EisM.cuspForm_of_CF <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EisM.cuspForm_of_CF` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FExistsCuspFormGamma1OfIsCuspFormCoeffSeq.lean&line=40#L40)
 -/
 theorem _root_.GlobalTheory.T.exists_cuspForm_gamma1_of_isCuspFormCoeffSeq : ∀ (k L N : ℕ) (ε : DirichletCharacter ℂ N) (a : ℕ → ℂ), 1 ≤ k → 0 < L → N ∣ L → CF k L (ch ε) a → ∃ f : CuspForm (Gamma1 L) (k : ℤ), ⇑f = qs a := by
   first | exact @GlobalTheory.EisM.cuspForm_of_CF | exact GlobalTheory.EisM.cuspForm_of_CF | (intros; apply GlobalTheory.EisM.cuspForm_of_CF <;> assumption)

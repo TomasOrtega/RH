@@ -4,8 +4,10 @@ open MeasureTheory Filter Topology Set Module
 open scoped ENNReal
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.weighted_lintegral_sobolev_pointwise | exact GlobalTheory.weighted_lintegral_sobolev_pointwise | (intros; apply GlobalTheory.weighted_lintegral_sobolev_pointwise <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.weighted_lintegral_sobolev_pointwise` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FWeightedLintegralSobolevPointwise.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.ofReal_norm_pow_mul_le_lintegral_iteratedFDeriv : ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E] (μ : Measure E) [μ.IsAddHaarMeasure] (m : ℕ), finrank ℝ E = m + 1 → ∃ C : ℝ≥0∞, C ≠ ∞ ∧ ∀ {F : Type} [NormedAddCommGroup F] [NormedSpace ℝ F] [CompleteSpace F] (G : E → F), ContDiff ℝ (⊤ : ℕ∞) G → (∀ j ≤ m, Tendsto (iteratedFDeriv ℝ j G) (cocompact E) (𝓝 0)) → ∀ (k : ℕ) (x : E), ENNReal.ofReal (‖x‖ ^ k * ‖G x‖) ≤ C * ∫⁻ z, ENNReal.ofReal (‖z‖ ^ k * ‖iteratedFDeriv ℝ (m + 1) G z‖) ∂μ := by
   first | exact @GlobalTheory.weighted_lintegral_sobolev_pointwise | exact GlobalTheory.weighted_lintegral_sobolev_pointwise | (intros; apply GlobalTheory.weighted_lintegral_sobolev_pointwise <;> assumption)

@@ -18,8 +18,10 @@ open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LineGroup.archOp_oneParam | exact GlobalTheory.LineGroup.archOp_oneParam | (intros; apply GlobalTheory.LineGroup.archOp_oneParam <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LineGroup.archOp_oneParam` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FUnitaryArchimedeanLineOperatorsOneParameter.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.unitaryArchimedeanLine_operators_oneParameter : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {a a' : ℕ} (B : Base F E) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W),

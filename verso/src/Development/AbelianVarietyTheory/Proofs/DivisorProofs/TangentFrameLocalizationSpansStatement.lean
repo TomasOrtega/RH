@@ -16,8 +16,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.isLieBasis_of_local_restrict | exact GlobalTheory.isLieBasis_of_local_restrict | (intros; apply GlobalTheory.isLieBasis_of_local_restrict <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.isLieBasis_of_local_restrict` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTangentFrameLocalizationSpans.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.tangent_frame_localization_spans : ∀ {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G], Smooth G.hom →
     ∀ (p : Ideal R) [p.IsPrime] {n : ℕ} (w : Fin n → (epsR R ⟶ G)),

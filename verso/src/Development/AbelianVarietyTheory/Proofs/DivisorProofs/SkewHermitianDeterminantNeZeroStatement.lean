@@ -9,8 +9,10 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 open GlobalTheory.Doubling (absE)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SkewGramDet.det_ne_zero | exact GlobalTheory.SkewGramDet.det_ne_zero | (intros; apply GlobalTheory.SkewGramDet.det_ne_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SkewGramDet.det_ne_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSkewHermitianDeterminantNeZero.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.skew_hermitian_determinant_ne_zero : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (d : ℕ) (W : Spc F E d) (r s : ℕ), W.IsSkew σ B r s → W.J.det ≠ 0 := by
   first | exact @GlobalTheory.SkewGramDet.det_ne_zero | exact GlobalTheory.SkewGramDet.det_ne_zero | (intros; apply GlobalTheory.SkewGramDet.det_ne_zero <;> assumption)

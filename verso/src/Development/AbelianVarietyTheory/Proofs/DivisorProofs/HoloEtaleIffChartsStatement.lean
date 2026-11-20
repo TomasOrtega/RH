@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.EtaleEmpty
 open MeasureTheory Filter Topology Metric ReciprocityTheory.L2DbarEstimates ReciprocityTheory.L2DbarEstimates.Y GlobalTheory.OTY GlobalTheory.Published.L2Extension
 open scoped ENNReal ContDiff
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.holo_etale_iff_charts | exact GlobalTheory.holo_etale_iff_charts | (intros; apply GlobalTheory.holo_etale_iff_charts <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.holo_etale_iff_charts` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHoloEtaleIffCharts.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.holo_iff_differentiableOn_charts_of_etale : ∀ (n : ℕ) (Y : Type) [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] (ι La : Type) [AddCommGroup La] (A : WeightedAtlas n Y ι La), ∀ (U : Set Y) (z : Y → V n), Etale A U z → ∀ u : Y → ℂ, (Holo n (fun y : U => z y) (fun y : U => u y) ↔ ∀ i, DifferentiableOn ℂ (u ∘ (A.chart i).symm) ((A.chart i).target ∩ (A.chart i).symm ⁻¹' U)) := by
   first | exact @GlobalTheory.holo_etale_iff_charts | exact GlobalTheory.holo_etale_iff_charts | (intros; apply GlobalTheory.holo_etale_iff_charts <;> assumption)

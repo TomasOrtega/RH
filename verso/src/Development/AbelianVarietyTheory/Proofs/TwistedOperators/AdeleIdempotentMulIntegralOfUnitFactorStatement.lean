@@ -14,8 +14,10 @@ set_option synthInstance.maxHeartbeats 160000
 set_option maxHeartbeats 1000000
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnitAtPl.idem_mul_mem_of_unit | exact GlobalTheory.UnitAtPl.idem_mul_mem_of_unit | (intros; apply GlobalTheory.UnitAtPl.idem_mul_mem_of_unit <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnitAtPl.idem_mul_mem_of_unit` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FAdeleIdempotentMulIntegralOfUnitFactor.lean&line=66#L66)
 -/
 theorem _root_.GlobalTheory.T.adeleIdempotent_mul_integral_of_unit_factor : ∀ (D : D7) (v : GlobalTheory.FinPl.Pl D) (u : 𝓞 D.host.F), u ∉ v.asIdeal → ∀ z : AE D, GlobalTheory.FinPlLoc.idem D (· = v) * incA D ((u : D.host.F) : D.host.E) * z ∈ intAt D (· = v) → GlobalTheory.FinPlLoc.idem D (· = v) * z ∈ intAt D (· = v) := by
   first | exact @GlobalTheory.UnitAtPl.idem_mul_mem_of_unit | exact GlobalTheory.UnitAtPl.idem_mul_mem_of_unit | (intros; apply GlobalTheory.UnitAtPl.idem_mul_mem_of_unit <;> assumption)

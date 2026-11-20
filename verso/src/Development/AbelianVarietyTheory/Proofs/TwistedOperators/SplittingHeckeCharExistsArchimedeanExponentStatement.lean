@@ -15,8 +15,10 @@ open scoped TensorProduct InnerProductSpace ComplexConjugate
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.ArchRec
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SplitCharExp.exists_hasInfExp | exact GlobalTheory.SplitCharExp.exists_hasInfExp | (intros; apply GlobalTheory.SplitCharExp.exists_hasInfExp <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SplitCharExp.exists_hasInfExp` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FSplittingHeckeCharExistsArchimedeanExponent.lean&line=68#L68)
 -/
 theorem _root_.GlobalTheory.T.splittingHeckeChar_exists_archimedeanExponent : ∀ (D : D7) (θ : InfFam D) (χ : (AE D)ˣ →* Circle) (n : ℕ) (τ : D.what₂.Tau), IsInfFam θ → IsHeckeChar D χ → ResEta D χ n → ∃ a : ℚ, HasInfExp D χ τ a := by
   first | exact @GlobalTheory.SplitCharExp.exists_hasInfExp | exact GlobalTheory.SplitCharExp.exists_hasInfExp | (intros; apply GlobalTheory.SplitCharExp.exists_hasInfExp <;> assumption)

@@ -16,8 +16,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.S Fo
 open scoped TensorProduct InnerProductSpace Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LevelComb.red_uniq | exact GlobalTheory.LevelComb.red_uniq | (intros; apply GlobalTheory.LevelComb.red_uniq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LevelComb.red_uniq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FReductionUniqueOfMaximal.lean&line=35#L35)
 -/
 theorem _root_.GlobalTheory.T.reduction_unique_of_maximal : ∀ (D : D7) (u : D.what₂.Word) (d : GlobalTheory.SeeSaw.Dat D u) (τ : ∀ j h, Matrix (Fin (d.bes j 0 h).L.rank) (Fin d.Lz.rank) D.host.E) (PP : Formalism.L2.DIV.Pl D.host.E) (G : GlobalTheory.LocMod.GAt d τ PP) (x x' : G.S.P.J) (g g' : GL (Fin D.R.r) (Formalism.L2.DIV.kP PP)), G.Red x g → G.Red x' g' → GlobalTheory.StepData.MaxM ((x' : GL (Fin D.R.k ⊕ Fin (G.s + 1)) G.k).val - (x : GL (Fin D.R.k ⊕ Fin (G.s + 1)) G.k).val) → g' = g := by
   first | exact @GlobalTheory.LevelComb.red_uniq | exact GlobalTheory.LevelComb.red_uniq | (intros; apply GlobalTheory.LevelComb.red_uniq <;> assumption)

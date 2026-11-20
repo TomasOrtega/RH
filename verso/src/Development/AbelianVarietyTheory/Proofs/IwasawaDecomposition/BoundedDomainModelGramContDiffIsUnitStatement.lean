@@ -8,8 +8,10 @@ open GlobalTheory.PointChern Filter Topology
 open scoped Matrix
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PointChern.modelGram_smooth_isUnit | exact GlobalTheory.PointChern.modelGram_smooth_isUnit | (intros; apply GlobalTheory.PointChern.modelGram_smooth_isUnit <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PointChern.modelGram_smooth_isUnit` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FBoundedDomainModelGramContDiffIsUnit.lean&line=47#L47)
 -/
 theorem _root_.GlobalTheory.T.boundedDomainModelGram_contDiff_isUnit : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) {n : ℕ} (ix : Fin n ≃ GlobalTheory.AllWt.Psi H × Fin Dw.p × Fin Dw.q) (w : ReciprocityTheory.L2DbarEstimates.V n), InDom (coordOf ix w) → ∀ τ, MContDiffAt 2 (fun u => modelGram H Dw (coordOf ix u) τ) w ∧ IsUnit (modelGram H Dw (coordOf ix w) τ).det := by
   first | exact @GlobalTheory.PointChern.modelGram_smooth_isUnit | exact GlobalTheory.PointChern.modelGram_smooth_isUnit | (intros; apply GlobalTheory.PointChern.modelGram_smooth_isUnit <;> assumption)

@@ -6,8 +6,10 @@ import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.StepOrderR
 open ReciprocityTheory.PGsh.L2 ReciprocityTheory.PGsh.Up GlobalTheory.CompanionTheory.Ar.GR
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Relay.stable_hopf_order_subgroup_quotient | exact GlobalTheory.CompanionTheory.Relay.stable_hopf_order_subgroup_quotient | (intros; apply GlobalTheory.CompanionTheory.Relay.stable_hopf_order_subgroup_quotient <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Relay.stable_hopf_order_subgroup_quotient` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FAlgebraProofs%2FStableHopfOrderSubgroupQuotient.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.stable_hopf_order_subgroup_quotient : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C], v.Integers R → v (p : C) < 1 → ∀ (F : Type) [Field F] [Fintype F] [DecidableEq F] [CharP F p] (f : ℕ), Fintype.card F = p ^ f → ∀ (N : Type) [AddCommGroup N] [Module F N] [Fintype N] [DecidableEq N] (AA : HopfOrder (C := C) R N), FStable F AA.carrier → ∀ (K : Submodule F N) (t : N), t ∉ K → GenAF p AA.carrier K.toAddSubgroup → ∀ τ : MulChar F R, IsFund p τ → ∀ c' c : R, idealX AA.carrier K t τ = Ideal.span {c'} → idealX AA.carrier K t (τ ^ p) = Ideal.span {c} → v (algebraMap R C c') ^ p < v (algebraMap R C c) → c ∈ idealD p AA.carrier K t (τ ^ p) := by
   first | exact @GlobalTheory.CompanionTheory.Relay.stable_hopf_order_subgroup_quotient | exact GlobalTheory.CompanionTheory.Relay.stable_hopf_order_subgroup_quotient | (intros; apply GlobalTheory.CompanionTheory.Relay.stable_hopf_order_subgroup_quotient <;> assumption)

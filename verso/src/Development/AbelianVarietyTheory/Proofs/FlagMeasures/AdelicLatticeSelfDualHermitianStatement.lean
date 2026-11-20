@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ExistsReduct
 open MeasureTheory Formalism.MainNotions.S GlobalTheory.RowLev NumberField IsDedekindDomain Matrix
 open scoped InnerProductSpace ComplexOrder TensorProduct Pointwise Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AdelicLattice.adelicLattice_selfDual | exact GlobalTheory.AdelicLattice.adelicLattice_selfDual | (intros; apply GlobalTheory.AdelicLattice.adelicLattice_selfDual <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AdelicLattice.adelicLattice_selfDual` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FAdelicLatticeSelfDualHermitian.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.adelicLattice_selfDual_hermitian : ∀ (I : AutInst) (y : Fin I.n → (I.E ⊗[I.F] Af I.F)), y ∈ I.Lf ↔ ∀ y' ∈ I.Lf, hAf I y' y ∈ IntAf I.F I.E := by
   first | exact @GlobalTheory.AdelicLattice.adelicLattice_selfDual | exact GlobalTheory.AdelicLattice.adelicLattice_selfDual | (intros; apply GlobalTheory.AdelicLattice.adelicLattice_selfDual <;> assumption)

@@ -16,8 +16,10 @@ open ReciprocityTheory.L2DbarEstimates (V cHess)
 open scoped ContDiff ComplexOrder Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.StepTrace.extTrace_step_eq_sum | exact GlobalTheory.StepTrace.extTrace_step_eq_sum | (intros; apply GlobalTheory.StepTrace.extTrace_step_eq_sum <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.StepTrace.extTrace_step_eq_sum` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExtensionTraceSubmatrixConnection.lean&line=40#L40)
 -/
 theorem _root_.GlobalTheory.T.extension_trace_submatrix_connection : ∀ {N : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ E] [IsScalarTower ℝ ℂ E] (H : E → Matrix (Fin N) (Fin N) ℂ) (p : E) (i : Fin N), MContDiffAt 2 H p → (∀ᶠ v in 𝓝 p, (H v).PosDef) → H p = 1 → ∀ ξ η : E, extTrace (fun v => (H v).submatrix (emb i) (emb i)) p ξ η = kappa * ∑ a ∈ Finset.Iio i, conn H p ξ i a * starRingEnd ℂ (conn H p η i a) := by
   first | exact @GlobalTheory.StepTrace.extTrace_step_eq_sum | exact GlobalTheory.StepTrace.extTrace_step_eq_sum | (intros; apply GlobalTheory.StepTrace.extTrace_step_eq_sum <;> assumption)

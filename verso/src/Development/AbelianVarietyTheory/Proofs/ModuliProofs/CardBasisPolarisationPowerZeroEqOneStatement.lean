@@ -12,8 +12,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj TensorProduct Pointwise
 open GlobalTheory.Models GlobalTheory.ModelSum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.basisAlong_zero_card | exact GlobalTheory.basisAlong_zero_card | (intros; apply GlobalTheory.basisAlong_zero_card <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.basisAlong_zero_card` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FModuliProofs%2FCardBasisPolarisationPowerZeroEqOne.lean&line=114#L114)
 -/
 theorem _root_.GlobalTheory.T.card_basis_polarisation_power_zero_eq_one : Out.GlobalFnsSt → ∀ (R : Type) [CommRing R] [Nontrivial R] (P : Out.PolAV (Sp R)) (n : ℕ) (b : Fin n → LB.Sec (Out.LPow P.A P.L ((0 : ℕ) : ℤ) (Over.mk (𝟙 (Sp R))))), GlobalTheory.LN.BasisAlong P.A P.L 0 (𝟙 _) b → n = 1 := by
   first | exact @GlobalTheory.basisAlong_zero_card | exact GlobalTheory.basisAlong_zero_card | (intros; apply GlobalTheory.basisAlong_zero_card <;> assumption)

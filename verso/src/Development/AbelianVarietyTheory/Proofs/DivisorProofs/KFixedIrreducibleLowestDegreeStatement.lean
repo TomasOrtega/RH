@@ -16,8 +16,10 @@ open GlobalTheory.Doubling (absE)
 open GlobalTheory.RealLift Formalism.BasicNotions.TH
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KFixIrr.lowest_irr | exact GlobalTheory.KFixIrr.lowest_irr | (intros; apply GlobalTheory.KFixIrr.lowest_irr <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KFixIrr.lowest_irr` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FKFixedIrreducibleLowestDegree.lean&line=47#L47)
 -/
 theorem _root_.GlobalTheory.T.k_fixed_irreducible_lowest_degree : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (P Q R S : ℕ) (x : ι → ℚ), P ≤ R → Q ≤ S →
     (∀ w, ∃ k k' : ℕ, 0 < k ∧ 0 < k' ∧ x w - Formalism.BasicNotions.TH.cPair R S = k ∧ x w + Formalism.BasicNotions.TH.cPair R S = k') →

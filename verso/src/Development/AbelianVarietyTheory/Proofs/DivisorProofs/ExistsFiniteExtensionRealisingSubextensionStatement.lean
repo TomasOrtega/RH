@@ -11,8 +11,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GalClosure.exists_finExt_realising | exact GlobalTheory.GalClosure.exists_finExt_realising | (intros; apply GlobalTheory.GalClosure.exists_finExt_realising <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GalClosure.exists_finExt_realising` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsFiniteExtensionRealisingSubextension.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.exists_finiteExtension_realising_subextension : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (R₁ : Type) [CommRing R₁] [IsDomain R₁] [IsLocalRing R₁] (ρ : R →+* R₁), FinExt ρ → ∀ (E : IntermediateField (FractionRing R₁) (Kb R₁)), FiniteDimensional (FractionRing R₁) E → ∃ (R₂ : Type) (_ : CommRing R₂) (_ : IsDomain R₂) (_ : IsLocalRing R₂) (i₁₂ : R₁ →+* R₂) (e : E →+* FractionRing R₂), FinExt i₁₂ ∧ FinExt (i₁₂.comp ρ) ∧ IsLocalHom i₁₂ ∧ ∀ r : R₁, e (algebraMap (FractionRing R₁) E (algebraMap R₁ (FractionRing R₁) r)) = algebraMap R₂ (FractionRing R₂) (i₁₂ r) := by
   first | exact @GlobalTheory.GalClosure.exists_finExt_realising | exact GlobalTheory.GalClosure.exists_finExt_realising | (intros; apply GlobalTheory.GalClosure.exists_finExt_realising <;> assumption)

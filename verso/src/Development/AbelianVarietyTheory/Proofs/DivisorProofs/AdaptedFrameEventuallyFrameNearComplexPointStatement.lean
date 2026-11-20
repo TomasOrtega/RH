@@ -8,8 +8,10 @@ open ReciprocityTheory.L2DbarEstimates (V)
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts GlobalTheory.FlagBundle GlobalTheory.HermFrame GlobalTheory.GoodMetric GlobalTheory.CxForm GlobalTheory.LineForm GlobalTheory.ChernCalc
 open scoped Matrix ContDiff ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChernCalc.frame_eventually_near | exact GlobalTheory.ChernCalc.frame_eventually_near | (intros; apply GlobalTheory.ChernCalc.frame_eventually_near <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChernCalc.frame_eventually_near` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAdaptedFrameEventuallyFrameNearComplexPoint.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.adaptedFrame_eventually_frame_near_complex_point : ∀ (F : Type) [Field F] (σ : F →+* ℂ) (X : Var F) (ι : Type) [Finite ι] (m k : ι → ℕ) (E : Fr (ratOf X) m k) (y : CxPts X.str σ), ∀ A ∈ E.S (under y), ∀ᶠ z in 𝓝 y, A ∈ E.S (under z) := by
   first | exact @GlobalTheory.ChernCalc.frame_eventually_near | exact GlobalTheory.ChernCalc.frame_eventually_near | (intros; apply GlobalTheory.ChernCalc.frame_eventually_near <;> assumption)

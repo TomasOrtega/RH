@@ -9,8 +9,10 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 open GlobalTheory.Doubling (absE)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ModuAdele.modu_norm_eq_absE | exact GlobalTheory.ModuAdele.modu_norm_eq_absE | (intros; apply GlobalTheory.ModuAdele.modu_norm_eq_absE <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ModuAdele.modu_norm_eq_absE` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FModulusOfNormEqAbs.lean&line=48#L48)
 -/
 theorem _root_.GlobalTheory.T.modulus_of_norm_eq_abs : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (x : (AE F E)ˣ),
     (adeleClass F).modu (Units.map (Algebra.norm (AF F) : AE F E →* AF F) x) = absE F E x := by

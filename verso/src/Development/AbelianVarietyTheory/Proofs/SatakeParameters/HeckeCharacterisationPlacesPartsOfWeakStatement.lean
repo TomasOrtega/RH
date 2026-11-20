@@ -12,8 +12,10 @@ open scoped TensorProduct InnerProductSpace
 open GlobalTheory.Hk3
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CoreThree.heckeCharacterisation_places_parts_of_weak | exact GlobalTheory.CoreThree.heckeCharacterisation_places_parts_of_weak | (intros; apply GlobalTheory.CoreThree.heckeCharacterisation_places_parts_of_weak <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CoreThree.heckeCharacterisation_places_parts_of_weak` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FHeckeCharacterisationPlacesPartsOfWeak.lean&line=57#L57)
 -/
 theorem _root_.GlobalTheory.T.heckeCharacterisation_places_of_weakCharacterisation : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3), R.WeakCharacterisation F → (R.toRealDat.ExAt → Core R.toRealDat F.lv2) ∧ IsSF R.toRealDat R.SF ∧ (∀ t, ∀ Q ∈ A3.okI t, Good R.toRealDat t (R.plI Q) ∧ conjPl (R.plI Q) = R.plI Q) ∧ (∀ P, Good R.toRealDat A3.A.μ0 P → (conjPl P = P → ∃ Q ∈ A3.okI A3.A.μ0, R.plI Q = P) ∧ (conjPl P ≠ P → ∃ P0 ∈ A3.A.ok A3.A.μ0, R.pl P0 = P)) ∧ (∀ c, R.EEc c = EEc R.toRealDat R.SF c) ∧ (∀ i c, R.Wc' i c = Wcc R.toRealDat R.SF i c) ∧ (A3.A.ok A3.A.μ0).Nonempty := by
   first | exact @GlobalTheory.CoreThree.heckeCharacterisation_places_parts_of_weak | exact GlobalTheory.CoreThree.heckeCharacterisation_places_parts_of_weak | (intros; apply GlobalTheory.CoreThree.heckeCharacterisation_places_parts_of_weak <;> assumption)

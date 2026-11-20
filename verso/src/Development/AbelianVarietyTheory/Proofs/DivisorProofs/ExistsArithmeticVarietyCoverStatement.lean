@@ -11,8 +11,10 @@ open MvPolynomial Formalism.DegreeFormula Formalism.BasicNotions.DV Formalism.Ma
 open CategoryTheory AlgebraicGeometry GlobalTheory GlobalTheory.TrueGeo GlobalTheory.ArInt ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.ProjVar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ReadModel.readModel | exact GlobalTheory.ReadModel.readModel | (intros; apply GlobalTheory.ReadModel.readModel <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ReadModel.readModel` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsArithmeticVarietyCover.lean&line=44#L44)
 -/
 theorem _root_.GlobalTheory.T.exists_arithmetic_variety_cover : Hypotheses2 → HypothesesH → ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (e : ℕ), Y.dim = e →
     ∀ (A' : Adl (cxSt F) Y) (M M' : TrueGeo.Model Y) (L' : HermLB M'.p) (k : ℕ+) (cf : HeightOneSpectrum (𝓞 F) → ℝ),

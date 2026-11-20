@@ -33,8 +33,10 @@ open Formalism.REAL Formalism.MainNotions.S GlobalTheory.SmoothGlob GlobalTheory
 open scoped InnerProductSpace
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KFinDecomp.cls_add | exact GlobalTheory.KFinDecomp.cls_add | (intros; apply GlobalTheory.KFinDecomp.cls_add <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KFinDecomp.cls_add` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FKTypeClassAddMem.lean&line=37#L37)
 -/
 theorem _root_.GlobalTheory.T.K_type_class_add_mem : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → GlobalTheory.FunPr.Hypotheses₂ → ∀ (N : GlobalTheory.Grid.Node D) (U : Subgroup (GA D N.V)) (f f' : GA D N.V → ℂ), f ∈ Cls θ N U → f' ∈ Cls θ N U → f + f' ∈ Cls θ N U := by
   first | exact @GlobalTheory.KFinDecomp.cls_add | exact GlobalTheory.KFinDecomp.cls_add | (intros; apply GlobalTheory.KFinDecomp.cls_add <;> assumption)

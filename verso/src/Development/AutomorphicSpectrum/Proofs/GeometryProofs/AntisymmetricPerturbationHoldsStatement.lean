@@ -16,8 +16,10 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.Glo
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Link.antisymPerturbation_holds | exact GlobalTheory.CompanionTheory.Ar.Link.antisymPerturbation_holds | (intros; apply GlobalTheory.CompanionTheory.Ar.Link.antisymPerturbation_holds <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Link.antisymPerturbation_holds` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FAntisymmetricPerturbationHolds.lean&line=8#L8)
 -/
 theorem _root_.GlobalTheory.T.antisymmetric_perturbation_holds : GroundTheory.Heights₂.Heights.AntisymPerturbation.Statement := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Link.antisymPerturbation_holds | exact GlobalTheory.CompanionTheory.Ar.Link.antisymPerturbation_holds | (intros; apply GlobalTheory.CompanionTheory.Ar.Link.antisymPerturbation_holds <;> assumption)

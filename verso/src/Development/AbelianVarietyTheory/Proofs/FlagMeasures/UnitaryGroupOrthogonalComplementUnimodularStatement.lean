@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.HermLat
 open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL MeasureTheory
 open scoped Pointwise ENNReal Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HL.Unimod.unimodular | exact GlobalTheory.HL.Unimod.unimodular | (intros; apply GlobalTheory.HL.Unimod.unimodular <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HL.Unimod.unimodular` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FUnitaryGroupOrthogonalComplementUnimodular.lean&line=94#L94)
 -/
 theorem _root_.GlobalTheory.T.unitaryGroup_orthogonalComplement_unimodular : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ {n : ℕ} (Hm : Matrix (Fin n) (Fin n) E), IsHermND L Hm → ∀ (m : ℕ) (x : Fin m → Fin n → E), IsUnit (gramT L Hm x).det → ∀ Λ0 Λ : Submodule L.O (Fin n → E), IsLat L Λ0 → IsLat L Λ → ∀ h ∈ fixG L Hm (Submodule.span E (Set.range x)), invVol (fixG L Hm (Submodule.span E (Set.range x)) ⊓ stabL L Λ0) (fixG L Hm (Submodule.span E (Set.range x)) ⊓ stabL L (h • Λ)) = invVol (fixG L Hm (Submodule.span E (Set.range x)) ⊓ stabL L Λ0) (fixG L Hm (Submodule.span E (Set.range x)) ⊓ stabL L Λ) := by
   first | exact @GlobalTheory.HL.Unimod.unimodular | exact GlobalTheory.HL.Unimod.unimodular | (intros; apply GlobalTheory.HL.Unimod.unimodular <;> assumption)

@@ -14,8 +14,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (Base Spc Model Ch
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PeriodicIterated.lintegral_ratPair_fundamentalDomain_eq_iterated | exact GlobalTheory.PeriodicIterated.lintegral_ratPair_fundamentalDomain_eq_iterated | (intros; apply GlobalTheory.PeriodicIterated.lintegral_ratPair_fundamentalDomain_eq_iterated <;> as …`.
+/- English proof (citation)
+Apply `GlobalTheory.PeriodicIterated.lintegral_ratPair_fundamentalDomain_eq_iterated` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLintegralRationalPairFundDomainEqIterated.lean&line=112#L112)
 -/
 theorem _root_.GlobalTheory.T.lintegral_rationalPair_fundDomain_eq_iterated : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (μ : @Measure (κ → AF F) (borel _)), @Measure.IsAddHaarMeasure _ _ _ (borel _) μ →
     ∀ (ν : @Measure ((κ → AF F) × (κ → AF F)) (borel _)), @Measure.IsAddHaarMeasure _ _ _ (borel _) ν →

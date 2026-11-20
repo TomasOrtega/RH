@@ -8,8 +8,10 @@ open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalT
 open Formalism.MainNotions.DIV.Cons (intO)
 open GlobalTheory.ArLieBase
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FrameGlue.exists_hom_of_frames | exact GlobalTheory.FrameGlue.exists_hom_of_frames | (intros; apply GlobalTheory.FrameGlue.exists_hom_of_frames <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FrameGlue.exists_hom_of_frames` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGlueMorphismOfCompatibleFrames.lean&line=57#L57)
 -/
 theorem _root_.GlobalTheory.T.glue_morphism_of_compatible_frames : ∀ (X : Scheme.{0}) (M M' : X.Modules) (r : ℕ) (ι : Type) (U : ι → X.Opens), (∀ x : X, ∃ i, x ∈ U i) →
     ∀ (f : ∀ i, Fin r → Γ(M, U i)) (hf : ∀ i, VB.IsFrame (f i)) (φ : ∀ i, Fin r → Γ(M', U i)),

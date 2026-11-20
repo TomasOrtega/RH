@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OmAOneApply
 open Matrix MeasureTheory ValuativeRel GlobalTheory.SplitFlip GlobalTheory.SmGL GlobalTheory.WeilM GlobalTheory.RankFibre GlobalTheory.SplitWeil GlobalTheory.RankFibreKer
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.compact_finite_leftCoset_reps | exact GlobalTheory.compact_finite_leftCoset_reps | (intros; apply GlobalTheory.compact_finite_leftCoset_reps <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.compact_finite_leftCoset_reps` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCompactCoveredByOpenCosets.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.compact_covered_by_open_cosets : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (K : Subgroup G), IsOpen (K : Set G) →
     ∀ C : Set G, IsCompact C →

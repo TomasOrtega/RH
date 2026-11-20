@@ -13,8 +13,10 @@ open GlobalTheory.Mum
 open GlobalTheory.Ex GlobalTheory.Mum.TensTor
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.TensTor.VExist.gtRelV_exists | exact GlobalTheory.Mum.TensTor.VExist.gtRelV_exists | (intros; apply GlobalTheory.Mum.TensTor.VExist.gtRelV_exists <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.TensTor.VExist.gtRelV_exists` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsTensorTorusPointOfComponentTuple.lean&line=67#L67)
 -/
 theorem _root_.GlobalTheory.T.exists_tensorTorusPoint_of_componentTuple : ∀ (F : Type) [Field F] (N N' : NumD F) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) (φ : N'.A → Fin r → N.A) (e : N'.X → Fin r → N.X) (wv : N'.A → F), TensFacts W φ e wv → ∀ vs : Fin r → N.Gt, ∃ v' : N'.Gt, GtRelV W φ e wv v' vs := by
   first | exact @GlobalTheory.Mum.TensTor.VExist.gtRelV_exists | exact GlobalTheory.Mum.TensTor.VExist.gtRelV_exists | (intros; apply GlobalTheory.Mum.TensTor.VExist.gtRelV_exists <;> assumption)

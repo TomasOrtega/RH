@@ -6,8 +6,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 open GlobalTheory GlobalTheory.CM
 
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.OntoSurj.surjective_of_onto_complex_points | exact GlobalTheory.OntoSurj.surjective_of_onto_complex_points | (intros; apply GlobalTheory.OntoSurj.surjective_of_onto_complex_points <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.OntoSurj.surjective_of_onto_complex_points` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FCubicalLineBundles%2FAbelianSchemeSurjectiveOfOntoComplexPoints.lean&line=43#L43)
 -/
 theorem _root_.GlobalTheory.T.abelianScheme_surjective_of_onto_complex_points : ∀ (R : Type) [CommRing R] [IsDomain R] (σ : R →+* ℂ), Function.Injective σ → ∀ (A B : Over (Sp R)) [GrpObj A] [GrpObj B] (Φ : B ⟶ A), IsAbelianScheme A → IsAbelianScheme B → (∀ y : Over.mk (spMap σ) ⟶ A, ∃ x : Over.mk (spMap σ) ⟶ B, y = x ≫ Φ) → Surjective Φ.left ∧ ∀ (k : Type) [Field k] [IsAlgClosed k] (t : Sp k ⟶ Sp R) (y : Over.mk t ⟶ A), ∃ x : Over.mk t ⟶ B, y = x ≫ Φ := by
   first | exact @GlobalTheory.OntoSurj.surjective_of_onto_complex_points | exact GlobalTheory.OntoSurj.surjective_of_onto_complex_points | (intros; apply GlobalTheory.OntoSurj.surjective_of_onto_complex_points <;> assumption)

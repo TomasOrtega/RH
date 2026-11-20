@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.ComponentMean
 import Formalism.SharpRestriction.Divisibility.LatticeTransfer
 open MvPolynomial Formalism.DegreeFormula Formalism.BasicNotions Formalism.BasicNotions.DV Formalism.MainNotions Formalism.MainNotions.WeightThresholdDefs Filter Topology Classical GlobalTheory.FlagPoly GlobalTheory.FlagAr GlobalTheory.Mean4
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mean4.EqualCoeff.shapeC_of_shapeT | exact GlobalTheory.Mean4.EqualCoeff.shapeC_of_shapeT | (intros; apply GlobalTheory.Mean4.EqualCoeff.shapeC_of_shapeT <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mean4.EqualCoeff.shapeC_of_shapeT` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FShapeChangeOfRelabelling.lean&line=122#L122)
 -/
 theorem _root_.GlobalTheory.T.shape_change_of_relabelling : ∀ (D : D7) (Y : ShimX D.what₂.Tau), ∀ (Φ : ℝ → Fn Y) (hh : Fn Y), 0 < Y.vol → Relabel Φ → FlagHt D.what₂.Tau Y.N hh → ShapeT Φ hh → ShapeC Φ hh := by
   first | exact @GlobalTheory.Mean4.EqualCoeff.shapeC_of_shapeT | exact GlobalTheory.Mean4.EqualCoeff.shapeC_of_shapeT | (intros; apply GlobalTheory.Mean4.EqualCoeff.shapeC_of_shapeT <;> assumption)

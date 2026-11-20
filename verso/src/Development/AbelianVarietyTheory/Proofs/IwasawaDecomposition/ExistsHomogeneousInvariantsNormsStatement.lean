@@ -7,8 +7,10 @@ open Formalism.MainNotions.DIV.Cons (intO)
 open GlobalTheory.LineNorm MonObj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.NormFam.norm_of_family | exact GlobalTheory.NormFam.norm_of_family | (intros; apply GlobalTheory.NormFam.norm_of_family <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.NormFam.norm_of_family` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsHomogeneousInvariantsNorms.lean&line=303#L303)
 -/
 theorem _root_.GlobalTheory.T.exists_homogeneous_invariants_norms : ∀ (A A' : Type) [CommRing A] [IsDomain A] [IsIntegrallyClosed A] [CharZero A] [CommRing A'] [IsDomain A'] [Algebra A A'] [Module.Finite A A'], Function.Injective (algebraMap A A') → ∀ (σ J : Type) [Fintype σ] [Fintype J] (ℓ : J → σ → A'), ∃ (d : ℕ+) (n : ℕ) (B : Fin n → MvPolynomial σ A), (∀ i, (B i).IsHomogeneous d) ∧ ∀ (C : Type) [NormedField C] [IsUltrametricDist C] [IsAlgClosed C] (x : A →+* C) (T : σ → C) (N : ℝ), (∀ x' : A' →+* C, x'.comp (algebraMap A A') = x → (⨆ j, ‖∑ s, x' (ℓ j s) * T s‖) = N) → N ^ (d : ℕ) = ⨆ i, ‖MvPolynomial.eval₂ x T (B i)‖ := by
   first | exact @GlobalTheory.NormFam.norm_of_family | exact GlobalTheory.NormFam.norm_of_family | (intros; apply GlobalTheory.NormFam.norm_of_family <;> assumption)

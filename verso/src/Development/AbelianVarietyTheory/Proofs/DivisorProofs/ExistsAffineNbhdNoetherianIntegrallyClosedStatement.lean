@@ -12,8 +12,10 @@ open GlobalTheory.ProjSpace GlobalTheory.UMin.ThBdl
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ZH.RatModel.exists_isAffineOpen_noetherian_integrallyClosed | exact GlobalTheory.ZH.RatModel.exists_isAffineOpen_noetherian_integrallyClosed | (intros; apply GlobalTheory.ZH.RatModel.exists_isAffineOpen_noetherian_integrallyClosed <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ZH.RatModel.exists_isAffineOpen_noetherian_integrallyClosed` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsAffineNbhdNoetherianIntegrallyClosed.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.exists_affine_nbhd_noetherian_integrallyClosed : ∀ (k Ω : Type) [CommRing k] [IsNoetherianRing k] [Field Ω] [Algebra k Ω] (M : RatModel k Ω), Geo.Tor.IsNormalScheme M.Z → ∀ (V : M.Z.Opens) (z : M.Z), z ∈ V → ∃ W : M.Z.Opens, IsAffineOpen W ∧ z ∈ W ∧ W ≤ V ∧ IsNoetherianRing (M.ringOn W) ∧ IsIntegrallyClosed (M.ringOn W) := by
   first | exact @GlobalTheory.ZH.RatModel.exists_isAffineOpen_noetherian_integrallyClosed | exact GlobalTheory.ZH.RatModel.exists_isAffineOpen_noetherian_integrallyClosed | (intros; apply GlobalTheory.ZH.RatModel.exists_isAffineOpen_noetherian_integrallyClosed <;> assumption)

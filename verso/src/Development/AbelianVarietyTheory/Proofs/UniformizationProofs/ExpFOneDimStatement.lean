@@ -14,8 +14,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UU
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UU.OneDim.expF_one_dim | exact GlobalTheory.UU.OneDim.expF_one_dim | (intros; apply GlobalTheory.UU.OneDim.expF_one_dim <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UU.OneDim.expF_one_dim` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUniformizationProofs%2FExpFOneDim.lean&line=95#L95)
 -/
 theorem _root_.GlobalTheory.T.expF_of_theta_degree_one : Laws → Laws2 → (AllPre fun {V} _ _ _ {D} {A} {G} _ _ U => ∀ θ f, U.Theta θ f → ∀ (th : LB.Sec (LPow A.A A.L ((1 : ℕ) : ℤ) (TFK (R := V) (Kbar V)))) (s₀ : Raw D (Kbar V) 1), U.PullG (Kbar V) (toUnit _) 1 θ th → PullB D (Kbar V) (toUnit _) 1 f s₀ → (∃ j, th.f j ≠ 0) ∧ U.ExpF (Kbar V) 1 th s₀ ∧ ∀ t s, U.ExpF (Kbar V) 1 t s → ∃ c : (Kbar V), ∀ α j, (s α).f j = DegPre.constBF D (Kbar V) c _ * (s₀ α).f j) := by
   first | exact @GlobalTheory.UU.OneDim.expF_one_dim | exact GlobalTheory.UU.OneDim.expF_one_dim | (intros; apply GlobalTheory.UU.OneDim.expF_one_dim <;> assumption)

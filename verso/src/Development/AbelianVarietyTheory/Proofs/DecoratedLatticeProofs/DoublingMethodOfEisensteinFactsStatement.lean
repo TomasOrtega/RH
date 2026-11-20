@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DoublingMe
 import Development.AbelianVarietyTheory.PublishedTheorems.SiegelWeil₂.SiegelEisensteinSimplePoleOfDoublingMethod
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsNormLeHeightPow
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.doublingMethod_of_three | exact GlobalTheory.doublingMethod_of_three | (intros; apply GlobalTheory.doublingMethod_of_three <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.doublingMethod_of_three` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FDoublingMethodOfEisensteinFacts.lean&line=8#L8)
 -/
 theorem _root_.GlobalTheory.T.doubling_method_of_eisenstein_facts : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.SiegelEisensteinContinuation → GlobalTheory.Published.SiegelEisensteinSimplePole → GlobalTheory.Published.DoublingMethod := by
   first | exact @GlobalTheory.doublingMethod_of_three | exact GlobalTheory.doublingMethod_of_three | (intros; apply GlobalTheory.doublingMethod_of_three <;> assumption)

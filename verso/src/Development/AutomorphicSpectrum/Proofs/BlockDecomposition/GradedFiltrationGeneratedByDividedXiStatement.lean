@@ -5,8 +5,10 @@ import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomology
 set_option backward.isDefEq.respectTransparency false
 open CategoryTheory GroundTheory.PAdicHodge CrystallineSemistableComparison CrystallineSemistableComparison.PAlg
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.PerfFil.graded_mod_pow | exact GlobalTheory.CompanionTheory.PerfFil.graded_mod_pow | (intros; apply GlobalTheory.CompanionTheory.PerfFil.graded_mod_pow <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.PerfFil.graded_mod_pow` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FGradedFiltrationGeneratedByDividedXi.lean&line=36#L36)
 -/
 theorem _root_.GlobalTheory.T.graded_filtration_generated_by_dividedXi : ∀ {l : ℕ} [Fact l.Prime] (A : PAlg l) (n r : ℕ), (∀ z ∈ A.Fil n r, ∃ w : A.W, z - A.toAcr n w * A.dxi n r ∈ A.Fil n (r + 1)) ∧ ∀ w : A.W, A.toAcr n w * A.dxi n r ∈ A.Fil n (r + 1) ↔ A.th w ∈ Ideal.span {(l : A.U) ^ n} := by
   first | exact @GlobalTheory.CompanionTheory.PerfFil.graded_mod_pow | exact GlobalTheory.CompanionTheory.PerfFil.graded_mod_pow | (intros; apply GlobalTheory.CompanionTheory.PerfFil.graded_mod_pow <;> assumption)

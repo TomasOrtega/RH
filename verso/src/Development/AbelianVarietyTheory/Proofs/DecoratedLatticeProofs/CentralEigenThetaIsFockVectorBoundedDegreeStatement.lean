@@ -9,8 +9,10 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.Un
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SeeSaw.CenFockPf.cenFock | exact GlobalTheory.SeeSaw.CenFockPf.cenFock | (intros; apply GlobalTheory.SeeSaw.CenFockPf.cenFock <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SeeSaw.CenFockPf.cenFock` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FCentralEigenThetaIsFockVectorBoundedDegree.lean&line=138#L138)
 -/
 theorem _root_.GlobalTheory.T.centralEigenTheta_isFockVector_bounded_degree : ∀ D : D7, CenFock D := by
   first | exact @GlobalTheory.SeeSaw.CenFockPf.cenFock | exact GlobalTheory.SeeSaw.CenFockPf.cenFock | (intros; apply GlobalTheory.SeeSaw.CenFockPf.cenFock <;> assumption)

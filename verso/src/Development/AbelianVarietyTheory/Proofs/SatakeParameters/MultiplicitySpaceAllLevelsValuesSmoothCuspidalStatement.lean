@@ -9,8 +9,10 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open scoped TensorProduct ComplexOrder
 open Formalism.IndefR Formalism.IndefR.Mult Formalism.L2.Theta Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MinfCusp.minf_val_autCusp | exact GlobalTheory.MinfCusp.minf_val_autCusp | (intros; apply GlobalTheory.MinfCusp.minf_val_autCusp <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MinfCusp.minf_val_autCusp` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FMultiplicitySpaceAllLevelsValuesSmoothCuspidal.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.multiplicitySpaceAllLevels_values_smooth_cuspidal : ∀ {D : D7} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) {V : Formalism.BasicNotions.TH.HSp D}
     {S : D.what₂.Tau → Formalism.BasicNotions.TH.SPar} {n : ℕ} (P : principalLevelFrame.RowPsi V n) (M : DSModel V S),

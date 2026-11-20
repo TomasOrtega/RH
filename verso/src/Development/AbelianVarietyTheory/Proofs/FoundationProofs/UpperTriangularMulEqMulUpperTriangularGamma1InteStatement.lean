@@ -7,8 +7,10 @@ open UpperHalfPlane ModularForm CongruenceSubgroup
 open scoped MatrixGroups ModularForm
 open GlobalTheory.HeckeFamilyMatrices
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Hk.tinv_fin_fin | exact GlobalTheory.Hk.tinv_fin_fin | (intros; apply GlobalTheory.Hk.tinv_fin_fin <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Hk.tinv_fin_fin` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FUpperTriangularMulEqMulUpperTriangularGamma1Inte.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.upperTriangular_mul_eq_mul_upperTriangular_gamma1InterGamma0 : ∀ (N l q j : ℕ) (γ : SL(2, ℤ)), q.Prime → ¬ q ∣ N * l → j < q → γ ∈ GlobalTheory.Hk.lev N l → ¬ (q : ℤ) ∣ mat γ 0 0 + j * mat γ 1 0 → ∃ j' < q, ∃ γ' ∈ GlobalTheory.Hk.lev N l, !![(1 : ℤ), (j : ℤ); 0, (q : ℤ)] * mat γ = mat γ' * !![(1 : ℤ), (j' : ℤ); 0, (q : ℤ)] := by
   first | exact @GlobalTheory.Hk.tinv_fin_fin | exact GlobalTheory.Hk.tinv_fin_fin | (intros; apply GlobalTheory.Hk.tinv_fin_fin <;> assumption)

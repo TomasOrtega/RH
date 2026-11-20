@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.MultiplicationKe
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PreEig
 open GlobalTheory.IndefiniteRowSideFullHecke.MultiplicationKernelIdentity GlobalTheory.HermitianPreEigenvalues Polynomial Module
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LenMap.relLen_map_iff | exact GlobalTheory.LenMap.relLen_map_iff | (intros; apply GlobalTheory.LenMap.relLen_map_iff <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LenMap.relLen_map_iff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHasLatticeRelativeLengthMapIff.lean&line=137#L137)
 -/
 theorem _root_.GlobalTheory.T.hasLatticeRelativeLength_map_iff : ∀ (C : Type) [Field C] (v : AddValuation C (WithTop ℝ)) (M M' : Type) [AddCommGroup M] [Module (Int0 v) M] [AddCommGroup M'] [Module (Int0 v) M'], (∀ (c : Int0 v) (x : M), c ≠ 0 → c • x = 0 → x = 0) → (∀ (c : Int0 v) (x : M'), c ≠ 0 → c • x = 0 → x = 0) → ∀ (f : M →ₗ[Int0 v] M') (X' X : Submodule (Int0 v) M), X' ≤ X → X ⊓ LinearMap.ker f ≤ X' → Module.Finite (Int0 v) X → Module.Finite (Int0 v) X' → ∀ r : ℝ, (RelLen v X' X r ↔ RelLen v (X'.map f) (X.map f) r) := by
   first | exact @GlobalTheory.LenMap.relLen_map_iff | exact GlobalTheory.LenMap.relLen_map_iff | (intros; apply GlobalTheory.LenMap.relLen_map_iff <;> assumption)

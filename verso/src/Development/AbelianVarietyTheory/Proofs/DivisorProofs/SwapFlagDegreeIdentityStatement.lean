@@ -8,8 +8,10 @@ open NumberField MvPolynomial Filter Topology Formalism.BasicNotions Formalism.M
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.ArInt
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CovTest.SwapZ.swapEq_flagZ | exact GlobalTheory.CovTest.SwapZ.swapEq_flagZ | (intros; apply GlobalTheory.CovTest.SwapZ.swapEq_flagZ <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CovTest.SwapZ.swapEq_flagZ` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSwapFlagDegreeIdentity.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.swap_flag_degree_identity : Hypotheses2 → GlobalTheory.Published.ArDegree → ∀ G, Homog G → SwapFl G → ∀ (D : D7) (Y : DV.ShimX D.what₂.Tau) (hh : Fn Y), GlobalTheory.FlagZ.IsHh D.what₂.Tau Y.N hh → SwapEq Y G hh (degFl D.what₂.Tau Y.N) := by
   first | exact @GlobalTheory.CovTest.SwapZ.swapEq_flagZ | exact GlobalTheory.CovTest.SwapZ.swapEq_flagZ | (intros; apply GlobalTheory.CovTest.SwapZ.swapEq_flagZ <;> assumption)

@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IMemSiegel
 open Matrix Complex GlobalTheory.SW
 open scoped ComplexConjugate Real
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SW.exists_weil_of_symplectic | exact GlobalTheory.SW.exists_weil_of_symplectic | (intros; apply GlobalTheory.SW.exists_weil_of_symplectic <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SW.exists_weil_of_symplectic` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSiegelThetaTransformation%2FExistsWeilOfSymplectic.lean&line=30#L30)
 -/
 theorem _root_.GlobalTheory.T.exists_weil_of_symplectic' : ∀ (κ ι : Type) [Fintype κ] [Fintype ι] [DecidableEq ι] (σ : Matrix (ι ⊕ ι) (ι ⊕ ι) ℚ), Even (Fintype.card κ) → σ ∈ Matrix.symplecticGroup ι ℚ → ∃ ω : (Matrix κ ι ℚ → ℂ) → (Matrix κ ι ℚ → ℂ), ∀ φ, IsSB φ → IsSB (ω φ) ∧ TransS σ φ (ω φ) ∧ ∀ φ', IsSB φ' → ip (ω φ) (ω φ') = ip φ φ' := by
   first | exact @GlobalTheory.SW.exists_weil_of_symplectic | exact GlobalTheory.SW.exists_weil_of_symplectic | (intros; apply GlobalTheory.SW.exists_weil_of_symplectic <;> assumption)

@@ -9,8 +9,10 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CongSplitBoth.split_cong_at_place | exact GlobalTheory.CongSplitBoth.split_cong_at_place | (intros; apply GlobalTheory.CongSplitBoth.split_cong_at_place <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CongSplitBoth.split_cong_at_place` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FPrincipalCongruenceSplitTrivOutsideAndAtPlace.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.principalCongruence_split_trivOutside_and_at_place : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (N : ℕ) (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (κ : GAf L n), NG.Cong L n N κ → ∃ x y : GAf L n, TrivOutside {v} x ∧ TrivOutside {v}ᶜ y ∧ NG.Cong L n N x ∧ NG.Cong L n N y ∧ κ = x * y := by
   first | exact @GlobalTheory.CongSplitBoth.split_cong_at_place | exact GlobalTheory.CongSplitBoth.split_cong_at_place | (intros; apply GlobalTheory.CongSplitBoth.split_cong_at_place <;> assumption)

@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsX
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj Formalism.BasicNotions.TH Formalism.L2.Theta ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.AllWt GlobalTheory.CompHt GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.Mean4 GlobalTheory.Mean4O
 open scoped ENNReal Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlatLimit.limVal | exact GlobalTheory.FlatLimit.limVal | (intros; apply GlobalTheory.FlatLimit.limVal <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlatLimit.limVal` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTendstoArithmeticDegreeFlagHomogeneous.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.tendsto_arithmetic_degree_flag_homogeneous : GlobalTheory.CovTop.HypothesesXH → Hypotheses2 → HypothesesH → GlobalTheory.Published.ScholzeWeinsteinB → OnObj fun D O A _ _ _ =>
     ∀ B : ℝ, 2 ≤ B → ∀ (τ : D.what₂.Tau) (Q : GlobalTheory.FlagPoly.Pol D.what₂.Tau O.Y.N),

@@ -11,8 +11,10 @@ open Matrix MeasureTheory NumberField Formalism.BasicNotions Formalism.MainNotio
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open Formalism.L2.SG.Pf.AmpWinLoc
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.pi_muNl_eq_dnB_image | exact GlobalTheory.pi_muNl_eq_dnB_image | (intros; apply GlobalTheory.pi_muNl_eq_dnB_image <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.pi_muNl_eq_dnB_image` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FPiPulledBackUnipotentMeasureEqBesselImage.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.pi_pulledBack_unipotentMeasure_eq_besselImage : ∀ (D : D7) (X : HidaSetting D) (θ : ℝ) (C : Choice X θ) (A : Set X.B.I.Ginf), 0 < θ → MeasurableSet A → Measure.pi (fun v => muNl C (X.pl v) v) A = Measure.pi (fun _ : D.what₂.Tau => muNB D θ) ((fun (x : X.B.I.Ginf) (τ : D.what₂.Tau) => (Matrix.of.symm (Formalism.L2.SG.RealObj.trG (C.Q τ) (C.Qi τ) (x (vOf X τ))) : Formalism.QuantumDeterminants.Mt D.R.k D.R.rS)) '' A) := by
   first | exact @GlobalTheory.pi_muNl_eq_dnB_image | exact GlobalTheory.pi_muNl_eq_dnB_image | (intros; apply GlobalTheory.pi_muNl_eq_dnB_image <;> assumption)

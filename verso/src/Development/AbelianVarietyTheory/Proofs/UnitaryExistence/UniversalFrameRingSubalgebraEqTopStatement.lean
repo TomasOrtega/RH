@@ -13,8 +13,10 @@ open NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRes
 open AlgebraicGeometry CategoryTheory Limits ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.Frames GlobalTheory.FrameUnif
 open scoped Matrix nonZeroDivisors
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.frameRing_subalgebra_eq_top | exact GlobalTheory.frameRing_subalgebra_eq_top | (intros; apply GlobalTheory.frameRing_subalgebra_eq_top <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.frameRing_subalgebra_eq_top` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUnitaryExistence%2FUniversalFrameRingSubalgebraEqTop.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.universalFrameRing_subalgebra_eq_top : ∀ (K : Type) [Field K] (J : Type) (m : J → ℕ) (R A : Type) [CommRing R] [Algebra K R] [CommRing A] [Algebra K A] (π : R →ₐ[K] A) (X : ∀ τ, Matrix (Fin (m τ)) (Fin (m τ)) A) (s : Aˣ), FrameRing m π X s → ∀ A' : Subalgebra K A, (∀ t, π t ∈ A') → (∀ τ i j, X τ i j ∈ A') → (s : A) ∈ A' → ((s⁻¹ : Aˣ) : A) ∈ A' → (∀ τ, ∃ d ∈ A', d * (X τ).det = 1) → A' = ⊤ := by
   first | exact @GlobalTheory.frameRing_subalgebra_eq_top | exact GlobalTheory.frameRing_subalgebra_eq_top | (intros; apply GlobalTheory.frameRing_subalgebra_eq_top <;> assumption)

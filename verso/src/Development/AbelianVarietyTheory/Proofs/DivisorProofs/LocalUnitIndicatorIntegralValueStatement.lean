@@ -14,8 +14,10 @@ open GlobalTheory.Doubling (absE absEv unitFin ideleAt)
 open scoped GlobalTheory.VacAny
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnrTate.integral_locId_eq_unrFac | exact GlobalTheory.UnrTate.integral_locId_eq_unrFac | (intros; apply GlobalTheory.UnrTate.integral_locId_eq_unrFac <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnrTate.integral_locId_eq_unrFac` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLocalUnitIndicatorIntegralValue.lean&line=99#L99)
 -/
 theorem _root_.GlobalTheory.T.local_unit_indicator_integral_value : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (ν : Chr F E)
     (𝔞 : FractionalIdeal (𝓞 E)⁰ E), 𝔞 ≠ 0 → ∀ v : Pl F, (∀ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) = v → UnrAt ν w) →

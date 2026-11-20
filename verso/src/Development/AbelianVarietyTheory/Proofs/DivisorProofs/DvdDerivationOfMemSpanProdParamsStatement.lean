@@ -12,8 +12,10 @@ open ReciprocityTheory.ChartRestriction.G.DVR.FlatBC (algX)
 open GlobalTheory.LogPole
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.dvd_derivation_of_mem_span_prod_params | exact GlobalTheory.dvd_derivation_of_mem_span_prod_params | (intros; apply GlobalTheory.dvd_derivation_of_mem_span_prod_params <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.dvd_derivation_of_mem_span_prod_params` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDvdDerivationOfMemSpanProdParams.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.dvd_derivation_of_mem_span_prod_params' : ∀ (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] [IsRegularLocalRing R] (m : ℕ) (r : Fin m → R), ReciprocityTheory.AnForm.R.FinalTheorems.Rsp R m r → ∀ (J : Finset (Fin m)) (D : Derivation ℤ R R), D (∏ j ∈ J, r j) ∈ Ideal.span {∏ j ∈ J, r j} → ∀ j ∈ J, r j ∣ D (r j) := by
   first | exact @GlobalTheory.dvd_derivation_of_mem_span_prod_params | exact GlobalTheory.dvd_derivation_of_mem_span_prod_params | (intros; apply GlobalTheory.dvd_derivation_of_mem_span_prod_params <;> assumption)

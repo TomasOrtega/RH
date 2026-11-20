@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftAt
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Geo.Tor
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SecGlue.exists_lift_of_chart_lifts | exact GlobalTheory.SecGlue.exists_lift_of_chart_lifts | (intros; apply GlobalTheory.SecGlue.exists_lift_of_chart_lifts <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SecGlue.exists_lift_of_chart_lifts` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsGlobalLiftOfChartLocalLiftsSquareZero.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.exists_global_lift_of_chartLocal_lifts_squareZero : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (π : R →+* R₀), Function.Surjective π → RingHom.ker π ^ 2 = ⊥ →
     ∀ (X : Over (Sp R)), Smooth X.hom → ∀ g₀ : Sp R₀ ⟶ X.left, g₀ ≫ X.hom = spMap π →

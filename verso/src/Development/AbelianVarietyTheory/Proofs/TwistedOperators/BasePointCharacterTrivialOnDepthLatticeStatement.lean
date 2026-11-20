@@ -10,8 +10,10 @@ open GlobalTheory.FinPl (Lat idAt idOff intAt grpAt grpOff MxAt latV latA InK Mo
 open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AscFin.pcBF_xZero_char | exact GlobalTheory.AscFin.pcBF_xZero_char | (intros; apply GlobalTheory.AscFin.pcBF_xZero_char <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AscFin.pcBF_xZero_char` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FBasePointCharacterTrivialOnDepthLattice.lean&line=37#L37)
 -/
 theorem _root_.GlobalTheory.T.base_point_character_trivial_on_depth_lattice : OnStd fun {D} _ _ {sc} {G} W F => ∀ ρ (h : 2 * ρ + 2 ≤ D.R.m), ∀ u ∈ latRow G (2 * ρ + 1), W.ψ (symplO (G.V (.grid (2 * ρ + 2) 0)) (G.V (.grid (2 * ρ + 1) 0)) ((F.dB ρ h).extX (G.V (.grid (2 * ρ + 1) 0)) (xZero (F.dJ ρ h))) ((F.dB ρ h).extY (G.V (.grid (2 * ρ + 1) 0)) (u ⬝ (F.dB ρ h).jY))) = 1 := by
   first | exact @GlobalTheory.AscFin.pcBF_xZero_char | exact GlobalTheory.AscFin.pcBF_xZero_char | (intros; apply GlobalTheory.AscFin.pcBF_xZero_char <;> assumption)

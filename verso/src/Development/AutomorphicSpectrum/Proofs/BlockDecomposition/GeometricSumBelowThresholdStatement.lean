@@ -5,8 +5,10 @@ import PositivityTheory.AutomorphicForms.PublishedInputs.CuspidalContinuity.Arch
 open MeasureTheory Matrix GroundTheory.LocalField GroundTheory.Automorphic
 open scoped ValuativeRel ENNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.GeomSum.tsum_zpow_le_rpow_div | exact GlobalTheory.CompanionTheory.GeomSum.tsum_zpow_le_rpow_div | (intros; apply GlobalTheory.CompanionTheory.GeomSum.tsum_zpow_le_rpow_div <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.GeomSum.tsum_zpow_le_rpow_div` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FGeometricSumBelowThreshold.lean&line=8#L8)
 -/
 theorem _root_.GlobalTheory.T.geometric_sum_below_threshold : ∀ (q s Y : ℝ), 1 < q → 0 < s → 0 < Y → (∑' n : ℤ, (if q ^ n ≤ Y then ENNReal.ofReal (q ^ (s * (n : ℝ))) else 0)) ≤ ENNReal.ofReal (Y ^ s / (1 - q ^ (-s))) := by
   first | exact @GlobalTheory.CompanionTheory.GeomSum.tsum_zpow_le_rpow_div | exact GlobalTheory.CompanionTheory.GeomSum.tsum_zpow_le_rpow_div | (intros; apply GlobalTheory.CompanionTheory.GeomSum.tsum_zpow_le_rpow_div <;> assumption)

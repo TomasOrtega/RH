@@ -12,8 +12,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.heisenberg_preimage_haar | exact GlobalTheory.heisenberg_preimage_haar | (intros; apply GlobalTheory.heisenberg_preimage_haar <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.heisenberg_preimage_haar` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLocallyCompactGroupFubiniSchwartz.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.locally_compact_group_fubini_schwartz : ∀ {G V Z : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G]
   [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGroup V] [LocallyCompactSpace V] [SecondCountableTopology V] [T2Space V] [MeasurableSpace V] [BorelSpace V]

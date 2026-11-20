@@ -12,8 +12,10 @@ open scoped TensorProduct
 open IsLocalRing
 universe u
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HTSummand.summand_of_liftedCoords | exact GlobalTheory.HTSummand.summand_of_liftedCoords | (intros; apply GlobalTheory.HTSummand.summand_of_liftedCoords <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HTSummand.summand_of_liftedCoords` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsSigmaStableSummandFromLiftedEigenCoords.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.exists_sigmaStable_summand_from_lifted_eigenCoords : ∀ {C : Type} [CommRing C] (I : Ideal C), I ^ 2 = ⊥ →
   ∀ {A : Type} [CommRing A] {H : Type u} [AddCommGroup H] [Module C H]

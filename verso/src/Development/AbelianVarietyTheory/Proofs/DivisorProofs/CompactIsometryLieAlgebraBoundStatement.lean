@@ -4,8 +4,10 @@ import Mathlib
 open scoped Matrix
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UniformLieDecomp.decomp | exact GlobalTheory.UniformLieDecomp.decomp | (intros; apply GlobalTheory.UniformLieDecomp.decomp <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UniformLieDecomp.decomp` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCompactIsometryLieAlgebraBound.lean&line=80#L80)
 -/
 theorem _root_.GlobalTheory.T.compact_isometry_lie_algebra_bound : ∀ (n : ℕ) (A R : Matrix (Fin n) (Fin n) ℂ) (ε : Fin n → Bool), Aᴴ = A →
     Rᴴ * A * R = Matrix.diagonal (fun i => if ε i then (1 : ℂ) else -1) →

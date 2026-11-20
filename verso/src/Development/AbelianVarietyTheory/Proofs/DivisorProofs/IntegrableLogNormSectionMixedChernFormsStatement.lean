@@ -13,8 +13,10 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.R
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points GlobalTheory.CechPic GlobalTheory.ChartGlue GlobalTheory.Mix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MixLogSec.intg_logSec | exact GlobalTheory.MixLogSec.intg_logSec | (intros; apply GlobalTheory.MixLogSec.intg_logSec <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MixLogSec.intg_logSec` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIntegrableLogNormSectionMixedChernForms.lean&line=85#L85)
 -/
 theorem _root_.GlobalTheory.T.integrable_logNormSection_mixedChernForms : ∀ (F : Type) [Field F] (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (p : X ⟶ Sp F) (σ : F →+* ℂ) (D : ℕ), IsProjOver p → SmoothOfRelativeDimension D p → ∀ (L : Fin D → MLine p σ) (M : MLine p σ) (s : M.B.Sec), genericPoint X ∈ nonzeroLocus s → Intg L (M.logSec s) := by
   first | exact @GlobalTheory.MixLogSec.intg_logSec | exact GlobalTheory.MixLogSec.intg_logSec | (intros; apply GlobalTheory.MixLogSec.intg_logSec <;> assumption)

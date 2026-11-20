@@ -14,8 +14,10 @@ open scoped CategoryTheory.Obj
 open ReciprocityTheory.AnForm.R GlobalTheory.ZH GlobalTheory.Poinc GlobalTheory.Poinc.Sep
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SplitPow.splitExtensionModuloIdeal_eighth_power | exact GlobalTheory.SplitPow.splitExtensionModuloIdeal_eighth_power | (intros; apply GlobalTheory.SplitPow.splitExtensionModuloIdeal_eighth_power <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SplitPow.splitExtensionModuloIdeal_eighth_power` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSplitExtensionModuloIdealEighthPower.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.splitOver_powObj_eight : ∀ (R : Type) [CommRing R] (G₀ : Over (Sp R)) [GrpObj G₀] [IsCommMonObj G₀] (I : Ideal R), GlobalTheory.LN.SplitOver G₀ I → GlobalTheory.LN.SplitOver (powObj G₀ 8) I := by
   first | exact @GlobalTheory.SplitPow.splitExtensionModuloIdeal_eighth_power | exact GlobalTheory.SplitPow.splitExtensionModuloIdeal_eighth_power | (intros; apply GlobalTheory.SplitPow.splitExtensionModuloIdeal_eighth_power <;> assumption)

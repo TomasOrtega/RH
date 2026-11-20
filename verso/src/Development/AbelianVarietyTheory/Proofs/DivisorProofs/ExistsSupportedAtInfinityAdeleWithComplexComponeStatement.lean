@@ -9,8 +9,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBasisAdaptedT
 open scoped TensorProduct Matrix
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RealLift.exists_atInf_piInf_eq | exact GlobalTheory.RealLift.exists_atInf_piInf_eq | (intros; apply GlobalTheory.RealLift.exists_atInf_piInf_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RealLift.exists_atInf_piInf_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsSupportedAtInfinityAdeleWithComplexCompone.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.exists_supportedAtInfinity_adele_with_complexComponents : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     IsCMExt F E σ → ∀ (emb : ∀ w : InfinitePlace F, EmbOver E w) (f : InfinitePlace F → ℂ),

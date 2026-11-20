@@ -9,8 +9,10 @@ open GlobalTheory.QFam GlobalTheory.WpFam GlobalTheory.KZ GlobalTheory.FN
 open ReciprocityTheory.ChartRestriction.L1 (DD jT IsMF)
 open ModularForm (E₄ E₆)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FN.jT_level_one | exact GlobalTheory.FN.jT_level_one | (intros; apply GlobalTheory.FN.jT_level_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FN.jT_level_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FJTLevelOne.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.lv_jT_one_and_jT_smul_eq : ∀ E : Subring ℂ, Lv E 1 1 jT ∧ ∀ (γ : SL(2, ℤ)) (τ : ℍ), jT (γ • τ) = jT τ := by
   first | exact @GlobalTheory.FN.jT_level_one | exact GlobalTheory.FN.jT_level_one | (intros; apply GlobalTheory.FN.jT_level_one <;> assumption)

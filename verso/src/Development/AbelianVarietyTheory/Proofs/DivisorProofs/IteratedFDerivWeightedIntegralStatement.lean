@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IteratedFDerivWeigh
 import Mathlib
 open MeasureTheory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.iteratedFDeriv_integral_smul_schwartz | exact GlobalTheory.iteratedFDeriv_integral_smul_schwartz | (intros; apply GlobalTheory.iteratedFDeriv_integral_smul_schwartz <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.iteratedFDeriv_integral_smul_schwartz` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIteratedFDerivWeightedIntegral.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.iteratedFDeriv_weighted_integral : ∀ {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     {W : Type} [MeasurableSpace W] (μ : Measure W) (Φ : W → SchwartzMap V ℂ) (φ : W → ℂ),

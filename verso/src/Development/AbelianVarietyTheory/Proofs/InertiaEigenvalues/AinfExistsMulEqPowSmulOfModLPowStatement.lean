@@ -24,8 +24,10 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 open scoped Formalism.Per NNReal
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AinfInvLim.exists_mul_eq_smul_one | exact GlobalTheory.AinfInvLim.exists_mul_eq_smul_one | (intros; apply GlobalTheory.AinfInvLim.exists_mul_eq_smul_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AinfInvLim.exists_mul_eq_smul_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FAinfExistsMulEqPowSmulOfModLPow.lean&line=31#L31)
 -/
 theorem _root_.GlobalTheory.T.ainf_exists_mul_eq_pow_smul_of_mod_lPow : ∀ (l : ℕ) [Fact l.Prime] (d M : ℕ) (τ : Ainf l) (Y : Matrix (Fin d) (Fin d) (Ainf l)), IsUnit (Y.map (inclW l)) → (∀ n, ∃ Q : Matrix (Fin d) (Fin d) (Ainf l), ∀ i j, (l : WCb l) ^ n ∣ (Y.map (inclW l) * Q.map (inclW l) - inclW l τ ^ M • (1 : Matrix (Fin d) (Fin d) (WCb l))) i j) → ∃ Y' : Matrix (Fin d) (Fin d) (Ainf l), Y * Y' = τ ^ M • (1 : Matrix (Fin d) (Fin d) (Ainf l)) := by
   first | exact @GlobalTheory.AinfInvLim.exists_mul_eq_smul_one | exact GlobalTheory.AinfInvLim.exists_mul_eq_smul_one | (intros; apply GlobalTheory.AinfInvLim.exists_mul_eq_smul_one <;> assumption)

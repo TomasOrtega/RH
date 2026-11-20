@@ -18,8 +18,10 @@ open ReciprocityTheory.Def (Z1 B1 H1)
 open TensorProduct
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.admissible_eventually_iff_mem_cls | exact GlobalTheory.admissible_eventually_iff_mem_cls | (intros; apply GlobalTheory.admissible_eventually_iff_mem_cls <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.admissible_eventually_iff_mem_cls` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FCocycleClassAdmissible.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.cocycle_class_admissible : ∀ {l : ℕ} [Fact l.Prime] {P : LocPrime l} (S : TopSit P) {M : Type} [AddCommGroup M]
     [Module S.O M] (W : Representation S.O S.G M) (X : Type) [AddCommGroup X] [Module S.O X] [Finite X],

@@ -14,8 +14,10 @@ open scoped Matrix
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LineGroupPair.archOp_oneParam_pair | exact GlobalTheory.LineGroupPair.archOp_oneParam_pair | (intros; apply GlobalTheory.LineGroupPair.archOp_oneParam_pair <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LineGroupPair.archOp_oneParam_pair` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FUnitaryArchimedeanLinePairOperatorsOneParameter.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.unitaryArchimedeanLine_pair_operators_oneParameter : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (χX χW : Chr F E) (om : Rep σ X W),

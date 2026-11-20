@@ -10,8 +10,10 @@ open ReciprocityTheory.ChartRestriction.G.I2 (polyDeriv)
 open scoped TensorProduct ComplexConjugate Real Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Ker.SignVac.isLatVac_iff | exact GlobalTheory.Ker.SignVac.isLatVac_iff | (intros; apply GlobalTheory.Ker.SignVac.isLatVac_iff <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Ker.SignVac.isLatVac_iff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSiegelThetaTransformation%2FIsLatticeVacuumIffSignedRationalFixed.lean&line=167#L167)
 -/
 theorem _root_.GlobalTheory.T.isLatticeVacuum_iff_signedRational_fixed : ∀ (D : D7) (S T : HSp D) (C : Ctx S T), ∀ w : D.host.E, IsIntegral ℤ w → w + cc w = 1 → IdemTwo w → ∀ (M : ℕ), ∀ Λ ∈ Vset D.host.E S.rank M, ∀ L : Lt D.host.E T.rank, SelfD C.X L → ∀ f, C.IsTh f → (IsLatVac (heisO C.ψ S T) (hatA S T (tens Λ L)) f ↔ ∀ y ∈ tens Λ L, epsW C.X w y • C.rho (finW S T y) f = f) := by
   first | exact @GlobalTheory.Ker.SignVac.isLatVac_iff | exact GlobalTheory.Ker.SignVac.isLatVac_iff | (intros; apply GlobalTheory.Ker.SignVac.isLatVac_iff <;> assumption)

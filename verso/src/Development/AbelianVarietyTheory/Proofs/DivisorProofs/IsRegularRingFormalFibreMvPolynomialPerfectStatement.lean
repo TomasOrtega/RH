@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsRegularRingFormal
 import Mathlib
 open IsLocalRing TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.isRegularRing_adicCompletion_tensor_of_mvPolynomial | exact GlobalTheory.isRegularRing_adicCompletion_tensor_of_mvPolynomial | (intros; apply GlobalTheory.isRegularRing_adicCompletion_tensor_of_mvPolynomial <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.isRegularRing_adicCompletion_tensor_of_mvPolynomial` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsRegularRingFormalFibreMvPolynomialPerfect.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.isRegularRing_formal_fibre_mvPolynomial_perfect : ∀ (Λ : Type) [CommRing Λ] [IsDomain Λ] [IsRegularRing Λ] [PerfectField (FractionRing Λ)] (n : ℕ) (P : Ideal (MvPolynomial (Fin n) Λ)) [P.IsPrime] (K : Type) [Field K] [Algebra (Localization.AtPrime P) K] [Algebra.EssFiniteType (Localization.AtPrime P) K], (∀ a : Λ, algebraMap (Localization.AtPrime P) K (algebraMap Λ (Localization.AtPrime P) a) = 0 → a = 0) → IsRegularRing (AdicCompletion (maximalIdeal (Localization.AtPrime P)) (Localization.AtPrime P) ⊗[Localization.AtPrime P] K) := by
   first | exact @GlobalTheory.isRegularRing_adicCompletion_tensor_of_mvPolynomial | exact GlobalTheory.isRegularRing_adicCompletion_tensor_of_mvPolynomial | (intros; apply GlobalTheory.isRegularRing_adicCompletion_tensor_of_mvPolynomial <;> assumption)

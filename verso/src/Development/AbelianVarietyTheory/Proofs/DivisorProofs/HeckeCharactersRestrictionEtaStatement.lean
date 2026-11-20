@@ -7,8 +7,10 @@ open scoped TensorProduct
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WeilExGen.exists_isWeil | exact GlobalTheory.WeilExGen.exists_isWeil | (intros; apply GlobalTheory.WeilExGen.exists_isWeil <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WeilExGen.exists_isWeil` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHeckeCharactersRestrictionEta.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.hecke_characters_restriction_eta : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E), B.IsGood σ → ∀ (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (r s r' s' : ℕ),

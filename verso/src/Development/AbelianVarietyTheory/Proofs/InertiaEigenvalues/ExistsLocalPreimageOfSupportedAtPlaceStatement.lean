@@ -12,8 +12,10 @@ open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RawLift
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RawLift.suppF_finIdem_mem_range | exact GlobalTheory.RawLift.suppF_finIdem_mem_range | (intros; apply GlobalTheory.RawLift.suppF_finIdem_mem_range <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RawLift.suppF_finIdem_mem_range` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FExistsLocalPreimageOfSupportedAtPlace.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.exists_local_preimage_of_supportedAtPlace : ∀ (D : D7) (V : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F)) (f : AE D), IsFinIdem D v f → ∀ k : GA D V, SuppF V f k → ∃ a : GlobalTheory.FinZeta.Gv V v, GlobalTheory.FinZeta.embV V v a = k := by
   first | exact @GlobalTheory.RawLift.suppF_finIdem_mem_range | exact GlobalTheory.RawLift.suppF_finIdem_mem_range | (intros; apply GlobalTheory.RawLift.suppF_finIdem_mem_range <;> assumption)

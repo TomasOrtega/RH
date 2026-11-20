@@ -10,8 +10,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.CechPic GlobalTheory.QCoh GlobalTheory.LogPair
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LogPair.isEtCoord_baseChange | exact GlobalTheory.LogPair.isEtCoord_baseChange | (intros; apply GlobalTheory.LogPair.isEtCoord_baseChange <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LogPair.isEtCoord_baseChange` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsEtaleCoordinatesOnOpenBaseChangePreimage.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.isEtaleCoordinatesOnOpen_baseChange_preimage : ∀ (R R' : Type) [CommRing R] [CommRing R'] (φ : R →+* R') (X X' : Scheme.{0}) (f : X ⟶ Sp R) (f' : X' ⟶ Sp R') (π : X' ⟶ X) (U : X.Opens) (d : ℕ) (t : Fin d → Γ(X, U)), IsPullback π f' f (spMap φ) → IsAffineOpen U → IsEtCoord f U t → IsAffineOpen (π ⁻¹ᵁ U) ∧ IsEtCoord f' (π ⁻¹ᵁ U) (fun a => (π.app U).hom (t a)) := by
   first | exact @GlobalTheory.LogPair.isEtCoord_baseChange | exact GlobalTheory.LogPair.isEtCoord_baseChange | (intros; apply GlobalTheory.LogPair.isEtCoord_baseChange <;> assumption)

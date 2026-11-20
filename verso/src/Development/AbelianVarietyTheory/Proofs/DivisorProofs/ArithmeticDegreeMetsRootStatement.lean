@@ -6,8 +6,10 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 open scoped ENNReal Classical
 open MvPolynomial Formalism.DegreeFormula Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalTheory.FlagPoly GlobalTheory.FlagAr Filter Topology
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ShFam.GalRelab.arDeg_relabel | exact GlobalTheory.ShFam.GalRelab.arDeg_relabel | (intros; apply GlobalTheory.ShFam.GalRelab.arDeg_relabel <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ShFam.GalRelab.arDeg_relabel` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FArithmeticDegreeMetsRoot.lean&line=106#L106)
 -/
 theorem _root_.GlobalTheory.T.arithmetic_degree_mets_root : Hypotheses2 → HypothesesH → ∀ (D : D7) (O : Setup D), O.Core → ∀ τ τ' : D.what₂.Tau, ∃ σ : Equiv.Perm D.what₂.Tau, σ τ = τ' ∧ ∀ x : GlobalTheory.ShFam.ToroidalCompactificationData O.s, ∃ x' : GlobalTheory.ShFam.ToroidalCompactificationData O.s, ∀ (B R : ℝ) (u : D.what₂.Tau → Fin O.N → ℝ), (GlobalTheory.ShFam.Pad.arIn O.s O.Φ (GlobalTheory.ShFam.metsOf x O.Φ)).arDeg (GlobalTheory.FlagAr.setB O.Y B) R (linRoot (fun ρ i => u (σ ρ) i) ^ (Formalism.DegreeFormula.dimFl D.what₂.Tau O.N + 1)) = (GlobalTheory.ShFam.Pad.arIn O.s O.Φ (GlobalTheory.ShFam.metsOf x' O.Φ)).arDeg (GlobalTheory.FlagAr.setB O.Y B) R (linRoot u ^ (Formalism.DegreeFormula.dimFl D.what₂.Tau O.N + 1)) := by
   first | exact @GlobalTheory.ShFam.GalRelab.arDeg_relabel | exact GlobalTheory.ShFam.GalRelab.arDeg_relabel | (intros; apply GlobalTheory.ShFam.GalRelab.arDeg_relabel <;> assumption)

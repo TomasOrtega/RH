@@ -5,8 +5,10 @@ import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
 import Formalism.SharpRestriction.LevelLetterCocycles.TableLineDegreeTwo
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions Formalism.MainNotions.N
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CrysCharJumps.adm20_of_fonOf | exact GlobalTheory.CrysCharJumps.adm20_of_fonOf | (intros; apply GlobalTheory.CrysCharJumps.adm20_of_fonOf <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CrysCharJumps.adm20_of_fonOf` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FCrystallineCharactersGivenJumpsUnramifiedTwists.lean&line=127#L127)
 -/
 theorem _root_.GlobalTheory.T.crystalline_characters_given_jumps_unramified_twists : ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW), Formalism.MainNotions.tableLineDegreeTwo.adm20 D HW F := by
   first | exact @GlobalTheory.CrysCharJumps.adm20_of_fonOf | exact GlobalTheory.CrysCharJumps.adm20_of_fonOf | (intros; apply GlobalTheory.CrysCharJumps.adm20_of_fonOf <;> assumption)

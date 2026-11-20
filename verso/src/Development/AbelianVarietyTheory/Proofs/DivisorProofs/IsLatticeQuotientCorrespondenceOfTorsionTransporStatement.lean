@@ -9,8 +9,10 @@ open NumberField GlobalTheory.QFam GlobalTheory.WpFam GlobalTheory.LatVal Recipr
 open GlobalTheory.CMVal GlobalTheory.HeckeGal
 open ModularForm (E₄ E₆)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WpFam.TrIs.main | exact GlobalTheory.WpFam.TrIs.main | (intros; apply GlobalTheory.WpFam.TrIs.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WpFam.TrIs.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsLatticeQuotientCorrespondenceOfTorsionTranspor.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.isLatticeQuotientCorrespondence_of_torsionTransport : ∀ (K : Type) [Field K] [NumberField K] (ι : K →+* ℂ) (g : ℂ ≃+* ℂ) (t : (Af K)ˣ) (Λ₀ Λ₁ : PeriodPair) (Ω₀ Ω₁ : ℂ), TorsTransport ι g t Λ₀ Λ₁ Ω₀ Ω₁ → IsTr ι Λ₀ Λ₁ (Tr t) := by
   first | exact @GlobalTheory.WpFam.TrIs.main | exact GlobalTheory.WpFam.TrIs.main | (intros; apply GlobalTheory.WpFam.TrIs.main <;> assumption)

@@ -6,8 +6,10 @@ open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open Formalism.IndefR.RecTie Formalism.IndefR.Lev Formalism.L2.Rows GlobalTheory.Mem GlobalTheory.Mem.R3
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CoefDim.finrank_coef_eq_prod | exact GlobalTheory.CoefDim.finrank_coef_eq_prod | (intros; apply GlobalTheory.CoefDim.finrank_coef_eq_prod <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CoefDim.finrank_coef_eq_prod` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FFinrankCoefficientSpaceEqProdRealModels.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.finrank_coefficient_space_eq_prod_real_models : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), R.BaseW F → Module.finrank ℂ R.cX.W = ∏ τ, Module.finrank ℂ (R.MX.H τ) := by
   first | exact @GlobalTheory.CoefDim.finrank_coef_eq_prod | exact GlobalTheory.CoefDim.finrank_coef_eq_prod | (intros; apply GlobalTheory.CoefDim.finrank_coef_eq_prod <;> assumption)

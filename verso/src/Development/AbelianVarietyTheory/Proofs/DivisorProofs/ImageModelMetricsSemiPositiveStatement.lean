@@ -15,8 +15,10 @@ open scoped ENNReal Classical
 open CategoryTheory AlgebraicGeometry
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ImageModelSemi.semiPos_of_isModelOf | exact GlobalTheory.ImageModelSemi.semiPos_of_isModelOf | (intros; apply GlobalTheory.ImageModelSemi.semiPos_of_isModelOf <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ImageModelSemi.semiPos_of_isModelOf` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FImageModelMetricsSemiPositive.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.imageModel_metrics_semiPositive : ∀ (K V Ω : Type) [Field K] [NumberField K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [Field Ω] [Algebra K Ω] (Nm : (K →+* ℂ) → V → ℝ) (W : Submodule (𝓞 K) V) (ev : V →ₗ[K] Ω) (D : ℕ) (X : AlgebraicGeometry.Scheme.{0}) [AlgebraicGeometry.IsIntegral X] (p : X ⟶ Sp (𝓞 K)) (L : GlobalTheory.HermLB p) (ψ : Ω →+* X.functionField) (s : W → L.B.Sec), GlobalTheory.ImageModel.IsModelOf Nm W ev D p L ψ s → ev ≠ 0 → L.SemiPos D := by
   first | exact @GlobalTheory.ImageModelSemi.semiPos_of_isModelOf | exact GlobalTheory.ImageModelSemi.semiPos_of_isModelOf | (intros; apply GlobalTheory.ImageModelSemi.semiPos_of_isModelOf <;> assumption)

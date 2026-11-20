@@ -6,8 +6,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Stan
 open GlobalTheory.IndefiniteRowSideFullHecke.AppendedVectorData (lastKer InDual)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FinPl.ExtZero.isThetaFunO_sliceT | exact GlobalTheory.FinPl.ExtZero.isThetaFunO_sliceT | (intros; apply GlobalTheory.FinPl.ExtZero.isThetaFunO_sliceT <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FinPl.ExtZero.isThetaFunO_sliceT` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FIsThetaFunOTargetSliceOrthogonalSum.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.isThetaFunO_target_slice_orthogonal_sum : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S A L T : HSp D) (o : OrthDec S A L) (f : WO T S → ℂ) (y : WO T L), IsThetaFunO ψ T S f → IsThetaFunO ψ T A (fun w => f ((o.resT T).symm (w, y))) := by
   first | exact @GlobalTheory.FinPl.ExtZero.isThetaFunO_sliceT | exact GlobalTheory.FinPl.ExtZero.isThetaFunO_sliceT | (intros; apply GlobalTheory.FinPl.ExtZero.isThetaFunO_sliceT <;> assumption)

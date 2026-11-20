@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoordMeasure
 open MeasureTheory
 open scoped NNReal ENNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TwoSidedInv.isMulLeftInvariant_of_parabolic | exact GlobalTheory.TwoSidedInv.isMulLeftInvariant_of_parabolic | (intros; apply GlobalTheory.TwoSidedInv.isMulLeftInvariant_of_parabolic <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TwoSidedInv.isMulLeftInvariant_of_parabolic` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCompactTorusQuotientMeasure.lean&line=102#L102)
 -/
 theorem _root_.GlobalTheory.T.compact_torus_quotient_measure : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G]
     [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G]

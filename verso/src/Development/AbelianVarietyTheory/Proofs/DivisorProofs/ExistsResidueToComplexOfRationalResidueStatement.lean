@@ -9,8 +9,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.Discrepancy GlobalTheory.FieldPair
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FieldPair.exists_residue_complex | exact GlobalTheory.FieldPair.exists_residue_complex | (intros; apply GlobalTheory.FieldPair.exists_residue_complex <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FieldPair.exists_residue_complex` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsResidueToComplexOfRationalResidue.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.exists_residue_to_complex_of_rationalResidue : ∀ {K : Type} [Field K] [Algebra ℂ K] (R : Subring K) (h : IsLocModel (algebraMap ℂ K) R),
   RatRes (algebraMap ℂ K) R →

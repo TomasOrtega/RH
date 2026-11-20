@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Proofs.ThetaFamilyOrigin.ExistsStarNormL
 open IsLocalRing GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.Poinc
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.exists_cm_trace_tensor | exact GlobalTheory.exists_cm_trace_tensor | (intros; apply GlobalTheory.exists_cm_trace_tensor <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.exists_cm_trace_tensor` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsCmIntegralAveragingTraceTensor.lean&line=54#L54)
 -/
 theorem _root_.GlobalTheory.T.exists_cm_integral_averaging_traceTensor : ∀ (E : Type) [Field E] [NumberField E] [NumberField.IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E), ∃ (n c : ℕ) (b : Fin n → NumberField.RingOfIntegers E) (T : Matrix (Fin n) (Fin n) ℤ), 0 < c ∧ (∀ s t, T s t = T t s) ∧ (∀ (a : NumberField.RingOfIntegers E) (g : NumberField.RingOfIntegers E →ₗ[ℤ] NumberField.RingOfIntegers E →ₗ[ℤ] ℤ), ∑ s, ∑ t, T s t * g (b s * a) (b t) = ∑ s, ∑ t, T s t * g (b s) (b t * H.bar a)) ∧ ∑ s, ∑ t, T s t • (H.bar (b s) * b t) = (c : NumberField.RingOfIntegers E) ∧ ∀ v : Fin n → ℤ, v ≠ 0 → 0 < ∑ s, ∑ t, T s t * v s * v t := by
   first | exact @GlobalTheory.exists_cm_trace_tensor | exact GlobalTheory.exists_cm_trace_tensor | (intros; apply GlobalTheory.exists_cm_trace_tensor <;> assumption)

@@ -10,8 +10,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj TensorProduct
 open GlobalTheory.ZM
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SmoothDedekind.smoothOfRelativeDimension_of_flat_of_tangent_le | exact GlobalTheory.SmoothDedekind.smoothOfRelativeDimension_of_flat_of_tangent_le | (intros; apply GlobalTheory.SmoothDedekind.smoothOfRelativeDimension_of_flat_of_tangent_le <;> assumpti …`.
+/- English proof (citation)
+Apply `GlobalTheory.SmoothDedekind.smoothOfRelativeDimension_of_flat_of_tangent_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FModuliProofs%2FSmoothOfRelativeDimensionOfFlatDedekindTangentLe.lean&line=214#L214)
 -/
 theorem _root_.GlobalTheory.T.smoothOfRelativeDimension_of_flat_dedekind_tangent_le : ∀ (o : Type) [CommRing o] [IsDedekindDomain o] [CharZero o] (X : Scheme.{0}) (s : X ⟶ Sp o) (d : ℕ), Algebra.FiniteType ℤ o → Flat s → LocallyOfFiniteType s → (∀ (R : Type) [CommRing R] [Algebra o R] (x : Sp R ⟶ X), IsOpenImmersion x → x ≫ s = spMap (algebraMap o R) → ∀ q ∈ minimalPrimes (FractionRing o ⊗[o] R), (d : WithBot ℕ∞) ≤ ringKrullDim ((FractionRing o ⊗[o] R) ⧸ q)) → (∀ (K : Type) [Field K] [IsAlgClosed K] (r : ℕ) (β : o →+* K) (x : Sp (TrivSqZeroExt K (Fin r → K)) ⟶ X), x ≫ s = spMap ((algebraMap K (TrivSqZeroExt K (Fin r → K))).comp β) → (∀ lam : (Fin r → K) →ₗ[K] K, spMap (dirMap lam) ≫ x = constPt (spMap (dirMap lam) ≫ x) → lam = 0) → r ≤ d) → SmoothOfRelativeDimension d s := by
   first | exact @GlobalTheory.SmoothDedekind.smoothOfRelativeDimension_of_flat_of_tangent_le | exact GlobalTheory.SmoothDedekind.smoothOfRelativeDimension_of_flat_of_tangent_le | (intros; apply GlobalTheory.SmoothDedekind.smoothOfRelativeDimension_of_flat_of_tangent_le <;> assumption)

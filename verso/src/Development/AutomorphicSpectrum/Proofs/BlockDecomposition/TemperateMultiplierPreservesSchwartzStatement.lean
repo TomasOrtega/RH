@@ -11,8 +11,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz (schwartzA)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.WSum.mul_mem_schwartzA | exact GlobalTheory.CompanionTheory.WSum.mul_mem_schwartzA | (intros; apply GlobalTheory.CompanionTheory.WSum.mul_mem_schwartzA <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.WSum.mul_mem_schwartzA` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FTemperateMultiplierPreservesSchwartz.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.temperate_multiplier_preserves_schwartz : ∀ (D : D7) (θ : InfFam D) (m n : ℕ) (q : (D.what₂.Tau → Fin m → Fin n → ℂ) → ℂ), q.HasTemperateGrowth → ∀ φ : Mx D m n → ℂ, φ ∈ schwartzA θ m n → (fun x => q (fun τ i j => compAt θ τ x i j) * φ x) ∈ schwartzA θ m n := by
   first | exact @GlobalTheory.CompanionTheory.WSum.mul_mem_schwartzA | exact GlobalTheory.CompanionTheory.WSum.mul_mem_schwartzA | (intros; apply GlobalTheory.CompanionTheory.WSum.mul_mem_schwartzA <;> assumption)

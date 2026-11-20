@@ -17,8 +17,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DiagUniq.eq_smul_lDiag | exact GlobalTheory.DiagUniq.eq_smul_lDiag | (intros; apply GlobalTheory.DiagUniq.eq_smul_lDiag <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DiagUniq.eq_smul_lDiag` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDiagonalInvariantFormUnique.lean&line=79#L79)
 -/
 theorem _root_.GlobalTheory.T.diagonal_invariant_form_unique : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ →
     ∀ (κ : Type) [Fintype κ] (l : ((κ ⊕ κ → AF F) → ℂ) →ₗ[ℂ] ℂ), l ∈ (adeleClass F).adm (κ ⊕ κ) →

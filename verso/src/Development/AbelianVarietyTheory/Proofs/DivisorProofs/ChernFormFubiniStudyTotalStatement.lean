@@ -10,8 +10,10 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open ReciprocityTheory.AnForm.M
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points GlobalTheory.CechPic GlobalTheory.ProjVar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FSMass.chern_mass_hermitian_O_one_projective | exact GlobalTheory.FSMass.chern_mass_hermitian_O_one_projective | (intros; apply GlobalTheory.FSMass.chern_mass_hermitian_O_one_projective <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FSMass.chern_mass_hermitian_O_one_projective` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FChernFormFubiniStudyTotal.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.chern_form_fubini_study_total : ∀ N : ℕ, ((ProjSpace.hermitianTwistingSheaf ℂ N).φ (RingHom.id ℂ)).chernPart N 1 Set.univ = 1 ∧ ((ProjSpace.hermitianTwistingSheaf ℂ N).φ (RingHom.id ℂ)).chernPart N (-1) Set.univ = 0 := by
   first | exact @GlobalTheory.FSMass.chern_mass_hermitian_O_one_projective | exact GlobalTheory.FSMass.chern_mass_hermitian_O_one_projective | (intros; apply GlobalTheory.FSMass.chern_mass_hermitian_O_one_projective <;> assumption)

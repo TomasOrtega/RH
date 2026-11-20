@@ -6,8 +6,10 @@ open Formalism.IndefR.Datum GlobalTheory.Mem.AutSpace GlobalTheory.IndefiniteRow
 open scoped TensorProduct ContDiff Topology
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mem.ThetaLevel.exists_level | exact GlobalTheory.Mem.ThetaLevel.exists_level | (intros; apply GlobalTheory.Mem.ThetaLevel.exists_level <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mem.ThetaLevel.exists_level` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsOpenLevelFixingThetaFunction.lean&line=59#L59)
 -/
 theorem _root_.GlobalTheory.T.exists_open_level_fixing_theta_function : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), GlobalTheory.Ker.IsWeak ψ S T om → OmCont ψ S T om → ∀ f, IsThetaFunO ψ S T f → ∃ (U : Subgroup (GA D S)) (U' : Subgroup (GA D T)), IsOpen (U : Set (GA D S)) ∧ IsOpen (U' : Set (GA D T)) ∧ ∀ k ∈ U, k ∈ GfC S → ∀ k' ∈ U', k' ∈ GfC T → om (k, k') f = f := by
   first | exact @GlobalTheory.Mem.ThetaLevel.exists_level | exact GlobalTheory.Mem.ThetaLevel.exists_level | (intros; apply GlobalTheory.Mem.ThetaLevel.exists_level <;> assumption)

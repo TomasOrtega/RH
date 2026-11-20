@@ -12,8 +12,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open GlobalTheory GlobalTheory.Points GlobalTheory.ArInt GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.ProjSpace GlobalTheory.CompanionTheory.Ar.BaseZ GlobalTheory.CompanionTheory.Ar.BGS
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Metric.chernInt_eq_finsum_sheets | exact GlobalTheory.CompanionTheory.Metric.chernInt_eq_finsum_sheets | (intros; apply GlobalTheory.CompanionTheory.Metric.chernInt_eq_finsum_sheets <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Metric.chernInt_eq_finsum_sheets` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FChernIntegrableOnIffSheets.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.chernIntegrableOn_iff_sheets : ∀ (k : Type) [CommRing k] [IsDomain k] [CharZero k] [Module.Finite ℤ k] (X : Scheme.{0}) (p : X ⟶ Sp k) (t : X ⟶ Sp ℤ) (τ : ℤ →+* ℂ), IsProjOver p → ∀ (D : ℕ) (B : LB X) (φ : ∀ σ : k →+* ℂ, Weight p σ B) (ψ : Weight t τ B), WOver φ ψ → (∀ σ, (φ σ).IsCInf) → ψ.IsCInf → ∀ (S : Set (CxPts t τ)), MeasurableSet S → ∀ f : CxPts t τ → ℝ, (ψ.ChernIntegrableOn D S f ↔ ∀ σ, (φ σ).ChernIntegrableOn D (sheet t τ ⁻¹' S) (fun z => f (sheet t τ z))) ∧ (ψ.ChernIntegrableOn D S f → ψ.chernInt D S f = ∑ᶠ σ, (φ σ).chernInt D (sheet t τ ⁻¹' S) (fun z => f (sheet t τ z))) := by
   first | exact @GlobalTheory.CompanionTheory.Metric.chernInt_eq_finsum_sheets | exact GlobalTheory.CompanionTheory.Metric.chernInt_eq_finsum_sheets | (intros; apply GlobalTheory.CompanionTheory.Metric.chernInt_eq_finsum_sheets <;> assumption)

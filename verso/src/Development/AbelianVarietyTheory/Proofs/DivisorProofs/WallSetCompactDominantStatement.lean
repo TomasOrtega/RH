@@ -5,8 +5,10 @@ import Formalism.DegreeFormula.PointDegree.PermExpInj
 import Development.AbelianVarietyTheory.Definitions.Foundations.CurveCl
 open MvPolynomial Formalism.DegreeFormula GlobalTheory.FlagPoly
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagPoly.wallSet_compact_dom_interior | exact GlobalTheory.FlagPoly.wallSet_compact_dom_interior | (intros; apply GlobalTheory.FlagPoly.wallSet_compact_dom_interior <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagPoly.wallSet_compact_dom_interior` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FWallSetCompactDominant.lean&line=54#L54)
 -/
 theorem _root_.GlobalTheory.T.wall_set_compact_dominant : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (N : ℕ) (j : ℕ) (τ₀ : ι), 1 ≤ j → j < N → IsCompact (wallSet (N := N) j τ₀ (1 / (4 * (N : ℝ)))) ∧ (∀ lam ∈ wallSet (N := N) j τ₀ (1 / (4 * (N : ℝ))), Dom lam) ∧ ∃ U : Set (ι → Fin N → ℝ), IsOpen U ∧ (∃ x ∈ U, GapZero j τ₀ x) ∧ ∀ x ∈ U, GapZero j τ₀ x → x ∈ wallSet j τ₀ (1 / (4 * (N : ℝ))) := by
   first | exact @GlobalTheory.FlagPoly.wallSet_compact_dom_interior | exact GlobalTheory.FlagPoly.wallSet_compact_dom_interior | (intros; apply GlobalTheory.FlagPoly.wallSet_compact_dom_interior <;> assumption)

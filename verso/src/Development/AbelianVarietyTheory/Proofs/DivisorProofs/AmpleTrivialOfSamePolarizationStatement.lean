@@ -20,8 +20,10 @@ open GlobalTheory.CechPic (Pic cls lam)
 open MonObj
 open scoped CategoryTheory.Obj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AmpleKerFibre.relAmple_kTriv_of_lam_eq | exact GlobalTheory.AmpleKerFibre.relAmple_kTriv_of_lam_eq | (intros; apply GlobalTheory.AmpleKerFibre.relAmple_kTriv_of_lam_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AmpleKerFibre.relAmple_kTriv_of_lam_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAmpleTrivialOfSamePolarization.lean&line=32#L32)
 -/
 theorem _root_.GlobalTheory.T.ample_trivial_of_same_polarization : ∀ (K : Type) [Field K] [IsAlgClosed K] (B : Over (Sp K)) [GrpObj B], IsAbelianScheme B → ∀ (L₀ : LB B.left) (h₀ : L₀.IsLB), Out.RelAmple B L₀ → Out.KTriv B L₀ → ∀ (N : LB B.left) (hN : N.IsLB), lam (cls N hN) (fst B B) (snd B B) = lam (cls L₀ h₀) (fst B B) (snd B B) → Out.RelAmple B N ∧ Out.KTriv B N := by
   first | exact @GlobalTheory.AmpleKerFibre.relAmple_kTriv_of_lam_eq | exact GlobalTheory.AmpleKerFibre.relAmple_kTriv_of_lam_eq | (intros; apply GlobalTheory.AmpleKerFibre.relAmple_kTriv_of_lam_eq <;> assumption)

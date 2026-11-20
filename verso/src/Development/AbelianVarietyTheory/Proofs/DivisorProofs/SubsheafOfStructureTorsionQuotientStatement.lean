@@ -11,8 +11,10 @@ open GlobalTheory.VB
 open GlobalTheory.IndefiniteRowSideFullHecke.GenericFiniteMaps
 open GlobalTheory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.exists_sub_mono_structure_of_genRank_pos | exact GlobalTheory.exists_sub_mono_structure_of_genRank_pos | (intros; apply GlobalTheory.exists_sub_mono_structure_of_genRank_pos <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.exists_sub_mono_structure_of_genRank_pos` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSubsheafOfStructureTorsionQuotient.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.subsheaf_of_structure_torsion_quotient : ∀ (k : Type) [Field k] (T : Scheme.{0}) [Algebra k Γ(T, ⊤)] [IsIntegral T], IsProjSurface k T → ∀ (F : T.Modules), QCoh.IsFiniteQC F → 0 < genRank F → ∃ (M : T.Modules) (f : M ⟶ structureModule T) (g : M ⟶ F), QCoh.IsFiniteQC M ∧ Mono f ∧ Mono g ∧ genRank (cokernel f) = 0 := by
   first | exact @GlobalTheory.exists_sub_mono_structure_of_genRank_pos | exact GlobalTheory.exists_sub_mono_structure_of_genRank_pos | (intros; apply GlobalTheory.exists_sub_mono_structure_of_genRank_pos <;> assumption)

@@ -10,8 +10,10 @@ import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.LogCondLeThre
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.AuxiliaryPrimeMemAvoidedPrimes
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Formalism.L2.GlobalTheoryTheory GlobalTheory.EX NumberField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EX.exists_tops | exact GlobalTheory.EX.exists_tops | (intros; apply GlobalTheory.EX.exists_tops <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EX.exists_tops` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FGlobalInterpolation%2FTopsChoice.lean&line=8#L8)
 -/
 theorem _root_.GlobalTheory.T.tops_choice : TopsChoice := by
   first | exact @GlobalTheory.EX.exists_tops | exact GlobalTheory.EX.exists_tops | (intros; apply GlobalTheory.EX.exists_tops <;> assumption)

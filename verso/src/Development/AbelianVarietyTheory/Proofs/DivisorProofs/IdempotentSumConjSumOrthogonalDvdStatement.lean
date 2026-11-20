@@ -10,8 +10,10 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Form
 open scoped TensorProduct Classical ComplexConjugate
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IdemOrth.idemSum_orth | exact GlobalTheory.IdemOrth.idemSum_orth | (intros; apply GlobalTheory.IdemOrth.idemSum_orth <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IdemOrth.idemSum_orth` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIdempotentSumConjSumOrthogonalDvd.lean&line=49#L49)
 -/
 theorem _root_.GlobalTheory.T.idempotentSum_conjSum_orthogonal_dvd : ∀ (D : D7) (e e' : AE D) (P P' : Finset (Formalism.L2.DIV.Pl D.host.E)) (n : ℕ), IsIdemSum e P → IsIdemSum e' P' → (∀ PP ∈ P, ((n : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal) → (∀ PP ∈ P', ((n : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal) → (e + cA D e) * (e' + cA D e') = 0 := by
   first | exact @GlobalTheory.IdemOrth.idemSum_orth | exact GlobalTheory.IdemOrth.idemSum_orth | (intros; apply GlobalTheory.IdemOrth.idemSum_orth <;> assumption)

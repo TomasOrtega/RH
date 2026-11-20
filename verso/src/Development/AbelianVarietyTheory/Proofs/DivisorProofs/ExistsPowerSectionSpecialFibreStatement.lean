@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsEqnI
 open CategoryTheory Limits AlgebraicGeometry TopologicalSpace Opposite
 open ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.IndefiniteRowSideFullHecke.SpecialFibreUnits GlobalTheory.Cartier
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ExpChoice.exists_exponents | exact GlobalTheory.ExpChoice.exists_exponents | (intros; apply GlobalTheory.ExpChoice.exists_exponents <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ExpChoice.exists_exponents` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsPowerSectionSpecialFibre.lean&line=205#L205)
 -/
 theorem _root_.GlobalTheory.T.exists_power_section_special_fibre : ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] [CompactSpace X],
   (∀ x : X, IsIntegrallyClosed (X.presheaf.stalk x)) →

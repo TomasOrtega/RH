@@ -21,8 +21,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open scoped TensorProduct
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThetaAgreeConv.thetaIntegralsAgree_of_integrable | exact GlobalTheory.ThetaAgreeConv.thetaIntegralsAgree_of_integrable | (intros; apply GlobalTheory.ThetaAgreeConv.thetaIntegralsAgree_of_integrable <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThetaAgreeConv.thetaIntegralsAgree_of_integrable` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSquareCommutationIntegralIdentity.lean&line=109#L109)
 -/
 theorem _root_.GlobalTheory.T.square_commutation_integral_identity : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →

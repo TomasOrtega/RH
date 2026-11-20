@@ -10,8 +10,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.S Fo
 open scoped TensorProduct InnerProductSpace Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Core.Mi.rowFun_evS | exact GlobalTheory.Core.Mi.rowFun_evS | (intros; apply GlobalTheory.Core.Mi.rowFun_evS <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Core.Mi.rowFun_evS` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FTranslateToSecondModelCuspFormMapValueAutomorphi.lean&line=107#L107)
 -/
 theorem _root_.GlobalTheory.T.translateToSecondModel_cuspFormMap_value_automorphic : GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (θ : InfFam D) (S : D.what₂.Tau → SPar) (M : DSModel (D.sp.Y 0) S) (J : Set (GA D (D.sp.Y 0))) (χ : GA D (D.sp.Y 0) → ℂ) (t : GA D (D.sp.Y 0)), IsInfFam θ → Matches X h J χ t → ∀ T ∈ MultT θ M J χ, ∀ x : SmT M, RowFun X (evS X h t (T x)) ∧ MemLp (evS X h t (T x)) 2 (muX X) := by
   first | exact @GlobalTheory.Core.Mi.rowFun_evS | exact GlobalTheory.Core.Mi.rowFun_evS | (intros; apply GlobalTheory.Core.Mi.rowFun_evS <;> assumption)

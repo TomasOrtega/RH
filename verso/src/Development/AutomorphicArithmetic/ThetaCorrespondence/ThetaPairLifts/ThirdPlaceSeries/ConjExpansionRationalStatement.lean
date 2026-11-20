@@ -17,8 +17,10 @@ set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 800000
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.ConjExpandRational.exists_evW_expansion_of_conjFun | exact _root_.GlobalTheory.ConjExpandRational.exists_evW_expansion_of_conjFun | (intros; apply _root_.GlobalTheory.ConjExpandRational.exists_evW_expansion_of_conjFun <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ConjExpandRational.exists_evW_expansion_of_conjFun` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicArithmetic%2FThetaCorrespondence%2FThetaPairLifts%2FThirdPlaceSeries%2FConjExpansionRational.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.conjTwist_function_eq_sum_evaluations_alt : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.RayClassFieldSt → GlobalTheory.IndefiniteRowSideFullHecke.RationalRayLevels.SeriesRat → _root_.GlobalTheory.BigOn.Exp.TwistConditions fun Fm x hx i p w j => ∀ τ : ℂ ≃+* ℂ,
   (∀ y, τ (Formalism.L2.Host.embLL0 (Fm.D x i) y) = Formalism.L2.Host.embLL0 (Fm.D x i) y) →

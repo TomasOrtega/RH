@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
 open Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ExpCartan.exists_exp_eq_of_commute_cartan | exact GlobalTheory.ExpCartan.exists_exp_eq_of_commute_cartan | (intros; apply GlobalTheory.ExpCartan.exists_exp_eq_of_commute_cartan <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ExpCartan.exists_exp_eq_of_commute_cartan` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsLieAlgebraExpEqOfCommuteCartanInvolution.lean&line=25#L25)
 -/
 theorem _root_.GlobalTheory.T.exists_lieAlgebra_exp_eq_of_commute_cartanInvolution : ∀ {n : ℕ} {G C g : Matrix (Fin n) (Fin n) ℂ}, Gᴴ = G → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsCartan Gᵀ C → gᴴ * G * g = G → Commute g C → ∃ Z : Matrix (Fin n) (Fin n) ℂ, Zᴴ * G + G * Z = 0 ∧ Commute Z C ∧ NormedSpace.exp Z = g := by
   first | exact @GlobalTheory.ExpCartan.exists_exp_eq_of_commute_cartan | exact GlobalTheory.ExpCartan.exists_exp_eq_of_commute_cartan | (intros; apply GlobalTheory.ExpCartan.exists_exp_eq_of_commute_cartan <;> assumption)

@@ -10,8 +10,10 @@ open GlobalTheory.UPoinc
 open GlobalTheory
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UTraitExt.uTraitExtSt | exact GlobalTheory.UTraitExt.uTraitExtSt | (intros; apply GlobalTheory.UTraitExt.uTraitExtSt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UTraitExt.uTraitExtSt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsUnitaryTraitThroughModuliGenericPoint.lean&line=54#L54)
 -/
 theorem _root_.GlobalTheory.T.exists_unitaryTrait_through_moduliGenericPoint : UTraitExtSt := by
   first | exact @GlobalTheory.UTraitExt.uTraitExtSt | exact GlobalTheory.UTraitExt.uTraitExtSt | (intros; apply GlobalTheory.UTraitExt.uTraitExtSt <;> assumption)

@@ -12,8 +12,10 @@ open scoped TensorProduct
 open IsLocalRing
 universe u
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.exists_eigen_coordinates_range_quot | exact GlobalTheory.exists_eigen_coordinates_range_quot | (intros; apply GlobalTheory.exists_eigen_coordinates_range_quot <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.exists_eigen_coordinates_range_quot` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsEigenCoordinatesIdempotentRangeQuotient.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.exists_eigenCoordinates_idempotentRange_quotient : ∀ {C : Type} [CommRing C] [IsLocalRing C] (I : Ideal C), I ^ 2 = ⊥ →
   ∀ {A : Type} [CommRing A] {H : Type u} [AddCommGroup H] [Module C H] [Module.Finite C H] [Module.Projective C H]

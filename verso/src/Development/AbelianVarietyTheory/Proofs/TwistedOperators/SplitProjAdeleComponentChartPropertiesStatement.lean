@@ -7,8 +7,10 @@ open scoped TensorProduct ComplexOrder
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SplitProjChart.chart_rdA | exact GlobalTheory.SplitProjChart.chart_rdA | (intros; apply GlobalTheory.SplitProjChart.chart_rdA <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SplitProjChart.chart_rdA` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FSplitProjAdeleComponentChartProperties.lean&line=64#L64)
 -/
 theorem _root_.GlobalTheory.T.splitProjAdeleComponent_chart_properties : ∀ (D : D7) (v : FinPl D) (φ : SplitProj D v) (e : AE D), IsIdemOf φ e → GlobalTheory.SplitHecke.Chart e v (rdA φ) ∧ (∀ a : AE D, rdE φ (toEAf D a) = rdA φ a) ∧ (∀ x : D.host.E, rdA φ (incA D x) = rdQ φ x) ∧ Continuous (rdA φ) ∧ ∀ e', IsIdemOf φ e' → e' = e := by
   first | exact @GlobalTheory.SplitProjChart.chart_rdA | exact GlobalTheory.SplitProjChart.chart_rdA | (intros; apply GlobalTheory.SplitProjChart.chart_rdA <;> assumption)

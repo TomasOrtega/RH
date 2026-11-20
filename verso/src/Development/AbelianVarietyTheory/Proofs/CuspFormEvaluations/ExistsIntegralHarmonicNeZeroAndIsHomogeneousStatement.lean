@@ -12,8 +12,10 @@ open scoped ComplexConjugate Classical
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Dict
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.exists_harmA_ne_zero_and_isHomogeneous | exact GlobalTheory.exists_harmA_ne_zero_and_isHomogeneous | (intros; apply GlobalTheory.exists_harmA_ne_zero_and_isHomogeneous <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.exists_harmA_ne_zero_and_isHomogeneous` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FCuspFormEvaluations%2FExistsIntegralHarmonicNeZeroAndIsHomogeneous.lean&line=29#L29)
 -/
 theorem _root_.GlobalTheory.T.exists_integralHarmonic_ne_zero_and_isHomogeneous : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (c : Coeff l) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ), (Dom a n → Dw.p + Dw.q ≤ n → ∃ P ∈ harmA (Dw := Dw) c a n, P ≠ 0) ∧ ∀ P ∈ HHa Dw.mult n c.F ComplexEmbedding.conjugate (InPsi H) (fun τ i => a (τ, i)), P.IsHomogeneous (Formalism.L2.Pj.DF Dw a) := by
   first | exact @GlobalTheory.exists_harmA_ne_zero_and_isHomogeneous | exact GlobalTheory.exists_harmA_ne_zero_and_isHomogeneous | (intros; apply GlobalTheory.exists_harmA_ne_zero_and_isHomogeneous <;> assumption)

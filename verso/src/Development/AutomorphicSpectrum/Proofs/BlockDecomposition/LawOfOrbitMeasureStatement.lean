@@ -12,8 +12,10 @@ open PositivityTheory.Rg.Rsw PositivityTheory.Rg.Rsw.L
 open GlobalTheory.CompanionTheory.ColumnSplitting
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.ColumnSplitting.LawPf.law | exact GlobalTheory.CompanionTheory.ColumnSplitting.LawPf.law | (intros; apply GlobalTheory.CompanionTheory.ColumnSplitting.LawPf.law <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.ColumnSplitting.LawPf.law` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FLawOfOrbitMeasure.lean&line=160#L160)
 -/
 theorem _root_.GlobalTheory.T.law_of_orbit_measure : Law := by
   first | exact @GlobalTheory.CompanionTheory.ColumnSplitting.LawPf.law | exact GlobalTheory.CompanionTheory.ColumnSplitting.LawPf.law | (intros; apply GlobalTheory.CompanionTheory.ColumnSplitting.LawPf.law <;> assumption)

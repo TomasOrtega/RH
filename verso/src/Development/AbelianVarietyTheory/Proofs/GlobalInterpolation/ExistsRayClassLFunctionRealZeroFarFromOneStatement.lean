@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.LamIdealOfNot
 open Complex ArithmeticFunction MeasureTheory Filter Topology NumberField GlobalTheory.Hk GlobalTheory.Mem
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Hk.LFam.real_zero_far_from_one | exact GlobalTheory.Hk.LFam.real_zero_far_from_one | (intros; apply GlobalTheory.Hk.LFam.real_zero_far_from_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Hk.LFam.real_zero_far_from_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FGlobalInterpolation%2FExistsRayClassLFunctionRealZeroFarFromOne.lean&line=47#L47)
 -/
 theorem _root_.GlobalTheory.T.exists_rayClassLFunction_real_zero_far_from_one : ∃ A c : ℝ, 0 < A ∧ 0 < c ∧ ∀ (𝓕 : LFam) (χ : AddChar 𝓕.G ℂ) (β : ℝ), χ * χ = 1 → 3 / 4 ≤ β → 𝓕.F χ β = 0 → c / 𝓕.B ^ A ≤ 1 - β := by
   first | exact @GlobalTheory.Hk.LFam.real_zero_far_from_one | exact GlobalTheory.Hk.LFam.real_zero_far_from_one | (intros; apply GlobalTheory.Hk.LFam.real_zero_far_from_one <;> assumption)

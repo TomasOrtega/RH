@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.GenericRegularity.CountQAtStGener
 import Formalism.LocalToGlobal.ProjectiveLattices.CurveLocInst
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.WeightAlgebra Formalism.MainNotions.Gaps.EtaleWeightGaps Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G.Geo.Tor
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SecCount.countQAtSt | exact GlobalTheory.SecCount.countQAtSt | (intros; apply GlobalTheory.SecCount.countQAtSt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SecCount.countQAtSt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FGenericRegularity%2FCountQAtStGenericSectionPrimes.lean&line=331#L331)
 -/
 theorem _root_.GlobalTheory.T.countQAtSt_generic_section_primes : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (hG : GenFrEx (T.Q.Xo j) T.Q.c) (hT : GenFromTest (T.Q.Xo j) T.Q.c hG), CountQAtSt h j hj hG hT := by
   first | exact @GlobalTheory.SecCount.countQAtSt | exact GlobalTheory.SecCount.countQAtSt | (intros; apply GlobalTheory.SecCount.countQAtSt <;> assumption)

@@ -14,8 +14,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Spread.dvd_of_dvd_near_closedFibre | exact GlobalTheory.Spread.dvd_of_dvd_near_closedFibre | (intros; apply GlobalTheory.Spread.dvd_of_dvd_near_closedFibre <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Spread.dvd_of_dvd_near_closedFibre` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FDivisibilityOnClosedFibreSpreads.lean&line=108#L108)
 -/
 theorem _root_.GlobalTheory.T.divisibility_on_closed_fibre_spreads : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], IsNoetherianRing R → IsIntegrallyClosed R →
     ∀ (G : Over (Sp R)) [GrpObj G], IsSemiAbelian G → ∀ (r : R), r ≠ 0 → ∀ (W : G.left.Opens) (a : Γ(G.left, W))

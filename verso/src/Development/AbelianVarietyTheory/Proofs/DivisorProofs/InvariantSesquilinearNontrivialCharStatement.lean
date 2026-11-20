@@ -9,8 +9,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.OffDiagVanish.offDiag_vanish | exact GlobalTheory.OffDiagVanish.offDiag_vanish | (intros; apply GlobalTheory.OffDiagVanish.offDiag_vanish <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.OffDiagVanish.offDiag_vanish` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FInvariantSesquilinearNontrivialChar.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.invariant_sesquilinear_nontrivial_char : GlobalTheory.ThK.KP → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (n d : ℕ) (ν : kˣ →* ℂˣ), n < d → GlobalTheory.SmGL.IsSmoothChar ν → GlobalTheory.SmGL.IsUnitaryChar ν → ν ≠ 1 →

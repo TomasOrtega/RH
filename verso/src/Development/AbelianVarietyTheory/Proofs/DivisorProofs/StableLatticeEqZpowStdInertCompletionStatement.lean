@@ -5,8 +5,10 @@ import Formalism.SatakeDualWeyl.KpqSubgroupCompact
 open IsDedekindDomain NumberField
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LocLatInert.stable_lattice_eq_zpow_std | exact GlobalTheory.LocLatInert.stable_lattice_eq_zpow_std | (intros; apply GlobalTheory.LocLatInert.stable_lattice_eq_zpow_std <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LocLatInert.stable_lattice_eq_zpow_std` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FStableLatticeEqZpowStdInertCompletion.lean&line=186#L186)
 -/
 theorem _root_.GlobalTheory.T.stable_lattice_eq_zpow_std_inert_completion : ∀ (E : Type) [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E)) (σ : P.adicCompletion E →+* P.adicCompletion E), (∀ x, σ (σ x) = x) → (∀ x, Valued.v (σ x) = Valued.v x) → (∃ x, Valued.v x ≤ 1 ∧ Valued.v (σ x - x) = 1) → ∀ (ϖ : P.adicCompletion E), Valued.v ϖ = WithZero.exp (-1 : ℤ) → ∀ (n : ℕ) (L : AddSubgroup (Fin n → P.adicCompletion E)) (N : P.adicCompletion E), N ≠ 0 → (∀ a : P.adicCompletion E, Valued.v a ≤ 1 → ∀ w ∈ L, a • w ∈ L) → (∀ w : Fin n → P.adicCompletion E, (∀ i, Valued.v (w i) ≤ 1) → N • w ∈ L) → (∀ w ∈ L, ∀ i, Valued.v (N * w i) ≤ 1) → (∀ U : GL (Fin n) (P.adicCompletion E), U ∈ Formalism.UG.UJ σ 1 → (∀ i j, Valued.v (U.1 i j) ≤ 1) → (∀ i j, Valued.v ((U⁻¹).1 i j) ≤ 1) → ∀ w ∈ L, U.1 *ᵥ w ∈ L) → ∃ k : ℤ, ∀ w, w ∈ L ↔ ∀ i, Valued.v (ϖ ^ k * w i) ≤ 1 := by
   first | exact @GlobalTheory.LocLatInert.stable_lattice_eq_zpow_std | exact GlobalTheory.LocLatInert.stable_lattice_eq_zpow_std | (intros; apply GlobalTheory.LocLatInert.stable_lattice_eq_zpow_std <;> assumption)

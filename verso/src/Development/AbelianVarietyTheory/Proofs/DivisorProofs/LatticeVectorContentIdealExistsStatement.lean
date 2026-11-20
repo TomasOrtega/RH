@@ -17,8 +17,10 @@ open IsDedekindDomain
 open scoped nonZeroDivisors
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.fracIdeal_of_lattice_smul_mem | exact GlobalTheory.fracIdeal_of_lattice_smul_mem | (intros; apply GlobalTheory.fracIdeal_of_lattice_smul_mem <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.fracIdeal_of_lattice_smul_mem` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLatticeVectorContentIdealExists.lean&line=32#L32)
 -/
 theorem _root_.GlobalTheory.T.lattice_vector_content_ideal_exists : ∀ (E : Type) [Field E] [NumberField E] (n : ℕ) (L : Submodule (𝓞 E) (Fin n → E)),
     Submodule.IsLattice E L → ∀ u : Fin n → E, u ≠ 0 →

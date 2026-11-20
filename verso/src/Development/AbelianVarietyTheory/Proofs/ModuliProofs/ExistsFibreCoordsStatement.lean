@@ -10,8 +10,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj TensorProduct ContDiff
 open GlobalTheory.KS
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KS.exists_fibre_coords | exact GlobalTheory.KS.exists_fibre_coords | (intros; apply GlobalTheory.KS.exists_fibre_coords <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KS.exists_fibre_coords` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FModuliProofs%2FExistsFibreCoords.lean&line=84#L84)
 -/
 theorem _root_.GlobalTheory.T.exists_fibre_coords_det_fderiv_ne_zero_of_smooth : ∀ (P₀ : Out.PolAV (Sp ℂ)) (u : HolUnif P₀.A P₀.L P₀.g) (Hm : Matrix (Fin P₀.g) (Fin P₀.g) ℂ) (χ : u.Λ → ℂ), GoodU u Hm χ → ∀ (R : Type) [CommRing R] (x₀ : R →+* ℂ) (X : Scheme.{0}) (p : X ⟶ Sp R) (m : P₀.A.left ⟶ X), Smooth p → IsPullback m P₀.A.hom p (spMap x₀) → ∀ z, ∃ (W : X.Opens) (t : Fin P₀.g → Γ(X, W)), z ∈ dom u m W ∧ (Matrix.of fun a b => fderiv ℂ (fn u m W (t b)) z (Pi.single a 1)).det ≠ 0 := by
   first | exact @GlobalTheory.KS.exists_fibre_coords | exact GlobalTheory.KS.exists_fibre_coords | (intros; apply GlobalTheory.KS.exists_fibre_coords <;> assumption)

@@ -10,8 +10,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open Formalism.L2.FormalSeriesBounds IsLocalRing GlobalTheory.AlphaPair
 open scoped CategoryTheory.Obj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SplitPoint.exists_split_extension | exact GlobalTheory.SplitPoint.exists_split_extension | (intros; apply GlobalTheory.SplitPoint.exists_split_extension <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SplitPoint.exists_split_extension` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUnramifiedDepth%2FExistsFiniteExtensionSplitSpecialFibrePoint.lean&line=49#L49)
 -/
 theorem _root_.GlobalTheory.T.exists_finite_extension_split_special_fibre_point : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], GlobalTheory.LN.CDvr V → ∀ t : SAB H (Sp V), GlobalTheory.LN.PolAt t (Out.jK V) → ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] (β : V →+* Ω), (∀ a ∈ maximalIdeal V, β a = 0) → ∃ (W : Type) (_ : CommRing W) (_ : IsDomain W) (_ : IsLocalRing W) (f : V →+* W) (β' : W →+* Ω) (t' : SAB H (Sp W)) (_ : SABMap t' t (spMap f)), GlobalTheory.LN.CDvr W ∧ β'.comp f = β ∧ (∀ a ∈ maximalIdeal W, β' a = 0) ∧ GlobalTheory.LN.PolAt t' (Out.jK W) ∧ GlobalTheory.LN.SplitOver t'.G (maximalIdeal W) := by
   first | exact @GlobalTheory.SplitPoint.exists_split_extension | exact GlobalTheory.SplitPoint.exists_split_extension | (intros; apply GlobalTheory.SplitPoint.exists_split_extension <;> assumption)

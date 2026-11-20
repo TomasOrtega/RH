@@ -11,8 +11,10 @@ open scoped Classical
 open GlobalTheory.CovTestDR GlobalTheory.VdmRec GlobalTheory.MetFam GlobalTheory.ShFam GlobalTheory.Toroidal GlobalTheory.CxPts
 open scoped ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SelfCont.tendsto_selfInter | exact GlobalTheory.SelfCont.tendsto_selfInter | (intros; apply GlobalTheory.SelfCont.tendsto_selfInter <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SelfCont.tendsto_selfInter` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSelfIntersectionContinuousLimit.lean&line=127#L127)
 -/
 theorem _root_.GlobalTheory.T.self_intersection_continuous_limit : ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → GenSmooth p D → ∀ t : ℝ → ℝ, Tendsto t atTop (𝓝 0) → ∀ (L : ℝ → HermLB p) (L₀ : HermLB p), LFam t L L₀ → ∀ (a : ℝ → ℝ) (a₀ : ℝ), (∀ R, (L R).IsSelfInter (a R)) → L₀.IsSelfInter a₀ → Tendsto a atTop (𝓝 a₀) := by
   first | exact @GlobalTheory.SelfCont.tendsto_selfInter | exact GlobalTheory.SelfCont.tendsto_selfInter | (intros; apply GlobalTheory.SelfCont.tendsto_selfInter <;> assumption)

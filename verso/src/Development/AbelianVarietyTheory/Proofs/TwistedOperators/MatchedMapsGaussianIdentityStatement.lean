@@ -11,8 +11,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.Hypo
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HoweNonsplitKerSmall.howe_nonsplit_ker_small | exact GlobalTheory.HoweNonsplitKerSmall.howe_nonsplit_ker_small | (intros; apply GlobalTheory.HoweNonsplitKerSmall.howe_nonsplit_ker_small <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HoweNonsplitKerSmall.howe_nonsplit_ker_small` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FMatchedMapsGaussianIdentity.lean&line=72#L72)
 -/
 theorem _root_.GlobalTheory.T.matched_maps_gaussian_identity : GlobalTheory.Published.HoweDualityFinite →
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)

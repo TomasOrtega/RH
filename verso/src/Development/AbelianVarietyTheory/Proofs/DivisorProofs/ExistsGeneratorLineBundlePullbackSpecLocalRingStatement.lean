@@ -10,8 +10,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LocalPullGen.main | exact GlobalTheory.LocalPullGen.main | (intros; apply GlobalTheory.LocalPullGen.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LocalPullGen.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsGeneratorLineBundlePullbackSpecLocalRing.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.exists_generator_lineBundle_pullback_spec_localRing : ∀ (R : Type) [CommRing R] [IsLocalRing R] (X : Scheme.{0}) (L : LB X), L.IsLB →
     ∀ p : (𝟙_ (Over (Sp R))).left ⟶ X, ∃ ρ : LB.Gen (L.pull p), ρ.IsGen := by

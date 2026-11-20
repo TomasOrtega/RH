@@ -11,8 +11,10 @@ open GlobalTheory.Poinc Formalism.L2.Pj
 attribute [local instance] Over.cartesianMonoidalCategory
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Poinc.RatModel.val_prod_zpow | exact GlobalTheory.Poinc.RatModel.val_prod_zpow | (intros; apply GlobalTheory.Poinc.RatModel.val_prod_zpow <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Poinc.RatModel.val_prod_zpow` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIntegralModelValueProdZpowLocalUnits.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.integralModel_value_prod_zpow_localUnits : ∀ {o' Ω : Type} [CommRing o'] [Field Ω] [Algebra o' Ω] (M : RatModel o' Ω) {K : Type} [Field K] (y : Sp K ⟶ M.Z) (z : M.Z), (∀ w, y w ⤳ z) → ∀ {ι : Type} (s : Finset ι) (f : ι → Ω) (m : ι → ℤ), (∀ i, f i ≠ 0 ∧ f i ∈ M.O z ∧ (f i)⁻¹ ∈ M.O z) → M.val y (∏ i ∈ s, f i ^ m i) = ∏ i ∈ s, M.val y (f i) ^ m i := by
   first | exact @GlobalTheory.Poinc.RatModel.val_prod_zpow | exact GlobalTheory.Poinc.RatModel.val_prod_zpow | (intros; apply GlobalTheory.Poinc.RatModel.val_prod_zpow <;> assumption)

@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.SiegelReframe
 open Matrix MeasureTheory GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe
 open scoped Real ContDiff
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlatRigidity.rigidity | exact GlobalTheory.FlatRigidity.rigidity | (intros; apply GlobalTheory.FlatRigidity.rigidity <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlatRigidity.rigidity` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPeriodMapRigidity.lean&line=225#L225)
 -/
 theorem _root_.GlobalTheory.T.period_map_rigidity : ∀ {g : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E] {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ}, IsPeriodMap B τ → RigidityProps B τ := by
   first | exact @GlobalTheory.FlatRigidity.rigidity | exact GlobalTheory.FlatRigidity.rigidity | (intros; apply GlobalTheory.FlatRigidity.rigidity <;> assumption)

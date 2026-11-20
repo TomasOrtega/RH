@@ -9,8 +9,10 @@ open GroundTheory.Automorphic.Iwasawa (blockUpper)
 open GroundTheory.Automorphic (permGL indRep)
 open DoubleCoset (doubleCoset)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.ParabBridge.parab_eq_blockUpper | exact GlobalTheory.CompanionTheory.ParabBridge.parab_eq_blockUpper | (intros; apply GlobalTheory.CompanionTheory.ParabBridge.parab_eq_blockUpper <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.ParabBridge.parab_eq_blockUpper` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FParabolicEqBlockUpper.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.parabolic_eq_block_upper : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {α : Type} [Fintype α] [LinearOrder α] {N : ℕ} {m : α → Type} [∀ i, Fintype (m i)] [∀ i, DecidableEq (m i)] (e : (Σ i, m i) ≃ Fin N) (β : Fin N → ℕ), (∀ x y, β x < β y ↔ blk e x < blk e y) → parab k e = blockUpper k N β := by
   first | exact @GlobalTheory.CompanionTheory.ParabBridge.parab_eq_blockUpper | exact GlobalTheory.CompanionTheory.ParabBridge.parab_eq_blockUpper | (intros; apply GlobalTheory.CompanionTheory.ParabBridge.parab_eq_blockUpper <;> assumption)

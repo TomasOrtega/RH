@@ -11,8 +11,10 @@ open CompanionTheory.D.DSIC (KRel KUnit KStab IsSmMod)
 open CompanionTheory.D.LK (IsKMod IsMin)
 open scoped InnerProductSpace
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KFinStab.kStab_iff_kStableOn | exact GlobalTheory.KFinStab.kStab_iff_kStableOn | (intros; apply GlobalTheory.KFinStab.kStab_iff_kStableOn <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KFinStab.kStab_iff_kStableOn` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FKStabIffIsKStableOnFiniteVectors.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.kStab_iff_isKStableOn_finite_vectors : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (D : Submodule ℂ H) (E : Fin n → Fin n → Module.End ℂ D), CompleteSpace H → IsURepOn (UJset ε) σ → IsIrredOn (UJset ε) σ → IsKMod ε σ D E → ∀ U : Submodule ℂ D, FiniteDimensional ℂ U → (KStab ε E U ↔ IsKStableOn ε σ (U.map D.subtype)) := by
   first | exact @GlobalTheory.KFinStab.kStab_iff_kStableOn | exact GlobalTheory.KFinStab.kStab_iff_kStableOn | (intros; apply GlobalTheory.KFinStab.kStab_iff_kStableOn <;> assumption)

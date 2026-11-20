@@ -11,8 +11,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Ex
 open Finset ArithmeticFunction NumberField IsDedekindDomain Filter Topology GlobalTheory.Mem.An Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab
 open scoped nonZeroDivisors
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mem.An.GoodBound.psiChi_bound_of_goodFor | exact GlobalTheory.Mem.An.GoodBound.psiChi_bound_of_goodFor | (intros; apply GlobalTheory.Mem.An.GoodBound.psiChi_bound_of_goodFor <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mem.An.GoodBound.psiChi_bound_of_goodFor` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FPsiChiPowerSavingBound.lean&line=99#L99)
 -/
 theorem _root_.GlobalTheory.T.psi_chi_power_saving_bound : GlobalTheory.Mem.An.ExplChi → GlobalTheory.Mem.An.LogDerOne → GlobalTheory.Mem.An.ZeroCount → Formalism.ZeroFreeDirichlet.ZFRDirichlet → GlobalTheory.Mem.An.ExplZeta → ∃ C₁ : ℝ, 0 < C₁ ∧ ∀ (Q : ℝ) (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q), 3 ≤ Q → χ ≠ 1 → GlobalTheoryTheory.GoodFor Q χ → ∀ u : ℝ, 2 ≤ u → ‖psiChi χ u‖ ≤ C₁ * (u ^ (1 - (1 : ℝ) / 400) * Real.log (u * Q) ^ 2 + u / Q * Real.log (u * Q) ^ 2) := by
   first | exact @GlobalTheory.Mem.An.GoodBound.psiChi_bound_of_goodFor | exact GlobalTheory.Mem.An.GoodBound.psiChi_bound_of_goodFor | (intros; apply GlobalTheory.Mem.An.GoodBound.psiChi_bound_of_goodFor <;> assumption)

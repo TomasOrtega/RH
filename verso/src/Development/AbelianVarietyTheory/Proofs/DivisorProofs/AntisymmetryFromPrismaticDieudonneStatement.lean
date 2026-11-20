@@ -9,8 +9,10 @@ open NumberField MvPolynomial Filter Topology Formalism.BasicNotions Formalism.M
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.ArInt
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AntiFinite.main | exact GlobalTheory.AntiFinite.main | (intros; apply GlobalTheory.AntiFinite.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AntiFinite.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAntisymmetryFromPrismaticDieudonne.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.antisymmetry_from_prismatic_dieudonne : Hypotheses2 → HypothesesH → RegularAlteration → ScholzeWeinsteinB → PrismaticDieudonnePerfd → AntiSt := by
   first | exact @GlobalTheory.AntiFinite.main | exact GlobalTheory.AntiFinite.main | (intros; apply GlobalTheory.AntiFinite.main <;> assumption)

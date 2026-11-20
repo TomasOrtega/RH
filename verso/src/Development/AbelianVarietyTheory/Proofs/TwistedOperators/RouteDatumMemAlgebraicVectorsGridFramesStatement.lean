@@ -11,8 +11,10 @@ open GlobalTheory.RouteSeesaw GlobalTheory.ChainFr
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SquareAlg.datumA_mem_algF | exact GlobalTheory.SquareAlg.datumA_mem_algF | (intros; apply GlobalTheory.SquareAlg.datumA_mem_algF <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SquareAlg.datumA_mem_algF` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FRouteDatumMemAlgebraicVectorsGridFrames.lean&line=259#L259)
 -/
 theorem _root_.GlobalTheory.T.routeDatum_mem_algebraicVectors_grid_frames : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T}, L.Is μ₀ → ∀ (W : G.Weil) (t : T) (i j : Fin D.R.m)
     (A : Fr (G.V (.grid (↑i + 1) (↑j + 1)))) (AV : Fr (G.V (.grid ↑i (↑j + 1)))) (AV₁ : Fr (G.V (.grid (↑i + 1) ↑j))),

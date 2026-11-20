@@ -9,8 +9,10 @@ open ReciprocityTheory.ChartRestriction.G.Out GlobalTheory.ZH Classical
 attribute [local instance] SplitExt.free SplitExt.finite MvPolynomial.gradedAlgebra
 open GlobalTheory.UT GlobalTheory.ZH.ClassWeight
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ZH.FibreIndep.linearIndependent_moved | exact GlobalTheory.ZH.FibreIndep.linearIndependent_moved | (intros; apply GlobalTheory.ZH.FibreIndep.linearIndependent_moved <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ZH.FibreIndep.linearIndependent_moved` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDegenerationProofs%2FLinearIndependentThetaBasisGeometricFibre.lean&line=46#L46)
 -/
 theorem _root_.GlobalTheory.T.linearIndependent_thetaBasis_geometric_fibre : LL → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀) (w : LB.Iso u.A.L (ρ.P.L.pull u.φ)), w.IsGen → ∀ t : S.J → SecA u.A (PadicAlgCl p) S.N, (∀ i, Moved u w (t i) (ρ.s i)) → LinearIndependent Γ((TFK (R := u.V) (PadicAlgCl p)).left, ⊤) (fun i => SecM.ofSec u.A.A (t i)) := by
   first | exact @GlobalTheory.ZH.FibreIndep.linearIndependent_moved | exact GlobalTheory.ZH.FibreIndep.linearIndependent_moved | (intros; apply GlobalTheory.ZH.FibreIndep.linearIndependent_moved <;> assumption)

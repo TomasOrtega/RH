@@ -8,8 +8,10 @@ open GlobalTheory.CompanionTheory.Ar.TorusUnif
 open scoped CategoryTheory.Obj
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.TorusUnif.compact_of_finite_generic | exact GlobalTheory.CompanionTheory.Ar.TorusUnif.compact_of_finite_generic | (intros; apply GlobalTheory.CompanionTheory.Ar.TorusUnif.compact_of_finite_generic <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.TorusUnif.compact_of_finite_generic` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FAnalyticPointsFiniteCompact.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.analytic_points_finite_compact : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)]
     (y : (Σ k, J k) → Ω) (ξ : Sp Ω ⟶ X), (∀ q : X, genPt ξ ⤳ q) →

@@ -20,8 +20,10 @@ open Formalism.UG (IsUnifV qV IsUnramInv GU KU IsInertAt Hecke IsCommensurated T
 open Formalism.MainNotions.SchurIrreducible (IsSplit)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WeilAtPlaceSrc.weilDatum_src_inert | exact GlobalTheory.WeilAtPlaceSrc.weilDatum_src_inert | (intros; apply GlobalTheory.WeilAtPlaceSrc.weilDatum_src_inert <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WeilAtPlaceSrc.weilDatum_src_inert` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FWeilDatumSourceInertPlaceEqLatticeIntertwiner.lean&line=118#L118)
 -/
 theorem _root_.GlobalTheory.T.weilDatum_source_inertPlace_eq_latticeIntertwiner : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsWeilDatumO ψ S T χS χT om → ∀ (hψ : IsStdChar D ψ (-1)) (lam : ℕ →* ℂ) (w₀ : 𝓞 D.host.E) (Om : GA D S × GA D T →* Module.End ℂ (GlobalTheory.FinWeilO.thetaSub ψ S T)), GlobalTheory.FinWeilO.IsLatRep hψ.1 (frameLat S) (frameLat T) w₀ lam Om → GlobalTheory.FinWeil.GoodNorm (GlobalTheory.FinWeil.sgO D) lam → ∀ (v : HeightOneSpectrum (𝓞 D.host.F)) (w : HeightOneSpectrum (𝓞 D.host.E)), w.under (𝓞 D.host.F) = v → IsInertAt D.host.F D.host.E v w → UnrAt χS w → UnrAt χT w → ∀ (a : Gv S v) (f : GlobalTheory.FinWeilO.thetaSub ψ S T), om (embV S v a, 1) f = (Om (embV S v a, 1) f : WO S T → ℂ) := by
   first | exact @GlobalTheory.WeilAtPlaceSrc.weilDatum_src_inert | exact GlobalTheory.WeilAtPlaceSrc.weilDatum_src_inert | (intros; apply GlobalTheory.WeilAtPlaceSrc.weilDatum_src_inert <;> assumption)

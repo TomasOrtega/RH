@@ -10,8 +10,10 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open ReciprocityTheory.AnForm.M
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points GlobalTheory.CechPic GlobalTheory.ProjVar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MongeAmperePoly.mInt_add_zsmul_poly | exact GlobalTheory.MongeAmperePoly.mInt_add_zsmul_poly | (intros; apply GlobalTheory.MongeAmperePoly.mInt_add_zsmul_poly <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MongeAmperePoly.mInt_add_zsmul_poly` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsPolynomialMongeAmpereMassAddZsmul.lean&line=99#L99)
 -/
 theorem _root_.GlobalTheory.T.exists_polynomial_mongeAmpereMass_add_zsmul : ∀ (e : ℕ) (X : Type) [TopologicalSpace X] [CompactSpace X] [T2Space X] (A : FinHolAtlas e X) (Φ Ψ : Fin e → LocPot X), (∀ i, IsPotential A (Φ i)) → (∀ i, IsPotential A (Ψ i)) → ∃ P : Polynomial ℝ, ∀ m : ℤ, mInt A (fun i => Φ i + (Ψ i).zsmul m) (fun _ => 1) = P.eval (m : ℝ) := by
   first | exact @GlobalTheory.MongeAmperePoly.mInt_add_zsmul_poly | exact GlobalTheory.MongeAmperePoly.mInt_add_zsmul_poly | (intros; apply GlobalTheory.MongeAmperePoly.mInt_add_zsmul_poly <;> assumption)

@@ -13,8 +13,10 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Unf GlobalTheory.See
 open scoped TensorProduct Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.MuUnrOff.mu_charUnramAt_alt | exact _root_.GlobalTheory.MuUnrOff.mu_charUnramAt_alt | (intros; apply _root_.GlobalTheory.MuUnrOff.mu_charUnramAt_alt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MuUnrOff.mu_charUnramAt_alt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicArithmetic%2FThetaCorrespondence%2FThetaPairLifts%2FThirdPlaceSeries%2FMuCharUnramAt.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.charUnramAt_of_not_under_pk : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.Fam.PackageHypotheses W → ∀ (t : W.P.T) (n : ℕ) (x : HeightOneSpectrum (𝓞 D.host.F)), 1 ≤ n → n ≤ D.R.m → (∀ PP ∈ (_root_.GlobalTheory.Fam.pk_z W).Pg, PP.under (𝓞 D.host.F) ≠ x) → (∀ PP ∈ (_root_.GlobalTheory.Fam.pk_z W).Q t, PP.under (𝓞 D.host.F) ≠ x) → GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.CharUnramAt D ((_root_.GlobalTheory.Fam.pk_z W).toLevCh.mu t n) x := by
   first | exact @_root_.GlobalTheory.MuUnrOff.mu_charUnramAt_alt | exact _root_.GlobalTheory.MuUnrOff.mu_charUnramAt_alt | (intros; apply _root_.GlobalTheory.MuUnrOff.mu_charUnramAt_alt <;> assumption)

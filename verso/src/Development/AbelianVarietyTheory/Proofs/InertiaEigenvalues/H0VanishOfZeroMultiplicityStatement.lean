@@ -6,8 +6,10 @@ import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
 import Formalism.SharpRestriction.LevelLetterCocycles.QuotientHomNonvanishingBound
 open NumberField IsDedekindDomain Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations Formalism.ConjugateSelfDual ReciprocityTheory.Gal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.InvJump.h0V_eq_bot_of_multV_zero | exact GlobalTheory.InvJump.h0V_eq_bot_of_multV_zero | (intros; apply GlobalTheory.InvJump.h0V_eq_bot_of_multV_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.InvJump.h0V_eq_bot_of_multV_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FH0VanishOfZeroMultiplicity.lean&line=32#L32)
 -/
 theorem _root_.GlobalTheory.T.H0_vanish_of_zero_multiplicity : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ (K LL : FinExt l) (V : Type) [AddCommGroup V] [Module ↥LL.1 V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] ↥LL.1 V] [FiniteDimensional ↥LL.1 V] (ρ : Representation ↥LL.1 ↥(GK K) V) (τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1), IsDR (P.PD K) ρ → multV (P.PD K) ρ τ 0 = 0 → H0V ρ = ⊥ := by
   first | exact @GlobalTheory.InvJump.h0V_eq_bot_of_multV_zero | exact GlobalTheory.InvJump.h0V_eq_bot_of_multV_zero | (intros; apply GlobalTheory.InvJump.h0V_eq_bot_of_multV_zero <;> assumption)

@@ -11,8 +11,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter (compFin ExtUnr
 open scoped TensorProduct Pointwise
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FinPl.RootKeep.inK_levi_transv | exact GlobalTheory.FinPl.RootKeep.inK_levi_transv | (intros; apply GlobalTheory.FinPl.RootKeep.inK_levi_transv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FinPl.RootKeep.inK_levi_transv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FWittLeviTransvectionMemCompactAtPlace.lean&line=128#L128)
 -/
 theorem _root_.GlobalTheory.T.wittLeviTransvection_mem_compactAtPlace : ∀ (D : D7) (S S₀ : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) (L : Lat S) (L₀ : Lat S₀) (v : Pl D), IsSelfDualC S L → MonoAt d L L₀ v → ∀ (i j : Fin ρ) (hij : i ≠ j) (r : AE D), r ∈ idAt D (· = v) → (∀ a ∈ idAt D (· = v), colMul d.jX j a ∈ latV S L (· = v) → colMul d.jX i (r * a) ∈ latV S L (· = v)) → InK S L (· = v) (d.levi (GlobalTheory.GLGen.transvGL hij r)) := by
   first | exact @GlobalTheory.FinPl.RootKeep.inK_levi_transv | exact GlobalTheory.FinPl.RootKeep.inK_levi_transv | (intros; apply GlobalTheory.FinPl.RootKeep.inK_levi_transv <;> assumption)

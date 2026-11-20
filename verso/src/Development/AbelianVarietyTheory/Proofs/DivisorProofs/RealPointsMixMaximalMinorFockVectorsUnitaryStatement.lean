@@ -12,8 +12,10 @@ open GlobalTheory.NormDict
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.NormDict.RealB.real_mix | exact GlobalTheory.NormDict.RealB.real_mix | (intros; apply GlobalTheory.NormDict.RealB.real_mix <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.NormDict.RealB.real_mix` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRealPointsMixMaximalMinorFockVectorsUnitary.lean&line=35#L35)
 -/
 theorem _root_.GlobalTheory.T.realPoints_mix_maximalMinorFockVectors_unitary : ∀ {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ t0 : ℂ} {Q : ℕ} (P : Pair D cc δ t0 Q) (X : Data P), IsDict P X →
   ∀ k ∈ GinfC X.B, ∃ U : Matrix (Tup D P.a P.d P.n) (Tup D P.a P.d P.n) ℂ, U ∈ Matrix.unitaryGroup (Tup D P.a P.d P.n) ℂ ∧

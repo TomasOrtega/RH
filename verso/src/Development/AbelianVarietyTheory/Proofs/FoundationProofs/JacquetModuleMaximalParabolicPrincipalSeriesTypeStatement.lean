@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.JacquetModuleMax
 import Development.AbelianVarietyTheory.Definitions.Foundations.OrderedConst
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil ValuativeRel GlobalTheory.PsType
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PsType.eig_jacquet_zero | exact GlobalTheory.PsType.eig_jacquet_zero | (intros; apply GlobalTheory.PsType.eig_jacquet_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PsType.eig_jacquet_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FJacquetModuleMaximalParabolicPrincipalSeriesType.lean&line=37#L37)
 -/
 theorem _root_.GlobalTheory.T.jacquetModule_maximalParabolic_principalSeriesTypeEigen : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (r t : ℕ) (ψ : Fin (r + t) → kˣ →* ℂˣ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin (r + t)) k) V), IsSmooth π → (∀ i, IsSmoothChar (ψ i)) → Ordered ψ → Cut ψ r → ∀ v ∈ twKer π (unipRad k (two (stdSum (rfl : r + t = r + t)))) 1, IsEig π (grp ψ) (theta ψ) v → v = 0 := by
   first | exact @GlobalTheory.PsType.eig_jacquet_zero | exact GlobalTheory.PsType.eig_jacquet_zero | (intros; apply GlobalTheory.PsType.eig_jacquet_zero <;> assumption)

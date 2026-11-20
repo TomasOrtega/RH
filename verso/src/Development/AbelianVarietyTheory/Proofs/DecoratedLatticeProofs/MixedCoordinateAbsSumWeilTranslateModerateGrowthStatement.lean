@@ -10,8 +10,10 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Unf
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MixedAbsGrowth.mixed_abs_growth | exact GlobalTheory.MixedAbsGrowth.mixed_abs_growth | (intros; apply GlobalTheory.MixedAbsGrowth.mixed_abs_growth <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MixedAbsGrowth.mixed_abs_growth` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FMixedCoordinateAbsSumWeilTranslateModerateGrowth.lean&line=38#L38)
 -/
 theorem _root_.GlobalTheory.T.mixedCoordinate_absSum_weilTranslate_moderateGrowth : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : Om S T), IsWeilDatumO ψ S T χS χT om → ∀ (S₀ : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) (v : VolM D T.rank ρ) (f : WO S T → ℂ), IsThetaFunO ψ S T f → ∃ (C : ℝ) (A : ℕ), ∀ g h (w : WO S₀ T), (∑' x : ratMx D T.rank ρ, ‖d.mixS T ψ v.μ v.𝓕 (om (g, h) f) x w‖ₑ) ≤ ENNReal.ofReal (C * (height S g * height T h) ^ A) := by
   first | exact @GlobalTheory.MixedAbsGrowth.mixed_abs_growth | exact GlobalTheory.MixedAbsGrowth.mixed_abs_growth | (intros; apply GlobalTheory.MixedAbsGrowth.mixed_abs_growth <;> assumption)

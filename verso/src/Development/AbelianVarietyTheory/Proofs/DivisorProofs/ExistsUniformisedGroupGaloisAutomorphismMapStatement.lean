@@ -8,8 +8,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.exists_galMap | exact GlobalTheory.Mum.exists_galMap | (intros; apply GlobalTheory.Mum.exists_galMap <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.exists_galMap` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsUniformisedGroupGaloisAutomorphismMap.lean&line=25#L25)
 -/
 theorem _root_.GlobalTheory.T.exists_uniformisedGroup_galoisAutomorphism_map : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (R' : Type) [CommRing R'] [IsDomain R'] [IsLocalRing R'] (ρ : R →+* R'), FinExt ρ → ∀ (D : DegData R (maximalIdeal R)) (D' : DegData R' (maximalIdeal R')) (hD : IsPullDeg ρ D.toPre D'.toPre) (A' : PolAV (Sp (FractionRing R'))) (G' : Over (Sp R')) [GrpObj G'] [IsCommMonObj G'], IsSemiAbelian G' → ∀ (U' : Unif (maximalIdeal R') D' A' G') (σ : Gal ρ), ∃ a, GalMap hD U' σ a := by
   first | exact @GlobalTheory.Mum.exists_galMap | exact GlobalTheory.Mum.exists_galMap | (intros; apply GlobalTheory.Mum.exists_galMap <;> assumption)

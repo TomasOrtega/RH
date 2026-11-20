@@ -15,8 +15,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IwArchLocal.iwasawa_arch_isotropic_line | exact GlobalTheory.IwArchLocal.iwasawa_arch_isotropic_line | (intros; apply GlobalTheory.IwArchLocal.iwasawa_arch_isotropic_line <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IwArchLocal.iwasawa_arch_isotropic_line` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHermitianIsotropicVectorCartan.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.hermitian_isotropic_vector_cartan : ∀ {n : ℕ} (M θ g g' : Matrix (Fin n) (Fin n) ℂ) (x : Fin n → ℂ), Mᴴ = M → IsCartan M θ → g * g' = 1 → gᵀ * M * g.map star = M → x ≠ 0 → x ⬝ᵥ M *ᵥ star x = 0 → ∃ k k' : Matrix (Fin n) (Fin n) ℂ, k * k' = 1 ∧ kᵀ * M * k.map star = M ∧ Commute k θ ∧ ∃ β : ℂ, β ≠ 0 ∧ (g * k') *ᵥ x = β • x := by
   first | exact @GlobalTheory.IwArchLocal.iwasawa_arch_isotropic_line | exact GlobalTheory.IwArchLocal.iwasawa_arch_isotropic_line | (intros; apply GlobalTheory.IwArchLocal.iwasawa_arch_isotropic_line <;> assumption)

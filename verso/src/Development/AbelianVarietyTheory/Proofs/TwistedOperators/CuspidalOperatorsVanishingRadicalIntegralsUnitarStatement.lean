@@ -8,8 +8,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.L2.Theta Formali
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Cusp GlobalTheory.IndefiniteRowSideFullHecke.CuspidalNoRadicalFixed
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CuspidalOpAssembly.cuspidalOperators | exact GlobalTheory.CuspidalOpAssembly.cuspidalOperators | (intros; apply GlobalTheory.CuspidalOpAssembly.cuspidalOperators <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CuspidalOpAssembly.cuspidalOperators` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FCuspidalOperatorsVanishingRadicalIntegralsUnitary.lean&line=48#L48)
 -/
 theorem _root_.GlobalTheory.T.cuspidalOperators_vanishingRadicalIntegrals_unitaryGroup : GlobalTheory.Published.CuspTraceClass → ∀ (D : D7) (V : HSp D) (μ : Measure (GA D V)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant], CuspidalOperators V μ := by
   first | exact @GlobalTheory.CuspidalOpAssembly.cuspidalOperators | exact GlobalTheory.CuspidalOpAssembly.cuspidalOperators | (intros; apply GlobalTheory.CuspidalOpAssembly.cuspidalOperators <;> assumption)

@@ -17,8 +17,10 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WRightChar.unitaryW_char | exact GlobalTheory.WRightChar.unitaryW_char | (intros; apply GlobalTheory.WRightChar.unitaryW_char <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WRightChar.unitaryW_char` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FUnramifiedLinearModelAtBasePlace.lean&line=29#L29)
 -/
 theorem _root_.GlobalTheory.T.unramified_linear_model_at_base_place : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W),

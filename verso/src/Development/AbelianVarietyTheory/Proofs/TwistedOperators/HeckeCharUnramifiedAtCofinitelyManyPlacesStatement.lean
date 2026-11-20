@@ -10,8 +10,10 @@ open scoped TensorProduct ComplexConjugate
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HeckeFinRam.finite_ramified | exact GlobalTheory.HeckeFinRam.finite_ramified | (intros; apply GlobalTheory.HeckeFinRam.finite_ramified <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HeckeFinRam.finite_ramified` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FHeckeCharUnramifiedAtCofinitelyManyPlaces.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.heckeChar_unramified_at_cofinitely_many_places : ∀ (D : D7) (χ : (AE D)ˣ →* Circle), IsHeckeChar D χ →
     {w : HeightOneSpectrum (𝓞 D.host.E) | ¬ GlobalTheory.LFun.UnrAt χ w}.Finite := by

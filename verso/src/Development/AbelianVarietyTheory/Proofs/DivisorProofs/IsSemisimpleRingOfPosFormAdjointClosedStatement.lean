@@ -5,8 +5,10 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.PELU
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.isSemisimpleRing_of_posForm_adjoint_closed | exact GlobalTheory.isSemisimpleRing_of_posForm_adjoint_closed | (intros; apply GlobalTheory.isSemisimpleRing_of_posForm_adjoint_closed <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.isSemisimpleRing_of_posForm_adjoint_closed` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsSemisimpleRingOfPosFormAdjointClosed.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.isSemisimpleRing_of_posDef_adjoint_closed : ∀ (r : ℕ) (Q : Matrix (Fin r) (Fin r) ℂ) (S : Subalgebra ℂ (Matrix (Fin r) (Fin r) ℂ)), Q.IsHermitian → (∀ z : Fin r → ℂ, z ≠ 0 → 0 < (star z ⬝ᵥ (Q *ᵥ z)).re) → (∀ x ∈ S, ∃ y ∈ S, Q * y = xᴴ * Q) → IsSemisimpleRing S := by
   first | exact @GlobalTheory.isSemisimpleRing_of_posForm_adjoint_closed | exact GlobalTheory.isSemisimpleRing_of_posForm_adjoint_closed | (intros; apply GlobalTheory.isSemisimpleRing_of_posForm_adjoint_closed <;> assumption)

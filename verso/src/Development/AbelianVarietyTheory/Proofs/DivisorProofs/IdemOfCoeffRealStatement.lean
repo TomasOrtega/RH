@@ -10,8 +10,10 @@ open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.CuspMult
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CuspMult.idemOf_coeff_real | exact GlobalTheory.CuspMult.idemOf_coeff_real | (intros; apply GlobalTheory.CuspMult.idemOf_coeff_real <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CuspMult.idemOf_coeff_real` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIdemOfCoeffReal.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.star_idemOf_coeff_eq_self : ∀ {K G : Type} [Field K] [Group G] [Fintype G] (σ : K →+* ℂ) (X : Finset (G → K)), (∀ χ ∈ X, IsAbsIrrChar χ) → GoodStable X → ∀ g, star (σ ((idemOf X).coeff g)) = σ ((idemOf X).coeff g) := by
   first | exact @GlobalTheory.CuspMult.idemOf_coeff_real | exact GlobalTheory.CuspMult.idemOf_coeff_real | (intros; apply GlobalTheory.CuspMult.idemOf_coeff_real <;> assumption)

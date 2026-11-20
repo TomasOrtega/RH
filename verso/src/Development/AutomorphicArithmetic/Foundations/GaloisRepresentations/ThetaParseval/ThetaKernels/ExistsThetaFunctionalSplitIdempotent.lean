@@ -11,8 +11,10 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open Formalism.IndefR.DatumF
 open MeasureTheory
-/- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.SplitInvFormF.exists_invForm_split_k | exact _root_.GlobalTheory.SplitInvFormF.exists_invForm_split_k | (intros; apply _root_.GlobalTheory.SplitInvFormF.exists_invForm_split_k <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SplitInvFormF.exists_invForm_split_k` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicArithmetic%2FFoundations%2FGaloisRepresentations%2FThetaParseval%2FThetaKernels%2FExistsInvFormSplitK.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.exists_theta_functional_split_idempotent : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     _root_.UpperTheory.TP.W.GoodK σ B → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

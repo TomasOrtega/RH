@@ -8,8 +8,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibl
 open scoped Formalism.Per
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PMon.exists_ratForm | exact GlobalTheory.PMon.exists_ratForm | (intros; apply GlobalTheory.PMon.exists_ratForm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PMon.exists_ratForm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FExistsRationalFormUnramifiedRestrictionScalars.lean&line=31#L31)
 -/
 theorem _root_.GlobalTheory.T.exists_rational_form_unramified_restrictionScalars : ∀ (l : ℕ) [Fact l.Prime] (n : Type) [Fintype n] [DecidableEq n] (K : FinExt l) (r : ℕ)
     (σ : ↥(GK K) →* GL n ↥(MaximalUnramifiedExtension l)) (ω : Fin r → ↥(MaximalUnramifiedExtension l)) (W : GL (Fin r) ↥(MaximalUnramifiedExtension l)), IsRat r σ →

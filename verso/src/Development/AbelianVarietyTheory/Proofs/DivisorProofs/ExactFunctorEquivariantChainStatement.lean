@@ -17,8 +17,10 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Vert Globa
 open GlobalTheory.ChainParts
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChainGlue.main | exact GlobalTheory.ChainGlue.main | (intros; apply GlobalTheory.ChainGlue.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChainGlue.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExactFunctorEquivariantChain.lean&line=98#L98)
 -/
 theorem _root_.GlobalTheory.T.exact_functor_equivariant_chain : ∀ {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p] {B : Vert.Model O} {Λ : Type} [CommRing Λ] {o : ℕ} (Q : EqChain p B Λ o) {ι : Type} (φ : ι → ι) (P : ι → (AM B Λ ⥤ B.X.Modules)) [∀ τ, (P τ).PreservesZeroMorphisms] (hlin : ∀ τ (M : AM B Λ) (g : Γ(B.X, ⊤)), IsAdd M → (P τ).map (smulA M g) = smulHom ((P τ).obj M) g) (hex : ∀ τ (S : ShortComplex (AM B Λ)), S.ShortExact → IsAdd S.X₁ → IsAdd S.X₂ → IsAdd S.X₃ → (S.map (P τ)).ShortExact) (hcok : ∀ τ {M N : AM B Λ} (f : M ⟶ N), IsAdd M → IsAdd N → Nonempty ((P τ).obj (cokernel f) ≅ cokernel ((P τ).map f))) (hvb : ∀ τ (E : EPres B Λ), ∃ r, GlobalTheory.VB.IsVB ((P τ).obj E.E) r ∧ GlobalTheory.VB.IsVB ((P τ).obj E.E') r ∧ IsIso (B.genRes.map ((P τ).map E.ψ))) (hfrob : ∀ τ (M : AM B Λ), IsAdd M → Nonempty ((P (φ τ)).obj (frobA p Q.hp M) ≅ (frobFun p Q.hp).obj ((P τ).obj M))) (hret : ∀ τ (M : AM B Λ), IsAdd M → ∃ (i : (P τ).obj M ⟶ M.V) (q : M.V ⟶ (P τ).obj M), i ≫ q = 𝟙 _) (hdiv : ∀ n < o, ∃ c : Γ(B.X, ⊤), Q.g = Q.γ n ^ p ^ n * c), ∃ Ch : Chain p B φ o, Ch.π = Q.π ∧ Ch.g = Q.g ∧ ∀ τ,
       (∃ r vb vb' iso, Ch.lw τ = ⟨r, (P τ).obj Q.lw.E, (P τ).obj Q.lw.E', vb, vb', (P τ).map Q.lw.ψ, iso⟩) ∧

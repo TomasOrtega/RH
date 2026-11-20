@@ -5,8 +5,10 @@ open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep 
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BCT.CtLevel.blk_mul_dgM | exact GlobalTheory.BCT.CtLevel.blk_mul_dgM | (intros; apply GlobalTheory.BCT.CtLevel.blk_mul_dgM <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BCT.CtLevel.blk_mul_dgM` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FBlockUpperTimesUnipotentMulBlockDiagonal.lean&line=8#L8)
 -/
 theorem _root_.GlobalTheory.T.blockUpperTimesUnipotent_mul_blockDiagonal : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a b n : ℕ) (h : a + b = n) (w : Pl E)
     (m k : GLw a w × GLw b w) (X : Matrix (Fin a) (Fin b) (w.adicCompletion E)),

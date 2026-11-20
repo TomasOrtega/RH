@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.BlockProductIsom
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsCuspidalIffCompositions
 open Formalism.L2.DIV GlobalTheory.FinGL GlobalTheory.Parabolic GlobalTheory.IndefiniteRowSideFullHecke.BlockProductIsomorphism
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FinGL.BlockMatch.blocks_match | exact GlobalTheory.FinGL.BlockMatch.blocks_match | (intros; apply GlobalTheory.FinGL.BlockMatch.blocks_match <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FinGL.BlockMatch.blocks_match` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCuspidalLeviDatumPermBlocksMatch.lean&line=60#L60)
 -/
 theorem _root_.GlobalTheory.T.cuspidalLeviDatum_perm_blocks_match : ∀ (F : Type) [Field F] [Finite F] (r : ℕ) (b b' : Fin r → ℕ) (V V' : Type) [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V'] (σ : Representation ℂ (blockTri (κ := F) b) V) (σ' : Representation ℂ (blockTri (κ := F) b') V'), IsCuspDatum b σ → IsCuspDatum b' σ' → ∀ (w : Equiv.Perm (Fin r)) (T : V →ₗ[ℂ] V'), T ≠ 0 → (∀ (p : blockTri (κ := F) b) (p' : blockTri (κ := F) b'), (p' : GL (Fin r) F) * permGL F w = permGL F w * (p : GL (Fin r) F) → σ' p' ∘ₗ T = T ∘ₗ σ p) → ∀ i j : Fin r, b i = b j ↔ b' (w i) = b' (w j) := by
   first | exact @GlobalTheory.FinGL.BlockMatch.blocks_match | exact GlobalTheory.FinGL.BlockMatch.blocks_match | (intros; apply GlobalTheory.FinGL.BlockMatch.blocks_match <;> assumption)

@@ -12,8 +12,10 @@ open Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G ReciprocityTheory.Char
 open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Rec GlobalTheory.CompanionTheory.Ar.Plug
 attribute [-instance] GlobalTheory.CompHt.fintypePsi
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Plug.countVol_le_of_le_shift_pow | exact GlobalTheory.CompanionTheory.Ar.Plug.countVol_le_of_le_shift_pow | (intros; apply GlobalTheory.CompanionTheory.Ar.Plug.countVol_le_of_le_shift_pow <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Plug.countVol_le_of_le_shift_pow` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FCountVolumePowerComparison.lean&line=79#L79)
 -/
 theorem _root_.GlobalTheory.T.count_volume_power_comparison : ∀ (D n d k₀ : ℕ) (m m' : ℕ → ℕ∞), 0 < n → 0 < d → 8 ∣ k₀ → (∀ᶠ τ : ℕ in atTop, m τ ≤ m' (τ + k₀) ^ d) → GlobalTheory.CompHt.countVol D (n * d) 8 m ≤ GlobalTheory.CompHt.countVol D n 8 m' := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Plug.countVol_le_of_le_shift_pow | exact GlobalTheory.CompanionTheory.Ar.Plug.countVol_le_of_le_shift_pow | (intros; apply GlobalTheory.CompanionTheory.Ar.Plug.countVol_le_of_le_shift_pow <;> assumption)

@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLinearHomProd
 open NumberField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlatCM.HomLat.mem_lat_of_dual | exact GlobalTheory.FlatCM.HomLat.mem_lat_of_dual | (intros; apply GlobalTheory.FlatCM.HomLat.mem_lat_of_dual <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlatCM.HomLat.mem_lat_of_dual` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FMemCmCoordinateLatticeOfIntegralGramPairing.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.mem_cmCoordinateLattice_of_integral_gramPairing : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E),
     GlobalTheory.IndefiniteRowSideFullHecke.EigenvectorLieDegree.IsHostField H → ∀ (K : Type) [Field K] [NumberField K] (ρ : 𝓞 K) (σ₁ : K →+* ℂ) (p : ℕ)

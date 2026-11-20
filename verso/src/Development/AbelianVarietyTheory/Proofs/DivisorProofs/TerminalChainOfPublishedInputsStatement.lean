@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.RegularAlt
 open CategoryTheory Limits AlgebraicGeometry IsLocalRing MvPolynomial
 open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.DV Formalism.DegreeFormula Formalism.MainNotions.LatticeTransfer Formalism.MainNotions.WeightThresholdDefs
 open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Vert GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.Mean4O GlobalTheory.MixedLocalChains GlobalTheory.BundleChernComparison
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PairTerm.termWSt_holds | exact GlobalTheory.PairTerm.termWSt_holds | (intros; apply GlobalTheory.PairTerm.termWSt_holds <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PairTerm.termWSt_holds` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTerminalChainOfHyp.lean&line=306#L306)
 -/
 theorem _root_.GlobalTheory.T.terminal_chain_of_published_inputs : GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.CovHt.HypothesesH → GlobalTheory.Published.RegularAlteration → GlobalTheory.Published.ScholzeWeinsteinB → GlobalTheory.Published.PrismaticDieudonnePerfd → TermWSt := by
   first | exact @GlobalTheory.PairTerm.termWSt_holds | exact GlobalTheory.PairTerm.termWSt_holds | (intros; apply GlobalTheory.PairTerm.termWSt_holds <;> assumption)

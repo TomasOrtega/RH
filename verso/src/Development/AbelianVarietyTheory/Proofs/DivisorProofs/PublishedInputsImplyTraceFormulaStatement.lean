@@ -22,8 +22,10 @@ open GlobalTheory.PRep (IsAdmissible)
 open GlobalTheory.TrMult
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EqualMultAssembly.trCusp_of_classicalTheorems | exact GlobalTheory.EqualMultAssembly.trCusp_of_classicalTheorems | (intros; apply GlobalTheory.EqualMultAssembly.trCusp_of_classicalTheorems <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EqualMultAssembly.trCusp_of_classicalTheorems` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTraceFormulaOfHyp.lean&line=45#L45)
 -/
 theorem _root_.GlobalTheory.T.published_inputs_imply_trace_formula : GlobalTheory.Published.HarishChandraAnalyticity → GlobalTheory.Published.DiscreteSeriesClassification → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspTraceClass → GlobalTheory.Published.DixmierMalliavinFactorisation → GlobalTheory.Published.FlathFactorisation → GlobalTheory.Published.PseudoCoefficientUpq → GlobalTheory.Published.HarishChandraCharacters → GlobalTheory.Published.LanglandsClassification → GlobalTheory.Published.LabesseWaldspurger → GlobalTheory.Published.ZelevinskyPolynomialRing → GlobalTheory.Published.GeometricLemma → TRCusp := by
   first | exact @GlobalTheory.EqualMultAssembly.trCusp_of_classicalTheorems | exact GlobalTheory.EqualMultAssembly.trCusp_of_classicalTheorems | (intros; apply GlobalTheory.EqualMultAssembly.trCusp_of_classicalTheorems <;> assumption)

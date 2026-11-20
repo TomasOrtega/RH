@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.FirstCoupledK
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Col Formalism.L2.Ker Formalism.L2.DIV GlobalTheory.TwU GlobalTheory.TwV Formalism.UG
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AwayFr.frames_away | exact GlobalTheory.AwayFr.frames_away | (intros; apply GlobalTheory.AwayFr.frames_away <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AwayFr.frames_away` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FChartPointsFramesCongrAwayFromBadPrimes.lean&line=96#L96)
 -/
 theorem _root_.GlobalTheory.T.chartPoints_frames_congr_away_from_badPrimes : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a => ∀ j (hj : j ≤ D.R.m) β x x₁ p p₁,
     IsPtAd A a j hj β x p → IsPtAd A a j hj β x₁ p₁ →

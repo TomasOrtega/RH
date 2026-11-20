@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NmatEqLowMat
 open ReciprocityTheory.ChartRestriction.G.FD MeasureTheory GlobalTheory.IntBall
 open scoped ENNReal Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IntBall.colGram_three_unitLower | exact GlobalTheory.IntBall.colGram_three_unitLower | (intros; apply GlobalTheory.IntBall.colGram_three_unitLower <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IntBall.colGram_three_unitLower` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FColumnGramDeterminantUnitLowerThree.lean&line=8#L8)
 -/
 theorem _root_.GlobalTheory.T.columnGramDeterminant_unitLower_three : ∀ M : Matrix (Fin 3) (Fin 3) ℂ, (∀ i, M i i = 1) → (∀ i j : Fin 3, i < j → M i j = 0) → colGram M 1 = 1 + ‖M 1 0‖ ^ 2 + ‖M 2 0‖ ^ 2 ∧ colGram M 2 = 1 + ‖M 2 1‖ ^ 2 + ‖M 1 0 * M 2 1 - M 2 0‖ ^ 2 := by
   first | exact @GlobalTheory.IntBall.colGram_three_unitLower | exact GlobalTheory.IntBall.colGram_three_unitLower | (intros; apply GlobalTheory.IntBall.colGram_three_unitLower <;> assumption)

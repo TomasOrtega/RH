@@ -12,8 +12,10 @@ open scoped TensorProduct ContDiff
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SeeSaw.isCompact_ginfC_of_defSp | exact GlobalTheory.SeeSaw.isCompact_ginfC_of_defSp | (intros; apply GlobalTheory.SeeSaw.isCompact_ginfC_of_defSp <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SeeSaw.isCompact_ginfC_of_defSp` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FIsCompactRealPointsOfDefiniteHermitianSpaceData.lean&line=65#L65)
 -/
 theorem _root_.GlobalTheory.T.isCompact_realPoints_of_definiteHermitianSpaceData : ∀ (D : D7) (A : HSp D) (x : DefSp A), x.Is → IsCompact (GinfC A : Set (GA D A)) := by
   first | exact @GlobalTheory.SeeSaw.isCompact_ginfC_of_defSp | exact GlobalTheory.SeeSaw.isCompact_ginfC_of_defSp | (intros; apply GlobalTheory.SeeSaw.isCompact_ginfC_of_defSp <;> assumption)

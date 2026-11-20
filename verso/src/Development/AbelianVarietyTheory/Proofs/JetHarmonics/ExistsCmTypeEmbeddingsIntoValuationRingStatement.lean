@@ -8,8 +8,10 @@ open ReciprocityTheory.ChartRestriction.G.Pdiv.ChartF ReciprocityTheory.ChartRes
 open GlobalTheory.CharDepth TensorProduct
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CharDepth.exists_types_valuationRing | exact GlobalTheory.CharDepth.exists_types_valuationRing | (intros; apply GlobalTheory.CharDepth.exists_types_valuationRing <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CharDepth.exists_types_valuationRing` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FJetHarmonics%2FExistsCmTypeEmbeddingsIntoValuationRing.lean&line=28#L28)
 -/
 theorem _root_.GlobalTheory.T.exists_cmType_embeddings_into_valuation_ring : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (l : Level H) (c : Coeff l) (T : CDVR) (io : c.F →+* T.Fr) (p : ℕ) [Fact p.Prime] (X : ValExt T p), ∃ (τT : (E →+* ℂ) → (𝓞 E →+* T.V)), (∀ τ a, algebraMap T.V T.Fr (τT τ a) = io (embK c τ a)) ∧ IsTypes X io (fun τ => X.ι.comp (τT τ)) ∧ Function.Injective (fun τ => X.ι.comp (τT τ)) ∧ (∀ τ τ', τ (H.rt : E) = τ' (H.rt : E) ↔ X.ι (τT τ H.rt) = X.ι (τT τ' H.rt)) ∧ ∀ τ a, τT (ComplexEmbedding.conjugate τ) a = τT τ (H.bar a) := by
   first | exact @GlobalTheory.CharDepth.exists_types_valuationRing | exact GlobalTheory.CharDepth.exists_types_valuationRing | (intros; apply GlobalTheory.CharDepth.exists_types_valuationRing <;> assumption)

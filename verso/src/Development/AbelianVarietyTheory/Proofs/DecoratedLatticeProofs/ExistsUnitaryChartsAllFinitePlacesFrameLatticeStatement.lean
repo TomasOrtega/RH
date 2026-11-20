@@ -13,8 +13,10 @@ open Formalism.UG (IsUnifV qV IsUnramInv GU KU IsInertAt Hecke IsCommensurated T
 open Formalism.MainNotions.SchurIrreducible (IsSplit)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChartsAll.exists_charts | exact GlobalTheory.ChartsAll.exists_charts | (intros; apply GlobalTheory.ChartsAll.exists_charts <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChartsAll.exists_charts` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FExistsUnitaryChartsAllFinitePlacesFrameLattice.lean&line=25#L25)
 -/
 theorem _root_.GlobalTheory.T.exists_unitaryCharts_allFinitePlaces_frameLattice : ∀ (D : D7) (V : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F)) (w : HeightOneSpectrum (𝓞 D.host.E)) (h : w.under (𝓞 D.host.F) = v), (IsSplit (E := D.host.E) v → ∃ e, IsSplitChart D.sp.cm.sig V.gram (frameLat V) h e) ∧ (¬ IsSplit (E := D.host.E) v → IsInertAt D.host.F D.host.E v w ∧ Odd (qV D.host.F v) ∧ ∀ c, IsConjAt D.sp.cm.sig h c → ∃ e, IsInertChart D.sp.cm.sig V.gram (frameLat V) h c e) := by
   first | exact @GlobalTheory.ChartsAll.exists_charts | exact GlobalTheory.ChartsAll.exists_charts | (intros; apply GlobalTheory.ChartsAll.exists_charts <;> assumption)

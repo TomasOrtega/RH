@@ -6,8 +6,10 @@ open Set Matrix MeasureTheory
 open GlobalTheory.HermFrame
 open scoped ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CxFormStokes.integral_ddc_mul_eq_zero | exact GlobalTheory.CxFormStokes.integral_ddc_mul_eq_zero | (intros; apply GlobalTheory.CxFormStokes.integral_ddc_mul_eq_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CxFormStokes.integral_ddc_mul_eq_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIntegralDdcClosedFormZero.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.integral_ddc_closed_form_zero : ∀ {M : Type} [TopologicalSpace M] [CompactSpace M] [T2Space M] [SecondCountableTopology M] [MeasurableSpace M]
     [BorelSpace M] {n : ℕ} (A : GlobalTheory.CxForm.HolAtlas M n) (η Z : A.Fld), A.IsForm η → A.IsForm Z → A.del Z = 0 →

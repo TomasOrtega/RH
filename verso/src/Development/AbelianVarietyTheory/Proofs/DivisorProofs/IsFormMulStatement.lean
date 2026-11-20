@@ -6,8 +6,10 @@ open Set Matrix MeasureTheory
 open GlobalTheory.HermFrame
 open scoped ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CxForm.FormMul.isForm_mul | exact GlobalTheory.CxForm.FormMul.isForm_mul | (intros; apply GlobalTheory.CxForm.FormMul.isForm_mul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CxForm.FormMul.isForm_mul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsFormMul.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.isForm_mul_of_isForm_of_isForm : ∀ {M : Type} [TopologicalSpace M] {n : ℕ} (A : GlobalTheory.CxForm.HolAtlas M n) (α β : A.Fld), A.IsForm α → A.IsForm β → A.IsForm (α * β) := by
   first | exact @GlobalTheory.CxForm.FormMul.isForm_mul | exact GlobalTheory.CxForm.FormMul.isForm_mul | (intros; apply GlobalTheory.CxForm.FormMul.isForm_mul <;> assumption)

@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Ex
 open MeasureTheory Matrix Formalism.REAL Formalism.MainNotions.S Formalism.L2.Theta GlobalTheory.Count GlobalTheory.FlagMeas GlobalTheory.FlagLeviGroup GlobalTheory.GKModule GlobalTheory.RealInd
 open scoped InnerProductSpace
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ParabCompact.continuous_of_continuous_mul | exact GlobalTheory.ParabCompact.continuous_of_continuous_mul | (intros; apply GlobalTheory.ParabCompact.continuous_of_continuous_mul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ParabCompact.continuous_of_continuous_mul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FContinuousOfIwasawaContinuous.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.continuous_of_iwasawa_continuous : ∀ (n a : ℕ) (ε : Fin n → Bool) (j : Fin a → ℕ) (W : Flag n a), IsIsoFlag ε j W →
     ∀ (Y : Type) [TopologicalSpace Y] (F : UJ ε → Y),

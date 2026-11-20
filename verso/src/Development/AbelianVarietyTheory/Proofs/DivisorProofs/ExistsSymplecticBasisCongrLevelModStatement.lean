@@ -8,8 +8,10 @@ open scoped CategoryTheory.Obj TensorProduct
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.ZM GlobalTheory.KeyFam
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SymplecticLevelLift.exists_symplectic_equiv_congr | exact GlobalTheory.SymplecticLevelLift.exists_symplectic_equiv_congr | (intros; apply GlobalTheory.SymplecticLevelLift.exists_symplectic_equiv_congr <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SymplecticLevelLift.exists_symplectic_equiv_congr` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsSymplecticBasisCongrLevelMod.lean&line=26#L26)
 -/
 theorem _root_.GlobalTheory.T.exists_symplectic_basis_congr_level_mod : ∀ (h k : ℕ) (M : Type) [AddCommGroup M] [Module.Free ℤ M] [Module.Finite ℤ M] (Ef : LinearMap.BilinForm ℤ M) (l : (Fin h ⊕ Fin h → ℤ) →ₗ[ℤ] M), 0 < k → Module.finrank ℤ M = 2 * h → (∀ x, Ef x x = 0) → Function.Bijective Ef → (∀ a b, (k : ℤ) ∣ Ef (l a) (l b) - omegaStd a b) → ∃ B : (Fin h ⊕ Fin h → ℤ) ≃ₗ[ℤ] M, (∀ a b, Ef (B a) (B b) = omegaStd a b) ∧ ∀ a, ∃ m : M, l a - B a = (k : ℤ) • m := by
   first | exact @GlobalTheory.SymplecticLevelLift.exists_symplectic_equiv_congr | exact GlobalTheory.SymplecticLevelLift.exists_symplectic_equiv_congr | (intros; apply GlobalTheory.SymplecticLevelLift.exists_symplectic_equiv_congr <;> assumption)

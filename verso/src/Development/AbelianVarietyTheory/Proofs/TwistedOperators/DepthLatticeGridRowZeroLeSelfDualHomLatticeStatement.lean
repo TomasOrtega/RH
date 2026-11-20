@@ -9,8 +9,10 @@ open GlobalTheory.FinPl (Lat idAt idOff intAt grpAt grpOff MxAt latV latA InK Mo
 open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RowBig.latRow_zero_le_latBig | exact GlobalTheory.RowBig.latRow_zero_le_latBig | (intros; apply GlobalTheory.RowBig.latRow_zero_le_latBig <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RowBig.latRow_zero_le_latBig` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FDepthLatticeGridRowZeroLeSelfDualHomLattice.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.depthLatticeGridRow_zero_le_selfDualHomLattice : All fun {D} _ _ _ {G} _ _ => 0 < D.R.m → latRow G 0 ≤ latBig G 0 := by
   first | exact @GlobalTheory.RowBig.latRow_zero_le_latBig | exact GlobalTheory.RowBig.latRow_zero_le_latBig | (intros; apply GlobalTheory.RowBig.latRow_zero_le_latBig <;> assumption)

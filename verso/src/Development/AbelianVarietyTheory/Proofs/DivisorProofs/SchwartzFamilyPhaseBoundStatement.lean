@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzFamilyPhase
 import Mathlib
 open MeasureTheory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CharFamily.charMul_family | exact GlobalTheory.CharFamily.charMul_family | (intros; apply GlobalTheory.CharFamily.charMul_family <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CharFamily.charMul_family` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSchwartzFamilyPhaseBound.lean&line=123#L123)
 -/
 theorem _root_.GlobalTheory.T.schwartz_family_phase_bound : ∀ (E P : Type) [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup P] [NormedSpace ℝ P]
     (A : P →L[ℝ] E →L[ℝ] ℝ) (f : SchwartzMap E ℂ), ∃ Φ : P → SchwartzMap E ℂ,

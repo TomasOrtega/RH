@@ -16,8 +16,10 @@ open GlobalTheory.Core.Rk.IP
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Core.Rk.Exh GlobalTheory.RegSW
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.InertIwasawaIso.iwasawa_inert | exact GlobalTheory.InertIwasawaIso.iwasawa_inert | (intros; apply GlobalTheory.InertIwasawaIso.iwasawa_inert <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.InertIwasawaIso.iwasawa_inert` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FIwasawaIsotropicStabilizerInertPlace.lean&line=233#L233)
 -/
 theorem _root_.GlobalTheory.T.iwasawa_isotropicStabilizer_inertPlace : ∀ (D : D7) (T T₀ : HSp D) (r : ℕ) (d : HypDec T T₀ r) (v : FinPl D), ¬ Formalism.MainNotions.SchurIrreducible.IsSplit (E := D.host.E) v → ∀ y : Gv T v, ∃ q k : Gv T v, emb D.sp.cm.sig T.gram v q ∈ stab d ∧ k ∈ stabLoc D.sp.cm.sig T.gram (frameLat T) v ∧ y = q * k := by
   first | exact @GlobalTheory.InertIwasawaIso.iwasawa_inert | exact GlobalTheory.InertIwasawaIso.iwasawa_inert | (intros; apply GlobalTheory.InertIwasawaIso.iwasawa_inert <;> assumption)

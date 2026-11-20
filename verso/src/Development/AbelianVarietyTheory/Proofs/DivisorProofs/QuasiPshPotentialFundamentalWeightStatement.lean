@@ -12,8 +12,10 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions ReciprocityTheory.
 open AlgebraicGeometry CategoryTheory MeasureTheory Set GlobalTheory.ShFam GlobalTheory.ChernReg GlobalTheory.CxPts GlobalTheory.TrueGeo ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.ShFam.Pad GlobalTheory.Toroidal GlobalTheory.ProjVar Formalism.L2.Pj Formalism.L2.Geo GlobalTheory
 open ReciprocityTheory.AnForm.M
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FundWeightExt.exists_quasiPsh_ext | exact GlobalTheory.FundWeightExt.exists_quasiPsh_ext | (intros; apply GlobalTheory.FundWeightExt.exists_quasiPsh_ext <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FundWeightExt.exists_quasiPsh_ext` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FQuasiPshPotentialFundamentalWeight.lean&line=69#L69)
 -/
 theorem _root_.GlobalTheory.T.quasi_psh_potential_fundamental_weight : Hypotheses2 → HypothesesH → OnObj fun D O _ T _ R => ∀ c a τ (i : Fin O.N), (i : ℕ) + 1 < O.N → ∃ v : (T.M c).X a → EReal, GlobalTheory.IndefiniteRowSideFullHecke.QuasiPlurisubharmonic.IsQuasiPsh ((T.M c).A a) ((T.F c).th (fund τ i) a) v ∧ ∀ z, z ∉ (T.M c).Z a → v z = ((2 * (T.F c).ph (fund τ i) a z : ℝ) : EReal) := by
   first | exact @GlobalTheory.FundWeightExt.exists_quasiPsh_ext | exact GlobalTheory.FundWeightExt.exists_quasiPsh_ext | (intros; apply GlobalTheory.FundWeightExt.exists_quasiPsh_ext <;> assumption)

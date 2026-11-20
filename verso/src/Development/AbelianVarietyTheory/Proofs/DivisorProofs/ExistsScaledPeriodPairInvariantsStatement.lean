@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.AddMonoidHomEqZ
 open NumberField IsDedekindDomain WeierstrassCurve GlobalTheory GlobalTheory.Published GlobalTheory.CMModel Formalism.L2.Th1.F
 open scoped IntermediateField BigOperators Topology
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CMModel.exists_scaled_periodPair | exact GlobalTheory.CMModel.exists_scaled_periodPair | (intros; apply GlobalTheory.CMModel.exists_scaled_periodPair <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CMModel.exists_scaled_periodPair` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsScaledPeriodPairInvariants.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.exists_scaled_periodPair_invariants : ∀ (L : PeriodPair) (c : ℂ), c ≠ 0 → ∃ L' : PeriodPair, (∀ z, c * z ∈ L'.lattice ↔ z ∈ L.lattice) ∧ L'.g₂ = (c ^ 4)⁻¹ * L.g₂ ∧ L'.g₃ = (c ^ 6)⁻¹ * L.g₃ ∧ (∀ z, L'.derivWeierstrassP (c * z) = (c ^ 3)⁻¹ * L.derivWeierstrassP z) ∧ (latticeCurve L').j = (latticeCurve L).j := by
   first | exact @GlobalTheory.CMModel.exists_scaled_periodPair | exact GlobalTheory.CMModel.exists_scaled_periodPair | (intros; apply GlobalTheory.CMModel.exists_scaled_periodPair <;> assumption)

@@ -9,8 +9,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj TensorProduct
 open GlobalTheory.ZM
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LBPush.exists_push | exact GlobalTheory.LBPush.exists_push | (intros; apply GlobalTheory.LBPush.exists_push <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LBPush.exists_push` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FModuliProofs%2FExistsCechDataPullbackOfLineBundleOnOpen.lean&line=83#L83)
 -/
 theorem _root_.GlobalTheory.T.exists_cechData_pullback_of_lineBundle_on_open : ∀ (X Y : Scheme.{0}) (ψ : Y ⟶ X) [IsOpenImmersion ψ] (L : LB Y), L.IsLB → ∃ M : LB X, ⨆ a, M.U a = ψ.opensRange ∧ (∀ (a : M.ι) (x : X), x ∈ M.U a → gm (𝟙 X) x (M.U a ⊓ M.U a) (M.g a a) = 1) ∧ (M.pull ψ).IsLB ∧ LBIso L (M.pull ψ) := by
   first | exact @GlobalTheory.LBPush.exists_push | exact GlobalTheory.LBPush.exists_push | (intros; apply GlobalTheory.LBPush.exists_push <;> assumption)

@@ -5,8 +5,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open scoped ComplexOrder
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DefLift.colHighest_intertwiner_proportional | exact GlobalTheory.DefLift.colHighest_intertwiner_proportional | (intros; apply GlobalTheory.DefLift.colHighest_intertwiner_proportional <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DefLift.colHighest_intertwiner_proportional` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FColumnHighestRowIntertwinersProportional.lean&line=86#L86)
 -/
 theorem _root_.GlobalTheory.T.columnHighest_rowIntertwiners_proportional : ∀ (ι : Type) [Fintype ι] (m n : ℕ), n ≤ m → ∀ (X : Type) [AddCommGroup X] [Module ℂ X] [FiniteDimensional ℂ X] (π : ι → Matrix.unitaryGroup (Fin m) ℂ → Module.End ℂ X), IrrFam π → ∀ (Φ Ψ : X →ₗ[ℂ] Pol ι m n) (μ μ' : ι → Fin n → ℤ), Φ ≠ 0 → (∀ τ u x, Φ (π τ u x) = rowSub n τ u (Φ x) ∧ Ψ (π τ u x) = rowSub n τ u (Ψ x)) → (∀ τ k l, k < l → colLie m τ k l ∘ₗ Φ = 0 ∧ colLie m τ k l ∘ₗ Ψ = 0) → (∀ τ k, colLie m τ k k ∘ₗ Φ = (μ τ k : ℂ) • Φ ∧ colLie m τ k k ∘ₗ Ψ = (μ' τ k : ℂ) • Ψ) → ∃ r : ℂ, Ψ = r • Φ := by
   first | exact @GlobalTheory.DefLift.colHighest_intertwiner_proportional | exact GlobalTheory.DefLift.colHighest_intertwiner_proportional | (intros; apply GlobalTheory.DefLift.colHighest_intertwiner_proportional <;> assumption)

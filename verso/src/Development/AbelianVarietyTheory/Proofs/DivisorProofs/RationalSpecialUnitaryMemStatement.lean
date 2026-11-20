@@ -6,8 +6,10 @@ open Formalism.BasicNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVo
 open scoped TensorProduct ENNReal
 open GlobalTheory.TamSU GlobalTheory.SUVol GlobalTheory.UCls GlobalTheory.AdLat GlobalTheory.Published GlobalTheory.TamUnf
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TamUnf.RatIn.exists_rat | exact GlobalTheory.TamUnf.RatIn.exists_rat | (intros; apply GlobalTheory.TamUnf.RatIn.exists_rat <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TamUnf.RatIn.exists_rat` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRationalSpecialUnitaryMem.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.rational_special_unitary_mem : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (G : Matrix (Fin r) (Fin r) E)
     (Ψ : Finset (E →+* ℂ)) (θ : Ψ → (Ainf (maximalRealSubfield E) ⊗[maximalRealSubfield E] E →+* ℂ)),

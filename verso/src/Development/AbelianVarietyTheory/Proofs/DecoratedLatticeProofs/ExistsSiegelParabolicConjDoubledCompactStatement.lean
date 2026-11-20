@@ -11,8 +11,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero (swSec sZero)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.StdUnn.ConjElt.exists_isConj | exact GlobalTheory.StdUnn.ConjElt.exists_isConj | (intros; apply GlobalTheory.StdUnn.ConjElt.exists_isConj <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.StdUnn.ConjElt.exists_isConj` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FExistsSiegelParabolicConjDoubledCompact.lean&line=112#L112)
 -/
 theorem _root_.GlobalTheory.T.exists_siegel_parabolic_conj_doubled_compact : ∀ D : D7, ∃ μ : D.host.E, IsSkew μ ∧ ∀ (A : HSp D) (a : GL (Fin A.rank) (AE D)), IsMaj A a → ∀ κ : GA D (dblSp A) ≃* G D A.rank, IsChart A μ κ → ∃ p : siegel A, IsConj A a κ p := by
   first | exact @GlobalTheory.StdUnn.ConjElt.exists_isConj | exact GlobalTheory.StdUnn.ConjElt.exists_isConj | (intros; apply GlobalTheory.StdUnn.ConjElt.exists_isConj <;> assumption)

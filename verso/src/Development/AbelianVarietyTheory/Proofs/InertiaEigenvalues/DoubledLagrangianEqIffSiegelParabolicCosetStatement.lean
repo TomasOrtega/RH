@@ -8,8 +8,10 @@ open Formalism.IndefR.Lev Formalism.IndefR.Mult Formalism.IndefR.Datum Formalism
 open GlobalTheory.RawLift GlobalTheory.SWLagTerms
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SWLagSame.sameClass | exact GlobalTheory.SWLagSame.sameClass | (intros; apply GlobalTheory.SWLagSame.sameClass <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SWLagSame.sameClass` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FDoubledLagrangianEqIffSiegelParabolicCoset.lean&line=182#L182)
 -/
 theorem _root_.GlobalTheory.T.doubledLagrangian_eq_iff_siegelParabolic_coset : ∀ (D : D7) (W : HSp D) (γ γ' : GA D (GlobalTheory.Doubling.dblSp W)) (g₀ : Matrix (Fin (W.rank + W.rank)) (Fin (W.rank + W.rank)) D.host.E) (g₀' : Matrix (Fin (W.rank + W.rank)) (Fin (W.rank + W.rank)) D.host.E), Formalism.L2.Theta.mt (GlobalTheory.Doubling.dblSp W) γ = g₀.map (incA D) → Formalism.L2.Theta.mt (GlobalTheory.Doubling.dblSp W) γ' = g₀'.map (incA D) → ∀ (Y Y' : Lag W), IsLagFrame W Y (frameOf W g₀) → IsLagFrame W Y' (frameOf W g₀') → (Y = Y' ↔ γ' * γ⁻¹ ∈ GlobalTheory.Doubling.siegel W) := by
   first | exact @GlobalTheory.SWLagSame.sameClass | exact GlobalTheory.SWLagSame.sameClass | (intros; apply GlobalTheory.SWLagSame.sameClass <;> assumption)

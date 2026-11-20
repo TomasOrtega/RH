@@ -8,8 +8,10 @@ open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalT
 open GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.ProjVar
 open GlobalTheory.FlagCls
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagCls.CarryBC.carries_baseChange_iff | exact GlobalTheory.FlagCls.CarryBC.carries_baseChange_iff | (intros; apply GlobalTheory.FlagCls.CarryBC.carries_baseChange_iff <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagCls.CarryBC.carries_baseChange_iff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFlagCompactificationPointExtension.lean&line=79#L79)
 -/
 theorem _root_.GlobalTheory.T.flag_compactification_point_extension : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l) (c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l) (Oz : Type) [CommRing Oz] (β : Oz →+* c.F) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β) (F : Type) [Field F] (e : F ≃+* c.F) (C : FlagCpt Z e) (K : Type) [Field K] (χ : c.F →+* K) (x : Sp K ⟶ Z.X) (g : EigFrame Z χ x) (K' : Type) [Field K'] (ψ : K →+* K') (χ' : c.F →+* K') (x' : Sp K' ⟶ Z.X) (g' : EigFrame Z χ' x') (t : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → K'ˣ) (p : Sp K ⟶ C.Y.X), x = p ≫ C.π ≫ genι Z → p ≫ C.π ≫ genStr Z = spMap χ → g.Tri ψ g' t → (C.Carries (spMap ψ ≫ p) g' ↔ C.Carries p g) := by
   first | exact @GlobalTheory.FlagCls.CarryBC.carries_baseChange_iff | exact GlobalTheory.FlagCls.CarryBC.carries_baseChange_iff | (intros; apply GlobalTheory.FlagCls.CarryBC.carries_baseChange_iff <;> assumption)

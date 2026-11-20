@@ -7,8 +7,10 @@ open scoped CategoryTheory.Obj
 open GlobalTheory GlobalTheory.CM
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CM.tensor_smoothOfRelativeDimension | exact GlobalTheory.CM.tensor_smoothOfRelativeDimension | (intros; apply GlobalTheory.CM.tensor_smoothOfRelativeDimension <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CM.tensor_smoothOfRelativeDimension` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FCubicalLineBundles%2FCmTensorSmoothOfRelativeDimension.lean&line=89#L89)
 -/
 theorem _root_.GlobalTheory.T.cmTensor_smoothOfRelativeDimension : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] (ω : R) (C : Ell H R ω) (D : Datum H) (A : Over (Sp R)) [GrpObj A] [IsCommMonObj A] (b : OAct (OK H) A), Nonempty (Serre.IsTensor A b C.P.A C.act D.La) → SmoothOfRelativeDimension (Module.finrank ℚ E / 2 * (D.p + D.q)) A.hom := by
   first | exact @GlobalTheory.CM.tensor_smoothOfRelativeDimension | exact GlobalTheory.CM.tensor_smoothOfRelativeDimension | (intros; apply GlobalTheory.CM.tensor_smoothOfRelativeDimension <;> assumption)

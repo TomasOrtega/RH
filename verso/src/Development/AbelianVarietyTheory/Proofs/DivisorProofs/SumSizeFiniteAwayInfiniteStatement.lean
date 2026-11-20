@@ -19,8 +19,10 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.ZetaValueIdeals
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HeckeFunctionalEquationAbs
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.LevelPlusSubgroup
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SumSize.Join.fin_away_inf | exact GlobalTheory.SumSize.Join.fin_away_inf | (intros; apply GlobalTheory.SumSize.Join.fin_away_inf <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SumSize.Join.fin_away_inf` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSumSizeFiniteAwayInfinite.lean&line=44#L44)
 -/
 theorem _root_.GlobalTheory.T.sum_size_finite_away_infinite : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.SumSize.FinK ∧ GlobalTheory.SumSize.AwayK ∧ GlobalTheory.SumSize.InfK := by
   first | exact @GlobalTheory.SumSize.Join.fin_away_inf | exact GlobalTheory.SumSize.Join.fin_away_inf | (intros; apply GlobalTheory.SumSize.Join.fin_away_inf <;> assumption)

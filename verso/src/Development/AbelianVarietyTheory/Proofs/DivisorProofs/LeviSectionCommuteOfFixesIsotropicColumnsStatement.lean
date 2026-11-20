@@ -8,8 +8,10 @@ open GlobalTheory.Doubling (absE npow)
 open Formalism.UG (cT bc)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SphEis.lv_comm_of_fix_cols | exact GlobalTheory.SphEis.lv_comm_of_fix_cols | (intros; apply GlobalTheory.SphEis.lv_comm_of_fix_cols <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SphEis.lv_comm_of_fix_cols` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLeviSectionCommuteOfFixesIsotropicColumns.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.leviSection_commute_of_fixes_isotropicColumns : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (j m : ℕ) (C D : Matrix (Fin n) (Fin j) E) (Z : Matrix (Fin n) (Fin m) E) (J₀ : Matrix (Fin m) (Fin m) E), Fr σ J C D Z J₀ → ∀ lv : GL (Fin j) (AF F ⊗[F] E) →* GAd σ J, IsLv σ J C D Z lv → ∀ α, ∀ x ∈ (fixG σ J C ⊓ fixG σ J D : Subgroup (GAd σ J)), lv α * x = x * lv α := by
   first | exact @GlobalTheory.SphEis.lv_comm_of_fix_cols | exact GlobalTheory.SphEis.lv_comm_of_fix_cols | (intros; apply GlobalTheory.SphEis.lv_comm_of_fix_cols <;> assumption)

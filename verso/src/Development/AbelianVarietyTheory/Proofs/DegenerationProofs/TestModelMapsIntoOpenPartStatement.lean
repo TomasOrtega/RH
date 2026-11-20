@@ -11,8 +11,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open ReciprocityTheory.ChartRestriction.G.Out GlobalTheory.ZH Classical
 attribute [local instance] SplitExt.free SplitExt.finite MvPolynomial.gradedAlgebra
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ZH.TestInOpen.top_le_preimage_G | exact GlobalTheory.ZH.TestInOpen.top_le_preimage_G | (intros; apply GlobalTheory.ZH.TestInOpen.top_le_preimage_G <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ZH.TestInOpen.top_le_preimage_G` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDegenerationProofs%2FTestModelMapsIntoOpenPart.lean&line=130#L130)
 -/
 theorem _root_.GlobalTheory.T.testModel_maps_into_openPart : GlobalTheory.UT.LL → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (M : RatModel o Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J), BaseFacts S M U₀ EE → ∀ (Q : Clos ρ M U₀ EE) (p : ℕ) [Fact p.Prime] (y : Sp (OO p) ⟶ M.Z) (y₀ : S.R →+* PadicAlgCl p) (t : ρ.GeoTest p y₀) (c : Q.Fac y t.u) (tm : Q.TMap t c), S.Big → ⊤ ≤ (tm.f ≫ (Q.P.hom ⁻¹ᵁ Q.W tm.l).ι) ⁻¹ᵁ Q.G := by
   first | exact @GlobalTheory.ZH.TestInOpen.top_le_preimage_G | exact GlobalTheory.ZH.TestInOpen.top_le_preimage_G | (intros; apply GlobalTheory.ZH.TestInOpen.top_le_preimage_G <;> assumption)

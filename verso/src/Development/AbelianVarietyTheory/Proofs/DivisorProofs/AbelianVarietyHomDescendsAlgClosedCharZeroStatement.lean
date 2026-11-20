@@ -10,8 +10,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AlgClosedHomDescent.hom_descends | exact GlobalTheory.AlgClosedHomDescent.hom_descends | (intros; apply GlobalTheory.AlgClosedHomDescent.hom_descends <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AlgClosedHomDescent.hom_descends` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAbelianVarietyHomDescendsAlgClosedCharZero.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.abelianVariety_hom_descends_algClosed_charZero : ∀ (K Ω : Type) [Field K] [IsAlgClosed K] [CharZero K] [Field Ω] (j : K →+* Ω) (A A' : Over (Sp K)) [GrpObj A] [GrpObj A'] (B B' : Over (Sp Ω)) [GrpObj B] [GrpObj B'] (b : B.left ⟶ A.left) (b' : B'.left ⟶ A'.left), IsAbelianScheme A → IsAbelianScheme A' → IsGrpPullback B A (spMap j) b → IsGrpPullback B' A' (spMap j) b' → ∀ f : B ⟶ B', IsMonHom f → ∃ f₀ : A ⟶ A', IsMonHom f₀ ∧ b ≫ f₀.left = f.left ≫ b' := by
   first | exact @GlobalTheory.AlgClosedHomDescent.hom_descends | exact GlobalTheory.AlgClosedHomDescent.hom_descends | (intros; apply GlobalTheory.AlgClosedHomDescent.hom_descends <;> assumption)

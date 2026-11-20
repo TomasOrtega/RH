@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MemChainVecsDet
 open Polynomial GlobalTheory.GLq GlobalTheory.GLp GlobalTheory.GLp.Supp GlobalTheory.SerSys GlobalTheory.TypeLeaf Formalism.BasicNotions Formalism.MainNotions.N Formalism.MainNotions.ArithmeticCylinders
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SerSys.has_prod_of_inInd | exact GlobalTheory.SerSys.has_prod_of_inInd | (intros; apply GlobalTheory.SerSys.has_prod_of_inInd <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SerSys.has_prod_of_inInd` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FSeriesEqProdOfParabolicInductionChain.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.series_eq_prod_of_parabolic_induction_chain : ∀ (g : ℕ) [Fact g.Prime] (S : Sys g) (π : GLRep g) (L : List (GLRep g)), InInd π L → ∀ F, Has S π.2.ρ F → ∃ fs : List (ZMod g)[X], List.Forall₂ (fun (ρ : GLRep g) f => Has S ρ.2.ρ f) L fs ∧ F = fs.prod := by
   first | exact @GlobalTheory.SerSys.has_prod_of_inInd | exact GlobalTheory.SerSys.has_prod_of_inInd | (intros; apply GlobalTheory.SerSys.has_prod_of_inInd <;> assumption)

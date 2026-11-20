@@ -7,8 +7,10 @@ open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCate
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.relAmple_boxLB | exact GlobalTheory.relAmple_boxLB | (intros; apply GlobalTheory.relAmple_boxLB <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.relAmple_boxLB` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUniformizationProofs%2FRelAmpleExternalTensorPowerGroupPower.lean&line=217#L217)
 -/
 theorem _root_.GlobalTheory.T.relAmple_externalTensorPower_groupPower : ∀ (S : Scheme.{0}) (G' G : Over S) [GrpObj G'] [GrpObj G] (j : ℕ) (p : IsPowGrp G' G j) (L : LB G.left), L.IsLB → RelAmple G L → RelAmple G' (boxLB L p.pr) := by
   first | exact @GlobalTheory.relAmple_boxLB | exact GlobalTheory.relAmple_boxLB | (intros; apply GlobalTheory.relAmple_boxLB <;> assumption)

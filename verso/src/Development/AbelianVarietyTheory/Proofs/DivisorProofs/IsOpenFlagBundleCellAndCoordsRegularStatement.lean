@@ -8,8 +8,10 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts G
 open GlobalTheory.FlagFibre (Low)
 open scoped Matrix ContDiff ComplexOrder ENNReal Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagCell2.isOpen_inCell_and_regAt | exact GlobalTheory.FlagCell2.isOpen_inCell_and_regAt | (intros; apply GlobalTheory.FlagCell2.isOpen_inCell_and_regAt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagCell2.isOpen_inCell_and_regAt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsOpenFlagBundleCellAndCoordsRegular.lean&line=32#L32)
 -/
 theorem _root_.GlobalTheory.T.isOpen_flagBundleCell_and_coords_regular : ∀ (F : Type) [Field F] (X Y : Var F) (ι : Type) [Fintype ι] (m : ι → ℕ) (E : Fr (ratOf X) m 0) (E' : Fr (ratOf Y) m m) (φ : X.Fn →ₐ[F] Y.Fn) (f : Y.X ⟶ X.X), Refines E E' φ f → ∀ (A : Mat m X.Fn) (u : Cell m → Y.Fn), IsOpen {y : Y.X | InCell E E' φ f A u y} ∧ ∀ y, InCell E E' φ f A u y → ∀ j, RegAt y (u j) := by
   first | exact @GlobalTheory.FlagCell2.isOpen_inCell_and_regAt | exact GlobalTheory.FlagCell2.isOpen_inCell_and_regAt | (intros; apply GlobalTheory.FlagCell2.isOpen_inCell_and_regAt <;> assumption)

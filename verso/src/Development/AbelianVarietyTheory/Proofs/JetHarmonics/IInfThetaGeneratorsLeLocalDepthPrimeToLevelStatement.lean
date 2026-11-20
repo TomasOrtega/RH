@@ -16,8 +16,10 @@ open Formalism.MainNotions.ModuliIntegralCharts.H1.BoxTuple Formalism.MainNotion
 open ReciprocityTheory.ChartRestriction.G.TB (colM dAct)
 open IsDedekindDomain
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThetaLeast.iInf_thGen_le_nuLocC | exact GlobalTheory.ThetaLeast.iInf_thGen_le_nuLocC | (intros; apply GlobalTheory.ThetaLeast.iInf_thGen_le_nuLocC <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThetaLeast.iInf_thGen_le_nuLocC` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FJetHarmonics%2FIInfThetaGeneratorsLeLocalDepthPrimeToLevel.lean&line=27#L27)
 -/
 theorem _root_.GlobalTheory.T.iInf_theta_generators_le_local_depth_prime_to_level : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l),
  letI := H.starRing

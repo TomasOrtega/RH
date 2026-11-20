@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.Irreducibl
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.StandardFunctorsFiniteLength
 open Filter Topology MeasureTheory GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.JHMult ValuativeRel
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Segment.top_piece_exponent_lt_one | exact GlobalTheory.CompanionTheory.Segment.top_piece_exponent_lt_one | (intros; apply GlobalTheory.CompanionTheory.Segment.top_piece_exponent_lt_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Segment.top_piece_exponent_lt_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FRealPowPartialSegmentLtOne.lean&line=25#L25)
 -/
 theorem _root_.GlobalTheory.T.real_pow_partial_segment_lt_one : ∀ (α r : ℝ) (d l0 l1 : ℕ), 0 < α → α < 1 → 0 < r → 1 ≤ d → 1 ≤ l0 → 1 ≤ l1 → r ^ (l0 + l1) * α ^ (d * ((l0 + l1) * (l0 + l1 - 1) / 2)) = 1 → r ^ l0 * α ^ (d * (l0 * l1 + l0 * (l0 - 1) / 2)) < 1 := by
   first | exact @GlobalTheory.CompanionTheory.Segment.top_piece_exponent_lt_one | exact GlobalTheory.CompanionTheory.Segment.top_piece_exponent_lt_one | (intros; apply GlobalTheory.CompanionTheory.Segment.top_piece_exponent_lt_one <;> assumption)

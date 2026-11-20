@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ImportsAlt
 open Formalism.Per GlobalTheory.PSer
 open scoped Formalism.Per
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.tilt_orth_of_untilt_orth | exact GlobalTheory.tilt_orth_of_untilt_orth | (intros; apply GlobalTheory.tilt_orth_of_untilt_orth <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.tilt_orth_of_untilt_orth` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FTiltOrthOfUntiltOrth.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.norm_sh_le_sh_int_sum_of_orthogonal : ∀ (l : ℕ) [Fact l.Prime] (h : ℕ) (m : Fin h → Fl l), (∀ i j, ‖sh (m i)‖ < l * ‖sh (m j)‖) →
     (∀ (c : Fin h → ℚ_[l]) (j : Fin h), ‖c j‖ * ‖sh (m j)‖ ≤ ‖∑ i, algebraMap ℚ_[l] ℂ_[l] (c i) * sh (m i)‖) →

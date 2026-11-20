@@ -11,8 +11,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SqStep.exists_lift | exact GlobalTheory.SqStep.exists_lift | (intros; apply GlobalTheory.SqStep.exists_lift <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SqStep.exists_lift` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsAbelianLiftAmpleBundle.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.exists_abelian_lift_ample_bundle : ∀ (R R₀ : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] [CommRing R₀] [IsLocalRing R₀] (π : R →+* R₀), Function.Surjective π → RingHom.ker π ^ 2 = ⊥ → ∀ (Y₀ : Over (Sp R₀)) [GrpObj Y₀], IsAbelianScheme Y₀ → ∀ L₀ : LB Y₀.left, L₀.IsLB → RelAmple Y₀ L₀ → KTriv Y₀ L₀ → ∃ (Y : Over (Sp R)) (_ : GrpObj Y) (L : LB Y.left) (i : Y₀.left ⟶ Y.left), IsAbelianScheme Y ∧ L.IsLB ∧ RelAmple Y L ∧ KTriv Y L ∧ IsGrpPullback Y₀ Y (spMap π) i ∧ LBIso L₀ (L.pull i) := by
   first | exact @GlobalTheory.SqStep.exists_lift | exact GlobalTheory.SqStep.exists_lift | (intros; apply GlobalTheory.SqStep.exists_lift <;> assumption)

@@ -17,8 +17,10 @@ set_option maxHeartbeats 1000000
 open GlobalTheory.LevCmp
 open GlobalTheory.TwistChoice (Reading ReadsAt)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.TypePlacesCover.gPlaces_all_alt | exact _root_.GlobalTheory.TypePlacesCover.gPlaces_all_alt | (intros; apply _root_.GlobalTheory.TypePlacesCover.gPlaces_all_alt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TypePlacesCover.gPlaces_all_alt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicArithmetic%2FThetaCorrespondence%2FThetaPairLifts%2FThirdPlaceSeries%2FTypePlacesCover.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.gPlaces_of_levelA : ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, AllSt fun _ _ _ _ _ _ x => _root_.GlobalTheory.HeightCounting.Up.SameGaloisLevel hL x → GPlaces (Dof x) := by
   first | exact @_root_.GlobalTheory.TypePlacesCover.gPlaces_all_alt | exact _root_.GlobalTheory.TypePlacesCover.gPlaces_all_alt | (intros; apply _root_.GlobalTheory.TypePlacesCover.gPlaces_all_alt <;> assumption)

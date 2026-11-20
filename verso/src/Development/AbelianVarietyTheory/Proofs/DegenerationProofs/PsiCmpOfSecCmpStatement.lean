@@ -14,8 +14,10 @@ open GlobalTheory.UU
 open GlobalTheory.LN
 open GlobalTheory.PsiRing
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.psiCmp_of_secCmp | exact GlobalTheory.psiCmp_of_secCmp | (intros; apply GlobalTheory.psiCmp_of_secCmp <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.psiCmp_of_secCmp` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDegenerationProofs%2FPsiCmpOfSecCmp.lean&line=98#L98)
 -/
 theorem _root_.GlobalTheory.T.psiCmp_of_secCmp' : ∀ (R V : Type) [CommRing R] [IsDomain R] [CommRing V] [IsDomain V] (φ : R →+* V) (D : DegPre R) (D' : DegPre V) (β : D'.P.A.left ⟶ D.P.A.left) (v : LB.Iso D'.P.L (D.P.L.pull β)) (xe : D'.X ≃+ D.X), IsGrpPullback D'.P.A D.P.A (spMap φ) β → v.IsGen → (∀ x, (D'.c x).left ≫ β = spMap φ ≫ (D.c (xe x)).left) → RigCmp φ D D' β v → ∀ (f : ∀ α, SecBT D (𝟙_ _) 1 α) (f' : ∀ α, SecBT D' (𝟙_ _) 1 α), SecCmp D D' β v xe f f' → PsiRel D (𝟙_ _) f → PsiRel D' (𝟙_ _) f' → (∃ j, (f' 0).f j ≠ 0) → ∀ gam : (TK V).left ⟶ (TK R).left, gam ≫ jK R = jK V ≫ spMap φ → PsiCmp D D' β v xe gam := by
   first | exact @GlobalTheory.psiCmp_of_secCmp | exact GlobalTheory.psiCmp_of_secCmp | (intros; apply GlobalTheory.psiCmp_of_secCmp <;> assumption)

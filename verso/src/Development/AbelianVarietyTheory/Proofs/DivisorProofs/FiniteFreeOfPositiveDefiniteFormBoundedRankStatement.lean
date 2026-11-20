@@ -7,8 +7,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.HTLat GlobalTheory.Published.AbVarRed GlobalTheory.CechPic GlobalTheory.AV GlobalTheory.AV.AbVar
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.finite_free_of_definite_form_of_rank_le | exact GlobalTheory.finite_free_of_definite_form_of_rank_le | (intros; apply GlobalTheory.finite_free_of_definite_form_of_rank_le <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.finite_free_of_definite_form_of_rank_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFiniteFreeOfPositiveDefiniteFormBoundedRank.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.finite_free_of_positiveDefinite_form_bounded_rank : ∀ (H : Type) [AddCommGroup H] (Q : H → ℤ), (∀ f g, Q (f + g) + Q (f - g) = 2 * Q f + 2 * Q g) → (∀ f, 0 ≤ Q f) → (∀ f, Q f = 0 → f = 0) → ∀ r : ℕ, (∀ (n : ℕ) (u : Fin n → H), LinearIndependent ℤ u → n ≤ r) → Module.Finite ℤ H ∧ Module.Free ℤ H ∧ Module.finrank ℤ H ≤ r := by
   first | exact @GlobalTheory.finite_free_of_definite_form_of_rank_le | exact GlobalTheory.finite_free_of_definite_form_of_rank_le | (intros; apply GlobalTheory.finite_free_of_definite_form_of_rank_le <;> assumption)

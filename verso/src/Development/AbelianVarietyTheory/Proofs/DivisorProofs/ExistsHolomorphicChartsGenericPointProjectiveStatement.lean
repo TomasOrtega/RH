@@ -13,8 +13,10 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.R
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points GlobalTheory.CechPic GlobalTheory.ChartGlue GlobalTheory.Mix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GenericCharts.exists_generic_charts | exact GlobalTheory.GenericCharts.exists_generic_charts | (intros; apply GlobalTheory.GenericCharts.exists_generic_charts <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GenericCharts.exists_generic_charts` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsHolomorphicChartsGenericPointProjective.lean&line=59#L59)
 -/
 theorem _root_.GlobalTheory.T.exists_holomorphic_charts_genericPoint_projective : ∀ (F : Type) [Field F] (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (p : X ⟶ Sp F) (σ : F →+* ℂ) (D : ℕ), IsProjOver p → topologicalKrullDim X = (D : ℕ) → ∃ U : X.Opens, genericPoint X ∈ U ∧ ∀ y ∈ ptsIn p σ U, ∃ c : AlgChart p σ D, y ∈ c.e.source := by
   first | exact @GlobalTheory.GenericCharts.exists_generic_charts | exact GlobalTheory.GenericCharts.exists_generic_charts | (intros; apply GlobalTheory.GenericCharts.exists_generic_charts <;> assumption)

@@ -3,8 +3,10 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LatticeBasisPullbac
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LevelSectionsExactKernelLocusOpen
 open AlgebraicGeometry CategoryTheory Limits GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Flat
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Flat.Lat.pull_isFrameAt_comp | exact GlobalTheory.CompanionTheory.Ar.Flat.Lat.pull_isFrameAt_comp | (intros; apply GlobalTheory.CompanionTheory.Ar.Flat.Lat.pull_isFrameAt_comp <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Flat.Lat.pull_isFrameAt_comp` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FLatticeBasisPullbackDominant.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.lattice_basis_pullback_dominant : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (X' : Scheme.{0}) (Ω' : Type) [Field Ω'] (ξ' : Spec (CommRingCat.of Ω') ⟶ X') (f : X' ⟶ X) (i : Ω →+* Ω') (E E' : Type) [AddCommGroup E] [Module Ω E] [AddCommGroup E'] [Module Ω' E'] (j : E →+ E'), Dominates ξ' ξ f i → (∀ (a : Ω) (e : E), j (a • e) = i a • j e) → ∀ (L : Lat ξ E) (r : ℕ) (b : Fin r → E) (p' : Cpt ξ') (h : genPt ξ ⤳ f p'.1), LinearIndependent Ω' (fun k => j (b k)) → L.IsFrameAt b ⟨f p'.1, h⟩ → (L.pull ξ' f j).IsFrameAt (fun k => j (b k)) p' := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Flat.Lat.pull_isFrameAt_comp | exact GlobalTheory.CompanionTheory.Ar.Flat.Lat.pull_isFrameAt_comp | (intros; apply GlobalTheory.CompanionTheory.Ar.Flat.Lat.pull_isFrameAt_comp <;> assumption)

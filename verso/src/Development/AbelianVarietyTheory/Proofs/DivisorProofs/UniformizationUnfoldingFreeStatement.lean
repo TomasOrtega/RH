@@ -8,8 +8,10 @@ open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalT
 open GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.ProjVar
 open GlobalTheory.FlagCls
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagCls.Lift.lifts_field | exact GlobalTheory.FlagCls.Lift.lifts_field | (intros; apply GlobalTheory.FlagCls.Lift.lifts_field <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagCls.Lift.lifts_field` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FUniformizationUnfoldingFree.lean&line=64#L64)
 -/
 theorem _root_.GlobalTheory.T.uniformization_unfolding_free : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l) (c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l) (Oz : Type) [CommRing Oz] (β : Oz →+* c.F) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β) (F : Type) [Field F] (e : F ≃+* c.F) (σ : c.F →+* ℂ) (N : ℕ) (U : Formalism.L2.PjFree.Unf Xo c σ N) (Φ : FlagTor Z e U) (k : U.Comp) (K : Type) [Field K] (χ : c.F →+* K) (x : Sp K ⟶ gen Z), x ≫ genStr Z = spMap χ → Set.range x ⊆ Set.range (Φ.C k).π → ∀ g : EigFrame Z χ (x ≫ genι Z), ∃! p : Sp K ⟶ (Φ.C k).Y.X, p ≫ (Φ.C k).π = x ∧ (Φ.C k).Carries p g := by
   first | exact @GlobalTheory.FlagCls.Lift.lifts_field | exact GlobalTheory.FlagCls.Lift.lifts_field | (intros; apply GlobalTheory.FlagCls.Lift.lifts_field <;> assumption)

@@ -16,8 +16,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Core.Rk.IP
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Core.Rk.IP.globalForm_of_siegelWeil | exact GlobalTheory.Core.Rk.IP.globalForm_of_siegelWeil | (intros; apply GlobalTheory.Core.Rk.IP.globalForm_of_siegelWeil <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Core.Rk.IP.globalForm_of_siegelWeil` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FGlobalFormOfSiegelWeil.lean&line=28#L28)
 -/
 theorem _root_.GlobalTheory.T.global_form_of_siegel_weil : GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.WeilSiegelFormulaUnitary → GlobalTheory.Published.SiegelWeilUnitaryConvergent → GlobalTheory.Published.DoublingMethod → ∀ D : D7, GlobalForm D := by
   first | exact @GlobalTheory.Core.Rk.IP.globalForm_of_siegelWeil | exact GlobalTheory.Core.Rk.IP.globalForm_of_siegelWeil | (intros; apply GlobalTheory.Core.Rk.IP.globalForm_of_siegelWeil <;> assumption)

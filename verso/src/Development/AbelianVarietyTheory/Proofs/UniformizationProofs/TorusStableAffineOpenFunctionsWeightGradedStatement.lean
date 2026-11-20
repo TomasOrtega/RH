@@ -11,8 +11,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UU
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.functions_graded_by_weights | exact GlobalTheory.functions_graded_by_weights | (intros; apply GlobalTheory.functions_graded_by_weights <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.functions_graded_by_weights` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUniformizationProofs%2FTorusStableAffineOpenFunctionsWeightGraded.lean&line=201#L201)
 -/
 theorem _root_.GlobalTheory.T.torusStable_affineOpen_functions_weightGraded : (∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] (X : Type) [AddCommGroup X] (i : splitTorus S X ⟶ G), IsMonHom i → ∀ V : G.left.Opens, IsAffineOpen V → (snd (splitTorus S X) G).left ⁻¹ᵁ V ≤ ((fst (splitTorus S X) G ≫ i) * snd (splitTorus S X) G).left ⁻¹ᵁ V → (∀ u : Γ(G.left, V), ∃ a : X →₀ Γ(G.left, V), (∀ χ, IsWt i V (a χ) χ) ∧ u = a.sum fun _ x => x) ∧ ∀ a : X →₀ Γ(G.left, V), (∀ χ, IsWt i V (a χ) χ) → (a.sum fun _ x => x) = 0 → a = 0) := by
   first | exact @GlobalTheory.functions_graded_by_weights | exact GlobalTheory.functions_graded_by_weights | (intros; apply GlobalTheory.functions_graded_by_weights <;> assumption)

@@ -9,8 +9,10 @@ open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM
 open scoped CategoryTheory.Obj
 open GlobalTheory.Poinc
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Poinc.exists_cen_main | exact GlobalTheory.Poinc.exists_cen_main | (intros; apply GlobalTheory.Poinc.exists_cen_main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Poinc.exists_cen_main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsClassicalPointCentredClosedPointArithmetic.lean&line=37#L37)
 -/
 theorem _root_.GlobalTheory.T.exists_classicalPoint_centred_closedPoint_arithmetic : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (M : RatModel o Ω) (x : M.Z), IsClosed ({x} : Set M.Z) → ∀ U : M.Z.Opens, (U : Set M.Z).Nonempty → ∃ (p : ℕ) (_ : Fact p.Prime) (y : Sp (OO p) ⟶ M.Z), M.Cen U x y := by
   first | exact @GlobalTheory.Poinc.exists_cen_main | exact GlobalTheory.Poinc.exists_cen_main | (intros; apply GlobalTheory.Poinc.exists_cen_main <;> assumption)

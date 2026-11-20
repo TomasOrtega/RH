@@ -14,8 +14,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Ju
 open Finset ArithmeticFunction NumberField IsDedekindDomain Filter Topology GlobalTheory.Mem.An Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab
 open scoped nonZeroDivisors
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mem.An.exists_q_d_box_bounds_rows | exact GlobalTheory.Mem.An.exists_q_d_box_bounds_rows | (intros; apply GlobalTheory.Mem.An.exists_q_d_box_bounds_rows <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mem.An.exists_q_d_box_bounds_rows` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsPrimePairBoxBounds.lean&line=53#L53)
 -/
 theorem _root_.GlobalTheory.T.exists_prime_pair_box_bounds : GlobalTheory.Mem.An.ExplZeta → GlobalTheory.Mem.An.ExplChi → GlobalTheory.Mem.An.LogDerOne → GlobalTheory.Mem.An.ZeroCount → Formalism.ZeroFreeDirichlet.ZFRDirichlet → GlobalTheory.Mem.An.TZRat → GlobalTheory.Mem.An.PageThm → GlobalTheory.Mem.An.Jutila → ∀ eps : ℝ, 0 < eps → eps < 1 / 52 → ∃ x₀ C : ℝ, 0 < C ∧ ∀ x : ℝ, x₀ ≤ x → ∃ q d : ℕ, Boxq x eps q d ∧ QDq x eps C q d ∧ ∀ n : ℕ, 1 ≤ n → (n : ℝ) ≤ 2 * x ^ (2 + 8 * eps) → Rowq x eps n q d := by
   first | exact @GlobalTheory.Mem.An.exists_q_d_box_bounds_rows | exact GlobalTheory.Mem.An.exists_q_d_box_bounds_rows | (intros; apply GlobalTheory.Mem.An.exists_q_d_box_bounds_rows <;> assumption)

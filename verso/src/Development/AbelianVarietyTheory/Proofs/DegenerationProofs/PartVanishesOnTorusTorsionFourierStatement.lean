@@ -5,8 +5,10 @@ open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj Alg
 open scoped CategoryTheory.Obj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.ZH
 attribute [local instance] SplitExt.free SplitExt.finite MvPolynomial.gradedAlgebra
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TorsionFourier.part_vanishes_on_torsion | exact GlobalTheory.TorsionFourier.part_vanishes_on_torsion | (intros; apply GlobalTheory.TorsionFourier.part_vanishes_on_torsion <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TorsionFourier.part_vanishes_on_torsion` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDegenerationProofs%2FPartVanishesOnTorusTorsionFourier.lean&line=59#L59)
 -/
 theorem _root_.GlobalTheory.T.part_vanishes_on_torus_torsion_fourier : (∀ (k : Type) [Field k] [IsAlgClosed k] (Φ : FibPre k) (d n : ℕ), (n : k) ≠ 0 → ∀ φ : (Φ.H d).Sec, (∀ α ∈ Φ.supp φ, ∀ β ∈ Φ.supp φ, (∃ w, α = β + n • w) → α = β) → (∀ x : Φ.Pt, x ^ n = 1 → ¬ ⊤ ≤ x.left ⁻¹ᵁ Out.nonzeroLocus φ) → ∀ α ψ, Φ.IsPart α φ ψ → ∀ x : Φ.Pt, x ^ n = 1 → ¬ ⊤ ≤ x.left ⁻¹ᵁ Out.nonzeroLocus ψ) := by
   first | exact @GlobalTheory.TorsionFourier.part_vanishes_on_torsion | exact GlobalTheory.TorsionFourier.part_vanishes_on_torsion | (intros; apply GlobalTheory.TorsionFourier.part_vanishes_on_torsion <;> assumption)

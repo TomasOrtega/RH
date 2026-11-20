@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsRhoPtOfSp
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.OneSubPhiOntoOfFilZero
 open NumberField IsDedekindDomain Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations Formalism.ConjugateSelfDual ReciprocityTheory.Gal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HubGood.ambAll_goodPoints | exact GlobalTheory.HubGood.ambAll_goodPoints | (intros; apply GlobalTheory.HubGood.ambAll_goodPoints <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HubGood.ambAll_goodPoints` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FAmbientConditionsAtGood.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.ambient_conditions_at_good : GlobalTheory.Published.FontaineBcris → ∀ (D : D7) (L : SizeData₂ D) (X : KillingConditions.HubData D), AdmissibleParameterJ.DeRhamFamilyAway D → AdmissibleParameterJ.ConclusionJa D → AdmissibleParameterJ.jcCondition L → GlobalTheory.PtCore.PtFam D X.r X.ρ → ∀ i : D.nd.Loc, D.nd.l i ∉ TwistedPlaces.gset D → ∀ π ∈ D.nd.Zgood i, EmbeddingTypes.ambT2 (D := D) i (X.ρ i) π (X.dc i) ∧ EmbeddingTypes.ambW (D := D) i (X.ρ i) π (X.dc i) ∧ EmbeddingTypes.ambFil (D := D) i (X.r i) (X.ρ i) π (X.dc i) ∧ EmbeddingTypes.ambBlock (D := D) i (X.r i) (X.ρ i) π := by
   first | exact @GlobalTheory.HubGood.ambAll_goodPoints | exact GlobalTheory.HubGood.ambAll_goodPoints | (intros; apply GlobalTheory.HubGood.ambAll_goodPoints <;> assumption)

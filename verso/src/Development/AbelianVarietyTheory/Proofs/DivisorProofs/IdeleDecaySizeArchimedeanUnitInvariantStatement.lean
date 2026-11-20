@@ -11,8 +11,10 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 open GlobalTheory.Doubling (absE)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IdeleSizeUnit.size_mul_of_unitInf_eq_one | exact GlobalTheory.IdeleSizeUnit.size_mul_of_unitInf_eq_one | (intros; apply GlobalTheory.IdeleSizeUnit.size_mul_of_unitInf_eq_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IdeleSizeUnit.size_mul_of_unitInf_eq_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIdeleDecaySizeArchimedeanUnitInvariant.lean&line=28#L28)
 -/
 theorem _root_.GlobalTheory.T.idele_decay_size_archimedean_unit_invariant : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (b h : (AE F E)ˣ),
     (∀ w, GlobalTheory.Doubling.unitInf F E w b = 1) → GlobalTheory.IdeleDecay.size F E (b * h : (AE F E)ˣ).1 = GlobalTheory.IdeleDecay.size F E h.1 := by

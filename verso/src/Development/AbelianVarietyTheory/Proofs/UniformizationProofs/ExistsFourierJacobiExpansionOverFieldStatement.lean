@@ -11,8 +11,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UU
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UU.ExpTotal.expF_total | exact GlobalTheory.UU.ExpTotal.expF_total | (intros; apply GlobalTheory.UU.ExpTotal.expF_total <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UU.ExpTotal.expF_total` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUniformizationProofs%2FExistsFourierJacobiExpansionOverField.lean&line=206#L206)
 -/
 theorem _root_.GlobalTheory.T.exists_fourierJacobi_expansion_over_field : Laws → Laws2 → (AllPre fun {V} _ _ _ {_} {_} {_} _ _ U => ∀ (F : Type) [Field F] [Algebra (FractionRing V) F] (k : ℕ), 1 ≤ k → ∀ t, ∃ s, U.ExpF F k t s) := by
   first | exact @GlobalTheory.UU.ExpTotal.expF_total | exact GlobalTheory.UU.ExpTotal.expF_total | (intros; apply GlobalTheory.UU.ExpTotal.expF_total <;> assumption)

@@ -11,8 +11,10 @@ open Formalism.MainNotions.DIV.Cons (intO)
 open scoped Classical
 open GlobalTheory.LieFilt
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LieFilt.exists_tanCoord | exact GlobalTheory.LieFilt.exists_tanCoord | (intros; apply GlobalTheory.LieFilt.exists_tanCoord <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LieFilt.exists_tanCoord` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FToroidalModelHeightLower.lean&line=120#L120)
 -/
 theorem _root_.GlobalTheory.T.toroidal_model_height_lower : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H}

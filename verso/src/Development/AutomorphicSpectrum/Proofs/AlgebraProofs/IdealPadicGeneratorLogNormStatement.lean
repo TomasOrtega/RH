@@ -5,8 +5,10 @@ import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.LatNormGrL
 open NumberField Matrix GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Fl
 open scoped ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Fl.ideal_local_generator | exact GlobalTheory.CompanionTheory.Ar.Fl.ideal_local_generator | (intros; apply GlobalTheory.CompanionTheory.Ar.Fl.ideal_local_generator <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Fl.ideal_local_generator` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FAlgebraProofs%2FIdealPadicGeneratorLogNorm.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.ideal_padic_generator_log_norm : ∀ (F : Type) [Field F] [NumberField F] (I : Ideal (𝓞 F)) (p : Nat.Primes), I ≠ ⊥ → ∃ δ ∈ I, δ ≠ 0 ∧ (∃ n : ℕ, ¬ (p : ℕ) ∣ n ∧ ∀ a ∈ I, (n : 𝓞 F) * a ∈ Ideal.span {δ}) ∧ ∀ j : F →+* ℂ_[p], Real.log ‖j (δ : F)‖ = logIdeal (j.comp (algebraMap (𝓞 F) F)) I := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Fl.ideal_local_generator | exact GlobalTheory.CompanionTheory.Ar.Fl.ideal_local_generator | (intros; apply GlobalTheory.CompanionTheory.Ar.Fl.ideal_local_generator <;> assumption)

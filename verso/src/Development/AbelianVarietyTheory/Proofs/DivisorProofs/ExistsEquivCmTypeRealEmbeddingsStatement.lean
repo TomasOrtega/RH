@@ -12,8 +12,10 @@ open GlobalTheory.LatJet (EisExp IsEis FR)
 open GlobalTheory.CMVal (OF Af lattice IsCMType)
 open GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates (IsDefSum IsEisValue polydisc)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CMTypeEmb.exists_equiv | exact GlobalTheory.CMTypeEmb.exists_equiv | (intros; apply GlobalTheory.CMTypeEmb.exists_equiv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CMTypeEmb.exists_equiv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsEquivCmTypeRealEmbeddings.lean&line=29#L29)
 -/
 theorem _root_.GlobalTheory.T.exists_equiv_cmType_realEmbeddings : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] (φ : I → E →+* ℂ), IsCMType φ → ∃ e : I ≃ Emb (FR E), ∀ i (x : FR E), φ i (x : E) = ((e i x : ℝ) : ℂ) := by
   first | exact @GlobalTheory.CMTypeEmb.exists_equiv | exact GlobalTheory.CMTypeEmb.exists_equiv | (intros; apply GlobalTheory.CMTypeEmb.exists_equiv <;> assumption)

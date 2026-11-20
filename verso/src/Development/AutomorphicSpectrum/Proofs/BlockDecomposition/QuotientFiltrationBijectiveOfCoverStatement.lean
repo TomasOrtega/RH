@@ -7,8 +7,10 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FilteredCohomol
 set_option backward.isDefEq.respectTransparency false
 open CategoryTheory AlgebraicGeometry TensorProduct GlobalTheory.LogCris DividedPowers CrystallineSemistableComparison CrystallineSemistableComparison.Pb
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.QuoK.quoK_bijective | exact GlobalTheory.CompanionTheory.QuoK.quoK_bijective | (intros; apply GlobalTheory.CompanionTheory.QuoK.quoK_bijective <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.QuoK.quoK_bijective` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FQuotientFiltrationBijectiveOfCover.lean&line=55#L55)
 -/
 theorem _root_.GlobalTheory.T.quotient_filtration_bijective_of_cover : KH.KIso → ∀ {K : Type} [Field K] [CharZero K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K))
     (U : Cov q) (s u : ℕ), (∀ α, U.d α < u) → u ≤ s → ∀ (𝒱 : Set X.Opens), sSup 𝒱 = ⊤ → ∀ (j : ℕ),

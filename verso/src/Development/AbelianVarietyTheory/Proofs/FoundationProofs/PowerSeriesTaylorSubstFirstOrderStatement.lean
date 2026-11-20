@@ -2,8 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PowerSeriesTaylorSubstFirstOrder
 open Polynomial
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.taylor_subst_first_order | exact GlobalTheory.taylor_subst_first_order | (intros; apply GlobalTheory.taylor_subst_first_order <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.taylor_subst_first_order` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FPowerSeriesTaylorSubstFirstOrder.lean&line=64#L64)
 -/
 theorem _root_.GlobalTheory.T.powerSeries_taylor_subst_first_order : ∀ (k : Type) [Field k] (φ a b : PowerSeries k) (m : ℕ), 1 ≤ m → PowerSeries.constantCoeff a = 0 →
  PowerSeries.constantCoeff (φ.subst a : PowerSeries k) = PowerSeries.constantCoeff φ ∧

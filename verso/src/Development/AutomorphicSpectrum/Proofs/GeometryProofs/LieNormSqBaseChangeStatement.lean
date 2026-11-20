@@ -6,8 +6,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open Matrix GlobalTheory GlobalTheory.CM GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Fl
 open scoped ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Fl.lieNormSq_baseChange | exact GlobalTheory.CompanionTheory.Ar.Fl.lieNormSq_baseChange | (intros; apply GlobalTheory.CompanionTheory.Ar.Fl.lieNormSq_baseChange <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Fl.lieNormSq_baseChange` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FLieNormSqBaseChange.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.lie_norm_sq_base_change : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R R' : Type) [CommRing R] [CommRing R'] (ω : R) (ω' : R') (C : Ell H R ω) (C' : Ell H R' ω') (f : R →+* R') (φ : C'.P.A.left ⟶ C.P.A.left) (σ : R' →+* ℂ) (r : ℝ), EllMap C' C f φ → (IsLieNormSq C.P C.v (σ.comp f) r ↔ IsLieNormSq C'.P C'.v σ r) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Fl.lieNormSq_baseChange | exact GlobalTheory.CompanionTheory.Ar.Fl.lieNormSq_baseChange | (intros; apply GlobalTheory.CompanionTheory.Ar.Fl.lieNormSq_baseChange <;> assumption)

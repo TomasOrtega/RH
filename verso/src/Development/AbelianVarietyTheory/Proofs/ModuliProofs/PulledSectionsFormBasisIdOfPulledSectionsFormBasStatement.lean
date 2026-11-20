@@ -12,8 +12,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj TensorProduct Pointwise
 open GlobalTheory.Models GlobalTheory.ModelSum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ModelSum.basisAlong_id_of_basisAlong | exact GlobalTheory.ModelSum.basisAlong_id_of_basisAlong | (intros; apply GlobalTheory.ModelSum.basisAlong_id_of_basisAlong <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ModelSum.basisAlong_id_of_basisAlong` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FModuliProofs%2FPulledSectionsFormBasisIdOfPulledSectionsFormBas.lean&line=39#L39)
 -/
 theorem _root_.GlobalTheory.T.pulledSectionsFormBasis_id_of_pulledSectionsFormBasis : ∀ (Z : Scheme.{0}) (G : Over Z) (L : LB G.left) (N n : ℕ) (T T' : Over Z) (h : T' ⟶ T) (b : Fin n → LB.Sec (Out.LPow G L (N : ℤ) T)), L.IsLB → GlobalTheory.LN.BasisAlong G L N h b → ∃ b' : Fin n → LB.Sec (Out.LPow G L (N : ℤ) T'), GlobalTheory.LN.BasisAlong G L N (𝟙 T') b' := by
   first | exact @GlobalTheory.ModelSum.basisAlong_id_of_basisAlong | exact GlobalTheory.ModelSum.basisAlong_id_of_basisAlong | (intros; apply GlobalTheory.ModelSum.basisAlong_id_of_basisAlong <;> assumption)

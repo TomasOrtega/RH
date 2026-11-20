@@ -6,8 +6,10 @@ import Formalism.HarderNarasimhan.ShiftInvariance
 open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S Formalism.REAL Formalism.QuantumDeterminants GlobalTheory.Count GlobalTheory.Dec
 open scoped InnerProductSpace ComplexOrder ContDiff
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LocMass.local_mass_le | exact GlobalTheory.LocMass.local_mass_le | (intros; apply GlobalTheory.LocMass.local_mass_le <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LocMass.local_mass_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FLocalL2BoundHeight.lean&line=47#L47)
 -/
 theorem _root_.GlobalTheory.T.local_L2_bound_height : ∀ (B : RowsAut) (U : Set B.I.GA), 1 ≤ B.I.n → IsCompact U → (∀ u ∈ U, u.2 ∈ B.I.Kset) → ∃ C : ℝ, 0 ≤ C ∧ ∀ (y : B.I.L2 B.μf B.fund) (x : B.I.GA), ∫⁻ g in U, (‖B.I.ext y (x * g)‖₊ : ENNReal) ^ 2 ∂(B.I.muA B.μf) ≤ ENNReal.ofReal (C * (tau1 B.I x)⁻¹ ^ (4 * B.I.n ^ 2 * B.I.f) * ‖y‖ ^ 2) := by
   first | exact @GlobalTheory.LocMass.local_mass_le | exact GlobalTheory.LocMass.local_mass_le | (intros; apply GlobalTheory.LocMass.local_mass_le <;> assumption)

@@ -11,8 +11,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj TensorProduct Pointwise
 open GlobalTheory.Models
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.card_torsion_abelianVariety | exact GlobalTheory.card_torsion_abelianVariety | (intros; apply GlobalTheory.card_torsion_abelianVariety <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.card_torsion_abelianVariety` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FModuliProofs%2FCardTorsionAbelianVariety.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.card_torsion_eq_pow_two_mul_dim : ∀ (k : Type) [Field k] [IsAlgClosed k] (B : Over (Sp k)) [GrpObj B] (g N : ℕ), IsAbelianScheme B → SmoothOfRelativeDimension g B.hom → (N : k) ≠ 0 → Nat.card {x : 𝟙_ (Over (Sp k)) ⟶ B // x ^ N = 1} = N ^ (2 * g) := by
   first | exact @GlobalTheory.card_torsion_abelianVariety | exact GlobalTheory.card_torsion_abelianVariety | (intros; apply GlobalTheory.card_torsion_abelianVariety <;> assumption)

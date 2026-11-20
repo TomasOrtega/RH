@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbsWeilCharacterDet
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchroedingerOperatorHeisenbergPreservesSchwartzBStatement
 open MeasureTheory Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HeisUnitRight.exists_unitary_factor_right | exact GlobalTheory.HeisUnitRight.exists_unitary_factor_right | (intros; apply GlobalTheory.HeisUnitRight.exists_unitary_factor_right <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HeisUnitRight.exists_unitary_factor_right` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FWeilMatrixTransportSchwartz.lean&line=42#L42)
 -/
 theorem _root_.GlobalTheory.T.weil_matrix_transport_schwartz : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n d : ℕ} (ψ0 : AddChar k ℂ), Continuous ψ0 → ψ0 ≠ 1 →
     ∀ (ι : ((Fin d × Fin n → k) → ℂ) →ₗ[ℂ] (Matrix (Fin d) (Fin n) k → ℂ)),

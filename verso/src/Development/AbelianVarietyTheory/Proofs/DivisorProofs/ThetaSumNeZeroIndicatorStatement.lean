@@ -16,8 +16,10 @@ open GlobalTheory.Doubling (absE)
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThetaSumNeScaled.exists_thetaSum_pureA_scaledInt_ne_zero | exact GlobalTheory.ThetaSumNeScaled.exists_thetaSum_pureA_scaledInt_ne_zero | (intros; apply GlobalTheory.ThetaSumNeScaled.exists_thetaSum_pureA_scaledInt_ne_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThetaSumNeScaled.exists_thetaSum_pureA_scaledInt_ne_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FThetaSumNeZeroIndicator.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.theta_sum_ne_zero_indicator : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (a : F), a ≠ 0 →
     Set.indicator {y | y - 0 ∈ GlobalTheory.EvAdm.scaledInt F κ a} (fun _ => (1 : ℂ)) ∈ SB (κ → FiniteAdeleRing (𝓞 F) F) →

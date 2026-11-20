@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerCochainCha
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsFirstChernClassOfLineBundle
 open GlobalTheory.NeedB Polynomial
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.eta_kummer_galoisInvariant | exact GlobalTheory.eta_kummer_galoisInvariant | (intros; apply GlobalTheory.eta_kummer_galoisInvariant <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.eta_kummer_galoisInvariant` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FKummerCochainCharacterGaloisInvariantClass.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.kummer_cochain_character_galoisInvariant_class : ∀ (K Ω : Type) [Field K] [CharZero K] [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω] (N : ℕ) (ζ : Ω), 0 < N →
   IsPrimitiveRoot ζ N → (∀ g : Ω ≃ₐ[K] Ω, g ζ = ζ) → ∀ (a b : K) (α β : Ω), a ≠ 0 → b ≠ 0 →

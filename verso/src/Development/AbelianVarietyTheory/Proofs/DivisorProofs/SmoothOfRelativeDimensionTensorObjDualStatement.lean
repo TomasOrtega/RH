@@ -7,8 +7,10 @@ open scoped CategoryTheory.Obj
 open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Serre
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TensorDualDim.smoothOfRelativeDimension_tensorObj_dual | exact GlobalTheory.TensorDualDim.smoothOfRelativeDimension_tensorObj_dual | (intros; apply GlobalTheory.TensorDualDim.smoothOfRelativeDimension_tensorObj_dual <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TensorDualDim.smoothOfRelativeDimension_tensorObj_dual` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSmoothOfRelativeDimensionTensorObjDual.lean&line=27#L27)
 -/
 theorem _root_.GlobalTheory.T.smoothOfRelativeDimension_tensorObj_dual_finrank_mul : ∀ (S : Scheme.{0}) (B : Over S) [GrpObj B] [IsCommMonObj B] (O : Type) [CommRing O] [IsDomain O] [Module.Finite ℤ O] (a : OAct O B) (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] [Module.Projective O X] (g : ℕ), SmoothOfRelativeDimension g B.hom → SmoothOfRelativeDimension (Module.finrank O X * g) (tensorObj (Module.Dual O X) a).hom := by
   first | exact @GlobalTheory.TensorDualDim.smoothOfRelativeDimension_tensorObj_dual | exact GlobalTheory.TensorDualDim.smoothOfRelativeDimension_tensorObj_dual | (intros; apply GlobalTheory.TensorDualDim.smoothOfRelativeDimension_tensorObj_dual <;> assumption)

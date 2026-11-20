@@ -11,8 +11,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.He
 open NumberField IsDedekindDomain
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SqTop.nuH_not_unrAt_twPl | exact GlobalTheory.SqTop.nuH_not_unrAt_twPl | (intros; apply GlobalTheory.SqTop.nuH_not_unrAt_twPl <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SqTop.nuH_not_unrAt_twPl` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSquareNuTwistedTupleRamifiedAtTwistPlace.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.square_nu_twisted_tuple_ramified_at_twist_place : ∀ {D : Formalism.BasicNotions.D7} {T : Type} {L : Formalism.IndefR.Links.LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} (G : GlobalTheory.ChiGrid.GridData L sc) {μ₀ : T}, L.Is μ₀ → ∀ (t : T) (i j : Fin D.R.m), ∀ P ∈ GlobalTheory.SqTop.twPl G t, ¬ (GlobalTheory.FunObj.SqNum.nuH G t i j).UnrAt P := by
   first | exact @GlobalTheory.SqTop.nuH_not_unrAt_twPl | exact GlobalTheory.SqTop.nuH_not_unrAt_twPl | (intros; apply GlobalTheory.SqTop.nuH_not_unrAt_twPl <;> assumption)

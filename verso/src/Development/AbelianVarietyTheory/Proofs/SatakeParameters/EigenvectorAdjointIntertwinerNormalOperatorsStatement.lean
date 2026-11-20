@@ -11,8 +11,10 @@ open scoped TensorProduct InnerProductSpace
 open GlobalTheory.Hk3
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HkUp.eigen_up_along_adjoint | exact GlobalTheory.HkUp.eigen_up_along_adjoint | (intros; apply GlobalTheory.HkUp.eigen_up_along_adjoint <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HkUp.eigen_up_along_adjoint` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FEigenvectorAdjointIntertwinerNormalOperators.lean&line=34#L34)
 -/
 theorem _root_.GlobalTheory.T.eigenvector_adjoint_intertwiner_normal_operators : ∀ {X E I : Type} [NormedAddCommGroup X] [InnerProductSpace ℂ X] [FiniteDimensional ℂ X] [NormedAddCommGroup E] [InnerProductSpace ℂ E] [FiniteDimensional ℂ E] (Θ : X →ₗ[ℂ] E) (op : I → Module.End ℂ X) (h : I → Module.End ℂ E), (∀ i u, Θ (op i u) = h i (Θ u)) → (∀ i, Commute (op i) (LinearMap.adjoint (op i))) → (∀ i, Commute (h i) (LinearMap.adjoint (h i))) → ∀ i (l : ℂ) w, h i w = l • w → op i (LinearMap.adjoint Θ w) = l • LinearMap.adjoint Θ w := by
   first | exact @GlobalTheory.HkUp.eigen_up_along_adjoint | exact GlobalTheory.HkUp.eigen_up_along_adjoint | (intros; apply GlobalTheory.HkUp.eigen_up_along_adjoint <;> assumption)

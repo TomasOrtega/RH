@@ -9,8 +9,10 @@ open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory
 open TensorProduct
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PairingEv.pairing_ev₂_sub_mem | exact GlobalTheory.PairingEv.pairing_ev₂_sub_mem | (intros; apply GlobalTheory.PairingEv.pairing_ev₂_sub_mem <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PairingEv.pairing_ev₂_sub_mem` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDualPairingChartPartialDerivativeModMax.lean&line=73#L73)
 -/
 theorem _root_.GlobalTheory.T.dual_pairing_chart_partial_derivative_mod_max : ∀ (p : ℕ) (O : Type) [CommRing O] (G : PDivGroup p O) (d : ℕ) (c : QLog.Chart G d) (n : ℕ) (m : Ideal O), (p : O) ∈ m → ∀ (u : Fin d → O) (φ : G.dual.A n), (∀ F, φ (c.ev n F) - ∑ i, u i * lin F i ∈ m) → ∀ (ψ : G.A n →ₗ[O] O) (H : MvPowerSeries (Fin d ⊕ Fin d) O), LinearMap.mul' O O (TensorProduct.map ψ φ.ofConv (c.ev₂ n H)) - ψ (c.ev n (∑ i, u i • atZero (pderiv O (Sum.inr i) H))) ∈ m := by
   first | exact @GlobalTheory.PairingEv.pairing_ev₂_sub_mem | exact GlobalTheory.PairingEv.pairing_ev₂_sub_mem | (intros; apply GlobalTheory.PairingEv.pairing_ev₂_sub_mem <;> assumption)

@@ -7,8 +7,10 @@ open scoped TensorProduct NNReal Matrix
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.Doubling GlobalTheory.ThK.Bot GlobalTheory.DblBox
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DblEvalLeft.siegel_law_and_mem_degPSOf | exact GlobalTheory.DblEvalLeft.siegel_law_and_mem_degPSOf | (intros; apply GlobalTheory.DblEvalLeft.siegel_law_and_mem_degPSOf <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DblEvalLeft.siegel_law_and_mem_degPSOf` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDarbouxCoordinatesDiagonalVanishing.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.darboux_coordinates_diagonal_vanishing : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (J : Matrix (Fin n) (Fin n) E) (X₂ : Spc F E (n + n)), X₂.J = dblGram finSumFinEquiv J →
     ∀ (W : Spc F E d) (co : Darboux (symp (R := AF F) (cA σ) (-1) (incM F X₂.J) (incM F W.J)) (Fin (n + n) × Fin d)),

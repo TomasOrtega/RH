@@ -11,8 +11,10 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.ThK.ConeEuler
 open GlobalTheory.Doubling (absE absEv unitFin ideleAt)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IdeleCyl.isCompact_cyl | exact GlobalTheory.IdeleCyl.isCompact_cyl | (intros; apply GlobalTheory.IdeleCyl.isCompact_cyl <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IdeleCyl.isCompact_cyl` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIdelesCompactOfLocalBounds.lean&line=164#L164)
 -/
 theorem _root_.GlobalTheory.T.ideles_compact_of_local_bounds : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (S : Finset (Pl F)) (A : Set (AE F E)ˣ) (B : Pl F → Set (AE F E)ˣ), IsCompact A → (∀ v ∈ S, IsCompact (B v)) →
     IsCompact {l : (AE F E)ˣ | unitArch F E l ∈ A ∧ (∀ v ∈ S, unitAt E v l ∈ B v) ∧ ∀ v ∉ S, unitAt E v l ∈ unitsAt E v} := by

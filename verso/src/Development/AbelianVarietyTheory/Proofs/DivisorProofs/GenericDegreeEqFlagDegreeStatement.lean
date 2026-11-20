@@ -9,8 +9,10 @@ open NumberField MvPolynomial Filter Topology Formalism.BasicNotions Formalism.M
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.ArInt
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagDegChecked.flag_gdeg_eq_degFl_checked | exact GlobalTheory.FlagDegChecked.flag_gdeg_eq_degFl_checked | (intros; apply GlobalTheory.FlagDegChecked.flag_gdeg_eq_degFl_checked <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagDegChecked.flag_gdeg_eq_degFl_checked` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGenericDegreeEqFlagDegree.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.generic_degree_eq_flag_degree : Hypotheses2 → GlobalTheory.Published.ArDegree → ∀ (ι : Type) [Fintype ι] (N : ℕ) (n : ι × Fin N → ℤ), gdeg (comb (GlobalTheory.FlagZ.grLine (ι := ι) (N := N)) n) (dimFl ι N) = degFl ι N (lin (fun x => (n x : ℝ)) ^ dimFl ι N) := by
   first | exact @GlobalTheory.FlagDegChecked.flag_gdeg_eq_degFl_checked | exact GlobalTheory.FlagDegChecked.flag_gdeg_eq_degFl_checked | (intros; apply GlobalTheory.FlagDegChecked.flag_gdeg_eq_degFl_checked <;> assumption)

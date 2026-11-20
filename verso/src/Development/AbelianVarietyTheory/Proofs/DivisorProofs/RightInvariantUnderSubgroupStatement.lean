@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThLiftMemLiftSpace
 open GlobalTheory.ThK.SplitInv
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThK.SplitInv.TrivQuot.invariant_of_compRed_quotTriv | exact GlobalTheory.ThK.SplitInv.TrivQuot.invariant_of_compRed_quotTriv | (intros; apply GlobalTheory.ThK.SplitInv.TrivQuot.invariant_of_compRed_quotTriv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThK.SplitInv.TrivQuot.invariant_of_compRed_quotTriv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRightInvariantUnderSubgroup.lean&line=31#L31)
 -/
 theorem _root_.GlobalTheory.T.right_invariant_under_subgroup : ∀ (H : Type) [Group H] (G₀ : Subgroup H) (S : Submodule ℂ (H → ℂ)), RStable G₀ S → CompRed G₀ S → QuotTriv G₀ S → ∀ φ ∈ S, ∀ k ∈ G₀, ∀ g, φ (g * k) = φ g := by
   first | exact @GlobalTheory.ThK.SplitInv.TrivQuot.invariant_of_compRed_quotTriv | exact GlobalTheory.ThK.SplitInv.TrivQuot.invariant_of_compRed_quotTriv | (intros; apply GlobalTheory.ThK.SplitInv.TrivQuot.invariant_of_compRed_quotTriv <;> assumption)

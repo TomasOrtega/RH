@@ -11,8 +11,10 @@ open GlobalTheory.Cartier GlobalTheory.TrueGeo GlobalTheory.ProjVar GlobalTheory
 open IsDedekindDomain GlobalTheory.WholeFlag.Glue GlobalTheory.WholeFlag.GlueProof
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WholeFlag.GlueProof.glue_test | exact GlobalTheory.WholeFlag.GlueProof.glue_test | (intros; apply GlobalTheory.WholeFlag.GlueProof.glue_test <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WholeFlag.GlueProof.glue_test` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHodgeChartSectionDivisor.lean&line=83#L83)
 -/
 theorem _root_.GlobalTheory.T.hodge_chart_section_divisor : ∀ {F : Type} [Field F] [NumberField F] {Y : Var F} {C : CxSt F} {g : ℕ} (A : Fin g → Adl C Y) (p : ℕ) (V : Cover Y) (W : Y.X.Opens) {ι : Type} (U : ι → V.X.Opens) (H : ι → Matrix (Fin (g + g)) (Fin g) V.G.functionField) (J : Matrix (Fin (g + g)) (Fin (g + g)) ℤ) (d : Y.X → Fin g → Y.Fnˣ) (T : Y.X → Matrix (Fin g) (Fin g) Y.Fn) (L : Fin g → LB V.X) (m : ℕ) (r : ∀ i, ((L i).pull V.j).ι → V.G.functionFieldˣ), Hyp A p V W U H J d T L m r → ∀ (v : HeightOneSpectrum (𝓞 F)), resP v = p → ∀ (e : Ext v) (y : AlgPt Y), below y.1 ∈ W → ∀ (z : Sp (AlgebraicClosure F) ⟶ V.G) (yt : Sp e.O ⟶ V.X), z ≫ V.π = y.1 → spMap e.O.subtype ≫ yt = z ≫ V.j → ∀ q : Idx ι L, ⊤ ≤ yt ⁻¹ᵁ chartOpen V U H L m r q → (∀ i, (A i).lg v e y = Real.log (e.w (valAt z (V.φ (genAt (A i).D (below y.1)) * (chartC V H q i : V.G.functionField))))) ∧ ∀ (i : Fin g) (k : Fin (g + g)), e.w (valAt (z ≫ V.j) (((chartM V H J q).transpose * J.map (Int.castRingHom V.X.functionField) * chartM V H J q) (Fin.castAdd g i) k) - (if (i : ℕ) + k = 2 * g - 1 then 1 else 0)) < 1 := by
   first | exact @GlobalTheory.WholeFlag.GlueProof.glue_test | exact GlobalTheory.WholeFlag.GlueProof.glue_test | (intros; apply GlobalTheory.WholeFlag.GlueProof.glue_test <;> assumption)

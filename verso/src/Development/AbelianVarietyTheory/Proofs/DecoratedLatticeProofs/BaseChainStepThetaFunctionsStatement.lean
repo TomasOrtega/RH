@@ -15,8 +15,10 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Unf GlobalTheory.See
 open scoped TensorProduct Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BaseChain.stepY_thetaFun_isItW | exact GlobalTheory.BaseChain.stepY_thetaFun_isItW | (intros; apply GlobalTheory.BaseChain.stepY_thetaFun_isItW <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BaseChain.stepY_thetaFun_isItW` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FBaseChainStepThetaFunctions.lean&line=31#L31)
 -/
 theorem _root_.GlobalTheory.T.base_chain_step_theta_functions : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex) (u : D.what₂.Word) (f : FamCh W u), PkHyp W → f.RowOK → ∀ j, j + 1 < D.R.m → (∀ φ, IsThetaFunO (GlobalTheory.BaseChain.com W).ψ (GlobalTheory.BaseChain.stageY W j).V (GlobalTheory.BaseChain.stageY W (j + 1)).V ((GlobalTheory.BaseChain.stepY f j).pt φ)) ∧ IsItW (GlobalTheory.BaseChain.com W).θ (GlobalTheory.BaseChain.stageY W j).M (GlobalTheory.BaseChain.stageY W (j + 1)).M (GlobalTheory.BaseChain.stepY f j).ω (GlobalTheory.BaseChain.stepY f j).pt (GlobalTheory.BaseChain.stepY f j).It := by
   first | exact @GlobalTheory.BaseChain.stepY_thetaFun_isItW | exact GlobalTheory.BaseChain.stepY_thetaFun_isItW | (intros; apply GlobalTheory.BaseChain.stepY_thetaFun_isItW <;> assumption)

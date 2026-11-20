@@ -9,8 +9,10 @@ open scoped CategoryTheory.Obj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.ZJ
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ZJ.Charts.kerIs_of_torus | exact GlobalTheory.ZJ.Charts.kerIs_of_torus | (intros; apply GlobalTheory.ZJ.Charts.kerIs_of_torus <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ZJ.Charts.kerIs_of_torus` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDegenerationProofs%2FTorusCutByInvariantRatiosField.lean&line=45#L45)
 -/
 theorem _root_.GlobalTheory.T.torus_cut_by_invariantRatios_field : ∀ (K : Type) [Field K] (H : Over (Sp K)) [GrpObj H] [IsCommMonObj H] [Smooth H.hom] [IsSeparated H.hom] [QuasiCompact H.hom] (C : Charts H.left) (d : ℕ) (c : Fin d → C.Cl) (i : splitTorus (Sp K) (Fin d → ℤ) ⟶ H) (a) (j : Fin d → C.I), GeometricallyConnected H.hom → C.Torus c i → C.Based c a j → C.KerIs a j i := by
   first | exact @GlobalTheory.ZJ.Charts.kerIs_of_torus | exact GlobalTheory.ZJ.Charts.kerIs_of_torus | (intros; apply GlobalTheory.ZJ.Charts.kerIs_of_torus <;> assumption)

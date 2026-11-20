@@ -13,8 +13,10 @@ attribute [local instance high] GlobalTheory.SplitWeil.matrixMeasurableSpace
 open GlobalTheory.HaarR
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HaarR.volN_KO_eq_one | exact GlobalTheory.HaarR.volN_KO_eq_one | (intros; apply GlobalTheory.HaarR.volN_KO_eq_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HaarR.volN_KO_eq_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FRootExchangeUnipotentHaarIntegralPointsEqOne.lean&line=53#L53)
 -/
 theorem _root_.GlobalTheory.T.rootExchangeUnipotentHaar_integralPoints_eq_one : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (n : Type) [Fintype n] [DecidableEq n] (c p : ℕ), 1 ≤ p → p ≤ c → ∀ (ν : Measure k), IsUnitVol ν → volN ν n c p {u : N k n c p | (u : GL (n ⊕ Fin c) k) ∈ KO k (n ⊕ Fin c)} = 1 := by
   first | exact @GlobalTheory.HaarR.volN_KO_eq_one | exact GlobalTheory.HaarR.volN_KO_eq_one | (intros; apply GlobalTheory.HaarR.volN_KO_eq_one <;> assumption)

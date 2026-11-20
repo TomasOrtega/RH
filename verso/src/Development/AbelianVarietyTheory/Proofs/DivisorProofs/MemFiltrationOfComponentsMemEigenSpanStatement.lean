@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemAddValuationInte
 open scoped NNReal
 open GlobalTheory.IndefiniteRowSideFullHecke.MultiplicationKernelIdentity GlobalTheory.HerbrandBridge
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Div.KerFil.mem_of_components | exact GlobalTheory.Div.KerFil.mem_of_components | (intros; apply GlobalTheory.Div.KerFil.mem_of_components <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Div.KerFil.mem_of_components` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FMemFiltrationOfComponentsMemEigenSpan.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.mem_filtration_of_components_mem_eigenSpan : ∀ (C : Type) [Field C] (w : Valuation C ℝ≥0) (S : Type) [Fintype S] [DecidableEq S] (a : S → w.valuationSubring) (N : ℕ) (F : Submodule w.valuationSubring (S → Fin N → C)), Function.Injective a → GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.IsFiltration a F → ∀ x ∈ GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.freeLattice a N, (∀ s, x s ∈ GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.filSpace F s) → x ∈ F := by
   first | exact @GlobalTheory.Div.KerFil.mem_of_components | exact GlobalTheory.Div.KerFil.mem_of_components | (intros; apply GlobalTheory.Div.KerFil.mem_of_components <;> assumption)

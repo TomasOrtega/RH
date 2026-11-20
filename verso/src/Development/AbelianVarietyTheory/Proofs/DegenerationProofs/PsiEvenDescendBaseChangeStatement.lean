@@ -14,8 +14,10 @@ open GlobalTheory.UU
 open GlobalTheory.LN
 open GlobalTheory.PsiRing
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PsiRing.psiEven_descend | exact GlobalTheory.PsiRing.psiEven_descend | (intros; apply GlobalTheory.PsiRing.psiEven_descend <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PsiRing.psiEven_descend` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDegenerationProofs%2FPsiEvenDescendBaseChange.lean&line=72#L72)
 -/
 theorem _root_.GlobalTheory.T.psiEven_descend_baseChange : GlobalFnsSt → ∀ (R V : Type) [CommRing R] [IsDomain R] [CommRing V] [IsDomain V] (φ : R →+* V) (D : DegPre R) (D' : DegPre V) (β : D'.P.A.left ⟶ D.P.A.left) (v : LB.Iso D'.P.L (D.P.L.pull β)) (xe : D'.X ≃+ D.X), IsGrpPullback D'.P.A D.P.A (spMap φ) β → v.IsGen → (∀ x, (D'.c x).left ≫ β = spMap φ ≫ (D.c (xe x)).left) → ∀ gam : (TK V).left ⟶ (TK R).left, gam ≫ jK R = jK V ≫ spMap φ → PsiCmp D D' β v xe gam → D'.PsiEven → D.PsiEven := by
   first | exact @GlobalTheory.PsiRing.psiEven_descend | exact GlobalTheory.PsiRing.psiEven_descend | (intros; apply GlobalTheory.PsiRing.psiEven_descend <;> assumption)

@@ -15,8 +15,10 @@ open GlobalTheory.Core.Rk.SW
 open scoped ContDiff
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Unf.realParam_size_bounds | exact GlobalTheory.Unf.realParam_size_bounds | (intros; apply GlobalTheory.Unf.realParam_size_bounds <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Unf.realParam_size_bounds` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FAdelicMatrixRealSizeBoundsAlongRealParametrisati.lean&line=88#L88)
 -/
 theorem _root_.GlobalTheory.T.adelicMatrixRealSize_bounds_along_real_parametrisation : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (m n k : ℕ) (L : (Fin k → ℝ) →+ Mx D m n), GlobalTheory.IndefiniteRowSideFullHecke.SchwartzBruhatMixedFamilies.IsRealParam L → (∃ C : ℝ, ∀ t, GlobalTheory.Unf.realSize θ (L t) ≤ C * ‖t‖) ∧ (Function.Injective L → ∃ C : ℝ, ∀ (x : Mx D m n) t, ‖t‖ ≤ C * (GlobalTheory.Unf.realSize θ (x + L t) + GlobalTheory.Unf.realSize θ x)) := by
   first | exact @GlobalTheory.Unf.realParam_size_bounds | exact GlobalTheory.Unf.realParam_size_bounds | (intros; apply GlobalTheory.Unf.realParam_size_bounds <;> assumption)

@@ -22,8 +22,10 @@ open NumberField
 open GlobalTheory.CompanionTheory.SiegelND.Integ.Weyl GlobalTheory.CompanionTheory.SW.Core
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.SiegelND.Integ.traceDual_clear_by_integer | exact GlobalTheory.CompanionTheory.SiegelND.Integ.traceDual_clear_by_integer | (intros; apply GlobalTheory.CompanionTheory.SiegelND.Integ.traceDual_clear_by_integer <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.SiegelND.Integ.traceDual_clear_by_integer` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FTraceDualDenominatorBounded.lean&line=6#L6)
 -/
 theorem _root_.GlobalTheory.T.trace_dual_denominator_bounded : ∀ (F : Type) [Field F] [NumberField F], ∃ D : ℕ, 0 < D ∧ ∀ f : F,
     (∀ r : 𝓞 F, ∃ m : ℤ, Algebra.trace ℚ F (f * (r : F)) = m) → ∃ o : 𝓞 F, (o : F) = (D : F) * f := by

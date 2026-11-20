@@ -9,8 +9,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.Discrepancy GlobalTheory.FieldPair
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FieldPair.isIntegrallyClosed_of_isEtTower | exact GlobalTheory.FieldPair.isIntegrallyClosed_of_isEtTower | (intros; apply GlobalTheory.FieldPair.isIntegrallyClosed_of_isEtTower <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FieldPair.isIntegrallyClosed_of_isEtTower` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsIntegrallyClosedOfIsEtaleTowerOverNormalLocal.lean&line=46#L46)
 -/
 theorem _root_.GlobalTheory.T.isIntegrallyClosed_of_isEtaleTowerOverNormalLocal : ∀ {K L : Type} [Field K] [Field L] (cK : ℂ →+* K) (cL : ℂ →+* L) (r : ℕ) (R : Subring K) (T : Subring L)
     (ι : R →+* T) (ψ : T →+* R) (τ : Fin r → T), IsEtTower cK R cL T ι ψ τ → IsIntegrallyClosed T := by

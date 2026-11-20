@@ -16,8 +16,10 @@ import Formalism.SharpRestriction.LevelLetterCocycles.PlaceLabelTeichmuller
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.RowParamOfThetaLiftBaseChange
 open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations GlobalTheory.NLink
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PassOp.main | exact GlobalTheory.PassOp.main | (intros; apply GlobalTheory.PassOp.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PassOp.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FJointConditionOfEigenCentralSeries.lean&line=146#L146)
 -/
 theorem _root_.GlobalTheory.T.joint_condition_of_eigen_central_series : ∀ (D : D7) (Q : PairedCharacterCondition.Pend D), GlobalTheory.Pass.EigSpan Q → GlobalTheory.Pass.CentralElt D → GlobalTheory.TypeLeaf.SerLoc D → SumRepresentations.Conclusion41 D → SumRepresentations.tieLab D → SumRepresentations.tie0 D → SumRepresentations.adm1 D → SumRepresentations.adm5 D → KillingConditions.CommutingEndomorphismCondition D := by
   first | exact @GlobalTheory.PassOp.main | exact GlobalTheory.PassOp.main | (intros; apply GlobalTheory.PassOp.main <;> assumption)

@@ -7,8 +7,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum GlobalTheory.Mum.Conj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.Conj.isActOf_secTw | exact GlobalTheory.Mum.Conj.isActOf_secTw | (intros; apply GlobalTheory.Mum.Conj.isActOf_secTw <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.Conj.isActOf_secTw` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FThetaGroupActionPullbackThetaSectionsGaloisTwist.lean&line=42#L42)
 -/
 theorem _root_.GlobalTheory.T.thetaGroupAction_pullbackThetaSectionsGaloisTwist : ∀ (R : Type) [CommRing R] [IsDomain R] (A : PolAV (Sp (FractionRing R))) (N : ℕ) (σ τ : Kb R →ₐ[FractionRing R] Kb R), σ.comp τ = AlgHom.id _ _ → ∀ (θ : ThetaGrp A.A A.L (N : ℤ) (TFK (R := R) (Kb R))) (a b : SecK A.L (snd (TFK (R := R) (Kb R)) A.A).left N), IsActOf A.A A.L N (thTw A N τ θ) a b → IsActOf A.A A.L N θ (secTw A N σ a) (secTw A N σ b) := by
   first | exact @GlobalTheory.Mum.Conj.isActOf_secTw | exact GlobalTheory.Mum.Conj.isActOf_secTw | (intros; apply GlobalTheory.Mum.Conj.isActOf_secTw <;> assumption)

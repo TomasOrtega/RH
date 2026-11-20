@@ -11,8 +11,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.exists_ratio_of_exp_one_trait | exact GlobalTheory.Mum.exists_ratio_of_exp_one_trait | (intros; apply GlobalTheory.Mum.exists_ratio_of_exp_one_trait <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.exists_ratio_of_exp_one_trait` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsRatioOfExpansionsProportionalAtTrait.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.exists_ratio_of_expansions_proportional_at_trait : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (C : LabCover D) (k : ℕ), 1 ≤ k → ∀ (G : IntFam (maximalIdeal R) D.toPre k) (S Ψ : SecK C.P.L.L C.α k), (∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W] (T : Trait C W), ∃ u : Wˣ, T.Exp 1 u Ψ G) → ∀ (W₀ : Type) [CommRing W₀] [IsDomain W₀] [IsLocalRing W₀] (T₀ : Trait C W₀) (a₀ b₀ : W₀), a₀ ≠ 0 → b₀ ≠ 0 → T₀.Exp a₀ b₀ S G → ∃ r t : R, r ≠ 0 ∧ t ≠ 0 ∧ ∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W] (T : Trait C W), ∃ u : Wˣ, T.Exp (T.φ t) (T.φ r * u) S G := by
   first | exact @GlobalTheory.Mum.exists_ratio_of_exp_one_trait | exact GlobalTheory.Mum.exists_ratio_of_exp_one_trait | (intros; apply GlobalTheory.Mum.exists_ratio_of_exp_one_trait <;> assumption)

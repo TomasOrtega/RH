@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.HasPartAnd
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.JetSplitAmb
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Formalism.L2.Ker Formalism.L2.Forms GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.Bl GlobalTheory.Fc GlobalTheory.Svd NumberField IsDedekindDomain
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Svd.tiesAt_of_rowPin | exact GlobalTheory.Svd.tiesAt_of_rowPin | (intros; apply GlobalTheory.Svd.tiesAt_of_rowPin <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Svd.tiesAt_of_rowPin` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FConcreteChainAgreesAtTupleOfNormalisedRows.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.concreteChainAgreesAtTuple_of_normalisedRows : ∀ (K : Ctx) (β : BPt K), β.Is (positionOf (HasPartAnd fun _ _ _ _ w Z => ∀ a, GlobalTheory.AtG.RowPin w.I w.ok w.l Z a)) → ∀ μ, GlobalTheory.AtG.TiesAt β.D β.O.ex.errX β.O.X μ := by
   first | exact @GlobalTheory.Svd.tiesAt_of_rowPin | exact GlobalTheory.Svd.tiesAt_of_rowPin | (intros; apply GlobalTheory.Svd.tiesAt_of_rowPin <;> assumption)

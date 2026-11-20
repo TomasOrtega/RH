@@ -8,8 +8,10 @@ open MeasureTheory Filter NumberField IsDedekindDomain Formalism.MainNotions.Glo
 open scoped Matrix GlobalTheory.VacAny
 attribute [local instance] GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.measFv GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.borelFv
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ConeSoB.ev_shift_integral | exact GlobalTheory.ConeSoB.ev_shift_integral | (intros; apply GlobalTheory.ConeSoB.ev_shift_integral <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ConeSoB.ev_shift_integral` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FEvShiftIntegral.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.config_b_triple_compatibility_alt : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} (B : Base F E) {a b : ℕ}
     (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →

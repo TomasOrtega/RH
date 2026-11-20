@@ -10,8 +10,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.ExpandNonzero.nonzero_of_expandsAt_zero | exact GlobalTheory.Mum.ExpandNonzero.nonzero_of_expandsAt_zero | (intros; apply GlobalTheory.Mum.ExpandNonzero.nonzero_of_expandsAt_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.ExpandNonzero.nonzero_of_expandsAt_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSectionNonzeroOfExpansionModMaximalIdeal.lean&line=31#L31)
 -/
 theorem _root_.GlobalTheory.T.section_nonzero_of_expansion_mod_maximalIdeal : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R]
     (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G]

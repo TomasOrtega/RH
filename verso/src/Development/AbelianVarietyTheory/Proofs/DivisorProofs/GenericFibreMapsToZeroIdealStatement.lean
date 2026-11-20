@@ -17,8 +17,10 @@ open MvPolynomial GlobalTheory.ArInt
 open CategoryTheory AlgebraicGeometry GlobalTheory GlobalTheory.Mean4O GlobalTheory.HermLB
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IsArithVar.asIdeal_eq_bot_of_under_eq_bot | exact GlobalTheory.IsArithVar.asIdeal_eq_bot_of_under_eq_bot | (intros; apply GlobalTheory.IsArithVar.asIdeal_eq_bot_of_under_eq_bot <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IsArithVar.asIdeal_eq_bot_of_under_eq_bot` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGenericFibreMapsToZeroIdeal.lean&line=56#L56)
 -/
 theorem _root_.GlobalTheory.T.generic_fibre_maps_to_zero_ideal : ∀ (F : Type) [Field F] [NumberField F] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp (𝓞 F)) (e : ℕ),
     IsArithVar p e → ∀ z : X, GlobalTheory.SteinFibre.under z = ⊥ → (p z).asIdeal = ⊥ := by

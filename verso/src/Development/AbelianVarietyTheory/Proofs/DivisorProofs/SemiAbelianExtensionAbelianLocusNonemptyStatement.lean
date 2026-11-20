@@ -11,8 +11,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ZHAbLocusNonempty.abLocus_nonempty | exact GlobalTheory.ZHAbLocusNonempty.abLocus_nonempty | (intros; apply GlobalTheory.ZHAbLocusNonempty.abLocus_nonempty <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ZHAbLocusNonempty.abLocus_nonempty` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSemiAbelianExtensionAbelianLocusNonempty.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.semiAbelianExtension_abelianLocus_nonempty : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ZH.ArithBase o Ω] (S : ZH.ThetaSys o Ω) (ρ : S.Real) (M : ZH.RatModel o Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J) (Zh : ZH.ZHOut ρ M U₀ EE), S.Over₀ M U₀ → (abLocus Zh.G).Nonempty := by
   first | exact @GlobalTheory.ZHAbLocusNonempty.abLocus_nonempty | exact GlobalTheory.ZHAbLocusNonempty.abLocus_nonempty | (intros; apply GlobalTheory.ZHAbLocusNonempty.abLocus_nonempty <;> assumption)

@@ -11,8 +11,10 @@ open scoped TensorProduct InnerProductSpace
 open GlobalTheory.Hk3
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Hk3.labIn_selfDual_iff | exact GlobalTheory.Hk3.labIn_selfDual_iff | (intros; apply GlobalTheory.Hk3.labIn_selfDual_iff <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Hk3.labIn_selfDual_iff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FSelfDualAntitoneListIffInertPrimeHeckeExponents.lean&line=56#L56)
 -/
 theorem _root_.GlobalTheory.T.selfDual_antitone_list_iff_inertPrimeHeckeExponents : ∀ (n : ℕ) (d : List ℤ), (d.length = n ∧ d.Pairwise (fun a b => b ≤ a) ∧ dualLab d = d) ↔ ∃ s : List ℕ, 2 * s.length ≤ n ∧ s.Pairwise (fun a b => b ≤ a) ∧ (∀ a ∈ s, 0 < a) ∧ d = labIn n s := by
   first | exact @GlobalTheory.Hk3.labIn_selfDual_iff | exact GlobalTheory.Hk3.labIn_selfDual_iff | (intros; apply GlobalTheory.Hk3.labIn_selfDual_iff <;> assumption)

@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.HodgeFrameGram
 open Matrix Complex ComplexConjugate GlobalTheory.HermFrame GlobalTheory.IndefiniteRowSideFullHecke.HodgeFrameGram
 open scoped ComplexOrder ContDiff
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HermFrame.thetaZeroOne_eq_neg_conj_thetaOneZero | exact GlobalTheory.HermFrame.thetaZeroOne_eq_neg_conj_thetaOneZero | (intros; apply GlobalTheory.HermFrame.thetaZeroOne_eq_neg_conj_thetaOneZero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HermFrame.thetaZeroOne_eq_neg_conj_thetaOneZero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FThetaZeroOneSkewConj.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.theta_zero_one_skew_conj : ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ E] [IsScalarTower ℝ ℂ E]
     [FiniteDimensional ℂ E] (ι : Type) [Fintype ι] (n : ℕ) (U : Set (ι → ℂ))

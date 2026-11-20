@@ -14,8 +14,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UU GlobalTheory.LN
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThetaClosed.exists_section_nonzero_closed | exact GlobalTheory.ThetaClosed.exists_section_nonzero_closed | (intros; apply GlobalTheory.ThetaClosed.exists_section_nonzero_closed <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThetaClosed.exists_section_nonzero_closed` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsSectionNonzeroOnClosedFibreCompleteLocal.lean&line=30#L30)
 -/
 theorem _root_.GlobalTheory.T.exists_section_nonzero_on_closed_fibre_complete_local : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], IsNoetherianRing R → IsIntegrallyClosed R → IsAdicComplete (IsLocalRing.maximalIdeal R) R → CharZero R → ∀ (D : DegData R (IsLocalRing.maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (U : Unif (IsLocalRing.maximalIdeal R) D A G), ∃ θ : LB.Sec U.LG.L, ∃ x ∈ nonzeroLocus θ, G.hom x = IsLocalRing.closedPoint R := by
   first | exact @GlobalTheory.ThetaClosed.exists_section_nonzero_closed | exact GlobalTheory.ThetaClosed.exists_section_nonzero_closed | (intros; apply GlobalTheory.ThetaClosed.exists_section_nonzero_closed <;> assumption)

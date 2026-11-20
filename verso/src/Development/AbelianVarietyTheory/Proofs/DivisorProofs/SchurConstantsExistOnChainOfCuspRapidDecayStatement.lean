@@ -14,8 +14,10 @@ open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Hk3 (Core Good IsSF SchurAll TwoSided FixAll EEc Wcc eH IsLab HoweUnram)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Hk3.schurAll_of_cuspRapidDecay | exact GlobalTheory.Hk3.schurAll_of_cuspRapidDecay | (intros; apply GlobalTheory.Hk3.schurAll_of_cuspRapidDecay <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Hk3.schurAll_of_cuspRapidDecay` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSchurConstantsExistOnChainOfCuspRapidDecay.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.schurConstantsExistOnChain_of_cuspRapidDecay : GlobalTheory.Published.CuspRapidDecay → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), SchurAll R := by
   first | exact @GlobalTheory.Hk3.schurAll_of_cuspRapidDecay | exact GlobalTheory.Hk3.schurAll_of_cuspRapidDecay | (intros; apply GlobalTheory.Hk3.schurAll_of_cuspRapidDecay <;> assumption)

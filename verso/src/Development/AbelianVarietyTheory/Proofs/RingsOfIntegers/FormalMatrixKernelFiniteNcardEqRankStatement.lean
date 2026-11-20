@@ -8,8 +8,10 @@ open ReciprocityTheory.ChartRestriction.G.TB (dAct dLin)
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.PlaceInt
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KerCard.finite_ncard_kerM | exact GlobalTheory.KerCard.finite_ncard_kerM | (intros; apply GlobalTheory.KerCard.finite_ncard_kerM <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KerCard.finite_ncard_kerM` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FRingsOfIntegers%2FFormalMatrixKernelFiniteNcardEqRank.lean&line=100#L100)
 -/
 theorem _root_.GlobalTheory.T.formalMatrixKernel_finite_ncard_eq_rank : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (maximalIdeal V) V] [CharZero V] (d : ℕ) (O : Type) [CommRing O] [StarRing O] (B : FB V d O), FinHt B → ∀ (n : ℕ) (p p' : Matrix (Fin n) (Fin n) O) (N : ℕ), 1 ≤ N → p' * p = (N : O) • (1 : Matrix (Fin n) (Fin n) O) → jacM B p ≠ 0 → SplitKer B p → (kerM B p).Finite ∧ (kerM B p).ncard = Module.finrank V (PS V n d ⧸ Ideal.span (Set.range fun s : Fin n × Fin d => matV B p (fun j => pt V (n := n) d j) s.1 s.2)) := by
   first | exact @GlobalTheory.KerCard.finite_ncard_kerM | exact GlobalTheory.KerCard.finite_ncard_kerM | (intros; apply GlobalTheory.KerCard.finite_ncard_kerM <;> assumption)

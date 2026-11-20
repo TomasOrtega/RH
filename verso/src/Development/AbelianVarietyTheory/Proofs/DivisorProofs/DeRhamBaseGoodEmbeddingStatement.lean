@@ -10,8 +10,10 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G Recip
 open scoped Classical
 open GlobalTheory.CovTestDR GlobalTheory.VdmRec
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BdDim.main | exact GlobalTheory.BdDim.main | (intros; apply GlobalTheory.BdDim.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BdDim.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDeRhamBaseGoodEmbedding.lean&line=217#L217)
 -/
 theorem _root_.GlobalTheory.T.de_rham_base_good_embedding : GlobalTheory.CovTop.HypothesesXH → Hypotheses2 → HypothesesH → RegularAlteration → OnObj fun D O _ _ _ _ => 1 ≤ dimGr D.what₂.Tau O.N O.j ∧ ∀ c (M : DRBase O c), ∃ I : M.Emb, I.Good (genericPoint M.B) (dimGr D.what₂.Tau O.N O.j - 1) := by
   first | exact @GlobalTheory.BdDim.main | exact GlobalTheory.BdDim.main | (intros; apply GlobalTheory.BdDim.main <;> assumption)

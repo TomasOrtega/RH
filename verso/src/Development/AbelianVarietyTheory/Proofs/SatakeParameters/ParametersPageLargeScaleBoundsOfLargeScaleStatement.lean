@@ -5,8 +5,10 @@ import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
 import Formalism.FrobeniusOrbits.HostCorollaries
 open GlobalTheory.HTW Formalism.BasicNotions Formalism.FrobeniusOrbits
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HTW.roomy_of_large | exact GlobalTheory.HTW.roomy_of_large | (intros; apply GlobalTheory.HTW.roomy_of_large <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HTW.roomy_of_large` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FPageLargeScaleBoundsOfLargeScale.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.roomy_of_large_scale : ∀ eps C A : ℝ, 0 < eps → 100 ≤ C → ∃ x0 : ℝ, ∀ (D : D7) (L : SizeData₂ D) (P : ParameterChoice' D L), L.sc.eps = eps → P.CLw ≤ A → x0 ≤ L.sc.x → Roomy L C := by
   first | exact @GlobalTheory.HTW.roomy_of_large | exact GlobalTheory.HTW.roomy_of_large | (intros; apply GlobalTheory.HTW.roomy_of_large <;> assumption)

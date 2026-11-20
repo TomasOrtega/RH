@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnfoldIntegralFunda
 import Mathlib
 open MeasureTheory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnfoldOrbits.integral_mul_tsum_eq_zero | exact GlobalTheory.UnfoldOrbits.integral_mul_tsum_eq_zero | (intros; apply GlobalTheory.UnfoldOrbits.integral_mul_tsum_eq_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnfoldOrbits.integral_mul_tsum_eq_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FUnfoldIntegralFundamentalDomain.lean&line=131#L131)
 -/
 theorem _root_.GlobalTheory.T.unfold_integral_fundamental_domain : ∀ {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G]
     (Γ : Subgroup G) [Countable Γ] (μ : Measure G) [μ.IsMulLeftInvariant] (𝓕 : Set G) (Q : Type) [Countable Q]

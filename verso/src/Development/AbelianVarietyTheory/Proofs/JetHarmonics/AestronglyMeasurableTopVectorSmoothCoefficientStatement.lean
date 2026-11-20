@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.Jets.ImportsAlt
 import Formalism.HermitianCurvature.HerGenC
 open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants GlobalTheory.TopVec Filter Topology MeasureTheory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TopVec.aestronglyMeasurable_tv | exact GlobalTheory.TopVec.aestronglyMeasurable_tv | (intros; apply GlobalTheory.TopVec.aestronglyMeasurable_tv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TopVec.aestronglyMeasurable_tv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FJetHarmonics%2FAestronglyMeasurableTopVectorSmoothCoefficient.lean&line=53#L53)
 -/
 theorem _root_.GlobalTheory.T.aestronglyMeasurable_topVector_smoothCoefficient : ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : M.Par) (p : KB.Pl P Wp Wq) (Cb : ℝ) (H : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (w : List C.Letter), KB.InDDplus2 P p.l0 p.T.base Cb p.Θ → KB.CutWord P p.l0 w → B.CkOn ⊤ (B.GV P.k P.r) H → AEStronglyMeasurable (tv p H w) volume := by
   first | exact @GlobalTheory.TopVec.aestronglyMeasurable_tv | exact GlobalTheory.TopVec.aestronglyMeasurable_tv | (intros; apply GlobalTheory.TopVec.aestronglyMeasurable_tv <;> assumption)

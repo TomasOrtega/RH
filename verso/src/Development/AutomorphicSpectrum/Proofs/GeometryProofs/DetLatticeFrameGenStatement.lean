@@ -19,8 +19,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp
 open ReciprocityTheory.AnForm (levi)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Relay.det_lattice_frame_gen | exact GlobalTheory.CompanionTheory.Relay.det_lattice_frame_gen | (intros; apply GlobalTheory.CompanionTheory.Relay.det_lattice_frame_gen <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Relay.det_lattice_frame_gen` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FDetLatticeFrameGen.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.det_lattice_frame_gen : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (V : Type) [AddCommGroup V] [Module Ω V] (L : Lat ξ V) (r : ℕ) (b₀ b : Fin r → V) (T : Matrix (Fin r) (Fin r) Ω) (p : Cpt ξ), LinearIndependent Ω b₀ → L.IsFrameAt b p → (∀ k, b k = ∑ k', T k' k • b₀ k') → (detLat L b₀).IsGenAt p T.det := by
   first | exact @GlobalTheory.CompanionTheory.Relay.det_lattice_frame_gen | exact GlobalTheory.CompanionTheory.Relay.det_lattice_frame_gen | (intros; apply GlobalTheory.CompanionTheory.Relay.det_lattice_frame_gen <;> assumption)

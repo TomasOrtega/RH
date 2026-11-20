@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCombIn
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Geo.Tor
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SecGlue.isCombIn_of_chart | exact GlobalTheory.SecGlue.isCombIn_of_chart | (intros; apply GlobalTheory.SecGlue.isCombIn_of_chart <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SecGlue.isCombIn_of_chart` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsAffineCombinationIndependentOfChart.lean&line=142#L142)
 -/
 theorem _root_.GlobalTheory.T.isAffineCombination_independent_of_chart : ∀ (Y : Scheme.{0}) (V V' : Y.Opens), IsAffineOpen V → IsAffineOpen V' →
     ∀ (S T : Type) [CommRing S] [CommRing T] (q : S →+* T), Function.Surjective q → RingHom.ker q ^ 2 = ⊥ →

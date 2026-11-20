@@ -9,8 +9,10 @@ open GlobalTheory GlobalTheory.ZM GlobalTheory.ZH GlobalTheory.UMin GlobalTheory
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UMin.CrdMap.exists_map_of_hasDiv | exact GlobalTheory.UMin.CrdMap.exists_map_of_hasDiv | (intros; apply GlobalTheory.UMin.CrdMap.exists_map_of_hasDiv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UMin.CrdMap.exists_map_of_hasDiv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsProjectiveSpaceMapOfModelHasDiv.lean&line=137#L137)
 -/
 theorem _root_.GlobalTheory.T.exists_projectiveSpace_map_of_model_hasDiv : ∀ (k Ω : Type) [CommRing k] [Field Ω] [Algebra k Ω] (M : RatModel k Ω) (n : ℕ) (c : Fin (n + 1) → Ω), M.HasDiv c → ∃ h : M.Z ⟶ PSpace k n, h ≫ PSpace.str k n = M.s ∧ PCrd (M.pt ≫ h) c := by
   first | exact @GlobalTheory.UMin.CrdMap.exists_map_of_hasDiv | exact GlobalTheory.UMin.CrdMap.exists_map_of_hasDiv | (intros; apply GlobalTheory.UMin.CrdMap.exists_map_of_hasDiv <;> assumption)

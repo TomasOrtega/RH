@@ -22,8 +22,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CovTop.WtRun.wt_size | exact GlobalTheory.CovTop.WtRun.wt_size | (intros; apply GlobalTheory.CovTop.WtRun.wt_size <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CovTop.WtRun.wt_size` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FWeightParamCoeffSumLeAtIndex.lean&line=367#L367)
 -/
 theorem _root_.GlobalTheory.T.weight_param_coeff_sum_le_at_index : Size → Covers fun Fm x _ ι p i Y PP _ => ∀ j ≤ lenT p i PP, ∑ τ, ∑ k, |((⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).wt j τ k : ℝ)| ≤ zBase (Fm.L x ι) ^ 2 * kap p i := by
   first | exact @GlobalTheory.CovTop.WtRun.wt_size | exact GlobalTheory.CovTop.WtRun.wt_size | (intros; apply GlobalTheory.CovTop.WtRun.wt_size <;> assumption)

@@ -4,8 +4,10 @@ import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomology
 set_option backward.isDefEq.respectTransparency false
 open CategoryTheory AlgebraicGeometry TensorProduct GlobalTheory.LogCris DividedPowers CrystallineSemistableComparison CrystallineSemistableComparison.Pb
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.AlmostFinite.serre_afg | exact GlobalTheory.CompanionTheory.AlmostFinite.serre_afg | (intros; apply GlobalTheory.CompanionTheory.AlmostFinite.serre_afg <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.AlmostFinite.serre_afg` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FAlmostFinitelyGeneratedSerreClass.lean&line=145#L145)
 -/
 theorem _root_.GlobalTheory.T.almost_finitely_generated_serre_class : ∀ (R : Type) [CommRing R] (I : Ideal R) (c : R), I.FG → IsNilpotent I → I.IsPrime →
     (∀ x y : R, x ∈ Ideal.span {y} ⊔ I ∨ y ∈ Ideal.span {x} ⊔ I) → (∀ x : R, x ∉ I → ∃ n : ℕ, c ^ n ∈ Ideal.span {x} ⊔ I) →

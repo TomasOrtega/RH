@@ -6,8 +6,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FockBaseChange.pureTensorO_subst | exact GlobalTheory.FockBaseChange.pureTensorO_subst | (intros; apply GlobalTheory.FockBaseChange.pureTensorO_subst <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FockBaseChange.pureTensorO_subst` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FFockPolynomialVectorBasisChangeEqSubstitution.lean&line=150#L150)
 -/
 theorem _root_.GlobalTheory.T.fockPolynomialVector_basisChange_eq_substitution : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D), IsStdChar D ψ (-1) → IsInfFam θ → ∀ (BS g : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (BT h : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) (f : WO S T → ℂ), IsThetaFunO ψ S T f → ∀ P, pureTensorO ψ θ S T (fun _ => 1) (fun _ => 1) (fun τ => BS τ * g τ) (fun τ => BT τ * h τ) f P = pureTensorO ψ θ S T (fun _ => 1) (fun _ => 1) BS BT f (substF h (fun τ => ((g τ)⁻¹)ᵀ) P) := by
   first | exact @GlobalTheory.FockBaseChange.pureTensorO_subst | exact GlobalTheory.FockBaseChange.pureTensorO_subst | (intros; apply GlobalTheory.FockBaseChange.pureTensorO_subst <;> assumption)

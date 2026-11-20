@@ -4,8 +4,10 @@ import Development.AutomorphicSpectrum.Definitions.MetricPeriods.InFlagDomainOne
 open Matrix GlobalTheory.CompanionTheory.Ar.PB
 open scoped ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.PB.gram_det_log_size | exact GlobalTheory.CompanionTheory.Ar.PB.gram_det_log_size | (intros; apply GlobalTheory.CompanionTheory.Ar.PB.gram_det_log_size <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.PB.gram_det_log_size` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FLogDetGramSubharmonic.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.log_det_comparable_gram_bound : ∀ (n k : ℕ) (G G₀ : Matrix (Fin n) (Fin n) ℂ) (V : Matrix (Fin n) (Fin k) ℂ) (m : ℝ), 1 ≤ m → G₀.PosDef → G.PosDef → ((m : ℂ) • G₀ - G).PosSemidef → ((m : ℂ) • G - G₀).PosSemidef → LinearIndependent ℂ Vᵀ → |Real.log (Vᴴ * G * V).det.re - Real.log (Vᴴ * G₀ * V).det.re| ≤ k * Real.log m := by
   first | exact @GlobalTheory.CompanionTheory.Ar.PB.gram_det_log_size | exact GlobalTheory.CompanionTheory.Ar.PB.gram_det_log_size | (intros; apply GlobalTheory.CompanionTheory.Ar.PB.gram_det_log_size <;> assumption)

@@ -8,8 +8,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MixedLagr.le_finrank_lagr | exact GlobalTheory.MixedLagr.le_finrank_lagr | (intros; apply GlobalTheory.MixedLagr.le_finrank_lagr <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MixedLagr.le_finrank_lagr` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FQuadraticInjectivePlaneCoordinates.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.quadratic_injective_plane_coordinates : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (n d d₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (W₁ : Spc F E d₁) (M : Model σ X W) (M₁ : Model σ X W₁) (H' : Plane E d d₁),

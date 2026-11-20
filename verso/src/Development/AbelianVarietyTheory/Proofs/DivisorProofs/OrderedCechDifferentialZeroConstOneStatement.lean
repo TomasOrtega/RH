@@ -11,8 +11,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.CechPoset
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CechPoset.δ_zero_one | exact GlobalTheory.CechPoset.δ_zero_one | (intros; apply GlobalTheory.CechPoset.δ_zero_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CechPoset.δ_zero_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FOrderedCechDifferentialZeroConstOne.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.orderedCechDifferential_zero_const_one : ∀ {κ : Type} [LinearOrder κ] {R : Type} [CommRing R] (F : (NE κ)ᵒᵖ ⥤ CommAlgCat.{0} R), δ F 0 (fun _ => 1) = 0 := by
   first | exact @GlobalTheory.CechPoset.δ_zero_one | exact GlobalTheory.CechPoset.δ_zero_one | (intros; apply GlobalTheory.CechPoset.δ_zero_one <;> assumption)

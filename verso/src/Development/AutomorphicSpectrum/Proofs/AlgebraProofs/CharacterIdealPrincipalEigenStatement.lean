@@ -6,8 +6,10 @@ import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.StepOrderR
 open ReciprocityTheory.PGsh.L2 ReciprocityTheory.PGsh.Up GlobalTheory.CompanionTheory.Ar.GR
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.GR.eig_rank_one | exact GlobalTheory.CompanionTheory.Ar.GR.eig_rank_one | (intros; apply GlobalTheory.CompanionTheory.Ar.GR.eig_rank_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.GR.eig_rank_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FAlgebraProofs%2FCharacterIdealPrincipalEigen.lean&line=92#L92)
 -/
 theorem _root_.GlobalTheory.T.character_ideal_principal_eigen : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C], v.Integers R → v (p : C) < 1 → ∀ (F : Type) [Field F] [Fintype F] [DecidableEq F] [CharP F p] (f : ℕ), Fintype.card F = p ^ f → ∀ (AA : HopfOrder (C := C) R F), FStable F AA.carrier → ∀ χ : MulChar F R, (∃ c : R, c ≠ 0 ∧ xIdeal AA.carrier χ = Ideal.span {c}) ∧ ∀ g, g ∈ eig AA.carrier χ ↔ ∃ c ∈ xIdeal AA.carrier χ, g = fun a => algebraMap R C (c * χ a) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.GR.eig_rank_one | exact GlobalTheory.CompanionTheory.Ar.GR.eig_rank_one | (intros; apply GlobalTheory.CompanionTheory.Ar.GR.eig_rank_one <;> assumption)

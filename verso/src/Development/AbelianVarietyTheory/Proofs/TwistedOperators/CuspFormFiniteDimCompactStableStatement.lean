@@ -18,8 +18,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 open scoped TensorProduct
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CuspGKPet.exists_petersson_gkGen | exact GlobalTheory.CuspGKPet.exists_petersson_gkGen | (intros; apply GlobalTheory.CuspGKPet.exists_petersson_gkGen <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CuspGKPet.exists_petersson_gkGen` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FCuspFormFiniteDimCompactStable.lean&line=286#L286)
 -/
 theorem _root_.GlobalTheory.T.cusp_form_finite_dim_compact_stable : GlobalTheory.FunPr.Hypotheses₂ → ∀ {D : D7} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D)
     (S : D.what₂.Tau → SPar) (M : Formalism.IndefR.Mult.DSModel V S), IsInfFam (D := D) θ →

@@ -12,8 +12,10 @@ open scoped TensorProduct Matrix Topology
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Member
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Member.dictIsUnif_of_isDict | exact GlobalTheory.Member.dictIsUnif_of_isDict | (intros; apply GlobalTheory.Member.dictIsUnif_of_isDict <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Member.dictIsUnif_of_isDict` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUnitaryExistence%2FDictIsUnifOfMarkingRuleDictionary.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.dictIsUnif_of_markingRule_dictionary : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (V : HSp D) (r : ℕ) (C : Ctx Xo c σ V r), C.OK → ∀ dict, C.IsDict dict → ∀ Kf : Subgroup (GA D V), IsLevelK V l.M Kf → DictIsUnif V dict Kf C.th C.hr := by
   first | exact @GlobalTheory.Member.dictIsUnif_of_isDict | exact GlobalTheory.Member.dictIsUnif_of_isDict | (intros; apply GlobalTheory.Member.dictIsUnif_of_isDict <;> assumption)

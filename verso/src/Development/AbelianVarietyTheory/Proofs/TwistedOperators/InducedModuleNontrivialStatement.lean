@@ -10,8 +10,10 @@ open GlobalTheory.Dec (IsHaarSub HasInfChar UEquiv gelfVal)
 open GlobalTheory.Orb (IsPseudoCoeff ujMat ujRep)
 open scoped InnerProductSpace
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IndNonzero.indModule_nontrivial | exact GlobalTheory.IndNonzero.indModule_nontrivial | (intros; apply GlobalTheory.IndNonzero.indModule_nontrivial <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IndNonzero.indModule_nontrivial` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FInducedModuleNontrivial.lean&line=115#L115)
 -/
 theorem _root_.GlobalTheory.T.induced_module_nontrivial : ∀ (n : ℕ) (ε : Fin n → Bool) (I : IndModule ε), Nontrivial I.H := by
   first | exact @GlobalTheory.IndNonzero.indModule_nontrivial | exact GlobalTheory.IndNonzero.indModule_nontrivial | (intros; apply GlobalTheory.IndNonzero.indModule_nontrivial <;> assumption)

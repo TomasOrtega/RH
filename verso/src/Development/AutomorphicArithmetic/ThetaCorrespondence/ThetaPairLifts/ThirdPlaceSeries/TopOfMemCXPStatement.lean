@@ -14,8 +14,10 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Unf GlobalTheory.See
 open scoped TensorProduct Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.TopLevelP.vector_of_mem_cxp | exact _root_.GlobalTheory.TopLevelP.vector_of_mem_cxp | (intros; apply _root_.GlobalTheory.TopLevelP.vector_of_mem_cxp <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TopLevelP.vector_of_mem_cxp` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicArithmetic%2FThetaCorrespondence%2FThetaPairLifts%2FThirdPlaceSeries%2FTopOfMemCXP.lean&line=27#L27)
 -/
 theorem _root_.GlobalTheory.T.vector_of_mem_extra_projection : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.Fam.PackageHypotheses W → ∀ t (F : Fin ((W.Q.F.fc (_root_.GlobalTheory.MiS.packageCoefficientSpace W).zs).Df1.nV t) → D.what₂.LL), _root_.GlobalTheory.Fam.leadingLinearMap W t F ∈ CXP (_root_.GlobalTheory.Fam.pk_z W) (_root_.GlobalTheory.Fam.complexLevelStructure W) t := by
   first | exact @_root_.GlobalTheory.TopLevelP.vector_of_mem_cxp | exact _root_.GlobalTheory.TopLevelP.vector_of_mem_cxp | (intros; apply _root_.GlobalTheory.TopLevelP.vector_of_mem_cxp <;> assumption)

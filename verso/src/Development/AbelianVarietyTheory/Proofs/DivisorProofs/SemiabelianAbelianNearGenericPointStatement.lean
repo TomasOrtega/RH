@@ -9,8 +9,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AbelianOpen.exists_open_isAbelianScheme | exact GlobalTheory.AbelianOpen.exists_open_isAbelianScheme | (intros; apply GlobalTheory.AbelianOpen.exists_open_isAbelianScheme <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AbelianOpen.exists_open_isAbelianScheme` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSemiabelianAbelianNearGenericPoint.lean&line=30#L30)
 -/
 theorem _root_.GlobalTheory.T.semiabelian_abelian_near_generic_point : ∀ (S : Scheme.{0}) [IsIntegral S] [AlgebraicGeometry.IsNoetherian S] (K : Type) [Field K] (η : Sp K ⟶ S),
     GlobalTheory.IsGenericPointHom η → ∀ (G : Over S) [GrpObj G], IsSemiAbelian G →

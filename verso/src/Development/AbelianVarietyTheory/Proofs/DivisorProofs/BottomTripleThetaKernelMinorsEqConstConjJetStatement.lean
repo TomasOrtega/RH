@@ -16,8 +16,10 @@ open GlobalTheory.NormSum (Pair Tup)
 open Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BotFormula.ConjJet.ker_minorF_eq_conj_jet | exact GlobalTheory.BotFormula.ConjJet.ker_minorF_eq_conj_jet | (intros; apply GlobalTheory.BotFormula.ConjJet.ker_minorF_eq_conj_jet <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BotFormula.ConjJet.ker_minorF_eq_conj_jet` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FBottomTripleThetaKernelMinorsEqConstConjJet.lean&line=73#L73)
 -/
 theorem _root_.GlobalTheory.T.bottomTriple_thetaKernel_minors_eq_const_conjJet : ∀ {D : D7} {T : Type} {Lc : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} (G : GridData Lc sc) (W : G.Weil),
     IsStdChar D W.ψ (-1) → ∀ (i j : Fin D.R.m) (A A' WW : HSp D) (X : Tri T A A' WW), IsBottomTri W i j X →

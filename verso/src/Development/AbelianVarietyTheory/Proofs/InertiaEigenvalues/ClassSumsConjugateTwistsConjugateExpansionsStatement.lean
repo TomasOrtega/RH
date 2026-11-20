@@ -14,8 +14,10 @@ open GlobalTheory.PlaceRead
 open GlobalTheory.HeightCounting.Up (PrN)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PlaceClassSum.classSum_conj_place | exact GlobalTheory.PlaceClassSum.classSum_conj_place | (intros; apply GlobalTheory.PlaceClassSum.classSum_conj_place <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PlaceClassSum.classSum_conj_place` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FClassSumsConjugateTwistsConjugateExpansions.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.classSums_conjugate_twists_conjugate_expansions : ∀ (D : D7) (X : RealSide D) (j : Fin D.R.m) (B : Base (Vc D j) (Wc D j)), B.Good → ∀ ψ ψ' : Twist D Circle, ψ.Good → ψ'.Good → B.admitted ψ.Q →
   GlobalTheory.BigOn.Exp.TwConj.HasTuples X.core X.R.toRealDat X.geo.κ X.geo.v₀ X.geo.O (fun _ => 1) j B ψ ψ' →

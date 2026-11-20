@@ -11,8 +11,10 @@ open scoped CategoryTheory.Obj CategoryTheory.MonObj TensorProduct
 open GlobalTheory GlobalTheory.AV GlobalTheory.AV.AbVar
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AV.AbVar.deg_aeval_eq_prod_aroots | exact GlobalTheory.AV.AbVar.deg_aeval_eq_prod_aroots | (intros; apply GlobalTheory.AV.AbVar.deg_aeval_eq_prod_aroots <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AV.AbVar.deg_aeval_eq_prod_aroots` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDegAevalEqProdAroots.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.deg_aeval_end_eq_prod_aroots : ∀ (K : Type) [Field K] (A : AbVar K) (f : End A) (Ω : Type) [Field Ω] [IsAlgClosed Ω] [Algebra ℚ Ω] (R : Polynomial ℤ), algebraMap ℚ Ω (deg (A := A) (B := A) (Polynomial.aeval f R) : ℚ) = ((((charpoly f).map (Int.castRingHom ℚ)).aroots Ω).map (fun a => Polynomial.aeval a R)).prod := by
   first | exact @GlobalTheory.AV.AbVar.deg_aeval_eq_prod_aroots | exact GlobalTheory.AV.AbVar.deg_aeval_eq_prod_aroots | (intros; apply GlobalTheory.AV.AbVar.deg_aeval_eq_prod_aroots <;> assumption)

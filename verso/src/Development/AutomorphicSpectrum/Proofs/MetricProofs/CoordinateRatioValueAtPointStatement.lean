@@ -5,8 +5,10 @@ open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm 
 open scoped ComplexOrder Classical
 open GlobalTheory.CompanionTheory.Ar.PB.CovGraph
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.PB.CovGraph.isValueAt_coord_ratio | exact GlobalTheory.CompanionTheory.Ar.PB.CovGraph.isValueAt_coord_ratio | (intros; apply GlobalTheory.CompanionTheory.Ar.PB.CovGraph.isValueAt_coord_ratio <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.PB.CovGraph.isValueAt_coord_ratio` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FCoordinateRatioValueAtPoint.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.coordinate_ratio_value_at_point : ∀ (K' : Type) [Fintype K'] (ι' : K' → Type) [∀ k, Fintype (ι' k)] (Ω : Type) [Field Ω] (y' : (Σ k, ι' k) → Ω) (z : (Σ k, ι' k) → ℂ) (k : K') (c : ι' k), z ∈ mcPts (mCoordIdeal y') → z ⟨k, c⟩ ≠ 0 → y' ⟨k, c⟩ ≠ 0 ∧ ∀ i : ι' k, IsValueAt y' (y' ⟨k, i⟩ / y' ⟨k, c⟩) z ((z ⟨k, c⟩)⁻¹ * z ⟨k, i⟩) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.PB.CovGraph.isValueAt_coord_ratio | exact GlobalTheory.CompanionTheory.Ar.PB.CovGraph.isValueAt_coord_ratio | (intros; apply GlobalTheory.CompanionTheory.Ar.PB.CovGraph.isValueAt_coord_ratio <;> assumption)

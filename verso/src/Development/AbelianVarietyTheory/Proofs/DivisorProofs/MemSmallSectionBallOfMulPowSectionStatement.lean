@@ -9,8 +9,10 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace Filter Topology
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier GlobalTheory.VolBr
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.VolBr.MpDiv.mem_Bl_of_mul_pow | exact GlobalTheory.VolBr.MpDiv.mem_Bl_of_mul_pow | (intros; apply GlobalTheory.VolBr.MpDiv.mem_Bl_of_mul_pow <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.VolBr.MpDiv.mem_Bl_of_mul_pow` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FMemSmallSectionBallOfMulPowSection.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.mem_smallSectionBall_of_mul_pow_section : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (P : Pair p), ∀ s : X.functionField, s ∈ P.H 0 1 → s ≠ 0 → ∀ δ : ℝ, 0 < δ → ∃ C : ℝ, 0 ≤ C ∧ ∀ (N m : ℕ) (f : X.functionField), f ∈ P.H N 0 → f * s ^ m ∈ P.Bl N m 2 → f ∈ P.Bl N 0 (2 * Real.exp (δ * N + C * m)) := by
   first | exact @GlobalTheory.VolBr.MpDiv.mem_Bl_of_mul_pow | exact GlobalTheory.VolBr.MpDiv.mem_Bl_of_mul_pow | (intros; apply GlobalTheory.VolBr.MpDiv.mem_Bl_of_mul_pow <;> assumption)

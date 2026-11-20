@@ -20,8 +20,10 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CuspOfReading.mem_cuspA_of_rdU_mem_holSub0 | exact GlobalTheory.CuspOfReading.mem_cuspA_of_rdU_mem_holSub0 | (intros; apply GlobalTheory.CuspOfReading.mem_cuspA_of_rdU_mem_holSub0 <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CuspOfReading.mem_cuspA_of_rdU_mem_holSub0` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FMemCuspFormsOfReadingBoundedCuspidalHolomorphic.lean&line=26#L26)
 -/
 theorem _root_.GlobalTheory.T.mem_cuspForms_of_reading_bounded_cuspidal_holomorphic : ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j, Formalism.L2.Pj.InR D j → ∀ w : WeightFamilies.Wt D j, w.LastPos → 8 * D.R.f * D.R.r + 4 ≤ w.n → ∀ f ∈ sec (T.Q.Xo j) T.Q.c (wtA w) w.n, rdU (T.U j T.σ₀) f ∈ Formalism.L2.Pj.holSub0 (T.U j T.σ₀).X (laU (T.U j T.σ₀) (wtA w) w.n) → f ∈ T.cuspA j (wtA w) w.n := by
   first | exact @GlobalTheory.CuspOfReading.mem_cuspA_of_rdU_mem_holSub0 | exact GlobalTheory.CuspOfReading.mem_cuspA_of_rdU_mem_holSub0 | (intros; apply GlobalTheory.CuspOfReading.mem_cuspA_of_rdU_mem_holSub0 <;> assumption)

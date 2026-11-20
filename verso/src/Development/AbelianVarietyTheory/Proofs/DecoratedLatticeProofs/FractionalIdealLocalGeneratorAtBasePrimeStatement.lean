@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.SmallPair
 open Formalism.BasicNotions IsDedekindDomain NumberField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.fracIdeal_locGen | exact GlobalTheory.fracIdeal_locGen | (intros; apply GlobalTheory.fracIdeal_locGen <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.fracIdeal_locGen` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FFractionalIdealLocalGeneratorAtBasePrime.lean&line=52#L52)
 -/
 theorem _root_.GlobalTheory.T.fractionalIdeal_localGenerator_at_basePrime : ∀ (D : D7) (I : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E), I ≠ 0 → ∀ v : HeightOneSpectrum (𝓞 D.host.F), ∃ a : D.host.E, a ≠ 0 ∧ ∃ c : 𝓞 D.host.F, c ∉ v.asIdeal ∧ ((c : D.host.F) : D.host.E) * a ∈ I ∧ ∀ b ∈ I, ∃ o : 𝓞 D.host.E, ((c : D.host.F) : D.host.E) * b = a * (o : D.host.E) := by
   first | exact @GlobalTheory.fracIdeal_locGen | exact GlobalTheory.fracIdeal_locGen | (intros; apply GlobalTheory.fracIdeal_locGen <;> assumption)

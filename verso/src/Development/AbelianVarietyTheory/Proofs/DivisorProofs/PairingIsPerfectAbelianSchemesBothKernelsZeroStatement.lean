@@ -10,8 +10,10 @@ open ReciprocityTheory.ChartRestriction.G.Semi (IsAbelianScheme LB)
 open GlobalTheory GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.DeRham GlobalTheory.PDiv GlobalTheory.PtExt
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AbDual.isPerfPair_of_abelianHodgeDeRham | exact GlobalTheory.AbDual.isPerfPair_of_abelianHodgeDeRham | (intros; apply GlobalTheory.AbDual.isPerfPair_of_abelianHodgeDeRham <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AbDual.isPerfPair_of_abelianHodgeDeRham` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPairingIsPerfectAbelianSchemesBothKernelsZero.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.pairing_isPerfect_abelianSchemes_both_kernels_zero : GlobalTheory.Published.AbelianHodgeDeRham → ∀ (R : Type) [CommRing R] (A B : Over (Sp R)) [GrpObj A] [GrpObj B] (g : ℕ), IsAbelianScheme A → IsAbelianScheme B → SmoothOfRelativeDimension g A.hom → SmoothOfRelativeDimension g B.hom → ∀ P : LB (A ⊗ B).left, AbDual.IsPerfect A B P → ∀ φ : HdR A →ₗ[R] HdR B →ₗ[R] R, AbDual.IsCorrForm (dp0 R) (𝟙 _) A B P φ → φ.IsPerfPair := by
   first | exact @GlobalTheory.AbDual.isPerfPair_of_abelianHodgeDeRham | exact GlobalTheory.AbDual.isPerfPair_of_abelianHodgeDeRham | (intros; apply GlobalTheory.AbDual.isPerfPair_of_abelianHodgeDeRham <;> assumption)

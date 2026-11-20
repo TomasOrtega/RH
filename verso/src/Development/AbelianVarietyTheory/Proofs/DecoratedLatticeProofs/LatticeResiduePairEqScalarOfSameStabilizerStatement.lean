@@ -9,8 +9,10 @@ open GlobalTheory.SeeSaw (idV dI FI)
 open ValuativeRel
 open GlobalTheory.Core.Mi.LatMatch
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LatPair.StabScal.eq_scalar_smul_of_stab | exact GlobalTheory.LatPair.StabScal.eq_scalar_smul_of_stab | (intros; apply GlobalTheory.LatPair.StabScal.eq_scalar_smul_of_stab <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LatPair.StabScal.eq_scalar_smul_of_stab` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FLatticeResiduePairEqScalarOfSameStabilizer.lean&line=119#L119)
 -/
 theorem _root_.GlobalTheory.T.latticeResiduePair_eq_scalar_of_same_stabilizer : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : Type) [Fintype n] [DecidableEq n] (P P' : GlobalTheory.LatPair.Pair k n), 3 ≤ Fintype.card n → (∀ g : GL n k, g • P = P ↔ g • P' = P') → ∃ (g : GL n k) (s : k), s ≠ 0 ∧ g.val = s • (1 : Matrix n n k) ∧ P' = g • P := by
   first | exact @GlobalTheory.LatPair.StabScal.eq_scalar_smul_of_stab | exact GlobalTheory.LatPair.StabScal.eq_scalar_smul_of_stab | (intros; apply GlobalTheory.LatPair.StabScal.eq_scalar_smul_of_stab <;> assumption)

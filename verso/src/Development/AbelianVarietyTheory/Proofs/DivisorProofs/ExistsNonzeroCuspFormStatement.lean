@@ -26,8 +26,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CovTop.LowNonzero.exists_cusp_uM | exact GlobalTheory.CovTop.LowNonzero.exists_cusp_uM | (intros; apply GlobalTheory.CovTop.LowNonzero.exists_cusp_uM <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CovTop.LowNonzero.exists_cusp_uM` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsNonzeroCuspForm.lean&line=98#L98)
 -/
 theorem _root_.GlobalTheory.T.exists_nonzero_cusp_form : GlobalTheory.Published.ScholzeWeinsteinB → Hypotheses2 → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalChartsForFan → GlobalTheory.Published.SemiAbelianLieSeminegative → Covers fun Fm x _ ι p i Y _ _ => ∃ Z : Comp Y.d.Xo₂ Y.d.c₂, ∃ f ∈ cuspOn Y.U Z (wtOf (dat p i) (uM p i) 0), f ≠ 0 := by
   first | exact @GlobalTheory.CovTop.LowNonzero.exists_cusp_uM | exact GlobalTheory.CovTop.LowNonzero.exists_cusp_uM | (intros; apply GlobalTheory.CovTop.LowNonzero.exists_cusp_uM <;> assumption)

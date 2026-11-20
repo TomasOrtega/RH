@@ -10,8 +10,10 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RestrictedPr
 open scoped Matrix GlobalTheory.VacAny ENNReal
 open NumberField IsDedekindDomain MeasureTheory Filter Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.RatWeilOp
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HaarFactorOffPlace.lintegral_evalV_mul_shiftInvariant | exact GlobalTheory.HaarFactorOffPlace.lintegral_evalV_mul_shiftInvariant | (intros; apply GlobalTheory.HaarFactorOffPlace.lintegral_evalV_mul_shiftInvariant <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HaarFactorOffPlace.lintegral_evalV_mul_shiftInvariant` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLintegralFiniteAdelicFactorOffPlace.lean&line=86#L86)
 -/
 theorem _root_.GlobalTheory.T.lintegral_finiteAdelic_factor_offPlace : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] [MeasurableSpace (κ → Af F)] [BorelSpace (κ → Af F)]
     (w : HeightOneSpectrum (𝓞 F)) [MeasurableSpace (κ → Fv F w)] [BorelSpace (κ → Fv F w)]

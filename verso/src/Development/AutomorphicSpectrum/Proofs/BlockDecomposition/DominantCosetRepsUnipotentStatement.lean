@@ -3,8 +3,10 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DominantCosetRe
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.IwahoriFactorisation.StrictDominance.JointGeneralisedEigenvectors.IsJointGenEig
 open GlobalTheory.PRep PositivityTheory.SphericalProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Casselman.exists_fin_coset_reps_of_isDom | exact GlobalTheory.CompanionTheory.Casselman.exists_fin_coset_reps_of_isDom | (intros; apply GlobalTheory.CompanionTheory.Casselman.exists_fin_coset_reps_of_isDom <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Casselman.exists_fin_coset_reps_of_isDom` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FDominantCosetRepsUnipotent.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.dominant_coset_reps_unipotent : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (D : PositivityTheory.SphericalProduct.CassData G), ∀ t : D.T, D.IsDom t → ∃ r : ℕ, 0 < r ∧ ∃ x : Fin r → G, (∀ i, x i ∈ D.J ⊓ D.N) ∧ ∀ y ∈ D.J, ∃! i, (x i)⁻¹ * y ∈ D.J ⊓ D.J.map (MulAut.conj (t : G)).toMonoidHom := by
   first | exact @GlobalTheory.CompanionTheory.Casselman.exists_fin_coset_reps_of_isDom | exact GlobalTheory.CompanionTheory.Casselman.exists_fin_coset_reps_of_isDom | (intros; apply GlobalTheory.CompanionTheory.Casselman.exists_fin_coset_reps_of_isDom <;> assumption)

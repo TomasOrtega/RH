@@ -13,8 +13,10 @@ open GlobalTheory.AdForm
 open GlobalTheory.AdForm
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FinPl.Frame.isLat_intVec_iff | exact GlobalTheory.FinPl.Frame.isLat_intVec_iff | (intros; apply GlobalTheory.FinPl.Frame.isLat_intVec_iff <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FinPl.Frame.isLat_intVec_iff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FMemIntegralVectorsComponentIffIntegralFrameCoord.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.mem_integralVectors_component_iff_integral_frame_coords : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : SplitPt D k) (S : HSp D) (n : Type) [Fintype n] [DecidableEq n] (β : Frame p S n) (L : Lat S),

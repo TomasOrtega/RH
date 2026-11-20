@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.SandwichMaps
 open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.iSup_jointEigenspace_eq_top_of_separable | exact GlobalTheory.iSup_jointEigenspace_eq_top_of_separable | (intros; apply GlobalTheory.iSup_jointEigenspace_eq_top_of_separable <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.iSup_jointEigenspace_eq_top_of_separable` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCommutingSemisimpleEigenspacesSpan.lean&line=7#L7)
 -/
 theorem _root_.GlobalTheory.T.commuting_semisimple_eigenspaces_span : ∀ (C : Type) [Field C] [IsAlgClosed C] (V : Type) [AddCommGroup V] [Module C V] [FiniteDimensional C V] (I : Type) (T : I → Module.End C V), (∀ a b, Commute (T a) (T b)) → (∀ a, ∃ f : Polynomial C, f.Separable ∧ Polynomial.aeval (T a) f = 0) → (⨆ χ : I → C, ⨅ a : I, Module.End.eigenspace (T a) (χ a)) = ⊤ := by
   first | exact @GlobalTheory.iSup_jointEigenspace_eq_top_of_separable | exact GlobalTheory.iSup_jointEigenspace_eq_top_of_separable | (intros; apply GlobalTheory.iSup_jointEigenspace_eq_top_of_separable <;> assumption)

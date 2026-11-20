@@ -13,8 +13,10 @@ open GlobalTheory.AutomorphicL2Unitary (IsTopIrreducible)
 open GlobalTheory.HCChar GlobalTheory.Published GlobalTheory.Published.Langlands
 open scoped InnerProductSpace Topology ENNReal ComplexConjugate
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HCChar.simple_of_isIrrAdm | exact GlobalTheory.HCChar.simple_of_isIrrAdm | (intros; apply GlobalTheory.HCChar.simple_of_isIrrAdm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HCChar.simple_of_isIrrAdm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FIrreducibleAdmissibleFiniteLength.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.irreducible_admissible_finite_length : GlobalTheory.Published.KFiniteCoefficientsAnalytic → ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)), IsIrrAdm ε π → (∀ Y : Submodule ℂ H, IsGKSub ε π Y → Y = ⊥ ∨ Y = kFinVec ε π) ∧ HasFiniteLength ε π := by
   first | exact @GlobalTheory.HCChar.simple_of_isIrrAdm | exact GlobalTheory.HCChar.simple_of_isIrrAdm | (intros; apply GlobalTheory.HCChar.simple_of_isIrrAdm <;> assumption)

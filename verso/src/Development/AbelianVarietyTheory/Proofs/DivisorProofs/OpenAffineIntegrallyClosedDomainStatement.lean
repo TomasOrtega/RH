@@ -21,8 +21,10 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 open GlobalTheory.FlatModel
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlatModel.chart_normal_domain_testPoints | exact GlobalTheory.FlatModel.chart_normal_domain_testPoints | (intros; apply GlobalTheory.FlatModel.chart_normal_domain_testPoints <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlatModel.chart_normal_domain_testPoints` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FOpenAffineIntegrallyClosedDomain.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.open_affine_integrally_closed_domain : ∀ (F : Type) [Field F] [NumberField F] (V : ValuationSubring F) (p : ℕ) [Fact p.Prime], (p : F) ∈ V.nonunits → ∀ (X : Scheme.{0}) (s : X ⟶ Sp V) (Xw : X.Opens), IsIntegral X → ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X → Flat s → LocallyOfFiniteType s → Xw ≤ X.basicOpen (p : Γ(X, ⊤)) → (Xw : Set X).Nonempty → ∀ (A : Type) [CommRing A] (w : Sp A ⟶ X), IsOpenImmersion w → Nonempty (Sp A) → ∃ (_ : IsDomain A) (_ : IsIntegrallyClosed A) (_ : Algebra V A) (_ : Algebra.FiniteType V A), Function.Injective (algebraMap V A) ∧ ∃ e : A, e ≠ 0 ∧ ∀ (T : CDVR) (kO : T.V →+* 𝓞_ℂ_[p]) (φ : A →+* T.V), T.FinRes → Function.Injective kO → φ e ≠ 0 → IsTest p Xw (spMap (kO.comp φ) ≫ w) := by
   first | exact @GlobalTheory.FlatModel.chart_normal_domain_testPoints | exact GlobalTheory.FlatModel.chart_normal_domain_testPoints | (intros; apply GlobalTheory.FlatModel.chart_normal_domain_testPoints <;> assumption)

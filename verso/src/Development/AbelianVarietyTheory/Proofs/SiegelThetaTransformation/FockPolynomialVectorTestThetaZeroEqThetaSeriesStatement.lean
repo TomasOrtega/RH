@@ -10,8 +10,10 @@ open ReciprocityTheory.ChartRestriction.G.I2 (polyDeriv)
 open scoped TensorProduct ComplexConjugate Real Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Ker.fvec_Th_zero | exact GlobalTheory.Ker.fvec_Th_zero | (intros; apply GlobalTheory.Ker.fvec_Th_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Ker.fvec_Th_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSiegelThetaTransformation%2FFockPolynomialVectorTestThetaZeroEqThetaSeries.lean&line=61#L61)
 -/
 theorem _root_.GlobalTheory.T.fockPolynomialVector_testTheta_zero_eq_thetaSeries : ∀ (D : D7) (S T : HSp D) (C : Ctx S T), Function.Bijective C.toH ∧ ∀ B, C.IsB B → ∀ φ : TF S.rank C.g, SW.IsSB φ → C.IsFock B (C.Th (C.xB B) φ) ∧ ∀ Q : MvPolynomial (FVar D T.rank S.rank) ℂ, C.fvec B (C.Th (C.xB B) φ) Q 0 = thP C.X C.hr C.bas C.idx φ (C.toH Q) (C.xB B) := by
   first | exact @GlobalTheory.Ker.fvec_Th_zero | exact GlobalTheory.Ker.fvec_Th_zero | (intros; apply GlobalTheory.Ker.fvec_Th_zero <;> assumption)

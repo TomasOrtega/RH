@@ -12,8 +12,10 @@ open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RawLift
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RawLift.vacFin_off | exact GlobalTheory.RawLift.vacFin_off | (intros; apply GlobalTheory.RawLift.vacFin_off <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RawLift.vacFin_off` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FPairFixedVectorLatticeVacuumOffLevels.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.pairFixedVector_latticeVacuum_offLevels : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Laws R F → ∀ (i : Fin D.R.m) (t : T) (v : HeightOneSpectrum (𝓞 D.host.F)) (f : AE D), IsFinIdem D v f → (∀ P, P ∈ R.Pg ∨ P ∈ R.Q t → ∀ e f', IsPrimeIdem P e f' → f' ≠ f) → GlobalTheory.FinZeta.VacFin R.ψ (Vc D i) (Wc D i) v (R.vP i t) := by
   first | exact @GlobalTheory.RawLift.vacFin_off | exact GlobalTheory.RawLift.vacFin_off | (intros; apply GlobalTheory.RawLift.vacFin_off <;> assumption)

@@ -16,8 +16,10 @@ open GlobalTheory.TrMult
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Chamber GlobalTheory.TruncKer GlobalTheory.Cusp
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IwFinFlag.iwasawa_minPar_fin | exact GlobalTheory.IwFinFlag.iwasawa_minPar_fin | (intros; apply GlobalTheory.IwFinFlag.iwasawa_minPar_fin <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IwFinFlag.iwasawa_minPar_fin` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FLocalIwasawaDecomposition.lean&line=45#L45)
 -/
 theorem _root_.GlobalTheory.T.local_iwasawa_decomposition : ∀ (D : D7) (V : HSp D) (Φ : WittFrame V) (L : _) (a : _), Φ.IsGood D.sp.cm L a → ∀ v (g : GLoc D.sp.cm.sig V.gram v), ∃ p ∈ PLoc Φ.flag0 v, ∃ k ∈ stabLoc D.sp.cm.sig V.gram L v, g = p * k := by
   first | exact @GlobalTheory.IwFinFlag.iwasawa_minPar_fin | exact GlobalTheory.IwFinFlag.iwasawa_minPar_fin | (intros; apply GlobalTheory.IwFinFlag.iwasawa_minPar_fin <;> assumption)

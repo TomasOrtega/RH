@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.AdelicP
 open Matrix GlobalTheory.ClassFin
 open scoped Kronecker ComplexOrder TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ClassFin.exists_linExt_corner_proj | exact GlobalTheory.ClassFin.exists_linExt_corner_proj | (intros; apply GlobalTheory.ClassFin.exists_linExt_corner_proj <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ClassFin.exists_linExt_corner_proj` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FAdelicLatticeProofs%2FExistsRatLinearParamBlockDiagKernel.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.exists_rat_linear_param_blockDiag_kernel : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (Γ : Set (Matrix ι ι ℂ)) (e : Matrix ι ι ℚ), IsQGroup Γ → e * e = e → ∃ c : ι × ι → ι × ι → ℚ, (∀ X : Matrix ι ι ℂ, 1 + linExt c X ∈ Γ ∧ e.map (algebraMap ℚ ℂ) * linExt c X * (1 - e.map (algebraMap ℚ ℂ)) = linExt c X) ∧ ∀ ε : Matrix ι ι ℂ, 1 + ε ∈ Γ → e.map (algebraMap ℚ ℂ) * ε * (1 - e.map (algebraMap ℚ ℂ)) = ε → linExt c ε = ε := by
   first | exact @GlobalTheory.ClassFin.exists_linExt_corner_proj | exact GlobalTheory.ClassFin.exists_linExt_corner_proj | (intros; apply GlobalTheory.ClassFin.exists_linExt_corner_proj <;> assumption)

@@ -8,8 +8,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.SiegelSet GlobalTheory.UAut GlobalTheory.LeviHC
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LeviHC.levi_conj_mem_unip | exact GlobalTheory.LeviHC.levi_conj_mem_unip | (intros; apply GlobalTheory.LeviHC.levi_conj_mem_unip <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LeviHC.levi_conj_mem_unip` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLeviNormalizesUnipotentBis.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.levi_normalizes_unipotent_bis : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (n n₁ : ℕ) (Y : Spc F E n) (Y₁ : Spc F E n₁) (H : Plane E n n₁) (h₁ : UA σ Y₁.J) (m : UA σ Y.J),

@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SelfDualOne
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LatticeModelVacuumTranslateClassesIndependent
 open Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Hk3.HoweG.gramClass_sum_mem_span_selfDual_vac | exact GlobalTheory.Hk3.HoweG.gramClass_sum_mem_span_selfDual_vac | (intros; apply GlobalTheory.Hk3.HoweG.gramClass_sum_mem_span_selfDual_vac <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Hk3.HoweG.gramClass_sum_mem_span_selfDual_vac` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FGramClassTranslateSumMemSpanSelfDualLatticeVacua.lean&line=58#L58)
 -/
 theorem _root_.GlobalTheory.T.gram_class_translate_sum_mem_span_selfDual_lattice_vacua : ∀ (L : Type) [Field L] [CharZero L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : L) (σ : L →+* L) (q : ℕ) (δ : L)
     (n n' : ℕ) (JS : GL (Fin n) L) (JT : GL (Fin n') L) (ψ : AddChar L ℂ) (M : Type) [AddCommGroup M] [Module ℂ M]

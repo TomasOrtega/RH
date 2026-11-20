@@ -12,8 +12,10 @@ open ReciprocityTheory.ChartRestriction.G.DVR.FlatBC (algX)
 open GlobalTheory.LogPole
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SncStalk.stalk_snc | exact GlobalTheory.SncStalk.stalk_snc | (intros; apply GlobalTheory.SncStalk.stalk_snc <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SncStalk.stalk_snc` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSncStalkRegularParametersFromAffineOpen.lean&line=33#L33)
 -/
 theorem _root_.GlobalTheory.T.snc_stalk_regularParameters_from_affineOpen : ∀ (X : Scheme.{0}) (I : X.IdealSheafData), ReciprocityTheory.AnForm.R.FinalTheorems.Snc I → ∀ (U : X.affineOpens) (x : X) (hx : x ∈ U.1), IsRegularLocalRing (X.presheaf.stalk x) ∧ ∃ (m : ℕ) (a : Fin m → Γ(X, U.1)) (J : Finset (Fin m)), ReciprocityTheory.AnForm.R.FinalTheorems.Rsp (X.presheaf.stalk x) m (fun i => (X.presheaf.germ U.1 x hx).hom (a i)) ∧ (I.ideal U).map (X.presheaf.germ U.1 x hx).hom = Ideal.span {(X.presheaf.germ U.1 x hx).hom (∏ i ∈ J, a i)} := by
   first | exact @GlobalTheory.SncStalk.stalk_snc | exact GlobalTheory.SncStalk.stalk_snc | (intros; apply GlobalTheory.SncStalk.stalk_snc <;> assumption)

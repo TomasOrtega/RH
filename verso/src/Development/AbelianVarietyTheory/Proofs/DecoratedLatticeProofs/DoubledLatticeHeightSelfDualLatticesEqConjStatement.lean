@@ -11,8 +11,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Core.Rk.IP
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Core.Rk.IP.hgtL_eq_conj_of_selfDual | exact GlobalTheory.Core.Rk.IP.hgtL_eq_conj_of_selfDual | (intros; apply GlobalTheory.Core.Rk.IP.hgtL_eq_conj_of_selfDual <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Core.Rk.IP.hgtL_eq_conj_of_selfDual` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FDoubledLatticeHeightSelfDualLatticesEqConj.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.doubledLatticeHeight_selfDual_lattices_eq_conj : ∀ (D : D7) (A : HSp D) (L L' : Lat A), IsSelfDualC A L → IsSelfDualC A L' → ∃ k ∈ GfC A, ∀ (a : GL (Fin A.rank) (AE D)), IsMaj A a → ∀ g, hgtL A L' a g = hgtL A L a (k⁻¹ * g * k) := by
   first | exact @GlobalTheory.Core.Rk.IP.hgtL_eq_conj_of_selfDual | exact GlobalTheory.Core.Rk.IP.hgtL_eq_conj_of_selfDual | (intros; apply GlobalTheory.Core.Rk.IP.hgtL_eq_conj_of_selfDual <;> assumption)

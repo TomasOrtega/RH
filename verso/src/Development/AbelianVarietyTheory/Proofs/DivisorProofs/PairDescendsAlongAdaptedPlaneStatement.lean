@@ -10,8 +10,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MixedLagrX.exists_ratLagr | exact GlobalTheory.MixedLagrX.exists_ratLagr | (intros; apply GlobalTheory.MixedLagrX.exists_ratLagr <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MixedLagrX.exists_ratLagr` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPairDescendsAlongAdaptedPlane.lean&line=162#L162)
 -/
 theorem _root_.GlobalTheory.T.pair_descends_along_adapted_plane : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →

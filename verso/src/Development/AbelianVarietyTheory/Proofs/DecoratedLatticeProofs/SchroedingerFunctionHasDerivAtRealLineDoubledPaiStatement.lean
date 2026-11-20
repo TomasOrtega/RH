@@ -15,8 +15,10 @@ open GlobalTheory.Core.Rk.SW
 open scoped ContDiff
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SchLine.sch_hasDerivAt_line | exact GlobalTheory.SchLine.sch_hasDerivAt_line | (intros; apply GlobalTheory.SchLine.sch_hasDerivAt_line <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SchLine.sch_hasDerivAt_line` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FSchroedingerFunctionHasDerivAtRealLineDoubledPai.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.schroedingerFunction_hasDerivAt_real_line_doubledPair : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (A B : HSp D) (ν : Measure (WO A B)) (𝓨 : Set (WO A B)), IsCovolOne (ratL B A) ν 𝓨 → ∀ f, IsThetaFunO ψ (dblSp A) B f → ∀ M : ℝ →+ Mx D B.rank A.rank, Continuous M → (∀ t, (M t).map (finPart D) = 0) → ∃ f', IsThetaFunO ψ (dblSp A) B f' ∧ ∀ x, HasDerivAt (fun t : ℝ => sch ψ A B ν 𝓨 f (x + M t)) (sch ψ A B ν 𝓨 f' x) 0 := by
   first | exact @GlobalTheory.SchLine.sch_hasDerivAt_line | exact GlobalTheory.SchLine.sch_hasDerivAt_line | (intros; apply GlobalTheory.SchLine.sch_hasDerivAt_line <;> assumption)

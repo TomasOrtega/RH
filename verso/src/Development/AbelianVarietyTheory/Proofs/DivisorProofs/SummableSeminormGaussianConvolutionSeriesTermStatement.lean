@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PowForm
 open MeasureTheory Filter Topology
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ConvSeries.summable_seminorm_term | exact GlobalTheory.ConvSeries.summable_seminorm_term | (intros; apply GlobalTheory.ConvSeries.summable_seminorm_term <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ConvSeries.summable_seminorm_term` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSummableSeminormGaussianConvolutionSeriesTerm.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.summable_seminorm_gaussianConvolutionSeriesTerm : ∀ (E : Type) [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E]
     [MeasurableSpace E] [BorelSpace E] (b c : ℝ), 0 < b → 0 < c → ∀ (h : SchwartzMap E ℂ)

@@ -13,8 +13,10 @@ open scoped ComplexOrder
 open GlobalTheory GlobalTheory.CM GlobalTheory.Frames GlobalTheory.LamT
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LamT.exists_isFrPoly | exact GlobalTheory.LamT.exists_isFrPoly | (intros; apply GlobalTheory.LamT.exists_isFrPoly <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LamT.exists_isFrPoly` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FCubicalLineBundles%2FExistsIsFramePolynomialOfRuleNumberField.lean&line=50#L50)
 -/
 theorem _root_.GlobalTheory.T.exists_isFramePolynomialOfRule_numberField : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (K : Type) [Field K] [NumberField K] [Algebra c.F K] (y : FrPt Xo c K) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ), ∀ F ∈ sec Xo c a n, ∃ G : MvPolynomial (FrVar Dw.mult) K, IsFrPoly F y G := by
   first | exact @GlobalTheory.LamT.exists_isFrPoly | exact GlobalTheory.LamT.exists_isFrPoly | (intros; apply GlobalTheory.LamT.exists_isFrPoly <;> assumption)

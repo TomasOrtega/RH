@@ -10,8 +10,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.ZM GlobalTheory.SiegLev GlobalTheory.SiegelTor
 open scoped CategoryTheory.Obj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.loc_units_eq | exact GlobalTheory.loc_units_eq | (intros; apply GlobalTheory.loc_units_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.loc_units_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsClopenGeometricPointsRootOfUnityEqUnit.lean&line=50#L50)
 -/
 theorem _root_.GlobalTheory.T.isClopen_geometricPoints_rootOfUnity_eq_unit : ∀ (X : Scheme.{0}) (N : ℕ) (c₀ u : Γ(X, ⊤)ˣ), IsUnit (N : Γ(X, ⊤)) → c₀ ^ N = 1 → (∀ (k : Type) [Field k] [IsAlgClosed k] (g : Sp k ⟶ X), Units.map g.appTop.hom.toMonoidHom u ^ N = 1) → GlobalTheory.HkClopen.Loc (S := X) (fun (k : Type) [Field k] [IsAlgClosed k] (g : Sp k ⟶ X) => Units.map g.appTop.hom.toMonoidHom c₀ = Units.map g.appTop.hom.toMonoidHom u) := by
   first | exact @GlobalTheory.loc_units_eq | exact GlobalTheory.loc_units_eq | (intros; apply GlobalTheory.loc_units_eq <;> assumption)

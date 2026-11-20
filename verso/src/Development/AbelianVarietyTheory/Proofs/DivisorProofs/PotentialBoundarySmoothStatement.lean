@@ -6,8 +6,10 @@ import ReciprocityTheory.AnalyticForms.PotentialTheory.ContDiffAtOfIsPotential
 open MeasureTheory ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M GlobalTheory.IndefiniteRowSideFullHecke.BoundaryPolynomialFunctions GlobalTheory.LogResInt
 open scoped ENNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BoundarySmooth.boundary_isClosed_and_smoothOn | exact GlobalTheory.BoundarySmooth.boundary_isClosed_and_smoothOn | (intros; apply GlobalTheory.BoundarySmooth.boundary_isClosed_and_smoothOn <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BoundarySmooth.boundary_isClosed_and_smoothOn` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPotentialBoundarySmooth.lean&line=59#L59)
 -/
 theorem _root_.GlobalTheory.T.potential_boundary_smooth : ∀ (d : ℕ) (X : Type) [TopologicalSpace X] (A : FinHolAtlas d X) (m : ℕ)
     (Λ : Fin m → LocPot X) (σ : Fin m → X → X → ℂ) (c : ℝ),

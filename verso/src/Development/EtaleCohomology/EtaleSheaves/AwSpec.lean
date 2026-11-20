@@ -68,16 +68,22 @@ theorem awSpec : LateralTheory.E.LeafA6suppPf.LeafAWSpec := by
   obtain ⟨γ, hγ⟩ := hS.1 α β
   exact ⟨γ, hγ, hS.2 α β γ hγ⟩
 
-/- English proof (translation)
-The claim follows from `@_root_.LateralTheory.E.LeafA6nat_xy7V2Cut.goal_of`.
+/- English proof (citation)
+Apply `LateralTheory.E.LeafA6nat_xy7V2Cut.goal_of` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FEtaleCohomology%2FEtaleSheaves%2FEtaleFirstChernClassRepresentedByChernCocycle.lean&line=43#L43)
 -/
 theorem s0 : LateralTheory.E.D2.LeafA6nat := @_root_.LateralTheory.E.LeafA6nat_xy7V2Cut.goal_of
-/- English proof (translation)
-The claim follows from `@_root_.LateralTheory.Fix.CupProductTensor.cupSpec`.
+/- English proof (citation)
+Apply `LateralTheory.Fix.CupProductTensor.cupSpec` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FEtaleCohomology%2FEtaleSheaves%2FTwPairExists.lean&line=85#L85)
 -/
 theorem s1 : LateralTheory.E.CupProductRingLaws.LeafCupSpec := @_root_.LateralTheory.Fix.CupProductTensor.cupSpec
-/- English proof (translation)
-The claim follows from `@_root_.LateralTheory.Fix.CupProductTensor.twPairExists`.
+/- English proof (citation)
+Apply `LateralTheory.Fix.CupProductTensor.twPairExists` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FEtaleCohomology%2FEtaleSheaves%2FTwPairExists.lean&line=99#L99)
 -/
 theorem s2 : LateralTheory.E.CupProductRingLaws.LeafTwPairExists := @_root_.LateralTheory.Fix.CupProductTensor.twPairExists
 /- English proof (translation)
@@ -92,8 +98,10 @@ theorem s4 : LateralTheory.E.LeafTwPairHtpyPf.LeafTensFactor := @_root_.LateralT
 The claim follows from `@_root_.GlobalTheory.EtC.isTwRes_tensor`.
 -/
 theorem s5 : LateralTheory.E.ZModFlatnessFromBaerCriterion.TensTwRes := @_root_.GlobalTheory.EtC.isTwRes_tensor
-/- English proof (translation)
-The claim follows from `@_root_.LateralTheory.E.ZModFlatnessFromBaerCriterion.LeafInjSecInj_of`.
+/- English proof (citation)
+Apply `LateralTheory.E.ZModFlatnessFromBaerCriterion.LeafInjSecInj_of` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FEtaleCohomology%2FEtaleSheaves%2FLeafInjSecInjOf.lean&line=38#L38)
 -/
 theorem s6 : LateralTheory.E.ZModFlatnessFromBaerCriterion.LeafInjSecInj := @_root_.LateralTheory.E.ZModFlatnessFromBaerCriterion.LeafInjSecInj_of
 /- English proof (translation)
@@ -180,8 +188,10 @@ theorem s26 : LateralTheory.E.LeafTensQIsoPf.LeafTensQIsoGen := @_root_.LateralT
 The claim follows from `@_root_.LateralTheory.E.LeafSecInjPf.LeafSecInj_of`.
 -/
 theorem s27 : LateralTheory.E.LeafTensQIsoPf.LeafSecInj := @_root_.LateralTheory.E.LeafSecInjPf.LeafSecInj_of
-/- English proof (translation)
-The claim follows from `@_root_.LateralTheory.E.LeafZModInjFlatPf.LeafZModInjFlat_of`.
+/- English proof (citation)
+Apply `LateralTheory.E.LeafZModInjFlatPf.LeafZModInjFlat_of` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FEtaleCohomology%2FEtaleSheaves%2FLeafZModInjFlatPf.lean&line=99#L99)
 -/
 theorem s28 : LateralTheory.E.LeafTensQIsoPf.LeafZModInjFlat := @_root_.LateralTheory.E.LeafZModInjFlatPf.LeafZModInjFlat_of
 /- English proof (translation)
@@ -224,12 +234,16 @@ theorem s37 : LateralTheory.E.LeafRingUnitPf.LeafUnitAW := @_root_.LateralTheory
 The claim follows from `@_root_.LateralTheory.E.LeafRingUnitPf.LeafRingUnit_of s1 s2 s12 s16 s34 s36 s37`.
 -/
 theorem s38 : LateralTheory.E.CupProductRingLaws.LeafRingUnit := @_root_.LateralTheory.E.LeafRingUnitPf.LeafRingUnit_of s1 s2 s12 s16 s34 s36 s37
-/- English proof (translation)
-The claim follows from `@_root_.LateralTheory.Fix.CupProductTensor.ringAssoc`.
+/- English proof (citation)
+Apply `LateralTheory.Fix.CupProductTensor.ringAssoc` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FEtaleCohomology%2FEtaleSheaves%2FTwPairExists.lean&line=84#L84)
 -/
 theorem s39 : LateralTheory.E.CupProductRingLaws.LeafRingAssoc := @_root_.LateralTheory.Fix.CupProductTensor.ringAssoc
-/- English proof (translation)
-The claim follows from `@_root_.LateralTheory.E.RingCommutativity.goal_of`.
+/- English proof (citation)
+Apply `LateralTheory.E.RingCommutativity.goal_of` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FEtaleCohomology%2FEtaleSheaves%2FRingCommutativity.lean&line=5#L5)
 -/
 theorem s40 : LateralTheory.E.CupProductRingLaws.LeafRingComm := @_root_.LateralTheory.E.RingCommutativity.goal_of
 /- English proof (translation)

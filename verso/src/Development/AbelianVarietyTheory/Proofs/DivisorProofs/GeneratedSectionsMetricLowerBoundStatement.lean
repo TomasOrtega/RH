@@ -6,8 +6,10 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace NumberField IsDedekindDom
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.Cartier GlobalTheory.ProjVar Formalism.BasicNotions GlobalTheory.TrueGeo
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ArchLowerBound.exists_pos_le_pn | exact GlobalTheory.ArchLowerBound.exists_pos_le_pn | (intros; apply GlobalTheory.ArchLowerBound.exists_pos_le_pn <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ArchLowerBound.exists_pos_le_pn` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGeneratedSectionsMetricLowerBound.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.generated_sections_metric_lower_bound : ∀ (F : Type) [Field F] [NumberField F] (C : CxSt F) (Y : Var F) (D : Y.Dv) (σ : F →+* ℂ)
     (m : C.Met Y σ D), C.mSmooth Y σ D m → ∀ (k N : ℕ) (s : Fin N → Y.Fn), (∀ i, s i ∈ Y.H0 (k • D)) →

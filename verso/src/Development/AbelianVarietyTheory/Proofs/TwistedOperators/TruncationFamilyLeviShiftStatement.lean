@@ -16,8 +16,10 @@ open GlobalTheory.TrMult
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Chamber GlobalTheory.TruncKer GlobalTheory.Cusp
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LeviShift.yfam_mul_levi | exact GlobalTheory.LeviShift.yfam_mul_levi | (intros; apply GlobalTheory.LeviShift.yfam_mul_levi <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LeviShift.yfam_mul_levi` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FTruncationFamilyLeviShift.lean&line=83#L83)
 -/
 theorem _root_.GlobalTheory.T.truncation_family_levi_shift : ∀ (D : D7) (V : HSp D) (Φ : WittFrame V) (L : _) (a : _), Φ.IsGood D.sp.cm L a → ∀ P, IsPar P → ∀ m ∈ Φ.levi D.sp.cm (AF D.host.F) P, ∃ h : A0 (wittIndex V), ∀ Q ∈ parP (aP P) ∅, ∀ x Tr, Yfam Φ (levelAll D.sp.cm.sig V.gram L a) (m * x) Tr Q = Yfam Φ (levelAll D.sp.cm.sig V.gram L a) x Tr Q + pr Q h := by
   first | exact @GlobalTheory.LeviShift.yfam_mul_levi | exact GlobalTheory.LeviShift.yfam_mul_levi | (intros; apply GlobalTheory.LeviShift.yfam_mul_levi <;> assumption)

@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MeromorphicIdentity
 import Mathlib
 open MeasureTheory Filter Topology
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.identity_of_localForm_halfPlane | exact GlobalTheory.identity_of_localForm_halfPlane | (intros; apply GlobalTheory.identity_of_localForm_halfPlane <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.identity_of_localForm_halfPlane` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FMeromorphicIdentityContinuation.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.meromorphic_identity_continuation : ∀ (f₁ f₂ : ℂ → ℂ) (c : ℝ),
     (∀ s₀ : ℂ, ∃ (k : ℕ) (U : Set ℂ) (Hol : ℂ → ℂ), U ∈ 𝓝 s₀ ∧ (∀ s ∈ U, s ≠ s₀ → Hol s = (s - s₀) ^ k * f₁ s) ∧

@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerCochainCup
 import Development.AbelianVarietyTheory.Definitions.Foundations.NotCoboundaryConstantOne
 open GlobalTheory.K5
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CuspCup.cup_congruence | exact GlobalTheory.CuspCup.cup_congruence | (intros; apply GlobalTheory.CuspCup.cup_congruence <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CuspCup.cup_congruence` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FKummerCochainCupProductCongruence.lean&line=48#L48)
 -/
 theorem _root_.GlobalTheory.T.kummer_cochain_cup_product_congruence : ∀ (p : ℕ) [Fact p.Prime], p ≠ 2 → ∀ (Ω : Type) [Field Ω] [Algebra (O0 p) Ω] (H : Subgroup (Gal p Ω)) (n c : ℕ)
   (a b lz lq : Gal p Ω → ZMod (p ^ n)) (A B A' B' : Ω),

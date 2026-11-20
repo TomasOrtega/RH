@@ -9,8 +9,10 @@ open Ad3.R (G2 Jd md KA LInv IsLoc2 pt pri dia2)
 open scoped NumberField.AdeleRing ValuativeRel
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.ThetaUnits.muU_finite_units | exact GlobalTheory.CompanionTheory.ThetaUnits.muU_finite_units | (intros; apply GlobalTheory.CompanionTheory.ThetaUnits.muU_finite_units <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.ThetaUnits.muU_finite_units` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FUnitMeasureFiniteCompactSupport.lean&line=30#L30)
 -/
 theorem _root_.GlobalTheory.T.unit_measure_finite_compact_support : ∀ Sv : Finset Pl, IsFiniteMeasure (muU Sv) ∧ (∀ᵐ u ∂(muU Sv), ∀ v : Sv, u v ∈ unQ v.1) ∧ ∀ v : Pl, IsCompact (unQ v) := by
   first | exact @GlobalTheory.CompanionTheory.ThetaUnits.muU_finite_units | exact GlobalTheory.CompanionTheory.ThetaUnits.muU_finite_units | (intros; apply GlobalTheory.CompanionTheory.ThetaUnits.muU_finite_units <;> assumption)

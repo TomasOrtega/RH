@@ -10,8 +10,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions Form
 open IsDedekindDomain NumberField GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.RowTest GlobalTheory.RowClaim MeasureTheory
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.thetaConv_and_isAutFun_thetaChi_of_hidaSetting | exact GlobalTheory.thetaConv_and_isAutFun_thetaChi_of_hidaSetting | (intros; apply GlobalTheory.thetaConv_and_isAutFun_thetaChi_of_hidaSetting <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.thetaConv_and_isAutFun_thetaChi_of_hidaSetting` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FThetaConvergenceAtScale.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.theta_convergence_at_scale : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.LiftsCuspidal → ∀ {D : D7} (large₂ : SizeData₂ D)
     {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m}

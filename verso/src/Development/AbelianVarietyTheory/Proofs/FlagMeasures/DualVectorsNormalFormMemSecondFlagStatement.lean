@@ -7,8 +7,10 @@ import Formalism.FormalDegreeBessel.StatementG
 import Formalism.SharpRestriction.CuspSpanNormBounds.FractionFieldToGenericStalkAlgebraMapEq
 open Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.dual_vectors_in_second_flag | exact GlobalTheory.dual_vectors_in_second_flag | (intros; apply GlobalTheory.dual_vectors_in_second_flag <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.dual_vectors_in_second_flag` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FDualVectorsNormalFormMemSecondFlag.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.dualVectors_normalForm_mem_secondFlag : ∀ {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
     (H : Formalism.HermitianLatticeCounting.S6.HermSpace K V) {r j : ℕ} (hj : j ≤ r) (e e' s : Fin r → V),

@@ -9,8 +9,10 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 open scoped GlobalTheory.VacAny
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LatSelfDualCo.latAtV_selfDual_locCo | exact GlobalTheory.LatSelfDualCo.latAtV_selfDual_locCo | (intros; apply GlobalTheory.LatSelfDualCo.latAtV_selfDual_locCo <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LatSelfDualCo.latAtV_selfDual_locCo` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLatticeInvariantVectorLocalSupport.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.lattice_invariant_vector_local_support : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (r s r' s' : ℕ), B.IsGood σ → X.IsHerm σ B r s → W.IsSkew σ B r' s' →

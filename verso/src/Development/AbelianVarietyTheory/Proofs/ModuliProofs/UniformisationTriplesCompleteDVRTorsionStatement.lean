@@ -10,8 +10,10 @@ open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCate
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LN.uDvrSt_holds | exact GlobalTheory.LN.uDvrSt_holds | (intros; apply GlobalTheory.LN.uDvrSt_holds <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LN.uDvrSt_holds` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FModuliProofs%2FUniformisationTriplesCompleteDVRTorsion.lean&line=29#L29)
 -/
 theorem _root_.GlobalTheory.T.uniformisation_triples_complete_DVR_torsion : GlobalTheory.LN.UDvrSt := by
   first | exact @GlobalTheory.LN.uDvrSt_holds | exact GlobalTheory.LN.uDvrSt_holds | (intros; apply GlobalTheory.LN.uDvrSt_holds <;> assumption)

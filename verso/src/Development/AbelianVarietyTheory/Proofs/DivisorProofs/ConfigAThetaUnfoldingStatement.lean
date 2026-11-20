@@ -14,8 +14,10 @@ open GlobalTheory.SmGL GlobalTheory.PRep GlobalTheory.IndLineGL
 open scoped GlobalTheory.IndLineGL
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IndLineGLBridge.isGLIndMap_of_isIndMap | exact GlobalTheory.IndLineGLBridge.isGLIndMap_of_isIndMap | (intros; apply GlobalTheory.IndLineGLBridge.isGLIndMap_of_isIndMap <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IndLineGLBridge.isGLIndMap_of_isIndMap` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FConfigAThetaUnfolding.lean&line=39#L39)
 -/
 theorem _root_.GlobalTheory.T.config_a_theta_unfolding : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b)

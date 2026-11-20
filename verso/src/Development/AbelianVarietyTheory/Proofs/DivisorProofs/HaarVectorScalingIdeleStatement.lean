@@ -8,8 +8,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 open GlobalTheory.ThK.LemF.QuotInv
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThK.LemF.QuotInv.map_vecAtSmul_cA_inv | exact GlobalTheory.ThK.LemF.QuotInv.map_vecAtSmul_cA_inv | (intros; apply GlobalTheory.ThK.LemF.QuotInv.map_vecAtSmul_cA_inv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThK.LemF.QuotInv.map_vecAtSmul_cA_inv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHaarVectorScalingIdele.lean&line=98#L98)
 -/
 theorem _root_.GlobalTheory.T.haar_vector_scaling_idele : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (m : ℕ) (v : Pl F)
     (t : (AE F E)ˣ), t ∈ idelesAt E (evFin F v) → ∀ ν : Measure (vecAt F E m (evFin F v)), ν.IsAddHaarMeasure →

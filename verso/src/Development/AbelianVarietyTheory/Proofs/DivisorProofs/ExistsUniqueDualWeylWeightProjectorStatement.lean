@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.Ch
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BhattScholzeCrystallineLattices
 open NumberField IsDedekindDomain Formalism.L2.DIV GlobalTheory.ExpFrame Formalism.CohomologicalDescent.DepthNonnegative Formalism.CohomologicalDescent.LogSmallConstantBounds Formalism.CohomologicalDescent.ShortWeightBounds Formalism.CohomologicalDescent.LD Formalism.RankGapBounds.FormsTensorLocalization
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ExpFrame.exists_unique_isProj | exact GlobalTheory.ExpFrame.exists_unique_isProj | (intros; apply GlobalTheory.ExpFrame.exists_unique_isProj <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ExpFrame.exists_unique_isProj` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsUniqueDualWeylWeightProjector.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.existsUnique_dualWeylWeightProjector : ∀ (O : Type) [CommRing O] (N : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] (lam : ι → ℕ → ℕ) (τ : ι) (w : Fin N → ℕ), ∃ a, IsProj O N lam τ w a ∧ ∀ a', IsProj O N lam τ w a' → a' = a := by
   first | exact @GlobalTheory.ExpFrame.exists_unique_isProj | exact GlobalTheory.ExpFrame.exists_unique_isProj | (intros; apply GlobalTheory.ExpFrame.exists_unique_isProj <;> assumption)

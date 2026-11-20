@@ -4,8 +4,10 @@ import Development.AutomorphicSpectrum.Proofs.GlobalProofs.IsSmoothVec
 open Matrix Formalism.REAL Formalism.MainNotions.S Formalism.L2.Theta GlobalTheory.LinRed GlobalTheory.FlagMeas GlobalTheory.RealInd GlobalTheory.CompanionTheory.Hypotheses₂ GlobalTheory.CompanionTheory.Hypotheses₂.HCA
 open scoped InnerProductSpace ContDiff
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Hypotheses₂.HCA.Bracket.smooth_bracket | exact GlobalTheory.CompanionTheory.Hypotheses₂.HCA.Bracket.smooth_bracket | (intros; apply GlobalTheory.CompanionTheory.Hypotheses₂.HCA.Bracket.smooth_bracket <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Hypotheses₂.HCA.Bracket.smooth_bracket` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGlobalProofs%2FDerivedActionCommutator.lean&line=136#L136)
 -/
 theorem _root_.GlobalTheory.T.derived_action_commutator : ∀ {n : ℕ} {G : Set (Matrix (Fin n) (Fin n) ℂ)} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hG : IsLinRed G) (hrep : Formalism.QuantumDeterminants.IsCRepOn G π) {v : H} (hv : IsSmoothVec G π v) {X Y : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ HCSS.lieOf G) (hY : Y ∈ HCSS.lieOf G), dRep π (X * Y - Y * X) v = dRep π X (dRep π Y v) - dRep π Y (dRep π X v) := by
   first | exact @GlobalTheory.CompanionTheory.Hypotheses₂.HCA.Bracket.smooth_bracket | exact GlobalTheory.CompanionTheory.Hypotheses₂.HCA.Bracket.smooth_bracket | (intros; apply GlobalTheory.CompanionTheory.Hypotheses₂.HCA.Bracket.smooth_bracket <;> assumption)

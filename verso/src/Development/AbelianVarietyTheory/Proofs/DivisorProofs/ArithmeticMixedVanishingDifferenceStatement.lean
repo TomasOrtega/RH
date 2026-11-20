@@ -9,8 +9,10 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G Recip
 open scoped Classical
 open MvPolynomial Formalism.BasicNotions.DV
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HTWholeVert.htWhole_mul_vert | exact GlobalTheory.HTWholeVert.htWhole_mul_vert | (intros; apply GlobalTheory.HTWholeVert.htWhole_mul_vert <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HTWholeVert.htWhole_mul_vert` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FArithmeticMixedVanishingDifference.lean&line=55#L55)
 -/
 theorem _root_.GlobalTheory.T.arithmetic_mixed_vanishing_difference : Hypotheses2 → HypothesesH → RegularAlteration → ScholzeWeinsteinB → ∀ (D : D7) (O : Setup D), O.Core → ∀ (Sx : Finset ℕ) (R : ℝ), 2 ≤ R → ∀ p : ℕ, p.Prime → ∀ (y : Rt D.what₂.Tau O.Y.N) (g : MvPolynomial (Vm D.what₂.Tau O.Y.N) ℝ), O.Y.arMix Sx R p (X (Sum.inr (true, 2)) * ((X (Sum.inl (false, y)) - X (Sum.inl (true, y))) * g)) = 0 := by
   first | exact @GlobalTheory.HTWholeVert.htWhole_mul_vert | exact GlobalTheory.HTWholeVert.htWhole_mul_vert | (intros; apply GlobalTheory.HTWholeVert.htWhole_mul_vert <;> assumption)

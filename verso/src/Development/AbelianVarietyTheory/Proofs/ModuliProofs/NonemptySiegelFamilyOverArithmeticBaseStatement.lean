@@ -10,8 +10,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj TensorProduct
 open GlobalTheory.ZM
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ZM.SiegelArithFamily.nonempty_sFam | exact GlobalTheory.ZM.SiegelArithFamily.nonempty_sFam | (intros; apply GlobalTheory.ZM.SiegelArithFamily.nonempty_sFam <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ZM.SiegelArithFamily.nonempty_sFam` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FModuliProofs%2FNonemptySiegelFamilyOverArithmeticBase.lean&line=78#L78)
 -/
 theorem _root_.GlobalTheory.T.nonempty_siegelFamily_over_arithmetic_base : Out.Laws → Out.Laws2 → (∀ (S : Scheme.{0}) (P : Out.PolAV S) (M : LB P.A.left), M.IsLB → ∃ t : LB.Gen (Theta P.A M), t.IsGen) → ThetaUnifAV → ∀ (h n : ℕ), 1 ≤ h → n.Prime → Odd n → ∃ j₀ : ℕ, ∀ j ≥ j₀, ∀ (o : Type) [CommRing o] (b : TBase o ((n ^ j) ^ 2)) (em : o →+* ℂ), ArBase em → Nonempty (SFam h ((n ^ j) ^ 2) (b.ζ : o)) := by
   first | exact @GlobalTheory.ZM.SiegelArithFamily.nonempty_sFam | exact GlobalTheory.ZM.SiegelArithFamily.nonempty_sFam | (intros; apply GlobalTheory.ZM.SiegelArithFamily.nonempty_sFam <;> assumption)

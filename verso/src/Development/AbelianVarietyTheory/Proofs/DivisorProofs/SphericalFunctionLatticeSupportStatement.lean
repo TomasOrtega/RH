@@ -9,8 +9,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open Formalism.L2.Host (aboveF)
 open Formalism.UG (IsUnifV qV)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThK.Bot.inter_kdiag_int_iff | exact GlobalTheory.ThK.Bot.inter_kdiag_int_iff | (intros; apply GlobalTheory.ThK.Bot.inter_kdiag_int_iff <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThK.Bot.inter_kdiag_int_iff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSphericalFunctionLatticeSupport.lean&line=63#L63)
 -/
 theorem _root_.GlobalTheory.T.spherical_function_lattice_support : ∀ (F : Type) [Field F] [NumberField F] (v : Pl F) (n d : ℕ),
     ∀ (ϖ : (Fv F v)ˣ), IsUnifV F v ϖ.1 → ∀ (e : Fin n → ℤ) (T : GL (Fin n) (Fv F v)), T.1 = Matrix.diagonal (fun i => ϖ.1 ^ e i) → ∀ k₁ ∈ KGL v n, ∀ k₂ ∈ KGL v n,

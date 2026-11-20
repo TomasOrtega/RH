@@ -8,8 +8,10 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts G
 open GlobalTheory.FlagFibre (Low)
 open scoped Matrix ContDiff ComplexOrder ENNReal Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CellPotSmooth.cellPot_contDiffAt | exact GlobalTheory.CellPotSmooth.cellPot_contDiffAt | (intros; apply GlobalTheory.CellPotSmooth.cellPot_contDiffAt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CellPotSmooth.cellPot_contDiffAt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FContDiffAtFlagCellGradedLinePotential.lean&line=34#L34)
 -/
 theorem _root_.GlobalTheory.T.contDiffAt_flagCellGradedLinePotential : ∀ (ι : Type) (m : ι → ℕ) (n d : ℕ) (ε : Fin n ≃ Fin d ⊕ Cell m) (G : V d → Mat m ℂ) (w : V n) (x : Root m), (G (bsL ε w) x.1).PosDef → MContDiffAt 2 (fun v => G v x.1) (bsL ε w) → ContDiffAt ℝ 2 (cellPot ε G x) w ∧ 0 < grD (upM (fb ε w) x.1 * G (bsL ε w) x.1 * (upM (fb ε w) x.1)ᴴ) x.2 := by
   first | exact @GlobalTheory.CellPotSmooth.cellPot_contDiffAt | exact GlobalTheory.CellPotSmooth.cellPot_contDiffAt | (intros; apply GlobalTheory.CellPotSmooth.cellPot_contDiffAt <;> assumption)

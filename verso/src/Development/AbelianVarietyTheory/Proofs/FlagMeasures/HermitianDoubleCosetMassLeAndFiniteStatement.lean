@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ComplementRe
 open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL MeasureTheory
 open scoped Pointwise ENNReal Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HL.MassGlue.mass_le_and_finite | exact GlobalTheory.HL.MassGlue.mass_le_and_finite | (intros; apply GlobalTheory.HL.MassGlue.mass_le_and_finite <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HL.MassGlue.mass_le_and_finite` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FHermitianDoubleCosetMassLeAndFinite.lean&line=105#L105)
 -/
 theorem _root_.GlobalTheory.T.hermitianDoubleCoset_mass_le_and_finite : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (r k : ℕ) (S : Frames L r k), 1 ≤ k → ∀ d : S.Datum, (∀ j : ℕ, (S.mass d fun Λ => S.cardI d Λ = j) ≤ ENNReal.ofReal (S.Hp ^ (9 * (r + 1) ^ 2 + 12 * (r + 1)) * (j : ℝ) ^ (k - 1))) ∧ {o : MulAction.orbitRel.Quotient S.St (Submodule L.O S.V) | S.IsTerm d o.out}.Finite := by
   first | exact @GlobalTheory.HL.MassGlue.mass_le_and_finite | exact GlobalTheory.HL.MassGlue.mass_le_and_finite | (intros; apply GlobalTheory.HL.MassGlue.mass_le_and_finite <;> assumption)

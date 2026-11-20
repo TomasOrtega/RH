@@ -8,8 +8,10 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.ShFam.Pad GlobalTheory.TrueGeo
 open Formalism.MainNotions.DIV.Cons (intO)
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.det_sub_lt_of_close_on_unitBall | exact GlobalTheory.det_sub_lt_of_close_on_unitBall | (intros; apply GlobalTheory.det_sub_lt_of_close_on_unitBall <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.det_sub_lt_of_close_on_unitBall` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDeterminantPerturbationBound.lean&line=60#L60)
 -/
 theorem _root_.GlobalTheory.T.determinant_perturbation_bound : ∀ (C : Type) [NormedField C] [IsUltrametricDist C] (J : Type) (k : ℕ) (P P' : J → Fin k → C) (N : ℝ), 0 < N → (∀ σ : Fin k → J, ‖(Matrix.of fun r l => P (σ r) l).det‖ ≤ N) → (∃ σ : Fin k → J, ‖(Matrix.of fun r l => P (σ r) l).det‖ = N) → (∀ cf : Fin k → C, (∀ j, ‖∑ l, cf l * P j l‖ ≤ 1) → ∀ j, ‖∑ l, cf l * (P j l - P' j l)‖ < 1) → ∀ σ : Fin k → J, ‖(Matrix.of fun r l => P (σ r) l).det - (Matrix.of fun r l => P' (σ r) l).det‖ < N := by
   first | exact @GlobalTheory.det_sub_lt_of_close_on_unitBall | exact GlobalTheory.det_sub_lt_of_close_on_unitBall | (intros; apply GlobalTheory.det_sub_lt_of_close_on_unitBall <;> assumption)

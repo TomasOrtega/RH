@@ -10,8 +10,10 @@ open Classical
 open ReciprocityTheory.ChartRestriction.G.Out
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnitTheta.exists_label_of_pow_eq_one | exact GlobalTheory.UnitTheta.exists_label_of_pow_eq_one | (intros; apply GlobalTheory.UnitTheta.exists_label_of_pow_eq_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnitTheta.exists_label_of_pow_eq_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDegenerationProofs%2FExistsLabelOfPowEqOne.lean&line=39#L39)
 -/
 theorem _root_.GlobalTheory.T.exists_label_of_pow_eq_one' : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀) (m : ℕ), m ∣ S.r * S.N → ∀ h : baseOver (Sp u.V) ⟶ u.G, h ^ m = 1 → ∃ b : S.Gam, m • b = 0 ∧ GlobalTheory.UnitTheta.Extends u b h := by
   first | exact @GlobalTheory.UnitTheta.exists_label_of_pow_eq_one | exact GlobalTheory.UnitTheta.exists_label_of_pow_eq_one | (intros; apply GlobalTheory.UnitTheta.exists_label_of_pow_eq_one <;> assumption)

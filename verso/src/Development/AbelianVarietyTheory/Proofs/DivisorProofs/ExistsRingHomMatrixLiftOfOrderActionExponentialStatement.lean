@@ -7,8 +7,10 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.PELU
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ExpLin.exists_ringHom_matrix_lift | exact GlobalTheory.ExpLin.exists_ringHom_matrix_lift | (intros; apply GlobalTheory.ExpLin.exists_ringHom_matrix_lift <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ExpLin.exists_ringHom_matrix_lift` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsRingHomMatrixLiftOfOrderActionExponential.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.exists_ringHom_matrix_lift_of_orderAction_exponential : ∀ (X : Scheme.{0}) (G : Over X) [GrpObj G] [IsCommMonObj G] (g : ℕ) (O : Type) [Ring O] (act : O → (G ⟶ G)), IsAbelianScheme G → SmoothOfRelativeDimension g G.hom → (∀ a, IsMonHom (act a)) → act 1 = 𝟙 G → (∀ a b, act (a * b) = act b ≫ act a) → (∀ a b, act (a + b) = act a * act b) → ∀ (y : Sp ℂ ⟶ X) (e : (Fin g → ℂ) → (Over.mk y ⟶ G)), IsExp y e → ∃ ρ' : O →+* Matrix (Fin g) (Fin g) ℂ, ∀ a z, e (ρ' a *ᵥ z) = e z ≫ act a := by
   first | exact @GlobalTheory.ExpLin.exists_ringHom_matrix_lift | exact GlobalTheory.ExpLin.exists_ringHom_matrix_lift | (intros; apply GlobalTheory.ExpLin.exists_ringHom_matrix_lift <;> assumption)

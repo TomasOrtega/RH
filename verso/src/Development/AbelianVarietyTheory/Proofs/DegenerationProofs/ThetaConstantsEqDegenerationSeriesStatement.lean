@@ -8,8 +8,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory GlobalTheory.Ex
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Ex.ThetaSeries.theta_const_eq_series | exact GlobalTheory.Ex.ThetaSeries.theta_const_eq_series | (intros; apply GlobalTheory.Ex.ThetaSeries.theta_const_eq_series <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Ex.ThetaSeries.theta_const_eq_series` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDegenerationProofs%2FThetaConstantsEqDegenerationSeries.lean&line=354#L354)
 -/
 theorem _root_.GlobalTheory.T.theta_constants_eq_degeneration_series : HV → BrGtSt → BrFamSt → TXSt := by
   first | exact @GlobalTheory.Ex.ThetaSeries.theta_const_eq_series | exact GlobalTheory.Ex.ThetaSeries.theta_const_eq_series | (intros; apply GlobalTheory.Ex.ThetaSeries.theta_const_eq_series <;> assumption)

@@ -6,8 +6,10 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory Car
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.RealMult
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.jointInj_tensor_of_rat_and_zmod | exact GlobalTheory.jointInj_tensor_of_rat_and_zmod | (intros; apply GlobalTheory.jointInj_tensor_of_rat_and_zmod <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.jointInj_tensor_of_rat_and_zmod` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTensorRationalInjectivity.lean&line=213#L213)
 -/
 theorem _root_.GlobalTheory.T.tensor_rational_injectivity : ∀ (N : ℕ) (I A : Type) [CommRing A] (B : I → Type) [∀ i, CommRing (B i)] (φ : ∀ i, A →+* B i),
     Module.Flat ℤ A → (∀ i, Module.Flat ℤ (B i)) → IsUnit ((N : ℤ) : A) →

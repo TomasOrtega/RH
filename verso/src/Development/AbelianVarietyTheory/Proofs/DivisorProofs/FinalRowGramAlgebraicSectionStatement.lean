@@ -10,8 +10,10 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BaseLevelInj.eq_one_of_lev_cong | exact GlobalTheory.BaseLevelInj.eq_one_of_lev_cong | (intros; apply GlobalTheory.BaseLevelInj.eq_one_of_lev_cong <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BaseLevelInj.eq_one_of_lev_cong` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFinalRowGramAlgebraicSection.lean&line=37#L37)
 -/
 theorem _root_.GlobalTheory.T.final_row_gram_algebraic_section : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} (p : PtAt ex Csz) (i : Fin D.R.m) (PP A M : ℝ), RowsT p → (i : ℕ) + 1 = D.R.m → GramAt p i → WtNum p i PP → HostNum D L PP A M → FnAlgClosed (p.T.Q.Xo ((i : ℕ) + 1)) p.T.Q.c → ∀ g : (p.F.lv2.lvl false).P, (∀ x : (p.T.Q.Dw ((i : ℕ) + 1)).La, (p.O i).lev (g : p.P.Gp) x - x ∈ p.T.Q.l.Mb • (⊤ : Submodule (𝓞 D.host.E) (p.T.Q.Dw ((i : ℕ) + 1)).La)) → g = 1 := by
   first | exact @GlobalTheory.BaseLevelInj.eq_one_of_lev_cong | exact GlobalTheory.BaseLevelInj.eq_one_of_lev_cong | (intros; apply GlobalTheory.BaseLevelInj.eq_one_of_lev_cong <;> assumption)

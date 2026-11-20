@@ -6,8 +6,10 @@ import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.
 open NumberField IsDedekindDomain MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.Published.SiegelOneVector GlobalTheory.CompanionTheory.Hypotheses₂.OneV
 open scoped TensorProduct ENNReal NNReal Topology
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.HaarScale.unit_mul_map_haar | exact GlobalTheory.CompanionTheory.HaarScale.unit_mul_map_haar | (intros; apply GlobalTheory.CompanionTheory.HaarScale.unit_mul_map_haar <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.HaarScale.unit_mul_map_haar` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGlobalProofs%2FCoordinateMeasureScalingTensor.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.archimedean_haar_scaling_norm : ∀ (F : Type) [Field F] [NumberField F] (e : Ainf F ≃+* (InfinitePlace F → ℝ)), IsHomeomorph e → ∀ (lam : Measure (Ainf F)), lam.IsAddHaarMeasure → ∀ t : Ainf F, IsUnit t → lam.map (fun y => t * y) = (∏ w, ‖e t w‖₊)⁻¹ • lam := by
   first | exact @GlobalTheory.CompanionTheory.HaarScale.unit_mul_map_haar | exact GlobalTheory.CompanionTheory.HaarScale.unit_mul_map_haar | (intros; apply GlobalTheory.CompanionTheory.HaarScale.unit_mul_map_haar <;> assumption)

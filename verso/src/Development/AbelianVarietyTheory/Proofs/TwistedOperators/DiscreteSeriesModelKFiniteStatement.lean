@@ -18,8 +18,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 open scoped TensorProduct
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KFinStruct.kFin_structure | exact GlobalTheory.KFinStruct.kFin_structure | (intros; apply GlobalTheory.KFinStruct.kFin_structure <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KFinStruct.kFin_structure` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FDiscreteSeriesModelKFinite.lean&line=91#L91)
 -/
 theorem _root_.GlobalTheory.T.discrete_series_model_K_finite : GlobalTheory.FunPr.Hypotheses₂ → ∀ {D : D7} (V : HSp D) (S : D.what₂.Tau → SPar)
     (M : Formalism.IndefR.Mult.DSModel V S) (τ : D.what₂.Tau),

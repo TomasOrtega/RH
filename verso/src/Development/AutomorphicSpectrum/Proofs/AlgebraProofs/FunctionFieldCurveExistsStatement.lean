@@ -6,8 +6,10 @@ import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.Proportion
 open AlgebraicGeometry CategoryTheory NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Crv GlobalTheory.CompanionTheory.Ar.Conj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.FF.places_form_curve | exact GlobalTheory.CompanionTheory.Ar.FF.places_form_curve | (intros; apply GlobalTheory.CompanionTheory.Ar.FF.places_form_curve <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.FF.places_form_curve` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FAlgebraProofs%2FFunctionFieldCurveExists.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.function_field_curve_exists : ∀ (k K : Type) [Field k] [Field K] [Algebra k K] [GroundTheory.FunctionField.IsFunctionField k K], ∃ C : ACurve K, IsFFCurve k C ∧ Nonempty C.I ∧ ∀ i (x : K), IsAlgebraic k x → C.v i x ≤ 1 := by
   first | exact @GlobalTheory.CompanionTheory.Ar.FF.places_form_curve | exact GlobalTheory.CompanionTheory.Ar.FF.places_form_curve | (intros; apply GlobalTheory.CompanionTheory.Ar.FF.places_form_curve <;> assumption)

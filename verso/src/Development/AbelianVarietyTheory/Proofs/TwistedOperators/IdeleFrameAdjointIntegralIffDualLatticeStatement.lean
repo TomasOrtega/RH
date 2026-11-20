@@ -11,8 +11,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.LiftLevel
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DualRed.adj_int_iff | exact GlobalTheory.DualRed.adj_int_iff | (intros; apply GlobalTheory.DualRed.adj_int_iff <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DualRed.adj_int_iff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FIdeleFrameAdjointIntegralIffDualLattice.lean&line=34#L34)
 -/
 theorem _root_.GlobalTheory.T.ideleFrameAdjoint_integral_iff_dualLattice : ∀ (D : D7) (S T : HSp D), S.gram = 1 → ∀ (ΛT : Lt D.host.E T.rank), IsSelfDualC T ΛT → ∀ (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (Fin T.rank) (Lev.EAf D)), Formalism.L2.DIV.IsFrame βT ΛT → ∀ (J : Ideal (𝓞 D.host.E)), Squarefree J → ∀ x : WO S T, IsFinPt x → ((IsIntM (adjA S T βS βT 1 x) ∧ ∀ PP : Formalism.L2.DIV.Pl D.host.E, J ≤ PP.asIdeal → redM PP (adjA S T βS βT 1 x) = 0) ↔ x ∈ hatA S T (tens (stdL D.host.E S.rank) (conjI J • ΛT))) := by
   first | exact @GlobalTheory.DualRed.adj_int_iff | exact GlobalTheory.DualRed.adj_int_iff | (intros; apply GlobalTheory.DualRed.adj_int_iff <;> assumption)

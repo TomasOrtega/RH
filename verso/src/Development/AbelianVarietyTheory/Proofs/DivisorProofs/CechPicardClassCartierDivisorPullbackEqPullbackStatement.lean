@@ -13,8 +13,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.OrbitSep
 open GlobalTheory.Discrepancy GlobalTheory.QCoh
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PullCartier.cls_toLB_pull | exact GlobalTheory.PullCartier.cls_toLB_pull | (intros; apply GlobalTheory.PullCartier.cls_toLB_pull <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PullCartier.cls_toLB_pull` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCechPicardClassCartierDivisorPullbackEqPullback.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.cechPicardClass_cartierDivisorPullback_eq_pullback : ∀ (M W : Scheme.{0}) [IsIntegral M] [IsIntegral W] (f : M ⟶ W) [IsDominant f] (D₀ : CartierDiv W) (D₁ : CartierDiv M), (∀ x g, D₀.IsEqn (f x) g → D₁.IsEqn x (Units.map (GlobalTheory.functionFieldMap f).toMonoidHom g)) → cls (toLB D₁) (isLB_toLB D₁) = CechPic.pull f (cls (toLB D₀) (isLB_toLB D₀)) := by
   first | exact @GlobalTheory.PullCartier.cls_toLB_pull | exact GlobalTheory.PullCartier.cls_toLB_pull | (intros; apply GlobalTheory.PullCartier.cls_toLB_pull <;> assumption)

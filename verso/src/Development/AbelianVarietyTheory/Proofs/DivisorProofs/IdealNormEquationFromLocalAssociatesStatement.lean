@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdealNormEquationFr
 import Mathlib
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CmIdealGlue.glue | exact GlobalTheory.CmIdealGlue.glue | (intros; apply GlobalTheory.CmIdealGlue.glue <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CmIdealGlue.glue` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIdealNormEquationFromLocalAssociates.lean&line=142#L142)
 -/
 theorem _root_.GlobalTheory.T.ideal_norm_equation_from_local_associates : ∀ (Λ : Type) [CommRing Λ] (c : Λ →+* Λ) (D : Λ) (m : ℕ), 0 < m → (m : Λ) ∈ Ideal.span {D} →
     ∀ (δ : ∀ (ℓ : ℕ) [Fact ℓ.Prime], ℤ_[ℓ] ⊗[ℤ] Λ),

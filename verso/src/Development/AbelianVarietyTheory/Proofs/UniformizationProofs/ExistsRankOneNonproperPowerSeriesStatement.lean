@@ -12,8 +12,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UU
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MultiplicativeTorusSetting.main | exact GlobalTheory.MultiplicativeTorusSetting.main | (intros; apply GlobalTheory.MultiplicativeTorusSetting.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MultiplicativeTorusSetting.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUniformizationProofs%2FExistsRankOneNonproperPowerSeries.lean&line=231#L231)
 -/
 theorem _root_.GlobalTheory.T.exists_rank_one_nonproper_power_series : ∃ (A : PolAV (Spec (CommRingCat.of (FractionRing (PowerSeries ℚ))))) (G : Over (Spec (CommRingCat.of (PowerSeries ℚ)))) (_ : GrpObj G) (_ : IsCommMonObj G) (s : HidaSetting (PowerSeries ℚ) A G), A.g = 1 ∧ Module.finrank ℤ s.X = 1 ∧ ¬ IsProper (thickObj (PowerSeries ℚ) (IsLocalRing.maximalIdeal (PowerSeries ℚ)) 0 G).hom := by
   first | exact @GlobalTheory.MultiplicativeTorusSetting.main | exact GlobalTheory.MultiplicativeTorusSetting.main | (intros; apply GlobalTheory.MultiplicativeTorusSetting.main <;> assumption)

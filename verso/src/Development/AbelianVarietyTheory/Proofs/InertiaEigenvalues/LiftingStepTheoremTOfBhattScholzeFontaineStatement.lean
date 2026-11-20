@@ -8,8 +8,10 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 open scoped Formalism.Per
 open Formalism.MainNotions Formalism.MainNotions.N
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TheoremTClosing.main | exact GlobalTheory.TheoremTClosing.main | (intros; apply GlobalTheory.TheoremTClosing.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TheoremTClosing.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FLiftingStepTheoremTOfBhattScholzeFontaine.lean&line=37#L37)
 -/
 theorem _root_.GlobalTheory.T.liftingStep_theoremT_of_bhattScholze_fontaine : GlobalTheory.Published.BhattScholzeCrystallineLattices → GlobalTheory.Published.FontaineBcris → ∀ C : ℕ, 40 ≤ C → ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW), Formalism.MainNotions.ElementDenominator.HodgeTateFromSandwich D HW F C := by
   first | exact @GlobalTheory.TheoremTClosing.main | exact GlobalTheory.TheoremTClosing.main | (intros; apply GlobalTheory.TheoremTClosing.main <;> assumption)

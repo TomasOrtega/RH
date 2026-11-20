@@ -9,8 +9,10 @@ open GlobalTheory.FinPl (Lat idAt idOff intAt grpAt grpOff MxAt latV latA InK Mo
 open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.intAf_div_prime_to_place' | exact GlobalTheory.intAf_div_prime_to_place' | (intros; apply GlobalTheory.intAf_div_prime_to_place' <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.intAf_div_prime_to_place'` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FIntegralFiniteAdeleSupportedDivPrimeToPlace.lean&line=41#L41)
 -/
 theorem _root_.GlobalTheory.T.integralFiniteAdele_supported_div_prime_to_place : ∀ (D : D7) (v : GlobalTheory.FinPl.Pl D) (d : 𝓞 D.host.F), d ∉ v.asIdeal → ∀ α ∈ intAf D.host.F, (∀ w, ¬ w = v → evalV D.host.F w α = 0) → ∃ α' ∈ intAf D.host.F, (∀ w, ¬ w = v → evalV D.host.F w α' = 0) ∧ α = α' * algebraMap D.host.F (Af D.host.F) (d : D.host.F) := by
   first | exact @GlobalTheory.intAf_div_prime_to_place' | exact GlobalTheory.intAf_div_prime_to_place' | (intros; apply GlobalTheory.intAf_div_prime_to_place' <;> assumption)

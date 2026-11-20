@@ -3,8 +3,10 @@ import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.FlagDegreePower
 import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.CompactGapsGE
 open MvPolynomial Filter Topology GlobalTheory.CompanionTheory.Ar.Top
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Top.degFl_pk_mul_eq_zero | exact GlobalTheory.CompanionTheory.Ar.Top.degFl_pk_mul_eq_zero | (intros; apply GlobalTheory.CompanionTheory.Ar.Top.degFl_pk_mul_eq_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Top.degFl_pk_mul_eq_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FDivisibilityProofs%2FFlagDegreePowerSumMulZero.lean&line=8#L8)
 -/
 theorem _root_.GlobalTheory.T.flag_degree_power_sum_mul_zero : ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (τ : Ψ) (k : ℕ) (G : RP Ψ N), 1 ≤ k → degFl (pk τ k * G) = 0 := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Top.degFl_pk_mul_eq_zero | exact GlobalTheory.CompanionTheory.Ar.Top.degFl_pk_mul_eq_zero | (intros; apply GlobalTheory.CompanionTheory.Ar.Top.degFl_pk_mul_eq_zero <;> assumption)

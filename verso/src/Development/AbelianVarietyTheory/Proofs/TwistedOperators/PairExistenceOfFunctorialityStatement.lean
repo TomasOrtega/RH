@@ -8,8 +8,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup (coefPlus Cols Si
 open GlobalTheory.SepRows
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PairIt.pairEx | exact GlobalTheory.PairIt.pairEx | (intros; apply GlobalTheory.PairIt.pairEx <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PairIt.pairEx` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FPairExistenceOfFunctoriality.lean&line=42#L42)
 -/
 theorem _root_.GlobalTheory.T.pair_existence_of_functoriality : GlobalTheory.FunPr.Hypotheses₂ → PairEx := by
   first | exact @GlobalTheory.PairIt.pairEx | exact GlobalTheory.PairIt.pairEx | (intros; apply GlobalTheory.PairIt.pairEx <;> assumption)

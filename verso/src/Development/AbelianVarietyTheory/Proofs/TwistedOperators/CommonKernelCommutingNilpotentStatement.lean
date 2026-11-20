@@ -13,8 +13,10 @@ open GlobalTheory.Orb (IsPseudoCoeff ujMat ujRep)
 open scoped InnerProductSpace
 open PI.DSInfCharCap (actU Egl)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.exists_common_null_of_commute_locallyNilpotent | exact GlobalTheory.exists_common_null_of_commute_locallyNilpotent | (intros; apply GlobalTheory.exists_common_null_of_commute_locallyNilpotent <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.exists_common_null_of_commute_locallyNilpotent` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FCommonKernelCommutingNilpotent.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.common_kernel_commuting_nilpotent : ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (T : ℕ → Module.End ℂ V) (S : Submodule ℂ V), FiniteDimensional ℂ S → S ≠ ⊥ → (∀ k, ∀ v ∈ S, T k v ∈ S) → (∀ k l, Commute (T k) (T l)) → (∀ k, ∀ v ∈ S, ∃ N : ℕ, (T k ^ N) v = 0) → ∃ v ∈ S, v ≠ 0 ∧ ∀ k, T k v = 0 := by
   first | exact @GlobalTheory.exists_common_null_of_commute_locallyNilpotent | exact GlobalTheory.exists_common_null_of_commute_locallyNilpotent | (intros; apply GlobalTheory.exists_common_null_of_commute_locallyNilpotent <;> assumption)

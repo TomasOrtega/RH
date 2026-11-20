@@ -9,8 +9,10 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace Limits
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.CechPic GlobalTheory.QCoh GlobalTheory.LogPair
 open scoped TensorProduct
-/- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.LogPair.SameDiv.trans_of_isLB | exact _root_.GlobalTheory.LogPair.SameDiv.trans_of_isLB | (intros; apply _root_.GlobalTheory.LogPair.SameDiv.trans_of_isLB <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LogPair.SameDiv.trans_of_isLB` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSameDivisorTrans.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.same_divisor_trans : ∀ (X : Scheme.{0}) (L M N : LB X) (σ : L.Sec) (τ : M.Sec) (υ : N.Sec), M.IsLB → SameDiv σ τ → SameDiv τ υ → SameDiv σ υ := by
   first | exact @_root_.GlobalTheory.LogPair.SameDiv.trans_of_isLB | exact _root_.GlobalTheory.LogPair.SameDiv.trans_of_isLB | (intros; apply _root_.GlobalTheory.LogPair.SameDiv.trans_of_isLB <;> assumption)

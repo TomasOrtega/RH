@@ -9,8 +9,10 @@ open GlobalTheory.PRep (IsAdmissible)
 open GlobalTheory.TrMult
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TrMult.geomExpansion_of_parts | exact GlobalTheory.TrMult.geomExpansion_of_parts | (intros; apply GlobalTheory.TrMult.geomExpansion_of_parts <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TrMult.geomExpansion_of_parts` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGeometricExpansionOfParts.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.geometric_expansion_of_parts : EllTrace → EllipticPart → RealStable → GeomExpansion := by
   first | exact @GlobalTheory.TrMult.geomExpansion_of_parts | exact GlobalTheory.TrMult.geomExpansion_of_parts | (intros; apply GlobalTheory.TrMult.geomExpansion_of_parts <;> assumption)

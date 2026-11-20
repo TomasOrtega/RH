@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InnerRightRegu
 import Development.AbelianVarietyTheory.Definitions.Foundations.AestronglyMeasurableQuotMeasureIffLift
 open MeasureTheory GlobalTheory.AutomorphicL2Unitary
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AutomorphicL2Unitary.inner_R_sub_eq_intervalIntegral | exact GlobalTheory.AutomorphicL2Unitary.inner_R_sub_eq_intervalIntegral | (intros; apply GlobalTheory.AutomorphicL2Unitary.inner_R_sub_eq_intervalIntegral <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AutomorphicL2Unitary.inner_R_sub_eq_intervalIntegral` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FInnerRightRegularRepSubEqIntervalIntegralDerivat.lean&line=26#L26)
 -/
 theorem _root_.GlobalTheory.T.inner_rightRegularRep_sub_eq_intervalIntegral_derivative : ∀ {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] [LocallyCompactSpace G] (Γ : Subgroup G) [DiscreteTopology Γ] (μ : Measure G) [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] [IsFiniteMeasureOnCompacts μ] (c : ℝ → G), Continuous c → c 0 = 1 → ∀ {f f' : G → ℂ} (hf : MemL2Quotient Γ μ f) (hf' : MemL2Quotient Γ μ f'), Continuous f' → (∀ x t, HasDerivAt (fun s => f (x * c s)) (f' (x * c t)) t) → ∀ (H : L2 Γ μ) (t : ℝ), Integrable (Function.uncurry fun (s : ℝ) (q : GlobalTheory.AutomorphicL2Unitary.Quot Γ) => starRingEnd ℂ (H q) * f' (sec Γ q * c s)) ((volume.restrict (Set.uIoc 0 t)).prod (quotMeasure Γ μ)) → inner ℂ H (R Γ μ (c t) hf.toL2) - inner ℂ H hf.toL2 = ∫ s in (0 : ℝ)..t, inner ℂ H (R Γ μ (c s) hf'.toL2) := by
   first | exact @GlobalTheory.AutomorphicL2Unitary.inner_R_sub_eq_intervalIntegral | exact GlobalTheory.AutomorphicL2Unitary.inner_R_sub_eq_intervalIntegral | (intros; apply GlobalTheory.AutomorphicL2Unitary.inner_R_sub_eq_intervalIntegral <;> assumption)

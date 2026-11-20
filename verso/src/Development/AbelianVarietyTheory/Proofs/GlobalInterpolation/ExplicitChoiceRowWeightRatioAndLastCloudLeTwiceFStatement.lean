@@ -4,8 +4,10 @@ import Formalism.SharpRestriction.InertJacobiLevels.AsmIface
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.PairRowIffQdRows
 open Formalism.BasicNotions Formalism.BasicNotions.LevelStarExponents Formalism.MainNotions Formalism.MainNotions.Inhab GlobalTheory.EX NumberField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EX.szRow_size_ratio | exact GlobalTheory.EX.szRow_size_ratio | (intros; apply GlobalTheory.EX.szRow_size_ratio <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EX.szRow_size_ratio` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FGlobalInterpolation%2FExplicitChoiceRowWeightRatioAndLastCloudLeTwiceF.lean&line=34#L34)
 -/
 theorem _root_.GlobalTheory.T.explicitChoice_rowWeight_ratio_and_lastCloud_le_twice_first : SzRow (fun C D L => (∀ j j' τ τ', 1 ≤ j → j ≤ D.R.m → 1 ≤ j' → j' ≤ D.R.m → wj D j τ ≤ L.sc.X'' D.R.n * wj D j' τ') ∧ (∀ τ (hm : 0 < D.R.m), (D.hc τ).b ⟨D.R.m - 1, by omega⟩ ≤ 2 * (D.hc τ).b ⟨0, hm⟩)) := by
   first | exact @GlobalTheory.EX.szRow_size_ratio | exact GlobalTheory.EX.szRow_size_ratio | (intros; apply GlobalTheory.EX.szRow_size_ratio <;> assumption)

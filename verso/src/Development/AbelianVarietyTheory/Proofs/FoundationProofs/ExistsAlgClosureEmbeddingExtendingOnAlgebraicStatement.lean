@@ -8,8 +8,10 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsTraceCompatibl
 open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.NormSum GlobalTheory.ThetaConj
 open scoped BigOperators
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThetaConj.exists_cj_Qbar_eq | exact GlobalTheory.ThetaConj.exists_cj_Qbar_eq | (intros; apply GlobalTheory.ThetaConj.exists_cj_Qbar_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThetaConj.exists_cj_Qbar_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FExistsAlgClosureEmbeddingExtendingOnAlgebraic.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.exists_algClosure_embedding_extending_on_algebraic : ∀ (M : IntermediateField ℚ ℂ) (ρ : M →ₐ[ℚ] ℂ), ∃ ρ' : Qbar →ₐ[ℚ] ℂ, ∀ x : ℂ, x ∈ Qbar → x ∈ M → cj M ρ x = cj Qbar ρ' x := by
   first | exact @GlobalTheory.ThetaConj.exists_cj_Qbar_eq | exact GlobalTheory.ThetaConj.exists_cj_Qbar_eq | (intros; apply GlobalTheory.ThetaConj.exists_cj_Qbar_eq <;> assumption)

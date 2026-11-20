@@ -18,8 +18,10 @@ open GlobalTheory.BotClassDict (finQ)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ZeroAtPlaces.zeroAt_finQ_iff | exact GlobalTheory.ZeroAtPlaces.zeroAt_finQ_iff | (intros; apply GlobalTheory.ZeroAtPlaces.zeroAt_finQ_iff <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ZeroAtPlaces.zeroAt_finQ_iff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFinitePartRationalTensorZeroAtPrimeIffPlaceIdem.lean&line=169#L169)
 -/
 theorem _root_.GlobalTheory.T.finitePartRationalTensor_zeroAtPrime_iff_placeIdem : ∀ (D : D7) (q : ℕ), q.Prime → ∀ a : AE D, (Formalism.MainNotions.StandardLatticesGL3.ZeroAt D q (finQ D a) ↔
   ∀ (v : HeightOneSpectrum (𝓞 D.host.F)) (η : AF D.host.F), IsPlaceIdem D v η → (q : 𝓞 D.host.F) ∈ v.asIdeal →

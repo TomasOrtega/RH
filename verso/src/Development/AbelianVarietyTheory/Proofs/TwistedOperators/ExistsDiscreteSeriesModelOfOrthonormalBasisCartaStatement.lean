@@ -15,8 +15,10 @@ open GlobalTheory.Grid GlobalTheory.ChiGrid GlobalTheory.GridJoin
 open scoped Pointwise TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.dsModel_of_onb_cart | exact GlobalTheory.dsModel_of_onb_cart | (intros; apply GlobalTheory.dsModel_of_onb_cart <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.dsModel_of_onb_cart` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsDiscreteSeriesModelOfOrthonormalBasisCarta.lean&line=29#L29)
 -/
 theorem _root_.GlobalTheory.T.exists_discreteSeriesModel_of_orthonormalBasis_cartan : ∀ (D : D7), GlobalTheory.Published.DiscreteSeriesUpqExists → ∀ (V : HSp D) (S : D.what₂.Tau → SPar) (O C : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ), (∀ τ, ∃ (lam : Fin V.rank → ℝ) (ε : Fin V.rank → Bool), IsEnum (S τ) lam ε ∧ Formalism.QuantumDeterminants.IsHCParam lam ∧ (O τ)ᴴ * gramAt D V τ * O τ = Formalism.REAL.Jm ε) → (∀ τ, ∃ ε : Fin V.rank → Bool, (O τ)ᴴ * gramAt D V τ * O τ = Formalism.REAL.Jm ε ∧ C τ * O τ = O τ * Formalism.REAL.Jm ε) → ∃ M : DSModel V S, cart M = C ∧ onb M = O := by
   first | exact @GlobalTheory.dsModel_of_onb_cart | exact GlobalTheory.dsModel_of_onb_cart | (intros; apply GlobalTheory.dsModel_of_onb_cart <;> assumption)

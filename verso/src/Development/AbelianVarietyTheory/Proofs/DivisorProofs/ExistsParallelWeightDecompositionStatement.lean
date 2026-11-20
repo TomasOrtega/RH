@@ -19,8 +19,10 @@ open GlobalTheory.FlagTan (dimFlag)
 open GlobalTheory.HSApp
 set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WtMatchArith.exists_dom_exponents | exact GlobalTheory.WtMatchArith.exists_dom_exponents | (intros; apply GlobalTheory.WtMatchArith.exists_dom_exponents <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WtMatchArith.exists_dom_exponents` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsParallelWeightDecomposition.lean&line=97#L97)
 -/
 theorem _root_.GlobalTheory.T.exists_parallel_weight_decomposition : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (la : GlobalTheory.AllWt.Weight Dw), GapGe 1 la → ∀ (N M k : ℕ), 0 < N → 2 * M + N ≤ k + 1 → ∃ (w : GlobalTheory.AllWt.Psi H → ℤ) (a : (E →+* ℂ) × ℕ → ℕ), Dom a (2 * M) ∧ (fun i => (ex Dw a (2 * M) i : ℤ)) = (k + 1) • GlobalTheory.AllWt.exOf Dw la 0 + GlobalTheory.AllWt.exOf Dw (GlobalTheory.FlatLine.parWt Dw fun τ => (N : ℤ) * w τ) M := by
   first | exact @GlobalTheory.WtMatchArith.exists_dom_exponents | exact GlobalTheory.WtMatchArith.exists_dom_exponents | (intros; apply GlobalTheory.WtMatchArith.exists_dom_exponents <;> assumption)

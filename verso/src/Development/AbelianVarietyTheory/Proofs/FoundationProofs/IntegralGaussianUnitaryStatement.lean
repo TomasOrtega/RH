@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IntMIffInt
 open Complex MeasureTheory GlobalTheory.UnitaryTheta
 open scoped BigOperators ComplexConjugate Real Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnitaryTheta.integral_gaussian_unitary | exact GlobalTheory.UnitaryTheta.integral_gaussian_unitary | (intros; apply GlobalTheory.UnitaryTheta.integral_gaussian_unitary <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnitaryTheta.integral_gaussian_unitary` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FIntegralGaussianUnitary.lean&line=37#L37)
 -/
 theorem _root_.GlobalTheory.T.integral_cexp_herm_gaussian_eq_div_det : ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℂ V] [FiniteDimensional ℂ V] [MeasurableSpace V] [BorelSpace V] (μ : Measure V) [μ.IsAddHaarMeasure] (H : Sesq V), IsPosHerm H → ∀ a : V ≃ₗ[ℂ] V, (∀ z w, H (a z) (a w) = H z w) → LinearMap.det (1 - (a : V →ₗ[ℂ] V)) ≠ 0 → ∃ κ : ℝ, κ ≠ 0 ∧ ∀ y v : V, Integrable (fun z => cexp (-(π : ℂ) * H (z - a z) z + π * H (y - a y) z + π * H z v)) μ ∧ ∫ z, cexp (-(π : ℂ) * H (z - a z) z + π * H (y - a y) z + π * H z v) ∂μ = κ / LinearMap.det (1 - (a : V →ₗ[ℂ] V)) * cexp (π * H y v) := by
   first | exact @GlobalTheory.UnitaryTheta.integral_gaussian_unitary | exact GlobalTheory.UnitaryTheta.integral_gaussian_unitary | (intros; apply GlobalTheory.UnitaryTheta.integral_gaussian_unitary <;> assumption)

@@ -22,8 +22,10 @@ open scoped ContDiff
 open GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.isDatum_twistFactor | exact GlobalTheory.isDatum_twistFactor | (intros; apply GlobalTheory.isDatum_twistFactor <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.isDatum_twistFactor` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDatumTwistByCharacter.lean&line=26#L26)
 -/
 theorem _root_.GlobalTheory.T.datum_twist_by_character : ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] (g : ℕ) (B : Set E) (τ : E → Matrix (Fin g) (Fin g) ℂ) (M M' : Submodule ℤ (Fl g)) (j : Fl g → Pt E g → ℂ) (h : Pt E g → ℝ), IsDatum B τ M' j h → IsLat M → M ≤ M' → ∀ χ : AddChar (M' ⧸ M.submoduleOf M') ℂ, IsDatum B τ M' (twistFactor M M' χ j) h := by
   first | exact @GlobalTheory.isDatum_twistFactor | exact GlobalTheory.isDatum_twistFactor | (intros; apply GlobalTheory.isDatum_twistFactor <;> assumption)

@@ -9,8 +9,10 @@ open scoped CategoryTheory.Obj ComplexOrder
 open GlobalTheory GlobalTheory.CM GlobalTheory.LamF
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LamF.lamDegSt_of_degSt | exact GlobalTheory.LamF.lamDegSt_of_degSt | (intros; apply GlobalTheory.LamF.lamDegSt_of_degSt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LamF.lamDegSt_of_degSt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FCubicalLineBundles%2FCmLieLineDegreeOfEigenLineDegreeFormula.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.cmLieLineDegree_of_eigenLineDegreeFormula : DegSt → ThetaUnifAV → Out.Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [NeZero H.d] (χ : DirichletCharacter ℂ H.d), IsKroneckerChar χ → LamDegSt H (logOm E χ).re := by
   first | exact @GlobalTheory.LamF.lamDegSt_of_degSt | exact GlobalTheory.LamF.lamDegSt_of_degSt | (intros; apply GlobalTheory.LamF.lamDegSt_of_degSt <;> assumption)

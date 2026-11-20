@@ -10,8 +10,10 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Numb
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Mem GlobalTheory.Mem.Top GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.Col2 GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Tr
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Twist.multEq_rowTest_of_copy | exact GlobalTheory.Twist.multEq_rowTest_of_copy | (intros; apply GlobalTheory.Twist.multEq_rowTest_of_copy <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Twist.multEq_rowTest_of_copy` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FEqualMultiplicitiesRowTestOfSameGroupTransfer.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.equalMultiplicities_rowTest_of_sameGroupTransfer : ∀ (B : Base) (C : Cols B) (a b : Late B C) (px : PreX B.toPre) (I : ColIn B px) (hX : B.fields.Ok) (Tw : TwDat B) (Wt : Set B.places.Pl) (s : SameGrp a b) (z : Dat a.st I hX Tw Wt), (GlobalTheory.CuspMult.MultEq (DatCopy.copy b s z).R.toRealDat → GlobalTheory.CuspMult.MultEq z.R.toRealDat) ∧ (Formalism.IndefR.Rat.RowTest ((DatCopy.copy b s z).R.toCx3 (DatCopy.copy b s z).F) → Formalism.IndefR.Rat.RowTest (z.R.toCx3 z.F)) := by
   first | exact @GlobalTheory.Twist.multEq_rowTest_of_copy | exact GlobalTheory.Twist.multEq_rowTest_of_copy | (intros; apply GlobalTheory.Twist.multEq_rowTest_of_copy <;> assumption)

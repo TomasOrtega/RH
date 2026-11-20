@@ -42,8 +42,10 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLat
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S GlobalTheory.Core.Deg
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Core.Deg.degenerate_and_collisions_uncond | exact GlobalTheory.Core.Deg.degenerate_and_collisions_uncond | (intros; apply GlobalTheory.Core.Deg.degenerate_and_collisions_uncond <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Core.Deg.degenerate_and_collisions_uncond` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FDegenerateTermsAndCollisionBoundsUniformWidths.lean&line=57#L57)
 -/
 theorem _root_.GlobalTheory.T.degenerateTerms_and_collisionBounds_uniform_widths : (∀ c : ℝ, On {c} VanishingGramTermsBound) ∧ ∀ c : ℝ, On {c} CollS := by
   first | exact @GlobalTheory.Core.Deg.degenerate_and_collisions_uncond | exact GlobalTheory.Core.Deg.degenerate_and_collisions_uncond | (intros; apply GlobalTheory.Core.Deg.degenerate_and_collisions_uncond <;> assumption)

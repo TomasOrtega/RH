@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.La
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.LanglandsExhaustionGL
 open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.JHMult Zc Zc.M
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.ZcWords.eq_of_inShW_wtW | exact GlobalTheory.CompanionTheory.ZcWords.eq_of_inShW_wtW | (intros; apply GlobalTheory.CompanionTheory.ZcWords.eq_of_inShW_wtW <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.ZcWords.eq_of_inShW_wtW` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FOrderedFormsMutualShuffleEq.lean&line=143#L143)
 -/
 theorem _root_.GlobalTheory.T.ordered_forms_mutual_shuffle_eq : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (hA : GlobalTheory.Published.IrreducibleAdmissibleGL), ∀ (𝔪 𝔫 : Multiset (Segment k)) (h h' : ℕ) (Δ : Fin h → Segment k) (Γ : Fin h' → Segment k), IsOrderedForm Δ 𝔪 → IsOrderedForm Γ 𝔫 → InShW 𝔫 (wtW Δ) → InShW 𝔪 (wtW Γ) → 𝔪 = 𝔫 := by
   first | exact @GlobalTheory.CompanionTheory.ZcWords.eq_of_inShW_wtW | exact GlobalTheory.CompanionTheory.ZcWords.eq_of_inShW_wtW | (intros; apply GlobalTheory.CompanionTheory.ZcWords.eq_of_inShW_wtW <;> assumption)

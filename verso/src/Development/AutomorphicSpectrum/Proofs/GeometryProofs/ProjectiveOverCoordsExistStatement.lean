@@ -9,8 +9,10 @@ open AlgebraicGeometry CategoryTheory CategoryTheory.Limits MonoidalCategory Car
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.XR
 open scoped CategoryTheory.Obj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Relay.projective_over_coords_exist | exact GlobalTheory.CompanionTheory.Relay.projective_over_coords_exist | (intros; apply GlobalTheory.CompanionTheory.Relay.projective_over_coords_exist <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Relay.projective_over_coords_exist` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FProjectiveOverCoordsExist.lean&line=31#L31)
 -/
 theorem _root_.GlobalTheory.T.projective_over_coords_exist : ∀ (o : Type) [CommRing o] [IsNoetherianRing o] (X : Scheme.{0}) (s : X ⟶ Sp o), IsProjOver s → ∀ (Ω : Type) [Field Ω] [Algebra o Ω] (ξ : Sp Ω ⟶ X), IsCptGen ξ → ξ ≫ s = spMap (algebraMap o Ω) → ∃ (n : ℕ) (x : Fin n → Ω), CoordTie o ξ x := by
   first | exact @GlobalTheory.CompanionTheory.Relay.projective_over_coords_exist | exact GlobalTheory.CompanionTheory.Relay.projective_over_coords_exist | (intros; apply GlobalTheory.CompanionTheory.Relay.projective_over_coords_exist <;> assumption)

@@ -17,8 +17,10 @@ open ReciprocityTheory.PGsh ReciprocityTheory.PGsh.Up ReciprocityTheory.PGsh.Be2
 open ReciprocityTheory.ChartRestriction.G.Chart (sp spMap)
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChF.hodgeTate_inclusion_chart | exact GlobalTheory.ChF.hodgeTate_inclusion_chart | (intros; apply GlobalTheory.ChF.hodgeTate_inclusion_chart <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChF.hodgeTate_inclusion_chart` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUnramifiedDepth%2FHodgeTateInclusionChartCharacters.lean&line=49#L49)
 -/
 theorem _root_.GlobalTheory.T.hodgeTate_inclusion_chart_characters : ∀ (p : ℕ) [Fact p.Prime], HTFSt p := by
   first | exact @GlobalTheory.ChF.hodgeTate_inclusion_chart | exact GlobalTheory.ChF.hodgeTate_inclusion_chart | (intros; apply GlobalTheory.ChF.hodgeTate_inclusion_chart <;> assumption)

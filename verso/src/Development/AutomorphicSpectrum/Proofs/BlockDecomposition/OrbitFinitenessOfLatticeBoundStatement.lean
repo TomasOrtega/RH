@@ -12,8 +12,10 @@ open PositivityTheory.Rg.Rsw PositivityTheory.Rg.Rsw.L
 open GlobalTheory.CompanionTheory.ColumnSplitting
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.ColumnSplitting.orbFin_of_latBound | exact GlobalTheory.CompanionTheory.ColumnSplitting.orbFin_of_latBound | (intros; apply GlobalTheory.CompanionTheory.ColumnSplitting.orbFin_of_latBound <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.ColumnSplitting.orbFin_of_latBound` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FOrbitFinitenessOfLatticeBound.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.orbit_finiteness_of_lattice_bound : LatBound → OrbFin := by
   first | exact @GlobalTheory.CompanionTheory.ColumnSplitting.orbFin_of_latBound | exact GlobalTheory.CompanionTheory.ColumnSplitting.orbFin_of_latBound | (intros; apply GlobalTheory.CompanionTheory.ColumnSplitting.orbFin_of_latBound <;> assumption)

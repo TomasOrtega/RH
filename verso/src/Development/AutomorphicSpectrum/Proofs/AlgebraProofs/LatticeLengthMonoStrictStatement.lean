@@ -6,8 +6,10 @@ import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.StepOrderR
 open ReciprocityTheory.PGsh.L2 ReciprocityTheory.PGsh.Up GlobalTheory.CompanionTheory.Ar.GR
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.GR.submodule_eq_of_hasLen_eq | exact GlobalTheory.CompanionTheory.Ar.GR.submodule_eq_of_hasLen_eq | (intros; apply GlobalTheory.CompanionTheory.Ar.GR.submodule_eq_of_hasLen_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.GR.submodule_eq_of_hasLen_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FAlgebraProofs%2FLatticeLengthMonoStrict.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.lattice_length_mono_strict : ∀ (C : Type) [Field C] (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C], v.Integers R → ∀ (ι : Type) [Fintype ι] (L L' : Submodule R (ι → R)), L ≤ L' → ∀ x y : NNReal, x ≠ 0 → HasLen v R ((ι → R) ⧸ L) x → HasLen v R ((ι → R) ⧸ L') y → x ≤ y ∧ (x = y → L = L') := by
   first | exact @GlobalTheory.CompanionTheory.Ar.GR.submodule_eq_of_hasLen_eq | exact GlobalTheory.CompanionTheory.Ar.GR.submodule_eq_of_hasLen_eq | (intros; apply GlobalTheory.CompanionTheory.Ar.GR.submodule_eq_of_hasLen_eq <;> assumption)

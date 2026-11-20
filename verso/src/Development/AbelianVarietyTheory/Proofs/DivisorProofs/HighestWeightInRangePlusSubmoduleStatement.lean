@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HighestWeightInRang
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RestrActApply
 open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible GlobalTheory.FockAlg GlobalTheory.SteepMult
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SteepMult.hw_lift_orth | exact GlobalTheory.SteepMult.hw_lift_orth | (intros; apply GlobalTheory.SteepMult.hw_lift_orth <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SteepMult.hw_lift_orth` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHighestWeightInRangePlusSubmodule.lean&line=8#L8)
 -/
 theorem _root_.GlobalTheory.T.exists_highestWeight_orthogonal_comap_of_mem_range_sup : ∀ (R S : ℕ) (W : Type) [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W]
     (actW : Mat R S →ₗ[ℂ] Module.End ℂ W) (B : W →ₗ⋆[ℂ] W →ₗ[ℂ] ℂ) (V : Type) [AddCommGroup V] [Module ℂ V]

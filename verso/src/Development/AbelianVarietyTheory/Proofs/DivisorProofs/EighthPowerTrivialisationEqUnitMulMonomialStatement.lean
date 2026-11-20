@@ -10,8 +10,10 @@ open ReciprocityTheory.AnForm.R GlobalTheory.ZH GlobalTheory.Poinc GlobalTheory.
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UT ReciprocityTheory.ChartRestriction.G.DVR
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Poinc.Sep.psi_unit_mono | exact GlobalTheory.Poinc.Sep.psi_unit_mono | (intros; apply GlobalTheory.Poinc.Sep.psi_unit_mono <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Poinc.Sep.psi_unit_mono` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FEighthPowerTrivialisationEqUnitMulMonomial.lean&line=105#L105)
 -/
 theorem _root_.GlobalTheory.T.eighthPower_trivialisation_eq_unit_mul_monomial : ∀ (W : Matrix (Fin 8) (Fin 8) ℤ), PosW W → ∀ (V V₁ : Type) [CommRing V] [IsDomain V] [CommRing V₁] [IsDomain V₁] [IsLocalRing V₁] (Q : Data V) (ρ : V →+* V₁), Function.Injective ρ → ∀ (m : ℕ) (t : Fin m → V) (δ : Fin m → LinearMap.BilinForm ℤ Q.X), (∀ k a b, δ k a b = δ k b a) → (∀ k a, 0 ≤ δ k a a) → (∀ k, t k ≠ 0) → Q.IsMonomialTau t δ → ∀ (D : DegPre V₁) (e : (Fin 8 → Q.X) ≃+ D.X), SharpRef W Q ρ D e → ∀ mu, ∃ u : V₁ˣ, Formalism.L2.Pj.PsiCoord D (e mu) (u * mono W (fun k => ρ (t k)) δ mu) := by
   first | exact @GlobalTheory.Poinc.Sep.psi_unit_mono | exact GlobalTheory.Poinc.Sep.psi_unit_mono | (intros; apply GlobalTheory.Poinc.Sep.psi_unit_mono <;> assumption)

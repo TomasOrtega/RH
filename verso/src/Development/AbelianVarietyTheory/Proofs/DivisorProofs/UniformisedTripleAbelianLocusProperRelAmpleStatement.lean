@@ -14,8 +14,10 @@ open GlobalTheory.RayEv (Ray)
 open GlobalTheory.Toroidal GlobalTheory.LogKS GlobalTheory.RigChart GlobalTheory.Heat
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AbLocusPol.isProper_relAmple_kTriv_of_abLocus | exact GlobalTheory.AbLocusPol.isProper_relAmple_kTriv_of_abLocus | (intros; apply GlobalTheory.AbLocusPol.isProper_relAmple_kTriv_of_abLocus <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AbLocusPol.isProper_relAmple_kTriv_of_abLocus` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FUniformisedTripleAbelianLocusProperRelAmple.lean&line=75#L75)
 -/
 theorem _root_.GlobalTheory.T.uniformisedTriple_abelianLocus_proper_relAmple : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [IsAdicComplete (maximalIdeal R) R] [Algebra ℚ R] (t : SAB H (Sp R)) (P : PELUnif (maximalIdeal R) t) (m : ℕ) (tt : Fin m → R), (∀ i, tt i ≠ 0) → (∀ p : Sp R, p ∈ abLocus t.G ↔ ∏ i, tt i ∉ p.asIdeal) → ∀ (S : Scheme.{0}) (x : S ⟶ Sp R) (t' : SAB H S), (∀ s : S, ∏ i, tt i ∉ (x s).asIdeal) → Nonempty (SABMap t' t x) → IsProper t'.G.hom ∧ Out.RelAmple t'.G t'.PP.L ∧ Out.KTriv t'.G t'.PP.L := by
   first | exact @GlobalTheory.AbLocusPol.isProper_relAmple_kTriv_of_abLocus | exact GlobalTheory.AbLocusPol.isProper_relAmple_kTriv_of_abLocus | (intros; apply GlobalTheory.AbLocusPol.isProper_relAmple_kTriv_of_abLocus <;> assumption)

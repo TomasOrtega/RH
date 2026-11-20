@@ -18,8 +18,10 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open scoped TensorProduct
 open Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnipEmb.PlaceSpan.locInc_splitIncl_mem_colSpan | exact GlobalTheory.UnipEmb.PlaceSpan.locInc_splitIncl_mem_colSpan | (intros; apply GlobalTheory.UnipEmb.PlaceSpan.locInc_splitIncl_mem_colSpan <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnipEmb.PlaceSpan.locInc_splitIncl_mem_colSpan` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLocalSpanColumnInclusion.lean&line=30#L30)
 -/
 theorem _root_.GlobalTheory.T.local_span_column_inclusion : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {v : HeightOneSpectrum (𝓞 F)} (τ : E →ₐ[F] Fv F v) {n r : ℕ}

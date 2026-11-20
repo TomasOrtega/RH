@@ -8,8 +8,10 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LevelTypePlace.offPlace | exact GlobalTheory.LevelTypePlace.offPlace | (intros; apply GlobalTheory.LevelTypePlace.offPlace <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LevelTypePlace.offPlace` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FTypePlaceLevelPlacesDistinctUnderlying.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.typePlace_levelPlaces_distinct_underlying : ∀ (D : D7) (T : Type) (L : LevCh D T) (μ0 : T), L.Is μ0 → (∀ PP, PP ∈ L.Pg ↔ ∃ k v, PP = D.naut.plGw k v) → ∀ (t : T) (s : ReciprocityTheory.Aut.SplitPlace D.host.E), s.w ∈ L.Pg → (∀ PP ∈ L.Pg, PP ≠ s.w → ¬ NG.OverPl PP s.v) ∧ (∀ PP ∈ L.Q t, ¬ NG.OverPl PP s.v) ∧ s.w ∉ L.Q t ∧ (L.xiH t).UnrAt s.w := by
   first | exact @GlobalTheory.LevelTypePlace.offPlace | exact GlobalTheory.LevelTypePlace.offPlace | (intros; apply GlobalTheory.LevelTypePlace.offPlace <;> assumption)

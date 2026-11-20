@@ -12,8 +12,10 @@ section
 open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Top GlobalTheory.Fc GlobalTheory.MiS GlobalTheory.Fam
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.Core.Rk.GapAt.rowE_bigGap_alt | exact _root_.GlobalTheory.Core.Rk.GapAt.rowE_bigGap_alt | (intros; apply _root_.GlobalTheory.Core.Rk.GapAt.rowE_bigGap_alt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Core.Rk.GapAt.rowE_bigGap_alt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicArithmetic%2FThetaCorrespondence%2FThetaPairLifts%2FThirdPlaceSeries%2FRowEBigGap.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.bigGap_of_isGoodE_isLinked : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL), GlobalTheory.Fc.RowE (Bl.IsGoodE p.s) (_root_.GlobalTheory.Mem.Top.Bl.BundleLinkage p) (fun _ D _ _ _ => GlobalTheory.Core.Rk.BigGap D) := by
   first | exact @_root_.GlobalTheory.Core.Rk.GapAt.rowE_bigGap_alt | exact _root_.GlobalTheory.Core.Rk.GapAt.rowE_bigGap_alt | (intros; apply _root_.GlobalTheory.Core.Rk.GapAt.rowE_bigGap_alt <;> assumption)

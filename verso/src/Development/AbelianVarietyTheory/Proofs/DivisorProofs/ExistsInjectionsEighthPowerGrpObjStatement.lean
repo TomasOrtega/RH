@@ -13,8 +13,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.eighthPower_inj_exists | exact GlobalTheory.eighthPower_inj_exists | (intros; apply GlobalTheory.eighthPower_inj_exists <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.eighthPower_inj_exists` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsInjectionsEighthPowerGrpObj.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.exists_injections_eighthPower_grpObj : ∀ {S : Scheme.{0}} (P C : Over S) [GrpObj P] [IsCommMonObj P] [GrpObj C] (pr : Fin 8 → (P ⟶ C)) (hpr : ∀ a, IsMonHom (pr a)) (huniv : ∀ (T : Over S) (y : Fin 8 → (T ⟶ C)), ∃! x : T ⟶ P, ∀ a, x ≫ pr a = y a), ∃ inj : Fin 8 → (C ⟶ P), (∀ a, IsMonHom (inj a)) ∧ (∀ a b, inj a ≫ pr b = if a = b then 𝟙 C else 1) ∧ ∏ a, (pr a ≫ inj a) = 𝟙 P := by
   first | exact @GlobalTheory.eighthPower_inj_exists | exact GlobalTheory.eighthPower_inj_exists | (intros; apply GlobalTheory.eighthPower_inj_exists <;> assumption)

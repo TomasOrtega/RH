@@ -13,8 +13,10 @@ open NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRes
 open AlgebraicGeometry CategoryTheory Limits ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.Frames GlobalTheory.FrameUnif
 open scoped Matrix nonZeroDivisors
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CuspCentre.latZ | exact GlobalTheory.CuspCentre.latZ | (intros; apply GlobalTheory.CuspCentre.latZ <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CuspCentre.latZ` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUnitaryExistence%2FArithmeticGroupCuspCentreLattice.lean&line=41#L41)
 -/
 theorem _root_.GlobalTheory.T.arithmeticGroup_cuspCentre_lattice : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r ρ : ℕ) (Comp : Type) (X : Comp → Data E r), FJ.LatZ X ρ := by
   first | exact @GlobalTheory.CuspCentre.latZ | exact GlobalTheory.CuspCentre.latZ | (intros; apply GlobalTheory.CuspCentre.latZ <;> assumption)

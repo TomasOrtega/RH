@@ -10,8 +10,10 @@ open scoped CategoryTheory.Obj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.SS
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SS.exists_smooth_of_defect_zero | exact GlobalTheory.SS.exists_smooth_of_defect_zero | (intros; apply GlobalTheory.SS.exists_smooth_of_defect_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SS.exists_smooth_of_defect_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDegenerationProofs%2FExistsSmoothOfDefectZero.lean&line=358#L358)
 -/
 theorem _root_.GlobalTheory.T.exists_smooth_of_defect_zero' : ∀ (R : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] (π : R), Irreducible π → ∀ (B : Type) [CommRing B] [Algebra R B] [Algebra.FiniteType R B] [Module.Flat R B], Algebra.Smooth R (Localization.Away (algebraMap R B π)) → ∀ (R' : Type) [CommRing R'] [Algebra R R'] (a : B →ₐ[R] R'), Unr π R' → Defect a π 0 → ∃ f : B, IsUnit (a f) ∧ Algebra.Smooth R (Localization.Away f) := by
   first | exact @GlobalTheory.SS.exists_smooth_of_defect_zero | exact GlobalTheory.SS.exists_smooth_of_defect_zero | (intros; apply GlobalTheory.SS.exists_smooth_of_defect_zero <;> assumption)

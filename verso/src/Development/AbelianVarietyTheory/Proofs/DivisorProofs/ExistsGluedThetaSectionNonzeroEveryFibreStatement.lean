@@ -11,8 +11,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KeyTheta.exists_nzFib | exact GlobalTheory.KeyTheta.exists_nzFib | (intros; apply GlobalTheory.KeyTheta.exists_nzFib <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KeyTheta.exists_nzFib` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsGluedThetaSectionNonzeroEveryFibre.lean&line=287#L287)
 -/
 theorem _root_.GlobalTheory.T.exists_glued_thetaSection_nonzero_every_fibre : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ZH.ArithBase o Ω] (S : ZH.ThetaSys o Ω) (ρ : S.Real) (M : ZH.RatModel o Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J) (Zh : ZH.ZHOut ρ M U₀ EE), S.Over₀ M U₀ → ∀ (δ : LB M.Z) (t : S.Gam → δ.Sec), δ.IsLB → (⨆ a, nonzeroLocus (t a)) = ⊤ → ZM.SecCoord δ t M.pt S.th → (∀ a, ∀ z ∈ nonzeroLocus (t a), a ∈ S.supI M z) → ∃ σ : (CechPic.tens Zh.L.L (δ.pull Zh.G.hom)).Sec, NzFib σ := by
   first | exact @GlobalTheory.KeyTheta.exists_nzFib | exact GlobalTheory.KeyTheta.exists_nzFib | (intros; apply GlobalTheory.KeyTheta.exists_nzFib <;> assumption)

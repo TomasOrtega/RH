@@ -13,8 +13,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ (PS Pt ev pt comp1 FGLaw)
 open MvPolynomial (X)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.chartTransport_holds | exact GlobalTheory.chartTransport_holds | (intros; apply GlobalTheory.chartTransport_holds <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.chartTransport_holds` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFormalGroupCharts%2FIntegralChartTransportToFramedPoint.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.integralChart_transport_to_framedPoint : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)], ChartTransportSt Xo c := by
   first | exact @GlobalTheory.chartTransport_holds | exact GlobalTheory.chartTransport_holds | (intros; apply GlobalTheory.chartTransport_holds <;> assumption)

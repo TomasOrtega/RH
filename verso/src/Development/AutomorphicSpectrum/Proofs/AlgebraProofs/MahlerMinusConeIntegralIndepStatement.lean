@@ -12,8 +12,10 @@ open GroundTheory.Heights₂.Heights MeasureTheory MvPolynomial Matrix GlobalThe
 open scoped ENNReal
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Short.Crofton.defect_eq_of_linForm_notMem | exact GlobalTheory.CompanionTheory.Ar.Short.Crofton.defect_eq_of_linForm_notMem | (intros; apply GlobalTheory.CompanionTheory.Ar.Short.Crofton.defect_eq_of_linForm_notMem <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Short.Crofton.defect_eq_of_linForm_notMem` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FAlgebraProofs%2FMahlerMinusConeIntegralIndep.lean&line=41#L41)
 -/
 theorem _root_.GlobalTheory.T.mahler_minus_cone_integral_indep : ∀ (n e δ : ℕ) (h : HermNorm n) (W : Ideal (MvPolynomial (Fin n) ℂ))
   (g : MvPolynomial (Fin (e + 1) × Fin n) ℂ) (u u' : Fin n → ℂ),

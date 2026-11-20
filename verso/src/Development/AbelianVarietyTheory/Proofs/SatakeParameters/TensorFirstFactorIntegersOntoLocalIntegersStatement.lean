@@ -11,8 +11,10 @@ open Formalism.BasicNotions NumberField IsDedekindDomain Formalism.MainNotions.G
 open scoped TensorProduct Matrix
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TwV.ph_tensInt_onto | exact GlobalTheory.TwV.ph_tensInt_onto | (intros; apply GlobalTheory.TwV.ph_tensInt_onto <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TwV.ph_tensInt_onto` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FTensorFirstFactorIntegersOntoLocalIntegers.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.tensor_first_factor_integers_onto_local_integers : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n p : ℕ} {G : GAtP p} (A : LocAt F E n G), SplAlg A → ∀ v, (∀ s ∈ intV E (A.pl v).1, A.ph v s ∈ (A.pl v).1.adicCompletionIntegers F) ∧ ∀ x ∈ (A.pl v).1.adicCompletionIntegers F, ∃ s ∈ intV E (A.pl v).1, A.ph v s = x := by
   first | exact @GlobalTheory.TwV.ph_tensInt_onto | exact GlobalTheory.TwV.ph_tensInt_onto | (intros; apply GlobalTheory.TwV.ph_tensInt_onto <;> assumption)

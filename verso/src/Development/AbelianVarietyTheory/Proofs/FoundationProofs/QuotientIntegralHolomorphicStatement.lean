@@ -9,8 +9,10 @@ open GlobalTheory.QFam GlobalTheory.WpFam GlobalTheory.KZ GlobalTheory.FN
 open ReciprocityTheory.ChartRestriction.L1 (DD jT IsMF)
 open ModularForm (E₄ E₆)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.quotient_integral_holomorphic | exact GlobalTheory.quotient_integral_holomorphic | (intros; apply GlobalTheory.quotient_integral_holomorphic <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.quotient_integral_holomorphic` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FQuotientIntegralHolomorphic.lean&line=48#L48)
 -/
 theorem _root_.GlobalTheory.T.exists_differentiableOn_quotient_of_integral : ∀ (U : Set ℂ) (n : ℕ) (A D : ℂ → ℂ) (s : Fin n → ℂ → ℂ), IsOpen U → IsPreconnected U → DifferentiableOn ℂ A U → DifferentiableOn ℂ D U → (∀ j, DifferentiableOn ℂ (s j) U) → (∃ z ∈ U, D z ≠ 0) → (∀ z ∈ U, A z ^ n + ∑ j, s j z * A z ^ (j : ℕ) * D z ^ (n - j) = 0) → ∃ h : ℂ → ℂ, DifferentiableOn ℂ h U ∧ (∀ z ∈ U, A z = h z * D z) ∧ ∀ z ∈ U, h z ^ n + ∑ j, s j z * h z ^ (j : ℕ) = 0 := by
   first | exact @GlobalTheory.quotient_integral_holomorphic | exact GlobalTheory.quotient_integral_holomorphic | (intros; apply GlobalTheory.quotient_integral_holomorphic <;> assumption)

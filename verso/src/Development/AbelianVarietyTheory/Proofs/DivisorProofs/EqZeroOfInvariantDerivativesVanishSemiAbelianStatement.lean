@@ -14,8 +14,10 @@ open GlobalTheory.RayEv (Ray)
 open GlobalTheory.Toroidal GlobalTheory.LogKS GlobalTheory.RigChart GlobalTheory.Heat
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.InvJet.eq_zero_of_invDer_vanish | exact GlobalTheory.InvJet.eq_zero_of_invDer_vanish | (intros; apply GlobalTheory.InvJet.eq_zero_of_invDer_vanish <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.InvJet.eq_zero_of_invDer_vanish` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FEqZeroOfInvariantDerivativesVanishSemiAbelian.lean&line=255#L255)
 -/
 theorem _root_.GlobalTheory.T.eq_zero_of_invariantDerivatives_vanish_semiAbelian : ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [Algebra ℚ R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], ReciprocityTheory.ChartRestriction.G.Semi.IsSemiAbelian G → ∀ (n : ℕ) (v : Module.Basis (Fin n) R (TanM (𝟙 (Sp R)) G)) (dd : Fin n → Fld G.left), (∀ a, IsInv G (v a) (dd a)) → ∀ (Ω : Type) [CommRing Ω] [IsDomain Ω] (φ : R →+* Ω), Function.Injective φ → ∀ (x : Sp Ω ⟶ G.left), x ≫ G.hom = spMap φ → ∀ (O : G.left.Opens) (f : Γ(G.left, O)), ⊤ ≤ x ⁻¹ᵁ O → (∀ l : List (Fin n), valR x O (l.foldr (fun a g => dd a O g) f) = 0) → f = 0 := by
   first | exact @GlobalTheory.InvJet.eq_zero_of_invDer_vanish | exact GlobalTheory.InvJet.eq_zero_of_invDer_vanish | (intros; apply GlobalTheory.InvJet.eq_zero_of_invDer_vanish <;> assumption)

@@ -14,8 +14,10 @@ open GlobalTheory.Core.Rk.IP
 open GlobalTheory.MixModel GlobalTheory.Core.Rk.SWLaw
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Core.Rk.SWLaw.aP_levi_mul_nC | exact GlobalTheory.Core.Rk.SWLaw.aP_levi_mul_nC | (intros; apply GlobalTheory.Core.Rk.SWLaw.aP_levi_mul_nC <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Core.Rk.SWLaw.aP_levi_mul_nC` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FDoublingSiegelLeviDetHomLeviMulUnipotent.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.doublingSiegelLeviDetHom_levi_mul_unipotent : ∀ (D : D7) (A : HSp D) (p : siegel A) (a : GL (Fin A.rank) (AE D)) (c : skewA D A.rank), (p : GA D (dblSp A)) = (dblDec A).levi a * (dblDec A).nC c → aP A p = Matrix.GeneralLinearGroup.det a := by
   first | exact @GlobalTheory.Core.Rk.SWLaw.aP_levi_mul_nC | exact GlobalTheory.Core.Rk.SWLaw.aP_levi_mul_nC | (intros; apply GlobalTheory.Core.Rk.SWLaw.aP_levi_mul_nC <;> assumption)

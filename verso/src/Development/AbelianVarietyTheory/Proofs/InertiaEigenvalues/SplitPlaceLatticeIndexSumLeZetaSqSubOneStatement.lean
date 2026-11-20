@@ -11,8 +11,10 @@ open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RawLift
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SplitIndexSum.indexSum_split | exact GlobalTheory.SplitIndexSum.indexSum_split | (intros; apply GlobalTheory.SplitIndexSum.indexSum_split <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SplitIndexSum.indexSum_split` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FSplitPlaceLatticeIndexSumLeZetaSqSubOne.lean&line=75#L75)
 -/
 theorem _root_.GlobalTheory.T.split_place_lattice_index_sum_le_zeta_sq_sub_one : ∀ (D : D7) (W : HSp D) (n : ℕ), 2 * W.rank + 5 ≤ n → ∀ (v : HeightOneSpectrum (𝓞 D.host.F)) (f : Formalism.L2.Theta.AE D), IsFinIdem D v f → (∃ e, Formalism.L2.Theta.IsSplitIdem D e ∧ e + Formalism.L2.Theta.cA D e = f) → ∀ C : Finset (GA D W), (∀ g ∈ C, SuppF W f g ∧ g ∉ KsphC W ∅) → (∀ g ∈ C, ∀ g' ∈ C, g⁻¹ * g' ∈ KsphC W ∅ → g = g') → ∑ g ∈ C, (latIndex W g : ℝ) ^ (-(n : ℝ) / 2) ≤ (∏ i ∈ Finset.range W.rank, (1 - (Ideal.absNorm v.asIdeal : ℝ) ^ ((i : ℝ) - (n : ℝ) / 2))⁻¹) ^ 2 - 1 := by
   first | exact @GlobalTheory.SplitIndexSum.indexSum_split | exact GlobalTheory.SplitIndexSum.indexSum_split | (intros; apply GlobalTheory.SplitIndexSum.indexSum_split <;> assumption)

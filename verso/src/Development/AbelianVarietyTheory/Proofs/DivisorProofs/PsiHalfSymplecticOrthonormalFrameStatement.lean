@@ -9,8 +9,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open scoped TensorProduct Classical ComplexConjugate
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AdThSympl.psi_symplOH_eq_of_isONFr | exact GlobalTheory.AdThSympl.psi_symplOH_eq_of_isONFr | (intros; apply GlobalTheory.AdThSympl.psi_symplOH_eq_of_isONFr <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AdThSympl.psi_symplOH_eq_of_isONFr` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPsiHalfSymplecticOrthonormalFrame.lean&line=149#L149)
 -/
 theorem _root_.GlobalTheory.T.psi_halfSymplectic_orthonormalFrame : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (V W : HSp D) (r g : ℕ) (hr : W.rank = r) (X : Data D.host.E r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r), IsStdChar D ψ (-1) → IsInfFam θ → V.gram = 1 → Even V.rank → IsMod W hr X → IsSympl X bas → ∀ x : Frame X.Ψ r, IsONFr X x → ∀ v w : WO V W, v.map (finPart D) = 0 → ψ (symplOH V W v w) = cexp (Real.pi * I * ((∑ b, (hx X bas idx x (zOf θ V W hr X idx x v b) (zOf θ V W hr X idx x w b)).im : ℝ) : ℂ)) := by
   first | exact @GlobalTheory.AdThSympl.psi_symplOH_eq_of_isONFr | exact GlobalTheory.AdThSympl.psi_symplOH_eq_of_isONFr | (intros; apply GlobalTheory.AdThSympl.psi_symplOH_eq_of_isONFr <;> assumption)

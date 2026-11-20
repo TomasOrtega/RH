@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SelfDualOne
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LatticeModelVacuumTranslateClassesIndependent
 open Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LatticeDuality.dual_subset | exact GlobalTheory.LatticeDuality.dual_subset | (intros; apply GlobalTheory.LatticeDuality.dual_subset <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LatticeDuality.dual_subset` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FDualIntegralPreimageLeSumTransposeImage.lean&line=86#L86)
 -/
 theorem _root_.GlobalTheory.T.dual_integral_preimage_le_sum_transpose_image : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (m n : ℕ) (x : Matrix (Fin m) (Fin n) L)
     (z : Fin n → L),

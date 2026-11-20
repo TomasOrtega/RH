@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TorsionKaehlerSp
 import Development.AbelianVarietyTheory.Definitions.Foundations.IntegralLocallyConstCochainModPow
 open GlobalTheory.K5
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.K5.TorsionDiff.torsion_span_and_indep | exact GlobalTheory.K5.TorsionDiff.torsion_span_and_indep | (intros; apply GlobalTheory.K5.TorsionDiff.torsion_span_and_indep <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.K5.TorsionDiff.torsion_span_and_indep` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FTorsionKaehlerSpanDlogIndep.lean&line=64#L64)
 -/
 theorem _root_.GlobalTheory.T.torsion_kaehler_span_dlog_indep : ∀ (p : ℕ) [Fact p.Prime], p ≠ 2 → ∃ c : ℕ, ∀ (Ω : Type) [Field Ω] [Algebra (O0 p) Ω], IsClo p Ω →
   ∀ (T : Tower p Ω) (n : ℕ), 1 ≤ n → ∀ z qn zi qi : integralClosure (O0 p) Ω,

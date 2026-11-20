@@ -8,8 +8,10 @@ open Formalism.BasicNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVo
 open scoped TensorProduct ENNReal
 open GlobalTheory.TamSU GlobalTheory.SUVol GlobalTheory.UCls GlobalTheory.AdLat GlobalTheory.Published GlobalTheory.TamUnf
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.InfAdeleCMType.exists_homeomorph | exact GlobalTheory.InfAdeleCMType.exists_homeomorph | (intros; apply GlobalTheory.InfAdeleCMType.exists_homeomorph <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.InfAdeleCMType.exists_homeomorph` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FArchimedeanCmTypeHomeomorph.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.archimedean_cm_type_homeomorph : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Finset (E →+* ℂ))
     (θ : Ψ → (Ainf (maximalRealSubfield E) ⊗[maximalRealSubfield E] E →+* ℂ)),

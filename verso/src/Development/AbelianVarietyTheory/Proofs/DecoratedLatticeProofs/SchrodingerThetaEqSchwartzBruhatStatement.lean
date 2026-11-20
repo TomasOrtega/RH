@@ -12,8 +12,10 @@ open GlobalTheory.Core.Rk.IP GlobalTheory.Core.Rk.SWLaw
 open GlobalTheory.Core.Rk.SW
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SchSchwartzAll.schSchwartz | exact GlobalTheory.SchSchwartzAll.schSchwartz | (intros; apply GlobalTheory.SchSchwartzAll.schSchwartz <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SchSchwartzAll.schSchwartz` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FSchrodingerThetaEqSchwartzBruhat.lean&line=33#L33)
 -/
 theorem _root_.GlobalTheory.T.schrodingerTheta_eq_schwartzBruhat : ∀ D : D7, SchSchwartz D := by
   first | exact @GlobalTheory.SchSchwartzAll.schSchwartz | exact GlobalTheory.SchSchwartzAll.schSchwartz | (intros; apply GlobalTheory.SchSchwartzAll.schSchwartz <;> assumption)

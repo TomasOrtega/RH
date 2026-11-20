@@ -6,8 +6,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open GlobalTheory GlobalTheory.CechPic GlobalTheory.CxPts GlobalTheory.Cartier GlobalTheory.ArInt GlobalTheory.MixHt
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MixHt.amb_vertical_or_arithVar | exact GlobalTheory.MixHt.amb_vertical_or_arithVar | (intros; apply GlobalTheory.MixHt.amb_vertical_or_arithVar <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MixHt.amb_vertical_or_arithVar` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FProjArithAmbientVerticalOrArithmeticVariety.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.projArithAmbient_vertical_or_arithmeticVariety : ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) [IsIntegral Y] (q : Y ⟶ Sp k), IsAmb q → ∀ d : ℕ, topologicalKrullDim Y = d → (∃ (l : ℕ) (_ : Fact l.Prime), Nonempty (Algebra (ZMod l) Γ(Y, ⊤)) ∧ ∀ σ : k →+* ℂ, IsEmpty (CxPts q σ)) ∨ ∃ e : ℕ, d = e + 1 ∧ IsArithVar q e := by
   first | exact @GlobalTheory.MixHt.amb_vertical_or_arithVar | exact GlobalTheory.MixHt.amb_vertical_or_arithVar | (intros; apply GlobalTheory.MixHt.amb_vertical_or_arithVar <;> assumption)

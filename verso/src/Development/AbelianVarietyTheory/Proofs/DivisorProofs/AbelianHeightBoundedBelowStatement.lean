@@ -6,8 +6,10 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 open scoped ENNReal Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AmpleHtLow.main | exact GlobalTheory.AmpleHtLow.main | (intros; apply GlobalTheory.AmpleHtLow.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AmpleHtLow.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAbelianHeightBoundedBelow.lean&line=93#L93)
 -/
 theorem _root_.GlobalTheory.T.abelian_height_bounded_below : Hypotheses2 → HypothesesH → ∀ (D : D7) (O : Setup D), O.Core → ∀ c : O.s.Comp, ∃ C : ℝ, ∀ b : (O.var c).X, IsClosed ({b} : Set (O.var c).X) → -C ≤ (O.met.ab c).ht b := by
   first | exact @GlobalTheory.AmpleHtLow.main | exact GlobalTheory.AmpleHtLow.main | (intros; apply GlobalTheory.AmpleHtLow.main <;> assumption)

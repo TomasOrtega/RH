@@ -6,8 +6,10 @@ import GroundTheory.GlobalFields.TateThesis.AdelicCharDual
 
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.StdCharSep.exists_sep | exact GlobalTheory.StdCharSep.exists_sep | (intros; apply GlobalTheory.StdCharSep.exists_sep <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.StdCharSep.exists_sep` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FStandardCharSeparatesIntegralFiniteAdeles.lean&line=54#L54)
 -/
 theorem _root_.GlobalTheory.T.standardChar_separates_integralFiniteAdeles : ∀ {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ →
     ∀ b : FiniteAdeleRing (𝓞 F) F, ¬ (∀ v : HeightOneSpectrum (𝓞 F), b v ∈ v.adicCompletionIntegers F) →

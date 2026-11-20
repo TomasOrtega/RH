@@ -7,8 +7,10 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.Un
 open scoped TensorProduct Pointwise
 open GlobalTheory.RootEx (embX)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FinPl.emb_gl_sumFrame | exact GlobalTheory.FinPl.emb_gl_sumFrame | (intros; apply GlobalTheory.FinPl.emb_gl_sumFrame <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FinPl.emb_gl_sumFrame` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FOrthogonalEmbeddingSplitPlaceBlockDiagonal.lean&line=33#L33)
 -/
 theorem _root_.GlobalTheory.T.orthogonalEmbedding_splitPlace_blockDiagonal : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : SplitPt D k) (n : Type) [Fintype n] [DecidableEq n] (σ : ℕ) (B : BesLev D σ) (β : Frame p B.A n) (β₀ : Frame p B.V₀ (n ⊕ Fin 1)), IsSumFrame B.o B.ζ β β₀ → ∀ g : GL n k, B.o.emb (β.gl g, 1) = β₀.gl (embX 1 g) := by
   first | exact @GlobalTheory.FinPl.emb_gl_sumFrame | exact GlobalTheory.FinPl.emb_gl_sumFrame | (intros; apply GlobalTheory.FinPl.emb_gl_sumFrame <;> assumption)

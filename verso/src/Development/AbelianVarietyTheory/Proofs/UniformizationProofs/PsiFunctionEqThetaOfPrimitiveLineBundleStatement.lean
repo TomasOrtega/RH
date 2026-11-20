@@ -18,8 +18,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UT
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PsiPrim.traceFormTwistIso_of_primitive_lineBundle | exact GlobalTheory.PsiPrim.traceFormTwistIso_of_primitive_lineBundle | (intros; apply GlobalTheory.PsiPrim.traceFormTwistIso_of_primitive_lineBundle <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PsiPrim.traceFormTwistIso_of_primitive_lineBundle` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUniformizationProofs%2FPsiFunctionEqThetaOfPrimitiveLineBundle.lean&line=93#L93)
 -/
 theorem _root_.GlobalTheory.T.psiFunction_eq_theta_of_primitive_lineBundle : LL → TwistBCSpanStatement → TWM.VRatioGtStatement → TWStatement → UUStatement → AllU fun {R} _ _ {I} {D} {A} {G} _ _ U => ∀ (O : Type) [CommRing O] [StarRing O] [Module O D.toPre.X] (ιD : D.toPre.OAct O) (ιA : A.OAct O) (ιG : RingAct G O), U.toUnifPre.OLinear O ιD ιA ιG → (∀ a, LBIso (cubeLB G ![fst G G ≫ ιG.act a, snd G G] U.LG.L) (cubeLB G ![fst G G, snd G G ≫ ιG.act (star a)] U.LG.L)) → ∀ (w₀ : O) (ν : ℕ), w₀ + star w₀ = 1 → w₀ * star w₀ = (ν : O) → 1 ≤ ν → Even ν → LBIso U.LG.L (cubeLB G ![𝟙 G, ιG.act w₀] U.LG.L) → TraceFormTwistIso D.toPre ιD w₀ := by
   first | exact @GlobalTheory.PsiPrim.traceFormTwistIso_of_primitive_lineBundle | exact GlobalTheory.PsiPrim.traceFormTwistIso_of_primitive_lineBundle | (intros; apply GlobalTheory.PsiPrim.traceFormTwistIso_of_primitive_lineBundle <;> assumption)

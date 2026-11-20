@@ -9,8 +9,10 @@ open GlobalTheory.QFam GlobalTheory.WpFam GlobalTheory.KZ GlobalTheory.FN
 open ReciprocityTheory.ChartRestriction.L1 (DD jT IsMF)
 open ModularForm (E₄ E₆)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FN.reciprocity_large_level | exact GlobalTheory.FN.reciprocity_large_level | (intros; apply GlobalTheory.FN.reciprocity_large_level <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FN.reciprocity_large_level` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FReciprocityLargeLevel.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.exists_level_gal_sl_commute : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (T : Frac Ω ε) (f : T.K), ∃ N₀ : ℕ, 0 < N₀ ∧ ∀ N : ℕ, 0 < N → N₀ ∣ N → ∀ (s : Ω ≃ₐ[ℚ] Ω) (d : ℤ), s (eOm ε (1 / N)) = eOm ε (1 / N) ^ d → ∀ γ γ' : SL(2, ℤ), Cong N d γ γ' → T.gal s (T.sl (ofSL γ) f) = T.sl (ofSL γ') (T.gal s f) := by
   first | exact @GlobalTheory.FN.reciprocity_large_level | exact GlobalTheory.FN.reciprocity_large_level | (intros; apply GlobalTheory.FN.reciprocity_large_level <;> assumption)

@@ -10,8 +10,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.MBLow.Cl Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MBLow.Cl.thetaChar_entire_ne_zero_automorphy | exact GlobalTheory.MBLow.Cl.thetaChar_entire_ne_zero_automorphy | (intros; apply GlobalTheory.MBLow.Cl.thetaChar_entire_ne_zero_automorphy <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MBLow.Cl.thetaChar_entire_ne_zero_automorphy` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FThetaCharEntireNeZeroAutomorphy.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.thetaChar_differentiable_ne_zero_automorphy : ∀ (g : ℕ) (τ : Matrix (Fin g) (Fin g) ℂ) (a b : Fin g → ℂ), τ.IsSymm → (τ.map Complex.im).PosDef → Half a → Half b → Differentiable ℂ (thetaChar τ a b) ∧ (∃ z, thetaChar τ a b z ≠ 0) ∧ ∀ M N z, thetaChar τ a b (z + perV τ M N) = autV τ a b M N z * thetaChar τ a b z := by
   first | exact @GlobalTheory.MBLow.Cl.thetaChar_entire_ne_zero_automorphy | exact GlobalTheory.MBLow.Cl.thetaChar_entire_ne_zero_automorphy | (intros; apply GlobalTheory.MBLow.Cl.thetaChar_entire_ne_zero_automorphy <;> assumption)

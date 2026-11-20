@@ -6,8 +6,10 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 open CategoryTheory AlgebraicGeometry TopologicalSpace Matrix ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.R.FinalTheorems GlobalTheory GlobalTheory.Toroidal GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.CxPts GlobalTheory.ShFam GlobalTheory.ShFam.Hor GlobalTheory.CurvInterp
 open scoped ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.posDef_family_gnorm_comparable | exact GlobalTheory.posDef_family_gnorm_comparable | (intros; apply GlobalTheory.posDef_family_gnorm_comparable <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.posDef_family_gnorm_comparable` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPosDefContinuousCompactNormEquiv.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.pos_def_continuous_compact_norm_equiv : ∀ (e n : ℕ) (K : Set (Fin e → ℂ)) (H₀ : (Fin e → ℂ) → Matrix (Fin n) (Fin n) ℂ), IsCompact K → ContinuousOn H₀ K → (∀ z ∈ K, (H₀ z).PosDef) → ∃ c C : ℝ, 0 < c ∧ 0 < C ∧ ∀ z ∈ K, ∀ v : Fin n → ℂ, c * ‖v‖ ≤ GlobalTheory.HermFrame.gnorm (H₀ z) v ∧ GlobalTheory.HermFrame.gnorm (H₀ z) v ≤ C * ‖v‖ := by
   first | exact @GlobalTheory.posDef_family_gnorm_comparable | exact GlobalTheory.posDef_family_gnorm_comparable | (intros; apply GlobalTheory.posDef_family_gnorm_comparable <;> assumption)

@@ -16,8 +16,10 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.B
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.Frames
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Exist.intFrExt_of_good | exact GlobalTheory.Exist.intFrExt_of_good | (intros; apply GlobalTheory.Exist.intFrExt_of_good <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Exist.intFrExt_of_good` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUnitaryExistence%2FIntFrExtOfGoodLevel.lean&line=29#L29)
 -/
 theorem _root_.GlobalTheory.T.intFrExt_of_good_level : PartI → N1ab → Out.SecBaseChangeSt → Out.SecTwistSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), 1 ≤ Dw.p + Dw.q → (∀ p : ℕ, p.Prime → l.GoodAt p) → IntFrExt Xo c := by
   first | exact @GlobalTheory.Exist.intFrExt_of_good | exact GlobalTheory.Exist.intFrExt_of_good | (intros; apply GlobalTheory.Exist.intFrExt_of_good <;> assumption)

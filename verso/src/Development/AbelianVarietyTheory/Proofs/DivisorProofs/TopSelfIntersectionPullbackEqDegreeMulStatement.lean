@@ -10,8 +10,10 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open ReciprocityTheory.AnForm.M
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points GlobalTheory.CechPic GlobalTheory.ProjVar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ProjFormulaTop.topSelf_pull_eq_mul | exact GlobalTheory.ProjFormulaTop.topSelf_pull_eq_mul | (intros; apply GlobalTheory.ProjFormulaTop.topSelf_pull_eq_mul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ProjFormulaTop.topSelf_pull_eq_mul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTopSelfIntersectionPullbackEqDegreeMul.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.topSelfIntersection_pullback_eq_degree_mul : ∀ (k : Type) [Field k] (X Y : Scheme.{0}) [IsIntegral X] [IsIntegral Y] (p : X ⟶ Sp k) (q : Y ⟶ Sp k) [CharZero k] (D : ℕ), IsProjOver p → IsProjOver q → topologicalKrullDim X ≤ D → ∀ (π : Y ⟶ X), π ≫ p = q → π (genericPoint Y) = genericPoint X → π.residueDegree (genericPoint Y) ≠ 0 → ∀ B : LB X, B.IsLB → letI := GlobalTheory.algebraΓOfHom p; letI := GlobalTheory.algebraΓOfHom q; topSelfIntersection k (B.pull π) D = (π.residueDegree (genericPoint Y) : ℤ) * topSelfIntersection k B D := by
   first | exact @GlobalTheory.ProjFormulaTop.topSelf_pull_eq_mul | exact GlobalTheory.ProjFormulaTop.topSelf_pull_eq_mul | (intros; apply GlobalTheory.ProjFormulaTop.topSelf_pull_eq_mul <;> assumption)

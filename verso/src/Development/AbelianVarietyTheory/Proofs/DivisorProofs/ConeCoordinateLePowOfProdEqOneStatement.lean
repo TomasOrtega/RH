@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Cu
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SelfMemSpanK
 open NumberField GlobalTheory.CuspRep GlobalTheory.CuspQuot GlobalTheory.AutGrowth MeasureTheory GroundTheory.Global GroundTheory.Automorphic GroundTheory.Automorphic.Reduction
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.coneCoord_le_pow_of_prod_eq_one | exact GlobalTheory.coneCoord_le_pow_of_prod_eq_one | (intros; apply GlobalTheory.coneCoord_le_pow_of_prod_eq_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.coneCoord_le_pow_of_prod_eq_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FConeCoordinateLePowOfProdEqOne.lean&line=39#L39)
 -/
 theorem _root_.GlobalTheory.T.coneCoordinate_le_pow_of_prod_eq_one : ∀ (a : ℕ) (t : ℝ), 0 < t → ∃ C : ℝ, 1 ≤ C ∧ ∀ (r : Fin a → ℝ) (ρ : ℝ), (∀ i, 0 < r i) → (∀ i j : Fin a, (j : ℕ) = i + 1 → t * r j ≤ r i) → ∏ i, r i = 1 → 1 ≤ ρ → (∀ i j : Fin a, (j : ℕ) = i + 1 → r i ≤ ρ * r j) → ∀ i, r i ≤ C * ρ ^ a ∧ (r i)⁻¹ ≤ C * ρ ^ a := by
   first | exact @GlobalTheory.coneCoord_le_pow_of_prod_eq_one | exact GlobalTheory.coneCoord_le_pow_of_prod_eq_one | (intros; apply GlobalTheory.coneCoord_le_pow_of_prod_eq_one <;> assumption)

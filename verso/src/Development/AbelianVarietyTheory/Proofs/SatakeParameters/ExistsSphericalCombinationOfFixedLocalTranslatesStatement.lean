@@ -11,8 +11,10 @@ open scoped TensorProduct InnerProductSpace
 open GlobalTheory.Hk3
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SphAvg.fixed_comb_eq_opOf | exact GlobalTheory.SphAvg.fixed_comb_eq_opOf | (intros; apply GlobalTheory.SphAvg.fixed_comb_eq_opOf <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SphAvg.fixed_comb_eq_opOf` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FExistsSphericalCombinationOfFixedLocalTranslates.lean&line=126#L126)
 -/
 theorem _root_.GlobalTheory.T.exists_sphericalCombination_of_fixed_localTranslates : ∀ {D : D7} (V : HSp D) (P : Pl D.host.E), ∀ e f, IsPrimeIdem P e f → ∀ a : GA D V →₀ ℂ, (∀ g ∈ a.support, SuppF V f g) → ∃ c : List ℤ →₀ ℂ, ∀ (M : Type) [AddCommGroup M] [Module ℂ M] (π : GA D V →* Module.End ℂ M) (u : M), (∀ k ∈ hyp V P, π k u = u) → (∀ k ∈ hyp V P, π k (a.sum fun g z => z • π g u) = a.sum fun g z => z • π g u) → (a.sum fun g z => z • π g u) = opOf π P c u := by
   first | exact @GlobalTheory.SphAvg.fixed_comb_eq_opOf | exact GlobalTheory.SphAvg.fixed_comb_eq_opOf | (intros; apply GlobalTheory.SphAvg.fixed_comb_eq_opOf <;> assumption)

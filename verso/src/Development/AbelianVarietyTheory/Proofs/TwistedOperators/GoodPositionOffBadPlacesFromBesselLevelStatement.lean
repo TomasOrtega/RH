@@ -9,8 +9,10 @@ open GlobalTheory.FinPl (Lat idAt idOff intAt grpAt grpOff MxAt latV latA InK Mo
 open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GoodPosBF.goodPosition_offBadPlaces_from_besselLevel | exact GlobalTheory.GoodPosBF.goodPosition_offBadPlaces_from_besselLevel | (intros; apply GlobalTheory.GoodPosBF.goodPosition_offBadPlaces_from_besselLevel <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GoodPosBF.goodPosition_offBadPlaces_from_besselLevel` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FGoodPositionOffBadPlacesFromBesselLevel.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.goodPosition_and_incAdj_mem_latO_iff_mem_intAt : OnStd fun {D} _ _ {sc} {G} W F => ∀ ρ (h : 2 * ρ + 2 ≤ D.R.m), ∀ v ∉ G.pl.S0, GoodAt (F.dB ρ h) (F.dJ ρ h) (xZero (F.dJ ρ h)) W.ψ (G.Λ (.grid (2 * ρ + 2) 0)) (lat0 F ρ h) (G.Λ (.grid (2 * ρ + 1) 0)) (G.Λ (.core (2 * ρ + 1))) v ∧ StdAt (F.dB ρ h) (F.dJ ρ h) (pcBF W F ρ h) (G.Λ (.grid (2 * ρ + 2) 0)) (G.Λ (.grid (2 * ρ + 1) 0)) v ∧ (0 < ρ → ∀ a ∈ idAt D (· = v), (F.dJ ρ h).incAdj (F.V₀ ρ) (a • yBF F ρ h) ∈ latO (F.V₀ ρ) _ (lat0 F ρ h : Set _) (G.Λ (.grid (2 * ρ + 1) 0) : Set _) (· = v) ↔ a ∈ intAt D (· = v)) := by
   first | exact @GlobalTheory.GoodPosBF.goodPosition_offBadPlaces_from_besselLevel | exact GlobalTheory.GoodPosBF.goodPosition_offBadPlaces_from_besselLevel | (intros; apply GlobalTheory.GoodPosBF.goodPosition_offBadPlaces_from_besselLevel <;> assumption)

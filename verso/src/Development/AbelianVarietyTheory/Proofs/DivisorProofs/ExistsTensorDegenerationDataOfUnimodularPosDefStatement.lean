@@ -9,8 +9,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.TensExist.exists_tens | exact GlobalTheory.Mum.TensExist.exists_tens | (intros; apply GlobalTheory.Mum.TensExist.exists_tens <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.TensExist.exists_tens` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsTensorDegenerationDataOfUnimodularPosDef.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.exists_tensorDegenerationData_of_unimodular_posDef : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) → ∀ (D : DegData R (maximalIdeal R)) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ), ((W + W.transpose).map (Int.cast : ℤ → ℝ)).PosDef → IsUnit (W + W.transpose).det → ∃ D' : DegData R (maximalIdeal R), Nonempty (Tens D.toPre D'.toPre W) := by
   first | exact @GlobalTheory.Mum.TensExist.exists_tens | exact GlobalTheory.Mum.TensExist.exists_tens | (intros; apply GlobalTheory.Mum.TensExist.exists_tens <;> assumption)

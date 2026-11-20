@@ -6,8 +6,10 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousSingl
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes IsDedekindDomain NumberField GlobalTheory.Published Sa2 GlobalTheory.CompanionTheory.SaGen
 open scoped TensorProduct Topology
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.SaGen.IsoOpen.isoPlane_eventually | exact GlobalTheory.CompanionTheory.SaGen.IsoOpen.isoPlane_eventually | (intros; apply GlobalTheory.CompanionTheory.SaGen.IsoOpen.isoPlane_eventually <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.SaGen.IsoOpen.isoPlane_eventually` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FIsotropicPlaneOpenNear.lean&line=228#L228)
 -/
 theorem _root_.GlobalTheory.T.isotropic_plane_open_near : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ {M : ℕ} (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ {K : Type} [NontriviallyNormedField K] [ProperSpace K] [Algebra F K], IsoAt K σ J → ∃ a₀ b₀ : Fin M → K ⊗[F] E, ∀ᶠ p in nhds (a₀, b₀), IsoPlane K σ J p.1 p.2 := by
   first | exact @GlobalTheory.CompanionTheory.SaGen.IsoOpen.isoPlane_eventually | exact GlobalTheory.CompanionTheory.SaGen.IsoOpen.isoPlane_eventually | (intros; apply GlobalTheory.CompanionTheory.SaGen.IsoOpen.isoPlane_eventually <;> assumption)

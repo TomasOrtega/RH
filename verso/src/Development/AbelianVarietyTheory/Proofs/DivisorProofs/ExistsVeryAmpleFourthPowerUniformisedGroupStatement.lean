@@ -9,8 +9,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.exists_veryAmpleAlong_unif | exact GlobalTheory.Mum.exists_veryAmpleAlong_unif | (intros; apply GlobalTheory.Mum.exists_veryAmpleAlong_unif <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.exists_veryAmpleAlong_unif` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsVeryAmpleFourthPowerUniformisedGroup.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.exists_veryAmple_fourth_power_uniformised_group : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : DegData R I) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (U : Unif I D A G), ∃ (m : ℕ) (σ : Fin (m + 1) → H0 U.LG.L 4), VeryAmpleAlong ((Over.pullback (jK R)).obj G).hom (pullback.fst G.hom (jK R)) U.LG.L σ := by
   first | exact @GlobalTheory.Mum.exists_veryAmpleAlong_unif | exact GlobalTheory.Mum.exists_veryAmpleAlong_unif | (intros; apply GlobalTheory.Mum.exists_veryAmpleAlong_unif <;> assumption)

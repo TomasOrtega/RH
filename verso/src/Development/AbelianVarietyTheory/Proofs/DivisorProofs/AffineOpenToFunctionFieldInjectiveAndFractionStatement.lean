@@ -14,8 +14,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.OrbitSep
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GenFrac.injective_and_frac | exact GlobalTheory.GenFrac.injective_and_frac | (intros; apply GlobalTheory.GenFrac.injective_and_frac <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GenFrac.injective_and_frac` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAffineOpenToFunctionFieldInjectiveAndFraction.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.affineOpen_to_functionField_injective_and_fraction : ∀ (X : Scheme.{0}) (V : X.Opens) [IsIntegral V.toScheme] (W : X.affineOpens), W.1 ≤ V → ∀ (ρW : Γ(X, W.1) →+* V.toScheme.functionField), spMap ρW ≫ GlobalTheory.LogKS.chart W = V.toScheme.fromSpecStalk (genericPoint V.toScheme) ≫ V.ι → Function.Injective ρW ∧ ∀ x : V.toScheme.functionField, ∃ a b : Γ(X, W.1), ρW b ≠ 0 ∧ x * ρW b = ρW a := by
   first | exact @GlobalTheory.GenFrac.injective_and_frac | exact GlobalTheory.GenFrac.injective_and_frac | (intros; apply GlobalTheory.GenFrac.injective_and_frac <;> assumption)

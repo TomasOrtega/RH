@@ -4,8 +4,10 @@ import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.SquareI
 import GroundTheory.AutomorphicForms.SupercuspidalCoefficients
 open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.JHMult
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.ZjCentral.leviEmb_zj_comm | exact GlobalTheory.CompanionTheory.ZjCentral.leviEmb_zj_comm | (intros; apply GlobalTheory.CompanionTheory.ZjCentral.leviEmb_zj_comm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.ZjCentral.leviEmb_zj_comm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FBlockCentralElementCommutesLevi.lean&line=35#L35)
 -/
 theorem _root_.GlobalTheory.T.block_central_element_commutes_levi : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], ∀ (h N : ℕ) (d : Fin h → ℕ) (hd : ∑ a, d a = N) (t : kˣ) (j : Fin h), ∀ y ∈ GroundTheory.Automorphic.Parabolic.levi k N (Zl.JC.blockIdx d hd), leviEmb k (stdBlocks d hd) (Zl.JC.zj d t j) * y = y * leviEmb k (stdBlocks d hd) (Zl.JC.zj d t j) := by
   first | exact @GlobalTheory.CompanionTheory.ZjCentral.leviEmb_zj_comm | exact GlobalTheory.CompanionTheory.ZjCentral.leviEmb_zj_comm | (intros; apply GlobalTheory.CompanionTheory.ZjCentral.leviEmb_zj_comm <;> assumption)

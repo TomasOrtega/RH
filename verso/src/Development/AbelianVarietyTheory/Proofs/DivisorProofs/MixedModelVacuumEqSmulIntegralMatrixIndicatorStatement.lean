@@ -13,8 +13,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 open GlobalTheory.TopFlip
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TopFlip.MixVacSmall.mixVac_eq_indicator | exact GlobalTheory.TopFlip.MixVacSmall.mixVac_eq_indicator | (intros; apply GlobalTheory.TopFlip.MixVacSmall.mixVac_eq_indicator <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TopFlip.MixVacSmall.mixVac_eq_indicator` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FMixedModelVacuumEqSmulIntegralMatrixIndicator.lean&line=101#L101)
 -/
 theorem _root_.GlobalTheory.T.mixedModel_vacuum_eq_smul_integralMatrix_indicator : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GridData L sc} {μ₀ : T}, L.Is μ₀ → ∀ (W : G.Weil) (B : Frames G) (t : T) (i j : Fin D.R.m) (M : Vol G), SquareStanding G t →
     ∀ (e : Num G i j) (Bs : Base D.host.F D.host.E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j) (X : Chars D.host.F D.host.E)

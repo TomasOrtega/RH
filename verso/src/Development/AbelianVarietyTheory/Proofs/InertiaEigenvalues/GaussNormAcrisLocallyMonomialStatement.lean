@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsGauss
 open GlobalTheory.PMon.Gauss
 open scoped Formalism.Per
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PMon.Gauss.gC_monomial_near | exact GlobalTheory.PMon.Gauss.gC_monomial_near | (intros; apply GlobalTheory.PMon.Gauss.gC_monomial_near <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PMon.Gauss.gC_monomial_near` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FGaussNormAcrisLocallyMonomial.lean&line=119#L119)
 -/
 theorem _root_.GlobalTheory.T.gaussNormAcris_locally_monomial : ∀ (l : ℕ) [Fact l.Prime] (x : Formalism.Per.Acris l), x ≠ 0 → ∀ ρ₀ : ℝ, (l : ℝ)⁻¹ ≤ ρ₀ → ρ₀ < 1 → (∃ (c : ℝ) (k : ℤ) (ρ₂ : ℝ), 0 < c ∧ ρ₀ < ρ₂ ∧ ρ₂ < 1 ∧ ∀ ρ ∈ Set.Icc ρ₀ ρ₂, gC l ρ x = c * ρ ^ k) ∧ ((l : ℝ)⁻¹ < ρ₀ → ∃ (c : ℝ) (k : ℤ) (ρ₁ : ℝ), 0 < c ∧ (l : ℝ)⁻¹ ≤ ρ₁ ∧ ρ₁ < ρ₀ ∧ ∀ ρ ∈ Set.Icc ρ₁ ρ₀, gC l ρ x = c * ρ ^ k) := by
   first | exact @GlobalTheory.PMon.Gauss.gC_monomial_near | exact GlobalTheory.PMon.Gauss.gC_monomial_near | (intros; apply GlobalTheory.PMon.Gauss.gC_monomial_near <;> assumption)

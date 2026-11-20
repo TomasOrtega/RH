@@ -13,8 +13,10 @@ open Formalism.UG (IsUnifV qV IsUnramInv GU KU IsInertAt Hecke IsCommensurated T
 open Formalism.MainNotions.SchurIrreducible (IsSplit)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChainOnto.heisInv_forms_proportional | exact GlobalTheory.ChainOnto.heisInv_forms_proportional | (intros; apply GlobalTheory.ChainOnto.heisInv_forms_proportional <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChainOnto.heisInv_forms_proportional` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FIntegralHeisenbergInvariantFormsProportional.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.integral_heisenberg_invariant_forms_proportional : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : L) (σ : L →+* L) (q : ℕ) (δ : L) (ψ : AddChar L ℂ) (n n' : ℕ) (M : Type) [AddCommGroup M] [Module ℂ M] (ρ : Matrix (Fin n') (Fin n) L → Module.End ℂ M) (ω : GU σ n × GU σ n' →* Module.End ℂ M) (s : M), IsStd ϖ σ q δ ψ ρ ω s → ∀ l e : M →ₗ[ℂ] ℂ, (∀ u ∈ intMat L (Fin n') (Fin n), ∀ m, l (ρ u m) = l m) → (∀ u ∈ intMat L (Fin n') (Fin n), ∀ m, e (ρ u m) = e m) → ∀ m, e m * l s = l m * e s := by
   first | exact @GlobalTheory.ChainOnto.heisInv_forms_proportional | exact GlobalTheory.ChainOnto.heisInv_forms_proportional | (intros; apply GlobalTheory.ChainOnto.heisInv_forms_proportional <;> assumption)

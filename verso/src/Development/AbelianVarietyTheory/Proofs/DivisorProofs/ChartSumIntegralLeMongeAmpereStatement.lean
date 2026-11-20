@@ -6,8 +6,10 @@ import ReciprocityTheory.AnalyticForms.PotentialTheory.ContDiffAtOfIsPotential
 open MeasureTheory ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M GlobalTheory.IndefiniteRowSideFullHecke.BoundaryPolynomialFunctions GlobalTheory.LogResInt
 open scoped ENNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChartSumBound.chartSumInt_le_card_mul | exact GlobalTheory.ChartSumBound.chartSumInt_le_card_mul | (intros; apply GlobalTheory.ChartSumBound.chartSumInt_le_card_mul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChartSumBound.chartSumInt_le_card_mul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FChartSumIntegralLeMongeAmpere.lean&line=96#L96)
 -/
 theorem _root_.GlobalTheory.T.chart_sum_integral_le_monge_ampere : ∀ (n : ℕ) (Y : Type) [TopologicalSpace Y] [CompactSpace Y] [T2Space Y] [MeasurableSpace Y]
     [BorelSpace Y] (B : FinHolAtlas n Y) (Ψ : LocPot Y), IsPotential B Ψ → IsPsh B Ψ →

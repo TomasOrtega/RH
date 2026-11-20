@@ -14,8 +14,10 @@ import Formalism.LocalToGlobal.Divisibility.ProjLemmas
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX NumberField IsDedekindDomain GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw GlobalTheory.HeightCounting GlobalTheory.HeightCounting.Up
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeRec.factG
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CenLocAt.cenLoc_at | exact GlobalTheory.CenLocAt.cenLoc_at | (intros; apply GlobalTheory.CenLocAt.cenLoc_at <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CenLocAt.cenLoc_at` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FCentralCharacterLocal.lean&line=29#L29)
 -/
 theorem _root_.GlobalTheory.T.central_character_local : ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AtMem hL fun _ _ _ _ w Z _ _ _ _ _ c => CenLoc (w.D Z) c.a.all.gal.mt := by
   first | exact @GlobalTheory.CenLocAt.cenLoc_at | exact GlobalTheory.CenLocAt.cenLoc_at | (intros; apply GlobalTheory.CenLocAt.cenLoc_at <;> assumption)

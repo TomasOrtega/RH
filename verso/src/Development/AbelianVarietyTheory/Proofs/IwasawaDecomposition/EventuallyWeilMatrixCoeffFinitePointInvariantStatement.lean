@@ -6,8 +6,10 @@ open Formalism.IndefR.Datum GlobalTheory.Mem.AutSpace GlobalTheory.IndefiniteRow
 open scoped TensorProduct ContDiff Topology
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mem.CoefInv.eventually_coef_actO | exact GlobalTheory.Mem.CoefInv.eventually_coef_actO | (intros; apply GlobalTheory.Mem.CoefInv.eventually_coef_actO <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mem.CoefInv.eventually_coef_actO` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FEventuallyWeilMatrixCoeffFinitePointInvariant.lean&line=164#L164)
 -/
 theorem _root_.GlobalTheory.T.eventually_weilMatrixCoeff_finitePoint_invariant : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), μ.IsAddHaarMeasure → IsAddFundamentalDomain (ratL T S) 𝓕 μ → ∀ f : WO S T → ℂ, IsThetaFunO ψ S T f → ∀ᶠ p : GA D S × GA D T in 𝓝 1, p.1 ∈ GfC S → p.2 ∈ GfC T → ∀ w, ∫ x in 𝓕, heisO ψ S T (actO S T p.1 p.2 w) f x * star (f x) ∂μ = ∫ x in 𝓕, heisO ψ S T w f x * star (f x) ∂μ := by
   first | exact @GlobalTheory.Mem.CoefInv.eventually_coef_actO | exact GlobalTheory.Mem.CoefInv.eventually_coef_actO | (intros; apply GlobalTheory.Mem.CoefInv.eventually_coef_actO <;> assumption)

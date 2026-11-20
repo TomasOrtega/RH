@@ -13,8 +13,10 @@ open NumberField MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheor
 open GlobalTheory.Doubling (absE)
 open Formalism.UG (cT)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WittCompl.exists_complement_data | exact GlobalTheory.WittCompl.exists_complement_data | (intros; apply GlobalTheory.WittCompl.exists_complement_data <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WittCompl.exists_complement_data` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FWittFrameOrthogonalComplementBasis.lean&line=65#L65)
 -/
 theorem _root_.GlobalTheory.T.witt_frame_orthogonal_complement_basis : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     IsCMExt F E σ → ∀ (n r : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (X Y : Matrix (Fin n) (Fin r) E), IsWittFrame σ J X Y →

@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LineLatticeClassMean
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.IsLatMeasurableConst
 open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheory.Count GlobalTheory.FlagMeas GlobalTheory.FlagBase
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MeanDual.latMean_dualAt | exact GlobalTheory.MeanDual.latMean_dualAt | (intros; apply GlobalTheory.MeanDual.latMean_dualAt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MeanDual.latMean_dualAt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FLineLatticeClassMeanTraceFormDualLattice.lean&line=367#L367)
 -/
 theorem _root_.GlobalTheory.T.lineLatticeClassMean_traceFormDualLattice : ∀ (E : Type) [Field E] [NumberField E], IsTotallyComplex E → ∀ j : ℕ, ∀ F : Submodule ℤ (VecInf E j) → ENNReal, (∀ Λ : Submodule (𝓞 E) (Fin j → E), Submodule.IsLattice E Λ → Measurable (fun g : MatInf E j => {g | 0 < detNorm E j g}.indicator (fun g => F (latAt E j Λ g)) g)) → latMean E j (fun L => F (dualAt E j L)) = latMean E j F := by
   first | exact @GlobalTheory.MeanDual.latMean_dualAt | exact GlobalTheory.MeanDual.latMean_dualAt | (intros; apply GlobalTheory.MeanDual.latMean_dualAt <;> assumption)

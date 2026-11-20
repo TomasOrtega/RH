@@ -14,8 +14,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds (IsClassZetaVals c_vp cE_vp a0)
 open TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ConductorMult.exists_natMul_mem_orderC | exact GlobalTheory.ConductorMult.exists_natMul_mem_orderC | (intros; apply GlobalTheory.ConductorMult.exists_natMul_mem_orderC <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ConductorMult.exists_natMul_mem_orderC` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FBoundedDenominatorInOrder.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.bounded_denominator_in_order : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (c : Ideal (OF E)), c ≠ ⊥ →
     ∀ x : E, ∃ n : ℕ, n ≠ 0 ∧ (n : E) * x ∈ orderC c := by

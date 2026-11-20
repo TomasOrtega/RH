@@ -9,8 +9,10 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.ThK.PlaneEv
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThK.PlaneEv.SchMap.evA_mem_schA | exact GlobalTheory.ThK.PlaneEv.SchMap.evA_mem_schA | (intros; apply GlobalTheory.ThK.PlaneEv.SchMap.evA_mem_schA <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThK.PlaneEv.SchMap.evA_mem_schA` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAdelicEvaluationPreservesSchwartz.lean&line=25#L25)
 -/
 theorem _root_.GlobalTheory.T.adelic_evaluation_preserves_schwartz : ∀ (F : Type) [Field F] [NumberField F] (n d d₁ : ℕ) (hd : d = d₁ + 2), ∀ Φ ∈ schA F (Fin n × Fin d),
     evA F hd Φ ∈ schA F (Fin n × Fin d₁) := by

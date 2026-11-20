@@ -10,8 +10,10 @@ section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.Host Formalism.L2.NT NumberField IsDedekindDomain Polynomial GlobalTheory.HeightCounting GlobalTheory.RowTie GlobalTheory.SplitRead GlobalTheory.NPin
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.NPin.pairRead_of_join_alt | exact _root_.GlobalTheory.NPin.pairRead_of_join_alt | (intros; apply _root_.GlobalTheory.NPin.pairRead_of_join_alt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.NPin.pairRead_of_join_alt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicArithmetic%2FThetaCorrespondence%2FThetaPairLifts%2FThirdPlaceSeries%2FPairReadOfJoin.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.pairRead_of_join_isTrue_unit : GlobalTheory.Published.BernsteinZelevinskyFiniteness → ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D), _root_.GlobalTheory.NPin.CharacterChoiceJoin P → ∀ S : Reading P.T, _root_.GlobalTheory.NPin.IsFaithfulReading P S → RowUnit S → PairRead S := by
   first | exact @_root_.GlobalTheory.NPin.pairRead_of_join_alt | exact _root_.GlobalTheory.NPin.pairRead_of_join_alt | (intros; apply _root_.GlobalTheory.NPin.pairRead_of_join_alt <;> assumption)

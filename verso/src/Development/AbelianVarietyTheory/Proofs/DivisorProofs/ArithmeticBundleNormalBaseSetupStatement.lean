@@ -7,8 +7,10 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G Recip
 open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalTheory.FlagAr GlobalTheory.ShFam.Pad GlobalTheory.VB GlobalTheory.ShFam GlobalTheory.TrueGeo Formalism.L2.Pj GlobalTheory.Toroidal GlobalTheory.ArLieBase
 open GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.ProjVar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BcRead.classifyingMap | exact GlobalTheory.BcRead.classifyingMap | (intros; apply GlobalTheory.BcRead.classifyingMap <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BcRead.classifyingMap` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FArithmeticBundleNormalBaseSetup.lean&line=42#L42)
 -/
 theorem _root_.GlobalTheory.T.arithmetic_bundle_normal_base_setup : Hypotheses2 → HypothesesH → RegularAlteration →
   ∀ (D : D7) (O : Setup D) (hO : O.Core) (P : Finset ℕ) (R : ℝ) (hR : 2 ≤ R) (c : O.s.Comp)

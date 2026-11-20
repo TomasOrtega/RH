@@ -14,8 +14,10 @@ open GlobalTheory.RayEv (Ray)
 open GlobalTheory.Toroidal GlobalTheory.LogKS GlobalTheory.LogKSChart GlobalTheory.Heat
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChartAbLocus.mem_abLocus_iff | exact GlobalTheory.ChartAbLocus.mem_abLocus_iff | (intros; apply GlobalTheory.ChartAbLocus.mem_abLocus_iff <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChartAbLocus.mem_abLocus_iff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FMemAbelianLocusToricChartIffNotMemBoundary.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.mem_abelianLocus_toricChart_iff_not_mem_boundary : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)) (k : Type) [Field k] (m d : ℕ) (ξ : Sp (ChartRing k m d) ⟶ gen Y) (t : SAB H (Sp (ChartRing k m d))), SABMap t Y.t (ξ ≫ genι Y) → (∀ p : Sp (ChartRing k m d), ξ p ∈ genBd Y ↔ ∏ i, bdParam k m d i ∈ p.asIdeal) → ∀ p : Sp (ChartRing k m d), p ∈ abLocus t.G ↔ ∏ i, bdParam k m d i ∉ p.asIdeal := by
   first | exact @GlobalTheory.ChartAbLocus.mem_abLocus_iff | exact GlobalTheory.ChartAbLocus.mem_abLocus_iff | (intros; apply GlobalTheory.ChartAbLocus.mem_abLocus_iff <;> assumption)

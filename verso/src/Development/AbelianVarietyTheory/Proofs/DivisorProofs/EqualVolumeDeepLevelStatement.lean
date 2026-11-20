@@ -25,8 +25,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompEqVol.eqVolume_good | exact GlobalTheory.CompEqVol.eqVolume_good | (intros; apply GlobalTheory.CompEqVol.eqVolume_good <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompEqVol.eqVolume_good` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FEqualVolumeDeepLevel.lean&line=33#L33)
 -/
 theorem _root_.GlobalTheory.T.equal_volume_deep_level : Hypotheses2 → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.SemiAbelianLieSeminegative → ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j : ℕ, 1 ≤ (T.Q.Dw j).p → 1 ≤ (T.Q.Dw j).q → 2 < Module.finrank ℚ D.host.E / 2 → InR D j → ∀ (Y : Deep T.toCore j) (e : ℕ) (o : ℝ), Y.Good e o → EqVolume Y.U := by
   first | exact @GlobalTheory.CompEqVol.eqVolume_good | exact GlobalTheory.CompEqVol.eqVolume_good | (intros; apply GlobalTheory.CompEqVol.eqVolume_good <;> assumption)

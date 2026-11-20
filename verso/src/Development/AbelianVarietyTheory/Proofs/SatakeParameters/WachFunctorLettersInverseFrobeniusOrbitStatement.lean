@@ -6,8 +6,10 @@ import Formalism.FrobeniusOrbits.HostCorollaries
 import Formalism.SharpRestriction.ParConsts
 open NumberField IsDedekindDomain GlobalTheory.HTW GlobalTheory.HTW.Rec Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.FrobeniusOrbits
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HTW.Rec.reads_orbit_invFrob | exact GlobalTheory.HTW.Rec.reads_orbit_invFrob | (intros; apply GlobalTheory.HTW.Rec.reads_orbit_invFrob <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HTW.Rec.reads_orbit_invFrob` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FWachFunctorLettersInverseFrobeniusOrbit.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.wachFunctor_letters_inverseFrobenius_orbit : ∀ (D : D7) {l : ℕ} [Fact l.Prime] (P : LocPrime l) (K LL : FinExt l) (W : Wach P K LL) (c : D.host.E →+* ↥K.1) (κ : D.host.E →+* ↥LL.1), l ∉ D.host.small → l ≠ D.host.q → l ≠ D.host.d → (K.1 : Set (Om l)) ⊆ closure (Set.range fun x => ((c x : ↥K.1) : Om l)) → K.1 ≤ MaximalUnramifiedExtension l → ∃ g : ZMod (Module.finrank ℚ_[l] ↥(K0 K)) → D.R.GG, IsOrbit g (DV.frobG D l)⁻¹ ∧ ∀ τ a, Over W τ a → Reads D.host c κ τ (g a) := by
   first | exact @GlobalTheory.HTW.Rec.reads_orbit_invFrob | exact GlobalTheory.HTW.Rec.reads_orbit_invFrob | (intros; apply GlobalTheory.HTW.Rec.reads_orbit_invFrob <;> assumption)

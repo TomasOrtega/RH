@@ -14,8 +14,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UU
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.psiEven_of_psiRel | exact GlobalTheory.psiEven_of_psiRel | (intros; apply GlobalTheory.psiEven_of_psiRel <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.psiEven_of_psiRel` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUniformizationProofs%2FEvenPsiOfThetaExpansionPsiRelation.lean&line=28#L28)
 -/
 theorem _root_.GlobalTheory.T.even_psi_of_thetaExpansionPsiRelation : Laws → Laws2 → (AllPre fun {V} _ _ _ {D} {A} {G} _ _ U => ∀ θ f, U.Theta θ f → PsiRel D (𝟙_ _) f → D.PsiEven) := by
   first | exact @GlobalTheory.psiEven_of_psiRel | exact GlobalTheory.psiEven_of_psiRel | (intros; apply GlobalTheory.psiEven_of_psiRel <;> assumption)

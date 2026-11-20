@@ -8,8 +8,10 @@ open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalT
 open GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.ProjVar GlobalTheory.TwoLat GlobalTheory.FlagCov
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PairCov.exists_isFrameSecX_of_compat | exact GlobalTheory.PairCov.exists_isFrameSecX_of_compat | (intros; apply GlobalTheory.PairCov.exists_isFrameSecX_of_compat <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PairCov.exists_isFrameSecX_of_compat` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPairCoverCompatibility.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.pair_cover_compatibility : ∀ (D : D7) (O : Setup D) (R : ℝ) (c : O.s.Comp) (Bs : Scheme.{0}) [IsIntegral Bs] (q : Bs ⟶ Sp (𝓞 D.what₂.LL))
     (Bg : Scheme.{0}) (jB : Bg ⟶ Bs) (πB : Bg ⟶ gen O.s.T.Z) (G : ∀ σ', EigMet O.s.T.Z σ')

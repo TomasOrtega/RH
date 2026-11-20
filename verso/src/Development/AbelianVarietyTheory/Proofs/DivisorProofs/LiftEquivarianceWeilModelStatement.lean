@@ -8,8 +8,10 @@ open scoped TensorProduct InnerProductSpace
 open GlobalTheory.GalLift
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GalLift.act_eq_translation | exact GlobalTheory.GalLift.act_eq_translation | (intros; apply GlobalTheory.GalLift.act_eq_translation <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GalLift.act_eq_translation` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLiftEquivarianceWeilModel.lean&line=67#L67)
 -/
 theorem _root_.GlobalTheory.T.lift_equivariance_weil_model : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), R.Char F → ∀ (i : Fin D.R.m), (∀ g, ∃ k, IsLiftW R i g k) ∧ ∀ (σ : D.what₂.LL →+* ℂ), (∀ g k, IsLiftW R i g k → ∀ y v h, (R.HW i σ).e (R.gW i σ g y) v h = (R.HW i σ).e y v (h * k)) ∧ ∀ y v, R.eWf i σ ((R.HW i σ).e y v) = (R.HW i σ).e (∑ g, RealDat.eC (A := A) σ g • R.gW i σ g y) v := by
   first | exact @GlobalTheory.GalLift.act_eq_translation | exact GlobalTheory.GalLift.act_eq_translation | (intros; apply GlobalTheory.GalLift.act_eq_translation <;> assumption)

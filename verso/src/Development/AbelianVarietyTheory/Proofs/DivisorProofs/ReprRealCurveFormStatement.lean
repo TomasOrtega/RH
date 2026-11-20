@@ -14,8 +14,10 @@ open GlobalTheory GlobalTheory.TorsionForm
 open scoped ContDiff Real CategoryTheory.Obj ComplexOrder
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CxForm.repr_const_add_eq_curveForm | exact GlobalTheory.CxForm.repr_const_add_eq_curveForm | (intros; apply GlobalTheory.CxForm.repr_const_add_eq_curveForm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CxForm.repr_const_add_eq_curveForm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FReprRealCurveForm.lean&line=61#L61)
 -/
 theorem _root_.GlobalTheory.T.repr_real_curve_form : ∀ (t : ℝ) (α : Alt 1), IsType 1 1 α → IsReal α → ⇑((bas 1).repr (algebraMap ℂ (Alt 1) t + α)) = curveForm t (dens α).re := by
   first | exact @GlobalTheory.CxForm.repr_const_add_eq_curveForm | exact GlobalTheory.CxForm.repr_const_add_eq_curveForm | (intros; apply GlobalTheory.CxForm.repr_const_add_eq_curveForm <;> assumption)

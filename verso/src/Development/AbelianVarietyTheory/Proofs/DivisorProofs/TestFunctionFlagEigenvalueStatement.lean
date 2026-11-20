@@ -8,8 +8,10 @@ open NumberField MvPolynomial Filter Topology Formalism.BasicNotions Formalism.M
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.ArInt
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CovTest.hh_testF | exact GlobalTheory.CovTest.hh_testF | (intros; apply GlobalTheory.CovTest.hh_testF <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CovTest.hh_testF` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTestFunctionFlagEigenvalue.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.test_function_flag_eigenvalue : GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.Published.ArDegree → ArCalc → RegularAlteration → ∀ (D : D7) (Y : DV.ShimX D.what₂.Tau) (hh : Fn Y), GlobalTheory.FlagZ.IsHh D.what₂.Tau Y.N hh → hh (testF Y) = (1 / (Y.j : ℝ) - 1 / ((Y.N : ℝ) - Y.j) - 1) * testI Y := by
   first | exact @GlobalTheory.CovTest.hh_testF | exact GlobalTheory.CovTest.hh_testF | (intros; apply GlobalTheory.CovTest.hh_testF <;> assumption)

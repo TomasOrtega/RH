@@ -10,8 +10,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SemiAbDesc.exists_grpPullback_map | exact GlobalTheory.SemiAbDesc.exists_grpPullback_map | (intros; apply GlobalTheory.SemiAbDesc.exists_grpPullback_map <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SemiAbDesc.exists_grpPullback_map` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsGrpPullbackMapSemiAbelianNormalDomain.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.exists_grpPullback_map_semiAbelian_normalDomain : ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsIntegrallyClosed R] {X S : Scheme.{0}} (j : X ⟶ S) (A : Over X) [GrpObj A] (G : Over S) [GrpObj G] (e : A.left ⟶ G.left), IsSemiAbelian G → IsGrpPullback A G j e → ∀ (G₁ : Over (Sp R)) [GrpObj G₁], IsSemiAbelian G₁ → ∀ (ξ : Sp R ⟶ S) (y : Sp (FractionRing R) ⟶ X), y ≫ j = jK R ≫ ξ → ∀ (B : Over (Sp (FractionRing R))) [GrpObj B] (a : B.left ⟶ G₁.left) (b : B.left ⟶ A.left), IsGrpPullback B G₁ (jK R) a → IsGrpPullback B A y b → ∃ πC : G₁.left ⟶ G.left, IsGrpPullback G₁ G ξ πC ∧ a ≫ πC = b ≫ e := by
   first | exact @GlobalTheory.SemiAbDesc.exists_grpPullback_map | exact GlobalTheory.SemiAbDesc.exists_grpPullback_map | (intros; apply GlobalTheory.SemiAbDesc.exists_grpPullback_map <;> assumption)

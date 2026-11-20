@@ -27,8 +27,10 @@ open MeasureTheory Formalism.L2.Theta Formalism.BasicNotions.TH ReciprocityTheor
 open scoped Topology TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IntWtRead.cuspW_eq_zero_of_reading | exact GlobalTheory.IntWtRead.cuspW_eq_zero_of_reading | (intros; apply GlobalTheory.IntWtRead.cuspW_eq_zero_of_reading <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IntWtRead.cuspW_eq_zero_of_reading` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FEqZeroOfRestrictionsVanish.lean&line=74#L74)
 -/
 theorem _root_.GlobalTheory.T.eq_zero_of_restrictions_vanish : ∀ (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ), Y.Good e o → ∀ σ : Y.d.c₂.F →+* ℂ, GoodEmb Y.d.c₂ σ → ∀ (G : WTZ D.host.E) (x : Y.V G), (∀ k, ∀ z ∈ ((Y.U σ).X k).dom, rdU (Y.U σ) (x : Rul Y.d.Xo₂ Y.d.c₂) k z = 0) → x = 0 := by
   first | exact @GlobalTheory.IntWtRead.cuspW_eq_zero_of_reading | exact GlobalTheory.IntWtRead.cuspW_eq_zero_of_reading | (intros; apply GlobalTheory.IntWtRead.cuspW_eq_zero_of_reading <;> assumption)

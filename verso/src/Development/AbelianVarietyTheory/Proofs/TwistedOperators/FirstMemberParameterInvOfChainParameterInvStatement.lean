@@ -8,8 +8,10 @@ open scoped TensorProduct InnerProductSpace ComplexConjugate
 open GlobalTheory.ChainOnto GlobalTheory.ChainTw
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChainInv.conjPl_inv_of_chainPar | exact GlobalTheory.ChainInv.conjPl_inv_of_chainPar | (intros; apply GlobalTheory.ChainInv.conjPl_inv_of_chainPar <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChainInv.conjPl_inv_of_chainPar` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FFirstMemberParameterInvOfChainParameterInv.lean&line=127#L127)
 -/
 theorem _root_.GlobalTheory.T.firstMemberParameter_inv_of_chainParameter_inv : ∀ (D : D7) (c : Com D), c.Is → ∀ j ≤ D.R.m, ∀ (B : GlobalTheory.LFun.Fam D.host.E), ∀ w ∉ (GlobalTheory.LFun.above D.host.E (c.S : Set (HeightOneSpectrum (𝓞 D.host.F)))), chainPar c B j (Formalism.DivisionValues.conjPl w) = (chainPar c B j w).map (·⁻¹) → B (Formalism.DivisionValues.conjPl w) = (B w).map (·⁻¹) := by
   first | exact @GlobalTheory.ChainInv.conjPl_inv_of_chainPar | exact GlobalTheory.ChainInv.conjPl_inv_of_chainPar | (intros; apply GlobalTheory.ChainInv.conjPl_inv_of_chainPar <;> assumption)

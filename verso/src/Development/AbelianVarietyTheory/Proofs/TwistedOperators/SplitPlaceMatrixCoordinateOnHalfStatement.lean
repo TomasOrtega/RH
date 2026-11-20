@@ -7,8 +7,10 @@ open scoped TensorProduct ComplexOrder
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PlaceCoord.isCoord_mapCo | exact GlobalTheory.PlaceCoord.isCoord_mapCo | (intros; apply GlobalTheory.PlaceCoord.isCoord_mapCo <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PlaceCoord.isCoord_mapCo` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FSplitPlaceMatrixCoordinateOnHalf.lean&line=124#L124)
 -/
 theorem _root_.GlobalTheory.T.splitPlace_matrix_coordinate_on_half : ∀ (D : D7) (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)), IsSelfDualC S ΛS → IsSelfDualC T ΛT → ∀ (v : FinPl D) (φ : SplitProj D v) (e : AE D), IsIdemOf φ e → ∀ (BS : GL (Fin S.rank) (Fv D.host.F v)) (BT : GL (Fin T.rank) (Fv D.host.F v)), IsCoord e (latO S T ΛS ΛT fun _ => True) (mapCo φ S T BS BT) ∧ ∀ (g : GA D S) (h : GA D T) (t : WO S T), mapCo φ S T BS BT (actO S T g⁻¹ h⁻¹ t) = ((grpCo φ T BT h)⁻¹).val * mapCo φ S T BS BT t * (grpCo φ S BS g).val := by
   first | exact @GlobalTheory.PlaceCoord.isCoord_mapCo | exact GlobalTheory.PlaceCoord.isCoord_mapCo | (intros; apply GlobalTheory.PlaceCoord.isCoord_mapCo <;> assumption)

@@ -9,8 +9,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AdmInt.adm_integral_comm | exact GlobalTheory.AdmInt.adm_integral_comm | (intros; apply GlobalTheory.AdmInt.adm_integral_comm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AdmInt.adm_integral_comm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAdmissibleIntegralInterchange.lean&line=78#L78)
 -/
 theorem _root_.GlobalTheory.T.admissible_integral_interchange : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (S₁ S₂ : Type) [TopologicalSpace S₁] [SecondCountableTopology S₁]
     [MeasurableSpace S₁] [BorelSpace S₁] [TopologicalSpace S₂] [SecondCountableTopology S₂] [MeasurableSpace S₂] [BorelSpace S₂]

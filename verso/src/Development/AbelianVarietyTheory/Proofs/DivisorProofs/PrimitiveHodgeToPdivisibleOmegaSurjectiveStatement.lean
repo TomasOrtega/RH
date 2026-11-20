@@ -11,8 +11,10 @@ open ReciprocityTheory.ChartRestriction.G.Semi (IsAbelianScheme LB RigLB Cubical
 open GlobalTheory GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.DeRham GlobalTheory.PDiv GlobalTheory.PtExt
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PtExt.surjective_of_isCan_field | exact GlobalTheory.PtExt.surjective_of_isCan_field | (intros; apply GlobalTheory.PtExt.surjective_of_isCan_field <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PtExt.surjective_of_isCan_field` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPrimitiveHodgeToPdivisibleOmegaSurjective.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.primitive_hodge_to_pdivisible_omega_surjective : GlobalTheory.Published.AbelianHodgeDeRham → ∀ (p : ℕ) [Fact p.Prime] (K : Type) [Field K], (p : K) = 0 → ∀ (A : Over (Sp K)) [GrpObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ (G : PDivGroup p K) (t : G.TorsionTower A) (ψ : PrimitiveSubmodule A →ₗ[K] G.omega), (∀ c : PrimitiveSubmodule A, IsCan t c.1 (G.rigOfOmega (ψ c))) → Function.Surjective ψ := by
   first | exact @GlobalTheory.PtExt.surjective_of_isCan_field | exact GlobalTheory.PtExt.surjective_of_isCan_field | (intros; apply GlobalTheory.PtExt.surjective_of_isCan_field <;> assumption)

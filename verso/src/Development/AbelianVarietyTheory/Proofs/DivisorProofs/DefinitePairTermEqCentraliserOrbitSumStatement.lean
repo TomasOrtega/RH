@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.TraceDef
 open Matrix NumberField GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMid GlobalTheory.LKCount
 open scoped TensorProduct Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LKDef.TermPair.term_eq_centSum | exact GlobalTheory.LKDef.TermPair.term_eq_centSum | (intros; apply GlobalTheory.LKDef.TermPair.term_eq_centSum <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LKDef.TermPair.term_eq_centSum` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDefinitePairTermEqCentraliserOrbitSum.lean&line=187#L187)
 -/
 theorem _root_.GlobalTheory.T.definitePair_term_eq_centraliser_orbit_sum : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (P : GlobalTheory.LKDef.DPair G) (hm : (P.γ, P.c) ∈ GlobalTheory.LKCx.grp G P.β)
     (L : G.Level) (f : G.GAf → ℂ), IsTest (MonoidHom.id _) L.K.toSubgroup L.K.toSubgroup f →

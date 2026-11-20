@@ -22,8 +22,10 @@ open Formalism.DivisionValues (vw lw)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.latLast_isLattice | exact GlobalTheory.latLast_isLattice | (intros; apply GlobalTheory.latLast_isLattice <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.latLast_isLattice` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsLatticeOfLastCoordinateExtension.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.isLattice_of_lastCoordinate_extension : ∀ {E : Type} [Field E] [NumberField E] {n N : ℕ} (hN : N = n + 1)
     (M : Submodule (𝓞 E) (Fin n → E)) (L : Submodule (𝓞 E) (Fin N → E)), Submodule.IsLattice E M →

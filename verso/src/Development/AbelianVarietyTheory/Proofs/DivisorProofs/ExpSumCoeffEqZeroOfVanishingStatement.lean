@@ -2,8 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExpSumCoeffEqZeroOfVanishing
 import Mathlib
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ExpSumUniq.coeff_eq_zero | exact GlobalTheory.ExpSumUniq.coeff_eq_zero | (intros; apply GlobalTheory.ExpSumUniq.coeff_eq_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ExpSumUniq.coeff_eq_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExpSumCoeffEqZeroOfVanishing.lean&line=109#L109)
 -/
 theorem _root_.GlobalTheory.T.exp_sum_coeff_eq_zero_of_vanishing : ∀ (N : ℕ) (Ξ : Type) (lam : Ξ → Fin N → ℝ) (c : Ξ → ℂ), Function.Injective lam → Summable c →
     (∀ t : Fin N → ℝ, ∑' ξ, c ξ * Complex.exp (2 * Real.pi * Complex.I * ∑ j, (lam ξ j : ℂ) * (t j : ℂ)) = 0) →

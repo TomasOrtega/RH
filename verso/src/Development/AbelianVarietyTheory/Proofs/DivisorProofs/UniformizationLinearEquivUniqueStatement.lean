@@ -12,8 +12,10 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.GeometryOfNumbersTheory
 open GlobalTheory.LieHt GlobalTheory.Cartier GlobalTheory.ThetaOnto GlobalTheory.MBModel GlobalTheory.SecJet GlobalTheory.CovTop
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnifTransfer.exists_linearEquiv_of_isPolFibre | exact GlobalTheory.UnifTransfer.exists_linearEquiv_of_isPolFibre | (intros; apply GlobalTheory.UnifTransfer.exists_linearEquiv_of_isPolFibre <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnifTransfer.exists_linearEquiv_of_isPolFibre` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FUniformizationLinearEquivUnique.lean&line=36#L36)
 -/
 theorem _root_.GlobalTheory.T.uniformization_linear_equiv_unique : ∀ (R : Type) [CommRing R] (f : R →+* ℂ) (P₀ : Out.PolAV (Sp R)) (Q Q' : Out.PolAV (Sp ℂ)) (ψ : Q.A.left ⟶ P₀.A.left) (ψ' : Q'.A.left ⟶ P₀.A.left) (g : ℕ) (u : HolUnif Q.A Q.L g) (u' : HolUnif Q'.A Q'.L g) (Hm Hm' : Matrix (Fin g) (Fin g) ℂ) (χ : u.Λ → ℂ) (χ' : u'.Λ → ℂ), Q.g = g → Q'.g = g → GlobalTheory.IsPolFibre f P₀ Q ψ → GlobalTheory.IsPolFibre f P₀ Q' ψ' → u.IsAH Hm χ → u'.IsAH Hm' χ' → ∃ F : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ), (∀ z, F z ∈ u'.Λ ↔ z ∈ u.Λ) ∧ ∀ z w, hermForm Hm' (F z) (F w) = hermForm Hm z w := by
   first | exact @GlobalTheory.UnifTransfer.exists_linearEquiv_of_isPolFibre | exact GlobalTheory.UnifTransfer.exists_linearEquiv_of_isPolFibre | (intros; apply GlobalTheory.UnifTransfer.exists_linearEquiv_of_isPolFibre <;> assumption)

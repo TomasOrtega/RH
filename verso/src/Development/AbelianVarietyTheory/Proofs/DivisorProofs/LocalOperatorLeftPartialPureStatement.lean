@@ -9,8 +9,10 @@ open scoped TensorProduct NNReal Matrix
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.DblEval
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DblEval.PartLStr.exists_partL_pureA | exact GlobalTheory.DblEval.PartLStr.exists_partL_pureA | (intros; apply GlobalTheory.DblEval.PartLStr.exists_partL_pureA <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DblEval.PartLStr.exists_partL_pureA` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLocalOperatorLeftPartialPure.lean&line=38#L38)
 -/
 theorem _root_.GlobalTheory.T.local_operator_left_partial_pure : ∀ {F : Type} [Field F] [NumberField F] {κ κ₁ κ' : Type} [Fintype κ] [Fintype κ₁] [Fintype κ'] (e : ((κ → AF F) → ℂ) →ₗ[ℂ] (κ₁ → AF F) → ℂ), IsLocOp e → ∃ P : SInf F (κ ⊕ κ') →L[ℂ] SInf F (κ₁ ⊕ κ'), ∀ g ∈ SB (κ ⊕ κ' → Af F), ∃ g₁ ∈ SB (κ₁ ⊕ κ' → Af F), ∀ f : SInf F (κ ⊕ κ'), partL e (pureA F f g) = pureA F (P f) g₁ := by
   first | exact @GlobalTheory.DblEval.PartLStr.exists_partL_pureA | exact GlobalTheory.DblEval.PartLStr.exists_partL_pureA | (intros; apply GlobalTheory.DblEval.PartLStr.exists_partL_pureA <;> assumption)

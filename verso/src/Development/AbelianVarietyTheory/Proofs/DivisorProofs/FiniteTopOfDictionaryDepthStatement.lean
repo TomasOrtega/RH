@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermi
 import Development.AbelianVarietyTheory.Definitions.Foundations.NormSumPairRankZeroOfCurveCoordNorm
 open GlobalTheory.SumSize GlobalTheory.RowClaim
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SumSize.TopInt.finTopK | exact GlobalTheory.SumSize.TopInt.finTopK | (intros; apply GlobalTheory.SumSize.TopInt.finTopK <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SumSize.TopInt.finTopK` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFiniteTopOfDictionaryDepth.lean&line=71#L71)
 -/
 theorem _root_.GlobalTheory.T.finite_top_of_dictionary_depth : GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) → DictK → DepthK → FinTopK := by
   first | exact @GlobalTheory.SumSize.TopInt.finTopK | exact GlobalTheory.SumSize.TopInt.finTopK | (intros; apply GlobalTheory.SumSize.TopInt.finTopK <;> assumption)

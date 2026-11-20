@@ -11,8 +11,10 @@ open scoped Classical
 open GlobalTheory.CovTestDR GlobalTheory.VdmRec GlobalTheory.MetFam GlobalTheory.ShFam GlobalTheory.Toroidal GlobalTheory.CxPts
 open scoped ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.VdmSurf.val_eq_two_mul | exact GlobalTheory.VdmSurf.val_eq_two_mul | (intros; apply GlobalTheory.VdmSurf.val_eq_two_mul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.VdmSurf.val_eq_two_mul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFlagValueSecondChernDegree.lean&line=39#L39)
 -/
 theorem _root_.GlobalTheory.T.flag_value_second_chern_degree : Hypotheses2 → ArCalc → RegularAlteration → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (d : ℕ), IsArithVar p d → ∀ (E : X.Modules) (r : ℕ) (h : VMetric p E r) (H : h.IsCInf) (F : FlagSp E r) (N : HermLB p) (S : Scheme.{0}) [IsIntegral S] (i : S ⟶ X) [IsClosedImmersion i], IsArithVar (i ≫ p) 1 → ∀ c : ℝ, (h.pull i rfl).IsCh2Deg c → F.val H N (i (genericPoint S)) 0 = 2 * c := by
   first | exact @GlobalTheory.VdmSurf.val_eq_two_mul | exact GlobalTheory.VdmSurf.val_eq_two_mul | (intros; apply GlobalTheory.VdmSurf.val_eq_two_mul <;> assumption)

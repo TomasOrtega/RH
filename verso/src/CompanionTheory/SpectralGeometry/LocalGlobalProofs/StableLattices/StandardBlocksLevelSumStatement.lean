@@ -9,8 +9,10 @@ open CompanionTheory.RgExh CompanionTheory.RgExh.U
 open GlobalTheory.CuspRep GlobalTheory.UnitaryBC GlobalTheory.SmGL GlobalTheory.DiscSpec
 open GlobalTheory.CompanionTheory.RgCOBlock
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.RgCOBlock.stdBlocks_clusters | exact GlobalTheory.CompanionTheory.RgCOBlock.stdBlocks_clusters | (intros; apply GlobalTheory.CompanionTheory.RgCOBlock.stdBlocks_clusters <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.RgCOBlock.stdBlocks_clusters` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=CompanionTheory%2FSpectralGeometry%2FLocalGlobalProofs%2FStableLattices%2FStandardBlocksLevelSum.lean&line=70#L70)
 -/
 theorem _root_.GlobalTheory.T.standard_blocks_level_sum : ∀ (n M : ℕ) (lev : Fin n → ℕ) (h : ∑ i, sz lev M i = n), Monotone lev → (∀ a, lev a < M) →
     (∀ (i : Fin M) (p : Fin (sz lev M i)), lev (stdBlocks (sz lev M) h ⟨i, p⟩) = (i : ℕ)) ∧

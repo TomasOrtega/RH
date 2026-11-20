@@ -16,8 +16,10 @@ set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 800000
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DeltaGood.twistOf_delta_good | exact GlobalTheory.DeltaGood.twistOf_delta_good | (intros; apply GlobalTheory.DeltaGood.twistOf_delta_good <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DeltaGood.twistOf_delta_good` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FArtinTwistingCharacterDeltaGood.lean&line=33#L33)
 -/
 theorem _root_.GlobalTheory.T.artin_twisting_character_delta_good : ∀ (D : D7) (a : Recip D D.nd.Om), a.Good → ∀ (i : D.ntw.Tw) (ch : Set (Pl D.host.E)), IsChoice ch → ∀ (f : D.ntw.O0 i →+* ℂ), Function.Injective f → ∀ b : Bool, (twistOf a f ch (D.ntw.pD i) (Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (D.ntw.delta i))).Good := by
   first | exact @GlobalTheory.DeltaGood.twistOf_delta_good | exact GlobalTheory.DeltaGood.twistOf_delta_good | (intros; apply GlobalTheory.DeltaGood.twistOf_delta_good <;> assumption)

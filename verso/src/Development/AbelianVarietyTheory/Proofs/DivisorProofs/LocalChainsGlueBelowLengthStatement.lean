@@ -15,8 +15,10 @@ open scoped TensorProduct Pointwise
 open GlobalTheory.ChainPts
 open GlobalTheory.ChainDesc
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChainDesc.kills_of_isQuot | exact GlobalTheory.ChainDesc.kills_of_isQuot | (intros; apply GlobalTheory.ChainDesc.kills_of_isQuot <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChainDesc.kills_of_isQuot` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLocalChainsGlueBelowLength.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.local_chains_glue_below_length : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] (B : GlobalTheory.Vert.Model O) (Λ : Type) [CommRing Λ] (h o : ℕ) (Lie Om : AM B Λ) (π : Γ(B.X, ⊤)) (γ : ℕ → Γ(B.X, ⊤)) (M : Λ →+* Matrix (Fin h) (Fin h) ℤ) (E : ℕ → B.X.Modules) (ι : ∀ n, E n ⟶ freeModule B.X (Fin h)) (I : Type) (V : I → B.X.Opens) (D : ∀ i, ChainOn p h o Lie Om π γ (V i)), IsLoc M ι V D → ∀ n < o, ∀ (Q : AM B Λ) (t : E (n + 1) ⟶ Q.V), IsQuot M (ι (n + 1)) (baseOn h π) Q t → Kills (γ 0) Q.V := by
   first | exact @GlobalTheory.ChainDesc.kills_of_isQuot | exact GlobalTheory.ChainDesc.kills_of_isQuot | (intros; apply GlobalTheory.ChainDesc.kills_of_isQuot <;> assumption)

@@ -9,8 +9,10 @@ open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalT
 open GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.ProjVar
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BcReadCx.frameSec_norm_cx | exact GlobalTheory.BcReadCx.frameSec_norm_cx | (intros; apply GlobalTheory.BcReadCx.frameSec_norm_cx <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BcReadCx.frameSec_norm_cx` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FArithBaseHermitianBundlesFifth.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.arith_base_hermitian_bundles_fifth : Hypotheses2 → HypothesesH → RegularAlteration →
   ∀ (D : D7) (O : Setup D) (hO : O.Core) (P : Finset ℕ) (R : ℝ) (hR : 2 ≤ R) (c : O.s.Comp)

@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.UnitLemmaGroup
 open GlobalTheory.UnitLemma Polynomial
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IntClosureSep.integralClosure_fg_of_separable_charpoly | exact GlobalTheory.IntClosureSep.integralClosure_fg_of_separable_charpoly | (intros; apply GlobalTheory.IntClosureSep.integralClosure_fg_of_separable_charpoly <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IntClosureSep.integralClosure_fg_of_separable_charpoly` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FIntegralClosureFgDvrOfSeparableCharpoly.lean&line=37#L37)
 -/
 theorem _root_.GlobalTheory.T.integralClosure_fg_dvr_of_separable_charpoly : ∀ (O E A : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field E] [Algebra O E] [IsFractionRing O E] [CommRing A] [Algebra O A] [Algebra E A] [IsScalarTower O E A] [Module.Finite E A] (g : A), (LinearMap.mulLeft E g).charpoly.Separable → (Subalgebra.toSubmodule (integralClosure O A)).FG := by
   first | exact @GlobalTheory.IntClosureSep.integralClosure_fg_of_separable_charpoly | exact GlobalTheory.IntClosureSep.integralClosure_fg_of_separable_charpoly | (intros; apply GlobalTheory.IntClosureSep.integralClosure_fg_of_separable_charpoly <;> assumption)

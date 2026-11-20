@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
 open NumberField IsDedekindDomain
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ConjCoordDenom.exists_common_denom_conj_coords | exact GlobalTheory.ConjCoordDenom.exists_common_denom_conj_coords | (intros; apply GlobalTheory.ConjCoordDenom.exists_common_denom_conj_coords <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ConjCoordDenom.exists_common_denom_conj_coords` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsCommonDenominatorConjLocalCoordsLattice.lean&line=8#L8)
 -/
 theorem _root_.GlobalTheory.T.exists_common_denominator_conj_localCoords_lattice : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (w : HeightOneSpectrum (𝓞 E)), (∀ x, w.valuation E (σ x) = w.valuation E x) → (∀ a : E, w.valuation E a ≤ 1 → ∃ s : 𝓞 E, s ∉ w.asIdeal ∧ ∃ r : 𝓞 E, (s : E) * a = r) → ∀ (n : ℕ) (L : Submodule (𝓞 E) (Fin n → E)), L.FG → ∀ (X : Matrix (Fin n) (Fin n) E), (∀ x ∈ L, ∀ i, w.valuation E ((X⁻¹ *ᵥ x) i) ≤ 1) → ∃ s : 𝓞 E, s ∉ w.asIdeal ∧ ∀ x ∈ L, ∀ i, ∃ r : 𝓞 E, (s : E) * σ ((X⁻¹ *ᵥ x) i) = r := by
   first | exact @GlobalTheory.ConjCoordDenom.exists_common_denom_conj_coords | exact GlobalTheory.ConjCoordDenom.exists_common_denom_conj_coords | (intros; apply GlobalTheory.ConjCoordDenom.exists_common_denom_conj_coords <;> assumption)

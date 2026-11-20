@@ -16,8 +16,10 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 open Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IdemDenominatorCp.idem_denominator | exact GlobalTheory.IdemDenominatorCp.idem_denominator | (intros; apply GlobalTheory.IdemDenominatorCp.idem_denominator <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IdemDenominatorCp.idem_denominator` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPadicDiscriminantDualBasisBound.lean&line=38#L38)
 -/
 theorem _root_.GlobalTheory.T.padic_discriminant_dual_basis_bound : ∀ (E : Type) [Field E] [NumberField E] [IsGalois ℚ E] (p : ℕ) [Fact p.Prime] (φ : E →+* ℂ_[p]), ∃ (d : ℂ_[p]) (n : ℕ) (r : Fin n → 𝓞_ℂ_[p]) (a : Fin n → 𝓞 E), (p : ℝ) ^ (-((padicValNat p (discr E).natAbs : ℝ) / (Module.finrank ℚ E : ℝ))) ≤ ‖d‖ ∧ ∀ σ : E →+* ℂ_[p], ∑ k, algebraMap 𝓞_ℂ_[p] ℂ_[p] (r k) * σ (a k) = if σ = φ then d else 0 := by
   first | exact @GlobalTheory.IdemDenominatorCp.idem_denominator | exact GlobalTheory.IdemDenominatorCp.idem_denominator | (intros; apply GlobalTheory.IdemDenominatorCp.idem_denominator <;> assumption)

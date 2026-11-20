@@ -9,8 +9,10 @@ open GlobalTheory GlobalTheory.ZM GlobalTheory.ZH GlobalTheory.UMin GlobalTheory
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DvrDiv.dvd_of_forall_cDvr | exact GlobalTheory.DvrDiv.dvd_of_forall_cDvr | (intros; apply GlobalTheory.DvrDiv.dvd_of_forall_cDvr <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DvrDiv.dvd_of_forall_cDvr` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDvdOfDvdInAllCompleteDVRNormalNoetherian.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.dvd_of_dvd_in_all_completeDVR_normal_noetherian : ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsIntegrallyClosed R] [CharZero R] (a b : R), b ≠ 0 → (∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], GlobalTheory.LN.CDvr V → ∀ φ : R →+* V, Function.Injective φ → φ b ∣ φ a) → b ∣ a := by
   first | exact @GlobalTheory.DvrDiv.dvd_of_forall_cDvr | exact GlobalTheory.DvrDiv.dvd_of_forall_cDvr | (intros; apply GlobalTheory.DvrDiv.dvd_of_forall_cDvr <;> assumption)

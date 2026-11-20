@@ -13,8 +13,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCompactSubgro
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 open scoped TensorProduct Topology
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThKL2.l2form | exact GlobalTheory.ThKL2.l2form | (intros; apply GlobalTheory.ThKL2.l2form <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThKL2.l2form` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTripleExistsInvariantPairing.lean&line=27#L27)
 -/
 theorem _root_.GlobalTheory.T.triple_exists_invariant_pairing : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsTriple B G X om om' → ∃ Bf : GlobalTheory.ThK.Fn F a (a + a') → GlobalTheory.ThK.Fn F a (a + a') → ℂ,
     (∀ Φ ∈ GlobalTheory.ThK.PolData B G.M, ∀ Ψ ∈ GlobalTheory.ThK.PolData B G.M, ∀ Θ ∈ GlobalTheory.ThK.PolData B G.M, Bf (Φ + Ψ) Θ = Bf Φ Θ + Bf Ψ Θ) ∧

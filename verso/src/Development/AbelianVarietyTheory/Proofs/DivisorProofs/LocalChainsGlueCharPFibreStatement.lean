@@ -15,8 +15,10 @@ open scoped TensorProduct Pointwise
 open GlobalTheory.ChainPts
 open GlobalTheory.ChainDesc
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChainDesc.SheafPsi.main | exact GlobalTheory.ChainDesc.SheafPsi.main | (intros; apply GlobalTheory.ChainDesc.SheafPsi.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChainDesc.SheafPsi.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLocalChainsGlueCharPFibre.lean&line=81#L81)
 -/
 theorem _root_.GlobalTheory.T.local_chains_glue_char_p_fibre : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] (B : GlobalTheory.Vert.Model O) (Λ : Type) [CommRing Λ] (h o : ℕ) (Lie Om : AM B Λ) (π : Γ(B.X, ⊤)) (γ : ℕ → Γ(B.X, ⊤)) (M : Λ →+* Matrix (Fin h) (Fin h) ℤ) (E : ℕ → B.X.Modules) (ι : ∀ n, E n ⟶ freeModule B.X (Fin h)) (I : Type) (V : I → B.X.Opens) (D : ∀ i, ChainOn p h o Lie Om π γ (V i)) (hp : (p : Γ((fibI p B).subscheme, ⊤)) = 0), IsLoc M ι V D → ∀ n < o, ∀ (Q Q' : AM B Λ) (t : E n ⟶ Q.V) (t' : E (n + 1) ⟶ Q'.V), IsQuot M (ι n) (baseOn h π) Q t → IsQuot M (ι (n + 1)) (baseOn h π) Q' t' → Nonempty (Q ≅ frobA p hp Q') := by
   first | exact @GlobalTheory.ChainDesc.SheafPsi.main | exact GlobalTheory.ChainDesc.SheafPsi.main | (intros; apply GlobalTheory.ChainDesc.SheafPsi.main <;> assumption)

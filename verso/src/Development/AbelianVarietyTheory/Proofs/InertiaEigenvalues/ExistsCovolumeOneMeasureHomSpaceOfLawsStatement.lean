@@ -13,8 +13,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RawLift
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RawLift.Covol.exists_isCovolOne_of_laws | exact GlobalTheory.RawLift.Covol.exists_isCovolOne_of_laws | (intros; apply GlobalTheory.RawLift.Covol.exists_isCovolOne_of_laws <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RawLift.Covol.exists_isCovolOne_of_laws` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FExistsCovolumeOneMeasureHomSpaceOfLaws.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.exists_covolumeOne_measure_homSpace_of_laws : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Laws R F → ∀ i, ∃ (μ : Measure (WO (Vc D i) (Wc D i))) (𝓕 : Set (WO (Vc D i) (Wc D i))), IsCovolOne (ratL (Wc D i) (Vc D i)) μ 𝓕 := by
   first | exact @GlobalTheory.RawLift.Covol.exists_isCovolOne_of_laws | exact GlobalTheory.RawLift.Covol.exists_isCovolOne_of_laws | (intros; apply GlobalTheory.RawLift.Covol.exists_isCovolOne_of_laws <;> assumption)

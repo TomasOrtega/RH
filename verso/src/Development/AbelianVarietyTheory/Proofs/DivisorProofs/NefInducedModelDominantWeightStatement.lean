@@ -11,8 +11,10 @@ open scoped ENNReal Classical
 open Limits
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.NefDeRhamCore.exists_model_nonneg | exact GlobalTheory.NefDeRhamCore.exists_model_nonneg | (intros; apply GlobalTheory.NefDeRhamCore.exists_model_nonneg <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.NefDeRhamCore.exists_model_nonneg` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FNefInducedModelDominantWeight.lean&line=96#L96)
 -/
 theorem _root_.GlobalTheory.T.nef_induced_model_dominant_weight : GlobalTheory.CovTop.HypothesesXH → Hypotheses2 → HypothesesH → ∀ (D : D7) (O : Setup D), O.Core → ∀ (A : SlopeTestRemainingChoices O.Y) (T : Real0 O.Y) (H : Ht O.Y), O.Reads A T H →
   ∀ (B : ℝ), 2 ≤ B → ∀ (u : Wt O.Y) (s : ℚ), IsRat O.Y u → 0 < s → WeightThresholdDefs.Dominant O.Y (A.sh u s) → NefCond O.Y B (A.sh u s) →

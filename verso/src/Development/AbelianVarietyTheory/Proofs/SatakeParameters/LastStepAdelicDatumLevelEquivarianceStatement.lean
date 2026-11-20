@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LastStepAdelicDa
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.UnderTie
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Col Formalism.L2.Ker Formalism.L2.DIV GlobalTheory.TwU GlobalTheory.TwV
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TwTop.levAt_top | exact GlobalTheory.TwTop.levAt_top | (intros; apply GlobalTheory.TwTop.levAt_top <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TwTop.levAt_top` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FLastStepAdelicDatumLevelEquivariance.lean&line=42#L42)
 -/
 theorem _root_.GlobalTheory.T.lastStep_adelicDatum_level_equivariance : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a => PtEx A a → MuLaw t u μ dtU → ∀ i hi, i = t.m2 + 1 → PtAway A a i hi → LevAt A dtU a i hi) := by
   first | exact @GlobalTheory.TwTop.levAt_top | exact GlobalTheory.TwTop.levAt_top | (intros; apply GlobalTheory.TwTop.levAt_top <;> assumption)

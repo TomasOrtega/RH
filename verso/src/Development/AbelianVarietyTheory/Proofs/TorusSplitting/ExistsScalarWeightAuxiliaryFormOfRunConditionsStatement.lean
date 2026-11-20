@@ -19,8 +19,10 @@ import Development.AbelianVarietyTheory.Definitions.ThetaValues.Generic
 import Formalism.LocalToGlobal.ProjectiveLattices.AxHLAM
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.WeightAlgebra Formalism.MainNotions.DIV.Cons Formalism.MainNotions.Gaps Formalism.MainNotions.Gaps.EtaleWeightGaps Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.RunJoin
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EtaBoundForm.exists_etaOK | exact GlobalTheory.EtaBoundForm.exists_etaOK | (intros; apply GlobalTheory.EtaBoundForm.exists_etaOK <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EtaBoundForm.exists_etaOK` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTorusSplitting%2FExistsScalarWeightAuxiliaryFormOfRunConditions.lean&line=31#L31)
 -/
 theorem _root_.GlobalTheory.T.exists_scalarWeight_auxiliaryForm_of_runConditions : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (large₂ : SizeData₂ D) (H : KHyp) (C2 A2 CT : ℝ) (ka wL wF : WeightFamilies.Wt D j) (Tn nP nW : ℕ) (h0 : ℝ), PageOK large₂ (recPJ h j hj) H C2 A2 CT ka wL wF Tn nP nW h0 → j < D.R.m → ∃ (i : ℕ) (et : (recB h.toLawsCore).Cusp j (etWt D j i)), EtaOK h j hj large₂ wL i et := by
   first | exact @GlobalTheory.EtaBoundForm.exists_etaOK | exact GlobalTheory.EtaBoundForm.exists_etaOK | (intros; apply GlobalTheory.EtaBoundForm.exists_etaOK <;> assumption)

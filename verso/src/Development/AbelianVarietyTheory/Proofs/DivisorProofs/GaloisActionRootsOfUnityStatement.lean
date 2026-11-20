@@ -12,8 +12,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LatticeNormTransport (upIdele IsLat
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option autoImplicit false
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.cyclotomic_character_of_ringEquiv | exact GlobalTheory.cyclotomic_character_of_ringEquiv | (intros; apply GlobalTheory.cyclotomic_character_of_ringEquiv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.cyclotomic_character_of_ringEquiv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGaloisActionRootsOfUnity.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.galois_action_roots_of_unity : ∀ (g : ℂ ≃+* ℂ) (k : ℕ), 0 < k → ∃ a : ℤ, IsCoprime a (k : ℤ) ∧
     ∀ n : ℤ, g (Complex.exp (2 * Real.pi * Complex.I * n / k)) = Complex.exp (2 * Real.pi * Complex.I * (a * n) / k) := by

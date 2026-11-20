@@ -11,8 +11,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.DiscreteSp
 import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.ClozelPurity.EopV
 open NumberField GlobalTheory.CuspRep GlobalTheory.CuspRep.CuspidalL2GL MeasureTheory PositivityTheory.S2.Clozel
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Clozel.glRel_EopV | exact GlobalTheory.CompanionTheory.Clozel.glRel_EopV | (intros; apply GlobalTheory.CompanionTheory.Clozel.glRel_EopV <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Clozel.glRel_EopV` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FLieOperatorGlRelations.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.lie_operator_gl_relations : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (π : CuspSub E a) (τ : E →+* ℂ), Formalism.REAL.GlRel (EopV π τ) := by
   first | exact @GlobalTheory.CompanionTheory.Clozel.glRel_EopV | exact GlobalTheory.CompanionTheory.Clozel.glRel_EopV | (intros; apply GlobalTheory.CompanionTheory.Clozel.glRel_EopV <;> assumption)

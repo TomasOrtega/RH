@@ -6,8 +6,10 @@ open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep 
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BCT.exists_mem_section_conj | exact GlobalTheory.BCT.exists_mem_section_conj | (intros; apply GlobalTheory.BCT.exists_mem_section_conj <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BCT.exists_mem_section_conj` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsMemSectionConj.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.exists_mem_section_valuation_eq_conj : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (S : Set (Pl E)), IsSection S → ∀ u : Pl E, u ∉ S → ∃ w ∈ S, ∀ x : E, u.valuation E x = w.valuation E (IsCMField.complexConj E x) := by
   first | exact @GlobalTheory.BCT.exists_mem_section_conj | exact GlobalTheory.BCT.exists_mem_section_conj | (intros; apply GlobalTheory.BCT.exists_mem_section_conj <;> assumption)

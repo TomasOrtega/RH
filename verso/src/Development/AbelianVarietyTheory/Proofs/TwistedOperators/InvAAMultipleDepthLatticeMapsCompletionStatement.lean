@@ -19,8 +19,10 @@ open GlobalTheory.FinPl (Lat idAt idOff intAt grpAt grpOff MxAt latV latA InK Mo
 open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AscFin.RowAAUnit.smul_mulVec_mem_latV | exact GlobalTheory.AscFin.RowAAUnit.smul_mulVec_mem_latV | (intros; apply GlobalTheory.AscFin.RowAAUnit.smul_mulVec_mem_latV <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AscFin.RowAAUnit.smul_mulVec_mem_latV` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FInvAAMultipleDepthLatticeMapsCompletion.lean&line=43#L43)
 -/
 theorem _root_.GlobalTheory.T.inv_AA_multiple_depth_lattice_maps_completion : OnStd fun {D} _ _ {sc} {G} W F => ∀ ρ (h : 2 * ρ + 2 ≤ D.R.m) (M : WO (G.V (.grid (2 * ρ + 2) 0)) (G.V (.grid (2 * ρ + 1) 0))), M ∈ latRow G (2 * ρ + 1) → ∀ v : GlobalTheory.FinPl.Pl D, ∀ y ∈ latV _ (G.Λ (.grid (2 * ρ + 2) 0)) (· = v), ∀ s ∈ GlobalTheory.SeeSaw.idV (D.host.AA⁻¹) v, s • (M *ᵥ y) ∈ latV _ (G.Λ (.grid (2 * ρ + 1) 0)) (· = v) := by
   first | exact @GlobalTheory.AscFin.RowAAUnit.smul_mulVec_mem_latV | exact GlobalTheory.AscFin.RowAAUnit.smul_mulVec_mem_latV | (intros; apply GlobalTheory.AscFin.RowAAUnit.smul_mulVec_mem_latV <;> assumption)

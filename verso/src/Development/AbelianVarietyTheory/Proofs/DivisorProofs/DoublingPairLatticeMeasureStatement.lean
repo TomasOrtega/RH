@@ -12,8 +12,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling GlobalTheory.ThK.DblKer
 open GlobalTheory.DblDatum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DblWeilBox.om₂_left_boxC | exact GlobalTheory.DblWeilBox.om₂_left_boxC | (intros; apply GlobalTheory.DblWeilBox.om₂_left_boxC <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DblWeilBox.om₂_left_boxC` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDoublingPairLatticeMeasure.lean&line=197#L197)
 -/
 theorem _root_.GlobalTheory.T.doubling_pair_lattice_measure : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n d : ℕ) (Xs : Spc F E n) (W : Spc F E d) (M : Model σ Xs W) (χX χW : Chr F E) (om : Rep σ Xs W) (r s' r₁ s₁ : ℕ),

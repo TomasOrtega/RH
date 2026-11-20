@@ -6,8 +6,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Chain.RealIt.GlueProof.glueLaw | exact GlobalTheory.Chain.RealIt.GlueProof.glueLaw | (intros; apply GlobalTheory.Chain.RealIt.GlueProof.glueLaw <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Chain.RealIt.GlueProof.glueLaw` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FGluingLawHolds.lean&line=122#L122)
 -/
 theorem _root_.GlobalTheory.T.gluing_law_holds : ∀ (D : D7) (a b : ℕ), GlueLaw D a b := by
   first | exact @GlobalTheory.Chain.RealIt.GlueProof.glueLaw | exact GlobalTheory.Chain.RealIt.GlueProof.glueLaw | (intros; apply GlobalTheory.Chain.RealIt.GlueProof.glueLaw <;> assumption)

@@ -15,8 +15,10 @@ open GlobalTheory.AbLaw
 open GlobalTheory.KeyPow GlobalTheory.KeyKa
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.isProjOver_descends_to_subring | exact GlobalTheory.isProjOver_descends_to_subring | (intros; apply GlobalTheory.isProjOver_descends_to_subring <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.isProjOver_descends_to_subring` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FThetaLawProofs%2FIsProjOverDescendsToSubring.lean&line=35#L35)
 -/
 theorem _root_.GlobalTheory.T.isProjOver_descends_to_subring' : ∀ (S : Type) [CommRing S] (R₀ : Subring S) (X X₀ : Scheme.{0}) (f : X ⟶ Sp S) (f₀ : X₀ ⟶ Sp R₀) (π : X ⟶ X₀) [QuasiCompact f₀] [QuasiSeparated f₀] [LocallyOfFiniteType f₀], IsPullback π f f₀ (spMap R₀.subtype) → IsProjOver f → ∃ F : Finset S, ∀ (R₁ : Subring S) (h : R₀ ≤ R₁), (F : Set S) ⊆ R₁ → ∀ (X₁ : Scheme.{0}) (f₁ : X₁ ⟶ Sp R₁) (π₁ : X₁ ⟶ X₀), IsPullback π₁ f₁ f₀ (spMap (Subring.inclusion h)) → IsProjOver f₁ := by
   first | exact @GlobalTheory.isProjOver_descends_to_subring | exact GlobalTheory.isProjOver_descends_to_subring | (intros; apply GlobalTheory.isProjOver_descends_to_subring <;> assumption)

@@ -18,8 +18,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UU
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UU.exists_pelUnif_of_cdvr_unconditional | exact GlobalTheory.UU.exists_pelUnif_of_cdvr_unconditional | (intros; apply GlobalTheory.UU.exists_pelUnif_of_cdvr_unconditional <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UU.exists_pelUnif_of_cdvr_unconditional` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUniformizationProofs%2FExistsPelUniformisationCompleteDvr.lean&line=27#L27)
 -/
 theorem _root_.GlobalTheory.T.exists_pel_uniformisation_complete_dvr : ∀ (E : Type) [Field E] [NumberField E] [NumberField.IsCMField E] (H : Host E) (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], CDVR V → ∀ (t : SAB H (Sp V)) (A : PolAV (Sp (FractionRing V))) (gen : (Over.pullback (jK V)).obj t.G ≅ A.A), IsMonHom gen.hom → (∃ w : LB.Iso (A.L.pull gen.hom.left) (t.PP.L.pull (pullback.fst t.G.hom (jK V))), w.IsGen) → (∃ S : SplitExt (Sp (IsLocalRing.ResidueField V)), S.IsGt ((Over.pullback (spMap (IsLocalRing.residue V))).obj t.G)) → ∃ P : PELUnif (maximalIdeal V) t, P.A = A ∧ HEq P.U.gen gen ∧ P.TorsionIso := by
   first | exact @GlobalTheory.UU.exists_pelUnif_of_cdvr_unconditional | exact GlobalTheory.UU.exists_pelUnif_of_cdvr_unconditional | (intros; apply GlobalTheory.UU.exists_pelUnif_of_cdvr_unconditional <;> assumption)

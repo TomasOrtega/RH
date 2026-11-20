@@ -5,8 +5,10 @@ import Formalism.UnipotentAdelicQuotients.WeylLatDual
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PolFunApply
 open GlobalTheory.IntegralityCompare
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DetShiftWeyl.detPow_mul_mem_delW_iff | exact GlobalTheory.DetShiftWeyl.detPow_mul_mem_delW_iff | (intros; apply GlobalTheory.DetShiftWeyl.detPow_mul_mem_delW_iff <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DetShiftWeyl.detPow_mul_mem_delW_iff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FDetPowerProductMulMemDelWShiftIff.lean&line=301#L301)
 -/
 theorem _root_.GlobalTheory.T.detPowerProduct_mul_mem_delW_shift_iff : ∀ (p : ℕ) [Fact p.Prime] (T : Type) [Fintype T] (N : ℕ) (ν : T → Fin N → ℕ) (k : T → ℕ)
     (Φ : MvPolynomial (T × Fin N × Fin N) ℂ_[p]),

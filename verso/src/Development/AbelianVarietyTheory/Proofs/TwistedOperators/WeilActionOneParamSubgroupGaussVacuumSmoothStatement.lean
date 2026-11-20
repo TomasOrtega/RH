@@ -17,8 +17,10 @@ open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GaussLine.smooth_vacuum_line | exact GlobalTheory.GaussLine.smooth_vacuum_line | (intros; apply GlobalTheory.GaussLine.smooth_vacuum_line <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GaussLine.smooth_vacuum_line` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FWeilActionOneParamSubgroupGaussVacuumSmooth.lean&line=29#L29)
 -/
 theorem _root_.GlobalTheory.T.weilAction_oneParamSubgroup_gaussVacuum_smooth : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {a a' : ℕ} (B : Base F E) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W),

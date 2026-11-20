@@ -11,8 +11,10 @@ open CompanionTheory.D.DSIC (KRel KUnit KStab IsSmMod)
 open CompanionTheory.D.LK (IsKMod IsMin)
 open scoped InnerProductSpace
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HolomorphicRootNormBound.vNormSq_lt_of_root | exact GlobalTheory.HolomorphicRootNormBound.vNormSq_lt_of_root | (intros; apply GlobalTheory.HolomorphicRootNormBound.vNormSq_lt_of_root <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HolomorphicRootNormBound.vNormSq_lt_of_root` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FVoganNormSqLtOfRemoveNoncompactRoot.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.voganNormSq_lt_of_remove_noncompactRoot : ∀ (n : ℕ) (ε : Fin n → Bool) (lam : Fin n → ℝ), StrictAnti lam → IsHolChamber ε lam → ∀ a b : Fin n, ε a = true → ε b = false → vNormSq ε (lowK ε lam - root a b) < vNormSq ε (lowK ε lam) := by
   first | exact @GlobalTheory.HolomorphicRootNormBound.vNormSq_lt_of_root | exact GlobalTheory.HolomorphicRootNormBound.vNormSq_lt_of_root | (intros; apply GlobalTheory.HolomorphicRootNormBound.vNormSq_lt_of_root <;> assumption)

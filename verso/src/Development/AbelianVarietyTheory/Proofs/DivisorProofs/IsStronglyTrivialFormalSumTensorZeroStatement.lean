@@ -8,8 +8,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TensBal.triv_zero | exact GlobalTheory.TensBal.triv_zero | (intros; apply GlobalTheory.TensBal.triv_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TensBal.triv_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsStronglyTrivialFormalSumTensorZero.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.isStronglyTrivialFormalSumTensor_zero : ∀ (R : Type) [CommRing R] [IsDomain R] (D D' : DegPre R) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) (T : Tens D D' W), GlobalTheory.TensBal.Triv T 0 := by
   first | exact @GlobalTheory.TensBal.triv_zero | exact GlobalTheory.TensBal.triv_zero | (intros; apply GlobalTheory.TensBal.triv_zero <;> assumption)

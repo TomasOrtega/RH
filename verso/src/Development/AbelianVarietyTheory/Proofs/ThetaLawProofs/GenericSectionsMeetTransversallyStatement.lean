@@ -15,8 +15,10 @@ open GlobalTheory.AbLaw
 open GlobalTheory.KeyKa
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KeyKa.GenericZeros.exists_etZ_of_algebraicIndependent | exact GlobalTheory.KeyKa.GenericZeros.exists_etZ_of_algebraicIndependent | (intros; apply GlobalTheory.KeyKa.GenericZeros.exists_etZ_of_algebraicIndependent <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KeyKa.GenericZeros.exists_etZ_of_algebraicIndependent` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FThetaLawProofs%2FGenericSectionsMeetTransversally.lean&line=214#L214)
 -/
 theorem _root_.GlobalTheory.T.generic_sections_meet_transversally : Out.Laws → ∀ (k K : Type) [Field k] [Field K] [IsAlgClosed K] [Algebra k K] (x : KeyIn k) (x' : KeyIn K) φ w (n : ℕ) (b : Fin (n ^ x.P.g) → RR x n) (b' : Fin (n ^ x.P.g) → RR x' n) (T : Fin x'.P.g × Fin (n ^ x.P.g) → K) (s : Fin x'.P.g → RR x' n), 4 ≤ n → KeyVia x' x (algebraMap k K) φ w → IsBasis x b → (∀ j, SecVia x' x φ w (b' j) (b j)) → AlgebraicIndependent k T → (∀ i, Coords x' b' (fun j => T (i, j)) (s i).f) → ∃ (d : ℕ) (z : Fin d → Pt x') (ch : Fin d → x'.P.L.ι), EtZ x' s z ch := by
   first | exact @GlobalTheory.KeyKa.GenericZeros.exists_etZ_of_algebraicIndependent | exact GlobalTheory.KeyKa.GenericZeros.exists_etZ_of_algebraicIndependent | (intros; apply GlobalTheory.KeyKa.GenericZeros.exists_etZ_of_algebraicIndependent <;> assumption)

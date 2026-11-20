@@ -7,8 +7,10 @@ open NumberField IsDedekindDomain MeasureTheory Formalism.BasicNotions Formalism
 open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ConjVacFix.unr_and_vacFix | exact GlobalTheory.ConjVacFix.unr_and_vacFix | (intros; apply GlobalTheory.ConjVacFix.unr_and_vacFix <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ConjVacFix.unr_and_vacFix` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FConjugateSplittingUnramifiedHyperspecialFix.lean&line=116#L116)
 -/
 theorem _root_.GlobalTheory.T.conjugateSplitting_unramified_hyperspecial_fix : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Hk3.Core R F → ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) (μ' η' : (AE D)ˣ →* Circle), GlobalTheory.IndefiniteRowSideFullHecke.WeilGramSignature.HypConj R i σ μ' η' → ∀ ω, IsWeilDatumO R.ψ (Vc D i) (Wc D i) μ' (μ' * η'⁻¹) ω → ∀ f₀ f B, GlobalTheory.GalLift.VecData R i σ f₀ f B → ∀ P, GlobalTheory.Hk3.Good R A.μ0 P → GlobalTheory.Hk3.UnrPl P μ' ∧ GlobalTheory.Hk3.UnrPl P (μ' * η'⁻¹) ∧ GlobalTheory.Hk3.VacFix R.ψ ω P := by
   first | exact @GlobalTheory.ConjVacFix.unr_and_vacFix | exact GlobalTheory.ConjVacFix.unr_and_vacFix | (intros; apply GlobalTheory.ConjVacFix.unr_and_vacFix <;> assumption)

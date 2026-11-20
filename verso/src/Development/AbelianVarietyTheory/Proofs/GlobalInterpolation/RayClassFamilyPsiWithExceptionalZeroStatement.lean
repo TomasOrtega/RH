@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.LamIdealOfNot
 open Complex ArithmeticFunction MeasureTheory Filter Topology NumberField GlobalTheory.Hk GlobalTheory.Mem
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Hk.PsiExc.psi_exceptional | exact GlobalTheory.Hk.PsiExc.psi_exceptional | (intros; apply GlobalTheory.Hk.PsiExc.psi_exceptional <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Hk.PsiExc.psi_exceptional` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FGlobalInterpolation%2FRayClassFamilyPsiWithExceptionalZero.lean&line=438#L438)
 -/
 theorem _root_.GlobalTheory.T.rayClassFamily_psi_with_exceptional_zero : ∀ c₀ : ℝ, 0 < c₀ → c₀ ≤ 1 / 20 → ∃ c C : ℝ, 0 < c ∧ 0 < C ∧ ∀ (𝓕 : LFam) (χ : AddChar 𝓕.G ℂ) (Z : Finset ℝ) (u : ℝ), 𝓕.ExcZ χ c₀ Z → 2 ≤ u → Real.log 𝓕.B ≤ Real.sqrt (Real.log u) → ‖𝓕.psi χ u - (if χ = 1 then (u : ℂ) else 0) + ∑ β ∈ Z, (u : ℂ) ^ (β : ℂ) / (β : ℂ)‖ ≤ C * u * Real.exp (-c * Real.sqrt (Real.log u)) := by
   first | exact @GlobalTheory.Hk.PsiExc.psi_exceptional | exact GlobalTheory.Hk.PsiExc.psi_exceptional | (intros; apply GlobalTheory.Hk.PsiExc.psi_exceptional <;> assumption)

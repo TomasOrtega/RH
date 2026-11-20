@@ -6,8 +6,10 @@ open scoped TensorProduct Matrix
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DblTargetRestrict.restrict_boxFun | exact GlobalTheory.DblTargetRestrict.restrict_boxFun | (intros; apply GlobalTheory.DblTargetRestrict.restrict_boxFun <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DblTargetRestrict.restrict_boxFun` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDoubledTargetWeilTransportRestrictFirstFactor.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.doubled_target_weil_transport_restrict_first_factor : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

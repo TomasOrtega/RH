@@ -14,8 +14,10 @@ open GlobalTheory.RayEv (Ray)
 open GlobalTheory.Toroidal GlobalTheory.LogKS GlobalTheory.LogKSChart GlobalTheory.Heat
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LocReg.exists_basicOpen_chartHom_ne_zero | exact GlobalTheory.LocReg.exists_basicOpen_chartHom_ne_zero | (intros; apply GlobalTheory.LocReg.exists_basicOpen_chartHom_ne_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LocReg.exists_basicOpen_chartHom_ne_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsBasicOpenInteriorContainingToricChartGener.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.exists_basicOpen_interior_containing_toricChart_generic : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)) (U W : Y.X.affineOpens), W.1 = U.1 ⊓ interior Y → ∀ (k : Type) [Field k] (m d : ℕ) (ξ : Sp (ChartRing k m d) ⟶ gen Y) (hx : ξ (closedPoint _) ∈ genι Y ⁻¹ᵁ U.1), (∀ p : Sp (ChartRing k m d), ξ p ∈ genBd Y ↔ ∏ i, bdParam k m d i ∈ p.asIdeal) → ∃ h : Γ(Y.X, U.1), Y.X.basicOpen h ≤ W.1 ∧ GlobalTheory.LocReg.chartHom Y U ξ hx h ≠ 0 := by
   first | exact @GlobalTheory.LocReg.exists_basicOpen_chartHom_ne_zero | exact GlobalTheory.LocReg.exists_basicOpen_chartHom_ne_zero | (intros; apply GlobalTheory.LocReg.exists_basicOpen_chartHom_ne_zero <;> assumption)

@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.Bh
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BKReal GlobalTheory.Per GlobalTheory.BSP
 open scoped Formalism.Per NNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BSP.invertible_ideal_principal_on_cover | exact GlobalTheory.BSP.invertible_ideal_principal_on_cover | (intros; apply GlobalTheory.BSP.invertible_ideal_principal_on_cover <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BSP.invertible_ideal_principal_on_cover` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FInvertibleIdealPrincipalOnZariskiCover.lean&line=31#L31)
 -/
 theorem _root_.GlobalTheory.T.invertible_ideal_principal_on_zariski_cover : ∀ (A : Type) [CommRing A] (I : Ideal A), Module.Invertible A ↥I → ∃ (n : ℕ) (s t : Fin n → A), Ideal.span (Set.range s) = ⊤ ∧ ∀ i, t i ∈ I ∧ ∀ x ∈ I, ∃ c, s i * x = c * t i := by
   first | exact @GlobalTheory.BSP.invertible_ideal_principal_on_cover | exact GlobalTheory.BSP.invertible_ideal_principal_on_cover | (intros; apply GlobalTheory.BSP.invertible_ideal_principal_on_cover <;> assumption)

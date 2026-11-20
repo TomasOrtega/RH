@@ -9,8 +9,10 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.DegreeFormula Formal
 open GlobalTheory.TwoLat GlobalTheory.OrthFilt GlobalTheory.VdmRec GlobalTheory.MixDens GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.Published
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.OrthFilt.isGraded_pull | exact GlobalTheory.OrthFilt.isGraded_pull | (intros; apply GlobalTheory.OrthFilt.isGraded_pull <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.OrthFilt.isGraded_pull` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGradedMetricPullback.lean&line=76#L76)
 -/
 theorem _root_.GlobalTheory.T.graded_metric_pullback : ∀ (k : Type) [CommRing k] (X Y : Scheme.{0}) (p : X ⟶ Sp k) (q : Y ⟶ Sp k) (π : Y ⟶ X) (w : π ≫ p = q) (ι : Type) (L : X.Modules) (g : ℕ) (hL : VMetric p L g) (E E' : ι → X.Modules) (r : ι → ℕ) (h : ∀ a, VMetric p (E a) (r a)) (u : ∀ a, E a ⟶ E' a) (m : ℕ) (o : ι ≃ Fin m), (∀ a, IsVB (E' a) (r a)) → IsGraded hL o h u → IsGraded (E' := fun a => (Scheme.Modules.pullback π).obj (E' a)) (hL.pull π w) o (fun a => (h a).pull π w) fun a => (Scheme.Modules.pullback π).map (u a) := by
   first | exact @GlobalTheory.OrthFilt.isGraded_pull | exact GlobalTheory.OrthFilt.isGraded_pull | (intros; apply GlobalTheory.OrthFilt.isGraded_pull <;> assumption)

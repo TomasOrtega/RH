@@ -6,8 +6,10 @@ import Formalism.LocalToGlobal.CharacterGerms.CoeffIterateZero
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.TwoMulChainStartIndexAddOneOfOdd
 open Formalism.L2.FormalSeriesBounds Formalism.IncomingBounds GlobalTheory.MainTerm Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SemilinearNullity.rank_nullity | exact GlobalTheory.SemilinearNullity.rank_nullity | (intros; apply GlobalTheory.SemilinearNullity.rank_nullity <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SemilinearNullity.rank_nullity` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUnramifiedDepth%2FPowerSemilinearRankNullityModMaxIdeal.lean&line=98#L98)
 -/
 theorem _root_.GlobalTheory.T.powerSemilinear_rank_nullity_mod_maxIdeal : ∀ (C : Type) [Field C] [IsAlgClosed C] (V : VF C) (σ : Type) (m k Q : ℕ), 1 ≤ Q → ∀ Y : Fin m → σ → C, (∀ δ x, V.Ge 0 (Y δ x)) → (∀ (N : ℕ) (x : Fin N → Fin m → C), (∀ ν δ, V.Ge 0 (x ν δ)) → IndepMod V x → (∀ ν s, V.MM (∑ δ, x ν δ ^ Q * Y δ s)) → N ≤ k) → ∃ (m' : ℕ) (cc : Fin m' ↪ Fin m), m ≤ m' + k ∧ IndepMod V (fun ν => Y (cc ν)) := by
   first | exact @GlobalTheory.SemilinearNullity.rank_nullity | exact GlobalTheory.SemilinearNullity.rank_nullity | (intros; apply GlobalTheory.SemilinearNullity.rank_nullity <;> assumption)

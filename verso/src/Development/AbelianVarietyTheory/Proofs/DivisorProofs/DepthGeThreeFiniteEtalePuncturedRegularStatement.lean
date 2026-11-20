@@ -5,8 +5,10 @@ import ReciprocityTheory.CommutativeAlgebra.CohenMacaulay.ModDepthGE
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PurityFree
 open IsLocalRing
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LocalLefschetz.depth_three | exact GlobalTheory.LocalLefschetz.depth_three | (intros; apply GlobalTheory.LocalLefschetz.depth_three <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LocalLefschetz.depth_three` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDepthGeThreeFiniteEtalePuncturedRegular.lean&line=38#L38)
 -/
 theorem _root_.GlobalTheory.T.depth_ge_three_finite_etale_punctured_regular : ∀ (R : Type) [CommRing R] [IsRegularLocalRing R], IsAdicComplete (maximalIdeal R) R → 3 ≤ ringKrullDim R → ∀ f ∈ maximalIdeal R, f ∉ maximalIdeal R ^ 2 → ∀ [IsLocalRing (R ⧸ Ideal.span {f})], GlobalTheory.PurityFree (R ⧸ Ideal.span {f}) → ∀ (A : Type) [CommRing A] [Algebra R A] [Module.Finite R A], ReciprocityTheory.CA.ModDepthGE R A 2 → (∀ (p : Ideal R) [p.IsPrime], p ≠ maximalIdeal R → Algebra.Etale (Localization.AtPrime p) (TensorProduct R (Localization.AtPrime p) A)) → ReciprocityTheory.CA.ModDepthGE R A 3 := by
   first | exact @GlobalTheory.LocalLefschetz.depth_three | exact GlobalTheory.LocalLefschetz.depth_three | (intros; apply GlobalTheory.LocalLefschetz.depth_three <;> assumption)

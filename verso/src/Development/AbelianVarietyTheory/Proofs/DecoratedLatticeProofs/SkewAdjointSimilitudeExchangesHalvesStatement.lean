@@ -9,8 +9,10 @@ import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.PartialFou
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR.Datum MeasureTheory Matrix ValuativeRel GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Unf GlobalTheory.SplitWeil GlobalTheory.RootEx GlobalTheory.SeeSaw GlobalTheory.LocMod
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KappaHalf.ofAdj_rat_mul_half | exact GlobalTheory.KappaHalf.ofAdj_rat_mul_half | (intros; apply GlobalTheory.KappaHalf.ofAdj_rat_mul_half <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KappaHalf.ofAdj_rat_mul_half` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FSkewAdjointSimilitudeExchangesHalves.lean&line=54#L54)
 -/
 theorem _root_.GlobalTheory.T.skewAdjointSimilitude_exchanges_halves : ∀ (D : D7) (L S L'' : HSp D) (τ : Matrix (Fin L.rank) (Fin L''.rank) D.host.E) (e : AE D) (y : WO S L''), (IsHalf (cA D e) y → IsHalf e (GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.ofAdj L S ((rat τ : Mx D L.rank L''.rank) * y))) ∧ (IsHalf e y → IsHalf (cA D e) (GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.ofAdj L S ((rat τ : Mx D L.rank L''.rank) * y))) := by
   first | exact @GlobalTheory.KappaHalf.ofAdj_rat_mul_half | exact GlobalTheory.KappaHalf.ofAdj_rat_mul_half | (intros; apply GlobalTheory.KappaHalf.ofAdj_rat_mul_half <;> assumption)

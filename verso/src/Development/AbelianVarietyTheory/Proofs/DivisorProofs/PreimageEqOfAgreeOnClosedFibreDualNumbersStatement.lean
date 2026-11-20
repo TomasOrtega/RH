@@ -14,8 +14,10 @@ open GlobalTheory.RayEv (Ray)
 open GlobalTheory.Toroidal GlobalTheory.LogKS GlobalTheory.RigChart GlobalTheory.Heat
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LogKS.preimage_eq_of_agree_closedFibre | exact GlobalTheory.LogKS.preimage_eq_of_agree_closedFibre | (intros; apply GlobalTheory.LogKS.preimage_eq_of_agree_closedFibre <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LogKS.preimage_eq_of_agree_closedFibre` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPreimageEqOfAgreeOnClosedFibreDualNumbers.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.preimage_eq_of_agree_on_closedFibre_dualNumbers : ∀ (k : Type) [Field k] (X B : Scheme.{0}) (h : B ⟶ Sp (DualNumber k)) (π₁ π₂ : B ⟶ X), (∀ (Z : Scheme.{0}) (x : Z ⟶ B) (y : Z ⟶ Sp k), x ≫ h = y ≫ spMap (TrivSqZeroExt.fstHom k k k).toRingHom → x ≫ π₁ = x ≫ π₂) → ∀ W : X.Opens, π₁ ⁻¹ᵁ W = π₂ ⁻¹ᵁ W := by
   first | exact @GlobalTheory.LogKS.preimage_eq_of_agree_closedFibre | exact GlobalTheory.LogKS.preimage_eq_of_agree_closedFibre | (intros; apply GlobalTheory.LogKS.preimage_eq_of_agree_closedFibre <;> assumption)

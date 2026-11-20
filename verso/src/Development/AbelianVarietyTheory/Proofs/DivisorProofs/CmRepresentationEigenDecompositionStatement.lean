@@ -14,8 +14,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds (IsClassZetaVals c_vp cE_vp a0)
 open TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EigLine.finrank_common_eigenspace_eq_one | exact GlobalTheory.EigLine.finrank_common_eigenspace_eq_one | (intros; apply GlobalTheory.EigLine.finrank_common_eigenspace_eq_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EigLine.finrank_common_eigenspace_eq_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCmRepresentationEigenDecomposition.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.cm_representation_eigen_decomposition : ∀ (E : Type) [Field E] [NumberField E] (O : Subring E), (∀ x : E, ∃ n : ℕ, n ≠ 0 ∧ (n : E) * x ∈ O) →
     ∀ (L : AddSubgroup E), (∀ a ∈ O, ∀ x ∈ L, a * x ∈ L) →

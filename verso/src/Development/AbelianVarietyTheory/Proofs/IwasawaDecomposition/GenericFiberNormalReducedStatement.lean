@@ -6,8 +6,10 @@ open AlgebraicGeometry CategoryTheory Limits NumberField IsLocalRing Topological
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R Formalism.L2.Pj
 open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFam GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.TorRef
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GenFibre.gen_normal_reduced_noetherian | exact GlobalTheory.GenFibre.gen_normal_reduced_noetherian | (intros; apply GlobalTheory.GenFibre.gen_normal_reduced_noetherian <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GenFibre.gen_normal_reduced_noetherian` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FGenericFiberNormalReduced.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.generic_fiber_normal_reduced : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l)
     (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)),

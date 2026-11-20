@@ -12,8 +12,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LatticeNormTransport (upIdele IsLat
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option autoImplicit false
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ConjTangent.exists_conj_holUnif_tangent | exact GlobalTheory.ConjTangent.exists_conj_holUnif_tangent | (intros; apply GlobalTheory.ConjTangent.exists_conj_holUnif_tangent <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ConjTangent.exists_conj_holUnif_tangent` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGaloisConjugateHolomorphicUniformization.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.galois_conjugate_holomorphic_uniformization : GlobalTheory.Published.PeriodComparison → GlobalTheory.Published.AbelianDeRham → GlobalTheory.Published.AbelianDualCrystal →
   ∀ (F : Type) [Field F] [NumberField F] (𝔠 : FracId F) (X X' : Obj F 𝔠 (Sp ℂ)) (p : X'.A.left ⟶ X.A.left) (g : ℂ ≃+* ℂ)

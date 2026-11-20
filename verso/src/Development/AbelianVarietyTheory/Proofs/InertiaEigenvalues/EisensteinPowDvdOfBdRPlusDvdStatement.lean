@@ -9,8 +9,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.De
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BKReal GlobalTheory.Per GlobalTheory.BSP GlobalTheory.MemLoc GlobalTheory.Pst GlobalTheory.BKLim GlobalTheory.Cong Matrix
 open scoped Formalism.Per NNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BSP.DivTransfer.div_transfer | exact GlobalTheory.BSP.DivTransfer.div_transfer | (intros; apply GlobalTheory.BSP.DivTransfer.div_transfer <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BSP.DivTransfer.div_transfer` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FEisensteinPowDvdOfBdRPlusDvd.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.eisenstein_pow_dvd_of_bdRPlus_dvd : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K), aDp l (bk.ev bk.E) ≠ 0 ∧ ∀ (m : ℕ) (s : bk.S), aDp l (bk.ev bk.E) ^ m ∣ aDp l (bk.ev s) → bk.E ^ m ∣ s := by
   first | exact @GlobalTheory.BSP.DivTransfer.div_transfer | exact GlobalTheory.BSP.DivTransfer.div_transfer | (intros; apply GlobalTheory.BSP.DivTransfer.div_transfer <;> assumption)

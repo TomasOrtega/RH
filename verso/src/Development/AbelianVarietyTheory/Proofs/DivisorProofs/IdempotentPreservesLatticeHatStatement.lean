@@ -10,8 +10,10 @@ open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.CuspMult
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LatLoc.lamHat_loc | exact GlobalTheory.LatLoc.lamHat_loc | (intros; apply GlobalTheory.LatLoc.lamHat_loc <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LatLoc.lamHat_loc` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIdempotentPreservesLatticeHat.lean&line=26#L26)
 -/
 theorem _root_.GlobalTheory.T.idempotent_preserves_lattice_hat : ∀ {D : D7} (V : HSp D) (β : GL (Fin V.rank) (EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (N : ℕ) (PP : Pl D.host.E) (e : Formalism.L2.Theta.AE D), IsBaseFrame V β Λ N → ((N : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal → Formalism.L2.NTheta.IsIdemAt e PP → ∀ y : Fin V.rank → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E, (y ∈ Formalism.L2.NTheta.LamHat V → (fun a => finPart D e * y a) ∈ Formalism.L2.NTheta.LamHat V) ∧ ((fun a => finPart D e * y a) ∈ Formalism.L2.NTheta.LamHat V ↔ ∀ i, (β⁻¹).val.mulVec (fun a => swapAE D (finPart D e * y a)) i ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) := by
   first | exact @GlobalTheory.LatLoc.lamHat_loc | exact GlobalTheory.LatLoc.lamHat_loc | (intros; apply GlobalTheory.LatLoc.lamHat_loc <;> assumption)

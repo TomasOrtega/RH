@@ -9,8 +9,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnifProperOpen.isProper_restrict | exact GlobalTheory.UnifProperOpen.isProper_restrict | (intros; apply GlobalTheory.UnifProperOpen.isProper_restrict <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnifProperOpen.isProper_restrict` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsProperUniformisedSemiAbelianOverOpenInAbLocus.lean&line=150#L150)
 -/
 theorem _root_.GlobalTheory.T.isProper_uniformisedSemiAbelian_over_open_in_abLocus : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → Unif (maximalIdeal R) D A G → ∀ W : (Sp R).Opens, (W : Set (Sp R)) ⊆ abLocus G → IsProper (G.hom ∣_ W) := by
   first | exact @GlobalTheory.UnifProperOpen.isProper_restrict | exact GlobalTheory.UnifProperOpen.isProper_restrict | (intros; apply GlobalTheory.UnifProperOpen.isProper_restrict <;> assumption)

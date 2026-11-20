@@ -14,8 +14,10 @@ open MeasureTheory Formalism.DegreeFormula GlobalTheory.TrueCx
 open scoped Matrix
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ModelMetricReg.invT_contDiffAt_and_isUnit | exact GlobalTheory.ModelMetricReg.invT_contDiffAt_and_isUnit | (intros; apply GlobalTheory.ModelMetricReg.invT_contDiffAt_and_isUnit <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ModelMetricReg.invT_contDiffAt_and_isUnit` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FBoundedDomainModelMetricContDiffAtAndIsUnit.lean&line=65#L65)
 -/
 theorem _root_.GlobalTheory.T.boundedDomainModelMetric_contDiffAt_and_isUnit : ∀ (ι : Type) [Fintype ι] (p q n : ℕ) (h : Fintype.card (ι × Fin p × Fin q) = n) (v : ReciprocityTheory.L2DbarEstimates.V n), GlobalTheory.UnifDens.flatL h v ∈ DomFlat ι p q → ∀ τ : ι, MContDiffAt 2 (fun w => ((hP (unflat (GlobalTheory.UnifDens.flatL h w) τ))⁻¹)ᵀ) v ∧ IsUnit (((hP (unflat (GlobalTheory.UnifDens.flatL h v) τ))⁻¹)ᵀ).det := by
   first | exact @GlobalTheory.ModelMetricReg.invT_contDiffAt_and_isUnit | exact GlobalTheory.ModelMetricReg.invT_contDiffAt_and_isUnit | (intros; apply GlobalTheory.ModelMetricReg.invT_contDiffAt_and_isUnit <;> assumption)

@@ -12,8 +12,10 @@ open GlobalTheory.LevCmp
 open GlobalTheory.TwistChoice (Reading ReadsAt)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GalTwist.galOf_twist_props | exact GlobalTheory.GalTwist.galOf_twist_props | (intros; apply GlobalTheory.GalTwist.galOf_twist_props <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GalTwist.galOf_twist_props` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FGaloisCharacterAntiRamifiedExactly.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.galois_character_anti_ramified_exactly : PrN → ∀ (D : D7) (l : ℕ) (Q : Finset (PlE D.host)) (χ : HChar D.host.E) (ψ₀ : G D.host.E D.nd.Om →* (D.what₂.LL)ˣ), l.Prime → IsPsi (H := D.host) l Q χ → GalOf D χ ψ₀ → AntiHom D.ntw.cc ψ₀ ∧ RamExactly ψ₀ (↑Q : Set (PlE D.host)) ∧ BlochKatoReduction.Gen.TrivAbove ψ₀ l := by
   first | exact @GlobalTheory.GalTwist.galOf_twist_props | exact GlobalTheory.GalTwist.galOf_twist_props | (intros; apply GlobalTheory.GalTwist.galOf_twist_props <;> assumption)

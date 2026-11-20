@@ -27,8 +27,10 @@ open GlobalTheory.TrMult
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open scoped InnerProductSpace
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TensorHom.exists_ne_zero_homDS | exact GlobalTheory.TensorHom.exists_ne_zero_homDS | (intros; apply GlobalTheory.TensorHom.exists_ne_zero_homDS <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TensorHom.exists_ne_zero_homDS` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsNeZeroDiscreteSeriesInfiniteHom.lean&line=393#L393)
 -/
 theorem _root_.GlobalTheory.T.exists_ne_zero_discreteSeriesInfiniteHom : ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (π : GA D V →* (H →L[ℂ] H)), IsIrrUnitary π → HasDSComp M π → ∃ Φ ∈ homDS M π ⊤, Φ ≠ 0 := by
   first | exact @GlobalTheory.TensorHom.exists_ne_zero_homDS | exact GlobalTheory.TensorHom.exists_ne_zero_homDS | (intros; apply GlobalTheory.TensorHom.exists_ne_zero_homDS <;> assumption)

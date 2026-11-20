@@ -9,8 +9,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MumPull.exists_pull | exact GlobalTheory.MumPull.exists_pull | (intros; apply GlobalTheory.MumPull.exists_pull <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MumPull.exists_pull` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsDegenerationDataPullbackInjectiveLocalHom.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.exists_degenerationData_pullback_injective_localHom : ∀ (R R' : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [CommRing R'] [IsDomain R'] [IsLocalRing R'] (ρ : R →+* R'), Function.Injective ρ → IsLocalHom ρ → ∀ D : DegData R (maximalIdeal R), ∃ D' : DegData R' (maximalIdeal R'), Nonempty (IsPullDeg ρ D.toPre D'.toPre) := by
   first | exact @GlobalTheory.MumPull.exists_pull | exact GlobalTheory.MumPull.exists_pull | (intros; apply GlobalTheory.MumPull.exists_pull <;> assumption)

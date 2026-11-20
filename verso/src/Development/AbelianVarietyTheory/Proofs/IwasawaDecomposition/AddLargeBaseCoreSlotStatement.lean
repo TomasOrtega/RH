@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.EventuallyAll
 import Formalism.SharpRestriction.GlobalSchurBounds.ThickPlacesCorollaryOfAnyTranslate
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Formalism.L2.Host GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Top GlobalTheory.Fc NumberField IsDedekindDomain
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mem.Top.GroupRetwisting.SecondG.sAnd_of_largeBase | exact GlobalTheory.Mem.Top.GroupRetwisting.SecondG.sAnd_of_largeBase | (intros; apply GlobalTheory.Mem.Top.GroupRetwisting.SecondG.sAnd_of_largeBase <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mem.Top.GroupRetwisting.SecondG.sAnd_of_largeBase` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FAddLargeBaseCoreSlot.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.secondG_sAnd_of_largeBase : ∀ (KP : GroupRetwisting.BaseP) (Q Q' R : V4.Slot), GroupRetwisting.BaseCond KP → GroupRetwisting.LargeBaseConditionG KP Q R → GroupRetwisting.SecondG KP Q Q' → GroupRetwisting.SecondG KP Q (sAnd Q' R) := by
   first | exact @GlobalTheory.Mem.Top.GroupRetwisting.SecondG.sAnd_of_largeBase | exact GlobalTheory.Mem.Top.GroupRetwisting.SecondG.sAnd_of_largeBase | (intros; apply GlobalTheory.Mem.Top.GroupRetwisting.SecondG.sAnd_of_largeBase <;> assumption)

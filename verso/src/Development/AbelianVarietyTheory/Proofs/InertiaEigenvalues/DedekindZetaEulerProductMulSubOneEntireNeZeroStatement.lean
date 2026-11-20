@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.InfinitelyMa
 open NumberField IsDedekindDomain NumberField.mixedEmbedding Filter Topology Asymptotics Polynomial
 open scoped ContDiff Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.dedekindZeta_eulerProduct_mul_sub_one_entire_ne_zero | exact GlobalTheory.dedekindZeta_eulerProduct_mul_sub_one_entire_ne_zero | (intros; apply GlobalTheory.dedekindZeta_eulerProduct_mul_sub_one_entire_ne_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.dedekindZeta_eulerProduct_mul_sub_one_entire_ne_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FDedekindZetaEulerProductMulSubOneEntireNeZero.lean&line=40#L40)
 -/
 theorem _root_.GlobalTheory.T.exists_entire_sub_one_mul_euler_exp_ne_zero_one : ∀ (K : Type) [Field K] [NumberField K], ∃ Z : ℂ → ℂ, Differentiable ℂ Z ∧ Z 1 ≠ 0 ∧ ∀ s : ℂ, 1 < s.re → Z s = (s - 1) * Complex.exp (∑' P : HeightOneSpectrum (𝓞 K), -Complex.log (1 - 1 * ((Ideal.absNorm P.asIdeal : ℕ) : ℂ) ^ (-s))) := by
   first | exact @GlobalTheory.dedekindZeta_eulerProduct_mul_sub_one_entire_ne_zero | exact GlobalTheory.dedekindZeta_eulerProduct_mul_sub_one_entire_ne_zero | (intros; apply GlobalTheory.dedekindZeta_eulerProduct_mul_sub_one_entire_ne_zero <;> assumption)

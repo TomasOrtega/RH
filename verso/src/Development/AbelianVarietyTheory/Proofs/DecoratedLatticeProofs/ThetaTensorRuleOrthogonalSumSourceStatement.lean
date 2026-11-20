@@ -10,8 +10,10 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Unf
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TensorSrc.tensorSource | exact GlobalTheory.TensorSrc.tensorSource | (intros; apply GlobalTheory.TensorSrc.tensorSource <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TensorSrc.tensorSource` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FThetaTensorRuleOrthogonalSumSource.lean&line=30#L30)
 -/
 theorem _root_.GlobalTheory.T.thetaTensorRule_orthogonalSum_source : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S A B : HSp D) (d : OrthDec S A B) (T : HSp D), GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.TensorSource ψ d T := by
   first | exact @GlobalTheory.TensorSrc.tensorSource | exact GlobalTheory.TensorSrc.tensorSource | (intros; apply GlobalTheory.TensorSrc.tensorSource <;> assumption)

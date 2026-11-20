@@ -11,8 +11,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.ZH ReciprocityTheory.ChartRestriction.G.Out Classical
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ZH.AbPol.relAmple_and_kTriv | exact GlobalTheory.ZH.AbPol.relAmple_and_kTriv | (intros; apply GlobalTheory.ZH.AbPol.relAmple_and_kTriv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ZH.AbPol.relAmple_and_kTriv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDegenerationProofs%2FThetaModelRelAmpleAndPrincipalAbelianLocus.lean&line=248#L248)
 -/
 theorem _root_.GlobalTheory.T.thetaModel_relAmple_and_principal_abelianLocus : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (M : RatModel o Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J) (Q : ZHPre ρ M U₀), Laws → S.Over₀ M U₀ → Q.SecO EE → Q.Ab → ∀ W : M.Z.Opens, (W : Set M.Z) ⊆ abLocus Q.G → RelAmple ((Over.pullback W.ι).obj Q.G) (Q.L.L.pull (pullback.fst Q.G.hom W.ι)) ∧ KTriv ((Over.pullback W.ι).obj Q.G) (Q.L.L.pull (pullback.fst Q.G.hom W.ι)) := by
   first | exact @GlobalTheory.ZH.AbPol.relAmple_and_kTriv | exact GlobalTheory.ZH.AbPol.relAmple_and_kTriv | (intros; apply GlobalTheory.ZH.AbPol.relAmple_and_kTriv <;> assumption)

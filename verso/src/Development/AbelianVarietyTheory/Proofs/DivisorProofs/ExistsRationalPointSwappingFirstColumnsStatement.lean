@@ -10,8 +10,10 @@ open scoped TensorProduct NNReal Matrix
 open NumberField MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.AdelicU GlobalTheory.SiegelSet GlobalTheory.EisRes
 open GlobalTheory.Doubling (absE)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EisCT.exists_ratPts_swap_col0 | exact GlobalTheory.EisCT.exists_ratPts_swap_col0 | (intros; apply GlobalTheory.EisCT.exists_ratPts_swap_col0 <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EisCT.exists_ratPts_swap_col0` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsRationalPointSwappingFirstColumns.lean&line=48#L48)
 -/
 theorem _root_.GlobalTheory.T.exists_rational_point_swapping_first_columns : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E),

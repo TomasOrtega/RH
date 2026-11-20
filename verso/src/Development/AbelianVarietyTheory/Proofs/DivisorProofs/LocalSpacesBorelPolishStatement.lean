@@ -8,8 +8,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 open GlobalTheory.ThK.LemF.QuotInv
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThK.LemF.QuotInv.Facts.vecAt_skewAt_facts | exact GlobalTheory.ThK.LemF.QuotInv.Facts.vecAt_skewAt_facts | (intros; apply GlobalTheory.ThK.LemF.QuotInv.Facts.vecAt_skewAt_facts <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThK.LemF.QuotInv.Facts.vecAt_skewAt_facts` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLocalSpacesBorelPolish.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.local_spaces_borel_polish : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (m : ℕ) (v : Pl F),
     (LocallyCompactSpace (vecAt F E m (evFin F v)) ∧ SecondCountableTopology (vecAt F E m (evFin F v)) ∧

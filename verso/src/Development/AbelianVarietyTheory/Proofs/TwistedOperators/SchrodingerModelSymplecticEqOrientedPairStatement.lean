@@ -13,8 +13,10 @@ open scoped TensorProduct GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMode
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SquareAgree.SympForm.symp_model_eq_symplO | exact GlobalTheory.SquareAgree.SympForm.symp_model_eq_symplO | (intros; apply GlobalTheory.SquareAgree.SympForm.symp_model_eq_symplO <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SquareAgree.SympForm.symp_model_eq_symplO` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FSchrodingerModelSymplecticEqOrientedPair.lean&line=45#L45)
 -/
 theorem _root_.GlobalTheory.T.schrodingerModel_symplectic_eq_orientedPair : ∀ (D : D7) (ε : Bool) (S X : HSp D) {d : ℕ} (e : Fin X.rank ≃ Fin d)
     (Vs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc D.host.F D.host.E S.rank) (Ws : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc D.host.F D.host.E d),

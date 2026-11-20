@@ -32,8 +32,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.FactorDepth GlobalTheory.CharDepth GlobalTheory.FGDepth
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HalfCover.half_gen_on_cover | exact GlobalTheory.HalfCover.half_gen_on_cover | (intros; apply GlobalTheory.HalfCover.half_gen_on_cover <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HalfCover.half_gen_on_cover` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHostFieldDegreeDivisibility.lean&line=38#L38)
 -/
 theorem _root_.GlobalTheory.T.host_field_degree_divisibility : Hypotheses2 → DeepGood → Size → FlatDeg → Covers fun Fm x _ ι p i Y PP _ => letI := p.T.Q.H.starRing; ∃ α : 𝓞 (Fm.D x ι).host.E, α * star α = ((((Fm.D x ι).host.g 0 * (Fm.D x ι).host.g 1 : ℕ) : ℕ) : 𝓞 (Fm.D x ι).host.E) ∧ ((Fm.D x ι).host.g 0 * (Fm.D x ι).host.g 1) ∣ Y.d.l₂.M ∧ Y.d.l₂.Mb ≤ Ideal.span {star α} ∧ Module.finrank ℚ (Fm.D x ι).host.E * (dat p i).q ≤ 2 * (Fm.D x ι).R.f * (Fm.D x ι).R.m := by
   first | exact @GlobalTheory.HalfCover.half_gen_on_cover | exact GlobalTheory.HalfCover.half_gen_on_cover | (intros; apply GlobalTheory.HalfCover.half_gen_on_cover <;> assumption)

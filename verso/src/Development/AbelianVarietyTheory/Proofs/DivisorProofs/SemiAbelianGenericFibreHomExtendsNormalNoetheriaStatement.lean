@@ -10,8 +10,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.semiAbelian_end_generic_extends | exact GlobalTheory.Mum.semiAbelian_end_generic_extends | (intros; apply GlobalTheory.Mum.semiAbelian_end_generic_extends <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.semiAbelian_end_generic_extends` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSemiAbelianGenericFibreHomExtendsNormalNoetheria.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.semiAbelian_genericFibre_hom_extends_normal_noetherian : ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsIntegrallyClosed R] (G : Over (Sp R)) [GrpObj G], IsSemiAbelian G → ∀ φ : (Over.pullback (jK R)).obj G ⟶ (Over.pullback (jK R)).obj G, IsMonHom φ → ∃ g : G ⟶ G, IsMonHom g ∧ (Over.pullback (jK R)).map g = φ := by
   first | exact @GlobalTheory.Mum.semiAbelian_end_generic_extends | exact GlobalTheory.Mum.semiAbelian_end_generic_extends | (intros; apply GlobalTheory.Mum.semiAbelian_end_generic_extends <;> assumption)

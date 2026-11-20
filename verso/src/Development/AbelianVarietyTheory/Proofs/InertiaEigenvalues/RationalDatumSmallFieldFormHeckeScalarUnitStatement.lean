@@ -6,8 +6,10 @@ open Formalism.MainNotions.IntegralHeckeForms (TwOK ClsQ HkIdx V0 Fm0 FullRk SgJ
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TwUnit.isKsForm_and_unit | exact GlobalTheory.TwUnit.isKsForm_and_unit | (intros; apply GlobalTheory.TwUnit.isKsForm_and_unit <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TwUnit.isKsForm_and_unit` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FRationalDatumSmallFieldFormHeckeScalarUnit.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.rational_datum_small_field_form_hecke_scalar_unit : ∀ (D : D7) (X : RealSide D) (E : IntegralHeckeForms.XD D) (Y : SerSide X E), (∀ j, 1 ≤ j → j ≤ D.R.m → (Y.S.A j).IsKsForm) ∧ ∀ i b P, P ∉ D.ntw.S0 i → ∃ u : (D.ntw.O i)ˣ, Y.H.cHk i b 1 P = algebraMap (D.ntw.O i) (FractionRing (D.ntw.O i)) u := by
   first | exact @GlobalTheory.TwUnit.isKsForm_and_unit | exact GlobalTheory.TwUnit.isKsForm_and_unit | (intros; apply GlobalTheory.TwUnit.isKsForm_and_unit <;> assumption)

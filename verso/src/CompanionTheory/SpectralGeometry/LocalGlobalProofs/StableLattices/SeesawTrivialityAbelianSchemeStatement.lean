@@ -12,8 +12,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.RigDesc.triv_of_triv_of_flat_cover | exact GlobalTheory.CompanionTheory.RigDesc.triv_of_triv_of_flat_cover | (intros; apply GlobalTheory.CompanionTheory.RigDesc.triv_of_triv_of_flat_cover <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.RigDesc.triv_of_triv_of_flat_cover` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=CompanionTheory%2FSpectralGeometry%2FLocalGlobalProofs%2FStableLattices%2FSeesawTrivialityAbelianScheme.lean&line=59#L59)
 -/
 theorem _root_.GlobalTheory.T.seesaw_triviality_abelian_scheme : ∀ (S : Scheme.{0}) (A X Y : Over S) [GrpObj A], IsAbelianScheme A → ∀ q : X ⟶ Y, Flat q.left →
     LocallyOfFinitePresentation q.left → Surjective q.left →

@@ -9,8 +9,10 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.Uppe
 open NumberField MeasureTheory Matrix Filter Topology GlobalTheory.SUVol GlobalTheory.RiemConst ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.AR.Inst ReciprocityTheory.ChartRestriction.G.AR.Up ReciprocityTheory.L2DbarEstimates
 open scoped ENNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RiemConst.phaseFrame_small_angles | exact GlobalTheory.RiemConst.phaseFrame_small_angles | (intros; apply GlobalTheory.RiemConst.phaseFrame_small_angles <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RiemConst.phaseFrame_small_angles` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDiagonalPhaseFrameSmallAngles.lean&line=27#L27)
 -/
 theorem _root_.GlobalTheory.T.diagonalPhaseFrame_small_angles : ∀ (E : Type) [Field E] (Ψ : Finset (E →+* ℂ)) (r : ℕ) (δ : ℝ), 0 < δ → ∃ η : ℝ, 0 < η ∧ ∀ θ : Ψ → Fin (r - 1) → ℝ, (∀ τ (a : Fin r), ‖phaseFrame θ τ a a - 1‖ < η) → ∃ θ' : Ψ → Fin (r - 1) → ℝ, ‖θ'‖ < δ ∧ phaseFrame θ' = phaseFrame θ := by
   first | exact @GlobalTheory.RiemConst.phaseFrame_small_angles | exact GlobalTheory.RiemConst.phaseFrame_small_angles | (intros; apply GlobalTheory.RiemConst.phaseFrame_small_angles <;> assumption)

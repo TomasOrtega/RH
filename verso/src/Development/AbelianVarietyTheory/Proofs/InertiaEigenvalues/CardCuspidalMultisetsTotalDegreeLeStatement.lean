@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.Gr
 open GlobalTheory.GLq GlobalTheory.Published Formalism.MainNotions.ArithmeticCylinders Polynomial
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GLq.CuspMultisetCount.card_le | exact GlobalTheory.GLq.CuspMultisetCount.card_le | (intros; apply GlobalTheory.GLq.CuspMultisetCount.card_le <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GLq.CuspMultisetCount.card_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FCardCuspidalMultisetsTotalDegreeLe.lean&line=30#L30)
 -/
 theorem _root_.GlobalTheory.T.card_cuspidal_multisets_total_degree_le : ∀ (g : ℕ) [Fact g.Prime] (n : ℕ), 0 < n → ∀ S : Finset (Multiset (Pc g)), (∀ M ∈ S, (M.map fun p => p.1).sum = n ∧ ∀ p ∈ M, IsCusp p.2) → S.card ≤ g ^ n - g ^ (n - 1) := by
   first | exact @GlobalTheory.GLq.CuspMultisetCount.card_le | exact GlobalTheory.GLq.CuspMultisetCount.card_le | (intros; apply GlobalTheory.GLq.CuspMultisetCount.card_le <;> assumption)

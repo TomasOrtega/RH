@@ -11,8 +11,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.Bh
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.HeckeLAdicCharacterAboveIff
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.DIV Formalism.L2.Pj GlobalTheory.BigTop GlobalTheory.BigOn GlobalTheory.ExpTie GlobalTheory.ExpFrame Formalism.CohomologicalDescent.DepthNonnegative Formalism.CohomologicalDescent.LogSmallConstantBounds Formalism.CohomologicalDescent.ShortWeightBounds Formalism.CohomologicalDescent.LD Formalism.RankGapBounds.FormsTensorLocalization
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ExpModel.modelSt_of_frames | exact GlobalTheory.ExpModel.modelSt_of_frames | (intros; apply GlobalTheory.ExpModel.modelSt_of_frames <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ExpModel.modelSt_of_frames` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FModelStatementOfFrameGalois.lean&line=117#L117)
 -/
 theorem _root_.GlobalTheory.T.model_statement_of_frame_galois : GlobalTheory.Published.BhattScholzeCrystallineLattices → GlobalTheory.Published.ChebotarevDegreeOne → SmallSt → FrameSt → GlobalTheory.ExpTie.GalSt → ModelSt := by
   first | exact @GlobalTheory.ExpModel.modelSt_of_frames | exact GlobalTheory.ExpModel.modelSt_of_frames | (intros; apply GlobalTheory.ExpModel.modelSt_of_frames <;> assumption)

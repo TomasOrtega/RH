@@ -9,8 +9,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open ReciprocityTheory.ChartRestriction.G.DVR.FlatBC (algX)
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.QCoh GlobalTheory.Discrepancy GlobalTheory.PairStep GlobalTheory.FieldPair
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FieldPair.isIntegrallyClosed_locRing | exact GlobalTheory.FieldPair.isIntegrallyClosed_locRing | (intros; apply GlobalTheory.FieldPair.isIntegrallyClosed_locRing <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FieldPair.isIntegrallyClosed_locRing` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsIntegrallyClosedPointLocalRingNormalScheme.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.isIntegrallyClosed_pointLocalRing_normalScheme : ∀ (X : Scheme.{0}) [IsIntegral X] [GlobalTheory.IsNormalScheme X] (x : X),
     IsIntegrallyClosed (locRing x) := by

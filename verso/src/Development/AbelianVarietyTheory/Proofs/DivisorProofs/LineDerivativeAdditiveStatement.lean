@@ -8,8 +8,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.SiegelSet GlobalTheory.UAut GlobalTheory.LeviHC
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LeviHC.LineLie.lineDer_add_bracket | exact GlobalTheory.LeviHC.LineLie.lineDer_add_bracket | (intros; apply GlobalTheory.LeviHC.LineLie.lineDer_add_bracket <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LeviHC.LineLie.lineDer_add_bracket` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLineDerivativeAdditive.lean&line=123#L123)
 -/
 theorem _root_.GlobalTheory.T.line_derivative_additive : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →

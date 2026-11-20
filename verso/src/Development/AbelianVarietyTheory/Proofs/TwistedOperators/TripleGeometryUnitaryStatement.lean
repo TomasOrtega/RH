@@ -10,8 +10,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.Hypo
 
 open NumberField IsDedekindDomain
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HoweEveryPlace.allInKer | exact GlobalTheory.HoweEveryPlace.allInKer | (intros; apply GlobalTheory.HoweEveryPlace.allInKer <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HoweEveryPlace.allInKer` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FTripleGeometryUnitary.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.triple_geometry_unitary : GlobalTheory.Published.HoweDualityUnitary → GlobalTheory.Published.HoweDualityReal → GlobalTheory.Published.MinguezThetaGL → GlobalTheory.FunPr.Hypotheses₂ →
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)

@@ -5,8 +5,10 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.tw_iso_nonempty | exact GlobalTheory.CompanionTheory.Ar.tw_iso_nonempty | (intros; apply GlobalTheory.CompanionTheory.Ar.tw_iso_nonempty <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.tw_iso_nonempty` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FTwistIsoNonempty.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.twist_iso_nonempty : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (g : HostAut H), Nonempty (TwIso D g) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.tw_iso_nonempty | exact GlobalTheory.CompanionTheory.Ar.tw_iso_nonempty | (intros; apply GlobalTheory.CompanionTheory.Ar.tw_iso_nonempty <;> assumption)

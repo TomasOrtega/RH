@@ -8,8 +8,10 @@ import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.DualOrder
 open CategoryTheory Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj TensorProduct
 open GlobalTheory.CompanionTheory.Ar.BT GroundTheory.PAdicHodge
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Relay.regular_at_base_change | exact GlobalTheory.CompanionTheory.Relay.regular_at_base_change | (intros; apply GlobalTheory.CompanionTheory.Relay.regular_at_base_change <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Relay.regular_at_base_change` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FRegularAtBaseChange.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.regular_at_base_change : ∀ (R : Type) [CommRing R] [IsDomain R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (R' : Type) [CommRing R'] [IsDomain R'] [Algebra R R'] (Γ' : QFGroup R' T) (F : Γ'.G.left ⟶ Γ.G.left), Γ'.IsBaseChange Γ (algebraMap R R') F → ∀ κ : FractionRing R →+* FractionRing R', κ.comp (algebraMap R _) = (algebraMap R' _).comp (algebraMap R R') → ∀ (f : T → FractionRing R) (g' : Γ'.G.left), Γ.RegularAt f (F g') → Γ'.RegularAt (fun t => κ (f t)) g' := by
   first | exact @GlobalTheory.CompanionTheory.Relay.regular_at_base_change | exact GlobalTheory.CompanionTheory.Relay.regular_at_base_change | (intros; apply GlobalTheory.CompanionTheory.Relay.regular_at_base_change <;> assumption)

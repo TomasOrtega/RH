@@ -10,8 +10,10 @@ open scoped Topology ComplexOrder
 open MonoidalCategory CartesianMonoidalCategory MonObj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ShFam.OddPrimesWithRootsOfUnity.gram_continuousOn_baseChange | exact GlobalTheory.ShFam.OddPrimesWithRootsOfUnity.gram_continuousOn_baseChange | (intros; apply GlobalTheory.ShFam.OddPrimesWithRootsOfUnity.gram_continuousOn_baseChange <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ShFam.OddPrimesWithRootsOfUnity.gram_continuousOn_baseChange` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FEigenframeContinuousFamily.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.eigenframe_continuous_family : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) [SmoothOfRelativeDimension Dw.dim (genStr Z)] (x : OddPrimesWithRootsOfUnity Z) (σ : c.F →+* ℂ) (V : (gen Z).affineOpens) (φ : c.F →+* Γ(gen Z, V.1)) (F : EigFrame Z φ (LogKS.chart V ≫ genι Z)) (T : Type) [TopologicalSpace T] (a : T → CxFr Z σ) (S : Set T), ContinuousOn (fun t => (a t).1) S → (∀ t ∈ S, ∃ hy : (a t).1 ∈ ptsIn (genStr Z) σ V.1, F.IsMap (evHom hy) (a t).2) → ∀ τ : E →+* ℂ, ContinuousOn (fun t => x.gram (a t).1 (a t).2 τ) S := by
   first | exact @GlobalTheory.ShFam.OddPrimesWithRootsOfUnity.gram_continuousOn_baseChange | exact GlobalTheory.ShFam.OddPrimesWithRootsOfUnity.gram_continuousOn_baseChange | (intros; apply GlobalTheory.ShFam.OddPrimesWithRootsOfUnity.gram_continuousOn_baseChange <;> assumption)

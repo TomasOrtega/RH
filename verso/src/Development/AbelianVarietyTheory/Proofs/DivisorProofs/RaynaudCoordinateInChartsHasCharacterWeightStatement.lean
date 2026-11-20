@@ -13,8 +13,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.HeatConn
 open GlobalTheory.HeatConn
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HeatConn.CoordWt.isWt_xc | exact GlobalTheory.HeatConn.CoordWt.isWt_xc | (intros; apply GlobalTheory.HeatConn.CoordWt.isWt_xc <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HeatConn.CoordWt.isWt_xc` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRaynaudCoordinateInChartsHasCharacterWeight.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.raynaud_coordinate_in_charts_has_character_weight : ∀ {R : Type} [CommRing R] [IsDomain R] {Q : DegPre R} {O : Type} [CommRing O] [StarRing O] [Module O Q.X] {oa : Q.OAct O} (Y : Ray oa) (α : Q.X) (t : Fin 4 → Q.P.L.ι) (W : Y.H.left.Opens), W ≤ xU Y α t → IsWt Y α W (rsT (xc Y α t).val W) := by
   first | exact @GlobalTheory.HeatConn.CoordWt.isWt_xc | exact GlobalTheory.HeatConn.CoordWt.isWt_xc | (intros; apply GlobalTheory.HeatConn.CoordWt.isWt_xc <;> assumption)

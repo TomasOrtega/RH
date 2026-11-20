@@ -6,8 +6,10 @@ open AlgebraicGeometry CategoryTheory Limits NumberField IsLocalRing Topological
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R Formalism.L2.Pj
 open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFam GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.TorRef
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TorRef.preimage_range_jQ_eq | exact GlobalTheory.TorRef.preimage_range_jQ_eq | (intros; apply GlobalTheory.TorRef.preimage_range_jQ_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TorRef.preimage_range_jQ_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FGenericPreimageEqRange.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.generic_preimage_eq_range : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l)
     (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (X : Model Xo c β) (Y : Model Xo c (RingHom.id c.F))

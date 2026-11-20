@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NonemptyEquivL
 
 open NumberField IsDedekindDomain GlobalTheory.CuspRep GlobalTheory.UnitaryBC
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnitaryBC.finiteDimensional_levelForms | exact GlobalTheory.UnitaryBC.finiteDimensional_levelForms | (intros; apply GlobalTheory.UnitaryBC.finiteDimensional_levelForms <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnitaryBC.finiteDimensional_levelForms` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FFiniteDimensionalDefiniteUnitaryLevelForms.lean&line=41#L41)
 -/
 theorem _root_.GlobalTheory.T.finiteDimensional_definiteUnitary_levelForms : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ), (∀ L : Subgroup (finU E n), IsOpen (L : Set (finU E n)) → ∃ S : Finset (UA E n), ∀ g : UA E n, ∃ γ ∈ ratU E n, ∃ s ∈ S, ∃ k ∈ L, ∃ y ∈ infU E n, g = γ * s * (k : UA E n) * y) → ∀ L : Subgroup (finU E n), IsOpen (L : Set (finU E n)) → ∀ C : Submodule ℂ (infU E n → ℂ), FiniteDimensional ℂ C → FiniteDimensional ℂ (Submodule.span ℂ {ψ : UA E n → ℂ | (∀ γ ∈ ratU E n, ∀ g, ψ (γ * g) = ψ g) ∧ (∀ k ∈ L, ∀ g, ψ (g * (k : UA E n)) = ψ g) ∧ ∀ g, (fun y : infU E n => ψ (g * (y : UA E n))) ∈ C}) := by
   first | exact @GlobalTheory.UnitaryBC.finiteDimensional_levelForms | exact GlobalTheory.UnitaryBC.finiteDimensional_levelForms | (intros; apply GlobalTheory.UnitaryBC.finiteDimensional_levelForms <;> assumption)

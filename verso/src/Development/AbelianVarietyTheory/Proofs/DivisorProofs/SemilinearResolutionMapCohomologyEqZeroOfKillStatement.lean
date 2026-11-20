@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.SecClass
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RestrPreservesHomology
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Use `first`. Consider the case `exact @GlobalTheory.EtC.semiMap_op_eq_zero_of_kill`. Consider the case `exact GlobalTheory.EtC.semiMap_op_eq_zero_of_kill`. Consider the case `(intros; apply GlobalTheory.EtC.semiMap_op_eq_zero_of_kill <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EtC.semiMap_op_eq_zero_of_kill` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSemilinearResolutionMapCohomologyEqZeroOfKill.lean&line=73#L73)
 -/
 theorem _root_.GlobalTheory.T.semilinearResolutionMap_cohomology_eq_zero_of_kill : ∀ (S R : Type) [CommRing S] [CommRing R] (F : Shv S) (G : Shv R) (δ : SemiMap (res S F) (res R G)), (∀ (U : Scheme.{0}) (a : Sec F U), δ.app U 0 (Sec.map (resι S F) a) = 0) → ∀ (E : Spc) (n : ℤ) (x : H S E F n), δ.op.app E n x = 0 := by
   first

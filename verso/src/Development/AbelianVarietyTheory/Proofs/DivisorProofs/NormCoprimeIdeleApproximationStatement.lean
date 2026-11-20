@@ -19,8 +19,10 @@ set_option autoImplicit false
 set_option autoImplicit false
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CMVal.NormCongr.absNorm_eq_div_modF | exact GlobalTheory.CMVal.NormCongr.absNorm_eq_div_modF | (intros; apply GlobalTheory.CMVal.NormCongr.absNorm_eq_div_modF <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CMVal.NormCongr.absNorm_eq_div_modF` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FNormCoprimeIdeleApproximation.lean&line=63#L63)
 -/
 theorem _root_.GlobalTheory.T.norm_coprime_idele_approximation : ∀ {K : Type} [Field K] [NumberField K] (t : (Af K)ˣ) (k n : ℕ), 0 < n → k ∣ n → ∀ m : K, m ≠ 0 →
     (∀ v : HeightOneSpectrum (𝓞 K),

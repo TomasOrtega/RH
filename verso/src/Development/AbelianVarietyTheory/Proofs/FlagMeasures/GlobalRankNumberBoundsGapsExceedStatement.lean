@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GlobalRankNumberBoun
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.SecondLabelsNonempty
 open GlobalTheory.Diag.PG
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Diag.PG.gaps_exceed | exact GlobalTheory.Diag.PG.gaps_exceed | (intros; apply GlobalTheory.Diag.PG.gaps_exceed <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Diag.PG.gaps_exceed` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FGlobalRankNumberBoundsGapsExceed.lean&line=8#L8)
 -/
 theorem _root_.GlobalTheory.T.globalRankNumberBounds_gaps_exceed : ∀ eps CD : ℝ, 0 < eps → eps < 1 / 52 → 3 ≤ CD → ∀ C : ℝ, 0 < C → ∃ x0 : ℝ, ∀ x, x0 ≤ x → ∀ m f k lrd Del : ℝ, RankNums x eps CD m f k lrd Del → ∀ r : ℝ, k ≤ r → r ≤ 2 * k → C * k * m ^ 4 + r * m ^ 10 < 4 * Del ∧ C * k * m ^ 4 + r * m ^ 10 < Real.sqrt (bx x eps) ∧ C * k * m ^ 4 + r * m ^ 10 < x ^ (eps / 100) * r ^ 19 * f ^ 5 * x ^ eps ∧ C * r ^ 19 * f ^ 5 * x ^ eps ≤ x ^ (eps / 100) * r ^ 19 * f ^ 5 * x ^ eps := by
   first | exact @GlobalTheory.Diag.PG.gaps_exceed | exact GlobalTheory.Diag.PG.gaps_exceed | (intros; apply GlobalTheory.Diag.PG.gaps_exceed <;> assumption)

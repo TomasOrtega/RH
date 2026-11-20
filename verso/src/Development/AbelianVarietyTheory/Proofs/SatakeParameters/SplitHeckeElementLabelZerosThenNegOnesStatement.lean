@@ -11,8 +11,10 @@ open scoped TensorProduct InnerProductSpace
 open GlobalTheory.Hk3
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Hk3Split.isLabElt_of_isTEnv | exact GlobalTheory.Hk3Split.isLabElt_of_isTEnv | (intros; apply GlobalTheory.Hk3Split.isLabElt_of_isTEnv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Hk3Split.isLabElt_of_isTEnv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FSplitHeckeElementLabelZerosThenNegOnes.lean&line=25#L25)
 -/
 theorem _root_.GlobalTheory.T.split_hecke_element_label_zeros_then_neg_ones : ∀ {D : D7} (V : HSp D) {Pl0 : Type} (pl : Pl0 → Pl D.host.E) (ok : Set Pl0) (i : ok × ℕ) (x : Bridge.Gf V), (i.2 ≤ V.rank → isTEnv V pl ok i x → IsLabElt V (pl i.1) (splitLab V.rank i.2) x) ∧ (isLocEnv V pl ok i x → IsLocElt V (pl i.1) x) ∧ (splitLab V.rank i.2).Pairwise (fun a b => b ≤ a) := by
   first | exact @GlobalTheory.Hk3Split.isLabElt_of_isTEnv | exact GlobalTheory.Hk3Split.isLabElt_of_isTEnv | (intros; apply GlobalTheory.Hk3Split.isLabElt_of_isTEnv <;> assumption)

@@ -5,8 +5,10 @@ import GroundTheory.ProfiniteCohomology.RestrictedRamification.IsUnramifiedOutsi
 import GroundTheory.ProfiniteCohomology.ContinuousCochains
 open NumberField IsDedekindDomain CategoryTheory GroundTheory.ProfCoh ReciprocityTheory.Gal Formalism.ConjugateSelfDual
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Cocycles.finite_cocycles | exact GlobalTheory.CompanionTheory.Cocycles.finite_cocycles | (intros; apply GlobalTheory.CompanionTheory.Cocycles.finite_cocycles <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Cocycles.finite_cocycles` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGlobalProofs%2FFiniteContinuousCrossedHomomorphisms.lean&line=101#L101)
 -/
 theorem _root_.GlobalTheory.T.finite_continuous_crossed_homomorphisms : ∀ (k G : Type) [CommRing k] [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (A : Rep.{0} k G) [IsDiscreteRep A], Finite A.V → (∀ N : ℕ, {H : Subgroup G | IsOpen (H : Set G) ∧ H.index ≠ 0 ∧ H.index ≤ N}.Finite) → {f : G → A.V | IsLocallyConstant f ∧ ∀ g h : G, f (g * h) = f g + A.ρ g (f h)}.Finite := by
   first | exact @GlobalTheory.CompanionTheory.Cocycles.finite_cocycles | exact GlobalTheory.CompanionTheory.Cocycles.finite_cocycles | (intros; apply GlobalTheory.CompanionTheory.Cocycles.finite_cocycles <;> assumption)

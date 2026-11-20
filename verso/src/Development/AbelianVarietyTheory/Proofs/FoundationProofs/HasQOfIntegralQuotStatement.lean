@@ -9,8 +9,10 @@ open GlobalTheory.QFam GlobalTheory.WpFam GlobalTheory.KZ GlobalTheory.FN
 open ReciprocityTheory.ChartRestriction.L1 (DD jT IsMF)
 open ModularForm (E₄ E₆)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FN.hasQ_of_integral_quot | exact GlobalTheory.FN.hasQ_of_integral_quot | (intros; apply GlobalTheory.FN.hasQ_of_integral_quot <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FN.hasQ_of_integral_quot` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FHasQOfIntegralQuot.lean&line=33#L33)
 -/
 theorem _root_.GlobalTheory.T.exists_hasQ_quotient_of_integral : ∀ (N n : ℕ) (A D : ℍ → ℂ) (s : Fin n → ℍ → ℂ), 0 < N → (∃ a, HasQ N A a) → (∃ d, HasQ N D d) → (∀ j, ∃ c, HasQ N (s j) c) → D ≠ 0 → (∀ τ, A τ ^ n + ∑ j, s j τ * A τ ^ (j : ℕ) * D τ ^ (n - j) = 0) → ∃ (h : ℍ → ℂ) (b : ℕ → ℂ), HasQ N h b ∧ ∀ τ, A τ = h τ * D τ := by
   first | exact @GlobalTheory.FN.hasQ_of_integral_quot | exact GlobalTheory.FN.hasQ_of_integral_quot | (intros; apply GlobalTheory.FN.hasQ_of_integral_quot <;> assumption)

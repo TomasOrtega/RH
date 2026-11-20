@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsGaloisInva
 open scoped MatrixGroups NNReal
 open GlobalTheory.KZ GlobalTheory.Glue GlobalTheory.K5 GlobalTheory.KummerEisensteinGalois
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KZ.ramified_divisible_of_unramified | exact GlobalTheory.KZ.ramified_divisible_of_unramified | (intros; apply GlobalTheory.KZ.ramified_divisible_of_unramified <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KZ.ramified_divisible_of_unramified` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FRamifiedDivisibilityOfUnramifiedDivisibility.lean&line=8#L8)
 -/
 theorem _root_.GlobalTheory.T.ramified_divisibility_of_unramified_divisibility : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [Algebra (O0 p) Ω] (v : Valuation Ω ℝ≥0) (ψ : O0 p →+* Ω) (E F : ℕ) (π : Ω) (κ : Fin F → Ω), 1 ≤ E → 0 < v (p : Ω) → v (p : Ω) < 1 → v π ^ E = v (p : Ω) → (∀ j, v (κ j) ≤ 1) → (∀ y, v (ψ y) ≤ 1) → (∀ b : Fin F → Lau p, v (∑ j, κ j * ψ (algebraMap (Lau p) (O0 p) (b j))) < 1 → ∀ j, (p : Lau p) ∣ b j) → ∀ b : Fin F → Fin E → Lau p, v (∑ j, ∑ s : Fin E, κ j * π ^ (s : ℕ) * ψ (algebraMap (Lau p) (O0 p) (b j s))) ≤ v (p : Ω) → ∀ j s, (p : Lau p) ∣ b j s := by
   first | exact @GlobalTheory.KZ.ramified_divisible_of_unramified | exact GlobalTheory.KZ.ramified_divisible_of_unramified | (intros; apply GlobalTheory.KZ.ramified_divisible_of_unramified <;> assumption)

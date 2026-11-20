@@ -13,8 +13,10 @@ open NumberField IsDedekindDomain Matrix MeasureTheory Filter Topology
 open GlobalTheory.CuspRep GlobalTheory.UnitaryBC PositivityTheory.Rg.Rs PositivityTheory.Rg.BcB.SpectralAccumulation GlobalTheory.AutomorphicL2Unitary GlobalTheory.SqIntGL
 open scoped GlobalTheory.CuspRep.CuspidalL2GL
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.FinDiscKfin.exists_kfin_subspace | exact GlobalTheory.CompanionTheory.FinDiscKfin.exists_kfin_subspace | (intros; apply GlobalTheory.CompanionTheory.FinDiscKfin.exists_kfin_subspace <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.FinDiscKfin.exists_kfin_subspace` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FExistsFiniteDimCompactStable.lean&line=57#L57)
 -/
 theorem _root_.GlobalTheory.T.exists_finite_dim_compact_stable : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (N : ℕ) (V : Submodule ℂ (Sm E N)), IsDiscrete V → ∀ L : Subgroup (GL (Fin N) (Af E)), ∀ x ∈ V, (∀ u ∈ L, finRep E N u x = x) → ∃ A : Submodule ℂ (Sm E N), FiniteDimensional ℂ A ∧ x ∈ A ∧ (∀ a ∈ A, a ∈ V ∧ ∀ u ∈ L, finRep E N u a = a) ∧ (∀ k, ∀ a ∈ A, cptRep E N k a ∈ A) ∧ ∀ ℓ : Sm E N →ₗ[ℂ] ℂ, ∀ a ∈ A, Continuous fun k => ℓ (cptRep E N k a) := by
   first | exact @GlobalTheory.CompanionTheory.FinDiscKfin.exists_kfin_subspace | exact GlobalTheory.CompanionTheory.FinDiscKfin.exists_kfin_subspace | (intros; apply GlobalTheory.CompanionTheory.FinDiscKfin.exists_kfin_subspace <;> assumption)

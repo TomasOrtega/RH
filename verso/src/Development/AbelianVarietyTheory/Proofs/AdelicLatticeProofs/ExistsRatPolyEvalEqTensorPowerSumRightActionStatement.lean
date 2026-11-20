@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.AdelicP
 open Matrix GlobalTheory.ClassFin
 open scoped Kronecker ComplexOrder TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ClassFin.exists_mvPolynomial_ev_eq_act | exact GlobalTheory.ClassFin.exists_mvPolynomial_ev_eq_act | (intros; apply GlobalTheory.ClassFin.exists_mvPolynomial_ev_eq_act <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ClassFin.exists_mvPolynomial_ev_eq_act` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FAdelicLatticeProofs%2FExistsRatPolyEvalEqTensorPowerSumRightAction.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.exists_ratPoly_eval_eq_tensorPowerSumRightAction : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (m : ℕ) (d : Fin m → ℕ) (t : TIdx ι d → ℚ), ∃ Φ : TIdx ι d → MvPolynomial (ι × ι) ℚ, ∀ (R : Type) [CommRing R] [Algebra ℚ R] (y : Matrix ι ι R) (k : TIdx ι d), ev (Φ k) y = act d (fun k => algebraMap ℚ R (t k)) y k := by
   first | exact @GlobalTheory.ClassFin.exists_mvPolynomial_ev_eq_act | exact GlobalTheory.ClassFin.exists_mvPolynomial_ev_eq_act | (intros; apply GlobalTheory.ClassFin.exists_mvPolynomial_ev_eq_act <;> assumption)

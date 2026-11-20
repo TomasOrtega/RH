@@ -6,8 +6,10 @@ import Development.AutomorphicSpectrum.Proofs.GlobalProofs.AbelContinuation
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.PartialSum
 open NumberField Formalism.MainNotions.ShortIntervalPrimes GlobalTheory.RayZeta GlobalTheory.CompanionTheory.Hypotheses₂.Shintani GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.coneTerm_summable | exact GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.coneTerm_summable | (intros; apply GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.coneTerm_summable <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.coneTerm_summable` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGlobalProofs%2FConeSeriesSummableRightHalfPlane.lean&line=44#L44)
 -/
 theorem _root_.GlobalTheory.T.cone_series_summable_right_half_plane : ∀ (ι : Type) [Fintype ι] (r : ℕ) (a : ι → Fin r → ℝ) (b : ι → ℝ), r ≤ Fintype.card ι → (∀ j i, 0 < a j i) → (∀ j, 0 < b j) → ∀ s : ℂ, 1 < s.re → Summable (coneTerm a b s) := by
   first | exact @GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.coneTerm_summable | exact GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.coneTerm_summable | (intros; apply GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.coneTerm_summable <;> assumption)

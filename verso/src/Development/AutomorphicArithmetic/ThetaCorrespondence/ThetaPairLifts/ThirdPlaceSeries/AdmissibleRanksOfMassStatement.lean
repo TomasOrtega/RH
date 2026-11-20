@@ -12,8 +12,10 @@ section
 open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Top GlobalTheory.Fc GlobalTheory.MiS GlobalTheory.Fam
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.Fam.MemberFrame.tFrameAt_at_linked_of_recT | exact _root_.GlobalTheory.Fam.MemberFrame.tFrameAt_at_linked_of_recT | (intros; apply _root_.GlobalTheory.Fam.MemberFrame.tFrameAt_at_linked_of_recT <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Fam.MemberFrame.tFrameAt_at_linked_of_recT` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicArithmetic%2FThetaCorrespondence%2FThetaPairLifts%2FThirdPlaceSeries%2FAdmissibleRanksOfMass.lean&line=44#L44)
 -/
 theorem _root_.GlobalTheory.T.type_frame_all_members' : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL), GlobalTheory.Fc.RowE (Bl.IsGoodE p.s) (_root_.GlobalTheory.Mem.Top.Bl.BundleLinkage p) (fun _ D _ _ _ => Formalism.L2.SG.RowsConc.TFrameAt D) := by
   first | exact @_root_.GlobalTheory.Fam.MemberFrame.tFrameAt_at_linked_of_recT | exact _root_.GlobalTheory.Fam.MemberFrame.tFrameAt_at_linked_of_recT | (intros; apply _root_.GlobalTheory.Fam.MemberFrame.tFrameAt_at_linked_of_recT <;> assumption)

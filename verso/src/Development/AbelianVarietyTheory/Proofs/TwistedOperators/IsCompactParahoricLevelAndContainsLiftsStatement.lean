@@ -8,8 +8,10 @@ open NumberField IsDedekindDomain MeasureTheory Formalism.BasicNotions Formalism
 open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ParahoricCompact.isCompact_flag_and_lift | exact GlobalTheory.ParahoricCompact.isCompact_flag_and_lift | (intros; apply GlobalTheory.ParahoricCompact.isCompact_flag_and_lift <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ParahoricCompact.isCompact_flag_and_lift` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FIsCompactParahoricLevelAndContainsLifts.lean&line=134#L134)
 -/
 theorem _root_.GlobalTheory.T.isCompact_parahoricLevel_and_contains_lifts : ∀ {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank), IsCompact ((levG V β (flagL L) : Subgroup (GA D V)) : Set (GA D V)) ∧ ∀ g0 κ, IsLevelLift V β L g0 κ → κ ∈ levG V β (flagL L) := by
   first | exact @GlobalTheory.ParahoricCompact.isCompact_flag_and_lift | exact GlobalTheory.ParahoricCompact.isCompact_flag_and_lift | (intros; apply GlobalTheory.ParahoricCompact.isCompact_flag_and_lift <;> assumption)

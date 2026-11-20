@@ -8,8 +8,10 @@ open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalT
 open Formalism.MainNotions.DIV.Cons (intO)
 open GlobalTheory.ArLieBase
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TwoLat.CoordReg.exists_isCoordMat | exact GlobalTheory.TwoLat.CoordReg.exists_isCoordMat | (intros; apply GlobalTheory.TwoLat.CoordReg.exists_isCoordMat <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TwoLat.CoordReg.exists_isCoordMat` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FToroidalModelBaseChangeNormal.lean&line=129#L129)
 -/
 theorem _root_.GlobalTheory.T.exists_isCoordMat_of_isLieLat_of_isGrLat : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H}

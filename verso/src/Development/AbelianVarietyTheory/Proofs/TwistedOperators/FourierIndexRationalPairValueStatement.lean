@@ -21,8 +21,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle (Tri)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RowEx MeasureTheory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MovedJet.jet_moved_vac_alg | exact GlobalTheory.MovedJet.jet_moved_vac_alg | (intros; apply GlobalTheory.MovedJet.jet_moved_vac_alg <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MovedJet.jet_moved_vac_alg` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FFourierIndexRationalPairValue.lean&line=155#L155)
 -/
 theorem _root_.GlobalTheory.T.fourier_index_rational_pair_value : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →

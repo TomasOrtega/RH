@@ -35,8 +35,10 @@ open GlobalTheory.HSApp
 open GlobalTheory.LamT (CMPt)
 set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LatFull.CMInt.exists_frame_denom_dominant_pow | exact GlobalTheory.LatFull.CMInt.exists_frame_denom_dominant_pow | (intros; apply GlobalTheory.LatFull.CMInt.exists_frame_denom_dominant_pow <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LatFull.CMInt.exists_frame_denom_dominant_pow` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsFrameDenominatorDominantWeightPowerCm.lean&line=45#L45)
 -/
 theorem _root_.GlobalTheory.T.exists_frame_denominator_dominant_weight_power_cm : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)] (z : CMPt Xo c) (f : ℕ) (La : ℝ), z.Good f La → ∀ y : FrPt Xo c z.K, y.x = z.x → 1 ≤ Dw.p → 1 ≤ Dw.q → ∀ la : GlobalTheory.AllWt.Weight Dw, (∀ τ, Antitone (la τ)) → (∀ τ, 1 ≤ gap (la τ) (Dw.p - 1)) → ∀ m : ℕ, ∃ N : z.K, N ≠ 0 ∧ ∀ F ∈ GlobalTheory.AllWt.secZ Xo c (GlobalTheory.AllWt.exOf Dw la m), (∀ v, ∀ w ∈ valSet Xo c (algCls Xo c) v, 0 ≤ w F) → IsIntegral ℤ (N * evR Xo c F y) := by
   first | exact @GlobalTheory.LatFull.CMInt.exists_frame_denom_dominant_pow | exact GlobalTheory.LatFull.CMInt.exists_frame_denom_dominant_pow | (intros; apply GlobalTheory.LatFull.CMInt.exists_frame_denom_dominant_pow <;> assumption)

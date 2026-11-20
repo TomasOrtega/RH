@@ -1,8 +1,10 @@
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsUnitDetPairingOfBicharacterOfDvdTrace
 open scoped TensorProduct
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.isUnit_det_of_bicharacter_of_dvd_trace | exact GlobalTheory.isUnit_det_of_bicharacter_of_dvd_trace | (intros; apply GlobalTheory.isUnit_det_of_bicharacter_of_dvd_trace <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.isUnit_det_of_bicharacter_of_dvd_trace` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FModuliProofs%2FIsUnitDetPairingOfBicharacterOfDvdTrace.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.isUnit_det_pairing_of_bicharacter_of_dvd_trace : ∀ (O H K Γ : Type) [CommRing O] [IsDomain O] [CommRing H] [Algebra O H] [Field K] [IsAlgClosed K] [Algebra O K] [CommGroup Γ] (r : ℕ) (b : Module.Basis (Fin r) O H) (D : Matrix (Fin r) (Fin r) O) (pt : Γ → (H →ₐ[O] K)) (X : Γ → Γ → K) (c : O), Function.Injective (algebraMap O K) → IsReduced (K ⊗[O] H) → Function.Bijective pt → (∀ a a', X a a' = ∑ i, ∑ j, algebraMap O K (D i j) * pt a (b i) * pt a' (b j)) → (∀ a b, X a b ≠ 0) → (∀ a a' b, X (a * a') b = X a b * X a' b) → (∀ a b b', X a (b * b') = X a b * X a b') → (∀ a, (∀ b, X a b = 1) → a = 1) → c ≠ 0 → (r : O) = c ^ 2 → (∀ h : H, c ∣ Algebra.trace O H h) → IsUnit D.det := by
   first | exact @GlobalTheory.isUnit_det_of_bicharacter_of_dvd_trace | exact GlobalTheory.isUnit_det_of_bicharacter_of_dvd_trace | (intros; apply GlobalTheory.isUnit_det_of_bicharacter_of_dvd_trace <;> assumption)

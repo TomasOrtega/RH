@@ -13,8 +13,10 @@ open GlobalTheory.HSCore GlobalTheory.QCoh
 open GlobalTheory
 open Formalism.L2.Pj Formalism.NormVectorIdentities.Items
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ImageHeightFrame.isImageHeight_unique | exact GlobalTheory.ImageHeightFrame.isImageHeight_unique | (intros; apply GlobalTheory.ImageHeightFrame.isImageHeight_unique <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ImageHeightFrame.isImageHeight_unique` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FNormalisedImageHeightUniqueFrame.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.normalisedImageHeight_unique_frame : Quoted → ∀ (F : Type) [Field F] [NumberField F] (V Ω : Type) [AddCommGroup V] [Module F V] [Module (𝓞 F) V] [IsScalarTower (𝓞 F) F V] [Field Ω] [Algebra F Ω] (Nm : (F →+* ℂ) → V → ℝ) (W : Submodule (𝓞 F) V) (ev : V →ₗ[F] Ω) (D : ℕ) (h h' : ℝ), IsTotallyComplex F → CompHt.IsImageHeight Nm W ev D h → CompHt.IsImageHeight Nm W ev D h' → h = h' := by
   first | exact @GlobalTheory.ImageHeightFrame.isImageHeight_unique | exact GlobalTheory.ImageHeightFrame.isImageHeight_unique | (intros; apply GlobalTheory.ImageHeightFrame.isImageHeight_unique <;> assumption)

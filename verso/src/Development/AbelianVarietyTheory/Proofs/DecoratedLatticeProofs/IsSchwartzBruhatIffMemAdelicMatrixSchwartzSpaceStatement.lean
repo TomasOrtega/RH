@@ -13,8 +13,10 @@ open GlobalTheory.Core.Rk.IP GlobalTheory.Core.Rk.SWLaw
 open GlobalTheory.Core.Rk.SW
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SchwartzIff.isSchwartzBruhat_iff_mem_schwartzA | exact GlobalTheory.SchwartzIff.isSchwartzBruhat_iff_mem_schwartzA | (intros; apply GlobalTheory.SchwartzIff.isSchwartzBruhat_iff_mem_schwartzA <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SchwartzIff.isSchwartzBruhat_iff_mem_schwartzA` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FIsSchwartzBruhatIffMemAdelicMatrixSchwartzSpace.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.isSchwartzBruhat_iff_mem_adelicMatrixSchwartzSpace : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (m n : ℕ) (φ : Mx D m n → ℂ), GlobalTheory.IndefiniteRowSideFullHecke.SchwartzBruhatMixedFamilies.IsSchwartzBruhat φ ↔ φ ∈ GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz.schwartzA θ m n := by
   first | exact @GlobalTheory.SchwartzIff.isSchwartzBruhat_iff_mem_schwartzA | exact GlobalTheory.SchwartzIff.isSchwartzBruhat_iff_mem_schwartzA | (intros; apply GlobalTheory.SchwartzIff.isSchwartzBruhat_iff_mem_schwartzA <;> assumption)

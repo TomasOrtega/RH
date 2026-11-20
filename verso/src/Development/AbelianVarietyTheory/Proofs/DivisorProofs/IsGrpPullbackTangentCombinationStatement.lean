@@ -16,8 +16,10 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 open GlobalTheory.FlatModel
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlatModel.lieTie_lieComb | exact GlobalTheory.FlatModel.lieTie_lieComb | (intros; apply GlobalTheory.FlatModel.lieTie_lieComb <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlatModel.lieTie_lieComb` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsGrpPullbackTangentCombination.lean&line=30#L30)
 -/
 theorem _root_.GlobalTheory.T.isGrpPullback_tangent_combination : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (S0 : Scheme.{0})
     (t : SAB H S0) (p : ℕ) [Fact p.Prime] [StarRing (𝓞 E)] (P : PtP E p) (x0 : Sp ℂ_[p] ⟶ S0)

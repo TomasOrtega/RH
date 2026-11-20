@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WhittakerSpaceDimPa
 import Development.AbelianVarietyTheory.Definitions.Divisors.SplitDoublingNBlock
 open GlobalTheory.FinGL Formalism.L2.DIV Module
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FinGL.whDim_parInd_eq_one | exact GlobalTheory.FinGL.whDim_parInd_eq_one | (intros; apply GlobalTheory.FinGL.whDim_parInd_eq_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FinGL.whDim_parInd_eq_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FWhittakerSpaceDimParabolicInductionCuspidalEqOne.lean&line=38#L38)
 -/
 theorem _root_.GlobalTheory.T.whittakerSpaceDim_parabolicInduction_cuspidal_eq_one : ∀ (F : Type) [Field F] [Fintype F] (ψ : AddChar F ℂ), ψ ≠ 1 → ∀ (r : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V] (b : Fin r → ℕ) (σ : Representation ℂ (blockTri (κ := F) b) V), IsCuspDatum b σ → whDim ψ (parInd b σ) = 1 := by
   first | exact @GlobalTheory.FinGL.whDim_parInd_eq_one | exact GlobalTheory.FinGL.whDim_parInd_eq_one | (intros; apply GlobalTheory.FinGL.whDim_parInd_eq_one <;> assumption)

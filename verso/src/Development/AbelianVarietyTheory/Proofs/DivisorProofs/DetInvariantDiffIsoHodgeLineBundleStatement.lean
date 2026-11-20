@@ -9,8 +9,10 @@ open GlobalTheory GlobalTheory.ZM GlobalTheory.ZH GlobalTheory.UMin GlobalTheory
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UMin.lbIso_detOm_hodge | exact GlobalTheory.UMin.lbIso_detOm_hodge | (intros; apply GlobalTheory.UMin.lbIso_detOm_hodge <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UMin.lbIso_detOm_hodge` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDetInvariantDiffIsoHodgeLineBundle.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.detInvariantDiff_iso_hodgeLineBundle : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)), (GlobalTheory.FlagMod.detOm Y).IsLB → LBIso (GlobalTheory.FlagMod.detOm Y) (GlobalTheory.SiegelTor.hodge Y.t.G (Module.finrank ℚ E / 2 * (Dw.p + Dw.q))) := by
   first | exact @GlobalTheory.UMin.lbIso_detOm_hodge | exact GlobalTheory.UMin.lbIso_detOm_hodge | (intros; apply GlobalTheory.UMin.lbIso_detOm_hodge <;> assumption)

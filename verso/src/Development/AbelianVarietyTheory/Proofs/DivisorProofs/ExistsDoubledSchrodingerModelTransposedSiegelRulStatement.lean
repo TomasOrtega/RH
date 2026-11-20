@@ -12,8 +12,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (Base Spc Model Ch
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WeilSchrodinger.DblTarget.exists_dbl_target | exact GlobalTheory.WeilSchrodinger.DblTarget.exists_dbl_target | (intros; apply GlobalTheory.WeilSchrodinger.DblTarget.exists_dbl_target <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WeilSchrodinger.DblTarget.exists_dbl_target` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsDoubledSchrodingerModelTransposedSiegelRul.lean&line=27#L27)
 -/
 theorem _root_.GlobalTheory.T.exists_doubled_schrodingerModel_transposed_siegelRule : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (S T : HSp D) (χS χT : (AE D)ˣ →* Circle), IsHeckeChar D χS → IsHeckeChar D χT →

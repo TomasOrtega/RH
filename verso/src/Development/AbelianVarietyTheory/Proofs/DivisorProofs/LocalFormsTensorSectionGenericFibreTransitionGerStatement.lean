@@ -10,8 +10,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KeySecRel.locSec_eq_germ_mul | exact GlobalTheory.KeySecRel.locSec_eq_germ_mul | (intros; apply GlobalTheory.KeySecRel.locSec_eq_germ_mul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KeySecRel.locSec_eq_germ_mul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLocalFormsTensorSectionGenericFibreTransitionGer.lean&line=80#L80)
 -/
 theorem _root_.GlobalTheory.T.localFormsTensorSection_genericFibre_transitionGerm : ∀ (S : Scheme.{0}) [IsIntegral S] (G : Over S) [GrpObj G] [IsCommMonObj G] (L : RigLB G) (δ : LB S)
     (σ : (CechPic.tens L.L (δ.pull G.hom)).Sec), δ.IsLB → ∀ (i i' : δ.ι) (h2 : genericPoint S ∈ δ.U i ⊓ δ.U i')

@@ -11,8 +11,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open ReciprocityTheory.ChartRestriction.G.Out GlobalTheory.ZH Classical
 attribute [local instance] SplitExt.free SplitExt.finite MvPolynomial.gradedAlgebra
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ZH.exists_parAt | exact GlobalTheory.ZH.exists_parAt | (intros; apply GlobalTheory.ZH.exists_parAt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ZH.exists_parAt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDegenerationProofs%2FExistsTorusExtensionParameterGenericFibrePoint.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.exists_torusExtension_parameter_genericFibrePoint : GlobalTheory.UT.LL → UTorsSt → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀) (l : u.Lab) (a : u.PtC), ∃ g, u.ParAt S.N a g := by
   first | exact @GlobalTheory.ZH.exists_parAt | exact GlobalTheory.ZH.exists_parAt | (intros; apply GlobalTheory.ZH.exists_parAt <;> assumption)

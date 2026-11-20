@@ -5,8 +5,10 @@ import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomology
 set_option backward.isDefEq.respectTransparency false
 open CategoryTheory GroundTheory.PAdicHodge CrystallineSemistableComparison CrystallineSemistableComparison.PAlg
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Untilt.untilt_mod_varpi_sq | exact GlobalTheory.CompanionTheory.Untilt.untilt_mod_varpi_sq | (intros; apply GlobalTheory.CompanionTheory.Untilt.untilt_mod_varpi_sq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Untilt.untilt_mod_varpi_sq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FExistsPrimeRootValuationQuotient.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.exists_prime_root_valuation_quotient : ∀ {l : ℕ} [Fact l.Prime] (A : PAlg l), A.IsTest → ∃ ϖ : A.U, ϖ ^ l = (l : A.U) ∧ R.Val0 (A.U ⧸ Ideal.span {ϖ ^ 2}) ∧ R.Aic (A.U ⧸ Ideal.span {ϖ ^ 2}) := by
   first | exact @GlobalTheory.CompanionTheory.Untilt.untilt_mod_varpi_sq | exact GlobalTheory.CompanionTheory.Untilt.untilt_mod_varpi_sq | (intros; apply GlobalTheory.CompanionTheory.Untilt.untilt_mod_varpi_sq <;> assumption)

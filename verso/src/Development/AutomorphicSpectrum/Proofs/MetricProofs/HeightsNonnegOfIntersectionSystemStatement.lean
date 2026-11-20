@@ -13,8 +13,10 @@ import GroundTheory.HeightsAndTheta.Heights.Intersections.Statements
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StatementsPushDown
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.ArakelovGeometry Filter Topology NumberField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Giv.heightsNonneg_of_smallGenerators | exact GlobalTheory.CompanionTheory.Ar.Giv.heightsNonneg_of_smallGenerators | (intros; apply GlobalTheory.CompanionTheory.Ar.Giv.heightsNonneg_of_smallGenerators <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Giv.heightsNonneg_of_smallGenerators` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FHeightsNonnegOfIntersectionSystem.lean&line=151#L151)
 -/
 theorem _root_.GlobalTheory.T.heights_nonneg_of_intersection_system : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω] (y : (Σ k, ι k) → Ω) (D : ℕ) (A : HermLine ι) (II : IntersectionSystem) (q : ℕ) (w : Fin q → Ω), IsIntersectionSystem II → IsArithVar (mCoordIdeal y) (D + 1) → Birational y → IsSmoothHerm A → (∀ j, w j ∈ chartLat y A.a 1) → KH.GeneratesOn y A.a w → (∀ j, IsSmallH (mCoordIdeal y) y A 1 (w j)) → HeightsNonneg II (mCoordIdeal y) A := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Giv.heightsNonneg_of_smallGenerators | exact GlobalTheory.CompanionTheory.Ar.Giv.heightsNonneg_of_smallGenerators | (intros; apply GlobalTheory.CompanionTheory.Ar.Giv.heightsNonneg_of_smallGenerators <;> assumption)

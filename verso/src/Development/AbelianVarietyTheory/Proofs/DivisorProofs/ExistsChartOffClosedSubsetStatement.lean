@@ -12,8 +12,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.BoundaryPolynomialFunctions (IsProj
 open Formalism.BasicNotions Formalism.L2.Pj GlobalTheory.Toroidal GlobalTheory.ShFam GlobalTheory.ShFam.Hor GlobalTheory.Mean4O
 open scoped ContDiff ComplexOrder ENNReal Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GenericChart.exists_isClosed_chart | exact GlobalTheory.GenericChart.exists_isClosed_chart | (intros; apply GlobalTheory.GenericChart.exists_isClosed_chart <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GenericChart.exists_isClosed_chart` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsChartOffClosedSubset.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.exists_chart_off_closed_subset : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∃ T : Set X, IsClosed T ∧ genericPoint X ∉ T ∧ ∀ (σ : k →+* ℂ) (y : CxPts p σ), y.1 (IsLocalRing.closedPoint ℂ) ∉ T → ∃ c : AlgChart p σ D, y ∈ c.e.source := by
   first | exact @GlobalTheory.GenericChart.exists_isClosed_chart | exact GlobalTheory.GenericChart.exists_isClosed_chart | (intros; apply GlobalTheory.GenericChart.exists_isClosed_chart <;> assumption)

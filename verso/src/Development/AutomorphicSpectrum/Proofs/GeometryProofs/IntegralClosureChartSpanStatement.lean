@@ -7,8 +7,10 @@ import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.LatNormGrL
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
 open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar NumberField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.IntClGens.exists_twisted_gens | exact GlobalTheory.CompanionTheory.Ar.IntClGens.exists_twisted_gens | (intros; apply GlobalTheory.CompanionTheory.Ar.IntClGens.exists_twisted_gens <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.IntClGens.exists_twisted_gens` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FIntegralClosureChartSpan.lean&line=94#L94)
 -/
 theorem _root_.GlobalTheory.T.integral_closure_chart_span : ∀ (o : Type) [CommRing o] (Ω : Type) [Field Ω] [Algebra o Ω] (κ : Type) [Finite κ] (x : κ → Ω), (∀ c, x c ≠ 0 → Module.Finite (chRing o x c) (integralClosure (chRing o x c) Ω)) → ∃ (d n : ℕ) (z : κ ⊕ Fin n → Ω), (∀ c, z (Sum.inl c) = x c ^ d) ∧ ∀ c, x c ≠ 0 → ∀ a : Ω, IsIntegral (chRing o x c) a ↔ a ∈ Submodule.span (chRing o x c) (Set.range fun k => z k / x c ^ d) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.IntClGens.exists_twisted_gens | exact GlobalTheory.CompanionTheory.Ar.IntClGens.exists_twisted_gens | (intros; apply GlobalTheory.CompanionTheory.Ar.IntClGens.exists_twisted_gens <;> assumption)

@@ -5,8 +5,10 @@ open NumberField IsDedekindDomain MeasureTheory Matrix Formalism.BasicNotions Fo
 open scoped TensorProduct InnerProductSpace ContDiff
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HolDict.ZClosed.zcusp_of_mem_closure | exact GlobalTheory.HolDict.ZClosed.zcusp_of_mem_closure | (intros; apply GlobalTheory.HolDict.ZClosed.zcusp_of_mem_closure <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HolDict.ZClosed.zcusp_of_mem_closure` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCuspidalityPreservedInClosure.lean&line=184#L184)
 -/
 theorem _root_.GlobalTheory.T.cuspidality_preserved_in_closure : ∀ (D : D7) (θ : InfFam D) (V : HSp D), IsInfFam θ → ∀ (μ : Measure (GA D V)) (𝓕 : Set (GA D V)) (ρ : GA D V →* (Lp ℂ 2 (nuQ V μ 𝓕) →L[ℂ] Lp ℂ 2 (nuQ V μ 𝓕))), FinPair V μ 𝓕 → IsReg V μ 𝓕 ρ → ∀ (φ ψ : GA D V → ℂ) F₀ F, IsAutFun V φ → ZCusp V φ → Repr V μ 𝓕 F₀ φ → IsAutFun V ψ → Repr V μ 𝓕 F ψ → F ∈ closure (Submodule.span ℂ {z | ∃ u : GA D V, z = ρ u F₀} : Set (Lp ℂ 2 (nuQ V μ 𝓕))) → ZCusp V ψ := by
   first | exact @GlobalTheory.HolDict.ZClosed.zcusp_of_mem_closure | exact GlobalTheory.HolDict.ZClosed.zcusp_of_mem_closure | (intros; apply GlobalTheory.HolDict.ZClosed.zcusp_of_mem_closure <;> assumption)

@@ -18,8 +18,10 @@ open GlobalTheory.Mum
 open Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ZH.exists_cp_zhOut | exact GlobalTheory.ZH.exists_cp_zhOut | (intros; apply GlobalTheory.ZH.exists_cp_zhOut <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ZH.exists_cp_zhOut` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsCubicalStructureSemiAbelianExtension.lean&line=27#L27)
 -/
 theorem _root_.GlobalTheory.T.exists_cubicalStructure_semiAbelianExtension : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [GlobalTheory.ZH.ArithBase o Ω] (S : GlobalTheory.ZH.ThetaSys o Ω) (ρS : S.Real) (M : GlobalTheory.ZH.RatModel o Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J), S.Over₀ M U₀ → ∀ Z : GlobalTheory.ZH.ZHOut ρS M U₀ EE, ∃ P : GlobalTheory.UU.CP Z.G, P.L = Z.L := by
   first | exact @GlobalTheory.ZH.exists_cp_zhOut | exact GlobalTheory.ZH.exists_cp_zhOut | (intros; apply GlobalTheory.ZH.exists_cp_zhOut <;> assumption)

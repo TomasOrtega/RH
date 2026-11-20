@@ -7,8 +7,10 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.Toroidal GlobalTheory.LocM G
 open scoped CategoryTheory.Obj
 open GlobalTheory.Desc
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Desc.exists_open_of_saturated_stalkBaseChange | exact GlobalTheory.Desc.exists_open_of_saturated_stalkBaseChange | (intros; apply GlobalTheory.Desc.exists_open_of_saturated_stalkBaseChange <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Desc.exists_open_of_saturated_stalkBaseChange` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsOpenOfSaturatedLocalSchemeBaseChange.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.exists_open_of_saturated_local_scheme_baseChange : ∀ (S S₁ P : Scheme.{0}) (p : P ⟶ S) (x : S) (ξ' : S₁ ⟶ Spec (S.presheaf.stalk x)) (ξ : S₁ ⟶ S), ξ' ≫ S.fromSpecStalk x = ξ → Flat ξ' → Surjective ξ' → QuasiCompact ξ' → ∀ O : Set ↥(Limits.pullback p ξ), IsOpen O → (∀ w w' : ↥(Limits.pullback p ξ), Limits.pullback.fst p ξ w = Limits.pullback.fst p ξ w' → w ∈ O → w' ∈ O) → ∃ V : P.Opens, ∀ w : ↥(Limits.pullback p ξ), Limits.pullback.fst p ξ w ∈ V ↔ w ∈ O := by
   first | exact @GlobalTheory.Desc.exists_open_of_saturated_stalkBaseChange | exact GlobalTheory.Desc.exists_open_of_saturated_stalkBaseChange | (intros; apply GlobalTheory.Desc.exists_open_of_saturated_stalkBaseChange <;> assumption)

@@ -6,8 +6,10 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory GlobalTheory.Cart
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LatChain.regAt_of_pInt | exact GlobalTheory.LatChain.regAt_of_pInt | (intros; apply GlobalTheory.LatChain.regAt_of_pInt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LatChain.regAt_of_pInt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPIntegralRegularOnCover.lean&line=8#L8)
 -/
 theorem _root_.GlobalTheory.T.p_integral_regular_on_cover : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (V : Cover Y) (p : ℕ), p.Prime → ∀ (f : V.X.functionField), PInt p f → ∀ x : V.X, Ov p x → RegAt x f := by
   first | exact @GlobalTheory.LatChain.regAt_of_pInt | exact GlobalTheory.LatChain.regAt_of_pInt | (intros; apply GlobalTheory.LatChain.regAt_of_pInt <;> assumption)

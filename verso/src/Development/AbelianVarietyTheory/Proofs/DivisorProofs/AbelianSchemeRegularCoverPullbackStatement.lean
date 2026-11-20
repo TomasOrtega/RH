@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsOf
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsL2OnDiagonalOfIsL2Metric
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThetaCover.exists_regCover_hasTheta | exact GlobalTheory.ThetaCover.exists_regCover_hasTheta | (intros; apply GlobalTheory.ThetaCover.exists_regCover_hasTheta <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThetaCover.exists_regCover_hasTheta` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAbelianSchemeRegularCoverPullback.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.abelian_scheme_regular_cover_pullback : GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.Published.RegularAlteration → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) [IsIntegral X], IsArithVar p 1 → ∀ P : PPAS X, ∃ (C : RegCover p) (P' : PPAS C.Y) (φ : P'.A.left ⟶ P.A.left), P'.IsPull P C.ρ φ ∧ P'.g = P.g ∧ P'.HasTheta := by
   first | exact @GlobalTheory.ThetaCover.exists_regCover_hasTheta | exact GlobalTheory.ThetaCover.exists_regCover_hasTheta | (intros; apply GlobalTheory.ThetaCover.exists_regCover_hasTheta <;> assumption)

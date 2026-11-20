@@ -4,8 +4,10 @@ import Formalism.QuotientMetricDivisors.Statement
 import Formalism.HermitianLattices.StatementLat
 open NumberField IsDedekindDomain
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mem.DualBC.dual_baseChange | exact GlobalTheory.Mem.DualBC.dual_baseChange | (intros; apply GlobalTheory.Mem.DualBC.dual_baseChange <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mem.DualBC.dual_baseChange` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FHermitianDualLatticeBaseChange.lean&line=122#L122)
 -/
 theorem _root_.GlobalTheory.T.hermitianDualLattice_baseChange : ∀ (K K' : Type) [Field K] [NumberField K] [StarRing K] [Field K'] [NumberField K'] [StarRing K'] (φ : K →+* K') (d d' : ℕ)
   (G : Matrix (Fin d') (Fin d) K'), Function.Bijective G.mulVec → ∀ (H : Matrix (Fin d) (Fin d) K) (H' : Matrix (Fin d') (Fin d') K'),

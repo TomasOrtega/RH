@@ -8,8 +8,10 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.triv_of_triv_on_dense_fibres_prod_abelian | exact GlobalTheory.triv_of_triv_on_dense_fibres_prod_abelian | (intros; apply GlobalTheory.triv_of_triv_on_dense_fibres_prod_abelian <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.triv_of_triv_on_dense_fibres_prod_abelian` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FModuliProofs%2FSeesawTrivialityOnDenseFibresProductAbelian.lean&line=29#L29)
 -/
 theorem _root_.GlobalTheory.T.seesaw_triviality_on_dense_fibres_product_abelian : Out.GlobalFnsSt → ∀ (k : Type) [Field k] [IsAlgClosed k] (A B : Over (Sp k)) [GrpObj A] [GrpObj B] (N : LB (A ⊗ B).left) (M : LB B.left), IsAbelianScheme A → IsAbelianScheme B → M.IsLB → Out.RelAmple B M → N.IsLB → (∃ t : (N.pull (lift (1 : B ⟶ A) (𝟙 B)).left).Gen, t.IsGen) → Dense (⋃ x ∈ {x : 𝟙_ (Over (Sp k)) ⟶ A | ∃ t : (N.pull (lift (toUnit B ≫ x) (𝟙 B)).left).Gen, t.IsGen}, Set.range x.left) → (∃ t : (N.pull (lift (𝟙 A) (1 : A ⟶ B)).left).Gen, t.IsGen) → ∃ t : N.Gen, t.IsGen := by
   first | exact @GlobalTheory.triv_of_triv_on_dense_fibres_prod_abelian | exact GlobalTheory.triv_of_triv_on_dense_fibres_prod_abelian | (intros; apply GlobalTheory.triv_of_triv_on_dense_fibres_prod_abelian <;> assumption)

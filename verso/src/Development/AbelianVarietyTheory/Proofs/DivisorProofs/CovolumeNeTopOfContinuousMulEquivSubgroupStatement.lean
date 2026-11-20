@@ -8,8 +8,10 @@ open GlobalTheory.Doubling (absE npow)
 open Formalism.UG (cT bc)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SphEis.covolume_ne_top_of_continuousMulEquiv | exact GlobalTheory.SphEis.covolume_ne_top_of_continuousMulEquiv | (intros; apply GlobalTheory.SphEis.covolume_ne_top_of_continuousMulEquiv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SphEis.covolume_ne_top_of_continuousMulEquiv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCovolumeNeTopOfContinuousMulEquivSubgroup.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.covolume_ne_top_of_continuousMulEquiv_subgroup : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G] (H : Type) [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [LocallyCompactSpace H] [SecondCountableTopology H] [T2Space H] [MeasurableSpace H] [BorelSpace H] (e : G ≃ₜ* H) (Γ : Subgroup G) (Λ : Subgroup H) [Countable Γ], (∀ g, g ∈ Γ ↔ e g ∈ Λ) → (∀ μ : Measure G, μ.IsHaarMeasure → ∀ 𝓕, IsFundamentalDomain Γ 𝓕 μ → μ 𝓕 < ⊤) → ∀ (π : Measure H) (𝓜 : Set H), π.IsHaarMeasure → IsFundamentalDomain Λ 𝓜 π → π 𝓜 ≠ ⊤ := by
   first | exact @GlobalTheory.SphEis.covolume_ne_top_of_continuousMulEquiv | exact GlobalTheory.SphEis.covolume_ne_top_of_continuousMulEquiv | (intros; apply GlobalTheory.SphEis.covolume_ne_top_of_continuousMulEquiv <;> assumption)

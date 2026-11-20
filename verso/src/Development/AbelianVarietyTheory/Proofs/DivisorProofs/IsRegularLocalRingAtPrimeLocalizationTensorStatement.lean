@@ -4,8 +4,10 @@ import Mathlib
 open IsLocalRing
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.isRegularLocalRing_atPrime_localization_tensor | exact GlobalTheory.isRegularLocalRing_atPrime_localization_tensor | (intros; apply GlobalTheory.isRegularLocalRing_atPrime_localization_tensor <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.isRegularLocalRing_atPrime_localization_tensor` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsRegularLocalRingAtPrimeLocalizationTensor.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.isRegularLocalRing_localization_atPrime_tensor_field : ∀ (k K : Type) [Field k] [Field K] [Algebra k K] (r : ℕ) (𝔪 : Ideal (MvPolynomial (Fin r) k)) [𝔪.IsPrime] (𝔫 : Ideal (Localization.AtPrime 𝔪 ⊗[k] K)) [𝔫.IsPrime], IsRegularLocalRing (Localization.AtPrime 𝔫) := by
   first | exact @GlobalTheory.isRegularLocalRing_atPrime_localization_tensor | exact GlobalTheory.isRegularLocalRing_atPrime_localization_tensor | (intros; apply GlobalTheory.isRegularLocalRing_atPrime_localization_tensor <;> assumption)

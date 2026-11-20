@@ -5,8 +5,10 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry
 open ReciprocityTheory.ChartRestriction.G.Out GlobalTheory.AbLaw GlobalTheory.FormalAlg
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FormalAlg.alg_of_isImmersion_isProjOver | exact GlobalTheory.FormalAlg.alg_of_isImmersion_isProjOver | (intros; apply GlobalTheory.FormalAlg.alg_of_isImmersion_isProjOver <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FormalAlg.alg_of_isImmersion_isProjOver` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAlgebraiseOfIsImmersionProjectiveCompleteNoeth.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.algebraise_of_isImmersion_projective_completeNoeth : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (I : Ideal R), IsAdicComplete I R → ∀ (W P : Scheme.{0}) (j : W ⟶ P) (p : P ⟶ Spec (CommRingCat.of R)), ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsProjOver p → IsImmersion j → Alg (j ≫ p) I := by
   first | exact @GlobalTheory.FormalAlg.alg_of_isImmersion_isProjOver | exact GlobalTheory.FormalAlg.alg_of_isImmersion_isProjOver | (intros; apply GlobalTheory.FormalAlg.alg_of_isImmersion_isProjOver <;> assumption)

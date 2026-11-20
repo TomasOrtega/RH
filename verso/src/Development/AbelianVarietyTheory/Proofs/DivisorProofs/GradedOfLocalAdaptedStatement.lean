@@ -11,8 +11,10 @@ open Formalism.MainNotions.DIV.Cons (intO)
 open scoped Classical
 open GlobalTheory.LieFilt
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GrFilt.isGraded_of_locAdapted | exact GlobalTheory.GrFilt.isGraded_of_locAdapted | (intros; apply GlobalTheory.GrFilt.isGraded_of_locAdapted <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GrFilt.isGraded_of_locAdapted` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGradedOfLocalAdapted.lean&line=27#L27)
 -/
 theorem _root_.GlobalTheory.T.graded_of_local_adapted : ∀ {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k} {ι : Type} [Fintype ι] {L : X.Modules} {g : ℕ}
     {E E' : ι → X.Modules} {r : ι → ℕ} (hL : VMetric p L g) {m : ℕ} (o : ι ≃ Fin m) (h : ∀ a, VMetric p (E a) (r a))

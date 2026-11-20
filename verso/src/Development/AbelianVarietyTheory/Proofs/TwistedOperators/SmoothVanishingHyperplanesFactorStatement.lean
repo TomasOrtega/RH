@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.In
 open GlobalTheory.Chamber
 open scoped InnerProductSpace ContDiff Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.smooth_div_prod_linear_forms | exact GlobalTheory.smooth_div_prod_linear_forms | (intros; apply GlobalTheory.smooth_div_prod_linear_forms <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.smooth_div_prod_linear_forms` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FSmoothVanishingHyperplanesFactor.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.smooth_vanishing_hyperplanes_factor : ∀ {k : ℕ} (L : Finset (A0 k)) (N : A0 k → ℂ), (∀ b ∈ L, b ≠ 0) → (∀ b ∈ L, ∀ b' ∈ L, b ≠ b' → ∀ r : ℝ, b' ≠ r • b) →
   ContDiff ℝ ∞ N → (∀ b ∈ L, ∀ x, ⟪x, b⟫_ℝ = 0 → N x = 0) →

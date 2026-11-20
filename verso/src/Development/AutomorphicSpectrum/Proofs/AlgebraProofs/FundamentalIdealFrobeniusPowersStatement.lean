@@ -6,8 +6,10 @@ import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.StepOrderR
 open ReciprocityTheory.PGsh.L2 ReciprocityTheory.PGsh.Up GlobalTheory.CompanionTheory.Ar.GR
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Relay.fundamental_ideal_frobenius_powers | exact GlobalTheory.CompanionTheory.Relay.fundamental_ideal_frobenius_powers | (intros; apply GlobalTheory.CompanionTheory.Relay.fundamental_ideal_frobenius_powers <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Relay.fundamental_ideal_frobenius_powers` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FAlgebraProofs%2FFundamentalIdealFrobeniusPowers.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.fundamental_ideal_frobenius_powers : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C], v.Integers R → v (p : C) < 1 → ∀ (F : Type) [Field F] [Fintype F] [DecidableEq F] [CharP F p] (f : ℕ), Fintype.card F = p ^ f → ∀ (AA : HopfOrder (C := C) R F), FStable F AA.carrier → ∀ σ : MulChar F R, IsFund p σ → ∀ c : ℕ → R, (∀ n, xIdeal AA.carrier (σ ^ p ^ n) = Ideal.span {c n}) → (∀ n, v (p : C) ≤ v (algebraMap R C (c n)) ^ (p - 1)) ∧ ∀ d : Fin f → Fin p, (∃ n, (d n : ℕ) ≠ 0) → xIdeal AA.carrier (σ ^ (∑ n : Fin f, (d n : ℕ) * p ^ (n : ℕ))) = Ideal.span {∏ n : Fin f, c n ^ (d n : ℕ)} := by
   first | exact @GlobalTheory.CompanionTheory.Relay.fundamental_ideal_frobenius_powers | exact GlobalTheory.CompanionTheory.Relay.fundamental_ideal_frobenius_powers | (intros; apply GlobalTheory.CompanionTheory.Relay.fundamental_ideal_frobenius_powers <;> assumption)

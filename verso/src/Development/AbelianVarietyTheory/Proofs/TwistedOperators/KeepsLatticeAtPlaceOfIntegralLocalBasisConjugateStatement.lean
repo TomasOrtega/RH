@@ -9,8 +9,10 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open scoped TensorProduct Matrix
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KeepInt.keepLat | exact GlobalTheory.KeepInt.keepLat | (intros; apply GlobalTheory.KeepInt.keepLat <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KeepInt.keepLat` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FKeepsLatticeAtPlaceOfIntegralLocalBasisConjugate.lean&line=29#L29)
 -/
 theorem _root_.GlobalTheory.T.keepsLatticeAtPlace_of_integral_localBasisConjugates : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {d : ℕ} (W : Spc F E d) (v : Pl F) (π₁ π₂ : AE F E →+* Fv F v) (b₁ b₂ : GL (Fin d) (Fv F v)),
   (∀ z : Fin d → AE F E, z ∈ GlobalTheory.InertSph.latAt W v ↔ At (evFin F v) z ∧

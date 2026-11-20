@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.DeltaStruct
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BKReal GlobalTheory.Per GlobalTheory.BSP
 open scoped Formalism.Per NNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.div_d_continuous_of_bdd_ltorsion | exact GlobalTheory.div_d_continuous_of_bdd_ltorsion | (intros; apply GlobalTheory.div_d_continuous_of_bdd_ltorsion <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.div_d_continuous_of_bdd_ltorsion` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FMemPowOfMulMemPowBoundedTorsion.lean&line=8#L8)
 -/
 theorem _root_.GlobalTheory.T.mem_pow_of_mul_mem_pow_bounded_torsion : ∀ (l : ℕ) [Fact l.Prime] (A : Type) [CommRing A] (d : A) (N : ℕ), d ∈ nonZeroDivisors A → (∀ (x : A) (m : ℕ), (l : A) ^ m * x ∈ Ideal.span {d} → (l : A) ^ N * x ∈ Ideal.span {d}) → ∀ (n : ℕ) (z : A), d * z ∈ (Ideal.span {(l : A)} ⊔ Ideal.span {d}) ^ (2 * (n + N + 1)) → z ∈ (Ideal.span {(l : A)} ⊔ Ideal.span {d}) ^ n := by
   first | exact @GlobalTheory.div_d_continuous_of_bdd_ltorsion | exact GlobalTheory.div_d_continuous_of_bdd_ltorsion | (intros; apply GlobalTheory.div_d_continuous_of_bdd_ltorsion <;> assumption)

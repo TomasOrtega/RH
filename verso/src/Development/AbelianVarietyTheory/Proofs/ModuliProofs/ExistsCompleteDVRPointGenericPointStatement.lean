@@ -12,8 +12,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj TensorProduct Pointwise
 open GlobalTheory.Models GlobalTheory.ModelSum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GenTrait.exists_trait_genericPoint | exact GlobalTheory.GenTrait.exists_trait_genericPoint | (intros; apply GlobalTheory.GenTrait.exists_trait_genericPoint <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GenTrait.exists_trait_genericPoint` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FModuliProofs%2FExistsCompleteDVRPointGenericPoint.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.exists_completeDVR_point_genericPoint : ∀ (Z : Scheme.{0}) [IsIntegral Z] (W : Type) [CommRing W] [IsDomain W] [CharZero W] (_ : Sp W ⟶ Z), ∃ (R : Type) (_ : CommRing R) (_ : IsDomain R) (_ : IsLocalRing R), GlobalTheory.LN.CDvr R ∧ ∃ χ : Sp R ⟶ Z, ∀ y, χ y = genericPoint Z := by
   first | exact @GlobalTheory.GenTrait.exists_trait_genericPoint | exact GlobalTheory.GenTrait.exists_trait_genericPoint | (intros; apply GlobalTheory.GenTrait.exists_trait_genericPoint <;> assumption)

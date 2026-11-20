@@ -4,8 +4,10 @@ import Mathlib
 import Formalism.CharacterColumnKernels.StatementRho
 open Formalism.NG
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HomLen.length_addMonoidHom_le | exact GlobalTheory.HomLen.length_addMonoidHom_le | (intros; apply GlobalTheory.HomLen.length_addMonoidHom_le <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HomLen.length_addMonoidHom_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FLengthAddMonoidHomFiniteGroupFractionQuotientLe.lean&line=219#L219)
 -/
 theorem _root_.GlobalTheory.T.length_addMonoidHom_finite_group_fractionQuotient_le : ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [Algebra ℤ_[l] O] (M : Type) [AddCommGroup M] [Module O M] (eM : M ≃ₗ[O] KO O)

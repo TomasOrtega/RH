@@ -3,8 +3,10 @@ import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ProductInequalitiesF
 open scoped Matrix TensorProduct
 open Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.GR.grcount | exact GlobalTheory.CompanionTheory.Ar.GR.grcount | (intros; apply GlobalTheory.CompanionTheory.Ar.GR.grcount <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.GR.grcount` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FAlgebraProofs%2FProductInequalitiesForceEquality.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.product_inequalities_force_equality : ∀ (T S : Type) [Fintype T] [Fintype S] (a b : ℕ), 0 < a → 0 < b → ∀ (x D d : T → S → NNReal) (r : S → NNReal) (cA cN cO : NNReal), cN ≠ 0 → (∀ t s, x t s ≤ D t s) → ∏ t, ∏ s, D t s = cA → (∏ t, ∏ s, x t s) ^ (a * b) = cN ^ 2 → cA ^ (a * b) = cN ^ 2 → (∀ s, ∏ t, d t s ≤ r s) → ∏ s, r s = cO → ∏ t, ∏ s, d t s = (∏ t, ∏ s, x t s) ^ b → cO ^ a = cN ^ 2 → (∀ t s, D t s = x t s) ∧ ∀ s, ∏ t, d t s = r s := by
   first | exact @GlobalTheory.CompanionTheory.Ar.GR.grcount | exact GlobalTheory.CompanionTheory.Ar.GR.grcount | (intros; apply GlobalTheory.CompanionTheory.Ar.GR.grcount <;> assumption)

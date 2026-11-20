@@ -15,8 +15,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DenomTrace.integral_traces_bounded_denominators | exact GlobalTheory.DenomTrace.integral_traces_bounded_denominators | (intros; apply GlobalTheory.DenomTrace.integral_traces_bounded_denominators <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DenomTrace.integral_traces_bounded_denominators` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTraceDualUniformDenominator.lean&line=51#L51)
 -/
 theorem _root_.GlobalTheory.T.trace_dual_uniform_denominator : ∀ (E : Type) [Field E] [NumberField E] (σ : E →+* E) {n : ℕ} (A : Matrix (Fin n) (Fin n) E), A.det ≠ 0 →
     ∃ (m : ℕ) (β : Fin m → Fin n → 𝓞 E) (D : ℕ), D ≠ 0 ∧ ∀ ξ : Fin n → E,

@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DbarAddVectorScalar
 open Matrix MeasureTheory Set Filter Topology GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe GlobalTheory.TorsionForm GlobalTheory.TorsionForm.Gauge
 open scoped ContDiff
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SiegelMoeb.im_moeb | exact GlobalTheory.SiegelMoeb.im_moeb | (intros; apply GlobalTheory.SiegelMoeb.im_moeb <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SiegelMoeb.im_moeb` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FMoebImaginaryPartTransform.lean&line=73#L73)
 -/
 theorem _root_.GlobalTheory.T.moeb_imaginary_part_transform : ∀ {g : ℕ} (γ : Sp g) (T : Matrix (Fin g) (Fin g) ℂ), T.IsSymm → IsUnit (den γ T) → (moeb γ T).map (fun t => (t.im : ℂ)) = ((den γ T)⁻¹)ᴴ * T.map (fun t => (t.im : ℂ)) * (den γ T)⁻¹ := by
   first | exact @GlobalTheory.SiegelMoeb.im_moeb | exact GlobalTheory.SiegelMoeb.im_moeb | (intros; apply GlobalTheory.SiegelMoeb.im_moeb <;> assumption)

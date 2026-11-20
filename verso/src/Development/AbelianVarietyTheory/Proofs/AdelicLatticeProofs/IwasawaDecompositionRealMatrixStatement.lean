@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.AdelicP
 open Matrix GlobalTheory.ClassFin
 open scoped Kronecker ComplexOrder TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ClassFin.iwasawa_real | exact GlobalTheory.ClassFin.iwasawa_real | (intros; apply GlobalTheory.ClassFin.iwasawa_real <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ClassFin.iwasawa_real` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FAdelicLatticeProofs%2FIwasawaDecompositionRealMatrix.lean&line=30#L30)
 -/
 theorem _root_.GlobalTheory.T.iwasawa_decomposition_real_matrix : ∀ (N : ℕ) (g : Matrix (Fin N) (Fin N) ℝ), g.det ≠ 0 → ∃ (k : Matrix (Fin N) (Fin N) ℝ) (a : Fin N → ℝ) (n : Matrix (Fin N) (Fin N) ℝ), kᵀ * k = 1 ∧ (∀ i, 0 < a i) ∧ (∀ i, n i i = 1) ∧ (∀ i j, j < i → n i j = 0) ∧ g = k * diagonal a * n := by
   first | exact @GlobalTheory.ClassFin.iwasawa_real | exact GlobalTheory.ClassFin.iwasawa_real | (intros; apply GlobalTheory.ClassFin.iwasawa_real <;> assumption)

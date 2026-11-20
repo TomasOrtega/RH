@@ -7,8 +7,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions Form
 open GlobalTheory.ChiGrid GlobalTheory.SqTop
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GridUnr.chi_eta_unramAt | exact GlobalTheory.GridUnr.chi_eta_unramAt | (intros; apply GlobalTheory.GridUnr.chi_eta_unramAt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GridUnr.chi_eta_unramAt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGridCharactersUnramified.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.grid_characters_unramified : ∀ {D : D7} {T : Type} {Lc : LevCh D T} {sc : Consts} (G : GridData Lc sc) (μ₀ : T), Lc.Is μ₀ → ∀ (t : T) (v : HeightOneSpectrum (𝓞 D.host.F)) (e : AF D.host.F), IsPlaceIdem D v e → v ∉ G.pl.S0 → ∀ i : Fin D.R.m, GlobalTheory.WeilParts.UnramAt e (G.ch.chi (D.R.m - i)) ∧ GlobalTheory.WeilParts.UnramAt e Lc.eta := by
   first | exact @GlobalTheory.GridUnr.chi_eta_unramAt | exact GlobalTheory.GridUnr.chi_eta_unramAt | (intros; apply GlobalTheory.GridUnr.chi_eta_unramAt <;> assumption)

@@ -6,8 +6,10 @@ import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.HeckeSecti
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.StatementsFlagIndependence
 open MvPolynomial
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ggeo.multihomog_component_relation | exact GlobalTheory.CompanionTheory.Ggeo.multihomog_component_relation | (intros; apply GlobalTheory.CompanionTheory.Ggeo.multihomog_component_relation <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ggeo.multihomog_component_relation` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FMultihomogComponentQuotient.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.multihomog_component_quotient : ∀ (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (P : Ideal (MvPolynomial (Σ k, ι k) ℤ)), P.IsPrime → GroundTheory.Heights₂.Heights.NumbersDVR.IsMultiHomogIdeal P → ∀ (f g u₀ v₀ : MvPolynomial (Σ k, ι k) ℤ) (bf bg a : K → ℕ), GroundTheory.Heights₂.Heights.NumbersDVR.IsMultiHomog f bf → GroundTheory.Heights₂.Heights.NumbersDVR.IsMultiHomog g bg → f ∉ P → u₀ * f - v₀ * g ∈ P → weightedHomogeneousComponent (GroundTheory.Heights₂.Heights.NumbersDVR.blockWeight ι) a u₀ ∉ P → ∃ (b : K → ℕ) (v : MvPolynomial (Σ k, ι k) ℤ), GroundTheory.Heights₂.Heights.NumbersDVR.IsMultiHomog v b ∧ a + bf = b + bg ∧ (weightedHomogeneousComponent (GroundTheory.Heights₂.Heights.NumbersDVR.blockWeight ι) a u₀) * f - v * g ∈ P := by
   first | exact @GlobalTheory.CompanionTheory.Ggeo.multihomog_component_relation | exact GlobalTheory.CompanionTheory.Ggeo.multihomog_component_relation | (intros; apply GlobalTheory.CompanionTheory.Ggeo.multihomog_component_relation <;> assumption)

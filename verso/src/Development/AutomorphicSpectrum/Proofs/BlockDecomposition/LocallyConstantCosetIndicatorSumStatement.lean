@@ -18,8 +18,10 @@ open Matrix GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.BZMir GlobalTheory.
 open scoped TensorProduct
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.BZPsiPG.FibKer.eq_sum_coset_indicators | exact GlobalTheory.CompanionTheory.BZPsiPG.FibKer.eq_sum_coset_indicators | (intros; apply GlobalTheory.CompanionTheory.BZPsiPG.FibKer.eq_sum_coset_indicators <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.BZPsiPG.FibKer.eq_sum_coset_indicators` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FLocallyConstantCosetIndicatorSum.lean&line=79#L79)
 -/
 theorem _root_.GlobalTheory.T.locally_constant_coset_indicator_sum : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (t : ℕ) {Z : Type} [AddCommGroup Z] [Module ℂ Z] (φ : (Fin t → k) → Z) (c : k), c ≠ 0 → HasCompactSupport φ → (∀ o ∈ Lc t c, ∀ v, φ (v + o.toAdd) = φ v) → ∃ A : Finset (Fin t → k), ∀ v, φ v = ∑ a ∈ A, (cosetSet t c a).indicator (fun _ => φ a) v := by
   first | exact @GlobalTheory.CompanionTheory.BZPsiPG.FibKer.eq_sum_coset_indicators | exact GlobalTheory.CompanionTheory.BZPsiPG.FibKer.eq_sum_coset_indicators | (intros; apply GlobalTheory.CompanionTheory.BZPsiPG.FibKer.eq_sum_coset_indicators <;> assumption)

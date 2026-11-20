@@ -11,8 +11,10 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Unf
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Desc.weil_data_descend | exact GlobalTheory.Desc.weil_data_descend | (intros; apply GlobalTheory.Desc.weil_data_descend <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Desc.weil_data_descend` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FWeilDatumDescendsToWittCore.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.weilDatum_descends_to_wittCore : ∀ D : D7, Descent D := by
   first | exact @GlobalTheory.Desc.weil_data_descend | exact GlobalTheory.Desc.weil_data_descend | (intros; apply GlobalTheory.Desc.weil_data_descend <;> assumption)

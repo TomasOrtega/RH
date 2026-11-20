@@ -16,8 +16,10 @@ open GlobalTheory.AscFin
 open GlobalTheory.BumpMix
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BumpMixSmooth.poinX_smooth | exact GlobalTheory.BumpMixSmooth.poinX_smooth | (intros; apply GlobalTheory.BumpMixSmooth.poinX_smooth <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BumpMixSmooth.poinX_smooth` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FContDiffPoincareSumOverRationalHomRealDirections.lean&line=89#L89)
 -/
 theorem _root_.GlobalTheory.T.contDiff_poincareSumOverRationalHom_realDirections : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S S₀ T : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) (β : Mx D T.rank ρ → ℂ), IsBump β → ∀ (k : ℕ) (L : (Fin k → ℝ) →+ WO S T), Continuous L → (∀ t, (L t).map (finPart D) = 0) → ∀ w, ContDiff ℝ ∞ fun t => poinX ψ d T β (w + L t) := by
   first | exact @GlobalTheory.BumpMixSmooth.poinX_smooth | exact GlobalTheory.BumpMixSmooth.poinX_smooth | (intros; apply GlobalTheory.BumpMixSmooth.poinX_smooth <;> assumption)

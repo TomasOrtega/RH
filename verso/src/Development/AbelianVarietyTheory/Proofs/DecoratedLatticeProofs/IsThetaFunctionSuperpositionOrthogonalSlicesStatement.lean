@@ -10,8 +10,10 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Unf
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SuperposS.superpos_isTheta | exact GlobalTheory.SuperposS.superpos_isTheta | (intros; apply GlobalTheory.SuperposS.superpos_isTheta <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SuperposS.superpos_isTheta` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FIsThetaFunctionSuperpositionOrthogonalSlices.lean&line=68#L68)
 -/
 theorem _root_.GlobalTheory.T.isThetaFunction_superposition_orthogonalSlices : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S A B T : HSp D) (o : OrthDec S A B) (F : WO S T → ℂ), IsThetaFunO ψ S T F → ∀ (Ω : Type) [MeasurableSpace Ω] (μ : Measure Ω) (k : Ω → WO B T) (a : Ω → ℂ), Measurable k → Integrable a μ → IsThetaFunO ψ A T fun u => ∫ w, a w * F ((o.resS T).symm (u, k w)) ∂μ := by
   first | exact @GlobalTheory.SuperposS.superpos_isTheta | exact GlobalTheory.SuperposS.superpos_isTheta | (intros; apply GlobalTheory.SuperposS.superpos_isTheta <;> assumption)

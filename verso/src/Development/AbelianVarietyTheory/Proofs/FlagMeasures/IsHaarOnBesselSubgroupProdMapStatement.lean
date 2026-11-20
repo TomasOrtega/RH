@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.MatrixOfBess
 open MeasureTheory Matrix Formalism.QuantumDeterminants Formalism.MainNotions.S GlobalTheory.SgInf
 open scoped InnerProductSpace
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SgInf.ProdHaarS.isHaarOn_prod_map | exact GlobalTheory.SgInf.ProdHaarS.isHaarOn_prod_map | (intros; apply GlobalTheory.SgInf.ProdHaarS.isHaarOn_prod_map <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SgInf.ProdHaarS.isHaarOn_prod_map` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FIsHaarOnBesselSubgroupProdMap.lean&line=8#L8)
 -/
 theorem _root_.GlobalTheory.T.isHaarOn_besselSubgroup_prod_map : ∀ (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (μW μN : Measure (Mt k r)), inWb k r z → 0 < Tz k r z → IsHaarOn (UWset k r z) μW → IsHaarOn (Nset k r) μN → IsHaarOn (Sset k r z) ((μW.prod μN).map fun p : Mt k r × Mt k r => lmulM (Matrix.of p.1) p.2) := by
   first | exact @GlobalTheory.SgInf.ProdHaarS.isHaarOn_prod_map | exact GlobalTheory.SgInf.ProdHaarS.isHaarOn_prod_map | (intros; apply GlobalTheory.SgInf.ProdHaarS.isHaarOn_prod_map <;> assumption)

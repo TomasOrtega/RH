@@ -7,8 +7,10 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.B
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.SncBase
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.SncBase.genPt_mem_of_dense_open | exact GlobalTheory.CompanionTheory.Ar.SncBase.genPt_mem_of_dense_open | (intros; apply GlobalTheory.CompanionTheory.Ar.SncBase.genPt_mem_of_dense_open <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.SncBase.genPt_mem_of_dense_open` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FGenericPointMemDenseOpen.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.generic_point_mem_dense_open : ∀ (W : Scheme.{0}) [IsLocallyNoetherian W] (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ W) (U : W.Opens), IsCptGen ξ → Dense (U : Set W) → genPt ξ ∈ U := by
   first | exact @GlobalTheory.CompanionTheory.Ar.SncBase.genPt_mem_of_dense_open | exact GlobalTheory.CompanionTheory.Ar.SncBase.genPt_mem_of_dense_open | (intros; apply GlobalTheory.CompanionTheory.Ar.SncBase.genPt_mem_of_dense_open <;> assumption)

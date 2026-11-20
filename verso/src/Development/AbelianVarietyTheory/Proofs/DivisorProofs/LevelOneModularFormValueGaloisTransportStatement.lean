@@ -8,8 +8,10 @@ open GlobalTheory.QFam
 open ReciprocityTheory.ChartRestriction.L1 (DD jT IsMF IsTauOf)
 open ModularForm (E₄ E₆)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.QFam.levelOne_value_transport | exact GlobalTheory.QFam.levelOne_value_transport | (intros; apply GlobalTheory.QFam.levelOne_value_transport <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.QFam.levelOne_value_transport` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLevelOneModularFormValueGaloisTransport.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.levelOne_modularForm_value_galois_transport : ∀ (g : ℂ ≃+* ℂ) (w N : ℕ) (F F' : ℍ → ℂ) (τ₀ τ₁ : ℍ) (ω₀ ω₁ : ℂ), 0 < N → (∀ γ : SL(2, ℤ), F ∣[(w : ℤ)] γ = F) → QConj g N F F' → g (E₄ τ₀ / ω₀ ^ 4) = E₄ τ₁ / ω₁ ^ 4 → g (E₆ τ₀ / ω₀ ^ 6) = E₆ τ₁ / ω₁ ^ 6 → g (F τ₀ / ω₀ ^ w) = F' τ₁ / ω₁ ^ w := by
   first | exact @GlobalTheory.QFam.levelOne_value_transport | exact GlobalTheory.QFam.levelOne_value_transport | (intros; apply GlobalTheory.QFam.levelOne_value_transport <;> assumption)

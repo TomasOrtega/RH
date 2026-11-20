@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermi
 import Development.AbelianVarietyTheory.Definitions.Foundations.NormSumPairRankZeroOfCurveCoordNorm
 open GlobalTheory.SumSize GlobalTheory.RowClaim
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FPair.main | exact GlobalTheory.FPair.main | (intros; apply GlobalTheory.FPair.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FPair.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFiniteInfinitePairBounds.lean&line=144#L144)
 -/
 theorem _root_.GlobalTheory.T.finite_infinite_pair_bounds : GlobalTheory.FunPr.Hypotheses₂ → FinPairK ∧ InfPairK := by
   first | exact @GlobalTheory.FPair.main | exact GlobalTheory.FPair.main | (intros; apply GlobalTheory.FPair.main <;> assumption)

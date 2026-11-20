@@ -10,8 +10,10 @@ open GlobalTheory.Twist (resM)
 open scoped CategoryTheory.Obj RatFunc
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Nef.interNum_det_nonpos_of_deg_nonpos | exact GlobalTheory.Nef.interNum_det_nonpos_of_deg_nonpos | (intros; apply GlobalTheory.Nef.interNum_det_nonpos_of_deg_nonpos <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Nef.interNum_det_nonpos_of_deg_nonpos` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDetDegreeNonposOfAdelicDegreeNonpos.lean&line=70#L70)
 -/
 theorem _root_.GlobalTheory.T.detDegree_nonpos_of_adelicDegree_nonpos : ∀ (k K : Type) [Field k] [IsAlgClosed k] [CharZero k] [Field K] [Algebra k K] (C : Scheme.{0}) [Algebra k Γ(C, ⊤)] (x : Sp K ⟶ C), IsGenOver k x →
   ∀ (W : C.Modules) (r : ℕ), IsVB W r → ∀ (V₀ : C.Opens) (s : Fin r → Γ(W, V₀)) (g : Place k K → Matrix (Fin r) (Fin r) K), (V₀ : Set C).Nonempty → IsFrame s → admitted g → (∀ v, LocFrame x s v (g v)) → deg g ≤ 0 → interNum k (GlobalTheory.structureModule C) ![det W r] ≤ 0 := by

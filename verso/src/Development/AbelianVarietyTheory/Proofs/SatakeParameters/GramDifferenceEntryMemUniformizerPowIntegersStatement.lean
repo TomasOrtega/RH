@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LatticeModelVacu
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.Gam0
 open Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Hk3.HoweG.gramDiff_entry_int | exact GlobalTheory.Hk3.HoweG.gramDiff_entry_int | (intros; apply GlobalTheory.Hk3.HoweG.gramDiff_entry_int <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Hk3.HoweG.gramDiff_entry_int` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FGramDifferenceEntryMemUniformizerPowIntegers.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.gramDifference_entry_mem_uniformizerPow_integers : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (ϖ : L) (σ : L →+* L) (n n' r : ℕ) (JT : GL (Fin n') L) (a : GL (Fin n) L)
   (x y : Matrix (Fin n') (Fin n) L) (M : Matrix (Fin n) (Fin r) L) (e : Fin r → ℕ),

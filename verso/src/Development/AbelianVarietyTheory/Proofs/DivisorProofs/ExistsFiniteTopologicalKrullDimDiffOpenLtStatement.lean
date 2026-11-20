@@ -10,8 +10,10 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open ReciprocityTheory.AnForm.M
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points GlobalTheory.CechPic GlobalTheory.ProjVar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Div.exists_finite_topologicalKrullDim_diff_lt | exact GlobalTheory.Div.exists_finite_topologicalKrullDim_diff_lt | (intros; apply GlobalTheory.Div.exists_finite_topologicalKrullDim_diff_lt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Div.exists_finite_topologicalKrullDim_diff_lt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsFiniteTopologicalKrullDimDiffOpenLt.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.exists_finite_topologicalKrullDim_diff_open_lt : ∀ (T : Type) [TopologicalSpace T] [NoetherianSpace T] [QuasiSober T] [T0Space T] (Z : Set T), IsClosed Z → ∃ S : Set T, S.Finite ∧ ∀ U : Set T, IsOpen U → S ⊆ U → ∀ d : ℕ, (topologicalKrullDim Z < (d + 1 : ℕ) → topologicalKrullDim (Z \ U : Set T) < (d : ℕ)) := by
   first | exact @GlobalTheory.Div.exists_finite_topologicalKrullDim_diff_lt | exact GlobalTheory.Div.exists_finite_topologicalKrullDim_diff_lt | (intros; apply GlobalTheory.Div.exists_finite_topologicalKrullDim_diff_lt <;> assumption)

@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsEqAddOfRedVEq
 open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.TorRef GlobalTheory.PolFan
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PolFan.cell_gen_mem_cone_of_smul | exact GlobalTheory.PolFan.cell_gen_mem_cone_of_smul | (intros; apply GlobalTheory.PolFan.cell_gen_mem_cone_of_smul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PolFan.cell_gen_mem_cone_of_smul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FCellGeneratorMemConeOfSmulCombination.lean&line=7#L7)
 -/
 theorem _root_.GlobalTheory.T.cell_generator_mem_cone_of_smul_combination : ∀ {O : Type} [CommRing O] (bar : O → O) (φ : InvFun O) {X : Type} [AddCommGroup X] [Module O X]
     [Module.Finite O X] {m m' : ℕ} (δ : Fin m → LinearMap.BilinForm ℤ X) (γ : Fin m' → LinearMap.BilinForm ℤ X)

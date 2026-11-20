@@ -5,8 +5,10 @@ open MeasureTheory Filter Topology GlobalTheory GlobalTheory.Cartier GlobalTheor
 open ReciprocityTheory.L2DbarEstimates (V)
 open scoped ContDiff Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GoodTop.exists_goodPatch_of_mem | exact GlobalTheory.GoodTop.exists_goodPatch_of_mem | (intros; apply GlobalTheory.GoodTop.exists_goodPatch_of_mem <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GoodTop.exists_goodPatch_of_mem` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsGoodPatchOfComplexPointOpenPart.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.exists_goodPatch_of_complexPoint_openPart : ∀ {F : Type} [Field F] {σ : F →+* ℂ} {X : Var F} {m : ℕ} (E : Fr (ratOf X) (fun _ : Unit => m) 0) (O : X.X.Opens) (H : Mat (fun _ : Unit => m) X.Fn → CxPts X.str σ → Mat (fun _ : Unit => m) ℂ), IsMetricOn E O H → ∀ y ∈ ptsIn X.str σ O, ∃ e S A W c, y ∈ W ∧ GoodPatch E O H e S A W c := by
   first | exact @GlobalTheory.GoodTop.exists_goodPatch_of_mem | exact GlobalTheory.GoodTop.exists_goodPatch_of_mem | (intros; apply GlobalTheory.GoodTop.exists_goodPatch_of_mem <;> assumption)

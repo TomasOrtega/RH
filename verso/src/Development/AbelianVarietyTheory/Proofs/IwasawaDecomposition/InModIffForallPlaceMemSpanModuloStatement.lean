@@ -5,8 +5,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.L2.Theta Formali
 open scoped TensorProduct Matrix
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mem.GroupLoc.Crt.inMod_iff_forall_modW | exact GlobalTheory.Mem.GroupLoc.Crt.inMod_iff_forall_modW | (intros; apply GlobalTheory.Mem.GroupLoc.Crt.inMod_iff_forall_modW <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mem.GroupLoc.Crt.inMod_iff_forall_modW` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FInModIffForallPlaceMemSpanModulo.lean&line=150#L150)
 -/
 theorem _root_.GlobalTheory.T.inMod_iff_forall_place_memSpanModulo : ∀ (D : D7) (X : HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D), (∀ x : X.B.I.E, HEq (X.ιE x) x) → ∀ (S : Set (VA X.B.I)), S ⊆ X.B.I.Lf → ∀ y ∈ X.B.I.Lf, (InMod X.B.I X.B.g S y ↔ ∀ w : HeightOneSpectrum (𝓞 D.host.E), ((X.B.g : ℕ) : 𝓞 D.host.E) ∈ w.asIdeal → GlobalTheory.Mem.GroupLoc.ModW X w S y) := by
   first | exact @GlobalTheory.Mem.GroupLoc.Crt.inMod_iff_forall_modW | exact GlobalTheory.Mem.GroupLoc.Crt.inMod_iff_forall_modW | (intros; apply GlobalTheory.Mem.GroupLoc.Crt.inMod_iff_forall_modW <;> assumption)

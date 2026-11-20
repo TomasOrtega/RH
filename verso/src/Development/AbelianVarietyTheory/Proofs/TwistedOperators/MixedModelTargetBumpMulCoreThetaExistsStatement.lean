@@ -9,8 +9,10 @@ open GlobalTheory.FinPl (Lat idAt idOff intAt grpAt grpOff MxAt latV latA InK Mo
 open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MixAdj.mixT_bump_smul | exact GlobalTheory.MixAdj.mixT_bump_smul | (intros; apply GlobalTheory.MixAdj.mixT_bump_smul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MixAdj.mixT_bump_smul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FMixedModelTargetBumpMulCoreThetaExists.lean&line=49#L49)
 -/
 theorem _root_.GlobalTheory.T.mixedModelTarget_bump_mul_coreTheta_exists : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T T₀ : HSp D) (ρ : ℕ) (d : HypDec T T₀ ρ) (v : VolM D ρ S.rank) (β : Mx D S.rank ρ → ℂ) (g : WO S T₀ → ℂ), IsBump β → IsThetaFunO ψ S T₀ g → ∃ Φ, IsThetaFunO ψ S T Φ ∧ ∀ y, d.mixT S ψ v.μ v.𝓕 Φ y = β y • g := by
   first | exact @GlobalTheory.MixAdj.mixT_bump_smul | exact GlobalTheory.MixAdj.mixT_bump_smul | (intros; apply GlobalTheory.MixAdj.mixT_bump_smul <;> assumption)

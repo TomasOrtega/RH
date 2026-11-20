@@ -12,8 +12,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open GlobalTheory GlobalTheory.Points GlobalTheory.ArInt GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.ProjSpace GlobalTheory.CompanionTheory.Ar.BaseZ GlobalTheory.CompanionTheory.Ar.BGS
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.BaseZ.cInfAt_sheet_iff | exact GlobalTheory.CompanionTheory.Ar.BaseZ.cInfAt_sheet_iff | (intros; apply GlobalTheory.CompanionTheory.Ar.BaseZ.cInfAt_sheet_iff <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.BaseZ.cInfAt_sheet_iff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FContDiffSheetIff.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.contDiff_sheet_iff : ∀ (k : Type) [CommRing k] [Module.Finite ℤ k] (X : Scheme.{0}) (p : X ⟶ Sp k) (t : X ⟶ Sp ℤ) (τ : ℤ →+* ℂ) (σ : k →+* ℂ) (f : CxPts t τ → ℝ) (y : CxPts p σ), CInfAt f (sheet t τ y) ↔ CInfAt (fun z : CxPts p σ => f (sheet t τ z)) y := by
   first | exact @GlobalTheory.CompanionTheory.Ar.BaseZ.cInfAt_sheet_iff | exact GlobalTheory.CompanionTheory.Ar.BaseZ.cInfAt_sheet_iff | (intros; apply GlobalTheory.CompanionTheory.Ar.BaseZ.cInfAt_sheet_iff <;> assumption)

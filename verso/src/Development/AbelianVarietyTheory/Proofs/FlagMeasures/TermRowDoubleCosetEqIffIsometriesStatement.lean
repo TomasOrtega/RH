@@ -7,8 +7,10 @@ open scoped Classical ENNReal
 open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.S.Lat Formalism.MainNotions.S.LocalSplitGroups Formalism.L2.SG.HidaSetting Formalism.L2.SG.TermOp Formalism.L2.SG.Full Formalism.L2.SG.RowsConc Formalism.L2.SG.NGData Formalism.L2.SG.TermLoc GlobalTheory.Unfold
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Unfold.KeyIff.key_eq_iff | exact GlobalTheory.Unfold.KeyIff.key_eq_iff | (intros; apply GlobalTheory.Unfold.KeyIff.key_eq_iff <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Unfold.KeyIff.key_eq_iff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FTermRowDoubleCosetEqIffIsometries.lean&line=42#L42)
 -/
 theorem _root_.GlobalTheory.T.term_row_double_coset_eq_iff_isometries : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), ∀ t t' : TauC Y u u', key t = key t' ↔ t.lam = t'.lam ∧ t.lam' = t'.lam' ∧ KeyEq (lf D (X.Fu u)) (lf D (X.Fu u')) t.lam t.lin t'.lin := by
   first | exact @GlobalTheory.Unfold.KeyIff.key_eq_iff | exact GlobalTheory.Unfold.KeyIff.key_eq_iff | (intros; apply GlobalTheory.Unfold.KeyIff.key_eq_iff <;> assumption)

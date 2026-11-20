@@ -29,8 +29,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 open GlobalTheory.Grow GlobalTheory.Size
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CuspKFin.kFinAt_avg | exact GlobalTheory.CuspKFin.kFinAt_avg | (intros; apply GlobalTheory.CuspKFin.kFinAt_avg <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CuspKFin.kFinAt_avg` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FAveragedAutomorphicFunctionKFinite.lean&line=55#L55)
 -/
 theorem _root_.GlobalTheory.T.averaged_automorphic_function_K_finite : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (N : GlobalTheory.Grid.Node D) (ψ : GA D N.V → ℂ), IsAutFunSm θ N.V ψ → ∀ (τ : D.what₂.Tau) (e : Formalism.REAL.KG (N.M.ε τ) → ℂ), GlobalTheory.TypeSum.KFinFun (N.M.ε τ) e → GlobalTheory.CuspKFin.KFinAt θ N τ (GlobalTheory.SeriesToClosure.avg θ N.V τ (N.M.ε τ) (N.M.fr τ) e ψ) := by
   first | exact @GlobalTheory.CuspKFin.kFinAt_avg | exact GlobalTheory.CuspKFin.kFinAt_avg | (intros; apply GlobalTheory.CuspKFin.kFinAt_avg <;> assumption)

@@ -12,8 +12,10 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 open GlobalTheory.Doubling GlobalTheory.ThK.DblKer
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TraceSelfDualAt.isSelfDualAt_smul_transpose | exact GlobalTheory.TraceSelfDualAt.isSelfDualAt_smul_transpose | (intros; apply GlobalTheory.TraceSelfDualAt.isSelfDualAt_smul_transpose <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TraceSelfDualAt.isSelfDualAt_smul_transpose` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDualLatticeLocalisedByDifferent.lean&line=53#L53)
 -/
 theorem _root_.GlobalTheory.T.dual_lattice_localised_by_different : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (L : Submodule (𝓞 E) (Fin n → E)), J.det ≠ 0 → L.IsLattice E →

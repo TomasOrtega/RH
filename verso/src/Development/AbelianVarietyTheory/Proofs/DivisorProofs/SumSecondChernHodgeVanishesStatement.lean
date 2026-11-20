@@ -12,8 +12,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.BoundaryPolynomialFunctions (IsProj
 open Formalism.BasicNotions Formalism.L2.Pj GlobalTheory.Toroidal GlobalTheory.ShFam GlobalTheory.ShFam.Hor GlobalTheory.Mean4O
 open scoped ContDiff ComplexOrder ENNReal Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HodgeChTwo.sum_chTwo_hodge | exact GlobalTheory.HodgeChTwo.sum_chTwo_hodge | (intros; apply GlobalTheory.HodgeChTwo.sum_chTwo_hodge <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HodgeChTwo.sum_chTwo_hodge` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSumSecondChernHodgeVanishes.lean&line=75#L75)
 -/
 theorem _root_.GlobalTheory.T.sum_second_chern_hodge_vanishes : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (x : ToroidalCompactificationData s) (σ : κ.c.F →+* ℂ) (n : ℕ) (U : Set (V n)) (a : V n → CxFr s.T.Z σ), IsOpen U → HolFam U a → ContinuousOn (fun u => (a u).1) U → ∀ u ∈ U, Inner (a u).1 → ∀ ξ₁ η₁ ξ₂ η₂ : V n, ∑ τ : D.host.E →+* ℂ, chTwo (eigGram (x.hodge σ) a τ) u ξ₁ η₁ ξ₂ η₂ = 0 := by
   first | exact @GlobalTheory.HodgeChTwo.sum_chTwo_hodge | exact GlobalTheory.HodgeChTwo.sum_chTwo_hodge | (intros; apply GlobalTheory.HodgeChTwo.sum_chTwo_hodge <;> assumption)

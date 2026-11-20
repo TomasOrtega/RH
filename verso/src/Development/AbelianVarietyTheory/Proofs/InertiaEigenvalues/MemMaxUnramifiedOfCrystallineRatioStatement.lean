@@ -5,8 +5,10 @@ import Formalism.SharpRestriction.LevelLetterCocycles.LocalSituation
 import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FracAlg.mem_Kur_of_ratio | exact GlobalTheory.FracAlg.mem_Kur_of_ratio | (intros; apply GlobalTheory.FracAlg.mem_Kur_of_ratio <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FracAlg.mem_Kur_of_ratio` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FMemMaxUnramifiedOfCrystallineRatio.lean&line=79#L79)
 -/
 theorem _root_.GlobalTheory.T.mem_maxUnramified_of_crystallineRatio : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ (a b : P.R.B) (x : Om l), b ≠ 0 → P.ιB a = algebraMap (Om l) P.R.BdR x * P.ιB b → x ∈ MaximalUnramifiedExtension l := by
   first | exact @GlobalTheory.FracAlg.mem_Kur_of_ratio | exact GlobalTheory.FracAlg.mem_Kur_of_ratio | (intros; apply GlobalTheory.FracAlg.mem_Kur_of_ratio <;> assumption)

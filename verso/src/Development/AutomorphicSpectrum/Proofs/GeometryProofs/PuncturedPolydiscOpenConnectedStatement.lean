@@ -10,8 +10,10 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.B
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Fl GlobalTheory.CompanionTheory.Ar.Flat Filter Topology Metric
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Flat.PunctShape.punct_open_connected_nonempty | exact GlobalTheory.CompanionTheory.Ar.Flat.PunctShape.punct_open_connected_nonempty | (intros; apply GlobalTheory.CompanionTheory.Ar.Flat.PunctShape.punct_open_connected_nonempty <;> as …`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Flat.PunctShape.punct_open_connected_nonempty` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FPuncturedPolydiscOpenConnected.lean&line=65#L65)
 -/
 theorem _root_.GlobalTheory.T.punctured_polydisc_open_connected : ∀ (n a : ℕ) (ρ : ℝ), 0 < ρ → IsOpen (punct n a ρ) ∧ IsPreconnected (punct n a ρ) ∧ (punct n a ρ).Nonempty := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Flat.PunctShape.punct_open_connected_nonempty | exact GlobalTheory.CompanionTheory.Ar.Flat.PunctShape.punct_open_connected_nonempty | (intros; apply GlobalTheory.CompanionTheory.Ar.Flat.PunctShape.punct_open_connected_nonempty <;> assumption)

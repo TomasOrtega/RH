@@ -21,8 +21,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open scoped TensorProduct
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.StageFinMatch.finMatch | exact GlobalTheory.StageFinMatch.finMatch | (intros; apply GlobalTheory.StageFinMatch.finMatch <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.StageFinMatch.finMatch` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSquareTowerStageFiniteFactor.lean&line=58#L58)
 -/
 theorem _root_.GlobalTheory.T.square_tower_stage_finite_factor : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
     GBig fun {D} {T} {Lc} {sc} G _ _ _ _ => ∀ (W : G.Weil) (i j : Fin D.R.m) (p q : ℕ) (A A' WW : HSp D)

@@ -5,8 +5,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open scoped TensorProduct ComplexOrder
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WeilChange.exists_weilDatum_twist | exact GlobalTheory.WeilChange.exists_weilDatum_twist | (intros; apply GlobalTheory.WeilChange.exists_weilDatum_twist <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WeilChange.exists_weilDatum_twist` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsWeilDatumTwistHeckeCharacters.lean&line=45#L45)
 -/
 theorem _root_.GlobalTheory.T.exists_weilDatum_twist_heckeCharacters : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (νS νT : (AE D)ˣ →* Circle) (om : (GA D S × GA D T →* Module.End ℂ (WO S T → ℂ))), IsWeilDatumO ψ S T χS χT om → IsHeckeChar D νS → IsHeckeChar D νT → ResEta D νS 0 → ResEta D νT 0 → ∃ om', IsWeilDatumO ψ S T (χS * νS) (χT * νT) om' ∧ ∀ g h x y, IsDetRoot S g x → IsDetRoot T h y → om' (g, h) = ((((νT x)⁻¹ * νS y : Circle) : ℂ)) • om (g, h) := by
   first | exact @GlobalTheory.WeilChange.exists_weilDatum_twist | exact GlobalTheory.WeilChange.exists_weilDatum_twist | (intros; apply GlobalTheory.WeilChange.exists_weilDatum_twist <;> assumption)

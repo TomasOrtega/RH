@@ -17,8 +17,10 @@ open GlobalTheory.TwistChoice (Reading ReadsAt)
 open Formalism.L2.DIV GlobalTheory.CoefModel
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CoefMatch.wtMatch_of_coef | exact GlobalTheory.CoefMatch.wtMatch_of_coef | (intros; apply GlobalTheory.CoefMatch.wtMatch_of_coef <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CoefMatch.wtMatch_of_coef` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FWeightMatricesMatchOfCoeffSpaceIso.lean&line=30#L30)
 -/
 theorem _root_.GlobalTheory.T.weightMatrices_match_of_coeffSpace_iso : ∀ {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {ι : Type} [Fintype ι] {K : Type} [Field K] (φ : K →+* ℂ) (emb : ι → L →+* K) (lam : ι → DomWeight n) {W₀ W' : Type} [AddCommGroup W₀] [Module K W₀] [AddCommGroup W'] [Module ℂ W'] (ρ₀ : Representation K (GQ L n) W₀) (ρ' : Representation ℂ (GQ L n) W') (T : W₀ ≃ₗ[K] VV K lam), (∀ γ x, T (ρ₀ γ x) = rhoVr emb lam (Formalism.L2.Col.mtwRat γ) (T x)) → ∀ (T' : W' ≃ₗ[ℂ] VV ℂ lam), (∀ γ x, T' (ρ' γ x) = rhoVr (fun t => φ.comp (emb t)) lam (Formalism.L2.Col.mtwRat γ) (T' x)) → GlobalTheory.LevCmp.WtMatch φ ρ₀ ρ' := by
   first | exact @GlobalTheory.CoefMatch.wtMatch_of_coef | exact GlobalTheory.CoefMatch.wtMatch_of_coef | (intros; apply GlobalTheory.CoefMatch.wtMatch_of_coef <;> assumption)

@@ -18,8 +18,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj TensorProduct Pointwise
 open GlobalTheory.Models GlobalTheory.ZM
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ZM.SiegelUniversal.exists_siegelFamily_siegRep | exact GlobalTheory.ZM.SiegelUniversal.exists_siegelFamily_siegRep | (intros; apply GlobalTheory.ZM.SiegelUniversal.exists_siegelFamily_siegRep <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ZM.SiegelUniversal.exists_siegelFamily_siegRep` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FModuliProofs%2FExistsUniversalQuasiProjectiveSiegelFamilyLargeL.lean&line=40#L40)
 -/
 theorem _root_.GlobalTheory.T.exists_universal_quasiProjective_siegelFamily_large_level : Out.Laws → Out.Laws2 → (∀ (S : Scheme.{0}) (P : Out.PolAV S) (M : LB P.A.left), M.IsLB → ∃ t : LB.Gen (Theta P.A M), t.IsGen) → ThetaUnifAV → ∀ h n : ℕ, 1 ≤ h → n.Prime → Odd n → ∃ j₀ : ℕ, ∀ j ≥ j₀, ∀ p : ℕ, p.Prime → p ≠ n → ∃ Ag : SiegelFamily h p ((n ^ j) ^ 2), SiegRep Ag := by
   first | exact @GlobalTheory.ZM.SiegelUniversal.exists_siegelFamily_siegRep | exact GlobalTheory.ZM.SiegelUniversal.exists_siegelFamily_siegRep | (intros; apply GlobalTheory.ZM.SiegelUniversal.exists_siegelFamily_siegRep <;> assumption)

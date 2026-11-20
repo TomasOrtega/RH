@@ -13,8 +13,10 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.R
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points GlobalTheory.CechPic GlobalTheory.ChartGlue GlobalTheory.Mix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MixDrop.part_pull_eq_zero | exact GlobalTheory.MixDrop.part_pull_eq_zero | (intros; apply GlobalTheory.MixDrop.part_pull_eq_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MixDrop.part_pull_eq_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FMixedChernMeasurePullbackEqZeroOfLtDim.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.mixedChernMeasure_pullback_eq_zero_of_lt_dim : ∀ (F : Type) [Field F] (X Y : Scheme.{0}) [IsIntegral X] [IsIntegral Y] (p : X ⟶ Sp F) (q : Y ⟶ Sp F) (σ : F →+* ℂ) (D D' : ℕ), D' < D → IsProjOver p → topologicalKrullDim X = (D' : ℕ) → IsProjOver q → ∀ (π : Y ⟶ X) (hπ : π ≫ p = q), π (genericPoint Y) = genericPoint X → ∀ (L : Fin D → MLine p σ) (ε : ℤˣ), part (fun i => (L i).pull π hπ) ε = 0 := by
   first | exact @GlobalTheory.MixDrop.part_pull_eq_zero | exact GlobalTheory.MixDrop.part_pull_eq_zero | (intros; apply GlobalTheory.MixDrop.part_pull_eq_zero <;> assumption)

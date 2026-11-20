@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.Bh
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BKReal GlobalTheory.Per GlobalTheory.BSP
 open scoped Formalism.Per NNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BSP.HeightEx.nonempty_height | exact GlobalTheory.BSP.HeightEx.nonempty_height | (intros; apply GlobalTheory.BSP.HeightEx.nonempty_height <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BSP.HeightEx.nonempty_height` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FNonemptyDiscPeriodAinfBasisDataOfIsPer.lean&line=123#L123)
 -/
 theorem _root_.GlobalTheory.T.nonempty_discPeriodAinfBasisData_of_isPer : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (τ : Ainf l), bk.IsPer τ → ∀ (d : ℕ) (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) ℤ_[l]), (∀ g, IsUnit (ρ g)) → ∀ s : Seed bk d ρ τ, Nonempty (Height s) := by
   first | exact @GlobalTheory.BSP.HeightEx.nonempty_height | exact GlobalTheory.BSP.HeightEx.nonempty_height | (intros; apply GlobalTheory.BSP.HeightEx.nonempty_height <;> assumption)

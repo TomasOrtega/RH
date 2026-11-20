@@ -6,8 +6,10 @@ import Development.AutomorphicSpectrum.Statements.AlgebraStatements.HodgeTateNor
 import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.Birational
 open CategoryTheory AlgebraicGeometry NumberField MvPolynomial GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.HT ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.HT.trivFlagMod_of_dvd | exact GlobalTheory.CompanionTheory.Ar.HT.trivFlagMod_of_dvd | (intros; apply GlobalTheory.CompanionTheory.Ar.HT.trivFlagMod_of_dvd <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.HT.trivFlagMod_of_dvd` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FTrivFlagModOfDvd.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.triv_flag_mod_of_dvd : ∀ (o : Type) [CommRing o] (Ω : Type) [Field Ω] [Algebra o Ω] (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (ϖ ϖ' : o) (N : ℕ) (b : Fin N → K → ℤ), ϖ' ∣ ϖ → Num.TrivFlagMod o ϖ y N b → Num.TrivFlagMod o ϖ' y N b := by
   first | exact @GlobalTheory.CompanionTheory.Ar.HT.trivFlagMod_of_dvd | exact GlobalTheory.CompanionTheory.Ar.HT.trivFlagMod_of_dvd | (intros; apply GlobalTheory.CompanionTheory.Ar.HT.trivFlagMod_of_dvd <;> assumption)

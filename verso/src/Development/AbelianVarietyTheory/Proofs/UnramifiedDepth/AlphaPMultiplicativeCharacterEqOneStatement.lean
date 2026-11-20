@@ -10,8 +10,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open Formalism.L2.FormalSeriesBounds IsLocalRing GlobalTheory.AlphaPair
 open scoped CategoryTheory.Obj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AlphaChar.char_eq_one | exact GlobalTheory.AlphaChar.char_eq_one | (intros; apply GlobalTheory.AlphaChar.char_eq_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AlphaChar.char_eq_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUnramifiedDepth%2FAlphaPMultiplicativeCharacterEqOne.lean&line=40#L40)
 -/
 theorem _root_.GlobalTheory.T.alphaP_multiplicativeCharacter_eq_one : ∀ (Ω : Type) [Field Ω] (p : ℕ) [Fact p.Prime] [CharP Ω p] (u : ∀ (A : Type) [CommRing A] [Algebra Ω A], A → Aˣ), (∀ (A B : Type) [CommRing A] [Algebra Ω A] [CommRing B] [Algebra Ω B] (f : A →ₐ[Ω] B) (a : A), a ^ p = 0 → u B (f a) = Units.map (f : A →* B) (u A a)) → (∀ (A : Type) [CommRing A] [Algebra Ω A] (a a' : A), a ^ p = 0 → a' ^ p = 0 → u A (a + a') = u A a * u A a') → ∀ (A : Type) [CommRing A] [Algebra Ω A] (a : A), a ^ p = 0 → u A a = 1 := by
   first | exact @GlobalTheory.AlphaChar.char_eq_one | exact GlobalTheory.AlphaChar.char_eq_one | (intros; apply GlobalTheory.AlphaChar.char_eq_one <;> assumption)

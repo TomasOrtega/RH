@@ -12,8 +12,10 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions ReciprocityTheory.
 open AlgebraicGeometry CategoryTheory MeasureTheory Set GlobalTheory.ShFam GlobalTheory.ChernReg GlobalTheory.CxPts GlobalTheory.TrueGeo ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.ShFam.Pad GlobalTheory.Toroidal GlobalTheory.ProjVar Formalism.L2.Pj Formalism.L2.Geo GlobalTheory
 open ReciprocityTheory.AnForm.M
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.QuasiPshTransfer.isFormPsh_of_isQuasiPsh | exact GlobalTheory.QuasiPshTransfer.isFormPsh_of_isQuasiPsh | (intros; apply GlobalTheory.QuasiPshTransfer.isFormPsh_of_isQuasiPsh <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.QuasiPshTransfer.isFormPsh_of_isQuasiPsh` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FQuasiPshFormPsh.lean&line=139#L139)
 -/
 theorem _root_.GlobalTheory.T.quasi_psh_form_psh : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (e : ℕ) (M : Man e) (I : ManIs M Y), Y.dim = e → ∀ (a : Fin (M.n + 1)) (Θ : LocPot (M.X a)) (θ : ChartForm Y.str (I.ε a) Y.dim) (v : M.X a → EReal), IsPotential (M.A a) Θ → (∀ x, GlobalTheory.ShFam.IsPotential (AnRead.all Y.str (I.ε a) Y.dim) θ (I.pt a '' Θ.U x) (fun y => 2 * Θ.φ x ((I.pt a).symm y))) → GlobalTheory.IndefiniteRowSideFullHecke.QuasiPlurisubharmonic.IsQuasiPsh (M.A a) Θ v → GlobalTheory.Published.IsFormPsh (AnRead.all Y.str (I.ε a) Y.dim) θ (v ∘ (I.pt a).symm) := by
   first | exact @GlobalTheory.QuasiPshTransfer.isFormPsh_of_isQuasiPsh | exact GlobalTheory.QuasiPshTransfer.isFormPsh_of_isQuasiPsh | (intros; apply GlobalTheory.QuasiPshTransfer.isFormPsh_of_isQuasiPsh <;> assumption)

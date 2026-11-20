@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.UnitLemmaGr
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LinearDescent
 open GlobalTheory.UnitLemma Polynomial
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnitLemma.rho_pow_eq_card_box | exact GlobalTheory.UnitLemma.rho_pow_eq_card_box | (intros; apply GlobalTheory.UnitLemma.rho_pow_eq_card_box <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnitLemma.rho_pow_eq_card_box` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FFiniteAlgebraInvolutionRhoPowEqCardBox.lean&line=8#L8)
 -/
 theorem _root_.GlobalTheory.T.finiteAlgebraInvolution_rho_pow_eq_card_box : ∀ (K : UQ) (B : InvAlg K) (a : K.O) (r : ℕ) (φ : B.T →* Multiplicative (Fin r → ℤ)) (c : Fin r → ℕ), Function.Surjective φ → (∀ t : B.T, φ t = 1 ↔ (t : B.Aˣ) ∈ intUnits K.O B.A) → (∀ (t : B.T) (k : ℕ), IsIntegral K.O ((((t : B.Aˣ)⁻¹ : B.Aˣ) : B.A) * algebraMap K.O B.A a ^ k) ↔ ∀ i, |Multiplicative.toAdd (φ t) i| ≤ ((k * c i : ℕ) : ℤ)) → ∀ k : ℕ, B.rho (algebraMap K.O B.A a ^ k) = ∏ i, (2 * k * c i + 1) := by
   first | exact @GlobalTheory.UnitLemma.rho_pow_eq_card_box | exact GlobalTheory.UnitLemma.rho_pow_eq_card_box | (intros; apply GlobalTheory.UnitLemma.rho_pow_eq_card_box <;> assumption)

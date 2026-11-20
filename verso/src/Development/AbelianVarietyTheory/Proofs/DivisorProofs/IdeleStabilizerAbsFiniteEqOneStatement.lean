@@ -11,8 +11,10 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 open GlobalTheory.Doubling (absE)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IdeleTate.absFin_eq_one_of_mem_stab | exact GlobalTheory.IdeleTate.absFin_eq_one_of_mem_stab | (intros; apply GlobalTheory.IdeleTate.absFin_eq_one_of_mem_stab <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IdeleTate.absFin_eq_one_of_mem_stab` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIdeleStabilizerAbsFiniteEqOne.lean&line=42#L42)
 -/
 theorem _root_.GlobalTheory.T.idele_stabilizer_abs_finite_eq_one : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E],
     ∀ u ∈ GlobalTheory.IdeleTate.stab F E, GlobalTheory.IdeleTate.absFin F E u = 1 := by

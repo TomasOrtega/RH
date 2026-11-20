@@ -15,8 +15,10 @@ open scoped TensorProduct InnerProductSpace ComplexConjugate
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.ArchRec
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ArchRec.ParPair.centred_pair | exact GlobalTheory.ArchRec.ParPair.centred_pair | (intros; apply GlobalTheory.ArchRec.ParPair.centred_pair <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ArchRec.ParPair.centred_pair` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FDefiniteSourcePairCentredBlockParameters.lean&line=271#L271)
 -/
 theorem _root_.GlobalTheory.T.definiteSource_pair_centred_block_parameters : ∀ (D : D7) (i : Fin D.R.m) (τ : D.what₂.Tau), ∃ al de : List ℚ, Centred D al [] [] de ∧ parHol D i τ = signed (al ++ []) ([] ++ de) (-(D.hc τ).e i) ∧ parDef D i τ = signed (al ++ block D.R.t ++ de) ([] ++ []) (-(D.hc τ).e i - 1 / 2) := by
   first | exact @GlobalTheory.ArchRec.ParPair.centred_pair | exact GlobalTheory.ArchRec.ParPair.centred_pair | (intros; apply GlobalTheory.ArchRec.ParPair.centred_pair <;> assumption)

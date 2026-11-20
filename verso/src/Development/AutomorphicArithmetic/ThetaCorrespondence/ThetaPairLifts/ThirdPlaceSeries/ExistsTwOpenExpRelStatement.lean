@@ -9,8 +9,10 @@ set_option synthInstance.maxHeartbeats 200000
 section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX GlobalTheory.HeightCounting NumberField IsDedekindDomain Polynomial
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.HeightCounting.FitTwExp.exists_twOpen_expRel_alt | exact _root_.GlobalTheory.HeightCounting.FitTwExp.exists_twOpen_expRel_alt | (intros; apply _root_.GlobalTheory.HeightCounting.FitTwExp.exists_twOpen_expRel_alt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HeightCounting.FitTwExp.exists_twOpen_expRel_alt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicArithmetic%2FThetaCorrespondence%2FThetaPairLifts%2FThirdPlaceSeries%2FExistsTwOpenExpRel.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.exists_twOpen_expRel_of_chebSplit : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D' : D7) (b : _root_.GlobalTheory.HeightCounting.NormChoiceConstructed hL D'), Elem b.D → GlobalTheory.RowTie.ChebSplit b.D.nd → ∃ Tw : TwOpen (withLoc b.L) (chL b.L b.C) (cfL b.L b.cf) (tpL b.L b.tp) (mtL b.L b.M) b.low, ExpRel b.L b.Bs.exp Tw.exp := by
   first | exact @_root_.GlobalTheory.HeightCounting.FitTwExp.exists_twOpen_expRel_alt | exact _root_.GlobalTheory.HeightCounting.FitTwExp.exists_twOpen_expRel_alt | (intros; apply _root_.GlobalTheory.HeightCounting.FitTwExp.exists_twOpen_expRel_alt <;> assumption)

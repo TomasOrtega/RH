@@ -13,8 +13,10 @@ open scoped TensorProduct InnerProductSpace Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Core.SBesFlagTie.mem_flagN_iff | exact GlobalTheory.Core.SBesFlagTie.mem_flagN_iff | (intros; apply GlobalTheory.Core.SBesFlagTie.mem_flagN_iff <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Core.SBesFlagTie.mem_flagN_iff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FMemFlagUnipotentRadicalIffSecondModel.lean&line=143#L143)
 -/
 theorem _root_.GlobalTheory.T.mem_flagUnipotentRadical_iff_secondModel : ∀ (D : D7) (X : HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (u : D.what₂.Word) (t lam : D.host.E), t ≠ 0 → lam ≠ 0 → IdE X → ∀ (V₀ : HSp D) (d : HypDec (D.sp.Y 0) V₀ D.R.rS), d.e = GlobalTheory.Core.SBesEx.eM X h t lam → ∀ n, n ∈ flagN d ↔ (iotaX X h n).1 ∈ X.NinfU u ∧ (iotaX X h n).2 ∈ X.NfinU u := by
   first | exact @GlobalTheory.Core.SBesFlagTie.mem_flagN_iff | exact GlobalTheory.Core.SBesFlagTie.mem_flagN_iff | (intros; apply GlobalTheory.Core.SBesFlagTie.mem_flagN_iff <;> assumption)

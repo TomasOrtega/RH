@@ -9,8 +9,10 @@ open GlobalTheory.DefFree GlobalTheory.DefLift Polynomial
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DefFree.isOfFinOrder_of_conjIn_mem_St | exact GlobalTheory.DefFree.isOfFinOrder_of_conjIn_mem_St | (intros; apply GlobalTheory.DefFree.isOfFinOrder_of_conjIn_mem_St <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DefFree.isOfFinOrder_of_conjIn_mem_St` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FIsOfFinOrderOfConjMemSelfDualLatticeStabilizer.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.isOfFinOrder_of_conj_mem_selfDualLatticeStabilizer : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] (hc : CMData F E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (Λ : Submodule (𝓞 E) (Fin n → E)) (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)), IsDefUnimod hc J Λ → IsFrame β Λ → ∀ (u : UR hc J) (x : UA hc J), conjIn hc J (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) u ∈ St β → IsOfFinOrder u := by
   first | exact @GlobalTheory.DefFree.isOfFinOrder_of_conjIn_mem_St | exact GlobalTheory.DefFree.isOfFinOrder_of_conjIn_mem_St | (intros; apply GlobalTheory.DefFree.isOfFinOrder_of_conjIn_mem_St <;> assumption)

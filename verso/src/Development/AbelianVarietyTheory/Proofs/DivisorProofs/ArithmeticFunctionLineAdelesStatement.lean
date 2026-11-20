@@ -9,8 +9,10 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.DegreeFormula Formal
 open GlobalTheory.TwoLat GlobalTheory.OrthFilt GlobalTheory.VdmRec GlobalTheory.MixDens GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.Published
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DRRead.termW_read | exact GlobalTheory.DRRead.termW_read | (intros; apply GlobalTheory.DRRead.termW_read <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DRRead.termW_read` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FArithmeticFunctionLineAdeles.lean&line=133#L133)
 -/
 theorem _root_.GlobalTheory.T.arithmetic_function_line_adeles : ArCalc → ArDegree → ∀ (D : D7) (O : Setup D), O.Core → ∀ R : ℝ, 2 ≤ R → ∀ (c : O.s.Comp) (V : Cover (O.var c)) (x x' : Letter O.S.Dw → HermLB V.p), (∀ z : Letter O.S.Dw, V.Induces (lineAdl O R c (.inl (z.1, z.2)) 1) (x z) 1) → (∀ (k : ℕ) (z : Letter O.S.Dw), (letters O.S.Dw)[k]? = some z → V.Induces (lineAdl O R c (.inr k) 1) (x' z) 1) → ∀ Φ : MvPolynomial (Letter O.S.Dw ⊕ Letter O.S.Dw) ℝ →ₗ[ℝ] ℝ, IsArFun (Sum.elim x x') (O.var c).dim Φ → termW O c R = Φ (pairPol O.S.Dw.mult (dimGr D.what₂.Tau O.N O.j - 1)) / ((∏ σ, ((O.S.Dw.mult σ).factorial : ℝ)) * V.ν) := by
   first | exact @GlobalTheory.DRRead.termW_read | exact GlobalTheory.DRRead.termW_read | (intros; apply GlobalTheory.DRRead.termW_read <;> assumption)

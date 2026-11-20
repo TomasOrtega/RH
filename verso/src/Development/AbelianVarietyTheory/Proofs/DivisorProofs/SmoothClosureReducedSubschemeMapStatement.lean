@@ -12,8 +12,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.BoundaryPolynomialFunctions (IsProj
 open Formalism.BasicNotions Formalism.L2.Pj GlobalTheory.Toroidal GlobalTheory.ShFam GlobalTheory.ShFam.Hor GlobalTheory.Mean4O
 open scoped ContDiff ComplexOrder ENNReal Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CloFlag.exists_isFlagBundle_clo | exact GlobalTheory.CloFlag.exists_isFlagBundle_clo | (intros; apply GlobalTheory.CloFlag.exists_isFlagBundle_clo <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CloFlag.exists_isFlagBundle_clo` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSmoothClosureReducedSubschemeMap.lean&line=119#L119)
 -/
 theorem _root_.GlobalTheory.T.smooth_closure_reduced_subscheme_map : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (E : X.Modules) (r : ℕ) (h : VMetric p E r) (H : h.IsCInf) (F : FlagSp E r) (N : HermLB p) (z : X) (y : F.Y), Smooth F.π → closure {y} = F.π ⁻¹' closure {z} → ∃ (ρ : (Scheme.IdealSheafData.vanishingIdeal (clo y)).subscheme ⟶ (Scheme.IdealSheafData.vanishingIdeal (clo z)).subscheme) (_ : ρ ≫ redι (clo z) = redι (clo y) ≫ F.π) (w : ρ ≫ redι (clo z) ≫ p = redι (clo y) ≫ F.π ≫ p) (fl : Vert.Flag ((Scheme.Modules.pullback ρ).obj ((Scheme.Modules.pullback (redι (clo z))).obj E)) r), IsFlagBundle ρ (fun _ : Unit => (Scheme.Modules.pullback (redι (clo z))).obj E) (fun _ => r) (fun _ => fl) ∧ ((F.fam H N none).restr (redι (clo y))).Isometric ((N.restr (redι (clo z))).pull ρ w) ∧ ∀ i, ((F.fam H N (some i)).restr (redι (clo y))).Isometric (VMetric.grLB fl i ((H.pull (redι (clo z)) rfl).pull ρ w)) := by
   first | exact @GlobalTheory.CloFlag.exists_isFlagBundle_clo | exact GlobalTheory.CloFlag.exists_isFlagBundle_clo | (intros; apply GlobalTheory.CloFlag.exists_isFlagBundle_clo <;> assumption)

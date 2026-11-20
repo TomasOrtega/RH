@@ -12,8 +12,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.AbLaw GlobalTheory.UU GlobalTheory.LN GlobalTheory.Raynaud IsLocalRing
 open scoped CategoryTheory.Obj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LevExt.sections_generic_mulEquiv | exact GlobalTheory.LevExt.sections_generic_mulEquiv | (intros; apply GlobalTheory.LevExt.sections_generic_mulEquiv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LevExt.sections_generic_mulEquiv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FProperGroupSchemeDvrSectionsMulEquivGeneric.lean&line=58#L58)
 -/
 theorem _root_.GlobalTheory.T.properGroupScheme_dvr_sections_mulEquiv_generic : ∀ (W L : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field L] [Algebra W L] [IsFractionRing W L] (G : Over (Sp W)) [GrpObj G] (A : Over (Sp L)) [GrpObj A] (φ : A.left ⟶ G.left), IsProper G.hom → IsGrpPullback A G (spMap (algebraMap W L)) φ → ∃ e : (𝟙_ (Over (Sp L)) ⟶ A) ≃* (𝟙_ (Over (Sp W)) ⟶ G), ∀ y, y.left ≫ φ = spMap (algebraMap W L) ≫ (e y).left := by
   first | exact @GlobalTheory.LevExt.sections_generic_mulEquiv | exact GlobalTheory.LevExt.sections_generic_mulEquiv | (intros; apply GlobalTheory.LevExt.sections_generic_mulEquiv <;> assumption)

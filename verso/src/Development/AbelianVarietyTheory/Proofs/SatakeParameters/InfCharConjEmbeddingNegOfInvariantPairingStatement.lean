@@ -12,8 +12,10 @@ open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open GlobalTheory.Published GlobalTheory.TheRec GlobalTheory.ContraPair
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CapPair.infChar_conj_of_paired | exact GlobalTheory.CapPair.infChar_conj_of_paired | (intros; apply GlobalTheory.CapPair.infChar_conj_of_paired <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CapPair.infChar_conj_of_paired` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FInfCharConjEmbeddingNegOfInvariantPairing.lean&line=91#L91)
 -/
 theorem _root_.GlobalTheory.T.infChar_conjEmbedding_neg_of_invariant_pairing : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a : ℕ) (π π' : CuspSub E a), Paired π π' conjOp → ∀ (τ : E →+* ℂ) (m m' : Multiset ℂ), π.HasInfChar τ m → π'.HasInfChar (NumberField.ComplexEmbedding.conjugate τ) m' → m' = m.map Neg.neg := by
   first | exact @GlobalTheory.CapPair.infChar_conj_of_paired | exact GlobalTheory.CapPair.infChar_conj_of_paired | (intros; apply GlobalTheory.CapPair.infChar_conj_of_paired <;> assumption)

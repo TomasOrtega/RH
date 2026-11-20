@@ -5,8 +5,10 @@ open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep 
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BCT.absHalf_blockDet_KGL_invariant | exact GlobalTheory.BCT.absHalf_blockDet_KGL_invariant | (intros; apply GlobalTheory.BCT.absHalf_blockDet_KGL_invariant <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BCT.absHalf_blockDet_KGL_invariant` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAbsHalfBlockDetIntegralGLInvariant.lean&line=50#L50)
 -/
 theorem _root_.GlobalTheory.T.absHalf_blockDet_integralGL_invariant : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a b : ℕ) (w : Pl E) (m k : GLw a w × GLw b w),
     k.1 ∈ GlobalTheory.LFun.KGL w a → k.2 ∈ GlobalTheory.LFun.KGL w b →

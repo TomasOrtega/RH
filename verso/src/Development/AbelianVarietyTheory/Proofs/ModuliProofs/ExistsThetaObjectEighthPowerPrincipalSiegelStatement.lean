@@ -10,8 +10,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj TensorProduct
 open GlobalTheory.ZM
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SiegelPower.exists_tObj_isSharp | exact GlobalTheory.SiegelPower.exists_tObj_isSharp | (intros; apply GlobalTheory.SiegelPower.exists_tObj_isSharp <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SiegelPower.exists_tObj_isSharp` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FModuliProofs%2FExistsThetaObjectEighthPowerPrincipalSiegel.lean&line=535#L535)
 -/
 theorem _root_.GlobalTheory.T.exists_thetaObject_eighthPower_principalSiegel : Out.Laws → Out.Laws2 → ∀ (h g : ℕ) (W : Matrix (Fin 8) (Fin 8) ℤ) (J : Type) (a : J → Matrix (Fin 8) (Fin 8) ℤ) (bas : (Fin (2 * g) → ℤ) ≃ₗ[ℤ] (Fin 8 → (Fin h ⊕ Fin h → ℤ))), IsE8 W → IsSharpBasis W bas → ∀ (k : ℕ) (o : Type) [CommRing o] (b : TBase o k) (S : Scheme.{0}) (s : S ⟶ Sp o) (c : SiegPre h k (b.ζ : o) s), Odd k → 3 ≤ k → b.ζ ^ k = 1 → c.Principal → ∃ t : TObj g k J b s, IsSharp W a bas t c := by
   first | exact @GlobalTheory.SiegelPower.exists_tObj_isSharp | exact GlobalTheory.SiegelPower.exists_tObj_isSharp | (intros; apply GlobalTheory.SiegelPower.exists_tObj_isSharp <;> assumption)

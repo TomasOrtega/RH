@@ -7,8 +7,10 @@ open Formalism.MainNotions.IntegralHeckeForms (TwOK ClsQ HkIdx V0 Fm0 FullRk SgJ
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TwInputs.supHk_commG | exact GlobalTheory.TwInputs.supHk_commG | (intros; apply GlobalTheory.TwInputs.supHk_commG <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TwInputs.supHk_commG` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FHeckePreservesSupLatticeAndCommutesTypeGroup.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.hecke_preserves_supLattice_and_commutes_typeGroup : ∀ (D : D7) (X : RealSide D) (E : IntegralHeckeForms.XD D) (Y : SerSide X E), (∀ j, GlobalTheory.IndefiniteRowSideFullHecke.LatticesOverBalls.HkSupAt X.core X.R.toRealDat j) → SupHk D ∧ CommG D := by
   first | exact @GlobalTheory.TwInputs.supHk_commG | exact GlobalTheory.TwInputs.supHk_commG | (intros; apply GlobalTheory.TwInputs.supHk_commG <;> assumption)

@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.PointShiftSt
 import Development.AbelianVarietyTheory.Definitions.Divisors.HtValOnSubset
 open AlgebraicGeometry CategoryTheory NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.GeometryOfNumbersTheory GlobalTheory GlobalTheory.CM GlobalTheory.FlatCM
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GramAdj.exists_endo_of_adjoint | exact GlobalTheory.GramAdj.exists_endo_of_adjoint | (intros; apply GlobalTheory.GramAdj.exists_endo_of_adjoint <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GramAdj.exists_endo_of_adjoint` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsLinearEndomorphismOfConjugateAdjointForm.lean&line=8#L8)
 -/
 theorem _root_.GlobalTheory.T.exists_linear_endomorphism_of_conjugate_adjoint_form : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (β : D.La → D.La → ℤ), (∀ x y z, β (x + y) z = β x z + β y z) → (∀ x y z, β x (y + z) = β x y + β x z) → (∀ (s : 𝓞 E) x y, β (s • x) y = β x (H.bar s • y)) → ∃ γ : D.La →+ D.La, (∀ (s : 𝓞 E) x, γ (s • x) = s • γ x) ∧ ∀ x y, β x y = D.EF (γ x) y := by
   first | exact @GlobalTheory.GramAdj.exists_endo_of_adjoint | exact GlobalTheory.GramAdj.exists_endo_of_adjoint | (intros; apply GlobalTheory.GramAdj.exists_endo_of_adjoint <;> assumption)

@@ -17,8 +17,10 @@ open MonoidalCategory CartesianMonoidalCategory MonObj GlobalTheory.ShFam.Hor.Lo
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.hermForm_im_antisymm | exact GlobalTheory.hermForm_im_antisymm | (intros; apply GlobalTheory.hermForm_im_antisymm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.hermForm_im_antisymm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FHermFormImIntMatrixTransposeNeg.lean&line=30#L30)
 -/
 theorem _root_.GlobalTheory.T.hermForm_im_intMatrix_transpose_neg : ∀ (g r : ℕ) (Hm : Matrix (Fin g) (Fin g) ℂ) (l : Fin r → Fin g → ℂ) (M : Matrix (Fin r) (Fin r) ℤ), Hm.IsHermitian → (∀ i j, (hermForm Hm (l i) (l j)).im = M i j) → Mᵀ = -M := by
   first | exact @GlobalTheory.hermForm_im_antisymm | exact GlobalTheory.hermForm_im_antisymm | (intros; apply GlobalTheory.hermForm_im_antisymm <;> assumption)

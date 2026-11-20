@@ -10,8 +10,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open scoped TensorProduct NNReal Matrix
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SobClass.Weight.weight_le_words | exact GlobalTheory.SobClass.Weight.weight_le_words | (intros; apply GlobalTheory.SobClass.Weight.weight_le_words <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SobClass.Weight.weight_le_words` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSchwartzPolynomialDecayWords.lean&line=82#L82)
 -/
 theorem _root_.GlobalTheory.T.schwartz_polynomial_decay_words : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (ψ : AddChar (AF F) ℂ), IsStd ψ → ∀ N : ℕ, ∃ (L : Finset (List ((κ → AF F) × (κ → AF F)))) (K : ℝ), (∀ l ∈ L, l.length ≤ N ∧ ∀ w ∈ l, IsArchUnit w) ∧ ∀ (Φ : (κ → AF F) → ℂ) (z : κ → AF F), ‖Φ z‖ * (1 + ∑ i, ‖evI F (z i)‖) ^ N ≤ K * ∑ l ∈ L, ‖wordH ψ l Φ z‖ := by
   first | exact @GlobalTheory.SobClass.Weight.weight_le_words | exact GlobalTheory.SobClass.Weight.weight_le_words | (intros; apply GlobalTheory.SobClass.Weight.weight_le_words <;> assumption)

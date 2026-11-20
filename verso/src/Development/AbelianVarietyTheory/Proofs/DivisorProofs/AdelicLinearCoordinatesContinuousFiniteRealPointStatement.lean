@@ -8,8 +8,10 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open scoped ContDiff
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AdelicCoordF.coord | exact GlobalTheory.AdelicCoordF.coord | (intros; apply GlobalTheory.AdelicCoordF.coord <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AdelicCoordF.coord` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAdelicLinearCoordinatesContinuousFiniteRealPoint.lean&line=83#L83)
 -/
 theorem _root_.GlobalTheory.T.adelicLinearCoordinates_continuous_finite_real_points : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (nS nT N : ℕ)
     (e : Formalism.IndefR.DatumF.WOF F E nS nT ≃ₗ[AF F] GlobalTheory.ThetaTransform.VA F N),

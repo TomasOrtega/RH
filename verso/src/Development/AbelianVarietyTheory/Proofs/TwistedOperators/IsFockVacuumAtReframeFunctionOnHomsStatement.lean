@@ -11,8 +11,10 @@ open GlobalTheory.AdSpan.ReVec
 open scoped TensorProduct ComplexConjugate Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AdSpan.ReVec.FockVac.isFockVacAt_reF | exact GlobalTheory.AdSpan.ReVec.FockVac.isFockVacAt_reF | (intros; apply GlobalTheory.AdSpan.ReVec.FockVac.isFockVacAt_reF <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AdSpan.ReVec.FockVac.isFockVacAt_reF` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FIsFockVacuumAtReframeFunctionOnHoms.lean&line=74#L74)
 -/
 theorem _root_.GlobalTheory.T.isFockVacuumAt_reframeFunctionOnHoms : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (b : Module.Basis (Fin S.rank) D.host.E S.V), IsInfFam θ → (∀ x y : WO (reS S b) T, symplO (reS S b) T x y = symplO S T (reW S T b x) (reW S T b y)) → ∀ (τ : D.what₂.Tau) (sT : Matrix (Fin T.rank) (Fin T.rank) ℂ) (f : WO S T → ℂ), IsFockVacAt (heisO ψ S T) θ τ (cplxO 1 sT) f → IsFockVacAt (heisO ψ (reS S b) T) θ τ (cplxO 1 sT) (reF S T b f) := by
   first | exact @GlobalTheory.AdSpan.ReVec.FockVac.isFockVacAt_reF | exact GlobalTheory.AdSpan.ReVec.FockVac.isFockVacAt_reF | (intros; apply GlobalTheory.AdSpan.ReVec.FockVac.isFockVacAt_reF <;> assumption)

@@ -12,8 +12,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InLat2
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.KFinLoc
 open scoped TensorProduct Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.InertBigCell.conjW_props | exact GlobalTheory.InertBigCell.conjW_props | (intros; apply GlobalTheory.InertBigCell.conjW_props <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.InertBigCell.conjW_props` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FInertCompletionConjugationProperties.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.inertCompletionConjugation_properties : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
   B.IsGood σ → ∀ {v : Pl F} {w : HeightOneSpectrum (𝓞 E)} (hw : Formalism.UG.IsInertAt F E v w),

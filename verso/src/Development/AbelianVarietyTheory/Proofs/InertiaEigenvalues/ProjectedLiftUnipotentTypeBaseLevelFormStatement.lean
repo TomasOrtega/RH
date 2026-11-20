@@ -8,8 +8,10 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1600000
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AvgLevel.avg_level | exact GlobalTheory.AvgLevel.avg_level | (intros; apply GlobalTheory.AvgLevel.avg_level <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AvgLevel.avg_level` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FProjectedLiftUnipotentTypeBaseLevelForm.lean&line=218#L218)
 -/
 theorem _root_.GlobalTheory.T.projectedLift_unipotentType_baseLevelForm : ∀ (D : D7) (X : RealSide D) (E : IntegralHeckeForms.XD D) (Y : SerSide X E) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool) (t : X.T),
     X.R.xi t = (Y.Z.ρ.B i j b).de.chi → X.R.Q t = (Y.Z.ρ.B i j b).de.Q → ∀ y0 : (X.R.HV j t).H,

@@ -10,8 +10,10 @@ open NumberField MvPolynomial Filter Topology Formalism.BasicNotions Formalism.M
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.ArInt
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GenericBaseChange.baseChange_genericPoint_residueDegree | exact GlobalTheory.GenericBaseChange.baseChange_genericPoint_residueDegree | (intros; apply GlobalTheory.GenericBaseChange.baseChange_genericPoint_residueDegree <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GenericBaseChange.baseChange_genericPoint_residueDegree` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPullbackCoverGenericPoint.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.pullback_cover_generic_point : ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) [IsIntegral B] [IsIntegral Y] (q : B ⟶ Sp k) (π : Y ⟶ B), IsArithVar q 1 → π (genericPoint Y) = genericPoint B → ∀ (C : RegCover q) [IsIntegral (Limits.pullback π C.ρ)], (Limits.pullback.fst π C.ρ : (Limits.pullback π C.ρ : Scheme.{0}) ⟶ Y) (genericPoint (Limits.pullback π C.ρ : Scheme.{0})) = genericPoint Y ∧ (Limits.pullback.fst π C.ρ : (Limits.pullback π C.ρ : Scheme.{0}) ⟶ Y).residueDegree (genericPoint (Limits.pullback π C.ρ : Scheme.{0})) = C.deg := by
   first | exact @GlobalTheory.GenericBaseChange.baseChange_genericPoint_residueDegree | exact GlobalTheory.GenericBaseChange.baseChange_genericPoint_residueDegree | (intros; apply GlobalTheory.GenericBaseChange.baseChange_genericPoint_residueDegree <;> assumption)

@@ -8,8 +8,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PinchEnl.exists_submersivePresentation_sum_zero | exact GlobalTheory.PinchEnl.exists_submersivePresentation_sum_zero | (intros; apply GlobalTheory.PinchEnl.exists_submersivePresentation_sum_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PinchEnl.exists_submersivePresentation_sum_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsSubmersivePresentationAddZeroVariables.lean&line=59#L59)
 -/
 theorem _root_.GlobalTheory.T.exists_submersivePresentation_add_zero_variables : ∀ (R D ν σ κ : Type) [CommRing R] [CommRing D] [Algebra R D] [Finite ν] [Finite σ] [Finite κ] (P : Algebra.SubmersivePresentation R D ν σ), ∃ P' : Algebra.SubmersivePresentation R D (κ ⊕ ν) (κ ⊕ σ), P'.val = Sum.elim (fun _ ↦ 0) P.val := by
   first | exact @GlobalTheory.PinchEnl.exists_submersivePresentation_sum_zero | exact GlobalTheory.PinchEnl.exists_submersivePresentation_sum_zero | (intros; apply GlobalTheory.PinchEnl.exists_submersivePresentation_sum_zero <;> assumption)

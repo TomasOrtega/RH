@@ -11,8 +11,10 @@ open GlobalTheory.Doubling (absE)
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TateConvBasis.integrable_norm_mul_absE_pow | exact GlobalTheory.TateConvBasis.integrable_norm_mul_absE_pow | (intros; apply GlobalTheory.TateConvBasis.integrable_norm_mul_absE_pow <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TateConvBasis.integrable_norm_mul_absE_pow` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCompactSupportSchwartzDecay.lean&line=51#L51)
 -/
 theorem _root_.GlobalTheory.T.compact_support_schwartz_decay : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (m : ℕ) (b₀ : Module.Basis (Fin m) F E) (g : AE F E → ℂ), Continuous g →
     (∃ K : Set (Fin m → FiniteAdeleRing (𝓞 F) F), IsCompact K ∧ ∀ a, (fun i => ((Algebra.TensorProduct.basis (AF F) b₀).equivFun a i).2) ∉ K → g a = 0) →

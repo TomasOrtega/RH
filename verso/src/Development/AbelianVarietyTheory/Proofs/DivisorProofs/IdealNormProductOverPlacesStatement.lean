@@ -17,8 +17,10 @@ open IsDedekindDomain
 open scoped nonZeroDivisors
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RegroupAbsNorm.finprod_aboveF_absNorm_zpow_count | exact GlobalTheory.RegroupAbsNorm.finprod_aboveF_absNorm_zpow_count | (intros; apply GlobalTheory.RegroupAbsNorm.finprod_aboveF_absNorm_zpow_count <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RegroupAbsNorm.finprod_aboveF_absNorm_zpow_count` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIdealNormProductOverPlaces.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.ideal_norm_product_over_places : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (I : FractionalIdeal (𝓞 E)⁰ E), I ≠ 0 →

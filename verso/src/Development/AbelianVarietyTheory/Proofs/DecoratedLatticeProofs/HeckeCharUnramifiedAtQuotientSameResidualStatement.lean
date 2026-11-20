@@ -25,8 +25,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.VolumeFlatSection (Blocks parahoric
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ResUnr.unrAt_div_of_isRes | exact GlobalTheory.ResUnr.unrAt_div_of_isRes | (intros; apply GlobalTheory.ResUnr.unrAt_div_of_isRes <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ResUnr.unrAt_div_of_isRes` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FHeckeCharUnramifiedAtQuotientSameResidual.lean&line=74#L74)
 -/
 theorem _root_.GlobalTheory.T.heckeCharUnramifiedAt_quotient_same_residual : ∀ (D : D7) (c₁ c₂ : (AE D)ˣ →* Circle) (H₁ H₂ : Formalism.L2.Host.HChar D.host.E) (PP : Pl D.host.E) (ξ : (kP PP)ˣ →* ℂˣ), ChrEq c₁ H₁ → ChrEq c₂ H₂ → IsRes H₁ PP ξ → IsRes H₂ PP ξ → GlobalTheory.LFun.UnrAt (F := D.host.F) (c₁ * c₂⁻¹) PP := by
   first | exact @GlobalTheory.ResUnr.unrAt_div_of_isRes | exact GlobalTheory.ResUnr.unrAt_div_of_isRes | (intros; apply GlobalTheory.ResUnr.unrAt_div_of_isRes <;> assumption)

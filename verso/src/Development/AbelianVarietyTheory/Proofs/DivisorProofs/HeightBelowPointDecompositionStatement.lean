@@ -9,8 +9,10 @@ open Formalism.MainNotions.DIV.Cons (intO)
 open GlobalTheory.LieSmooth
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LieSmooth.HtEmb.main | exact GlobalTheory.LieSmooth.HtEmb.main | (intros; apply GlobalTheory.LieSmooth.HtEmb.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LieSmooth.HtEmb.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHeightBelowPointDecomposition.lean&line=82#L82)
 -/
 theorem _root_.GlobalTheory.T.height_below_point_decomposition : ∀ {F : Type} [Field F] [NumberField F] {C : CxSt F} {Y : Var F} (A : Adl C Y) {K : Type} [Field K] [NumberField K] (φ : F →+* K) (p : Sp K ⟶ Y.X) (hp : p ≫ Y.str = spMap φ), A.ht (below p) = -((∑ σ : K →+* ℂ, (Real.log (C.pn Y (σ.comp φ) A.D (A.m _) (C.cx Y _ ((eqn A.D (below p))⁻¹ : Y.Fnˣ)) (cxPtOf p hp σ)) / 2 - (A.n : ℕ) * A.ci (InfinitePlace.mk (σ.comp φ)))) + ∑ᶠ v : HeightOneSpectrum (𝓞 F), ∑ θ : EmbOver φ, A.lg v (extOf v) (algPtOf p hp θ)) / (((A.n : ℕ) : ℝ) * (Module.finrank ℚ K : ℝ)) := by
   first | exact @GlobalTheory.LieSmooth.HtEmb.main | exact GlobalTheory.LieSmooth.HtEmb.main | (intros; apply GlobalTheory.LieSmooth.HtEmb.main <;> assumption)

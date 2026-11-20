@@ -17,8 +17,10 @@ open scoped TensorProduct ContDiff Topology
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Unf
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HeisNearZero.heisO_near_zero_unif | exact GlobalTheory.HeisNearZero.heisO_near_zero_unif | (intros; apply GlobalTheory.HeisNearZero.heisO_near_zero_unif <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HeisNearZero.heisO_near_zero_unif` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FHeisenbergOperatorThetaLawTendstoUniformNearZero.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.heisenbergOperator_thetaLaw_tendsto_uniform_near_zero : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (A T : HSp D) (q : WO A T → ℂ), Continuous q → (∀ (γ : Matrix (Fin T.rank) (Fin A.rank) D.host.E) (u : WO A T), q (ratW T A γ + u) = ψ (-(symplOH A T (ratW T A γ) u)) * q u) → ∀ ε : ℝ, 0 < ε → ∃ N ∈ 𝓝 (0 : WO A T), ∀ a ∈ N, ∀ w, ‖heisO ψ A T a q w - q w‖ ≤ ε := by
   first | exact @GlobalTheory.HeisNearZero.heisO_near_zero_unif | exact GlobalTheory.HeisNearZero.heisO_near_zero_unif | (intros; apply GlobalTheory.HeisNearZero.heisO_near_zero_unif <;> assumption)

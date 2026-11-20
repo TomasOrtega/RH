@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockColumnSubstitut
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ColDerApply
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ColLie.colSub_exp_of_colDer | exact GlobalTheory.ColLie.colSub_exp_of_colDer | (intros; apply GlobalTheory.ColLie.colSub_exp_of_colDer <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ColLie.colSub_exp_of_colDer` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFockColumnSubstitutionExpOfColumnDerivation.lean&line=81#L81)
 -/
 theorem _root_.GlobalTheory.T.fockColumnSubstitution_exp_of_columnDerivation : ∀ {ι : Type} [Fintype ι] [DecidableEq ι] (d a : ℕ) (τ : ι) (c : ℕ) (Q : Type) [AddCommGroup Q] [Module ℂ Q]
     (q : GlobalTheory.MinorFrame.Pol ι d a →ₗ[ℂ] Q),

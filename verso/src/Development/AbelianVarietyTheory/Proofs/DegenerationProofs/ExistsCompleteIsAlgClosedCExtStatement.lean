@@ -8,8 +8,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory GlobalTheory.Ex
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Ex.exists_complete_isAlgClosed_cExt | exact GlobalTheory.Ex.exists_complete_isAlgClosed_cExt | (intros; apply GlobalTheory.Ex.exists_complete_isAlgClosed_cExt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Ex.exists_complete_isAlgClosed_cExt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDegenerationProofs%2FExistsCompleteIsAlgClosedCExt.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.exists_complete_isAlgClosed_cExt' : ∀ (W : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] (K : Type) [Field K] [Algebra (FractionRing W) K] [Algebra.IsAlgebraic (FractionRing W) K], ∃ (C : Type) (_ : NontriviallyNormedField C) (_ : IsUltrametricDist C) (_ : CompleteSpace C) (_ : IsAlgClosed C) (_ : Algebra (FractionRing W) C) (gam : K →+* C), (∀ x, gam (algebraMap (FractionRing W) K x) = algebraMap (FractionRing W) C x) ∧ CExt W (IsLocalRing.maximalIdeal W) C := by
   first | exact @GlobalTheory.Ex.exists_complete_isAlgClosed_cExt | exact GlobalTheory.Ex.exists_complete_isAlgClosed_cExt | (intros; apply GlobalTheory.Ex.exists_complete_isAlgClosed_cExt <;> assumption)

@@ -16,8 +16,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.BoundaryPolynomialFunctions (IsProj
 open Formalism.BasicNotions Formalism.L2.Pj GlobalTheory.Toroidal GlobalTheory.ShFam GlobalTheory.ShFam.Hor GlobalTheory.Mean4O
 open scoped ContDiff ComplexOrder ENNReal Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ArchLim.setLIntegral_base_eq | exact GlobalTheory.ArchLim.setLIntegral_base_eq | (intros; apply GlobalTheory.ArchLim.setLIntegral_base_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ArchLim.setLIntegral_base_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLintegralBigCellFibre.lean&line=40#L40)
 -/
 theorem _root_.GlobalTheory.T.lintegral_big_cell_fibre : ∀ (n r D : ℕ) (ε : Fin D ≃ Fin n ⊕ Low r) (K : Set (V n)) (H : V D → ℝ≥0∞), MeasurableSet K → AEMeasurable H (volume.restrict (base ε ⁻¹' K)) → (∫⁻ v in base ε ⁻¹' K, H v = ∫⁻ u in K, ∫⁻ x : Low r → ℂ, H (pt ε u x)) ∧ AEMeasurable (fun u => ∫⁻ x : Low r → ℂ, H (pt ε u x)) (volume.restrict K) := by
   first | exact @GlobalTheory.ArchLim.setLIntegral_base_eq | exact GlobalTheory.ArchLim.setLIntegral_base_eq | (intros; apply GlobalTheory.ArchLim.setLIntegral_base_eq <;> assumption)

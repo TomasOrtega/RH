@@ -24,8 +24,10 @@ open CategoryTheory AlgebraicGeometry IsDedekindDomain GlobalTheory.TrueGeo Glob
 open Classical GlobalTheory.HtAdd
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HtAdd.ProdFormulaPts.main | exact GlobalTheory.HtAdd.ProdFormulaPts.main | (intros; apply GlobalTheory.HtAdd.ProdFormulaPts.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HtAdd.ProdFormulaPts.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FProductFormulaRationalFunction.lean&line=185#L185)
 -/
 theorem _root_.GlobalTheory.T.product_formula_rational_function : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (x : Y.X), IsClosed ({x} : Set Y.X) →
     ∀ g : Y.Fn, UnitAt x g →

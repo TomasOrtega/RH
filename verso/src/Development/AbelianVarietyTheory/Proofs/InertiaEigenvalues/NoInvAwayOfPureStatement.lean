@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.GaloisSideT
 import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
 open GlobalTheory.TripleGal Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.MainNotions.BlochKatoReduction Formalism.MainNotions.BlochKatoReduction.Gen Formalism.ConjugateSelfDual ReciprocityTheory.Gal NumberField IsDedekindDomain Polynomial
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PurityInvariants.noInv_of_pure | exact GlobalTheory.PurityInvariants.noInv_of_pure | (intros; apply GlobalTheory.PurityInvariants.noInv_of_pure <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PurityInvariants.noInv_of_pure` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FNoInvAwayOfPure.lean&line=57#L57)
 -/
 theorem _root_.GlobalTheory.T.noInv_away_of_pure : ∀ (D : D7) (i : D.ntw.Tw) (s : D.ntw.Sig i) (ι : FractionRing (D.ntw.O0 i) →+* ℂ), Pure i s ι → ∀ v, v ∉ placesOver D.host.E (D.ntw.l i) → v ∉ Spl (X := D.ntw) i → NoInv i (Tmat i s) v ∧ NoInv i (Tdual i s) v := by
   first | exact @GlobalTheory.PurityInvariants.noInv_of_pure | exact GlobalTheory.PurityInvariants.noInv_of_pure | (intros; apply GlobalTheory.PurityInvariants.noInv_of_pure <;> assumption)

@@ -8,8 +8,10 @@ open IsDedekindDomain NumberField
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.iteratedFDeriv_apply_eq_foldr_fderiv | exact GlobalTheory.iteratedFDeriv_apply_eq_foldr_fderiv | (intros; apply GlobalTheory.iteratedFDeriv_apply_eq_foldr_fderiv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.iteratedFDeriv_apply_eq_foldr_fderiv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIteratedFDerivApplyEqFoldrDirectionalFderiv.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.iteratedFDeriv_apply_eq_foldr_directional_fderiv : ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℝ E] (g : E → ℂ), ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) g →
     ∀ (j : ℕ) (m : Fin j → E) (x : E),

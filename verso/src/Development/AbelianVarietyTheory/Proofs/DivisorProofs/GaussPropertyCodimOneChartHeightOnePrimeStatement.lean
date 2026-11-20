@@ -7,8 +7,10 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.Toroidal GlobalTheory.LocM G
 open scoped CategoryTheory.Obj
 open GlobalTheory.Desc
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Desc.GaussPt.gaussAt_vert | exact GlobalTheory.Desc.GaussPt.gaussAt_vert | (intros; apply GlobalTheory.Desc.GaussPt.gaussAt_vert <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Desc.GaussPt.gaussAt_vert` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGaussPropertyCodimOneChartHeightOnePrime.lean&line=189#L189)
 -/
 theorem _root_.GlobalTheory.T.gaussProperty_codimOne_chart_heightOnePrime : ∀ (σ : Setup) (x : Sp σ.R) (z : (σ.C x).G.left), Vert (σ.C x).G.hom (σ.ρ x σ.f) z → GaussAt (GlobalTheory.Desc.cst (σ.C x).G.hom) ((σ.C x).G.hom z).asIdeal (σ.θ x) (σ.W (spMap (σ.ρ x) ((σ.C x).G.hom z))) (regSet z) ∧ (σ.θ x) ⁻¹' (regSet z) = σ.W (spMap (σ.ρ x) ((σ.C x).G.hom z)) := by
   first | exact @GlobalTheory.Desc.GaussPt.gaussAt_vert | exact GlobalTheory.Desc.GaussPt.gaussAt_vert | (intros; apply GlobalTheory.Desc.GaussPt.gaussAt_vert <;> assumption)

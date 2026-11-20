@@ -10,8 +10,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj TensorProduct ContDiff
 open GlobalTheory.ZM
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ZM.GenericTrdeg.exists_algebraicIndependent | exact GlobalTheory.ZM.GenericTrdeg.exists_algebraicIndependent | (intros; apply GlobalTheory.ZM.GenericTrdeg.exists_algebraicIndependent <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ZM.GenericTrdeg.exists_algebraicIndependent` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FModuliProofs%2FThetaClosureComponentTrdegGe.lean&line=95#L95)
 -/
 theorem _root_.GlobalTheory.T.thetaClosure_component_trdeg_ge : Out.Laws → Out.Laws2 → ∀ (n : ℕ), ∀ (g N' : ℕ) (J : Type) (Mat : J → Matrix (Fin (2 * g)) (Fin (2 * g)) ℤ) (κ : ℕ) (w w' : J) (o : Type) [CommRing o] (b : TBase o (N' ^ 2)) (em : o →+* ℂ) (C : TObj g (N' ^ 2) J b (spMap em) → Prop) (d : ℕ) (F : ThetaFam n em C), ArBase em → GoodClass em C Mat κ w w' d → ∀ (R : Type) [CommRing R] [Algebra o R] (x : Sp R ⟶ F.MM), IsOpenImmersion x → x ≫ F.s = spMap (algebraMap o R) → ∀ (K : Type) [Field K] [Algebra o K] (φ : R →ₐ[o] K), RingHom.ker φ ∈ minimalPrimes R → (∀ z : K, ∃ a b, z = φ a / φ b) → ∃ y : Fin d → K, AlgebraicIndependent o y := by
   first | exact @GlobalTheory.ZM.GenericTrdeg.exists_algebraicIndependent | exact GlobalTheory.ZM.GenericTrdeg.exists_algebraicIndependent | (intros; apply GlobalTheory.ZM.GenericTrdeg.exists_algebraicIndependent <;> assumption)

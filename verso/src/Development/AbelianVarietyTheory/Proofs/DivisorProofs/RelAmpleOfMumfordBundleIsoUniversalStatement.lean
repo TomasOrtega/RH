@@ -7,8 +7,10 @@ open scoped CategoryTheory.Obj TensorProduct
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.ZM
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MumAmple.relAmple_of_lam_iso_univ | exact GlobalTheory.MumAmple.relAmple_of_lam_iso_univ | (intros; apply GlobalTheory.MumAmple.relAmple_of_lam_iso_univ <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MumAmple.relAmple_of_lam_iso_univ` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRelAmpleOfMumfordBundleIsoUniversal.lean&line=26#L26)
 -/
 theorem _root_.GlobalTheory.T.relAmple_of_mumfordBundle_iso_universal : ∀ {o : Type} [CommRing o] {ζ : o} {g n : ℕ} (F : SFam g n ζ) (R' : Type) [CommRing R'] [IsNoetherianRing R'] (T : Sp R' ⟶ F.X) (B : Over (Sp R')) [GrpObj B] [IsCommMonObj B] (β : B.left ⟶ F.univ.A.left) (β₂ : (G2 B).left ⟶ (G2 F.univ.A).left), IsGrpPullback B F.univ.A T β → IsSquare β β₂ → ∀ L : LB B.left, L.IsLB → LBIso (abelian₂ B L) (F.univ.P.pull β₂) → RelAmple B L := by
   first | exact @GlobalTheory.MumAmple.relAmple_of_lam_iso_univ | exact GlobalTheory.MumAmple.relAmple_of_lam_iso_univ | (intros; apply GlobalTheory.MumAmple.relAmple_of_lam_iso_univ <;> assumption)

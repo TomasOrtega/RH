@@ -13,8 +13,10 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.R
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points GlobalTheory.CechPic GlobalTheory.ChartGlue GlobalTheory.Mix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mix.int_cons_ofFun_symm | exact GlobalTheory.Mix.int_cons_ofFun_symm | (intros; apply GlobalTheory.Mix.int_cons_ofFun_symm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mix.int_cons_ofFun_symm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FMixedIntegralDdcPairingSymmProjective.lean&line=53#L53)
 -/
 theorem _root_.GlobalTheory.T.mixedIntegral_ddc_pairing_symm_projective : GlobalTheory.Published.Principalisation → ∀ (F : Type) [Field F] (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (p : X ⟶ Sp F) (σ : F →+* ℂ) (e : ℕ), IsProjOver p → topologicalKrullDim X = (e + 1 : ℕ) → ∀ (L : Fin e → MLine p σ) (u v : CxPts p σ → ℝ) (hu : ∀ y, CInfAt u y) (hv : ∀ y, CInfAt v y), Mix.int (Fin.cons (MLine.ofFun u hu) L : Fin (e + 1) → MLine p σ) v = Mix.int (Fin.cons (MLine.ofFun v hv) L : Fin (e + 1) → MLine p σ) u := by
   first | exact @GlobalTheory.Mix.int_cons_ofFun_symm | exact GlobalTheory.Mix.int_cons_ofFun_symm | (intros; apply GlobalTheory.Mix.int_cons_ofFun_symm <;> assumption)

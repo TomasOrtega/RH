@@ -9,8 +9,10 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj TensorProduct ContDiff
 open GlobalTheory.ZM
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.smoothOfRelativeDimension_genericFibre_of_independent_of_finrank_derivation_le | exact GlobalTheory.smoothOfRelativeDimension_genericFibre_of_independent_of_finrank_derivation_le | (intros; apply GlobalTheory.smoothOfRelativeDimension_genericFibre_of_i …`.
+/- English proof (citation)
+Apply `GlobalTheory.smoothOfRelativeDimension_genericFibre_of_independent_of_finrank_derivation_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FModuliProofs%2FSmoothGenericFibreOfIndependentAndTangentBound.lean&line=101#L101)
 -/
 theorem _root_.GlobalTheory.T.smooth_genericFibre_of_independent_and_tangent_bound : ∀ (o : Type) [CommRing o] [IsDomain o] (em : o →+* ℂ) (R : Type) [CommRing R] [Algebra o R] (d : ℕ), Function.Injective em → Algebra.FiniteType o R → (∀ (K : Type) [Field K] [Algebra o K] (φ : R →ₐ[o] K), RingHom.ker φ ∈ minimalPrimes R → (∀ z : K, ∃ a b, z = φ a / φ b) → ∃ y : Fin d → K, AlgebraicIndependent o y) → (∀ [Algebra o ℂ] [Algebra R ℂ] [IsScalarTower o R ℂ], algebraMap o ℂ = em → Module.finrank ℂ (Derivation o R ℂ) ≤ d) → SmoothOfRelativeDimension d (spMap (algebraMap (FractionRing o) (FractionRing o ⊗[o] R))) := by
   first | exact @GlobalTheory.smoothOfRelativeDimension_genericFibre_of_independent_of_finrank_derivation_le | exact GlobalTheory.smoothOfRelativeDimension_genericFibre_of_independent_of_finrank_derivation_le | (intros; apply GlobalTheory.smoothOfRelativeDimension_genericFibre_of_independent_of_finrank_derivation_le <;> assumption)

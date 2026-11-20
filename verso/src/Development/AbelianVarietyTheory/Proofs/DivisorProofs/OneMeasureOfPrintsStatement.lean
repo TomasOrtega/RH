@@ -6,8 +6,10 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.AllWt GlobalTheory.CompHt GlobalTheory.BigTop GlobalTheory.CovTop GlobalTheory.CovTop.MeasRd
 open Formalism.MainNotions
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.OneMeasureAll.oneMeasure | exact GlobalTheory.OneMeasureAll.oneMeasure | (intros; apply GlobalTheory.OneMeasureAll.oneMeasure <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.OneMeasureAll.oneMeasure` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FOneMeasureOfPublished.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.one_measure_of_classicalTheorems : Hypotheses2 → ∀ D : D7, GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.OneMeasure D := by
   first | exact @GlobalTheory.OneMeasureAll.oneMeasure | exact GlobalTheory.OneMeasureAll.oneMeasure | (intros; apply GlobalTheory.OneMeasureAll.oneMeasure <;> assumption)

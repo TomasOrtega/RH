@@ -10,8 +10,10 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FullRankLocalForm.formP | exact GlobalTheory.FullRankLocalForm.formP | (intros; apply GlobalTheory.FullRankLocalForm.formP <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FullRankLocalForm.formP` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFullRankFormLinearExtension.lean&line=146#L146)
 -/
 theorem _root_.GlobalTheory.T.fullRank_form_linear_extension : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n d : ℕ)
     (F : (Matrix (Fin n) (Fin d) k → ℂ) → Matrix (Fin n) (Fin d) k → ℂ)

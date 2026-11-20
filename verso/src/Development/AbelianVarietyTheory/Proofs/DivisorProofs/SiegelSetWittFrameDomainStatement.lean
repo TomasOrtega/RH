@@ -8,8 +8,10 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SiegelTheta.theta_le_seminorm_height_torus | exact GlobalTheory.SiegelTheta.theta_le_seminorm_height_torus | (intros; apply GlobalTheory.SiegelTheta.theta_le_seminorm_height_torus <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SiegelTheta.theta_le_seminorm_height_torus` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSiegelSetWittFrameDomain.lean&line=36#L36)
 -/
 theorem _root_.GlobalTheory.T.siegel_set_witt_frame_domain : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W)

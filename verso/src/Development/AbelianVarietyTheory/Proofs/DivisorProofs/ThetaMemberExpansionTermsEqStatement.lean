@@ -20,8 +20,10 @@ open GlobalTheory.Poinc.Sep
 open GlobalTheory.UT.CoefBasic
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GSep.ExpUnique.coef_eq_of_expandsF | exact GlobalTheory.GSep.ExpUnique.coef_eq_of_expandsF | (intros; apply GlobalTheory.GSep.ExpUnique.coef_eq_of_expandsF <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GSep.ExpUnique.coef_eq_of_expandsF` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FThetaMemberExpansionTermsEq.lean&line=47#L47)
 -/
 theorem _root_.GlobalTheory.T.thetaMember_expansion_terms_eq : ∀ (I : Type) (X₁ : GlobalTheory.GSep.GSet) (z₁ : X₁.M.Z) (act : I → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)) (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (Y : Type) [AddCommGroup Y] (t : Y → V) (δ : I → Y → Y) (𝔪 : GlobalTheory.GSep.GMem X₁ z₁ act V ev Y t δ) (w₀ : W0 𝔪.U.toUnifPre) (k : ℕ) (th : SecA 𝔪.A (FractionRing V) k) (s s₂ : Fam 𝔪.D.toPre (FractionRing V) k),
   w₀.IsGen → 1 ≤ k → 𝔪.U.ExpandsF (FractionRing V) k w₀ th s → 𝔪.U.ExpandsF (FractionRing V) k w₀ th s₂ →

@@ -18,8 +18,10 @@ open ReciprocityTheory.Def (Z1 B1 H1)
 open TensorProduct
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Per.LetterJumps.card_jumps_letter | exact GlobalTheory.Per.LetterJumps.card_jumps_letter | (intros; apply GlobalTheory.Per.LetterJumps.card_jumps_letter <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Per.LetterJumps.card_jumps_letter` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FCardHodgeTateJumpsCrystallineEqDim.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.card_hodgeTate_jumps_crystalline_eq_dim : ∀ {l : ℕ} [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), Nonempty (LocTied l P AI) →
     ∀ (H : LocHW l P) (K LL : FinExt l) (hA : CaseA K LL) (V : Type) [AddCommGroup V] [Module ↥LL.1 V]

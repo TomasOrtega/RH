@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjMapApply
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK MeasureTheory GlobalTheory.DoublingEv
 open scoped Matrix ENNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DoublingEvaluationL2.partL_lintegral_sq | exact GlobalTheory.DoublingEvaluationL2.partL_lintegral_sq | (intros; apply GlobalTheory.DoublingEvaluationL2.partL_lintegral_sq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DoublingEvaluationL2.partL_lintegral_sq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPartialFourierLeftIsometryL2.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.partial_fourier_left_isometry_l2 : ∀ (F : Type) [Field F] [NumberField F] (κ κ' : Type) [Fintype κ] [Fintype κ']
     (A : ((κ → AF F) → ℂ) →ₗ[ℂ] ((κ → AF F) → ℂ)),

@@ -4,8 +4,10 @@ import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.SquareI
 import GroundTheory.AutomorphicForms.SupercuspidalCoefficients
 open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.JHMult
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.ContractVolume.volume_lower_bound | exact GlobalTheory.CompanionTheory.ContractVolume.volume_lower_bound | (intros; apply GlobalTheory.CompanionTheory.ContractVolume.volume_lower_bound <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.ContractVolume.volume_lower_bound` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FContractingDoubleCosetVolumeBound.lean&line=246#L246)
 -/
 theorem _root_.GlobalTheory.T.contracting_double_coset_volume_bound : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], ∀ (h N : ℕ) (d : Fin h → ℕ) (hd : ∑ a, d a = N), (∀ a, 0 < d a) → ∀ (t : kˣ), ValuativeRel.valuation k (t : k) < 1 → ∀ (j : Fin h), j.val + 1 < h → ∀ (m : ℕ), 1 ≤ m → ∀ [MeasurableSpace (AdGL k N)] [BorelSpace (AdGL k N)] (μ : MeasureTheory.Measure (AdGL k N)), μ.IsHaarMeasure → ∃ c : ℝ, 0 < c ∧ ∀ r : ℕ, ENNReal.ofReal (c * ((modulus k (fun a => Fin (d a)) (Zl.JC.zj d t j))⁻¹) ^ r) ≤ μ ((QuotientGroup.mk : GL (Fin N) k → AdGL k N) '' {g | ∃ x ∈ GroundTheory.Automorphic.GLnLocal.congruenceSubgroup k N m, ∃ y ∈ GroundTheory.Automorphic.GLnLocal.congruenceSubgroup k N m, g = x * (leviEmb k (stdBlocks d hd) (Zl.JC.zj d t j)) ^ r * y}) := by
   first | exact @GlobalTheory.CompanionTheory.ContractVolume.volume_lower_bound | exact GlobalTheory.CompanionTheory.ContractVolume.volume_lower_bound | (intros; apply GlobalTheory.CompanionTheory.ContractVolume.volume_lower_bound <;> assumption)

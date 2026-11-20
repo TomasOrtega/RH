@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsIsoNearNormalPoint
 import Development.AbelianVarietyTheory.Definitions.ShimuraVarieties.IsOpenOfMemIrreducibleComponentsOfFinite
 open AlgebraicGeometry CategoryTheory Limits
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FiniteBirationalNear.isIso_morphismRestrict_of_isNormal | exact GlobalTheory.FiniteBirationalNear.isIso_morphismRestrict_of_isNormal | (intros; apply GlobalTheory.FiniteBirationalNear.isIso_morphismRestrict_of_isNormal <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FiniteBirationalNear.isIso_morphismRestrict_of_isNormal` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsIsoMorphismRestrictFiniteOfIsNormalDense.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.isIso_morphismRestrict_finite_of_isNormal_dense : ∀ {S T : Scheme.{0}} [IsLocallyNoetherian T] (ν : S ⟶ T) [IsFinite ν] (U V : T.Opens), ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme S → ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme (V : Scheme.{0}) → Dense (U : Set T) → Dense (ν ⁻¹' (U : Set T)) → IsIso (ν ∣_ U) → IsIso (ν ∣_ V) := by
   first | exact @GlobalTheory.FiniteBirationalNear.isIso_morphismRestrict_of_isNormal | exact GlobalTheory.FiniteBirationalNear.isIso_morphismRestrict_of_isNormal | (intros; apply GlobalTheory.FiniteBirationalNear.isIso_morphismRestrict_of_isNormal <;> assumption)

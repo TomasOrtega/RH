@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsX
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj Formalism.BasicNotions.TH Formalism.L2.Theta ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.AllWt GlobalTheory.CompHt GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.Mean4 GlobalTheory.Mean4O
 open scoped ENNReal Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlatDetLine.numbers_eq_height_mul_degree | exact GlobalTheory.FlatDetLine.numbers_eq_height_mul_degree | (intros; apply GlobalTheory.FlatDetLine.numbers_eq_height_mul_degree <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlatDetLine.numbers_eq_height_mul_degree` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsSmoothBoundaryPotential.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.exists_smooth_boundary_potential : GlobalTheory.CovTop.HypothesesXH → Hypotheses2 → HypothesesH → GlobalTheory.Published.ScholzeWeinsteinB → OnObj fun D O _ T _ _ => ∀ B : ℝ, 2 ≤ B → ∀ (τ : D.what₂.Tau) c,
     ∃ g : (T.M c).Fun, (T.M c).Smooth g ∧

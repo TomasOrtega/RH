@@ -7,8 +7,10 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor (Datum Level Moduli Coeff)
 open ReciprocityTheory.ChartRestriction.G.Pdiv.ChartF (AvFSt HTFSt UpFSt)
 open GlobalTheory.RunDepth GlobalTheory.CharDepth
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WeightRows.kappa_entries_le | exact GlobalTheory.WeightRows.kappa_entries_le | (intros; apply GlobalTheory.WeightRows.kappa_entries_le <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WeightRows.kappa_entries_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FJetHarmonics%2FKappaRowsEntriesLeSizes.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.kappaRows_entries_le_sizes : ∀ (D : D7) (L : SizeData₂ D) (Pm : ParameterChoice' D L) (Tp : ParamsT D L Pm) (hK : DV.KapDef D) (j : ℕ), InR D j → ∀ τ : D.what₂.Tau, (∀ i, i.1 < D.R.k - 1 → ((kaR Tp hK j).aP τ i : ℝ) ≤ wj D j τ + L.Sc) ∧ (∀ i, D.R.k - 1 ≤ i.1 → ((kaR Tp hK j).aP τ i : ℝ) ≤ L.etaSz) ∧ ∀ i, ((kaR Tp hK j).aM τ i : ℝ) ≤ L.etaSz := by
   first | exact @GlobalTheory.WeightRows.kappa_entries_le | exact GlobalTheory.WeightRows.kappa_entries_le | (intros; apply GlobalTheory.WeightRows.kappa_entries_le <;> assumption)

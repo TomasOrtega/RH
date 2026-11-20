@@ -11,8 +11,10 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Unf
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WeilDatumExistence.weilDatumExists | exact GlobalTheory.WeilDatumExistence.weilDatumExists | (intros; apply GlobalTheory.WeilDatumExistence.weilDatumExists <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WeilDatumExistence.weilDatumExists` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FExistsWeilDatumHermitianPair.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.exists_weilDatum_hermitianPair : ∀ D : D7, GlobalTheory.IndefiniteRowSideFullHecke.WeilDatumExistenceCriterion.WeilDatumExists D := by
   first | exact @GlobalTheory.WeilDatumExistence.weilDatumExists | exact GlobalTheory.WeilDatumExistence.weilDatumExists | (intros; apply GlobalTheory.WeilDatumExistence.weilDatumExists <;> assumption)

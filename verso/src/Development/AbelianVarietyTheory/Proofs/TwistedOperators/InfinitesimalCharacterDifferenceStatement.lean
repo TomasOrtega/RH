@@ -12,8 +12,10 @@ open GlobalTheory.Orb (IsPseudoCoeff ujMat ujRep)
 open scoped InnerProductSpace
 open PI.DSInfCharCap (actU Egl)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IndCap.infChar_sub_eq_of_line | exact GlobalTheory.IndCap.infChar_sub_eq_of_line | (intros; apply GlobalTheory.IndCap.infChar_sub_eq_of_line <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IndCap.infChar_sub_eq_of_line` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FInfinitesimalCharacterDifference.lean&line=79#L79)
 -/
 theorem _root_.GlobalTheory.T.infinitesimal_character_difference : GlobalTheory.Published.LanglandsClassification → ∀ (n : ℕ) (ε : Fin n → Bool) (I : IndModule ε) (h : 0 < I.a), I.j ⟨0, h⟩ = 1 → ∀ χ : Fin n → ℂ, (∀ (k : ℕ) v, IsKFin ε I.ρ v → ∃ N : ℕ, actU ε I.ρ ((etr (Egl n) (k + 1) - algebraMap ℂ _ (gelfVal χ (k + 1))) ^ N) v = 0) → ∃ i j, i ≠ j ∧ χ i - χ j = I.s ⟨0, h⟩ := by
   first | exact @GlobalTheory.IndCap.infChar_sub_eq_of_line | exact GlobalTheory.IndCap.infChar_sub_eq_of_line | (intros; apply GlobalTheory.IndCap.infChar_sub_eq_of_line <;> assumption)

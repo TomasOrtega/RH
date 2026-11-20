@@ -8,8 +8,10 @@ open GlobalTheory.ZH GlobalTheory.UPoinc GlobalTheory.UCovSep
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.XScov.genericPoints_XF_finite | exact GlobalTheory.XScov.genericPoints_XF_finite | (intros; apply GlobalTheory.XScov.genericPoints_XF_finite <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.XScov.genericPoints_XF_finite` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGenericPointsFiniteUnitaryModuliCoefficientField.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.genericPoints_finite_unitaryModuli_coefficientField : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l), (genericPoints (Xo.XF c)).Finite := by
   first | exact @GlobalTheory.XScov.genericPoints_XF_finite | exact GlobalTheory.XScov.genericPoints_XF_finite | (intros; apply GlobalTheory.XScov.genericPoints_XF_finite <;> assumption)

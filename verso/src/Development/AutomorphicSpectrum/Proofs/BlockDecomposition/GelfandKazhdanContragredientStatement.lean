@@ -4,8 +4,10 @@ import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.Zelevin
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IrreducibleAdmissibleGL
 open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.JHMult Zc Zc.Cos
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.ThetaW.comp_thetaW_equiv_contra | exact GlobalTheory.CompanionTheory.ThetaW.comp_thetaW_equiv_contra | (intros; apply GlobalTheory.CompanionTheory.ThetaW.comp_thetaW_equiv_contra <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.ThetaW.comp_thetaW_equiv_contra` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FGelfandKazhdanContragredient.lean&line=60#L60)
 -/
 theorem _root_.GlobalTheory.T.gelfand_kazhdan_contragredient : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], GKLocal k → ∀ (N : ℕ) {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V), IsSmooth π → π.IsIrreducible → Nonempty (Representation.Equiv (π.comp (thetaW k N)) (contra π)) := by
   first | exact @GlobalTheory.CompanionTheory.ThetaW.comp_thetaW_equiv_contra | exact GlobalTheory.CompanionTheory.ThetaW.comp_thetaW_equiv_contra | (intros; apply GlobalTheory.CompanionTheory.ThetaW.comp_thetaW_equiv_contra <;> assumption)

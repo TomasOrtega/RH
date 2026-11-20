@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothAlgebraLocali
 import Mathlib
 open AlgebraicGeometry CategoryTheory Limits
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlatFibreRegular.localization_eq_zero_of_mul_eq_zero | exact GlobalTheory.FlatFibreRegular.localization_eq_zero_of_mul_eq_zero | (intros; apply GlobalTheory.FlatFibreRegular.localization_eq_zero_of_mul_eq_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlatFibreRegular.localization_eq_zero_of_mul_eq_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSmoothAlgebraLocalizationEqZeroOfAvoidFibreMinim.lean&line=191#L191)
 -/
 theorem _root_.GlobalTheory.T.smooth_algebra_localization_eq_zero_of_avoid_fibre_minimal : ∀ (A B : Type) [CommRing A] [IsNoetherianRing A] [CommRing B] [Algebra A B] [Algebra.Smooth A B]
     (b g : B) (u : PrimeSpectrum B), g * b = 0 →

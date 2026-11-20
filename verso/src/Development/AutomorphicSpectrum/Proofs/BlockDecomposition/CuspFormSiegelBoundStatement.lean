@@ -5,8 +5,10 @@ open NumberField MeasureTheory Matrix Formalism.MainNotions.GlobalTheoryTheory.G
 open Formalism.UG (cT)
 open scoped TensorProduct NNReal ENNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.SiegelHt.height_le_pow | exact GlobalTheory.CompanionTheory.SiegelHt.height_le_pow | (intros; apply GlobalTheory.CompanionTheory.SiegelHt.height_le_pow <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.SiegelHt.height_le_pow` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FCuspFormSiegelBound.lean&line=203#L203)
 -/
 theorem _root_.GlobalTheory.T.cusp_form_siegel_bound : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (r : ℕ) (X Y : Matrix (Fin n) (Fin r) E), IsWittFrame σ J X Y → ∀ (K : Subgroup (GAd σ J)) (Ω : Set (GAd σ J)) (c : ℝ), IsCompact (K : Set (GAd σ J)) → IsCompact Ω → Ω ⊆ minParOne σ J X → 0 < c → ∃ (C : ℝ≥0) (A : ℕ), ∀ g ∈ siegelSet σ J X Y Ω c K, ∀ γ ∈ ratPts σ J, height σ J g ≤ C * height σ J (γ * g) ^ A := by
   first | exact @GlobalTheory.CompanionTheory.SiegelHt.height_le_pow | exact GlobalTheory.CompanionTheory.SiegelHt.height_le_pow | (intros; apply GlobalTheory.CompanionTheory.SiegelHt.height_le_pow <;> assumption)

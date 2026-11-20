@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JacquetRallisM
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.FourierMatch
 open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.JR.DenseMatch.match_of_dense | exact GlobalTheory.JR.DenseMatch.match_of_dense | (intros; apply GlobalTheory.JR.DenseMatch.match_of_dense <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.JR.DenseMatch.match_of_dense` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FJacquetRallisMatchOfDenseSeparable.lean&line=170#L170)
 -/
 theorem _root_.GlobalTheory.T.jacquetRallis_match_of_dense_separable : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (r : ℕ) (M : Meas r F E) (f' : Gl r F → ℂ) (f : Hn r F E → ℂ), IsTest f' → IsTest f → ((∀ a : Inv r F, Delta a ≠ 0 → (companion a.1).charpoly.Separable → MatchAt M f' f a) → Match M f' f) ∧ (0 < r → (∀ a : Inv r F, Delta a ≠ 0 → mom (sec a) 0 ≠ 0 → MatchAt M f' f a) → Match M f' f) := by
   first | exact @GlobalTheory.JR.DenseMatch.match_of_dense | exact GlobalTheory.JR.DenseMatch.match_of_dense | (intros; apply GlobalTheory.JR.DenseMatch.match_of_dense <;> assumption)

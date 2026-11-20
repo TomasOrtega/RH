@@ -14,8 +14,10 @@ open Formalism.BasicNotions Formalism.L2.Pj GlobalTheory.Toroidal GlobalTheory.S
 open scoped ContDiff ComplexOrder ENNReal Classical
 open GlobalTheory.HorComp
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HorComp.locallyOfFiniteType_generic_fibre_model | exact GlobalTheory.HorComp.locallyOfFiniteType_generic_fibre_model | (intros; apply GlobalTheory.HorComp.locallyOfFiniteType_generic_fibre_model <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HorComp.locallyOfFiniteType_generic_fibre_model` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLocallyOfFiniteTypeGenericFibre.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.locallyOfFiniteType_generic_fibre : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ), LocallyOfFiniteType (genStr s.T.Z) := by
   first | exact @GlobalTheory.HorComp.locallyOfFiniteType_generic_fibre_model | exact GlobalTheory.HorComp.locallyOfFiniteType_generic_fibre_model | (intros; apply GlobalTheory.HorComp.locallyOfFiniteType_generic_fibre_model <;> assumption)

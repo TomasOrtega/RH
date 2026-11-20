@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.GaloisSideT
 import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
 open GlobalTheory.TripleGal Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.MainNotions.BlochKatoReduction Formalism.MainNotions.BlochKatoReduction.Gen Formalism.ConjugateSelfDual ReciprocityTheory.Gal NumberField IsDedekindDomain Polynomial
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LatticeSelfDual.selfDual_of_charDual | exact GlobalTheory.LatticeSelfDual.selfDual_of_charDual | (intros; apply GlobalTheory.LatticeSelfDual.selfDual_of_charDual <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LatticeSelfDual.selfDual_of_charDual` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FSelfDualLatticeOfConjDualCharpoly.lean&line=76#L76)
 -/
 theorem _root_.GlobalTheory.T.selfDual_lattice_of_conjDualCharpoly : ∀ (D : D7) (i : D.ntw.Tw) (s : D.ntw.Sig i), ValuationStabilityAtRing D.ntw i s → CharDual i s → SelfDual i s := by
   first | exact @GlobalTheory.LatticeSelfDual.selfDual_of_charDual | exact GlobalTheory.LatticeSelfDual.selfDual_of_charDual | (intros; apply GlobalTheory.LatticeSelfDual.selfDual_of_charDual <;> assumption)

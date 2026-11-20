@@ -7,8 +7,10 @@ open scoped TensorProduct InnerProductSpace ComplexConjugate
 open GlobalTheory.ChainOnto
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChainOnto.stabLoc_isParamFun_frameLat | exact GlobalTheory.ChainOnto.stabLoc_isParamFun_frameLat | (intros; apply GlobalTheory.ChainOnto.stabLoc_isParamFun_frameLat <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChainOnto.stabLoc_isParamFun_frameLat` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FThetaChainStageLatticeStabilizerParamsOffSet.lean&line=116#L116)
 -/
 theorem _root_.GlobalTheory.T.thetaChainStage_lattice_stabilizer_params_off_set : ∀ D : D7, ForStage D fun c _ s => (∀ v ∉ c.S, GlobalTheory.AdelicU.stabLoc D.sp.cm.sig s.V.gram s.Λ v = GlobalTheory.AdelicU.stabLoc D.sp.cm.sig s.V.gram (GlobalTheory.AdelicU.frameLat s.V) v) ∧ ∀ (f : GA D s.V → ℂ) (B : GlobalTheory.LFun.Fam D.host.E), GlobalTheory.LFun.IsParamFun D.sp.cm.sig s.V.gram s.Λ (c.S : Set (HeightOneSpectrum (𝓞 D.host.F))) f B ↔ GlobalTheory.LFun.IsParamFunV s.V c.S f B := by
   first | exact @GlobalTheory.ChainOnto.stabLoc_isParamFun_frameLat | exact GlobalTheory.ChainOnto.stabLoc_isParamFun_frameLat | (intros; apply GlobalTheory.ChainOnto.stabLoc_isParamFun_frameLat <;> assumption)

@@ -5,8 +5,10 @@ open NumberField MeasureTheory Matrix Formalism.MainNotions.GlobalTheoryTheory.G
 open Formalism.UG (cT)
 open scoped TensorProduct NNReal ENNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.ParCocompact.hermFam_nondeg | exact GlobalTheory.CompanionTheory.ParCocompact.hermFam_nondeg | (intros; apply GlobalTheory.CompanionTheory.ParCocompact.hermFam_nondeg <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.ParCocompact.hermFam_nondeg` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FHermitianFamilyAnisotropicJoint.lean&line=60#L60)
 -/
 theorem _root_.GlobalTheory.T.hermitian_family_anisotropic_joint : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (r : ℕ) (X Y : Matrix (Fin n) (Fin r) E), IsWittFrame σ J X Y → ∀ ξ : Fin n → E, (∀ j, hE σ (hermFam σ J X Y j) ξ ξ = 0) → ξ = 0 := by
   first | exact @GlobalTheory.CompanionTheory.ParCocompact.hermFam_nondeg | exact GlobalTheory.CompanionTheory.ParCocompact.hermFam_nondeg | (intros; apply GlobalTheory.CompanionTheory.ParCocompact.hermFam_nondeg <;> assumption)

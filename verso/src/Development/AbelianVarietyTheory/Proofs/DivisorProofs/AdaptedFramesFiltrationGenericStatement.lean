@@ -7,8 +7,10 @@ open GlobalTheory GlobalTheory.VB GlobalTheory.LieFilt GlobalTheory.GrFilt
 open GlobalTheory.Twist (resM)
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GrFilt.genSpan_eq_of_adaptedAt | exact GlobalTheory.GrFilt.genSpan_eq_of_adaptedAt | (intros; apply GlobalTheory.GrFilt.genSpan_eq_of_adaptedAt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GrFilt.genSpan_eq_of_adaptedAt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAdaptedFramesFiltrationGeneric.lean&line=79#L79)
 -/
 theorem _root_.GlobalTheory.T.adapted_frames_filtration_generic : ∀ {X : Scheme.{0}} [IsIntegral X] {ι : Type} [Fintype ι] {L : X.Modules} {E E' : ι → X.Modules} {r : ι → ℕ}
     (o : ι → ℕ), Function.Injective o → ∀ (T : ∀ a, E a ⟶ L) (u : ∀ a, E a ⟶ E' a) {V : X.Opens}

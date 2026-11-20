@@ -33,8 +33,10 @@ open Formalism.REAL Formalism.MainNotions.S GlobalTheory.SmoothGlob GlobalTheory
 open scoped InnerProductSpace
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PlaceDecomp.hasCtp_translate | exact GlobalTheory.PlaceDecomp.hasCtp_translate | (intros; apply GlobalTheory.PlaceDecomp.hasCtp_translate <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PlaceDecomp.hasCtp_translate` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FKTypeClassTranslate.lean&line=40#L40)
 -/
 theorem _root_.GlobalTheory.T.K_type_class_translate : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → GlobalTheory.FunPr.Hypotheses₂ → ∀ (N : GlobalTheory.Grid.Node D) (U : Subgroup (GA D N.V)) (W : D.what₂.Tau → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module ℂ (W τ)] (ρ : ∀ τ, Representation ℂ (Formalism.REAL.KG (N.M.ε τ)) (W τ)) (τ : D.what₂.Tau), ∀ g ∈ UJset (N.M.ε τ), HasCtp θ N U (TyOf θ N ρ) τ (N.M.σ τ g) := by
   first | exact @GlobalTheory.PlaceDecomp.hasCtp_translate | exact GlobalTheory.PlaceDecomp.hasCtp_translate | (intros; apply GlobalTheory.PlaceDecomp.hasCtp_translate <;> assumption)

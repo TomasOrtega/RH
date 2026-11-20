@@ -6,8 +6,10 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory GlobalTheory.Cart
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LatChain.link_adapted_step | exact GlobalTheory.LatChain.link_adapted_step | (intros; apply GlobalTheory.LatChain.link_adapted_step <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LatChain.link_adapted_step` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLinkedOfGeneratorMultiplication.lean&line=66#L66)
 -/
 theorem _root_.GlobalTheory.T.linked_of_generator_multiplication : ∀ (X : Scheme.{0}) [IsIntegral X] (p k a N : ℕ) (M : X → Matrix (Fin N) (Fin N) X.functionField) (c : X → Fin N → X.functionFieldˣ) (j : Fin N) (γ : X.functionField), γ ≠ 0 → (∀ x, Ov p x → RegAt x γ ∧ RegAt x ((p : X.functionField) ^ a / γ)) → Coh p (k + 1 + a) M c → ∀ η : X → Fin (N + 1) → X.functionFieldˣ, (∀ x, Ov p x → ∀ i, Gen (loc x) (gens γ (fun l => (M x)⁻¹ l j) i) (η x i)) → Link p c fun x i => c x i * η x i.succ / η x i.castSucc := by
   first | exact @GlobalTheory.LatChain.link_adapted_step | exact GlobalTheory.LatChain.link_adapted_step | (intros; apply GlobalTheory.LatChain.link_adapted_step <;> assumption)

@@ -16,8 +16,10 @@ open MvPolynomial Formalism.BasicNotions.DV
 open GlobalTheory.ShFam.Pad GlobalTheory.TrivFlag
 open GlobalTheory.Cartier GlobalTheory.TrueGeo GlobalTheory.ProjVar GlobalTheory.WholeFlag
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WholeFlag.halfFlag_whole | exact GlobalTheory.WholeFlag.halfFlag_whole | (intros; apply GlobalTheory.WholeFlag.halfFlag_whole <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WholeFlag.halfFlag_whole` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHalfFlagAdelicWholeSymbol.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.half_flag_adelic_whole_symbol : Hypotheses2 → HypothesesH → RegularAlteration → ScholzeWeinsteinB → ∀ (D : D7) (O : Setup D), O.Core →
     ∀ (Sx : Finset ℕ) (R : ℝ), 2 ≤ R → ∀ p : ℕ, p.Prime → ∀ c : O.s.Comp,

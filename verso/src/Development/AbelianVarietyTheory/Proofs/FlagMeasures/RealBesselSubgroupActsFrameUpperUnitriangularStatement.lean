@@ -16,8 +16,10 @@ open Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.S.Lat 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LoopAct.sinfU_frame_upUni | exact GlobalTheory.LoopAct.sinfU_frame_upUni | (intros; apply GlobalTheory.LoopAct.sinfU_frame_upUni <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LoopAct.sinfU_frame_upUni` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FRealBesselSubgroupActsFrameUpperUnitriangular.lean&line=73#L73)
 -/
 theorem _root_.GlobalTheory.T.realBesselSubgroup_acts_frame_upperUnitriangular : ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word) (y : X.B.I.Ginf), y ∈ X.SinfU u → ∀ v : NumberField.InfinitePlace X.B.I.F, ∃ M : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) ℂ, IsUpUni M ∧ GlobalTheory.LoopAct.IsMatOn (uMat (y v)) (Formalism.L2.SG.RealObj.frm X u 1 v) M := by
   first | exact @GlobalTheory.LoopAct.sinfU_frame_upUni | exact GlobalTheory.LoopAct.sinfU_frame_upUni | (intros; apply GlobalTheory.LoopAct.sinfU_frame_upUni <;> assumption)

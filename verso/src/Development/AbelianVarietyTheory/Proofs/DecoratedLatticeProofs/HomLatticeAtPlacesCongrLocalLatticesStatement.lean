@@ -10,8 +10,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.LocMod GlobalTheory.SplitWeil ValuativeRel
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FinPl.LatCong.latO_congr | exact GlobalTheory.FinPl.LatCong.latO_congr | (intros; apply GlobalTheory.FinPl.LatCong.latO_congr <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FinPl.LatCong.latO_congr` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FHomLatticeAtPlacesCongrLocalLattices.lean&line=175#L175)
 -/
 theorem _root_.GlobalTheory.T.homLatticeAtPlaces_congr_localLattices : ∀ (D : D7) (S T : HSp D) (N M : Lat S) (N' M' : Lat T), IsSelfDualC S N → IsSelfDualC S M → IsSelfDualC T N' → IsSelfDualC T M' → ∀ (P : Pl D → Prop), (∀ p, P p → latV S N (· = p) = latV S M (· = p) ∧ latV T N' (· = p) = latV T M' (· = p)) → latO S T (N : Set _) (N' : Set _) P = latO S T (M : Set _) (M' : Set _) P := by
   first | exact @GlobalTheory.FinPl.LatCong.latO_congr | exact GlobalTheory.FinPl.LatCong.latO_congr | (intros; apply GlobalTheory.FinPl.LatCong.latO_congr <;> assumption)

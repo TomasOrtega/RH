@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.BoundAtTwoT
 import Formalism.SharpRestriction.GlobalTheoremInputs
 open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations GlobalTheory.NLink
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.NBand.bandPlaceWeightApproximation_tabX | exact GlobalTheory.NBand.bandPlaceWeightApproximation_tabX | (intros; apply GlobalTheory.NBand.bandPlaceWeightApproximation_tabX <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.NBand.bandPlaceWeightApproximation_tabX` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FLocalBoundTableFromDataBandCondition.lean&line=75#L75)
 -/
 theorem _root_.GlobalTheory.T.localBoundTableFromData_bandCondition : ∀ (D : D7) (L : SizeData₂ D) (P : ParameterChoice' D L) (HW : HWOf D.loc) (X : KillingConditions.HubData D) (R : KillingConditions.RowK) (C : ℝ), KillingConditions.DataAD L HW X R → R.Le C → EmbeddingTypeJumps.ParametersPolynomiallyBounded L → TwistedPlaces.BandPlaceWeightApproximation L (tabX L X) C := by
   first | exact @GlobalTheory.NBand.bandPlaceWeightApproximation_tabX | exact GlobalTheory.NBand.bandPlaceWeightApproximation_tabX | (intros; apply GlobalTheory.NBand.bandPlaceWeightApproximation_tabX <;> assumption)

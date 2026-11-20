@@ -4,8 +4,10 @@ import Mathlib
 open MeasureTheory
 open scoped ComplexConjugate ENNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AbsFubini.abstract_fubini_two_lifts | exact GlobalTheory.AbsFubini.abstract_fubini_two_lifts | (intros; apply GlobalTheory.AbsFubini.abstract_fubini_two_lifts <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AbsFubini.abstract_fubini_two_lifts` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FIntegralKernelLiftsFubiniSigmaFinite.lean&line=101#L101)
 -/
 theorem _root_.GlobalTheory.T.integral_kernel_lifts_fubini_sigmaFinite : ∀ {X₁ X₂ Y : Type*} [MeasurableSpace X₁] [MeasurableSpace X₂] [MeasurableSpace Y]
     (μ₁ : Measure X₁) (μ₂ : Measure X₂) (ν : Measure Y) [SigmaFinite μ₁] [SigmaFinite μ₂] [SigmaFinite ν]

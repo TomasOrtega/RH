@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SpecLocalHomFactors
 import Mathlib
 open AlgebraicGeometry CategoryTheory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.spec_local_hom_factors_affineOpen | exact GlobalTheory.spec_local_hom_factors_affineOpen | (intros; apply GlobalTheory.spec_local_hom_factors_affineOpen <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.spec_local_hom_factors_affineOpen` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSpecLocalHomFactorsAffineOpen.lean&line=6#L6)
 -/
 theorem _root_.GlobalTheory.T.exists_ringHom_spec_factor_fromSpec_of_closedPoint_mem : ∀ (X : Scheme.{0}) (V : X.Opens) (hV : IsAffineOpen V) (A : Type) [CommRing A] [IsLocalRing A]
     (f : Spec (CommRingCat.of A) ⟶ X), f (IsLocalRing.closedPoint A) ∈ V →

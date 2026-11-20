@@ -17,8 +17,10 @@ open GlobalTheory.Toroidal GlobalTheory.LogKS GlobalTheory.LogKSChart GlobalTheo
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PullAutConst.main | exact GlobalTheory.PullAutConst.main | (intros; apply GlobalTheory.PullAutConst.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PullAutConst.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPulledBackLineBundleAutomorphismEqConst.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.pulledBackLineBundle_automorphism_eq_const : ∀ {A : Type} [CommRing A] (B' : Over (Sp A)) [GrpObj B'] {X : Scheme.{0}} (L : LB X) (π : B'.left ⟶ X), IsAbelianScheme B' → L.IsLB → ∀ w : LB.Iso (L.pull π) (L.pull π), w.IsGen → ∃ lam : Aˣ, ∀ (Z : Scheme.{0}) (x : Z ⟶ B'.left) (z : Z) (j : L.ι), π (x z) ∈ L.U j → gm x z _ (w.s (fun _ => j, fun _ => j)) = gm (x ≫ B'.hom) z ⊤ (unitOn lam) := by
   first | exact @GlobalTheory.PullAutConst.main | exact GlobalTheory.PullAutConst.main | (intros; apply GlobalTheory.PullAutConst.main <;> assumption)

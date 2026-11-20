@@ -10,8 +10,10 @@ open scoped CategoryTheory.Obj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.SS
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SS.potModel_semiAbelian_of_retract | exact GlobalTheory.SS.potModel_semiAbelian_of_retract | (intros; apply GlobalTheory.SS.potModel_semiAbelian_of_retract <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SS.potModel_semiAbelian_of_retract` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDegenerationProofs%2FPotentialSemiAbelianReductionOfRetract.lean&line=57#L57)
 -/
 theorem _root_.GlobalTheory.T.potentialSemiAbelianReduction_of_retract : ∀ (V K : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (IsLocalRing.maximalIdeal V) V] [Field K] [CharZero K] [Algebra V K] [IsFractionRing V K] (B Q : Over (Sp K)) [GrpObj B] [GrpObj Q] (i : B ⟶ Q) (r : Q ⟶ B), IsMonHom i → IsMonHom r → i ≫ r = 𝟙 B → PotModel V K Q (fun _ _ _ G _ => IsSemiAbelian G) → PotModel V K B (fun _ _ _ G _ => IsSemiAbelian G) := by
   first | exact @GlobalTheory.SS.potModel_semiAbelian_of_retract | exact GlobalTheory.SS.potModel_semiAbelian_of_retract | (intros; apply GlobalTheory.SS.potModel_semiAbelian_of_retract <;> assumption)

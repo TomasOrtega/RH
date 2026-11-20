@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.HermLat
 open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL MeasureTheory
 open scoped Pointwise ENNReal Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HL.cont_independent_pos | exact GlobalTheory.HL.cont_independent_pos | (intros; apply GlobalTheory.HL.cont_independent_pos <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HL.cont_independent_pos` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FCommensurableCosetUnionContentIndependentNonneg.lean&line=101#L101)
 -/
 theorem _root_.GlobalTheory.T.commensurableCosetUnionContent_independent_nonneg : ∀ {W : Type} [AddCommGroup W] (W0 : AddSubgroup W) (S : Set W), (∀ A, GoodSub W0 A S → cont W0 S = (((QuotientAddGroup.mk : W → W ⧸ A) '' S).ncard : ℝ) * relVol W0 A) ∧ (∀ A A', GoodSub W0 A S → A' ≤ A → A'.relIndex A ≠ 0 → GoodSub W0 A' S) ∧ 0 ≤ cont W0 S ∧ (IsCO W0 S → S.Nonempty → 0 < cont W0 S) := by
   first | exact @GlobalTheory.HL.cont_independent_pos | exact GlobalTheory.HL.cont_independent_pos | (intros; apply GlobalTheory.HL.cont_independent_pos <;> assumption)

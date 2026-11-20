@@ -5,8 +5,10 @@ open NumberField IsDedekindDomain Matrix MeasureTheory ReciprocityTheory.ChartRe
 open scoped TensorProduct InnerProductSpace Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HolRead.mu_real_eq_prod_det | exact GlobalTheory.HolRead.mu_real_eq_prod_det | (intros; apply GlobalTheory.HolRead.mu_real_eq_prod_det <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HolRead.mu_real_eq_prod_det` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FArchimedeanCharacterDetPower.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.archimedean_character_det_power : ∀ (D : D7) (θ : InfFam D) (V : HSp D) (χ : (AE D)ˣ →* Circle) (mu : GA D V → ℂ) (e : D.what₂.Tau → ℤ), IsInfFam θ → MuVal V χ mu → (∀ ρ, HasInfExp D χ ρ (-(e ρ : ℚ))) → ∀ u ∈ GinfC V, mu u = ∏ ρ, (archM V (θ ρ) u).det ^ (-(e ρ)) := by
   first | exact @GlobalTheory.HolRead.mu_real_eq_prod_det | exact GlobalTheory.HolRead.mu_real_eq_prod_det | (intros; apply GlobalTheory.HolRead.mu_real_eq_prod_det <;> assumption)

@@ -9,8 +9,10 @@ open scoped TensorProduct NNReal Matrix
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.IndLine
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LatHatStab.mulVec_mem_latHat | exact GlobalTheory.LatHatStab.mulVec_mem_latHat | (intros; apply GlobalTheory.LatHatStab.mulVec_mem_latHat <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LatHatStab.mulVec_mem_latHat` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLocalStabilizerPreservesAdelicLattice.lean&line=134#L134)
 -/
 theorem _root_.GlobalTheory.T.local_stabilizer_preserves_adelic_lattice : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (X : Spc F E n) (v : Pl F), ∀ k ∈ stabLoc σ J X.L v,

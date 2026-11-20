@@ -9,8 +9,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.connectedSpace_pullback_of_finitelyGenerated_residue | exact GlobalTheory.Mum.connectedSpace_pullback_of_finitelyGenerated_residue | (intros; apply GlobalTheory.Mum.connectedSpace_pullback_of_finitelyGenerated_residue <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.connectedSpace_pullback_of_finitelyGenerated_residue` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FConnectedSpaceClosedFibreFinitelyGeneratedExt.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.connectedSpace_closedFibre_finitelyGenerated_ext : ∀ (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] (S : Scheme.{0}) (π : S ⟶ Sp R),
       IsProper π → Surjective π → Function.Bijective π.appTop.hom →

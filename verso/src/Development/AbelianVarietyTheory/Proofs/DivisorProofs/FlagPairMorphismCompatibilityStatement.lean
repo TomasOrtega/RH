@@ -9,8 +9,10 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Vert GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.Mean4O GlobalTheory.MixedLocalChains
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Vert.Model.FlagPair.GrAgree.toFPair_agree | exact GlobalTheory.Vert.Model.FlagPair.GrAgree.toFPair_agree | (intros; apply GlobalTheory.Vert.Model.FlagPair.GrAgree.toFPair_agree <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Vert.Model.FlagPair.GrAgree.toFPair_agree` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFlagPairMorphismCompatibility.lean&line=32#L32)
 -/
 theorem _root_.GlobalTheory.T.flag_pair_morphism_compatibility : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p]

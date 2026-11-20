@@ -7,8 +7,10 @@ open scoped Classical
 open CategoryTheory.Limits
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagQ.keepsRad_toPt | exact GlobalTheory.FlagQ.keepsRad_toPt | (intros; apply GlobalTheory.FlagQ.keepsRad_toPt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagQ.keepsRad_toPt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFlagHomKeepsRadical.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.flag_hom_keeps_radical : ∀ (Y : GlobalTheory.ProjVar.Var ℚ) (φ : (GlobalTheory.ProjVar.proj ℚ 0).Fn →ₐ[ℚ] Y.Fn), (GlobalTheory.FlagBundle.ratOf (GlobalTheory.ProjVar.proj ℚ 0)).IsHom (GlobalTheory.FlagBundle.ratOf Y) φ (GlobalTheory.FlagQ.toPt Y) → GlobalTheory.FlagBundle.KeepsRad (GlobalTheory.FlagBundle.ratOf (GlobalTheory.ProjVar.proj ℚ 0)) (GlobalTheory.FlagBundle.ratOf Y) φ (GlobalTheory.FlagQ.toPt Y) := by
   first | exact @GlobalTheory.FlagQ.keepsRad_toPt | exact GlobalTheory.FlagQ.keepsRad_toPt | (intros; apply GlobalTheory.FlagQ.keepsRad_toPt <;> assumption)

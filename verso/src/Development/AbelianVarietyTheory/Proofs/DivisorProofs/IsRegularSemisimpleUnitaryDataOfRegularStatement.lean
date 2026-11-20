@@ -18,8 +18,10 @@ open GlobalTheory.TruncKer GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeV
 open scoped TensorProduct
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ConjLevi.RegularData.isRegular_of_isRegSS | exact GlobalTheory.ConjLevi.RegularData.isRegular_of_isRegSS | (intros; apply GlobalTheory.ConjLevi.RegularData.isRegular_of_isRegSS <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ConjLevi.RegularData.isRegular_of_isRegSS` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsRegularSemisimpleUnitaryDataOfRegular.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.isRegularSemisimpleUnitaryData_of_regular : ∀ {D : D7} {V : HSp D} (γ : GF V), IsRegSS γ.1.1 → GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.IsRegular D.sp.cm.sig V.gram γ.1 := by
   first | exact @GlobalTheory.ConjLevi.RegularData.isRegular_of_isRegSS | exact GlobalTheory.ConjLevi.RegularData.isRegular_of_isRegSS | (intros; apply GlobalTheory.ConjLevi.RegularData.isRegular_of_isRegSS <;> assumption)

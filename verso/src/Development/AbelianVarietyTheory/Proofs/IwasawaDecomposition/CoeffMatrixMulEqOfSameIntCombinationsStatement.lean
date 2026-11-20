@@ -17,8 +17,10 @@ open MonoidalCategory CartesianMonoidalCategory MonObj GlobalTheory.ShFam.Hor.Lo
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FrameFix.coeff_mul_eq_of_same_combinations | exact GlobalTheory.FrameFix.coeff_mul_eq_of_same_combinations | (intros; apply GlobalTheory.FrameFix.coeff_mul_eq_of_same_combinations <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FrameFix.coeff_mul_eq_of_same_combinations` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FCoeffMatrixMulEqOfSameIntCombinations.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.coeffMatrix_mul_eq_of_same_intCombinations : ∀ (g r r₀ : ℕ) (l l' : Fin r → Fin g → ℂ) (w : Fin r₀ → Fin g → ℂ) (c : Matrix (Fin r₀) (Fin r) ℤ) (T : Matrix (Fin r) (Fin r) ℤ), LinearIndependent ℤ l → (∀ i, l' i = ∑ j, T i j • l j) → (∀ i, w i = ∑ j, c i j • l j) → (∀ i, w i = ∑ j, c i j • l' j) → c * T = c := by
   first | exact @GlobalTheory.FrameFix.coeff_mul_eq_of_same_combinations | exact GlobalTheory.FrameFix.coeff_mul_eq_of_same_combinations | (intros; apply GlobalTheory.FrameFix.coeff_mul_eq_of_same_combinations <;> assumption)

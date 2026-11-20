@@ -13,8 +13,10 @@ open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Sl
 open GlobalTheory.CompanionTheory.Ar.InvDer
 open scoped Topology
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.JetLeib.jet_first_nonzero | exact GlobalTheory.CompanionTheory.Ar.JetLeib.jet_first_nonzero | (intros; apply GlobalTheory.CompanionTheory.Ar.JetLeib.jet_first_nonzero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.JetLeib.jet_first_nonzero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FIteratedDerivativeFactor.lean&line=36#L36)
 -/
 theorem _root_.GlobalTheory.T.iterated_derivative_factor : ∀ (r : ℕ) (Ψ : Fin r → ℂ → ℂ) (c : Fin r → ℂ) (h F : ℂ → ℂ), (∀ j, AnalyticAt ℂ (Ψ j) 0) → AnalyticAt ℂ F 0 → F 0 ≠ 0 → (∀ᶠ τ in 𝓝 (0 : ℂ), ∑ j, c j * Ψ j τ = h τ * F τ) → ∀ i : ℕ, ((∀ k < i, ∑ j, c j * iteratedDeriv k (Ψ j) 0 = 0) ↔ ∀ k < i, iteratedDeriv k h 0 = 0) ∧ ((∀ k < i, ∑ j, c j * iteratedDeriv k (Ψ j) 0 = 0) → ∑ j, c j * iteratedDeriv i (Ψ j) 0 = F 0 * iteratedDeriv i h 0) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.JetLeib.jet_first_nonzero | exact GlobalTheory.CompanionTheory.Ar.JetLeib.jet_first_nonzero | (intros; apply GlobalTheory.CompanionTheory.Ar.JetLeib.jet_first_nonzero <;> assumption)

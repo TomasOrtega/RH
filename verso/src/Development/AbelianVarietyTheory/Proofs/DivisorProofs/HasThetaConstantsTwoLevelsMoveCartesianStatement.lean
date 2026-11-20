@@ -9,8 +9,10 @@ open GlobalTheory GlobalTheory.ZM GlobalTheory.ZH GlobalTheory.UMin GlobalTheory
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UMin.ThMove.hasTh₂_move | exact GlobalTheory.UMin.ThMove.hasTh₂_move | (intros; apply GlobalTheory.UMin.ThMove.hasTh₂_move <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UMin.ThMove.hasTh₂_move` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHasThetaConstantsTwoLevelsMoveCartesian.lean&line=226#L226)
 -/
 theorem _root_.GlobalTheory.T.hasThetaConstantsTwoLevels_move_cartesian : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (L : LB G.left) (ρ : LB.Gen (L.pull (eSec G))), L.IsLB → ρ.IsGen → ∀ (S' : Scheme.{0}) (A : Over S') [GrpObj A] [IsCommMonObj A] (L' : LB A.left) (ρ' : LB.Gen (L'.pull (eSec A))) (f : S' ⟶ S) (φ : A.left ⟶ G.left), L'.IsLB → ρ'.IsGen → IsGrpPullback A G f φ → LBIso L' (L.pull φ) → ∀ (m m' N N' : ℕ) (K : Type) [Field K] (x : Sp K ⟶ S') (c : Fin N → K) (c' : Fin N' → K), HasTh₂ A L' ρ' m m' x c c' ↔ HasTh₂ G L ρ m m' (x ≫ f) c c' := by
   first | exact @GlobalTheory.UMin.ThMove.hasTh₂_move | exact GlobalTheory.UMin.ThMove.hasTh₂_move | (intros; apply GlobalTheory.UMin.ThMove.hasTh₂_move <;> assumption)

@@ -8,8 +8,10 @@ import GroundTheory.GlobalFields.TateThesis.AdeleIdealMeasure
 open MeasureTheory NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 open scoped nonZeroDivisors TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IdeleTensorParts.mem_idelesAt_iff | exact GlobalTheory.IdeleTensorParts.mem_idelesAt_iff | (intros; apply GlobalTheory.IdeleTensorParts.mem_idelesAt_iff <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IdeleTensorParts.mem_idelesAt_iff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIdelesAtInfiniteFiniteIff.lean&line=51#L51)
 -/
 theorem _root_.GlobalTheory.T.ideles_at_infinite_finite_iff : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (l : (AE F E)ˣ),
     (l ∈ idelesAt E (evI F) ↔ ((GlobalTheory.IdeleLogHom.toE F E l : AdeleRing (𝓞 E) E)).2 = 1) ∧

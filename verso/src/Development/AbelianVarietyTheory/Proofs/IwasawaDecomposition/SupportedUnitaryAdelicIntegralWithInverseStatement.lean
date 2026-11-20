@@ -10,8 +10,10 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 open scoped TensorProduct
 attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mem.Col2.AdT.IntSplit.int_of_supported | exact GlobalTheory.Mem.Col2.AdT.IntSplit.int_of_supported | (intros; apply GlobalTheory.Mem.Col2.AdT.IntSplit.int_of_supported <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mem.Col2.AdT.IntSplit.int_of_supported` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FSupportedUnitaryAdelicIntegralWithInverse.lean&line=82#L82)
 -/
 theorem _root_.GlobalTheory.T.supported_unitary_adelic_integral_with_inverse : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [StarRing E] (hc : CMData F E) {n : ℕ} (u : GL (Fin n) (AfE F E)), u ∈ Formalism.L2.Herm.UstdAf hc n → ∀ (v : HeightOneSpectrum (𝓞 F)) (P : HeightOneSpectrum (𝓞 E)), Formalism.L2.Col.IsOver v P → (∀ v', v' ≠ v → bc (prV (E := E) v') u = 1) → ∀ g ∈ Formalism.L2.Col.GLint E n P, (∀ r s, adAt F P ((u : Matrix (Fin n) (Fin n) (AfE F E)) r s) = algebraMap E (P.adicCompletion E) (LinearMap.toMatrix' g.toLinearMap r s)) → ∀ i j, (u : Matrix (Fin n) (Fin n) (AfE F E)) i j ∈ RInt F E ∧ ((u⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) i j ∈ RInt F E := by
   first | exact @GlobalTheory.Mem.Col2.AdT.IntSplit.int_of_supported | exact GlobalTheory.Mem.Col2.AdT.IntSplit.int_of_supported | (intros; apply GlobalTheory.Mem.Col2.AdT.IntSplit.int_of_supported <;> assumption)

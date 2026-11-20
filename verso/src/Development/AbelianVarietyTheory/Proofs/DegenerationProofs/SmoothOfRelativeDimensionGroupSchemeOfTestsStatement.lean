@@ -6,8 +6,10 @@ open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj Alg
 open scoped CategoryTheory.Obj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.ZJ
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ZJ.Core.smoothOfRelativeDimension_of_hasTests | exact GlobalTheory.ZJ.Core.smoothOfRelativeDimension_of_hasTests | (intros; apply GlobalTheory.ZJ.Core.smoothOfRelativeDimension_of_hasTests <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ZJ.Core.smoothOfRelativeDimension_of_hasTests` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDegenerationProofs%2FSmoothOfRelativeDimensionGroupSchemeOfTests.lean&line=134#L134)
 -/
 theorem _root_.GlobalTheory.T.smoothOfRelativeDimension_groupScheme_of_tests : ∀ C : Core, C.HasTests → C.Fib → SmoothOfRelativeDimension C.g C.GG.hom := by
   first | exact @GlobalTheory.ZJ.Core.smoothOfRelativeDimension_of_hasTests | exact GlobalTheory.ZJ.Core.smoothOfRelativeDimension_of_hasTests | (intros; apply GlobalTheory.ZJ.Core.smoothOfRelativeDimension_of_hasTests <;> assumption)

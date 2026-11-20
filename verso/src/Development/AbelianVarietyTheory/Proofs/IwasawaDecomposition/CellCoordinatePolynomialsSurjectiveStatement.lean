@@ -8,8 +8,10 @@ open GlobalTheory.FlagMod (ev tanPull initSpan)
 open GlobalTheory.FlagEmb (plN plk lform LeftInv)
 open GlobalTheory.ProjSpace (pt)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GrCl.CellGen.main | exact GlobalTheory.GrCl.CellGen.main | (intros; apply GlobalTheory.GrCl.CellGen.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GrCl.CellGen.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FCellCoordinatePolynomialsSurjective.lean&line=74#L74)
 -/
 theorem _root_.GlobalTheory.T.cell_coordinate_polynomials_surjective : ∀ (R : Type) [CommRing R] (m a k b N : ℕ) (hk : k ≤ m) (D c : Fin m → Fin (N + 1) → R) (w : GPm m a b), a ≤ k → k ≤ b → LeftInv D c → ∑ q, (MvPolynomial.C : R →+* MvPolynomial (GVar m a k b) R) (gell a b hk D w q) * gxi a b hk c w q = 1 ∧ Function.Surjective (MvPolynomial.eval₂Hom (MvPolynomial.C : R →+* MvPolynomial (GVar m a k b) R) (gxi a b hk c w)) := by
   first | exact @GlobalTheory.GrCl.CellGen.main | exact GlobalTheory.GrCl.CellGen.main | (intros; apply GlobalTheory.GrCl.CellGen.main <;> assumption)

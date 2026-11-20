@@ -8,8 +8,10 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.Toroidal GlobalTheory.LocM G
 open scoped CategoryTheory.Obj
 open GlobalTheory.Desc
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SymBaseChange.symm_pull | exact GlobalTheory.SymBaseChange.symm_pull | (intros; apply GlobalTheory.SymBaseChange.symm_pull <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SymBaseChange.symm_pull` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSymmetricLineBundlePullbackBaseChange.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.symmetric_lineBundle_pullback_baseChange : ∀ (S T : Scheme.{0}) (G : Over S) [GrpObj G] (j : T ⟶ S) (L : LB G.left), L.IsLB → LBIso (L.pull (GrpObj.inv : G ⟶ G).left) L → LBIso ((L.pull (pullback.fst G.hom j)).pull (GrpObj.inv : (Over.pullback j).obj G ⟶ (Over.pullback j).obj G).left) (L.pull (pullback.fst G.hom j)) := by
   first | exact @GlobalTheory.SymBaseChange.symm_pull | exact GlobalTheory.SymBaseChange.symm_pull | (intros; apply GlobalTheory.SymBaseChange.symm_pull <;> assumption)

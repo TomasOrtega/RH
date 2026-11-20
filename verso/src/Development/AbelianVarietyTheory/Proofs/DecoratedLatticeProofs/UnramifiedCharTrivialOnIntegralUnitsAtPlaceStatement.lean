@@ -14,8 +14,10 @@ open Formalism.MainNotions.SchurIrreducible (IsSplit)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Hk3 (hyp IsVacAt UnrPl)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnrPlDict.unrPl_of_unrAt | exact GlobalTheory.UnrPlDict.unrPl_of_unrAt | (intros; apply GlobalTheory.UnrPlDict.unrPl_of_unrAt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnrPlDict.unrPl_of_unrAt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FUnramifiedCharTrivialOnIntegralUnitsAtPlace.lean&line=46#L46)
 -/
 theorem _root_.GlobalTheory.T.unramified_char_trivial_on_integral_units_at_place : ∀ (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) (w : HeightOneSpectrum (𝓞 D.host.E)), w.under (𝓞 D.host.F) = v → ∀ χ : (AE D)ˣ →* Circle, (∀ w' : HeightOneSpectrum (𝓞 D.host.E), w'.under (𝓞 D.host.F) = v → UnrAt χ w') → UnrPl w χ := by
   first | exact @GlobalTheory.UnrPlDict.unrPl_of_unrAt | exact GlobalTheory.UnrPlDict.unrPl_of_unrAt | (intros; apply GlobalTheory.UnrPlDict.unrPl_of_unrAt <;> assumption)

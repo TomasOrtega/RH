@@ -6,8 +6,10 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.GeometryOfNumbersTheory GlobalTheory GlobalTheory.CM
 open scoped CategoryTheory.Obj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlatCM.HomIndep.phiP_independent | exact GlobalTheory.FlatCM.HomIndep.phiP_independent | (intros; apply GlobalTheory.FlatCM.HomIndep.phiP_independent <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlatCM.HomIndep.phiP_independent` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCmObjHomOfTypeLinearIndependent.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.cmObjHomOfType_linearIndependent : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (K : Type) [Field K] [NumberField K] (ρ : 𝓞 K) (σ₁ : K →+* ℂ) (p q : ℕ) (X : CMObj H K ρ σ₁ p q)
     (x : Fin p → 𝓞 E), ∏ a, ((X.A true).t.act.act (x a) ≫ GlobalTheory.FlatCM.phiP X a) = 1 → x = 0 := by

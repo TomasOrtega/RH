@@ -12,8 +12,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.QkMul.exists_qk_mul | exact GlobalTheory.Mum.QkMul.exists_qk_mul | (intros; apply GlobalTheory.Mum.QkMul.exists_qk_mul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.QkMul.exists_qk_mul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsLevelPointMulLevel.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.exists_levelPoint_mul_level : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (D : DegData R (maximalIdeal R)) (F : Type) [Field F] [Algebra (FractionRing R) F] (k d : ℕ) (p : QkPt D.toPre F k), ∃ q : QkPt D.toPre F (k * d), q.y = d • p.y ∧ q.g = p.g := by
   first | exact @GlobalTheory.Mum.QkMul.exists_qk_mul | exact GlobalTheory.Mum.QkMul.exists_qk_mul | (intros; apply GlobalTheory.Mum.QkMul.exists_qk_mul <;> assumption)

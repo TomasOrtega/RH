@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GeneratedSubmoduleH
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RestrActApply
 open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible GlobalTheory.FockAlg GlobalTheory.SteepMult
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GenHW.block_span_hw | exact GlobalTheory.GenHW.block_span_hw | (intros; apply GlobalTheory.GenHW.block_span_hw <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GenHW.block_span_hw` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGeneratedSubmoduleHighestWeightStructure.lean&line=6#L6)
 -/
 theorem _root_.GlobalTheory.T.generated_submodule_highest_weight_structure : ∀ (R S : ℕ) (M : GKMod R S) (Λ : Ix R S → ℚ) (v : M.V), IsHW M.act Λ v →
     FiniteDimensional ℂ (GlobalTheory.BlockReps.gen M.act v) ∧

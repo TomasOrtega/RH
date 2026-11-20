@@ -9,8 +9,10 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestric
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SecLift.exists_section_lift | exact GlobalTheory.SecLift.exists_section_lift | (intros; apply GlobalTheory.SecLift.exists_section_lift <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SecLift.exists_section_lift` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsSectionLiftSmoothNilpotentThickening.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.exists_section_lift_smooth_nilpotent_thickening : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (π : R →+* R₀), Function.Surjective π → IsNilpotent (RingHom.ker π) →
     ∀ (X : Over (Sp R)) (X₀ : Over (Sp R₀)) (i : X₀.left ⟶ X.left), IsPullback i X₀.hom X.hom (spMap π) → Smooth X.hom →

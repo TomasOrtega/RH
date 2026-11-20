@@ -6,8 +6,10 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory GlobalTheory.Cart
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LatChain.CanTens.can_tens_dual | exact GlobalTheory.LatChain.CanTens.can_tens_dual | (intros; apply GlobalTheory.LatChain.CanTens.can_tens_dual <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LatChain.CanTens.can_tens_dual` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDivisorOfTensorSectionAdd.lean&line=73#L73)
 -/
 theorem _root_.GlobalTheory.T.divisor_of_tensor_section_add : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (q : X ⟶ Sp k) (M M' : HermLB q), (∀ E E' : CartierDiv X, Can M E → Can M' E' → Can (M.tens M') (E + E') ∧ Can M.dual (-E)) ∧ ∀ (r : M.B.ι → X.functionFieldˣ) (hr : IsRatSec M.B r) (r' : M'.B.ι → X.functionFieldˣ) (hr' : IsRatSec M'.B r'), ∃ (s : (M.tens M').B.ι → X.functionFieldˣ) (hs : IsRatSec (M.tens M').B s), (M.tens M').div hs = M.div hr + M'.div hr' := by
   first | exact @GlobalTheory.LatChain.CanTens.can_tens_dual | exact GlobalTheory.LatChain.CanTens.can_tens_dual | (intros; apply GlobalTheory.LatChain.CanTens.can_tens_dual <;> assumption)

@@ -16,8 +16,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ClassFunctionSumIntegral (IsDefinit
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.VacInertMove.inert_vacuum_reads | exact GlobalTheory.VacInertMove.inert_vacuum_reads | (intros; apply GlobalTheory.VacInertMove.inert_vacuum_reads <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.VacInertMove.inert_vacuum_reads` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FInertIntegralPointsFixAdelicClassicalVacuum.lean&line=374#L374)
 -/
 theorem _root_.GlobalTheory.T.inertIntegralPoints_fix_adelic_classical_vacuum : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) {a d : ℕ} (hS : S.rank = a) (hT : T.rank = d)
   (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (r : D.host.E), Setup ψ θ S T cc δ r →

@@ -8,8 +8,10 @@ open ReciprocityTheory.ChartRestriction.G.TB (dLin transF IsInvPair dAct)
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.ChartCmp
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChartCmp.intData_models_iso | exact GlobalTheory.ChartCmp.intData_models_iso | (intros; apply GlobalTheory.ChartCmp.intData_models_iso <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChartCmp.intData_models_iso` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFormalGroupCharts%2FExistsIsoIntegralModelsMatchingLieBases.lean&line=26#L26)
 -/
 theorem _root_.GlobalTheory.T.exists_iso_integralModels_matching_lieBases : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (T : CDVR) (io : c.F →+* T.Fr) (y : letI := io.toAlgebra; FrPt Xo c T.Fr) (I I' : IntData Xo c T io y), ∃ n : SABMap I.G I'.G (𝟙 (Sp T.V)), ∀ τ i, (I.ub τ i).left ≫ n.φ = (I'.ub τ i).left := by
   first | exact @GlobalTheory.ChartCmp.intData_models_iso | exact GlobalTheory.ChartCmp.intData_models_iso | (intros; apply GlobalTheory.ChartCmp.intData_models_iso <;> assumption)

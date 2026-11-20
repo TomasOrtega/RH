@@ -8,8 +8,10 @@ open CategoryTheory Limits AlgebraicGeometry IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Out
 open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Vert GlobalTheory.Twist
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Vert.Model.Hom.exists_finite_free_off_codim_two | exact GlobalTheory.Vert.Model.Hom.exists_finite_free_off_codim_two | (intros; apply GlobalTheory.Vert.Model.Hom.exists_finite_free_off_codim_two <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Vert.Model.Hom.exists_finite_free_off_codim_two` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFiniteFlatLocusCodimBound.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.finite_flat_locus_codim_bound : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (B B' : GlobalTheory.Vert.Model O) (f : GlobalTheory.Vert.Model.Hom B' B), GlobalTheory.IsNormalScheme B.X → f.relDim = 0 → ∃ (U : B.X.Opens) (n : ℕ), 0 < n ∧ f.fibreDeg 1 = n ∧ topologicalKrullDim ((U : Set B.X)ᶜ : Set B.X) + 1 ≤ (B.relDim : WithBot ℕ∞) ∧ ∀ x ∈ U, ∃ V : B.X.Opens, x ∈ V ∧ V ≤ U ∧ IsAffineOpen V ∧ IsAffineOpen (f.f ⁻¹ᵁ V) ∧ (letI := (f.f.app V).hom.toAlgebra; Module.Free Γ(B.X, V) Γ(B'.X, f.f ⁻¹ᵁ V) ∧ Module.Finite Γ(B.X, V) Γ(B'.X, f.f ⁻¹ᵁ V) ∧ Module.finrank Γ(B.X, V) Γ(B'.X, f.f ⁻¹ᵁ V) = n) := by
   first | exact @GlobalTheory.Vert.Model.Hom.exists_finite_free_off_codim_two | exact GlobalTheory.Vert.Model.Hom.exists_finite_free_off_codim_two | (intros; apply GlobalTheory.Vert.Model.Hom.exists_finite_free_off_codim_two <;> assumption)

@@ -14,8 +14,10 @@ import ReciprocityTheory.GeometryOfNumbers.MatrixArithmetic.WeakMatSt
 open NumberField MeasureTheory ReciprocityTheory.GeometryOfNumbersTheory ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.LieHt
 open scoped ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.exists_injective_full_comap_map_eq | exact GlobalTheory.exists_injective_full_comap_map_eq | (intros; apply GlobalTheory.exists_injective_full_comap_map_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.exists_injective_full_comap_map_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFinitelyGeneratedLatticeFullEmbedding.lean&line=8#L8)
 -/
 theorem _root_.GlobalTheory.T.finitely_generated_lattice_full_embedding : ∀ (K : Type) [Field K] [NumberField K] (m : ℕ) (W : Submodule (𝓞 K) (Fin m → K)), W.FG → ∃ α : (Fin (latRank K W) → K) →ₗ[K] (Fin m → K), Function.Injective α ∧ Full (W.comap (α.restrictScalars (𝓞 K))) ∧ (W.comap (α.restrictScalars (𝓞 K))).map (α.restrictScalars (𝓞 K)) = W := by
   first | exact @GlobalTheory.exists_injective_full_comap_map_eq | exact GlobalTheory.exists_injective_full_comap_map_eq | (intros; apply GlobalTheory.exists_injective_full_comap_map_eq <;> assumption)

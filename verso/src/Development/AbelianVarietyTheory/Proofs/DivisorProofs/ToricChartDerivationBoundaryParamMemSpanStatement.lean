@@ -13,8 +13,10 @@ open GlobalTheory.RayEv (Ray)
 open GlobalTheory.Toroidal GlobalTheory.LogKS GlobalTheory.LogKSChart GlobalTheory.Heat
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChartDerBd.deriv_bdParam_mem_span | exact GlobalTheory.ChartDerBd.deriv_bdParam_mem_span | (intros; apply GlobalTheory.ChartDerBd.deriv_bdParam_mem_span <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChartDerBd.deriv_bdParam_mem_span` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FToricChartDerivationBoundaryParamMemSpan.lean&line=36#L36)
 -/
 theorem _root_.GlobalTheory.T.toricChart_derivation_boundaryParam_mem_span : ∀ (A : Type) [CommRing A] (k : Type) [Field k] (m d : ℕ) (ψ : A →+* ChartRing k m d) (δ : Derivation ℤ A A) (D' : Derivation ℤ (ChartRing k m d) (ChartRing k m d)) (I : Ideal A), (∀ a ∈ I, δ a ∈ I) → (∀ a, D' (ψ a) = ψ (δ a)) → I.map ψ = Ideal.span {∏ i, bdParam k m d i} → ∀ i, D' (bdParam k m d i) ∈ Ideal.span {bdParam k m d i} := by
   first | exact @GlobalTheory.ChartDerBd.deriv_bdParam_mem_span | exact GlobalTheory.ChartDerBd.deriv_bdParam_mem_span | (intros; apply GlobalTheory.ChartDerBd.deriv_bdParam_mem_span <;> assumption)

@@ -22,8 +22,10 @@ open scoped GlobalTheory.VacAny
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CharMulSchA.charMul_mem_schA | exact GlobalTheory.CharMulSchA.charMul_mem_schA | (intros; apply GlobalTheory.CharMulSchA.charMul_mem_schA <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CharMulSchA.charMul_mem_schA` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAddCharDotMulMemAdelicSchwartzSpace.lean&line=25#L25)
 -/
 theorem _root_.GlobalTheory.T.addCharDotMul_mem_adelicSchwartzSpace : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (ψ : AddChar (AF F) ℂ),
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ → ∀ b : κ → AF F, ∀ Φ ∈ GlobalTheory.WeilM.schA F κ,

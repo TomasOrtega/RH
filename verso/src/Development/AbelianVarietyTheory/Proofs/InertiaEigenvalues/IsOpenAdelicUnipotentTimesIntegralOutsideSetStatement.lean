@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AdelicUnitrian
 open NumberField IsDedekindDomain Matrix Formalism.UG GlobalTheory.CuspRep MeasureTheory
 open scoped ENNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CellDec.isOpen_adelicUnipotentTimesIntegralOutsideSet | exact GlobalTheory.CellDec.isOpen_adelicUnipotentTimesIntegralOutsideSet | (intros; apply GlobalTheory.CellDec.isOpen_adelicUnipotentTimesIntegralOutsideSet <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CellDec.isOpen_adelicUnipotentTimesIntegralOutsideSet` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FIsOpenAdelicUnipotentTimesIntegralOutsideSet.lean&line=53#L53)
 -/
 theorem _root_.GlobalTheory.T.isOpen_C0 : ∀ (E : Type) [Field E] [NumberField E] (n : ℕ) (S : Finset (HeightOneSpectrum (𝓞 E))),
     IsOpen (GlobalTheory.CellDec.C0 E n S) := by

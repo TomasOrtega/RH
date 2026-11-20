@@ -6,8 +6,10 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermitianPlaneS
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes IsDedekindDomain NumberField GlobalTheory.Published GlobalTheory.CompanionTheory.PlaneSA Topology
 open scoped TensorProduct Quaternion
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.PlaneSA.exists_integral_norm_one_trace | exact GlobalTheory.CompanionTheory.PlaneSA.exists_integral_norm_one_trace | (intros; apply GlobalTheory.CompanionTheory.PlaneSA.exists_integral_norm_one_trace <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.PlaneSA.exists_integral_norm_one_trace` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FQuaternionIntegralTraceAlmostAll.lean&line=62#L62)
 -/
 theorem _root_.GlobalTheory.T.quaternion_integral_trace_almost_all : ∀ {F : Type} [Field F] [NumberField F] (d β : F), d ≠ 0 → β ≠ 0 →
   ∀ᶠ v in Filter.cofinite (α := HeightOneSpectrum (𝓞 F)), ∀ t ∈ Ov v,

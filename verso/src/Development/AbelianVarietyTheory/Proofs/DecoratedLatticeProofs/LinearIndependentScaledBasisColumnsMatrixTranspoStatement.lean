@@ -13,8 +13,10 @@ open scoped TensorProduct InnerProductSpace Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Core.SBesEx.eM_transpose_linearIndependent | exact GlobalTheory.Core.SBesEx.eM_transpose_linearIndependent | (intros; apply GlobalTheory.Core.SBesEx.eM_transpose_linearIndependent <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Core.SBesEx.eM_transpose_linearIndependent` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FLinearIndependentScaledBasisColumnsMatrixTranspo.lean&line=25#L25)
 -/
 theorem _root_.GlobalTheory.T.linearIndependent_scaledBasisColumnsMatrix_transpose : ∀ {D : D7} (X : HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (t lam : D.host.E), t ≠ 0 → lam ≠ 0 → LinearIndependent D.host.E (GlobalTheory.Core.SBesEx.eM X h t lam).transpose := by
   first | exact @GlobalTheory.Core.SBesEx.eM_transpose_linearIndependent | exact GlobalTheory.Core.SBesEx.eM_transpose_linearIndependent | (intros; apply GlobalTheory.Core.SBesEx.eM_transpose_linearIndependent <;> assumption)

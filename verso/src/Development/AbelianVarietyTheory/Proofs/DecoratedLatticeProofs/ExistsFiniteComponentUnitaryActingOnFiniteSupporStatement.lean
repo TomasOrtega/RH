@@ -8,8 +8,10 @@ open IsDedekindDomain NumberField Matrix
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GlobFin.fin_rep | exact GlobalTheory.GlobFin.fin_rep | (intros; apply GlobalTheory.GlobFin.fin_rep <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GlobFin.fin_rep` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FExistsFiniteComponentUnitaryActingOnFiniteSuppor.lean&line=31#L31)
 -/
 theorem _root_.GlobalTheory.T.exists_finiteComponent_unitary_acting_on_finiteSupported : ∀ (D : D7) (S : HSp D) (g : GA D S), ∃ x ∈ GfC S, ∀ (P : Pl D → Prop) (y : Fin S.rank → AE D), (∀ i, y i ∈ idAt D P) → mt S g *ᵥ y = mt S x *ᵥ y := by
   first | exact @GlobalTheory.GlobFin.fin_rep | exact GlobalTheory.GlobFin.fin_rep | (intros; apply GlobalTheory.GlobFin.fin_rep <;> assumption)

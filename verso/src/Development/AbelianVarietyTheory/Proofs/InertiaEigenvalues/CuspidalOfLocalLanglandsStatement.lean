@@ -9,8 +9,10 @@ import Formalism.SharpRestriction.LevelLetterCocycles.SphericalInertData
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.Host GlobalTheory.HeightCounting NumberField IsDedekindDomain GlobalTheory.CuspRep GlobalTheory.UnitaryBC GlobalTheory.FormDict GlobalTheory.DefiniteBC
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CuspReadTrue.cuspRead_recT | exact GlobalTheory.CuspReadTrue.cuspRead_recT | (intros; apply GlobalTheory.CuspReadTrue.cuspRead_recT <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CuspReadTrue.cuspRead_recT` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FCuspidalOfLocalLanglands.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.cuspidal_of_local_langlands : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (T : GlobalTheory.RowTie.WDTie D.nd D.naut), CGTrue hL D T → CuspRead (recT T hL) := by
   first | exact @GlobalTheory.CuspReadTrue.cuspRead_recT | exact GlobalTheory.CuspReadTrue.cuspRead_recT | (intros; apply GlobalTheory.CuspReadTrue.cuspRead_recT <;> assumption)

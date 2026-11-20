@@ -9,8 +9,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.ZH GlobalTheory.Poinc GlobalTheory.UPoinc.USum
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UPoinc.USum.isTwVal_transl | exact GlobalTheory.UPoinc.USum.isTwVal_transl | (intros; apply GlobalTheory.UPoinc.USum.isTwVal_transl <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UPoinc.USum.isTwVal_transl` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsTwistedThetaValueTranslateOrthogonalTorsion.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.isTwistedThetaValue_translate_orthogonal_torsion : ∀ {B : Scheme.{0}} (P : PolAV B) (N m : ℕ) {T₀ T : Over B} (θ : LB.Sec (LPow P.A P.L 1 T₀)) {z₀ : T₀ ⟶ P.A} (τ : LB.Gen (LB.LinComb P.L (Y := T₀.left) (K := Fin 1) (fun _ => z₀.left) (fun _ => 1))) (β : T ⟶ T₀) (x h : T ⟶ P.A) (v : Γ(T.left, ⊤)) (k : T ⟶ P.A), k ^ m = 1 → WeilIs P.A P.L N x k 1 → IsTwVal P N m θ τ β x h v → IsTwVal P N m θ τ β x (h * k) v := by
   first | exact @GlobalTheory.UPoinc.USum.isTwVal_transl | exact GlobalTheory.UPoinc.USum.isTwVal_transl | (intros; apply GlobalTheory.UPoinc.USum.isTwVal_transl <;> assumption)

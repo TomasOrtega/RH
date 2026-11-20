@@ -7,8 +7,10 @@ open AlgebraicGeometry CategoryTheory Limits NumberField IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFam GlobalTheory.PolFan GlobalTheory.TorRef
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.dvd_of_forall_complete_dvr_order_le | exact GlobalTheory.dvd_of_forall_complete_dvr_order_le | (intros; apply GlobalTheory.dvd_of_forall_complete_dvr_order_le <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.dvd_of_forall_complete_dvr_order_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FDvdOfValuationLeAllDvr.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.dvd_of_valuation_le_all_dvr : ∀ (R : Type) [CommRing R] [IsDomain R] [CharZero R], IsNoetherianRing R → IsIntegrallyClosed R →
     ∀ r s : R, r ≠ 0 →

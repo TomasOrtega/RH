@@ -14,8 +14,10 @@ open GlobalTheory.UU
 open GlobalTheory.LN
 open GlobalTheory.PsiRing
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PsiRing.exists_basis_fibNZ | exact GlobalTheory.PsiRing.exists_basis_fibNZ | (intros; apply GlobalTheory.PsiRing.exists_basis_fibNZ <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PsiRing.exists_basis_fibNZ` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDegenerationProofs%2FExistsThetaSectionNonzeroFibresLocalRing.lean&line=29#L29)
 -/
 theorem _root_.GlobalTheory.T.exists_thetaSection_nonzeroFibres_localRing : SecTwistSt → ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (D : DegPre R), ∃ th : SecBT D (𝟙_ _) 1 0, FibNZ (𝟙_ _ ⊗ D.P.A).hom th ∧ ∀ g : SecBT D (𝟙_ _) 1 0, ∃ b : R, Mult D th g b := by
   first | exact @GlobalTheory.PsiRing.exists_basis_fibNZ | exact GlobalTheory.PsiRing.exists_basis_fibNZ | (intros; apply GlobalTheory.PsiRing.exists_basis_fibNZ <;> assumption)

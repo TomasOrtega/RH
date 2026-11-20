@@ -10,8 +10,10 @@ open Formalism.L2 Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Rows Formalis
 open GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Top GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Div.PgTie.pgEq_of_linked | exact GlobalTheory.Div.PgTie.pgEq_of_linked | (intros; apply GlobalTheory.Div.PgTie.pgEq_of_linked <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Div.PgTie.pgEq_of_linked` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FBundleWitnessPlacesEqImage.lean&line=38#L38)
 -/
 theorem _root_.GlobalTheory.T.bundle_witness_places_eq_image : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (p : Prm hL), GlobalTheory.Fc.EvP fun _ K => ∀ (q : WPt p.s K) (c : ℝ) (b : GlobalTheory.Fc.Bundle (q.w.D q.Z) q.O c) (w : BWit q b), q.O.L.sc = K.s → (open Classical in w.x.R.Pg = b.R.T.ker.Pr.vGs.image (Formalism.L2.Host.CT.plMap b.R.T.ker.seam.iE)) := by
   first | exact @GlobalTheory.Div.PgTie.pgEq_of_linked | exact GlobalTheory.Div.PgTie.pgEq_of_linked | (intros; apply GlobalTheory.Div.PgTie.pgEq_of_linked <;> assumption)

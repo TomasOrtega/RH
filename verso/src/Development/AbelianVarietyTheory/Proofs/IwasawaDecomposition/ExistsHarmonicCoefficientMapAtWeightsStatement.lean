@@ -9,8 +9,10 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Form
 open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CoefMapRecord.exists_io_record | exact GlobalTheory.CoefMapRecord.exists_io_record | (intros; apply GlobalTheory.CoefMapRecord.exists_io_record <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CoefMapRecord.exists_io_record` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsHarmonicCoefficientMapAtWeights.lean&line=131#L131)
 -/
 theorem _root_.GlobalTheory.T.exists_harmonicCoefficientMap_at_weights : ∀ (D : D7) (Q : Formalism.L2.Pj.Par D), Q.Pins → ∀ (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)), KapIs κ → ∀ (i : Fin D.R.m) (c' : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff Q.l), ∃ (io : VsV D i c'.F →ₗ[c'.F] MvPolynomial (LtN (Q.Dw ((i : ℕ) + 1)) (Vc D i).rank) c'.F) (hw : VsV D i c'.F), IoLFRec c' (fun τ => embF c' (tauE D τ)) (lamV D i) (wtA (κ i)) io hw := by
   first | exact @GlobalTheory.CoefMapRecord.exists_io_record | exact GlobalTheory.CoefMapRecord.exists_io_record | (intros; apply GlobalTheory.CoefMapRecord.exists_io_record <;> assumption)

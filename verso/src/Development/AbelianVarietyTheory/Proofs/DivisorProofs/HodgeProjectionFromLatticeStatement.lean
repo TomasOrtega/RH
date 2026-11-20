@@ -2,8 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HodgeProjectionFromLattice
 import Mathlib
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.spanning_map_factors_through_quotient | exact GlobalTheory.spanning_map_factors_through_quotient | (intros; apply GlobalTheory.spanning_map_factors_through_quotient <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.spanning_map_factors_through_quotient` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHodgeProjectionFromLattice.lean&line=5#L5)
 -/
 theorem _root_.GlobalTheory.T.hodge_projection_from_lattice : ∀ (W : Type 1) [AddCommGroup W] [Module ℂ W] (g : ℕ) (Λ : Submodule ℤ (Fin g → ℂ)) (P : Λ →+ W)
     (F : Submodule ℂ W), Submodule.span ℂ (Set.range P) = ⊤ → Module.finrank ℂ W = 2 * g →

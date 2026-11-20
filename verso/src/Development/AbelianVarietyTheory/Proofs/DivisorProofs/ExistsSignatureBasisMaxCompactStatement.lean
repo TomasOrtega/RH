@@ -23,8 +23,10 @@ open GlobalTheory.SiegelSet GlobalTheory.UAut GlobalTheory.LeviHC
 open GlobalTheory.Orb (archMat)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MaxCptFrame.exists_frame_lines_mem | exact GlobalTheory.MaxCptFrame.exists_frame_lines_mem | (intros; apply GlobalTheory.MaxCptFrame.exists_frame_lines_mem <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MaxCptFrame.exists_frame_lines_mem` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsSignatureBasisMaxCompact.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.exists_signature_basis_max_compact : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →

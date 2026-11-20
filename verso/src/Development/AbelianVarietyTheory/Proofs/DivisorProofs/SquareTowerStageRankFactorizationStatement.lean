@@ -19,8 +19,10 @@ open GlobalTheory.ConstRatio (NegIdx Factor)
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SqStepK.step_first | exact GlobalTheory.SqStepK.step_first | (intros; apply GlobalTheory.SqStepK.step_first <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SqStepK.step_first` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSquareTowerStageRankFactorization.lean&line=194#L194)
 -/
 theorem _root_.GlobalTheory.T.square_tower_stage_rank_factorization : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
   GBig fun {D} T _ _ G μ₀ _ _ _ => ∀ (W : G.Weil) (S : GridChoice W Set.univ), IsStdChar D W.ψ (-1) →

@@ -12,8 +12,10 @@ open ReciprocityTheory.ChartRestriction.G.DVR.FlatBC (algX)
 open GlobalTheory.LogPole
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FrameSpread.exists_basicOpen_isFrame_dOn | exact GlobalTheory.FrameSpread.exists_basicOpen_isFrame_dOn | (intros; apply GlobalTheory.FrameSpread.exists_basicOpen_isFrame_dOn <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FrameSpread.exists_basicOpen_isFrame_dOn` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsBasicOpenTopFormFrameOfStalkKaehlerBasis.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.exists_basicOpen_topFormFrame_of_stalkKaehlerBasis : ∀ (k : Type) [Field k] (X : Scheme.{0}) (p : X ⟶ Sp k) (n : ℕ) [SmoothOfRelativeDimension n p] (U : X.affineOpens) (x₀ : X) (hx : x₀ ∈ U.1) (x : Fin n → Γ(X, U.1)), (letI := ((X.presheaf.germ U.1 x₀ hx).hom.comp (algX p U.1)).toAlgebra; ∃ bs : Module.Basis (Fin n) (X.presheaf.stalk x₀) Ω[X.presheaf.stalk x₀⁄k], ∀ i, bs i = KaehlerDifferential.D k (X.presheaf.stalk x₀) ((X.presheaf.germ U.1 x₀ hx).hom (x i))) → ∃ s : Γ(X, U.1), x₀ ∈ X.basicOpen s ∧ GlobalTheory.TopForm.IsFrame (GlobalTheory.TopForm.dOn p fun i => resG X (X.basicOpen_le s) (x i)) := by
   first | exact @GlobalTheory.FrameSpread.exists_basicOpen_isFrame_dOn | exact GlobalTheory.FrameSpread.exists_basicOpen_isFrame_dOn | (intros; apply GlobalTheory.FrameSpread.exists_basicOpen_isFrame_dOn <;> assumption)

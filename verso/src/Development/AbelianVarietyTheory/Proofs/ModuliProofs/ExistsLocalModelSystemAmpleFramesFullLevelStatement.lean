@@ -18,8 +18,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj TensorProduct Pointwise
 open GlobalTheory.Models GlobalTheory.ZM
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SystemAmple.exists_system_ampFrames | exact GlobalTheory.SystemAmple.exists_system_ampFrames | (intros; apply GlobalTheory.SystemAmple.exists_system_ampFrames <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SystemAmple.exists_system_ampFrames` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FModuliProofs%2FExistsLocalModelSystemAmpleFramesFullLevel.lean&line=28#L28)
 -/
 theorem _root_.GlobalTheory.T.exists_localModelSystem_ampleFrames_fullLevel : GlobalTheory.LN.HomExtSt → Out.Laws → Out.Laws2 → Out.Laws3 → TopAmpExists → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (Xo : ∀ l : Level H, Moduli D l), 1 ≤ D.p + D.q → ToroidalLevelCompatibility (H := H) (D := D) → ∃ S : System Xo, ∀ i, ∃ k : ℕ, Nonempty (GlobalTheory.LN.AmpFrames (S.T i).t.G (S.T i).t.PP.L ((S.n i ^ k) ^ 2)) := by
   first | exact @GlobalTheory.SystemAmple.exists_system_ampFrames | exact GlobalTheory.SystemAmple.exists_system_ampFrames | (intros; apply GlobalTheory.SystemAmple.exists_system_ampFrames <;> assumption)

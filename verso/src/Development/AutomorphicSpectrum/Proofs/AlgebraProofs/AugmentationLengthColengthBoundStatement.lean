@@ -6,8 +6,10 @@ import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.StepOrderR
 open ReciprocityTheory.PGsh.L2 ReciprocityTheory.PGsh.Up GlobalTheory.CompanionTheory.Ar.GR
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Relay.augmentation_length_colength_bound | exact GlobalTheory.CompanionTheory.Relay.augmentation_length_colength_bound | (intros; apply GlobalTheory.CompanionTheory.Relay.augmentation_length_colength_bound <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Relay.augmentation_length_colength_bound` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FAlgebraProofs%2FAugmentationLengthColengthBound.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.augmentation_length_colength_bound : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C], v.Integers R → v (p : C) < 1 → ∀ (N : Type) [AddCommGroup N] [Fintype N] [DecidableEq N], (∀ x : N, p • x = 0) → ∀ AA : HopfOrder (C := C) R N, ∀ cA cN, HasLen v R (AFQuot p AA.carrier) cA → HasColen R v AA.carrier cN → cA ^ (Fintype.card N * (p - 1)) ≤ cN ^ 2 ∧ (cA ^ (Fintype.card N * (p - 1)) = cN ^ 2 → GenAF p AA.carrier ⊥) := by
   first | exact @GlobalTheory.CompanionTheory.Relay.augmentation_length_colength_bound | exact GlobalTheory.CompanionTheory.Relay.augmentation_length_colength_bound | (intros; apply GlobalTheory.CompanionTheory.Relay.augmentation_length_colength_bound <;> assumption)

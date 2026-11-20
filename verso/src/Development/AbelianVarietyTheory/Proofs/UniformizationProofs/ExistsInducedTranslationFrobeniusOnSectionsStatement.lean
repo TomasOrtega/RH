@@ -13,8 +13,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UT
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.InducedTranslation.exists_translT_indAt | exact GlobalTheory.InducedTranslation.exists_translT_indAt | (intros; apply GlobalTheory.InducedTranslation.exists_translT_indAt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.InducedTranslation.exists_translT_indAt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUniformizationProofs%2FExistsInducedTranslationFrobeniusOnSections.lean&line=212#L212)
 -/
 theorem _root_.GlobalTheory.T.exists_inducedTranslation_frobeniusOnSections : LL → AllUF fun {R} _ _ {I} {D} {A} {G} _ _ U F _ _ => ∀ (k : ℕ), 1 ≤ k → ∀ p : QkPt D.toPre F k, ∃ x : TFK (R := R) F ⟶ A.A, ∀ (n N : ℕ), 1 ≤ n → N = k * n → ∀ q : QkPt D.toPre F N, q.y = n • p.y → q.g = p.g → IndAt U.toUnifPre F N q (translT A.A x) := by
   first | exact @GlobalTheory.InducedTranslation.exists_translT_indAt | exact GlobalTheory.InducedTranslation.exists_translT_indAt | (intros; apply GlobalTheory.InducedTranslation.exists_translT_indAt <;> assumption)

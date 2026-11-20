@@ -8,8 +8,10 @@ open CategoryTheory Limits AlgebraicGeometry TopologicalSpace Filter
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.CechPic GlobalTheory.QCoh GlobalTheory.Discrepancy GlobalTheory.LogPair
-/- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.Discrepancy.isOpen_kltAt_and_lcAt_of_isLogRes | exact _root_.GlobalTheory.Discrepancy.isOpen_kltAt_and_lcAt_of_isLogRes | (intros; apply _root_.GlobalTheory.Discrepancy.isOpen_kltAt_and_lcAt_of_isLogRes <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Discrepancy.isOpen_kltAt_and_lcAt_of_isLogRes` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FWeilBound%2FCoreStatements%2FPublishedTheorems%2FNadelVanishingPairs%2FNadelVanishingLemmas%2FLogResolutionMultiplierOpen.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.log_resolution_multiplier_open : ∀ (k : Type) [Field k] [CharZero k] (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X] (p : X ⟶ Sp k) (n : ℕ), IsProjOver p → topologicalKrullDim X = n → ∀ (Δ : X → ℚ) (η : RatForms p n) (m : ℕ) (G : CartierDiv X) (Y : Scheme.{0}) [IsIntegral Y] [IsLocallyNoetherian Y] (s : Y ⟶ X) [IsDominant s] (K : CartierDiv Y) (B : Closeds Y), IsLogMult p n Δ η m G → IsLogRes p n η m G s K B → IsOpen {x : X | KltAt p n Δ x} ∧ IsOpen {x : X | LcAt p n Δ x} := by
   first | exact @_root_.GlobalTheory.Discrepancy.isOpen_kltAt_and_lcAt_of_isLogRes | exact _root_.GlobalTheory.Discrepancy.isOpen_kltAt_and_lcAt_of_isLogRes | (intros; apply _root_.GlobalTheory.Discrepancy.isOpen_kltAt_and_lcAt_of_isLogRes <;> assumption)

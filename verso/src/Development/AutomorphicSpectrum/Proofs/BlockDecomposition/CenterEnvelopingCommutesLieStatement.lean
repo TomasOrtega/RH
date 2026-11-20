@@ -6,8 +6,10 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsTestZero
 open NumberField MeasureTheory Topology Matrix GlobalTheory.AutomorphicL2Unitary GlobalTheory.DiscreteSum GlobalTheory.OpTrace GlobalTheory.UnitaryBC GlobalTheory.DiscSpec GlobalTheory.CuspRep GlobalTheory.CuspRep.CuspidalL2GL GlobalTheory.CompanionTheory.SmoothRep
 open scoped ContDiff
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.SmoothRep.Zalg_comm_lie | exact GlobalTheory.CompanionTheory.SmoothRep.Zalg_comm_lie | (intros; apply GlobalTheory.CompanionTheory.SmoothRep.Zalg_comm_lie <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.SmoothRep.Zalg_comm_lie` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FCenterEnvelopingCommutesLie.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.center_enveloping_commutes_lie : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (z : Module.End ℂ (Sm E a)), z ∈ Zalg E a → ∀ X : Lie E a, z * lie E a X = lie E a X * z := by
   first | exact @GlobalTheory.CompanionTheory.SmoothRep.Zalg_comm_lie | exact GlobalTheory.CompanionTheory.SmoothRep.Zalg_comm_lie | (intros; apply GlobalTheory.CompanionTheory.SmoothRep.Zalg_comm_lie <;> assumption)

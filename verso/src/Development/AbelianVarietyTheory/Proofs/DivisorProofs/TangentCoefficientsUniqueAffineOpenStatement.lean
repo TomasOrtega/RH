@@ -16,8 +16,10 @@ open GlobalTheory.RayEv (Ray)
 open GlobalTheory.Toroidal GlobalTheory.LogKS GlobalTheory.RigChart GlobalTheory.Heat
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KSAgree.TanLocUnique.comb_unique_basicOpen | exact GlobalTheory.KSAgree.TanLocUnique.comb_unique_basicOpen | (intros; apply GlobalTheory.KSAgree.TanLocUnique.comb_unique_basicOpen <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KSAgree.TanLocUnique.comb_unique_basicOpen` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTangentCoefficientsUniqueAffineOpen.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.tangent_coefficients_unique_affine_open : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X : Scheme.{0}) (t : SAB H X) (U W : X.affineOpens) (hW : W.1 ≤ U.1) (f : Γ(X, U.1)), W.1 = X.basicOpen f → ∀ (n : ℕ) (v : Fin n → (Sp (DualNumber Γ(X, U.1)) ⟶ t.G.left)), (∀ i, IsTanAtG t (chart U) (v i)) → (∀ w, IsTanAtG t (chart U) w → ∃! cf : Fin n → Γ(X, U.1), IsCombAtG t (chart U) v cf w) → ∀ (cf cf' : Fin n → Γ(X, W.1)) (w : Sp (DualNumber Γ(X, W.1)) ⟶ t.G.left), IsCombAtG t (chart W) (fun i => spMap (dualMap (X.presheaf.map (homOfLE hW).op).hom) ≫ v i) cf w → IsCombAtG t (chart W) (fun i => spMap (dualMap (X.presheaf.map (homOfLE hW).op).hom) ≫ v i) cf' w → cf = cf' := by
   first | exact @GlobalTheory.KSAgree.TanLocUnique.comb_unique_basicOpen | exact GlobalTheory.KSAgree.TanLocUnique.comb_unique_basicOpen | (intros; apply GlobalTheory.KSAgree.TanLocUnique.comb_unique_basicOpen <;> assumption)

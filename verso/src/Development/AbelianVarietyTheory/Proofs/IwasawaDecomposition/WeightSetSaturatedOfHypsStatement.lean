@@ -15,8 +15,10 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Fo
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.HeightCounting.Up GlobalTheory.Mem.SRe GlobalTheory.Mem.R3.Rw
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HeightCounting.Up.w1Sat_of_hyps | exact GlobalTheory.HeightCounting.Up.w1Sat_of_hyps | (intros; apply GlobalTheory.HeightCounting.Up.w1Sat_of_hyps <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HeightCounting.Up.w1Sat_of_hyps` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FWeightSetSaturatedOfHyps.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.exists_unlocalized_saturated_state_of_hypA_hypH : HypA → HypH → ExistsUnlocalizedSaturatedState := by
   first | exact @GlobalTheory.HeightCounting.Up.w1Sat_of_hyps | exact GlobalTheory.HeightCounting.Up.w1Sat_of_hyps | (intros; apply GlobalTheory.HeightCounting.Up.w1Sat_of_hyps <;> assumption)

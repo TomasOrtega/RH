@@ -10,8 +10,10 @@ open scoped TensorProduct
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TransferHyp.cj_mem_hyp_iff | exact GlobalTheory.TransferHyp.cj_mem_hyp_iff | (intros; apply GlobalTheory.TransferHyp.cj_mem_hyp_iff <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TransferHyp.cj_mem_hyp_iff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHyperspecialStabilizerTransferConjSelfDualLattic.lean&line=118#L118)
 -/
 theorem _root_.GlobalTheory.T.hyperspecial_stabilizer_transfer_conj_selfDual_lattice : ∀ (D : D7) [IsCMField D.host.E] (V : HSp D) (j : UA D.host.E V.rank ≃ₜ* GA D V) (h₀ : GA D V)
     (M : Matrix (Fin V.rank) (Fin V.rank) D.host.E),

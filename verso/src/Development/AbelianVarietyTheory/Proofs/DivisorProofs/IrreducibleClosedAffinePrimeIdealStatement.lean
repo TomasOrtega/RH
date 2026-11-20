@@ -14,8 +14,10 @@ open scoped ContDiff ComplexOrder ENNReal Classical
 open GlobalTheory.IrrAn
 open scoped GlobalTheory.AffinePoints
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IrrSmooth.exists_affine_smooth_prime | exact GlobalTheory.IrrSmooth.exists_affine_smooth_prime | (intros; apply GlobalTheory.IrrSmooth.exists_affine_smooth_prime <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IrrSmooth.exists_affine_smooth_prime` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIrreducibleClosedAffinePrimeIdeal.lean&line=73#L73)
 -/
 theorem _root_.GlobalTheory.T.irreducible_closed_affine_prime_ideal : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) [LocallyOfFiniteType p] (σ : k →+* ℂ) (T : Set (Limits.pullback p (spMap σ) : Scheme.{0})), IsClosed T → IsIrreducible T → ∃ (W : (Limits.pullback p (spMap σ) : Scheme.{0}).Opens) (hW : IsAffineOpen W), (T ∩ (W : Set (Limits.pullback p (spMap σ) : Scheme.{0}))).Nonempty ∧ ∃ P : Ideal Γ((Limits.pullback p (spMap σ) : Scheme.{0}), W), P.IsPrime ∧ (∀ x : W, (x : (Limits.pullback p (spMap σ) : Scheme.{0})) ∈ T ↔ P ≤ (hW.primeIdealOf x).asIdeal) ∧ letI : Algebra ℂ Γ((Limits.pullback p (spMap σ) : Scheme.{0}), W) := (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX (Limits.pullback.snd p (spMap σ)) W).toAlgebra; Algebra.FiniteType ℂ (Γ((Limits.pullback p (spMap σ) : Scheme.{0}), W) ⧸ P) ∧ ∃ d' : ℕ, GlobalTheory.AffinePoints.HasAlgebraicCharts ℂ (Γ((Limits.pullback p (spMap σ) : Scheme.{0}), W) ⧸ P) d' := by
   first | exact @GlobalTheory.IrrSmooth.exists_affine_smooth_prime | exact GlobalTheory.IrrSmooth.exists_affine_smooth_prime | (intros; apply GlobalTheory.IrrSmooth.exists_affine_smooth_prime <;> assumption)

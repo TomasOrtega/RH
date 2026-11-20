@@ -4,8 +4,10 @@ import Mathlib
 import Formalism.LocalToGlobal.IndefiniteReal.GramCEqTranspose
 open NumberField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.card_smul_eOp_mem_Mall | exact GlobalTheory.card_smul_eOp_mem_Mall | (intros; apply GlobalTheory.card_smul_eOp_mem_Mall <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.card_smul_eOp_mem_Mall` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCardSmulTwistedProjectorMemIntegralForms.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.card_smul_twistedProjector_mem_integralForms : ∀ {LL Ks : Type} [Field LL] [NumberField LL] [Field Ks] [NumberField Ks] [Algebra Ks LL]
     {WL : Type} [AddCommGroup WL] [Module LL WL] [Module Ks WL] [IsScalarTower Ks LL WL]

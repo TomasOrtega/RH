@@ -11,8 +11,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Core.Rk.IP
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Core.Rk.coefClause_of_thetaClause | exact GlobalTheory.Core.Rk.coefClause_of_thetaClause | (intros; apply GlobalTheory.Core.Rk.coefClause_of_thetaClause <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Core.Rk.coefClause_of_thetaClause` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FSiegelWeilSectionDoublingEqMatrixCoefficient.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.siegelWeilSection_doubling_eq_matrixCoefficient : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (A B : HSp D) (χA χB : (AE D)ˣ →* Circle) (om : WRep A B) (omh : WRep (dblSp A) B), IsWeilDatumO ψ A B χA χB om → ThetaClause ψ A B χB om omh → ∀ (ν : Measure (WO A B)) (𝓕 : Set (WO A B)), IsCovolOne (ratL B A) ν 𝓕 → CoefClause ψ A B om omh ν 𝓕 := by
   first | exact @GlobalTheory.Core.Rk.coefClause_of_thetaClause | exact GlobalTheory.Core.Rk.coefClause_of_thetaClause | (intros; apply GlobalTheory.Core.Rk.coefClause_of_thetaClause <;> assumption)

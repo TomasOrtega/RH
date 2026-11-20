@@ -6,8 +6,10 @@ open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep 
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BCT.HintLevel.hint_level | exact GlobalTheory.BCT.HintLevel.hint_level | (intros; apply GlobalTheory.BCT.HintLevel.hint_level <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BCT.HintLevel.hint_level` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHaarIntegralNormalizedOpenCompactEqFiniteLevelSu.lean&line=50#L50)
 -/
 theorem _root_.GlobalTheory.T.haarIntegralNormalizedOpenCompact_eq_finite_level_sum : ∀ (H : Type) [Group H] (K L : Subgroup H) (u : H → ℂ), L ≤ K → L ≤ rStab u → L.relIndex K ≠ 0 → hint K u = ((L.relIndex K : ℕ) : ℂ)⁻¹ * ∑ᶠ q : H ⧸ L, u q.out := by
   first | exact @GlobalTheory.BCT.HintLevel.hint_level | exact GlobalTheory.BCT.HintLevel.hint_level | (intros; apply GlobalTheory.BCT.HintLevel.hint_level <;> assumption)

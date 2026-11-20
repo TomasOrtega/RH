@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IMemSiegel
 open Matrix Complex GlobalTheory.SW
 open scoped ComplexConjugate Real
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SiegelAction.symplectic_action | exact GlobalTheory.SiegelAction.symplectic_action | (intros; apply GlobalTheory.SiegelAction.symplectic_action <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SiegelAction.symplectic_action` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSiegelThetaTransformation%2FSymplecticSiegelActionMemUpperHalfSpaceAndCocycl.lean&line=176#L176)
 -/
 theorem _root_.GlobalTheory.T.symplecticSiegelAction_mem_upperHalfSpace_and_cocycle : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (σ : Matrix (ι ⊕ ι) (ι ⊕ ι) ℚ), σ ∈ Matrix.symplecticGroup ι ℚ → ∀ τ ∈ Siegel ι, (spDen σ τ).det ≠ 0 ∧ spAct σ τ ∈ Siegel ι ∧ ((spDen σ τ)⁻¹ * qm σ.toBlocks₂₁).IsSymm ∧ (spDen σ τ)ᵀ * (spAct σ τ).map (fun z => (z.im : ℂ)) * (spDen σ τ).map conj = τ.map (fun z => (z.im : ℂ)) ∧ ∀ σ' ∈ Matrix.symplecticGroup ι ℚ, spDen (σ' * σ) τ = spDen σ' (spAct σ τ) * spDen σ τ ∧ spAct (σ' * σ) τ = spAct σ' (spAct σ τ) := by
   first | exact @GlobalTheory.SiegelAction.symplectic_action | exact GlobalTheory.SiegelAction.symplectic_action | (intros; apply GlobalTheory.SiegelAction.symplectic_action <;> assumption)

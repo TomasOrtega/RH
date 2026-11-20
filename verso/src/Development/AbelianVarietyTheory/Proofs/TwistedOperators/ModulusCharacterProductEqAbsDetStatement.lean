@@ -18,8 +18,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Chamber GlobalTheory.TruncKer GlobalTheory.Cusp
 open GlobalTheory.LeviShift
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LeviShift.prod_absChi_Iic | exact GlobalTheory.LeviShift.prod_absChi_Iic | (intros; apply GlobalTheory.LeviShift.prod_absChi_Iic <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LeviShift.prod_absChi_Iic` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FModulusCharacterProductEqAbsDet.lean&line=69#L69)
 -/
 theorem _root_.GlobalTheory.T.modulus_character_product_eq_abs_det : ∀ (D : D7) (V : HSp D) (Φ : WittFrame V) (j : Fin (wittIndex V)) (p : PA Φ.flag0), ∏ i ∈ Finset.Iic j, absChi Φ i p = absA D.host.F D.host.E (detU Φ D.sp.cm (AF D.host.F) (stdVec j) p) := by
   first | exact @GlobalTheory.LeviShift.prod_absChi_Iic | exact GlobalTheory.LeviShift.prod_absChi_Iic | (intros; apply GlobalTheory.LeviShift.prod_absChi_Iic <;> assumption)

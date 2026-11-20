@@ -11,8 +11,10 @@ open scoped Classical
 open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalTheory.FlagAr GlobalTheory.ShFam.Pad GlobalTheory.VB
 open CategoryTheory.Limits
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagConnect.exists_irreducible_through | exact GlobalTheory.FlagConnect.exists_irreducible_through | (intros; apply GlobalTheory.FlagConnect.exists_irreducible_through <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagConnect.exists_irreducible_through` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFlagBundlePointsIrreducibleConnected.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.flag_bundle_points_irreducible_connected : ∀ (B Y : Scheme.{0}) (π : Y ⟶ B) (ι : Type) [Fintype ι] (E : ι → B.Modules) (r : ι → ℕ) (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (r a)), (∀ a, GlobalTheory.VB.IsVB (E a) (r a)) → IsFlagBundle π E r fl → ∀ (L : Type) [Field L] (q₁ q₂ : Spec (CommRingCat.of L) ⟶ Y), q₁ ≫ π = q₂ ≫ π → ∃ (T : Scheme.{0}) (t₁ t₂ : Spec (CommRingCat.of L) ⟶ T) (f : T ⟶ Y), IrreducibleSpace T ∧ t₁ ≫ f = q₁ ∧ t₂ ≫ f = q₂ := by
   first | exact @GlobalTheory.FlagConnect.exists_irreducible_through | exact GlobalTheory.FlagConnect.exists_irreducible_through | (intros; apply GlobalTheory.FlagConnect.exists_irreducible_through <;> assumption)

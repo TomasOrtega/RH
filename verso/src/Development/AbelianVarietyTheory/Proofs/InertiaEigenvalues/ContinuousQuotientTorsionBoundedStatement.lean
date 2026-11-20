@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FactorMemCocyc
 open Formalism.RepresentationBoundsCohomology.LOC ReciprocityTheory.Gal GlobalTheory.LocDualInt
 open Formalism.NG (KO)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LatticeQuotBound.pow_smul_eq_zero_of_compact | exact GlobalTheory.LatticeQuotBound.pow_smul_eq_zero_of_compact | (intros; apply GlobalTheory.LatticeQuotBound.pow_smul_eq_zero_of_compact <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LatticeQuotBound.pow_smul_eq_zero_of_compact` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FContinuousQuotientTorsionBounded.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.continuous_quotient_torsion_bounded : ∀ {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {V : Type} [AddCommGroup V] [Module O V] [Module (FractionRing O) V] [IsScalarTower O (FractionRing O) V] [TopologicalSpace V] [IsTopologicalAddGroup V] {X : Type} [TopologicalSpace X] [CompactSpace X] (T : Submodule O V), IsLatticeIn T → IsOpen (T : Set V) → ∀ ϖ : O, Irreducible ϖ → ∀ c : X → V ⧸ T, Continuous c → ∃ r : ℕ, ∀ x, ϖ ^ r • c x = 0 := by
   first | exact @GlobalTheory.LatticeQuotBound.pow_smul_eq_zero_of_compact | exact GlobalTheory.LatticeQuotBound.pow_smul_eq_zero_of_compact | (intros; apply GlobalTheory.LatticeQuotBound.pow_smul_eq_zero_of_compact <;> assumption)

@@ -12,8 +12,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.LN
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LN.generic_point_of_meets_abLocus | exact GlobalTheory.LN.generic_point_of_meets_abLocus | (intros; apply GlobalTheory.LN.generic_point_of_meets_abLocus <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LN.generic_point_of_meets_abLocus` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDegenerationProofs%2FGenericPointMemModuliOfMeetsAbelianLocus.lean&line=78#L78)
 -/
 theorem _root_.GlobalTheory.T.generic_point_mem_moduli_of_meets_abelian_locus : Laws → Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (W₀ : ValuationSubring ℂ) (Y : Model Xo c (c.V W₀).subtype) (p : ℕ), Y.LevelStructureConditions p → ∀ (R : Type) [CommRing R] [IsDomain R] [CharZero R] (ξ : Sp R ⟶ Y.X) (t : SAB H (Sp R)) (_ : SABMap t Y.t ξ), (ξ ⁻¹' abLocus Y.t.G).Nonempty → (∃ y : Sp (FractionRing R) ⟶ Xo.XF c, y ≫ Y.j = jK R ≫ ξ) ∧ PolAt t (jK R) ∧ ξ ⁻¹' abLocus Y.t.G = abLocus t.G := by
   first | exact @GlobalTheory.LN.generic_point_of_meets_abLocus | exact GlobalTheory.LN.generic_point_of_meets_abLocus | (intros; apply GlobalTheory.LN.generic_point_of_meets_abLocus <;> assumption)

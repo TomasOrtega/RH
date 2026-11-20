@@ -10,8 +10,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 open GlobalTheory.CompanionTheory.GodementH
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.IntegerCount.card_bounded_conjugates_le | exact GlobalTheory.CompanionTheory.IntegerCount.card_bounded_conjugates_le | (intros; apply GlobalTheory.CompanionTheory.IntegerCount.card_bounded_conjugates_le <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.IntegerCount.card_bounded_conjugates_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FIntegersBoundedEmbeddingsCount.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.integers_bounded_embeddings_count : ∀ (E : Type) [Field E] [NumberField E], ∃ C : ℝ, 0 < C ∧ ∀ R : ℝ, 1 ≤ R →
     {β : 𝓞 E | ∀ τ : E →+* ℂ, ‖τ (β : E)‖ ≤ R}.Finite ∧

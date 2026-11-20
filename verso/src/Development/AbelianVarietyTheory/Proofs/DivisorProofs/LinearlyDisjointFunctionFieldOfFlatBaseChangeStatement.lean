@@ -8,8 +8,10 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.Toroidal GlobalTheory.LocM G
 open scoped CategoryTheory.Obj
 open GlobalTheory.Desc
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Desc.FlatLin.linDisj_of_flat | exact GlobalTheory.Desc.FlatLin.linDisj_of_flat | (intros; apply GlobalTheory.Desc.FlatLin.linDisj_of_flat <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Desc.FlatLin.linDisj_of_flat` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLinearlyDisjointFunctionFieldOfFlatBaseChange.lean&line=47#L47)
 -/
 theorem _root_.GlobalTheory.T.linearlyDisjoint_functionField_of_flat_baseChange : ∀ (T D : Type) [CommRing T] [CommRing D] (a : T →+* D), a.Flat → ∀ (H : Over (Sp T)) [IsIntegral H.left] (H' : Over (Sp D)) [IsIntegral H'.left] (π : H'.left ⟶ H.left) (θ : H.left.functionField →+* H'.left.functionField), IsPullback π H'.hom H.hom (spMap a) → PFF (𝟙 _) π θ → LinDisj (GlobalTheory.Desc.cst H.hom) (GlobalTheory.Desc.cst H'.hom) θ := by
   first | exact @GlobalTheory.Desc.FlatLin.linDisj_of_flat | exact GlobalTheory.Desc.FlatLin.linDisj_of_flat | (intros; apply GlobalTheory.Desc.FlatLin.linDisj_of_flat <;> assumption)

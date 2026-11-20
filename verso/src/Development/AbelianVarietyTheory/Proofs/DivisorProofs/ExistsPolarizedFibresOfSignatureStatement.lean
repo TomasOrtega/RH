@@ -6,8 +6,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.BdDim GlobalTheory.SiegelTor GlobalTheory.ZM GlobalTheory.CM GlobalTheory.Models
 open scoped CategoryTheory.Obj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BdDim.CxField.exists_field_of_signature | exact GlobalTheory.BdDim.CxField.exists_field_of_signature | (intros; apply GlobalTheory.BdDim.CxField.exists_field_of_signature <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BdDim.CxField.exists_field_of_signature` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsPolarizedFibresOfSignature.lean&line=182#L182)
 -/
 theorem _root_.GlobalTheory.T.exists_polarized_fibres_of_signature : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (_ : Level H) (R : Type) [CommRing R] (σ : R →+* ℂ) (Q : PAT H (Sp R)) (ρ : ℂ) (p q : ℕ), ρ ^ 2 = -(H.d : ℂ) → (∀ τ : 𝓞 E →+* ℂ, (τ H.rt = ρ → LieMult Q.t.act (spMap σ) τ p) ∧ (τ H.rt ≠ ρ → LieMult Q.t.act (spMap σ) τ q)) → ∃ (K : Type) (_ : Field K) (_ : IsAlgClosed K) (ι : K →+* ℂ) (P₀ : Out.PolAV (Sp K)) (P₁ : Out.PolAV (Sp ℂ)) (φ : P₁.A.left ⟶ Q.pol.A.left) (φ₀ : P₁.A.left ⟶ P₀.A.left), TrLe K (Module.finrank ℚ E / 2 * p * q) ∧ IsPolFibre σ Q.pol P₁ φ ∧ IsPolFibre ι P₀ P₁ φ₀ := by
   first | exact @GlobalTheory.BdDim.CxField.exists_field_of_signature | exact GlobalTheory.BdDim.CxField.exists_field_of_signature | (intros; apply GlobalTheory.BdDim.CxField.exists_field_of_signature <;> assumption)

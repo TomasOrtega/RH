@@ -11,8 +11,10 @@ open scoped Classical
 open GlobalTheory.CovTestDR GlobalTheory.VdmRec GlobalTheory.MetFam GlobalTheory.ShFam GlobalTheory.Toroidal GlobalTheory.CxPts
 open scoped ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MetFam.exists_bound_chernPart_univ | exact GlobalTheory.MetFam.exists_bound_chernPart_univ | (intros; apply GlobalTheory.MetFam.exists_bound_chernPart_univ <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MetFam.exists_bound_chernPart_univ` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FChernPartUniformBound.lean&line=82#L82)
 -/
 theorem _root_.GlobalTheory.T.chern_part_uniform_bound : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → GenSmooth p D → ∀ t : ℝ → ℝ, Tendsto t atTop (𝓝 0) → ∀ (σ : k →+* ℂ) (B : LB X) (φ : Weight p σ B), φ.IsCInf → ∀ u : ℝ → CxPts p σ → ℝ, (∀ R y, CInfAt (u R) y) → (∀ y, FamAt t u (fun _ => 0) y) → ∃ C : NNReal, ∀ᶠ R in atTop, ∀ ε : ℤˣ, (φ.addFn (u R)).chernPart D ε Set.univ ≤ (C : ENNReal) := by
   first | exact @GlobalTheory.MetFam.exists_bound_chernPart_univ | exact GlobalTheory.MetFam.exists_bound_chernPart_univ | (intros; apply GlobalTheory.MetFam.exists_bound_chernPart_univ <;> assumption)

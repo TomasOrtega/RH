@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsDetEltOne
 open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps GlobalTheory.DetInv Matrix TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DetInv.dvd_of_detElt_orders_eq | exact GlobalTheory.DetInv.dvd_of_detElt_orders_eq | (intros; apply GlobalTheory.DetInv.dvd_of_detElt_orders_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DetInv.dvd_of_detElt_orders_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPsiDeterminantOrdersProperty.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.psi_determinant_orders_property : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O], v.Integers O → ∀ (ε : PreTilt O p), IsPrimitiveRoot (root ε).untilt p → ∀ (Λ : Type) [CommRing Λ] [IsDomain Λ] [IsDiscreteValuationRing Λ] [Algebra ℤ_[p] Λ] [Module.Finite ℤ_[p] Λ] [FaithfulSMul ℤ_[p] Λ], ∀ (ψ : RL p O Λ →+* RL p O Λ), IsPsi ψ → ∀ (N : ℕ) (Δ Δ' : RL p O Λ) (a : (Λ →+* O) → ℕ) (c : (Λ →+* O) → C) (c' : (Λ →+* O) → C), IsDetElt ε ψ N Δ → IsDetElt ε ψ N Δ' → HasOrders C ε N Δ a c → HasOrders C ε N Δ' a c' → Δ ∣ Δ' := by
   first | exact @GlobalTheory.DetInv.dvd_of_detElt_orders_eq | exact GlobalTheory.DetInv.dvd_of_detElt_orders_eq | (intros; apply GlobalTheory.DetInv.dvd_of_detElt_orders_eq <;> assumption)

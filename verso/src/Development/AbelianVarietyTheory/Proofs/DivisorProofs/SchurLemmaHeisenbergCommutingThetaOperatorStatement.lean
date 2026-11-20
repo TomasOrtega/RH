@@ -8,8 +8,10 @@ open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHeck
 open Formalism.IndefR.DatumF
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThetaSchurF.schur | exact GlobalTheory.ThetaSchurF.schur | (intros; apply GlobalTheory.ThetaSchurF.schur <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThetaSchurF.schur` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSchurLemmaHeisenbergCommutingThetaOperator.lean&line=153#L153)
 -/
 theorem _root_.GlobalTheory.T.schur_lemma_heisenberg_commuting_thetaOperator : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

@@ -11,8 +11,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero (swSec sZero)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.StdUnn.mem_UJ_one_iff_conj_similitude | exact GlobalTheory.StdUnn.mem_UJ_one_iff_conj_similitude | (intros; apply GlobalTheory.StdUnn.mem_UJ_one_iff_conj_similitude <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.StdUnn.mem_UJ_one_iff_conj_similitude` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FMemUnitaryStandardIffConjSimilitude.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.mem_unitaryStandard_iff_conj_similitude : ∀ (R : Type) [CommRing R] (σ : R →+* R), (∀ x, σ (σ x) = x) → ∀ (N : ℕ) (M y : GL (Fin N) R) (r : Rˣ), Formalism.UG.cT σ M.1 * M.1 = (r : R) • 1 → (y ∈ Formalism.UG.UJ σ (1 : Matrix (Fin N) (Fin N) R) ↔ M⁻¹ * y * M ∈ Formalism.UG.UJ σ (1 : Matrix (Fin N) (Fin N) R)) := by
   first | exact @GlobalTheory.StdUnn.mem_UJ_one_iff_conj_similitude | exact GlobalTheory.StdUnn.mem_UJ_one_iff_conj_similitude | (intros; apply GlobalTheory.StdUnn.mem_UJ_one_iff_conj_similitude <;> assumption)

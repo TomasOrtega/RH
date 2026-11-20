@@ -11,8 +11,10 @@ open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible Formalism.
 open Formalism.MainNotions.S (IsURepOn IsIrredOn IsKFin IsKStableOn IsWtOn IsKTypeOf IsDS IsSqIntOn UJset)
 open scoped InnerProductSpace
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompactRep.exists_finiteDimensional_invariant | exact GlobalTheory.CompactRep.exists_finiteDimensional_invariant | (intros; apply GlobalTheory.CompactRep.exists_finiteDimensional_invariant <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompactRep.exists_finiteDimensional_invariant` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FCompactUnitaryFiniteInvariantSubspace.lean&line=78#L78)
 -/
 theorem _root_.GlobalTheory.T.compact_unitary_finite_invariant_subspace : ∀ (K : Type) [Group K] [TopologicalSpace K] [IsTopologicalGroup K] [CompactSpace K] [T2Space K] [SecondCountableTopology K] (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] [Nontrivial H] (π : K →* (H →L[ℂ] H)), (∀ k x, ‖π k x‖ = ‖x‖) → (∀ x, Continuous fun k => π k x) → ∃ S : Submodule ℂ H, S ≠ ⊥ ∧ FiniteDimensional ℂ S ∧ ∀ k, ∀ x ∈ S, π k x ∈ S := by
   first | exact @GlobalTheory.CompactRep.exists_finiteDimensional_invariant | exact GlobalTheory.CompactRep.exists_finiteDimensional_invariant | (intros; apply GlobalTheory.CompactRep.exists_finiteDimensional_invariant <;> assumption)

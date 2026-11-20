@@ -9,8 +9,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.DefLift
 open GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues GlobalTheory.AdelicScalar GlobalTheory.LiftRows GlobalTheory.LowRow
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LowRow.holShape_overK | exact GlobalTheory.LowRow.holShape_overK | (intros; apply GlobalTheory.LowRow.holShape_overK <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LowRow.holShape_overK` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLiftModelHolomorphicOverReflexField.lean&line=60#L60)
 -/
 theorem _root_.GlobalTheory.T.liftModel_holomorphic_overReflexField : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Core5 R F → ∀ i σ s, IsEmbOverK D σ s → HolShape (R.MW i σ) ∧ ∃ w, WtIs (R.MW i σ) w := by
   first | exact @GlobalTheory.LowRow.holShape_overK | exact GlobalTheory.LowRow.holShape_overK | (intros; apply GlobalTheory.LowRow.holShape_overK <;> assumption)

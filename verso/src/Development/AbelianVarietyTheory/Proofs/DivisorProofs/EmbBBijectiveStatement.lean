@@ -8,8 +8,10 @@ open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalT
 open GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.ProjVar
 open GlobalTheory.FlagCls
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagCls.embB_bijective | exact GlobalTheory.FlagCls.embB_bijective | (intros; apply GlobalTheory.FlagCls.embB_bijective <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagCls.embB_bijective` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FEmbBBijective.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.bijective_embB : ∀ D : D7, Function.Bijective (embB D) := by
   first | exact @GlobalTheory.FlagCls.embB_bijective | exact GlobalTheory.FlagCls.embB_bijective | (intros; apply GlobalTheory.FlagCls.embB_bijective <;> assumption)

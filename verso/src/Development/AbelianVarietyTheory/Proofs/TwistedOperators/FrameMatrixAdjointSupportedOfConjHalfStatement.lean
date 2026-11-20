@@ -11,8 +11,10 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HalfSupp.frMapAdj_supp | exact GlobalTheory.HalfSupp.frMapAdj_supp | (intros; apply GlobalTheory.HalfSupp.frMapAdj_supp <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HalfSupp.frMapAdj_supp` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FFrameMatrixAdjointSupportedOfConjHalf.lean&line=26#L26)
 -/
 theorem _root_.GlobalTheory.T.frameMatrixAdjoint_supported_of_conjHalf : ∀ {D : D7} (S T : HSp D) (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D)) (e : AE D) (x : WO S T), e * e = e → IsHalf (cA D e) x → ∀ i j, toEAf D e * frMapAdj S T βS βT x i j = frMapAdj S T βS βT x i j := by
   first | exact @GlobalTheory.HalfSupp.frMapAdj_supp | exact GlobalTheory.HalfSupp.frMapAdj_supp | (intros; apply GlobalTheory.HalfSupp.frMapAdj_supp <;> assumption)

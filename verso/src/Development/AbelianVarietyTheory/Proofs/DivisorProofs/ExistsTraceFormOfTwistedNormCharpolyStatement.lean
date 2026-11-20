@@ -10,8 +10,10 @@ open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep 
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TwTraceForm.exists_trace_form | exact GlobalTheory.TwTraceForm.exists_trace_form | (intros; apply GlobalTheory.TwTraceForm.exists_trace_form <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TwTraceForm.exists_trace_form` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsTraceFormOfTwistedNormCharpoly.lean&line=83#L83)
 -/
 theorem _root_.GlobalTheory.T.exists_traceForm_of_twistedNorm_charpoly : ∀ (K : GlobalTheory.UnitLemma.UQ) (B : GlobalTheory.UnitLemma.InvAlg K) (L : Type) [Field L] (e : K.E ≃+* L) (c : L →+* L), (∀ x, e (K.c x) = c (e x)) → (∀ x, c (c x) = x) → B.g * B.σ B.g = 1 → ∀ (a : ℕ) (Q : L[X]), B.P = Q.map e.symm.toRingHom → Q.Separable → Q.natDegree = a → ∀ δ : GL (Fin a) L, (δ * thetaGL a c δ).val.charpoly = Q → ∃ β : B.Aˣ, B.σ (β : B.A) = β * ((-1) ^ (a - 1) * B.g) ∧ ∃ b : Module.Basis (Fin a) K.E B.A, ((δ.val * GlobalTheory.Tw.Phi a L)⁻¹)ᵀ = (Matrix.of fun i j => e (B.herm β (b i) (b j))) := by
   first | exact @GlobalTheory.TwTraceForm.exists_trace_form | exact GlobalTheory.TwTraceForm.exists_trace_form | (intros; apply GlobalTheory.TwTraceForm.exists_trace_form <;> assumption)

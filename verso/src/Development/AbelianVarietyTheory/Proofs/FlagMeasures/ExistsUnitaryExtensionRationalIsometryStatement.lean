@@ -11,8 +11,10 @@ open MeasureTheory NumberField Formalism.BasicNotions Formalism.MainNotions.S Fo
 open scoped Pointwise ENNReal Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LocOver.exists_ext_unitary | exact GlobalTheory.LocOver.exists_ext_unitary | (intros; apply GlobalTheory.LocOver.exists_ext_unitary <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LocOver.exists_ext_unitary` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FExistsUnitaryExtensionRationalIsometry.lean&line=35#L35)
 -/
 theorem _root_.GlobalTheory.T.exists_unitary_extension_rational_isometry : ∀ (D : D7) (Z : LocDat D) (p : PlF D) (ρ : (VS D).V ≃ₗ[D.host.E] (VS D).V), ρ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT → ∃ g : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p, GlobalTheory.LocOver.Ext p ρ g ∧ Formalism.MainNotions.S.LocNG.IsUnitary (locH Z p) g := by
   first | exact @GlobalTheory.LocOver.exists_ext_unitary | exact GlobalTheory.LocOver.exists_ext_unitary | (intros; apply GlobalTheory.LocOver.exists_ext_unitary <;> assumption)

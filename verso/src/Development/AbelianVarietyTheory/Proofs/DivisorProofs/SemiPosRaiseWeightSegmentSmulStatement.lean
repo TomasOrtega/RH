@@ -6,8 +6,10 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace Filter Topology MeasureTh
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier GlobalTheory.VolBr GlobalTheory.HSAmp
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HSAmp.semiPos_up_smul | exact GlobalTheory.HSAmp.semiPos_up_smul | (intros; apply GlobalTheory.HSAmp.semiPos_up_smul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HSAmp.semiPos_up_smul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSemiPosRaiseWeightSegmentSmul.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.semiPos_raiseWeight_segment_smul : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (D : ℕ) (L : HermLB p) (u : SmFn p) (t : ℝ), 0 ≤ t → t ≤ 1 → L.SemiPos D → (up L u).SemiPos D → (up L (u.smul t)).SemiPos D := by
   first | exact @GlobalTheory.HSAmp.semiPos_up_smul | exact GlobalTheory.HSAmp.semiPos_up_smul | (intros; apply GlobalTheory.HSAmp.semiPos_up_smul <;> assumption)

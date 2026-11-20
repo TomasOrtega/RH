@@ -8,8 +8,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory GlobalTheory.Ex
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ValuesTorsion.tors_of_integral | exact GlobalTheory.ValuesTorsion.tors_of_integral | (intros; apply GlobalTheory.ValuesTorsion.tors_of_integral <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ValuesTorsion.tors_of_integral` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDegenerationProofs%2FAbelianPartValuesTorsionPairingSeparationIntegra.lean&line=209#L209)
 -/
 theorem _root_.GlobalTheory.T.abelianPartValues_torsion_pairing_separation_integral : Laws → Laws2 → BrUthSt → ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] (D : DegPre R), D.PsiEven → D.TauBimult → ∀ (C : Type) [NormedField C] [IsUltrametricDist C] [IsAlgClosed C] [Algebra (FractionRing R) C], CExt R ⊥ C → ∀ (N : NumD C) (ν : NumOf D C N), ν.IntN → ∀ n : ℕ, n.Prime → Odd n → ‖(n : C)‖ = 1 → N.Tors n D.P.g := by
   first | exact @GlobalTheory.ValuesTorsion.tors_of_integral | exact GlobalTheory.ValuesTorsion.tors_of_integral | (intros; apply GlobalTheory.ValuesTorsion.tors_of_integral <;> assumption)

@@ -10,8 +10,10 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.B
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Fl GlobalTheory.CompanionTheory.Ar.Flat Filter Topology Metric
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Flat.isHolTo_pt | exact GlobalTheory.CompanionTheory.Ar.Flat.isHolTo_pt | (intros; apply GlobalTheory.CompanionTheory.Ar.Flat.isHolTo_pt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Flat.isHolTo_pt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FBoundaryChartHolomorphic.lean&line=58#L58)
 -/
 theorem _root_.GlobalTheory.T.boundary_chart_holomorphic : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (σ : KA l →+* ℂ) (n a : ℕ) (C : BdryChart Xo σ n a), IsHolTo (punct n a 1) C.pt := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Flat.isHolTo_pt | exact GlobalTheory.CompanionTheory.Ar.Flat.isHolTo_pt | (intros; apply GlobalTheory.CompanionTheory.Ar.Flat.isHolTo_pt <;> assumption)

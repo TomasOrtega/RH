@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermitianPosDefSimu
 import Mathlib
 open Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SimNormal.simultaneous_normal_form | exact GlobalTheory.SimNormal.simultaneous_normal_form | (intros; apply GlobalTheory.SimNormal.simultaneous_normal_form <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SimNormal.simultaneous_normal_form` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHermitianPosDefSimultaneousNormalForm.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.hermitian_posDef_simultaneous_normal_form : ∀ {n : ℕ} {J P : Matrix (Fin n) (Fin n) ℂ}, J.IsHermitian → J.det ≠ 0 → P.IsHermitian →
     (∀ x : Fin n → ℂ, x ≠ 0 → 0 < (star x ⬝ᵥ P *ᵥ x).re) →

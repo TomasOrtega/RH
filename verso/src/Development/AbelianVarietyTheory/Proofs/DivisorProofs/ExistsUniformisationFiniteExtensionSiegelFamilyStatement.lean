@@ -11,8 +11,10 @@ open GlobalTheory.Poinc Formalism.L2.Pj
 attribute [local instance] Over.cartesianMonoidalCategory
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PoincUnif.exists_unif_finExt | exact GlobalTheory.PoincUnif.exists_unif_finExt | (intros; apply GlobalTheory.PoincUnif.exists_unif_finExt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PoincUnif.exists_unif_finExt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsUniformisationFiniteExtensionSiegelFamily.lean&line=25#L25)
 -/
 theorem _root_.GlobalTheory.T.exists_uniformisation_finiteExtension_siegelFamily : ∀ (g n : ℕ) (o : Type) [CommRing o] (ζ : o) (F : SFam g n ζ) (V₁ : Type) [CommRing V₁] [IsDomain V₁]
     [IsLocalRing V₁], GlobalTheory.LN.CDvr V₁ → ∀ (y₁ : Sp (FractionRing V₁) ⟶ F.X) (A : PolAV (Sp (FractionRing V₁)))

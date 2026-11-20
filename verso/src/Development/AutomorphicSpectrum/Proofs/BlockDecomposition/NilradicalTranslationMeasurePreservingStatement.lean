@@ -6,8 +6,10 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SecondCountable
 open Matrix MeasureTheory PositivityTheory.Rg.BcB PositivityTheory.Rg.Tf.Loc GlobalTheory.CompanionTheory.LocVan
 open scoped ENNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.LocVan.nmul_measurePreserving | exact GlobalTheory.CompanionTheory.LocVan.nmul_measurePreserving | (intros; apply GlobalTheory.CompanionTheory.LocVan.nmul_measurePreserving <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.LocVan.nmul_measurePreserving` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FNilradicalTranslationMeasurePreserving.lean&line=33#L33)
 -/
 theorem _root_.GlobalTheory.T.nilradical_translation_measure_preserving : ∀ (n : ℕ) (W₁ W₂ : Submodule ℂ (Fin n → ℂ)) (hW : W₁ ≤ W₂) [MeasurableSpace (nilrad W₁ W₂)]
   [BorelSpace (nilrad W₁ W₂)] (ν : Measure (nilrad W₁ W₂)) [ν.IsAddHaarMeasure] (Y : nilrad W₁ W₂),

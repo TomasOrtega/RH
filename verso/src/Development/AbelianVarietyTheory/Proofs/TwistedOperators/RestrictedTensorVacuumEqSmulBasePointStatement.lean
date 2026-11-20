@@ -7,8 +7,10 @@ open scoped TensorProduct ComplexOrder
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.VacuumLine.eq_smul_base | exact GlobalTheory.VacuumLine.eq_smul_base | (intros; apply GlobalTheory.VacuumLine.eq_smul_base <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.VacuumLine.eq_smul_base` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FRestrictedTensorVacuumEqSmulBasePoint.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.restrictedTensor_vacuum_eq_smul_basePoint : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (f₀ : WO S T → ℂ), IsBase ψ θ S T sS sT ΛS ΛT f₀ → ∀ f, IsThetaFunO ψ S T f → IsLatVac (heisO ψ S T) (latO S T ΛS ΛT fun _ => True) f → (∀ ρ, IsFockVacAt (heisO ψ S T) θ ρ (cplxO (sS ρ) (sT ρ)) f) → ∃ c : ℂ, f = c • f₀ := by
   first | exact @GlobalTheory.VacuumLine.eq_smul_base | exact GlobalTheory.VacuumLine.eq_smul_base | (intros; apply GlobalTheory.VacuumLine.eq_smul_base <;> assumption)

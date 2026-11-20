@@ -8,8 +8,10 @@ open MvPolynomial GlobalTheory.CompanionTheory.Ar.Num GroundTheory.Heights₂.He
 open ReciprocityTheory.ChartRestriction.G.Geo (ChartBundle chartRing)
 open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles (mseg mcIdeal chartMon joinCoord bcCoord pullDeg liftVar fnField ck rootNum SameGeneric LatLE IsPull IsPullBC IsSubQuot QuotIso IsFrobPres FlagModel modelDeg)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Num.PullPreserve.pull_preserve | exact GlobalTheory.CompanionTheory.Ar.Num.PullPreserve.pull_preserve | (intros; apply GlobalTheory.CompanionTheory.Ar.Num.PullPreserve.pull_preserve <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Num.PullPreserve.pull_preserve` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FAlgebraProofs%2FChartBundleBaseExtensionUnique.lean&line=64#L64)
 -/
 theorem _root_.GlobalTheory.T.chart_bundle_base_extension_unique : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Ω : Type) [Field Ω] [Algebra O Ω] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (x : (Σ k, ι k) → Ω) (N : ℕ) (V : Type) [AddCommGroup V] [Module Ω V] (E E' : ChartBundle O (mseg x) N V) (K' : Type) [Fintype K'] [DecidableEq K'] (ι' : K' → Type) [∀ k, Fintype (ι' k)] (z : (Σ k, ι' k) → Ω) (EB E'B : ChartBundle O (mseg (joinCoord x z)) N V), IsPull O x z E EB → IsPull O x z E' E'B → (LatLE O x E E' → LatLE O (joinCoord x z) EB E'B) ∧ (SameGeneric O x E E' → SameGeneric O (joinCoord x z) EB E'B) ∧ (∀ c : Ω, IsScaled x c E.lat E'.lat → IsScaled (joinCoord x z) c EB.lat E'B.lat) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Num.PullPreserve.pull_preserve | exact GlobalTheory.CompanionTheory.Ar.Num.PullPreserve.pull_preserve | (intros; apply GlobalTheory.CompanionTheory.Ar.Num.PullPreserve.pull_preserve <;> assumption)

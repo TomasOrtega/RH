@@ -20,8 +20,10 @@ open GlobalTheory.LieVB (omega unitSec dUnit)
 open GlobalTheory.QCoh (pullbackSections)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SpanCompare.posSemidef_of_span | exact GlobalTheory.SpanCompare.posSemidef_of_span | (intros; apply GlobalTheory.SpanCompare.posSemidef_of_span <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SpanCompare.posSemidef_of_span` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHermitianFormDecompositionComparison.lean&line=34#L34)
 -/
 theorem _root_.GlobalTheory.T.hermitian_form_decomposition_comparison : ∀ {g : ℕ} {ι Tau : Type} [Fintype Tau] {d : Tau → ℕ} (v : ι → Fin g → ℂ), Submodule.span ℂ (Set.range v) = ⊤ → ∀ (Gm Gm' : Matrix (Fin g) (Fin g) ℂ), Gm.IsHermitian → Gm'.IsHermitian → ∀ (A A' : ∀ τ, Matrix (Fin (d τ)) (Fin (d τ)) ℂ) (x : ∀ τ, ι → Fin (d τ) → ℂ), (∀ i i', HermFrame.form Gm (v i) (v i') = ∑ τ, HermFrame.form (A τ) (x τ i) (x τ i')) → (∀ i i', HermFrame.form Gm' (v i) (v i') = ∑ τ, HermFrame.form (A' τ) (x τ i) (x τ i')) → ∀ (K : ℝ), (∀ τ, (((K : ℂ) • A' τ) - A τ).PosSemidef) → (((K : ℂ) • Gm') - Gm).PosSemidef := by
   first | exact @GlobalTheory.SpanCompare.posSemidef_of_span | exact GlobalTheory.SpanCompare.posSemidef_of_span | (intros; apply GlobalTheory.SpanCompare.posSemidef_of_span <;> assumption)

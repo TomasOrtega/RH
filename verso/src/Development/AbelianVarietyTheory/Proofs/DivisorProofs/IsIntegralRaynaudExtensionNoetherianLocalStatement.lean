@@ -15,8 +15,10 @@ open GlobalTheory.RayEv (Ray)
 open GlobalTheory.Toroidal GlobalTheory.LogKS GlobalTheory.RigChart GlobalTheory.Heat
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RayInt.isIntegral_H | exact GlobalTheory.RayInt.isIntegral_H | (intros; apply GlobalTheory.RayInt.isIntegral_H <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RayInt.isIntegral_H` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsIntegralRaynaudExtensionNoetherianLocal.lean&line=94#L94)
 -/
 theorem _root_.GlobalTheory.T.isIntegral_raynaudExtension_noetherian_local : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] (Q : DegPre R) (O : Type) [CommRing O] [StarRing O] [Module O Q.X] (oa : Q.OAct O) (Y : Ray oa), IsIntegral Y.H.left := by
   first | exact @GlobalTheory.RayInt.isIntegral_H | exact GlobalTheory.RayInt.isIntegral_H | (intros; apply GlobalTheory.RayInt.isIntegral_H <;> assumption)

@@ -6,8 +6,10 @@ open Matrix Complex NumberField GlobalTheory.SW Filter Topology
 open ReciprocityTheory.ChartRestriction.G.FD (cc herm)
 open scoped ComplexConjugate ComplexOrder Real Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SW.swd_invariant_bound | exact GlobalTheory.SW.swd_invariant_bound | (intros; apply GlobalTheory.SW.swd_invariant_bound <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SW.swd_invariant_bound` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSiegelThetaTransformation%2FSiegelWeilDifferenceInvariantNormBounded.lean&line=167#L167)
 -/
 theorem _root_.GlobalTheory.T.siegelWeil_difference_invariant_norm_bounded : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Finset (E →+* ℂ)), IsType Ψ → ∀ (n N : ℕ), Even n → 4 * (N + 1) < n → SWAt Ψ n N → ∀ M R : ℕ, ∃ C : ℝ, ∀ φ : Fam E n (N + 1), admitted M R φ → ∀ B : ℝ, (∀ Λ ∈ Vset E n M, ∀ x, ‖φ Λ x‖ ≤ B) → ∀ Z ∈ Hn Ψ (N + 1), ‖swd Ψ M φ Z 0 0‖ * detIm Z ^ ((n : ℝ) / 2) ≤ C * B := by
   first | exact @GlobalTheory.SW.swd_invariant_bound | exact GlobalTheory.SW.swd_invariant_bound | (intros; apply GlobalTheory.SW.swd_invariant_bound <;> assumption)

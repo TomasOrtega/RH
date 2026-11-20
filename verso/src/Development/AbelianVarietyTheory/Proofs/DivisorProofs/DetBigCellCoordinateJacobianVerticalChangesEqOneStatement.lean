@@ -12,8 +12,10 @@ open ReciprocityTheory.ChartRestriction.G.DVR.FlatBC (algX)
 open GlobalTheory.LogPole
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LogPole.VertDet.det_vert | exact GlobalTheory.LogPole.VertDet.det_vert | (intros; apply GlobalTheory.LogPole.VertDet.det_vert <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LogPole.VertDet.det_vert` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDetBigCellCoordinateJacobianVerticalChangesEqOne.lean&line=48#L48)
 -/
 theorem _root_.GlobalTheory.T.det_bigCellCoordinateJacobian_verticalChanges_eq_one : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (K : Type) [Field K] (M : ∀ σ : E →+* ℂ, Matrix (Fin (Dw.mult σ)) (Fin (Dw.mult σ)) K), (∀ σ i j, j < i → M σ i j = 0) → (∀ σ i, M σ i i = 1) → (Matrix.of fun a b : VIx Dw => ((GlobalTheory.FlagTan.unip K (Pi.single b.toF (1 : K)) a.1 * (M a.1).map (fun r => (TrivSqZeroExt.inl r : DualNumber K))) a.2.1.1 a.2.1.2).snd).det = 1 := by
   first | exact @GlobalTheory.LogPole.VertDet.det_vert | exact GlobalTheory.LogPole.VertDet.det_vert | (intros; apply GlobalTheory.LogPole.VertDet.det_vert <;> assumption)

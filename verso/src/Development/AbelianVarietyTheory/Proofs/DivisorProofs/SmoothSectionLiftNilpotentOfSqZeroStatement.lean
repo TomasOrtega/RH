@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftAt
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Geo.Tor
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SecLift.lift_of_nilpotent_of_sqZero | exact GlobalTheory.SecLift.lift_of_nilpotent_of_sqZero | (intros; apply GlobalTheory.SecLift.lift_of_nilpotent_of_sqZero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SecLift.lift_of_nilpotent_of_sqZero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSmoothSectionLiftNilpotentOfSqZero.lean&line=8#L8)
 -/
 theorem _root_.GlobalTheory.T.smooth_section_lift_nilpotent_of_sqZero : (∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (π : R →+* R₀), Function.Surjective π → RingHom.ker π ^ 2 = ⊥ →
     ∀ (X : Over (Sp R)) (X₀ : Over (Sp R₀)) (i : X₀.left ⟶ X.left), IsPullback i X₀.hom X.hom (spMap π) → Smooth X.hom →

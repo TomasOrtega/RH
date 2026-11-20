@@ -11,8 +11,10 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G Recip
 open GlobalTheory.Cartier GlobalTheory.CovTest.SwapLine
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CovTest.SwapLine.core_exists | exact GlobalTheory.CovTest.SwapLine.core_exists | (intros; apply GlobalTheory.CovTest.SwapLine.core_exists <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CovTest.SwapLine.core_exists` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRegularBaseRankTwoMetricFamily.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.regular_base_rank_two_metric_family : ArCalc → ∃ G : ℕ → ℤ → ℤ → MvPolynomial (Fin 3) ℝ, Homog G ∧
     ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) [IsIntegral B] [IsIntegral Y] (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (d : ℕ),

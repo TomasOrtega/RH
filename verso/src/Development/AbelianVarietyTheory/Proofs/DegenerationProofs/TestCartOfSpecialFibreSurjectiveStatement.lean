@@ -6,8 +6,10 @@ open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj Alg
 open scoped CategoryTheory.Obj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.ZJ
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ZJ.Core.testCart_of_fib | exact GlobalTheory.ZJ.Core.testCart_of_fib | (intros; apply GlobalTheory.ZJ.Core.testCart_of_fib <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ZJ.Core.testCart_of_fib` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDegenerationProofs%2FTestCartOfSpecialFibreSurjective.lean&line=113#L113)
 -/
 theorem _root_.GlobalTheory.T.testCart_of_specialFibre_surjective : ∀ C : Core, C.Fib → SmoothOfRelativeDimension C.g C.GG.hom → C.TestCart := by
   first | exact @GlobalTheory.ZJ.Core.testCart_of_fib | exact GlobalTheory.ZJ.Core.testCart_of_fib | (intros; apply GlobalTheory.ZJ.Core.testCart_of_fib <;> assumption)

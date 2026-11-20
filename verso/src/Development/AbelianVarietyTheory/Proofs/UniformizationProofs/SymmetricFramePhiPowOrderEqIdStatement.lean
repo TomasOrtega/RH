@@ -12,8 +12,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UT
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UT.PhiOrder.main | exact GlobalTheory.UT.PhiOrder.main | (intros; apply GlobalTheory.UT.PhiOrder.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UT.PhiOrder.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUniformizationProofs%2FSymmetricFramePhiPowOrderEqId.lean&line=381#L381)
 -/
 theorem _root_.GlobalTheory.T.symmetricFrame_phi_pow_order_eq_id : LL → AllD fun {R} _ _ {I} D F _ _ => ∀ (N : ℕ), Odd N → ∀ (p : QkPt D.toPre F N) (w : Frm D.toPre F N p.g.b), TXFrame N p w → ∀ ss : Fin (N + 1) → Fam D.toPre F N, (∀ i : Fin N, PhiRel D.toPre F N p w (ss i.castSucc) (ss i.succ)) → ss (Fin.last N) = ss 0 := by
   first | exact @GlobalTheory.UT.PhiOrder.main | exact GlobalTheory.UT.PhiOrder.main | (intros; apply GlobalTheory.UT.PhiOrder.main <;> assumption)

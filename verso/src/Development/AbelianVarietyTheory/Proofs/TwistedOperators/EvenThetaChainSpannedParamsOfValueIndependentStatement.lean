@@ -22,8 +22,10 @@ open scoped TensorProduct InnerProductSpace ComplexConjugate
 open GlobalTheory.EvenOnto
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EvenOnto.eig_parOfVal_indep | exact GlobalTheory.EvenOnto.eig_parOfVal_indep | (intros; apply GlobalTheory.EvenOnto.eig_parOfVal_indep <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EvenOnto.eig_parOfVal_indep` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FEvenThetaChainSpannedParamsOfValueIndependent.lean&line=75#L75)
 -/
 theorem _root_.GlobalTheory.T.even_theta_chain_spanned_params_of_value_independent : GlobalTheory.Published.CuspRapidDecay → ∀ D : D7, FinDim D → MetEx D → EigSpan D ∧ ParOfVal D ∧ ParIndep D := by
   first | exact @GlobalTheory.EvenOnto.eig_parOfVal_indep | exact GlobalTheory.EvenOnto.eig_parOfVal_indep | (intros; apply GlobalTheory.EvenOnto.eig_parOfVal_indep <;> assumption)

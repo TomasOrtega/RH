@@ -12,8 +12,10 @@ open ReciprocityTheory.AnForm.R GlobalTheory.ZH GlobalTheory.Poinc GlobalTheory.
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UT ReciprocityTheory.ChartRestriction.G.DVR
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GSep.exists_zhAbove | exact GlobalTheory.GSep.exists_zhAbove | (intros; apply GlobalTheory.GSep.exists_zhAbove <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GSep.exists_zhAbove` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsSemiAbelianExtendingModelAboveThetaSystem.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.exists_semiAbelianExtendingModel_above_thetaSystem : ∀ (X₁ : GlobalTheory.GSep.GSet), ∃ (Y : RatModel X₁.o₁ X₁.Ω₁) (πY : Y.Z ⟶ X₁.M.Z), GlobalTheory.GSep.ZHAbove X₁ Y πY := by
   first | exact @GlobalTheory.GSep.exists_zhAbove | exact GlobalTheory.GSep.exists_zhAbove | (intros; apply GlobalTheory.GSep.exists_zhAbove <;> assumption)

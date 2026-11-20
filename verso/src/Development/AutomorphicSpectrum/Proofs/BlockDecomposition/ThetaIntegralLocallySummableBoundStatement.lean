@@ -8,8 +8,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz (schwartzA)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.JtUnif.jt_unif | exact GlobalTheory.CompanionTheory.JtUnif.jt_unif | (intros; apply GlobalTheory.CompanionTheory.JtUnif.jt_unif <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.JtUnif.jt_unif` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FThetaIntegralLocallySummableBound.lean&line=217#L217)
 -/
 theorem _root_.GlobalTheory.T.theta_integral_locally_summable_bound : ∀ (D : D7) (r : ℕ) (V : HSp D) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (μ : Measure (Mx D V.rank r)) (φ : Mx D V.rank r → ℂ), 2 * r < V.rank → IsCharAF D.host.F ψ → IsInfFam θ → (∃ 𝓕, IsCovolOne (ratMx D V.rank r) μ 𝓕) → φ ∈ schwartzA θ V.rank r → ∀ K : Set (hermA D r), IsCompact K → ∃ u : ratHerm D r → ℝ, Summable u ∧ ∀ c : ratHerm D r, ∀ b ∈ K, ‖Jt ψ V μ φ (b + c.1)‖ ≤ u c := by
   first | exact @GlobalTheory.CompanionTheory.JtUnif.jt_unif | exact GlobalTheory.CompanionTheory.JtUnif.jt_unif | (intros; apply GlobalTheory.CompanionTheory.JtUnif.jt_unif <;> assumption)

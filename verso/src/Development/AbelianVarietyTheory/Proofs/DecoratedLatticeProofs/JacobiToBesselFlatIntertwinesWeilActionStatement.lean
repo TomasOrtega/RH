@@ -11,8 +11,10 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Unf GlobalTheory.Unf.FB
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Unf.FlatComm.flatFB_om | exact GlobalTheory.Unf.FlatComm.flatFB_om | (intros; apply GlobalTheory.Unf.FlatComm.flatFB_om <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Unf.FlatComm.flatFB_om` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FJacobiToBesselFlatIntertwinesWeilAction.lean&line=64#L64)
 -/
 theorem _root_.GlobalTheory.T.jacobiToBesselFlat_intertwines_weilAction : ∀ (D : D7), Descent D → ∀ (ψ : AddChar (AF D.host.F) ℂ) (σ : ℕ) (J : JacLev D (σ + 1)) (B : BesLev D σ) (s : StepFB ψ J B), ∀ (Ψ : WO J.W B.V → ℂ), IsThetaFunO ψ J.W B.V Ψ → ∀ (g : GA D J.W₀) (h : GA D B.A), flatFB s (s.om (J.d.emb0 g, embA B.d B.o h) Ψ) = s.om₀ (g, B.o.emb (h, 1)) (flatFB s Ψ) := by
   first | exact @GlobalTheory.Unf.FlatComm.flatFB_om | exact GlobalTheory.Unf.FlatComm.flatFB_om | (intros; apply GlobalTheory.Unf.FlatComm.flatFB_om <;> assumption)

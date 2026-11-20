@@ -7,8 +7,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.LN GlobalTheory.TorRef
 open scoped CategoryTheory.Obj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FieldAscent.indepAlong_ascent | exact GlobalTheory.FieldAscent.indepAlong_ascent | (intros; apply GlobalTheory.FieldAscent.indepAlong_ascent <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FieldAscent.indepAlong_ascent` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FIndependenceFieldExtension.lean&line=81#L81)
 -/
 theorem _root_.GlobalTheory.T.independence_field_extension : ∀ (R : Type) [CommRing R] (G : Over (Sp R)) (L : LB G.left) (N n : ℕ)
     (b : Fin n → LB.Sec (LPow G L (N : ℤ) (Over.mk (𝟙 (Sp R))))) (k K : Type) [Field k] [Field K] (ψ : R →+* k)

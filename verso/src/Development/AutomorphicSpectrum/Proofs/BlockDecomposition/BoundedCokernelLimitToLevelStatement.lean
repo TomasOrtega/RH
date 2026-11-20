@@ -3,8 +3,10 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BoundedCokernel
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.TwistedRepresentations.Tens
 open TensorProduct CrystallineSemistableComparison CrystallineSemistableComparison.Tw
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.TwCok.lim_cokernel_bounded | exact GlobalTheory.CompanionTheory.TwCok.lim_cokernel_bounded | (intros; apply GlobalTheory.CompanionTheory.TwCok.lim_cokernel_bounded <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.TwCok.lim_cokernel_bounded` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FBoundedCokernelLimitToLevel.lean&line=85#L85)
 -/
 theorem _root_.GlobalTheory.T.bounded_cokernel_limit_to_level : ∀ (W : Type) [CommRing W] [IsNoetherianRing W] (l : ℕ) (S S' : Sys.{1} W) (_ : LSeq l S S'), (∀ n, IsArtinian W (S.M n)) → Module.Finite W S'.lim → ∃ c : ℕ, ∀ n (x : S.M n), ∃ y : S.lim, y.1 n = ((l : W) ^ c) • x := by
   first | exact @GlobalTheory.CompanionTheory.TwCok.lim_cokernel_bounded | exact GlobalTheory.CompanionTheory.TwCok.lim_cokernel_bounded | (intros; apply GlobalTheory.CompanionTheory.TwCok.lim_cokernel_bounded <;> assumption)

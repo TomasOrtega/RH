@@ -16,8 +16,10 @@ open Formalism.MainNotions.ModuliIntegralCharts.H1.BoxTuple Formalism.MainNotion
 open ReciprocityTheory.ChartRestriction.G.TB (colM dAct)
 open IsDedekindDomain
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LevelPrimePoint.least_value_le | exact GlobalTheory.LevelPrimePoint.least_value_le | (intros; apply GlobalTheory.LevelPrimePoint.least_value_le <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LevelPrimePoint.least_value_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FJetHarmonics%2FThetaGeneratorsLeastValueOverLevelPrime.lean&line=196#L196)
 -/
 theorem _root_.GlobalTheory.T.theta_generators_least_value_over_level_prime : (∀ (p : ℕ) [Fact p.Prime], ReciprocityTheory.ChartRestriction.G.Pdiv.ChartF.HTFSt p) → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l),
  letI := H.starRing

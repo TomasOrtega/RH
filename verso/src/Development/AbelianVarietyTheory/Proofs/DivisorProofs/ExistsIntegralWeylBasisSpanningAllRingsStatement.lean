@@ -10,8 +10,10 @@ open GlobalTheory.FrameRead
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WeylBasis.exists_weyl_basis | exact GlobalTheory.WeylBasis.exists_weyl_basis | (intros; apply GlobalTheory.WeylBasis.exists_weyl_basis <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WeylBasis.exists_weyl_basis` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsIntegralWeylBasisSpanningAllRings.lean&line=35#L35)
 -/
 theorem _root_.GlobalTheory.T.exists_integral_weylBasis_spanning_all_rings : ∀ (n : ℕ) (ν : Fin n → ℕ), Antitone ν → ∃ (P : Type) (_ : Fintype P) (b : P → MvPolynomial (Fin n × Fin n) ℤ), LinearIndependent ℤ b ∧ (∀ (R : Type) [CommRing R], weyl R n n le_rfl ν = Submodule.span R (Set.range fun i => MvPolynomial.map (Int.castRingHom R) (b i))) ∧ ∀ (K : Type) [Field K] [CharZero K], dualWeyl K n n ν = Submodule.span K (Set.range fun i => MvPolynomial.map (Int.castRingHom K) (b i)) := by
   first | exact @GlobalTheory.WeylBasis.exists_weyl_basis | exact GlobalTheory.WeylBasis.exists_weyl_basis | (intros; apply GlobalTheory.WeylBasis.exists_weyl_basis <;> assumption)

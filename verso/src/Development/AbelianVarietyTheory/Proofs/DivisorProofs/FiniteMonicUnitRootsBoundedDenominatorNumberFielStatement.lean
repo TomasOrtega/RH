@@ -6,8 +6,10 @@ open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep 
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.monic_roots_norm_one_coeff_denom_finite | exact GlobalTheory.monic_roots_norm_one_coeff_denom_finite | (intros; apply GlobalTheory.monic_roots_norm_one_coeff_denom_finite <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.monic_roots_norm_one_coeff_denom_finite` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFiniteMonicUnitRootsBoundedDenominatorNumberFiel.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.finite_monic_unitRoots_bounded_denominator_numberField : ∀ (E : Type) [Field E] [NumberField E] (n d : ℕ), d ≠ 0 → {P : E[X] | P.Monic ∧ P.natDegree = n ∧ (∀ τ : E →+* ℂ, ∀ z ∈ (P.map τ).roots, ‖z‖ = 1) ∧ ∀ k, ∃ a : 𝓞 E, (a : E) = d * P.coeff k}.Finite := by
   first | exact @GlobalTheory.monic_roots_norm_one_coeff_denom_finite | exact GlobalTheory.monic_roots_norm_one_coeff_denom_finite | (intros; apply GlobalTheory.monic_roots_norm_one_coeff_denom_finite <;> assumption)

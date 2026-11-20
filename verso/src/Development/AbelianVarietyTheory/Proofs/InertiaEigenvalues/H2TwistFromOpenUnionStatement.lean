@@ -5,8 +5,10 @@ import ReciprocityTheory.ReductiveGroups.TraceFormulas.LatDefs
 open ReciprocityTheory.Gal Formalism.RepresentationBoundsCohomology.LOC ReciprocityTheory.ChartRestriction.T2
 open Formalism.NG (KO)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.h2_twist_exists_of_iUnion_open | exact GlobalTheory.h2_twist_exists_of_iUnion_open | (intros; apply GlobalTheory.h2_twist_exists_of_iUnion_open <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.h2_twist_exists_of_iUnion_open` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FH2TwistFromOpenUnion.lean&line=8#L8)
 -/
 theorem _root_.GlobalTheory.T.exists_H2_preimage_of_monotone_open_exhaustion : ∀ {O : Type} [CommRing O] [TopologicalSpace O] {G : Type} [Group G] [TopologicalSpace G] [CompactSpace G]
     (ε : G →* Oˣ) {M : Type} [AddCommGroup M] [Module O M] [TopologicalSpace M] [IsTopologicalAddGroup M]

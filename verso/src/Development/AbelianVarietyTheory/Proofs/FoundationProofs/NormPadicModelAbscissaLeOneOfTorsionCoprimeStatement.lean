@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DifferentiableSq
 open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.NormSum
 open scoped BigOperators
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TorsionAbscissa.norm_xAt_le_of_mul | exact GlobalTheory.TorsionAbscissa.norm_xAt_le_of_mul | (intros; apply GlobalTheory.TorsionAbscissa.norm_xAt_le_of_mul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TorsionAbscissa.norm_xAt_le_of_mul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FNormPadicModelAbscissaLeOneOfTorsionCoprime.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.norm_padicModelAbscissa_le_one_of_torsion_coprime : ∀ (D : D7) (p : ℕ) [Fact p.Prime] (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (g : GL3Theta.G1 p), GL3Theta.At D cc δ g → ∀ (N : ℕ) (v : ℂ), 0 < N → Nat.Coprime N p → (N : ℂ) * v ∈ g.abelian₂ → v ∉ g.abelian₂ → ‖GlobalTheory.EvenTheta.xAt g v‖ ≤ 1 := by
   first | exact @GlobalTheory.TorsionAbscissa.norm_xAt_le_of_mul | exact GlobalTheory.TorsionAbscissa.norm_xAt_le_of_mul | (intros; apply GlobalTheory.TorsionAbscissa.norm_xAt_le_of_mul <;> assumption)

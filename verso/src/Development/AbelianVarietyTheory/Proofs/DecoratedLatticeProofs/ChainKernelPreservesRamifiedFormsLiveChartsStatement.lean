@@ -6,8 +6,10 @@ open NumberField IsDedekindDomain Matrix MeasureTheory GlobalTheory.Mem GlobalTh
 open scoped TensorProduct Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AdForm.kernels_keep_ramL | exact GlobalTheory.AdForm.kernels_keep_ramL | (intros; apply GlobalTheory.AdForm.kernels_keep_ramL <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AdForm.kernels_keep_ramL` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FChainKernelPreservesRamifiedFormsLiveCharts.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.chainKernel_preserves_ramifiedForms_liveCharts : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (u : B.Word) (a : I.ι) (Ch₀ Ch : ℕ → Type) (A : TwDat I l Z u a Ch₀) (ι : ∀ j, Ch j → Ch₀ j), A.Is → A.Live ι → ∀ i, i < B.R.m → ∀ φ, A.RamL ι i φ → A.RamL ι (i + 1) ((I.chain l u a).K i φ) := by
   first | exact @GlobalTheory.AdForm.kernels_keep_ramL | exact GlobalTheory.AdForm.kernels_keep_ramL | (intros; apply GlobalTheory.AdForm.kernels_keep_ramL <;> assumption)

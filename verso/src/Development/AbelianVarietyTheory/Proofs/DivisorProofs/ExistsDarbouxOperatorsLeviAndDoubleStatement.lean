@@ -7,8 +7,10 @@ open scoped TensorProduct NNReal ENNReal Matrix Classical
 open NumberField MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.TowU
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TowU.realised_levi2 | exact GlobalTheory.TowU.realised_levi2 | (intros; apply GlobalTheory.TowU.realised_levi2 <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TowU.realised_levi2` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsDarbouxOperatorsLeviAndDouble.lean&line=126#L126)
 -/
 theorem _root_.GlobalTheory.T.exists_darbouxOperators_levi_and_double : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ → ∀ (κ : Type) [Fintype κ] [DecidableEq κ], ∀ A : Matrix κ κ F, IsUnit A.det → ∃ (S : ((κ → AF F) → ℂ) →ₗ[ℂ] ((κ → AF F) → ℂ)) (S' : ((κ → AF F) → ℂ) →ₗ[ℂ] ((κ → AF F) → ℂ)), IsOp2 ψ (GlobalTheory.AdelicSvN.act (Matrix.fromBlocks A 0 0 (A⁻¹)ᵀ)) S S' := by
   first | exact @GlobalTheory.TowU.realised_levi2 | exact GlobalTheory.TowU.realised_levi2 | (intros; apply GlobalTheory.TowU.realised_levi2 <;> assumption)

@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.PetEqRelIndexMul
 open UpperHalfPlane ModularForm CongruenceSubgroup MeasureTheory
 open scoped MatrixGroups ModularForm Manifold
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Hk.dia_congr | exact GlobalTheory.Hk.dia_congr | (intros; apply GlobalTheory.Hk.dia_congr <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Hk.dia_congr` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FDiamondOperatorOfMatrixCongr.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.diamondOperatorOfMatrix_congr : ∀ (N l : ℕ) (k d : ℤ) (σ τ : SL(2, ℤ)), 0 < N → GlobalTheory.Hk.IsDia N l d σ → GlobalTheory.Hk.IsDia N l d τ → ∀ f : ModularForm (GlobalTheory.Hk.lev N l) k, GlobalTheory.Hk.dia k σ ⇑f = GlobalTheory.Hk.dia k τ ⇑f := by
   first | exact @GlobalTheory.Hk.dia_congr | exact GlobalTheory.Hk.dia_congr | (intros; apply GlobalTheory.Hk.dia_congr <;> assumption)

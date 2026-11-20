@@ -7,8 +7,10 @@ open scoped TensorProduct Matrix Classical GlobalTheory.IndefiniteRowSideFullHec
 open NumberField MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.BasicNotions.TH GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.FockAlg GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.RealLift
 open GlobalTheory.HoweD
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HoweD.FrameCartan.frame_of_cartan | exact GlobalTheory.HoweD.FrameCartan.frame_of_cartan | (intros; apply GlobalTheory.HoweD.FrameCartan.frame_of_cartan <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HoweD.FrameCartan.frame_of_cartan` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsSignatureOrthonormalFrameEigenOfCartanInvo.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.exists_signatureOrthonormalFrame_eigen_of_cartanInvolution : ∀ (n : ℕ) (M θ : Matrix (Fin n) (Fin n) ℂ), (∀ i j, star (M j i) = M i j) → M.det ≠ 0 → IsCartan M θ → ∃ (r s : ℕ) (A : Matrix (Fin n) (Ix r s) ℂ), IsFrame M A ∧ θ * A = A * Jm r s := by
   first | exact @GlobalTheory.HoweD.FrameCartan.frame_of_cartan | exact GlobalTheory.HoweD.FrameCartan.frame_of_cartan | (intros; apply GlobalTheory.HoweD.FrameCartan.frame_of_cartan <;> assumption)

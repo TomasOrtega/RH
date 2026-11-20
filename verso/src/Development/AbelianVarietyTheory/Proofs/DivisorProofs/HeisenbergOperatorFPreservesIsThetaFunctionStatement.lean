@@ -8,8 +8,10 @@ open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHeck
 open Formalism.IndefR.DatumF MeasureTheory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HeisKeepF.isThetaFunOF_heisOF | exact GlobalTheory.HeisKeepF.isThetaFunOF_heisOF | (intros; apply GlobalTheory.HeisKeepF.isThetaFunOF_heisOF <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HeisKeepF.isThetaFunOF_heisOF` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHeisenbergOperatorFPreservesIsThetaFunction.lean&line=185#L185)
 -/
 theorem _root_.GlobalTheory.T.heisenbergOperatorF_preserves_isThetaFunction : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E) (ξ₀ : E) (ψ : AddChar (AF F) ℂ),

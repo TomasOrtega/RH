@@ -11,8 +11,10 @@ open scoped TensorProduct
 attribute [local instance] Over.cartesianMonoidalCategory
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Poinc.TestAtPt.norm_psi_coord | exact GlobalTheory.Poinc.TestAtPt.norm_psi_coord | (intros; apply GlobalTheory.Poinc.TestAtPt.norm_psi_coord <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Poinc.TestAtPt.norm_psi_coord` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FClassicalPointNormPsiCoordinateExpNegQuadratic.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.classicalPoint_norm_psi_coordinate_exp_neg_quadratic : ∀ (o' Ω : Type) [CommRing o'] [Field Ω] [Algebra o' Ω] (S : ThetaSys o' Ω) (ρ : S.Real) (M : RatModel o' Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J) (FinalForm : ZHOut ρ M U₀ EE) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (gm : G.left ⟶ FinalForm.G.left) (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (U : Unif (maximalIdeal R) D A G) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (ev : R →+* OO p) (u : ρ.UTest p y₀) (ε : D.toPre.X ≃+ u.D.toPre.X), GlobalTheory.Poinc.TestAtPt.IsBC FinalForm gm U ev u ε → ∀ (l : u.Lab) α s, PsiCoord D.toPre α s → ‖(ev s : PadicAlgCl p)‖ = Real.exp (-l.q (ε α)) := by
   first | exact @GlobalTheory.Poinc.TestAtPt.norm_psi_coord | exact GlobalTheory.Poinc.TestAtPt.norm_psi_coord | (intros; apply GlobalTheory.Poinc.TestAtPt.norm_psi_coord <;> assumption)

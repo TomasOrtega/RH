@@ -12,8 +12,10 @@ open Formalism.MainNotions.ModuliIntegralCharts.H1.BoxTuple Formalism.MainNotion
 open ReciprocityTheory.ChartRestriction.G.TB (colM dAct)
 open IsDedekindDomain
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PowData.exists_powData | exact GlobalTheory.PowData.exists_powData | (intros; apply GlobalTheory.PowData.exists_powData <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PowData.exists_powData` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FJetHarmonics%2FExistsProductDataCopiesTrivialisationValuation.lean&line=28#L28)
 -/
 theorem _root_.GlobalTheory.T.exists_productData_copies_trivialisation_valuation : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l),
  letI := H.starRing

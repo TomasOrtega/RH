@@ -8,8 +8,10 @@ import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.ConductorExpo
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BK GlobalTheory.BKReal GlobalTheory.BKGal GlobalTheory.Per Matrix
 open scoped Formalism.Per
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.norm_minpoly_coeff_zero_pow_of_pow_eq_neg | exact GlobalTheory.norm_minpoly_coeff_zero_pow_of_pow_eq_neg | (intros; apply GlobalTheory.norm_minpoly_coeff_zero_pow_of_pow_eq_neg <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.norm_minpoly_coeff_zero_pow_of_pow_eq_neg` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FNormMinpolyCoeffZeroPowOfPowEqNeg.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.norm_minpoly_coeff_zero_pow_of_pow_eq_neg_prime : ∀ (l : ℕ) [Fact l.Prime] (F : IntermediateField ℚ_[l] (Om l)) (N : ℕ) (x : Om l), 0 < N → x ^ N = -(l : Om l) → ‖(((minpoly F x).coeff 0 : F) : Om l)‖ ^ N = ((l : ℝ)⁻¹) ^ (minpoly F x).natDegree := by
   first | exact @GlobalTheory.norm_minpoly_coeff_zero_pow_of_pow_eq_neg | exact GlobalTheory.norm_minpoly_coeff_zero_pow_of_pow_eq_neg | (intros; apply GlobalTheory.norm_minpoly_coeff_zero_pow_of_pow_eq_neg <;> assumption)

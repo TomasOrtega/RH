@@ -15,8 +15,10 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
   GlobalTheory.UAut GlobalTheory.SiegelSet GlobalTheory.ThK.SquareIntegrability GlobalTheory.CuspBlock GlobalTheory.LFun.SplitTie
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CuspSmooth.mem_Sm_blockEmb | exact GlobalTheory.CuspSmooth.mem_Sm_blockEmb | (intros; apply GlobalTheory.CuspSmooth.mem_Sm_blockEmb <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CuspSmooth.mem_Sm_blockEmb` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FMaxCompactBlockLeviSecond.lean&line=29#L29)
 -/
 theorem _root_.GlobalTheory.T.isCuspOn_translate_mem_sm : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [IsTotallyComplex E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →

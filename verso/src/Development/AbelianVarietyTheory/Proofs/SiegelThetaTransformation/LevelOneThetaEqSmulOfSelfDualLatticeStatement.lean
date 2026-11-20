@@ -10,8 +10,10 @@ open scoped ComplexConjugate Classical
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Dict
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Dict.ThetaOne.exists_eq_smul_of_isTheta1 | exact GlobalTheory.Dict.ThetaOne.exists_eq_smul_of_isTheta1 | (intros; apply GlobalTheory.Dict.ThetaOne.exists_eq_smul_of_isTheta1 <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Dict.ThetaOne.exists_eq_smul_of_isTheta1` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSiegelThetaTransformation%2FLevelOneThetaEqSmulOfSelfDualLattice.lean&line=259#L259)
 -/
 theorem _root_.GlobalTheory.T.levelOne_theta_eq_smul_of_selfDual_lattice : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g : ℕ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → ∀ w : E, IsIntegral ℤ w → w + cc w = 1 → ∀ L : Lt E r, SelfD X L → ∀ x ∈ X.dom, ∀ θ θ' : (Fin g → ℂ) → ℂ, IsTheta1 X bas idx w x L θ → IsTheta1 X bas idx w x L θ' → θ' ≠ 0 → ∃ a : ℂ, θ = a • θ' := by
   first | exact @GlobalTheory.Dict.ThetaOne.exists_eq_smul_of_isTheta1 | exact GlobalTheory.Dict.ThetaOne.exists_eq_smul_of_isTheta1 | (intros; apply GlobalTheory.Dict.ThetaOne.exists_eq_smul_of_isTheta1 <;> assumption)

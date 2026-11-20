@@ -11,8 +11,10 @@ open NumberField MvPolynomial Filter Topology Formalism.BasicNotions Formalism.M
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.ArInt
 open scoped Classical
 open GlobalTheory.CovTestDR
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CovTestDR.vdmVal_tendsto | exact GlobalTheory.CovTestDR.vdmVal_tendsto | (intros; apply GlobalTheory.CovTestDR.vdmVal_tendsto <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CovTestDR.vdmVal_tendsto` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FVandermondeValueTendstoConstant.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.vandermonde_value_tendsto_constant : GlobalTheory.Published.ScholzeWeinsteinB → GlobalTheory.CovTop.HypothesesXH → Hypotheses2 → HypothesesH → RegularAlteration → GlobalTheory.IndefiniteRowSideFullHecke.ZeroSectionBase.Ch2HodgeVanishes → ∀ r : ℝ, Ch2Const r → OnObj fun _ O _ _ _ _ => Tendsto (vdmVal O.Y) atTop (𝓝 (-(2 * r * O.Y.vol * testI O.Y))) := by
   first | exact @GlobalTheory.CovTestDR.vdmVal_tendsto | exact GlobalTheory.CovTestDR.vdmVal_tendsto | (intros; apply GlobalTheory.CovTestDR.vdmVal_tendsto <;> assumption)

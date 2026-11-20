@@ -4,8 +4,10 @@ import Mathlib
 open MeasureTheory
 open scoped NNReal ENNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.exists_measurable_invariant_modification_of_closedSubgroup | exact GlobalTheory.exists_measurable_invariant_modification_of_closedSubgroup | (intros; apply GlobalTheory.exists_measurable_invariant_modification_of_closedSubgroup <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.exists_measurable_invariant_modification_of_closedSubgroup` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FInvariantMeasurableModification.lean&line=7#L7)
 -/
 theorem _root_.GlobalTheory.T.invariant_measurable_modification : ∀ (K : Type) [Group K] [TopologicalSpace K] [IsTopologicalGroup K] [CompactSpace K] [SecondCountableTopology K]
     [T2Space K] [MeasurableSpace K] [BorelSpace K] (M : Subgroup K) (μK : Measure K),

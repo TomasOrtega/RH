@@ -10,8 +10,10 @@ open scoped TensorProduct ComplexConjugate Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LevkSmul.smul_mem_hatV | exact GlobalTheory.LevkSmul.smul_mem_hatV | (intros; apply GlobalTheory.LevkSmul.smul_mem_hatV <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LevkSmul.smul_mem_hatV` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FSmulMemHermitianLatticeAdelicCompletionOfSmulLe.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.smul_mem_hermitianLatticeAdelicCompletion_of_smul_le : ∀ (D : D7) {k : ℕ} (L L' : Lt D.host.E k) (c : D.host.E), (∀ x ∈ L, c • x ∈ L') → ∀ u ∈ hatV L, ((1 : Af D.host.F) ⊗ₜ[D.host.F] c) • u ∈ hatV L' := by
   first | exact @GlobalTheory.LevkSmul.smul_mem_hatV | exact GlobalTheory.LevkSmul.smul_mem_hatV | (intros; apply GlobalTheory.LevkSmul.smul_mem_hatV <;> assumption)

@@ -8,8 +8,10 @@ open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHeck
 open Formalism.IndefR.DatumF
 open MeasureTheory
 
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SplitInvFormF.exists_invForm_split | exact GlobalTheory.SplitInvFormF.exists_invForm_split | (intros; apply GlobalTheory.SplitInvFormF.exists_invForm_split <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SplitInvFormF.exists_invForm_split` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsSplitPlaceConjHeisenbergInvariantForm.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.exists_splitPlace_conjHeisenberg_invariantForm : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

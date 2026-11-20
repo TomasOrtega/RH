@@ -14,8 +14,10 @@ open Formalism.L2 Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Rows Formalis
 open GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Top GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.Mem.Top.Bl.bWit_zsc_F0_heq_F0K_of_sc_eq | exact _root_.GlobalTheory.Mem.Top.Bl.bWit_zsc_F0_heq_F0K_of_sc_eq | (intros; apply _root_.GlobalTheory.Mem.Top.Bl.bWit_zsc_F0_heq_F0K_of_sc_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mem.Top.Bl.bWit_zsc_F0_heq_F0K_of_sc_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicArithmetic%2FThetaCorrespondence%2FThetaPairLifts%2FThirdPlaceSeries%2FBundleWitnessZeroSectionEq.lean&line=30#L30)
 -/
 theorem _root_.GlobalTheory.T.bWit_zsc_F0_heq_F0K_local_of_sc_eq : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL), GlobalTheory.Fc.EvP fun _ K => ∀ (q : WPt p.s K) (c : ℝ) (b : _root_.GlobalTheory.Fc.BundleCondition (q.w.D q.Z) q.O c) (w : _root_.GlobalTheory.Mem.Top.Bl.BundleWitness q b), q.O.L.sc = K.s → HEq (w.a.Zsc (zsOf q.x.what₂.r.z.R q.x.what₂.r.z.F)).F0 (F0K K.s (q.w.D q.Z)) := by
   first | exact @_root_.GlobalTheory.Mem.Top.Bl.bWit_zsc_F0_heq_F0K_of_sc_eq | exact _root_.GlobalTheory.Mem.Top.Bl.bWit_zsc_F0_heq_F0K_of_sc_eq | (intros; apply _root_.GlobalTheory.Mem.Top.Bl.bWit_zsc_F0_heq_F0K_of_sc_eq <;> assumption)

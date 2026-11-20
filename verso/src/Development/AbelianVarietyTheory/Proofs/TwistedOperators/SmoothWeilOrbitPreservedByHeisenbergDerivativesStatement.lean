@@ -17,8 +17,10 @@ open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HeisOrbit.orbit_heis | exact GlobalTheory.HeisOrbit.orbit_heis | (intros; apply GlobalTheory.HeisOrbit.orbit_heis <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HeisOrbit.orbit_heis` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FSmoothWeilOrbitPreservedByHeisenbergDerivatives.lean&line=28#L28)
 -/
 theorem _root_.GlobalTheory.T.smooth_weilOrbit_preserved_by_heisenbergDerivatives : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {a a' : ℕ} (B : Base F E) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W),

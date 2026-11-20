@@ -7,8 +7,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.TypedPartSplitPrimes (IsIntHom IsOr
 open GlobalTheory.IndefiniteRowSideFullHecke.BigBlockCharacters (HasChars)
 open GlobalTheory.IndefiniteRowSideFullHecke.FactorDepthInertBounds (boundAll boundInert boundFine)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RefSum.facBetween_inert | exact GlobalTheory.RefSum.facBetween_inert | (intros; apply GlobalTheory.RefSum.facBetween_inert <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RefSum.facBetween_inert` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFactorDepthBoundsInertPrime.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.factorDepth_bounds_inert_prime : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ∀ (p : ℕ) [Fact p.Prime] (la : PointsOfFlagModel.abelian₂ p c), ¬ (p : ℤ) ∣ discr E → InertInK H p → ∀ (f : Lt1 Dw) (k : ℕ), InPsi H f.1 → ∃ A B : ℝ, FacBetween Xo la f k A B ∧ B - A ≤ boundInert p Dw.q (rk f) k := by
   first | exact @GlobalTheory.RefSum.facBetween_inert | exact GlobalTheory.RefSum.facBetween_inert | (intros; apply GlobalTheory.RefSum.facBetween_inert <;> assumption)

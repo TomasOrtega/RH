@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.ValidForConst
 import Formalism.SharpRestriction.ElevenLe
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.DIV Formalism.L2.Ker GlobalTheory.AtG
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TiesTrue.tiesAt_true | exact GlobalTheory.TiesTrue.tiesAt_true | (intros; apply GlobalTheory.TiesTrue.tiesAt_true <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TiesTrue.tiesAt_true` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FPeriodRelationsTrueColumnsAtTuple.lean&line=166#L166)
 -/
 theorem _root_.GlobalTheory.T.periodRelations_trueColumns_at_tuple : ∀ {B : GlobalTheory.Mem.Base} {X : GlobalTheory.Mem.PreX B.toPre} (I : GlobalTheory.Mem.Col2.TC B X) (h : I.Ok) (l : I.Laws) (Z : GlobalTheory.Mem.Col2.TC.Later B (I.cols l)) (l0 : I.Law0 l), GlobalTheory.Mem.Col2.ColIn.JetsIn I → ∀ (EX : ErrX (I.rec7 l Z)) (Dx : DivX (I.rec7 l Z)) (a : I.ι), EX.piG = X.piG → EX.piT = X.piT → I.QpIs Dx.Qp → RowPin I h l Z a → TiesAt (I.rec7 l Z) EX Dx a := by
   first | exact @GlobalTheory.TiesTrue.tiesAt_true | exact GlobalTheory.TiesTrue.tiesAt_true | (intros; apply GlobalTheory.TiesTrue.tiesAt_true <;> assumption)

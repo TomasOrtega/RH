@@ -14,8 +14,10 @@ open GlobalTheory GlobalTheory.TorsionForm
 open scoped ContDiff Real CategoryTheory.Obj ComplexOrder
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ExactZero.eq_of_isExact_sub | exact GlobalTheory.ExactZero.eq_of_isExact_sub | (intros; apply GlobalTheory.ExactZero.eq_of_isExact_sub <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ExactZero.eq_of_isExact_sub` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FEqOfExactTypeZero.lean&line=31#L31)
 -/
 theorem _root_.GlobalTheory.T.eq_of_exact_type_zero : ∀ (M : Type) [TopologicalSpace M] (n : ℕ) (A : HolAtlas M n) (α β : A.Fld), (∀ x, IsType 0 0 (α x)) → (∀ x, IsType 0 0 (β x)) → A.IsExact (α - β) → α = β := by
   first | exact @GlobalTheory.ExactZero.eq_of_isExact_sub | exact GlobalTheory.ExactZero.eq_of_isExact_sub | (intros; apply GlobalTheory.ExactZero.eq_of_isExact_sub <;> assumption)

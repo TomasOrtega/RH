@@ -9,8 +9,10 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory.LocLanglands GlobalTheory.HeckeGal GlobalTheory.LocGL GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Published UpperTheory.V.Af.Bc GlobalTheory.RealGal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IsoOfFrobFree.main | exact GlobalTheory.IsoOfFrobFree.main | (intros; apply GlobalTheory.IsoOfFrobFree.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IsoOfFrobFree.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=PositivityTheory%2FAutomorphicForms%2FPublishedInputs%2FRealGaloisRepresentations%2FIwahoriSphericalTransfer%2FImports.lean&line=27#L27)
 -/
 theorem _root_.GlobalTheory.T.isomorphism_of_frobenius_traces : IsoOfFrob := by
   first | exact @GlobalTheory.IsoOfFrobFree.main | exact GlobalTheory.IsoOfFrobFree.main | (intros; apply GlobalTheory.IsoOfFrobFree.main <;> assumption)

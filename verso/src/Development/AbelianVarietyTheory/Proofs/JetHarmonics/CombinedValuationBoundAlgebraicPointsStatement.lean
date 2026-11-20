@@ -17,8 +17,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.DIV.Cons Formalism.MainNotions.Gaps.EtaleWeightGaps
 open GlobalTheory.PtTie
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PtTie.combBound_alg | exact GlobalTheory.PtTie.combBound_alg | (intros; apply GlobalTheory.PtTie.combBound_alg <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PtTie.combBound_alg` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FJetHarmonics%2FCombinedValuationBoundAlgebraicPoints.lean&line=54#L54)
 -/
 theorem _root_.GlobalTheory.T.combinedValuationBound_algebraicPoints : (∀ (p : ℕ) [Fact p.Prime], Pdiv.ChartF.HTFSt p) → ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (hinj : Function.Injective D.what₂.OtoLL) (EX : ErrX D) (w : WeightFamilies.Wt D j) (c : ℝ), Oriented T EX → RunNum D w c → ∀ (ka wF : WeightFamilies.Wt D j) (S : WeightAlgebra.Scal (recB h.toLawsCore)) (G : GlobalFamilyData (recPJ h j hj) ka w wF), S.sW = sWt (recB h.toLawsCore) hinj EX w → (j < D.R.m → 0 < G.iet ∧ EtVal h j hj G.iet G.et) → CombBound G S c (nusOf (recB h.toLawsCore) w (nuWt T w)) := by
   first | exact @GlobalTheory.PtTie.combBound_alg | exact GlobalTheory.PtTie.combBound_alg | (intros; apply GlobalTheory.PtTie.combBound_alg <;> assumption)

@@ -16,8 +16,10 @@ open ReciprocityTheory.L2DbarEstimates (V cHess)
 open scoped ContDiff ComplexOrder Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagFibre.det_lowConj | exact GlobalTheory.FlagFibre.det_lowConj | (intros; apply GlobalTheory.FlagFibre.det_lowConj <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagFibre.det_lowConj` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDetTriangularConjugateEqDiagonalRatio.lean&line=92#L92)
 -/
 theorem _root_.GlobalTheory.T.det_triangular_conjugate_eq_diagonal_ratio : ∀ {m : ℕ} (n : Low m → ℂ) (T : Matrix (Fin m) (Fin m) ℂ), (∀ a c : Fin m, c < a → T a c = 0) → IsUnit T.det → (Matrix.of fun s t : Low m => (T⁻¹ * (uni n)⁻¹) s.1.1 t.1.1 * T t.1.2 s.1.2).det = ∏ s : Low m, T s.1.2 s.1.2 / T s.1.1 s.1.1 := by
   first | exact @GlobalTheory.FlagFibre.det_lowConj | exact GlobalTheory.FlagFibre.det_lowConj | (intros; apply GlobalTheory.FlagFibre.det_lowConj <;> assumption)

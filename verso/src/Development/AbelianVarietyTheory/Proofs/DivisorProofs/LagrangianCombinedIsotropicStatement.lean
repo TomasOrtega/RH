@@ -7,8 +7,10 @@ open ValuativeRel
 open scoped Matrix Topology
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LagrFrame.exists_frame | exact GlobalTheory.LagrFrame.exists_frame | (intros; apply GlobalTheory.LagrFrame.exists_frame <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LagrFrame.exists_frame` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLagrangianCombinedIsotropic.lean&line=172#L172)
 -/
 theorem _root_.GlobalTheory.T.lagrangian_combined_isotropic : ∀ {k : Type} [Field k] {κ : Type} [Fintype κ] (U : Submodule k ((κ → k) × (κ → k))),
     (∀ u ∈ U, ∀ u' ∈ U, u.1 ⬝ᵥ u'.2 - u'.1 ⬝ᵥ u.2 = 0) →

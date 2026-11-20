@@ -13,8 +13,10 @@ open NumberField MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheor
 open GlobalTheory.Doubling (absE)
 open Formalism.UG (cT)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HypAdapt.Cmpl.exists_selfDual_complement | exact GlobalTheory.HypAdapt.Cmpl.exists_selfDual_complement | (intros; apply GlobalTheory.HypAdapt.Cmpl.exists_selfDual_complement <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HypAdapt.Cmpl.exists_selfDual_complement` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSelfDualLatticeProjectionCriterion.lean&line=48#L48)
 -/
 theorem _root_.GlobalTheory.T.self_dual_lattice_projection_criterion : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (n m r : ℕ) (J : Matrix (Fin n) (Fin n) E), J.det ≠ 0 →

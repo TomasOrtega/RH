@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ThickLetterWo
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.OneSubPhiOntoOfFilZero
 open NumberField IsDedekindDomain Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations Formalism.ConjugateSelfDual ReciprocityTheory.Gal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.pointInputAwayFromTypePrimes | exact GlobalTheory.pointInputAwayFromTypePrimes | (intros; apply GlobalTheory.pointInputAwayFromTypePrimes <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.pointInputAwayFromTypePrimes` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FPointInFamilyCrystalline.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.point_in_family_crystalline : GlobalTheory.Published.FontaineBcris → ∀ (D : D7) (X : KillingConditions.HubData D), GlobalTheory.PtCore.PtFam D X.r X.ρ → AdmissibleParameterJ.DeRhamFamilyAway D → ∀ i : D.nd.Loc, D.nd.l i ∉ TwistedPlaces.gset D → ∀ π ∈ D.nd.Zgood i, GlobalTheory.HTW.RecS.PtIn i (X.r i) (X.ρ i) π := by
   first | exact @GlobalTheory.pointInputAwayFromTypePrimes | exact GlobalTheory.pointInputAwayFromTypePrimes | (intros; apply GlobalTheory.pointInputAwayFromTypePrimes <;> assumption)

@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.AbByPOfCo
 import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.InvariantSubspaceMobiusInverseRecEqOfFinrankLt
 open Polynomial GlobalTheory.CuspGL GlobalTheory.BI
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BI.one_mem_of_integral_combination | exact GlobalTheory.BI.one_mem_of_integral_combination | (intros; apply GlobalTheory.BI.one_mem_of_integral_combination <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BI.one_mem_of_integral_combination` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FCharacterTheory%2FOneMemVirtualCharactersOfIntegralCombination.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.one_mem_virtualCharacters_of_integral_combination : ∀ (G : Type) [Group G] [Finite G] (S : AddSubgroup (G → ℂ)), S ≤ Virt ℂ ℂ G → ∀ (ι : Type) [Fintype ι] (r : ι → ℂ) (s : ι → G → ℂ), (∀ i, IsIntegral ℤ (r i)) → (∀ i, s i ∈ S) → (∀ g, ∑ i, r i * s i g = 1) → (1 : G → ℂ) ∈ S := by
   first | exact @GlobalTheory.BI.one_mem_of_integral_combination | exact GlobalTheory.BI.one_mem_of_integral_combination | (intros; apply GlobalTheory.BI.one_mem_of_integral_combination <;> assumption)

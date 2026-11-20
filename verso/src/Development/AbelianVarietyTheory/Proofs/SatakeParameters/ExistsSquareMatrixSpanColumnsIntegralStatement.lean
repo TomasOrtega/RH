@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SelfDualOne
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LatticeModelVacuumTranslateClassesIndependent
 open Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Hk3.HoweG.exists_square_span_cols | exact GlobalTheory.Hk3.HoweG.exists_square_span_cols | (intros; apply GlobalTheory.Hk3.HoweG.exists_square_span_cols <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Hk3.HoweG.exists_square_span_cols` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FExistsSquareMatrixSpanColumnsIntegral.lean&line=53#L53)
 -/
 theorem _root_.GlobalTheory.T.exists_square_matrix_span_columns_integral : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (n : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι]
     (M : Matrix (Fin n) ι L), ∃ b : Matrix (Fin n) (Fin n) L, ∀ v : Fin n → L,

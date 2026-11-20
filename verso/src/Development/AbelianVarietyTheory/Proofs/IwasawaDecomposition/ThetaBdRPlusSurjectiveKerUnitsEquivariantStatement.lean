@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsCris
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc GlobalTheory.MemLoc
 open scoped Formalism.Per
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MemLoc.thetaD_props | exact GlobalTheory.MemLoc.thetaD_props | (intros; apply GlobalTheory.MemLoc.thetaD_props <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MemLoc.thetaD_props` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FThetaBdRPlusSurjectiveKerUnitsEquivariant.lean&line=143#L143)
 -/
 theorem _root_.GlobalTheory.T.thetaBdRPlus_surjective_ker_units_equivariant : ∀ (l : ℕ) [Fact l.Prime], Function.Surjective (Per.θD l) ∧ (∀ y : Per.BdRp l, Per.θD l y = 0 ↔ y ∈ Per.FilP l 1) ∧ (∀ y : Per.BdRp l, Per.θD l y ≠ 0 → IsUnit y) ∧ (∀ a : Per.Ainf l, Per.θD l (aDp l a) = (Per.θ l a : ℂ_[l])) ∧ ∀ (g : Per.Gq l) (y : Per.BdRp l), Per.θD l (Per.σDp g y) = Per.σC g (Per.θD l y) := by
   first | exact @GlobalTheory.MemLoc.thetaD_props | exact GlobalTheory.MemLoc.thetaD_props | (intros; apply GlobalTheory.MemLoc.thetaD_props <;> assumption)

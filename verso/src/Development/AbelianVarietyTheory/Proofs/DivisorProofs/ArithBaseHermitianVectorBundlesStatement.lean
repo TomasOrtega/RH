@@ -14,8 +14,10 @@ open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalT
 open GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.ProjVar
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagGenFib.flagCover_exists | exact GlobalTheory.FlagGenFib.flagCover_exists | (intros; apply GlobalTheory.FlagGenFib.flagCover_exists <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagGenFib.flagCover_exists` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FArithBaseHermitianVectorBundles.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.arith_base_hermitian_vector_bundles : Hypotheses2 → HypothesesH → RegularAlteration → ScholzeWeinsteinB →
   ∀ (D : D7) (O : Setup D) (hO : O.Core) (B : ℝ) (hB : 2 ≤ B) (R : ℝ) (hR : 2 ≤ R) (c : O.s.Comp)

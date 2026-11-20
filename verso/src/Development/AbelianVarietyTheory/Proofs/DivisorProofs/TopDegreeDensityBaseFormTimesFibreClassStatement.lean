@@ -8,8 +8,10 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts G
 open GlobalTheory.FlagFibre (Low)
 open scoped Matrix ContDiff ComplexOrder ENNReal Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagCell2.CellDens.dens_cellForm | exact GlobalTheory.FlagCell2.CellDens.dens_cellForm | (intros; apply GlobalTheory.FlagCell2.CellDens.dens_cellForm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagCell2.CellDens.dens_cellForm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTopDegreeDensityBaseFormTimesFibreClass.lean&line=69#L69)
 -/
 theorem _root_.GlobalTheory.T.topDegreeDensity_base_form_times_fibre_class : ∀ (ι : Type) [Fintype ι] (m : ι → ℕ) (n d : ℕ) (ε : Fin n ≃ Fin d ⊕ Cell m) (G : V d → Mat m ℂ) (a : V d → Alt d) (w : V n), (∀ τ, (G (bsL ε w) τ).PosDef) → (∀ τ, MContDiffAt 2 (fun v => G v τ) (bsL ε w)) → dens (cellForm ε G a w) = dens (a (bsL ε w)) * (fibDens (G (bsL ε w)) (fb ε w) : ℝ) := by
   first | exact @GlobalTheory.FlagCell2.CellDens.dens_cellForm | exact GlobalTheory.FlagCell2.CellDens.dens_cellForm | (intros; apply GlobalTheory.FlagCell2.CellDens.dens_cellForm <;> assumption)

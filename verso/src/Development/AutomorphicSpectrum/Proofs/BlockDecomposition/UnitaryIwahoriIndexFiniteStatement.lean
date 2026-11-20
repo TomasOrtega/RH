@@ -7,8 +7,10 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsPermWOne
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MemIwUIff
 open GlobalTheory.PRep Formalism.UG GlobalTheory.LFun PositivityTheory.SphericalProduct GlobalTheory.CompanionTheory.SatPow
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.SatPow.finite_index_iwU | exact GlobalTheory.CompanionTheory.SatPow.finite_index_iwU | (intros; apply GlobalTheory.CompanionTheory.SatPow.finite_index_iwU <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.SatPow.finite_index_iwU` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FUnitaryIwahoriIndexFinite.lean&line=67#L67)
 -/
 theorem _root_.GlobalTheory.T.unitary_iwahori_index_finite : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : L) (σ : L →+* L) (q n : ℕ), IsUnramInv ϖ σ q → Finite (KU σ n ⧸ (IwU σ n).subgroupOf (KU σ n)) ∧ ∀ t : GU σ n, Finite (IwU σ n ⧸ (IwU σ n ⊓ (IwU σ n).map (MulAut.conj t).toMonoidHom).subgroupOf (IwU σ n)) := by
   first | exact @GlobalTheory.CompanionTheory.SatPow.finite_index_iwU | exact GlobalTheory.CompanionTheory.SatPow.finite_index_iwU | (intros; apply GlobalTheory.CompanionTheory.SatPow.finite_index_iwU <;> assumption)

@@ -8,8 +8,10 @@ open GlobalTheory.Doubling (absE npow)
 open Formalism.UG (cT bc)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SphEis.compact_inter_ratPts_finite | exact GlobalTheory.SphEis.compact_inter_ratPts_finite | (intros; apply GlobalTheory.SphEis.compact_inter_ratPts_finite <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SphEis.compact_inter_ratPts_finite` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFiniteCompactInterUnitaryRationalPoints.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.finite_compact_inter_unitaryRationalPoints : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (K : Set (GAd σ J)), IsCompact K → (K ∩ ratPts σ J).Finite := by
   first | exact @GlobalTheory.SphEis.compact_inter_ratPts_finite | exact GlobalTheory.SphEis.compact_inter_ratPts_finite | (intros; apply GlobalTheory.SphEis.compact_inter_ratPts_finite <;> assumption)

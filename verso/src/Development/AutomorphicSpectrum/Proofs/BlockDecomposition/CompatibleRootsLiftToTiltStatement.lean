@@ -5,8 +5,10 @@ import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomology
 set_option backward.isDefEq.respectTransparency false
 open CategoryTheory GroundTheory.PAdicHodge CrystallineSemistableComparison CrystallineSemistableComparison.PAlg
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Untilt.exists_compatible_roots_of_sharp | exact GlobalTheory.CompanionTheory.Untilt.exists_compatible_roots_of_sharp | (intros; apply GlobalTheory.CompanionTheory.Untilt.exists_compatible_roots_of_sharp <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Untilt.exists_compatible_roots_of_sharp` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FCompatibleRootsLiftToTilt.lean&line=60#L60)
 -/
 theorem _root_.GlobalTheory.T.compatible_roots_lift_to_tilt : ∀ {l : ℕ} [Fact l.Prime] (A : PAlg l) (u : ℕ → A.U), (∀ i, u (i + 1) ^ l = u i) → ∃ a : ℕ → A.A, (∀ i, a (i + 1) ^ l = a i) ∧ ∀ i, A.sharp (a i) = u i := by
   first | exact @GlobalTheory.CompanionTheory.Untilt.exists_compatible_roots_of_sharp | exact GlobalTheory.CompanionTheory.Untilt.exists_compatible_roots_of_sharp | (intros; apply GlobalTheory.CompanionTheory.Untilt.exists_compatible_roots_of_sharp <;> assumption)

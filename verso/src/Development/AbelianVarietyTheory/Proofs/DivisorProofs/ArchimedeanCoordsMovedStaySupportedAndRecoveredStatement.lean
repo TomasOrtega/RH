@@ -12,8 +12,10 @@ open scoped Classical
 open GlobalTheory.ArchDecay
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ArchDecay.liftI_at_movI | exact GlobalTheory.ArchDecay.liftI_at_movI | (intros; apply GlobalTheory.ArchDecay.liftI_at_movI <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ArchDecay.liftI_at_movI` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FArchimedeanCoordsMovedStaySupportedAndRecovered.lean&line=46#L46)
 -/
 theorem _root_.GlobalTheory.T.archimedeanCoords_moved_stay_supported_and_recovered : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (p : UA σ X.J × UA σ W.J) (ζ : (Fin n × Fin d → mixedEmbedding.mixedSpace F) × (Fin n × Fin d → mixedEmbedding.mixedSpace F)), At (evI F) (liftI M ζ) ∧ liftI M (movI M p ζ) = actAB (cA σ) p⁻¹ (liftI M ζ) := by
   first | exact @GlobalTheory.ArchDecay.liftI_at_movI | exact GlobalTheory.ArchDecay.liftI_at_movI | (intros; apply GlobalTheory.ArchDecay.liftI_at_movI <;> assumption)

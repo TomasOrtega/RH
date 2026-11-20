@@ -9,8 +9,10 @@ open GlobalTheory GlobalTheory.LieHt GlobalTheory.Cartier GlobalTheory.ThetaOnto
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MBLow.exists_keyAtMap_of_isGrpPullback | exact GlobalTheory.MBLow.exists_keyAtMap_of_isGrpPullback | (intros; apply GlobalTheory.MBLow.exists_keyAtMap_of_isGrpPullback <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MBLow.exists_keyAtMap_of_isGrpPullback` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsKeyDatumFibreOfGrpPullback.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.exists_keyDatum_fibre_of_grpPullback : ∀ (R K : Type) [CommRing R] [Field K] (f : R →+* K) (y : KeyIn R) (P : PolAV (Sp K)) (φ : P.A.left ⟶ y.P.A.left) (hp : 1 ≤ P.g) (rig : LB.Gen (P.L.pull (eSec P.A))) (hr : rig.IsGen), P.g = y.P.g → IsGrpPullback P.A y.P.A (spMap f) φ → LBIso P.L (y.P.L.pull φ) → ∃ th hth v hv, KeyAtMap ⟨P, hp, rig, hr, th, hth, v, hv⟩ y f φ := by
   first | exact @GlobalTheory.MBLow.exists_keyAtMap_of_isGrpPullback | exact GlobalTheory.MBLow.exists_keyAtMap_of_isGrpPullback | (intros; apply GlobalTheory.MBLow.exists_keyAtMap_of_isGrpPullback <;> assumption)

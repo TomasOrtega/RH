@@ -6,8 +6,10 @@ open NumberField MeasureTheory Matrix Formalism.HermitianLatticeCounting.S6 Glob
 open scoped Pointwise ENNReal Classical
 open GlobalTheory.DegVol.RefCov
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DegVol.MidLift.inWb_of_mem_Wn | exact GlobalTheory.DegVol.MidLift.inWb_of_mem_Wn | (intros; apply GlobalTheory.DegVol.MidLift.inWb_of_mem_Wn <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DegVol.MidLift.inWb_of_mem_Wn` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FRealisationMemStandardMiddleSpace.lean&line=89#L89)
 -/
 theorem _root_.GlobalTheory.T.realisation_mem_standard_middle_space : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (H : HermSpace K V) (r : ℕ) (N : NF H r) (k : ℕ) (σ : K →+* ℂ) (ρ : ℝ) (β : Fin r → ℕ) (Φ : V → Fin (2 * r + k + 1) → ℂ) (z z' : Fin (2 * r + k + 1) → ℂ) (g : Mat k r), 0 < ρ → IsFrameOf N k σ ρ β Φ z z' g → ∀ w ∈ N.Wn, inWb k r (Φ w) := by
   first | exact @GlobalTheory.DegVol.MidLift.inWb_of_mem_Wn | exact GlobalTheory.DegVol.MidLift.inWb_of_mem_Wn | (intros; apply GlobalTheory.DegVol.MidLift.inWb_of_mem_Wn <;> assumption)

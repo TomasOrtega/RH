@@ -10,8 +10,10 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open ReciprocityTheory.AnForm.M
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points GlobalTheory.CechPic GlobalTheory.ProjVar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChernPoly.chernInt_tens_pow_poly | exact GlobalTheory.ChernPoly.chernInt_tens_pow_poly | (intros; apply GlobalTheory.ChernPoly.chernInt_tens_pow_poly <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChernPoly.chernInt_tens_pow_poly` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsPolynomialChernIntegralTensPow.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.exists_polynomial_chernIntegral_tens_pow : ∀ (Y : Var ℂ) (L H : LB Y.X) (φ : Weight Y.str (RingHom.id ℂ) L) (ψ : Weight Y.str (RingHom.id ℂ) H), φ.IsCInf → ψ.IsCInf → ∃ P : Polynomial ℝ, P.eval 0 = Weight.chernInt φ Y.dim Set.univ (fun _ => 1) ∧ ∀ m : ℕ, Weight.chernInt (φ.tens (ψ.pow m)) Y.dim Set.univ (fun _ => 1) = P.eval (m : ℝ) := by
   first | exact @GlobalTheory.ChernPoly.chernInt_tens_pow_poly | exact GlobalTheory.ChernPoly.chernInt_tens_pow_poly | (intros; apply GlobalTheory.ChernPoly.chernInt_tens_pow_poly <;> assumption)

@@ -15,8 +15,10 @@ open scoped TensorProduct InnerProductSpace ComplexConjugate
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.ArchRec
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ArchRec.itLine_of_hypotheses | exact GlobalTheory.ArchRec.itLine_of_hypotheses | (intros; apply GlobalTheory.ArchRec.itLine_of_hypotheses <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ArchRec.itLine_of_hypotheses` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FRealThetaIntertwinersProportionalOfHarishChandra.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.realThetaIntertwiners_proportional_of_harishChandra : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → ∀ D : D7, GlobalTheory.Chain.ItLine D := by
   first | exact @GlobalTheory.ArchRec.itLine_of_hypotheses | exact GlobalTheory.ArchRec.itLine_of_hypotheses | (intros; apply GlobalTheory.ArchRec.itLine_of_hypotheses <;> assumption)

@@ -16,8 +16,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.Ch
 open NumberField IsDedekindDomain ValuativeRel Matrix Polynomial Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.LocGL GlobalTheory.WeilDeligne GlobalTheory.LocLanglands GlobalTheory.Published
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.OrdZeroUnit.valuation_eq_one_of_approx | exact GlobalTheory.OrdZeroUnit.valuation_eq_one_of_approx | (intros; apply GlobalTheory.OrdZeroUnit.valuation_eq_one_of_approx <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.OrdZeroUnit.valuation_eq_one_of_approx` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FValuationEqOneOfCongruentGlobalApprox.lean&line=49#L49)
 -/
 theorem _root_.GlobalTheory.T.valuation_eq_one_of_congruent_global_approx : ∀ (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (x : w.adicCompletion E),
     x ≠ 0 → Valued.v x ≤ 1 → (∀ a : ℕ, 0 < a → ∀ t : w.adicCompletion E, t ≠ 0 → ∃ k : Eˣ,

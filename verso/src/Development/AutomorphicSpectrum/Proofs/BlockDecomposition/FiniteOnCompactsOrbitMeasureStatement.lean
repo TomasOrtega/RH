@@ -12,8 +12,10 @@ open PositivityTheory.Rg.Rsw PositivityTheory.Rg.Rsw.L
 open GlobalTheory.CompanionTheory.ColumnSplitting
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.ColumnSplitting.isFiniteMeasureOnCompacts_nuT | exact GlobalTheory.CompanionTheory.ColumnSplitting.isFiniteMeasureOnCompacts_nuT | (intros; apply GlobalTheory.CompanionTheory.ColumnSplitting.isFiniteMeasureOnCompacts_nuT <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.ColumnSplitting.isFiniteMeasureOnCompacts_nuT` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FFiniteOnCompactsOrbitMeasure.lean&line=160#L160)
 -/
 theorem _root_.GlobalTheory.T.finite_on_compacts_orbit_measure : ∀ (D : D7) (n t : ℕ) (B W : HSp D) (d : HypDec B W t) (hn : W.rank + t = n) (I : IkD d n) (μ : Measure (Mx D W.rank t)), μ.IsAddHaarMeasure → ∀ (b₀ : HermE D W.rank), b₀.1.det ≠ 0 → ∀ x₀, gramQ W x₀ = b₀.1 → IsFiniteMeasureOnCompacts (nuT hn I μ x₀) := by
   first | exact @GlobalTheory.CompanionTheory.ColumnSplitting.isFiniteMeasureOnCompacts_nuT | exact GlobalTheory.CompanionTheory.ColumnSplitting.isFiniteMeasureOnCompacts_nuT | (intros; apply GlobalTheory.CompanionTheory.ColumnSplitting.isFiniteMeasureOnCompacts_nuT <;> assumption)

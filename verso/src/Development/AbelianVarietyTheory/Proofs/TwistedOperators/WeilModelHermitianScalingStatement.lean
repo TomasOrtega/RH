@@ -20,8 +20,10 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.OmegaDer.line_deriv_mem_coinv | exact GlobalTheory.OmegaDer.line_deriv_mem_coinv | (intros; apply GlobalTheory.OmegaDer.line_deriv_mem_coinv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.OmegaDer.line_deriv_mem_coinv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FWeilModelHermitianScaling.lean&line=219#L219)
 -/
 theorem _root_.GlobalTheory.T.weil_model_hermitian_scaling : GlobalTheory.FunPr.Hypotheses₂ → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
   ∀ (ε : Bool) (M X : HSp D) (A : Fr M) (B : Fr X) (χS χT : (AE D)ˣ →* Circle) (ω : WRep M X) (eS eT : D.what₂.Tau → ℚ),

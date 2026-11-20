@@ -5,8 +5,10 @@ import Formalism.SharpRestriction.LevelLetterCocycles.UsedLocalConclusion
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NotFullBot
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc TensorProduct GlobalTheory.NL Formalism.MainNotions.DeltaInvariantLattices
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.NL.PhiDec.phi_dec | exact GlobalTheory.NL.PhiDec.phi_dec | (intros; apply GlobalTheory.NL.PhiDec.phi_dec <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.NL.PhiDec.phi_dec` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FWachLetterRingFrobeniusDecomposition.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.wachLetterRing_frobenius_decomposition : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL), let W := (HW l).W K s LL h; ∀ a : AA K LL, ∃ c : Fin l → AA K LL, a = ∑ j : Fin l, (fun _ => ((1 : PowerSeries ↥(OL LL)) + PowerSeries.X) ^ (j : ℕ) : AA K LL) * W.φA (c j) := by
   first | exact @GlobalTheory.NL.PhiDec.phi_dec | exact GlobalTheory.NL.PhiDec.phi_dec | (intros; apply GlobalTheory.NL.PhiDec.phi_dec <;> assumption)

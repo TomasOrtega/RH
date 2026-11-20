@@ -13,8 +13,10 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Unf GlobalTheory.MiS
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.MiTop GlobalTheory.SeeSaw GlobalTheory.Fam ValuativeRel IsLocalRing GlobalTheory.FinPl
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MiTop.joint_of_famAllQ | exact GlobalTheory.MiTop.joint_of_famAllQ | (intros; apply GlobalTheory.MiTop.joint_of_famAllQ <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MiTop.joint_of_famAllQ` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FJointOfFamilyAndService.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.joint_of_family_and_service : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.HarishChandraModules → ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex), FamAllQ W → ServedQ W → Joint W := by
   first | exact @GlobalTheory.MiTop.joint_of_famAllQ | exact GlobalTheory.MiTop.joint_of_famAllQ | (intros; apply GlobalTheory.MiTop.joint_of_famAllQ <;> assumption)

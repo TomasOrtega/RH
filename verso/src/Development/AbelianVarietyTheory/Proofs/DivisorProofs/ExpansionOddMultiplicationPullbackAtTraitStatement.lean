@@ -12,8 +12,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.exp_mulPull_trait | exact GlobalTheory.Mum.exp_mulPull_trait | (intros; apply GlobalTheory.Mum.exp_mulPull_trait <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.exp_mulPull_trait` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExpansionOddMultiplicationPullbackAtTrait.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.expansion_oddMultiplicationPullback_at_trait : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (C : LabCover D) (m : ℕ), Odd m → ∀ (F₁ : IntFam (maximalIdeal R) D.toPre 1) (G : IntFam (maximalIdeal R) D.toPre (m ^ 2)) (θ₀ : SecK C.P.L.L C.α 1) (S : SecK C.P.L.L C.α (m ^ 2)), MulFam m F₁ G → MulSecK C m θ₀ S → ∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W] (T : Trait C W) (a b : W), a ≠ 0 → T.Exp a b θ₀ F₁ → ∃ v : Wˣ, T.Exp a (b * v) S G := by
   first | exact @GlobalTheory.Mum.exp_mulPull_trait | exact GlobalTheory.Mum.exp_mulPull_trait | (intros; apply GlobalTheory.Mum.exp_mulPull_trait <;> assumption)

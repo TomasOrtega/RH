@@ -9,8 +9,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz (schwartzA)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TorusBound.absTheta_le_torus | exact GlobalTheory.TorusBound.absTheta_le_torus | (intros; apply GlobalTheory.TorusBound.absTheta_le_torus <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TorusBound.absTheta_le_torus` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAbsThetaSumSiegelSetLeTorusPower.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.absThetaSum_siegelSet_le_torusPower : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) (n : ℕ) (r : ℕ) (X Y : Matrix (Fin V.rank) (Fin r) D.host.E), GlobalTheory.SiegelSet.IsWittFrame D.sp.cm.sig V.gram X Y → ∀ c : ℝ, 0 < c → ∀ Q : Set (GA D V), IsCompact Q → ∀ Φ : schwartzA θ V.rank n, ∃ C : ℝ, 0 ≤ C ∧ ∀ t ∈ GlobalTheory.SiegelSet.cone r c, ∀ a : GA D V, GlobalTheory.SiegelSet.IsTorusElt D.sp.cm.sig V.gram X Y t a → ∀ y ∈ Q, GlobalTheory.SiegelFormula.absTheta V Φ.1 (a * y) ≤ ENNReal.ofReal (C * ∏ i, t i ^ (Module.finrank ℚ D.host.F * (2 * n))) := by
   first | exact @GlobalTheory.TorusBound.absTheta_le_torus | exact GlobalTheory.TorusBound.absTheta_le_torus | (intros; apply GlobalTheory.TorusBound.absTheta_le_torus <;> assumption)

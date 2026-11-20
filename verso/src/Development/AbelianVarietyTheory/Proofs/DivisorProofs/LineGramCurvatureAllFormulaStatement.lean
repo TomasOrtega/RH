@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.HodgeFrameGram
 open Matrix Complex ComplexConjugate GlobalTheory.HermFrame GlobalTheory.IndefiniteRowSideFullHecke.HodgeFrameGram
 open scoped ComplexOrder ContDiff
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChernWeight.lineChern_weightNormSq | exact GlobalTheory.ChernWeight.lineChern_weightNormSq | (intros; apply GlobalTheory.ChernWeight.lineChern_weightNormSq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChernWeight.lineChern_weightNormSq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLineGramCurvatureAllFormula.lean&line=88#L88)
 -/
 theorem _root_.GlobalTheory.T.lineChern_weightNormSq_eq_vertForm_add_horizForm : ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ E] [IsScalarTower ℝ ℂ E]
     [FiniteDimensional ℂ E] (ι : Type) [Fintype ι] (n : ℕ) (U : Set (ι → ℂ))

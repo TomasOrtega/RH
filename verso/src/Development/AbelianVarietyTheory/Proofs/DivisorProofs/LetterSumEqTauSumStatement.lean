@@ -14,8 +14,10 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions ReciprocityTheory.
 open GlobalTheory.ShFam GlobalTheory.ShFam.Pad ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LieLetters.sum_letters_eq_sum_tau | exact GlobalTheory.LieLetters.sum_letters_eq_sum_tau | (intros; apply GlobalTheory.LieLetters.sum_letters_eq_sum_tau <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LieLetters.sum_letters_eq_sum_tau` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLetterSumEqTauSum.lean&line=40#L40)
 -/
 theorem _root_.GlobalTheory.T.letter_sum_eq_tau_sum : ∀ (D : D7) (O : Setup D) (g : (D.host.E →+* ℂ) × ℕ → ℝ),
     ∑ j : Fin (letters O.S.Dw).length, g (((letters O.S.Dw).get j).1, (((letters O.S.Dw).get j).2 : ℕ)) =

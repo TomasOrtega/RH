@@ -16,8 +16,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.CovTop.ZedSz.zed_size_alt | exact _root_.GlobalTheory.CovTop.ZedSz.zed_size_alt | (intros; apply _root_.GlobalTheory.CovTop.ZedSz.zed_size_alt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CovTop.ZedSz.zed_size_alt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicArithmetic%2FThetaCorrespondence%2FThetaPairLifts%2FThirdPlaceSeries%2FZedSize.lean&line=27#L27)
 -/
 theorem _root_.GlobalTheory.T.weight_parameter_size_bounds' : _root_.GlobalTheory.CovTop.SizeCondition → _root_.GlobalTheory.CovTop.CoversCondition fun Fm x _ ι p i Y PP _ => zed p i PP (⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).u₁ * (PP * kap p i) ≤ (Fm.L x ι).sc.b ∧ zed p i PP (⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).u₁ ≤ 1 / 2 := by
   first | exact @_root_.GlobalTheory.CovTop.ZedSz.zed_size_alt | exact _root_.GlobalTheory.CovTop.ZedSz.zed_size_alt | (intros; apply _root_.GlobalTheory.CovTop.ZedSz.zed_size_alt <;> assumption)

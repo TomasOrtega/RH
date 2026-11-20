@@ -16,8 +16,10 @@ open scoped TensorProduct
 open UpperTheory.V.Hi.LvR
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 attribute [local instance 2000] UpperTheory.V.W.coefLocal
-/- English proof (translation)
-The claim follows from `_root_.UpperTheory.V.Hi.level_of_isJ_unitaryHeckeData`.
+/- English proof (citation)
+Apply `UpperTheory.V.Hi.level_of_isJ_unitaryHeckeData` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicArithmetic%2FAutomorphicVarieties%2FModularityArgument%2FThresholdArguments%2FDenseThresholdCases%2FBaseObjectHomExt.lean&line=129#L129)
 -/
 theorem UpperTheory.V.Hi.level_of_is_j_unitary_hecke_data :
     _root_.UpperTheory.V.Af.HypothesesH' → ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (n : ℕ), 1 ≤ n →

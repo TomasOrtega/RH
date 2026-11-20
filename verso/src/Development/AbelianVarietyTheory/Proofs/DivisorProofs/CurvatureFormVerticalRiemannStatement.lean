@@ -6,8 +6,10 @@ open Matrix GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe GlobalTheory.T
 open scoped Real ContDiff
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TorsionForm.FlatAcyc.curvature_vertical | exact GlobalTheory.TorsionForm.FlatAcyc.curvature_vertical | (intros; apply GlobalTheory.TorsionForm.FlatAcyc.curvature_vertical <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TorsionForm.FlatAcyc.curvature_vertical` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCurvatureFormVerticalRiemann.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.curvature_form_vertical_riemann : ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {g : ℕ} {B : Set E}
     {τ : E → Matrix (Fin g) (Fin g) ℂ} (hτ : IsPeriodMap B τ) {b : E} (hb : b ∈ B)

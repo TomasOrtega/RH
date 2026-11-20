@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SemisimpleOfIn
 import Formalism.LocalToGlobal.NormalizedHeckeFactors.CoverStd
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 NumberField IsDedekindDomain Polynomial GlobalTheory.EtaJoin GlobalTheory.CoefDuty
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ClassFinConj.exists_finset_double_cosets_conj | exact GlobalTheory.ClassFinConj.exists_finset_double_cosets_conj | (intros; apply GlobalTheory.ClassFinConj.exists_finset_double_cosets_conj <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ClassFinConj.exists_finset_double_cosets_conj` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FExistsFinsetDoubleCosetsConjMaxCompact.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.exists_finset_doubleCosets_conj_maxCompact : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (h : GAf L n), ∃ T : Finset (GAf L n), ∀ g : GAf L n, ∃ γ ∈ GQ L n, ∃ t ∈ T, ∃ κ ∈ (Umax L n ⊓ (Umax L n).map (MulAut.conj h).toMonoidHom), g = γ * t * κ := by
   first | exact @GlobalTheory.ClassFinConj.exists_finset_double_cosets_conj | exact GlobalTheory.ClassFinConj.exists_finset_double_cosets_conj | (intros; apply GlobalTheory.ClassFinConj.exists_finset_double_cosets_conj <;> assumption)

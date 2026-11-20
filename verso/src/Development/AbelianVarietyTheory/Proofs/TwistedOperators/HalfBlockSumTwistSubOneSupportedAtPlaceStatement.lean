@@ -9,8 +9,10 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open scoped TensorProduct Matrix
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TwistBlockK.atK_sub_one | exact GlobalTheory.TwistBlockK.atK_sub_one | (intros; apply GlobalTheory.TwistBlockK.atK_sub_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TwistBlockK.atK_sub_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FHalfBlockSumTwistSubOneSupportedAtPlace.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.halfBlockSumTwist_sub_one_supportedAtPlace : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {d : ℕ} (v : Pl F) (g : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) (AE F E)) (Y : Matrix (Fin d) (Fin d) (AE F E)),
   At (evFin F v) (g - 1) → At (evFin F v) Y → At (evFin F v) ((⅟(2 : AF F) • ((g).toBlocks₁₁ + (g).toBlocks₁₂ + (g).toBlocks₂₁ + (g).toBlocks₂₂) +

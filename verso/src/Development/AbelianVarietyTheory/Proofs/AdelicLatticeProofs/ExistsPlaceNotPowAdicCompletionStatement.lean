@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.MemPowS
 open NumberField IsDedekindDomain Polynomial GlobalTheory.QNorm GlobalTheory.CNorm
 open scoped WithZero TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CNorm.exists_not_mem_not_pow_completion | exact GlobalTheory.CNorm.exists_not_mem_not_pow_completion | (intros; apply GlobalTheory.CNorm.exists_not_mem_not_pow_completion <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CNorm.exists_not_mem_not_pow_completion` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FAdelicLatticeProofs%2FExistsPlaceNotPowAdicCompletion.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.exists_place_not_pow_adicCompletion : ∀ (p : ℕ) (F : Type) [Field F] [NumberField F] [IsTotallyComplex F] (ζ u : F) (S₀ : Finset (HeightOneSpectrum (𝓞 F))), p.Prime → IsPrimitiveRoot ζ p → u ≠ 0 → (∀ r : F, r ^ p ≠ u) → ∃ v, v ∉ S₀ ∧ ∀ r : v.adicCompletion F, r ^ p ≠ algebraMap F (v.adicCompletion F) u := by
   first | exact @GlobalTheory.CNorm.exists_not_mem_not_pow_completion | exact GlobalTheory.CNorm.exists_not_mem_not_pow_completion | (intros; apply GlobalTheory.CNorm.exists_not_mem_not_pow_completion <;> assumption)

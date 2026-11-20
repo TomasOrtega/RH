@@ -18,8 +18,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting (SplitPro
 open GlobalTheory.IndefiniteRowSideFullHecke.VolumeFlatSection (Blocks parahoric datum)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LowerBlockParam.qOfVal | exact GlobalTheory.LowerBlockParam.qOfVal | (intros; apply GlobalTheory.LowerBlockParam.qOfVal <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LowerBlockParam.qOfVal` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FLowerBlockParameterOfOneNonzeroValue.lean&line=85#L85)
 -/
 theorem _root_.GlobalTheory.T.lowerBlockParameter_of_one_nonzeroValue : ∀ D : D7, SoftQ D → QOfVal D := by
   first | exact @GlobalTheory.LowerBlockParam.qOfVal | exact GlobalTheory.LowerBlockParam.qOfVal | (intros; apply GlobalTheory.LowerBlockParam.qOfVal <;> assumption)

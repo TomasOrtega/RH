@@ -11,8 +11,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ModuAdeleReal.modu_norm_eq_absE_real | exact GlobalTheory.ModuAdeleReal.modu_norm_eq_absE_real | (intros; apply GlobalTheory.ModuAdeleReal.modu_norm_eq_absE_real <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ModuAdeleReal.modu_norm_eq_absE_real` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAdelicModulusNormEqAbs.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.adelic_modulus_norm_eq_abs : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (x : (AE F E)ˣ),
     (((adeleClass F).modu (Units.map (Algebra.norm (AF F) : AE F E →* AF F) x) : ℝ≥0) : ℝ) = (absE F E x : ℝ) := by

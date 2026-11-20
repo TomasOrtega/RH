@@ -15,8 +15,10 @@ section
 open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Top GlobalTheory.Fc GlobalTheory.MiS GlobalTheory.Fam
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.Fam.xi_chrEq_cols_alt | exact _root_.GlobalTheory.Fam.xi_chrEq_cols_alt | (intros; apply _root_.GlobalTheory.Fam.xi_chrEq_cols_alt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Fam.xi_chrEq_cols_alt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicArithmetic%2FThetaCorrespondence%2FThetaPairLifts%2FThirdPlaceSeries%2FXiChrEqCols.lean&line=34#L34)
 -/
 theorem _root_.GlobalTheory.T.twist_character_matches_witness' : ∀ {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL} {K : Ctx} (q : Bl.WPt p.s K) {c : ℝ} (b : _root_.GlobalTheory.Fc.BundleCondition (q.w.D q.Z) q.O c), _root_.GlobalTheory.Mem.Top.Bl.BundleWitness q b → ∀ t, Formalism.IndefR.Links.ChrEq ((_root_.GlobalTheory.Fam.pk_z (_root_.GlobalTheory.Fam.packB_alt b)).xi t) (q.w.I.xi (b.P.I.tup t)) := by
   first | exact @_root_.GlobalTheory.Fam.xi_chrEq_cols_alt | exact _root_.GlobalTheory.Fam.xi_chrEq_cols_alt | (intros; apply _root_.GlobalTheory.Fam.xi_chrEq_cols_alt <;> assumption)

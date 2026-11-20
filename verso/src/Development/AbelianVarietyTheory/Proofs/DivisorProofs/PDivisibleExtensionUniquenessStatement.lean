@@ -12,8 +12,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.PDiv GlobalTheory.PDivGroup GlobalTheory.PerfdLat GlobalTheory.GroupBplus
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GroupBplus.Rigid.isRestr_of_generic | exact GlobalTheory.GroupBplus.Rigid.isRestr_of_generic | (intros; apply GlobalTheory.GroupBplus.Rigid.isRestr_of_generic <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GroupBplus.Rigid.isRestr_of_generic` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPDivisibleExtensionUniqueness.lean&line=549#L549)
 -/
 theorem _root_.GlobalTheory.T.p_divisible_extension_uniqueness : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (p : ℕ) [Fact p.Prime]
     (X Z : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (g : X ⟶ Z) (tZ : SAB H Z), GlobalTheory.IsNormalScheme X →

@@ -6,8 +6,10 @@ import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.Mirabol
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.GeometricLemmaFiltration
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.BZSeg GlobalTheory.BZMir Zc
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.DualQuot.exists_subquotient_dual_nu | exact GlobalTheory.CompanionTheory.DualQuot.exists_subquotient_dual_nu | (intros; apply GlobalTheory.CompanionTheory.DualQuot.exists_subquotient_dual_nu <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.DualQuot.exists_subquotient_dual_nu` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FPairingTwistedDeterminantSubquotient.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.pairing_twisted_determinant_subquotient : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (n s : ℕ) (V' : Type) [AddCommGroup V'] [Module ℂ V'] (S : IrrRep (GL (Fin n) k))

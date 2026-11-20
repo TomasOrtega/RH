@@ -16,8 +16,10 @@ open GlobalTheory.AscFin
 open GlobalTheory.BumpMix
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BumpMixSum.mixS_poinX | exact GlobalTheory.BumpMixSum.mixS_poinX | (intros; apply GlobalTheory.BumpMixSum.mixS_poinX <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BumpMixSum.mixS_poinX` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FMixedCoordinatePoincareSumHalfWittEqBump.lean&line=31#L31)
 -/
 theorem _root_.GlobalTheory.T.mixedCoordinate_poincareSum_halfWitt_eq_bump : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S S₀ T : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) (v : VolM D T.rank ρ) (β : Mx D T.rank ρ → ℂ), IsBump β → ∀ x, d.mixS T ψ v.μ v.𝓕 (poinX ψ d T β) x 0 = β x := by
   first | exact @GlobalTheory.BumpMixSum.mixS_poinX | exact GlobalTheory.BumpMixSum.mixS_poinX | (intros; apply GlobalTheory.BumpMixSum.mixS_poinX <;> assumption)

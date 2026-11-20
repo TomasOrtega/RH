@@ -11,8 +11,10 @@ open GlobalTheory
 open Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UPoinc.UTraitRam.evalZ_eq_mul | exact GlobalTheory.UPoinc.UTraitRam.evalZ_eq_mul | (intros; apply GlobalTheory.UPoinc.UTraitRam.evalZ_eq_mul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UPoinc.UTraitRam.evalZ_eq_mul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPolarisationFunctionMulRamificationIndex.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.polarisationFunction_mul_ramificationIndex : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l), 1 ≤ Dw.p + Dw.q → ∀ (T T' : UTrait Xo c) (f : T.V →+* T'.V) (fK : FractionRing T.V →+* FractionRing T'.V), Function.Injective f → IsLocalHom f → (∀ a, fK (algebraMap T.V (FractionRing T.V) a) = algebraMap T'.V (FractionRing T'.V) (f a)) → T'.y = spMap fK ≫ T.y → ∀ m : ℕ, Associated (f T.ϖ) (T'.ϖ ^ m) → ∀ φ : InvFun (𝓞 E), IsPolFan H.bar (min Dw.p Dw.q) φ → φ.evalZ T'.be = m * φ.evalZ T.be := by
   first | exact @GlobalTheory.UPoinc.UTraitRam.evalZ_eq_mul | exact GlobalTheory.UPoinc.UTraitRam.evalZ_eq_mul | (intros; apply GlobalTheory.UPoinc.UTraitRam.evalZ_eq_mul <;> assumption)

@@ -11,8 +11,10 @@ open ReciprocityTheory.L2DbarEstimates (V)
 open Filter Topology
 open scoped ContDiff
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PPAS.isArithVar_total | exact GlobalTheory.PPAS.isArithVar_total | (intros; apply GlobalTheory.PPAS.isArithVar_total <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PPAS.isArithVar_total` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAbelianSchemeArithVariety.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.abelian_scheme_arith_variety : ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k), IsRegSurf p → ∀ (P : PPAS S), IsArithVar (P.A.hom ≫ p) (P.g + 1) := by
   first | exact @GlobalTheory.PPAS.isArithVar_total | exact GlobalTheory.PPAS.isArithVar_total | (intros; apply GlobalTheory.PPAS.isArithVar_total <;> assumption)

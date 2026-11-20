@@ -22,8 +22,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup (coefPlus Cols Si
 open GlobalTheory.SepRows GlobalTheory.CoreOnto
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LatVacComb.isLatVac_sum_heisO | exact GlobalTheory.LatVacComb.isLatVac_sum_heisO | (intros; apply GlobalTheory.LatVacComb.isLatVac_sum_heisO <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LatVacComb.isLatVac_sum_heisO` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FIsLatticeVacuumSumHeisenbergTranslates.lean&line=27#L27)
 -/
 theorem _root_.GlobalTheory.T.isLatticeVacuum_sum_heisenbergTranslates : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (Λ : AddSubgroup (WO S T)) (g : WO S T → ℂ), IsLatVac (heisO ψ S T) Λ g → ∀ {ι : Type} (R : Finset ι) (c : ι → ℂ) (t : ι → WO S T), (∀ z ∈ R, ∀ u ∈ Λ, ψ (symplO S T u (t z)) = 1) → IsLatVac (heisO ψ S T) Λ (∑ z ∈ R, c z • heisO ψ S T (t z) g) := by
   first | exact @GlobalTheory.LatVacComb.isLatVac_sum_heisO | exact GlobalTheory.LatVacComb.isLatVac_sum_heisO | (intros; apply GlobalTheory.LatVacComb.isLatVac_sum_heisO <;> assumption)

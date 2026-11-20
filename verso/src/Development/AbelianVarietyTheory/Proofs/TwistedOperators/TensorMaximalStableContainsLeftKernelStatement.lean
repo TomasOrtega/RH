@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SimpleOver
 open scoped TensorProduct
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TensHead.tens_maxStab_contains_left_ker | exact GlobalTheory.TensHead.tens_maxStab_contains_left_ker | (intros; apply GlobalTheory.TensHead.tens_maxStab_contains_left_ker <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TensHead.tens_maxStab_contains_left_ker` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FTensorMaximalStableContainsLeftKernel.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.tensor_maximalStable_contains_leftKernel : ∀ {M₀ V : Type} [AddCommGroup M₀] [Module ℂ M₀] [AddCommGroup V] [Module ℂ V]
     (Op₀ : Set (Module.End ℂ M₀)) (B : Set (Module.End ℂ V)) (Rel₀ K₀ : Submodule ℂ M₀),

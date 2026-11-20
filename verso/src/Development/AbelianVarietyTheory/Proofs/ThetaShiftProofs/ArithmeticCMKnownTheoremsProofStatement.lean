@@ -6,8 +6,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open Formalism.L2.Pj Formalism.L2.PjFree Formalism.L2.Pj.QAt Formalism.L2.LamCM GlobalTheory GlobalTheory.ArcQ GlobalTheory.LamF GlobalTheory.ArcCM
 open scoped LaurentSeries
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ArcCM.known_holds | exact GlobalTheory.ArcCM.known_holds | (intros; apply GlobalTheory.ArcCM.known_holds <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ArcCM.known_holds` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FThetaShiftProofs%2FArithmeticCMKnownTheoremsProof.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.arithmeticCMKnownTheorems_proof : Known := by
   first | exact @GlobalTheory.ArcCM.known_holds | exact GlobalTheory.ArcCM.known_holds | (intros; apply GlobalTheory.ArcCM.known_holds <;> assumption)

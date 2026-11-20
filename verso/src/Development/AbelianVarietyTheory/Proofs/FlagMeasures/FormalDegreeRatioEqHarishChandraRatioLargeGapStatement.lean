@@ -9,8 +9,10 @@ import Formalism.LocalRingCardinality.DataTies
 open BranchingSupport GlobalTheory.CellAmp GlobalTheory.Amp Formalism.BasicNotions Formalism.MainNotions.S Formalism.QuantumDeterminants Matrix MeasureTheory Finset
 open scoped InnerProductSpace ENNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GapDegreeRatio.deg_ratio | exact GlobalTheory.GapDegreeRatio.deg_ratio | (intros; apply GlobalTheory.GapDegreeRatio.deg_ratio <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GapDegreeRatio.deg_ratio` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FFormalDegreeRatioEqHarishChandraRatioLargeGap.lean&line=57#L57)
 -/
 theorem _root_.GlobalTheory.T.formalDegree_ratio_eq_harishChandra_ratio_largeGap : GlobalTheory.GapIn.Hyp → ∀ (D : D7) (W : LocW D.R.k D.R.rS) (l l' : Fin (2 * D.R.rS + D.R.k + 1) → ℝ) (A A' : LocS W) (h : ℝ), GoodS D l A → GoodS D l' A' → GapAtLeast (epsSH D.R) l h → GapAtLeast (epsSH D.R) l' h → Formalism.FourierDecayAlt.ThreeDimData.GapOK D.R.k D.R.rS h → A'.deg / A.deg = Formalism.QuantumDeterminants.fdegHC l' / Formalism.QuantumDeterminants.fdegHC l := by
   first | exact @GlobalTheory.GapDegreeRatio.deg_ratio | exact GlobalTheory.GapDegreeRatio.deg_ratio | (intros; apply GlobalTheory.GapDegreeRatio.deg_ratio <;> assumption)

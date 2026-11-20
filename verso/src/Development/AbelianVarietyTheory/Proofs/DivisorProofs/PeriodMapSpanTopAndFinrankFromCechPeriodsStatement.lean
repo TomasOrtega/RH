@@ -5,8 +5,10 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory Car
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.Cris GlobalTheory.DeRham GlobalTheory.CechDR GlobalTheory.CechPer
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CechPer.span_periods_eq_top_and_finrank | exact GlobalTheory.CechPer.span_periods_eq_top_and_finrank | (intros; apply GlobalTheory.CechPer.span_periods_eq_top_and_finrank <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CechPer.span_periods_eq_top_and_finrank` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPeriodMapSpanTopAndFinrankFromCechPeriods.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.period_map_span_top_and_finrank_from_cech_periods : ∀ (A : Over (Sp ℂ)) [GrpObj A] (g : ℕ) (L : LB A.left) (u : HolUnif A L g), IsAbelianScheme A → ∀ P : u.Λ →+ HdR A, (∀ c : primDR A, IsPer u.ex u.Λ (cmp1 (str A) c.1) fun l => P l c) → Submodule.span ℂ (Set.range P) = ⊤ ∧ Module.finrank ℂ (HdR A) = 2 * g := by
   first | exact @GlobalTheory.CechPer.span_periods_eq_top_and_finrank | exact GlobalTheory.CechPer.span_periods_eq_top_and_finrank | (intros; apply GlobalTheory.CechPer.span_periods_eq_top_and_finrank <;> assumption)

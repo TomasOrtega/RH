@@ -6,8 +6,10 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.Un
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.QTw.QExt.bottom_one | exact GlobalTheory.QTw.QExt.bottom_one | (intros; apply GlobalTheory.QTw.QExt.bottom_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.QTw.QExt.bottom_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FBottomSphericalCardWeightIndex.lean&line=97#L97)
 -/
 theorem _root_.GlobalTheory.T.bottom_spherical_card_weight_index : ∀ (D : D7) (c : Comm D) (v : VCom c) (B : GlobalTheory.Fam.Base c) (PP : Formalism.L2.DIV.Pl D.host.E) (G : QGeo v B PP) (χ : ℕ → (AE D)ˣ →* Circle) (E : QExt G χ), Fintype.card (E.Ch 0) = 1 ∧ (∀ α, E.wt 0 α = 1) ∧ E.idx 0 = 1 ∧ ∀ j, j ≤ G.s + 1 + 1 → E.idx j ≠ 0 := by
   first | exact @GlobalTheory.QTw.QExt.bottom_one | exact GlobalTheory.QTw.QExt.bottom_one | (intros; apply GlobalTheory.QTw.QExt.bottom_one <;> assumption)

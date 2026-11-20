@@ -14,8 +14,10 @@ open Formalism.MainNotions.SchurIrreducible (IsSplit)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Hk3 (hyp IsVacAt UnrPl)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HypDict.mem_hyp_iff_embV | exact GlobalTheory.HypDict.mem_hyp_iff_embV | (intros; apply GlobalTheory.HypDict.mem_hyp_iff_embV <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HypDict.mem_hyp_iff_embV` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FMemHyperspecialSubgroupAtPlaceIffLocalStabilizer.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.mem_hyperspecialSubgroupAtPlace_iff_local_stabilizer : ∀ (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) (w : HeightOneSpectrum (𝓞 D.host.E)), w.under (𝓞 D.host.F) = v → ∀ (V : HSp D) (g : GA D V), g ∈ hyp V w ↔ ∃ k ∈ Kv V v, g = embV V v k := by
   first | exact @GlobalTheory.HypDict.mem_hyp_iff_embV | exact GlobalTheory.HypDict.mem_hyp_iff_embV | (intros; apply GlobalTheory.HypDict.mem_hyp_iff_embV <;> assumption)

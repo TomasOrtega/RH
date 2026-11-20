@@ -12,8 +12,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.BoundaryPolynomialFunctions (IsProj
 open Formalism.BasicNotions Formalism.L2.Pj GlobalTheory.Toroidal GlobalTheory.ShFam GlobalTheory.ShFam.Hor GlobalTheory.Mean4O
 open scoped ContDiff ComplexOrder ENNReal Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ArchLim.isClosedEmbedding_up | exact GlobalTheory.ArchLim.isClosedEmbedding_up | (intros; apply GlobalTheory.ArchLim.isClosedEmbedding_up <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ArchLim.isClosedEmbedding_up` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FClosedSubschemeModelGenericFibre.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.closed_subscheme_model_generic_fibre : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} {Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l} {c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l} {Oz : Type} [CommRing Oz] {β : Oz →+* c.F} (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β) {Y : Scheme.{0}} {q : Y ⟶ Sp Oz} (j : Y ⟶ Z.X) [IsClosedImmersion j] (hj : j ≫ Z.s = q) (σ : c.F →+* ℂ), IsClosedEmbedding (up j hj σ) := by
   first | exact @GlobalTheory.ArchLim.isClosedEmbedding_up | exact GlobalTheory.ArchLim.isClosedEmbedding_up | (intros; apply GlobalTheory.ArchLim.isClosedEmbedding_up <;> assumption)

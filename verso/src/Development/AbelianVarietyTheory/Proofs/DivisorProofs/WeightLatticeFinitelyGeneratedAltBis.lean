@@ -24,8 +24,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CovTop.ShiftFG.latW_fg_pow | exact GlobalTheory.CovTop.ShiftFG.latW_fg_pow | (intros; apply GlobalTheory.CovTop.ShiftFG.latW_fg_pow <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CovTop.ShiftFG.latW_fg_pow` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLatWFgPow.lean&line=65#L65)
 -/
 theorem _root_.GlobalTheory.T.latW_fg_of_good : Hypotheses2 → ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j : ℕ, 1 ≤ (T.Q.Dw j).p → 1 ≤ (T.Q.Dw j).q → 2 < Module.finrank ℚ D.host.E / 2 → InR D j → ∀ (Y : Deep T.toCore j) (e : ℕ) (o : ℝ), Y.Good e o → ∀ (la : GlobalTheory.AllWt.Weight (T.Q.Dw j)), (∀ τ, Antitone (la τ)) → (∀ τ, 1 ≤ gap (la τ) ((T.Q.Dw j).p - 1)) → (∀ k : ℕ, Y.GoodAt (wtOf _ ((k + 1) • la) 0)) → ∀ m : ℕ, (GlobalTheory.AllWt.latW Y.U (wtOf _ la m)).FG := by
   first | exact @GlobalTheory.CovTop.ShiftFG.latW_fg_pow | exact GlobalTheory.CovTop.ShiftFG.latW_fg_pow | (intros; apply GlobalTheory.CovTop.ShiftFG.latW_fg_pow <;> assumption)

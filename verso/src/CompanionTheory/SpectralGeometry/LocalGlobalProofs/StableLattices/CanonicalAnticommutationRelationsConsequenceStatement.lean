@@ -8,8 +8,10 @@ open Formalism.REAL (GlRel KHighest IsWeight)
 open CompanionTheory.D.DSIC (KUnit)
 open scoped InnerProductSpace
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.CliffordCoeff.commute_shifted_dirac | exact GlobalTheory.CompanionTheory.CliffordCoeff.commute_shifted_dirac | (intros; apply GlobalTheory.CompanionTheory.CliffordCoeff.commute_shifted_dirac <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.CliffordCoeff.commute_shifted_dirac` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=CompanionTheory%2FSpectralGeometry%2FLocalGlobalProofs%2FStableLattices%2FCanonicalAnticommutationRelationsConsequence.lean&line=202#L202)
 -/
 theorem _root_.GlobalTheory.T.canonical_anticommutation_relations_consequence : ∀ (n : ℕ) (R : Type) [Ring R] (τ : Fin n → Fin n → Prop) [DecidableRel τ] (c d L : Fin n → Fin n → R) (p q : Fin n),
     (∀ a b a' b', c a b * c a' b' + c a' b' * c a b = 0) →

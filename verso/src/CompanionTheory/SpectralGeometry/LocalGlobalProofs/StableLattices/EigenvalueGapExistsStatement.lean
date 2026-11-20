@@ -4,8 +4,10 @@ import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.HsConjT
 open Matrix
 open CompanionTheory.RgExh.Dec CompanionTheory.RgExh.Dec.L ReciprocityTheory.ChartRestriction.DS GlobalTheory.CompanionTheory.PSubFlag GlobalTheory.CompanionTheory.UGeo
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.UGeoGap.exists_gap_of_mem_Icc_top | exact GlobalTheory.CompanionTheory.UGeoGap.exists_gap_of_mem_Icc_top | (intros; apply GlobalTheory.CompanionTheory.UGeoGap.exists_gap_of_mem_Icc_top <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.UGeoGap.exists_gap_of_mem_Icc_top` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=CompanionTheory%2FSpectralGeometry%2FLocalGlobalProofs%2FStableLattices%2FEigenvalueGapExists.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.exists_gap_interval_avoiding_finite_family : ∀ (n : ℕ) (l : Fin n → ℝ) (L : ℝ), 0 < L → (∀ i, 0 ≤ l i ∧ l i ≤ L) → (∃ i, l i = L) → ∃ r : ℕ, r < n ∧ ∀ i, l i < r * (L / (n + 1)) ∨ (r + 1) * (L / (n + 1)) ≤ l i := by
   first | exact @GlobalTheory.CompanionTheory.UGeoGap.exists_gap_of_mem_Icc_top | exact GlobalTheory.CompanionTheory.UGeoGap.exists_gap_of_mem_Icc_top | (intros; apply GlobalTheory.CompanionTheory.UGeoGap.exists_gap_of_mem_Icc_top <;> assumption)

@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.PetEqRelIndexMul
 open UpperHalfPlane ModularForm CongruenceSubgroup MeasureTheory
 open scoped MatrixGroups ModularForm Manifold
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Hk.coef_heckeT | exact GlobalTheory.Hk.coef_heckeT | (intros; apply GlobalTheory.Hk.coef_heckeT <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Hk.coef_heckeT` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FQExpansionCoeffHeckeTOperatorGamma1InterGamma0.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.qExpansionCoeff_heckeTOperator_gamma1InterGamma0 : ∀ (N l q : ℕ) (k : ℤ) (σ : SL(2, ℤ)), 0 < N → q.Prime → ¬ q ∣ N * l → GlobalTheory.Hk.IsDia N l q σ → ∀ (f : ModularForm (GlobalTheory.Hk.lev N l) k) (n : ℕ), GlobalTheory.Hk.coef (GlobalTheory.Hk.heckeT k q σ ⇑f) n = GlobalTheory.Hk.coef ⇑f (q * n) + (q : ℂ) ^ (k - 1) * (if q ∣ n then GlobalTheory.Hk.coef (GlobalTheory.Hk.dia k σ ⇑f) (n / q) else 0) := by
   first | exact @GlobalTheory.Hk.coef_heckeT | exact GlobalTheory.Hk.coef_heckeT | (intros; apply GlobalTheory.Hk.coef_heckeT <;> assumption)

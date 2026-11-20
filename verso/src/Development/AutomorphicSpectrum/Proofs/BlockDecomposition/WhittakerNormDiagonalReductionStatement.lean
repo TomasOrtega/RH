@@ -7,8 +7,10 @@ import GroundTheory.AutomorphicForms.ReductionSiegel
 open NumberField IsDedekindDomain MeasureTheory Matrix Filter Topology GroundTheory.Global GroundTheory.Automorphic GroundTheory.Automorphic.AutomorphicForm Ad3 Ad3.GA
 open scoped NumberField.AdeleRing
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.MajIwa.norm_W_borel_mul | exact GlobalTheory.CompanionTheory.MajIwa.norm_W_borel_mul | (intros; apply GlobalTheory.CompanionTheory.MajIwa.norm_W_borel_mul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.MajIwa.norm_W_borel_mul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FWhittakerNormDiagonalReduction.lean&line=41#L41)
 -/
 theorem _root_.GlobalTheory.T.whittaker_norm_diagonal_reduction : ∀ (V : Submodule ℂ (G3 → ℂ)), WhA V → ∀ W ∈ V, ∀ β ∈ (Reduction.adelicBorel : Subgroup G3), ∀ t1 t2 t3 : (𝔸[ℚ])ˣ, (β : Matrix (Fin 3) (Fin 3) 𝔸[ℚ]) 0 0 = t1 → (β : Matrix (Fin 3) (Fin 3) 𝔸[ℚ]) 1 1 = t2 → (β : Matrix (Fin 3) (Fin 3) 𝔸[ℚ]) 2 2 = t3 → ∀ k : G3, ‖W (β * k)‖ = ‖W (dg (t1 * t2⁻¹ * (t2 * t3⁻¹)) (t2 * t3⁻¹) 1 * k)‖ := by
   first | exact @GlobalTheory.CompanionTheory.MajIwa.norm_W_borel_mul | exact GlobalTheory.CompanionTheory.MajIwa.norm_W_borel_mul | (intros; apply GlobalTheory.CompanionTheory.MajIwa.norm_W_borel_mul <;> assumption)

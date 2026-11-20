@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemOfMemSpanRingOfI
 import Mathlib
 open NumberField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlatDescent.mem_of_mem_span_map | exact GlobalTheory.FlatDescent.mem_of_mem_span_map | (intros; apply GlobalTheory.FlatDescent.mem_of_mem_span_map <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlatDescent.mem_of_mem_span_map` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FMemOfMemSpanRingOfIntegersMapNumberField.lean&line=34#L34)
 -/
 theorem _root_.GlobalTheory.T.mem_of_mem_span_ringOfIntegers_map_numberField : ∀ (K K' : Type) [Field K] [NumberField K] [Field K'] [NumberField K'] (j : K →+* K') (n : ℕ)
     (N : Submodule (𝓞 K) (Fin n → K)) (w : Fin n → K),

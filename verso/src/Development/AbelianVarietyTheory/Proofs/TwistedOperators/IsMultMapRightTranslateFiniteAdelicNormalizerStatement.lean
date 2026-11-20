@@ -8,8 +8,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open scoped ComplexOrder
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.isMultMap_rightTranslate_finite | exact GlobalTheory.isMultMap_rightTranslate_finite | (intros; apply GlobalTheory.isMultMap_rightTranslate_finite <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.isMultMap_rightTranslate_finite` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FIsMultMapRightTranslateFiniteAdelicNormalizer.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.isMultMap_rightTranslate_finiteAdelic_normalizer : ∀ {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (θ : InfFam D) (M : DSModel V S) (J : Set (GA D V)) (χ : GA D V → ℂ) (κ : GA D V), κ ∈ GfC V → (∀ k ∈ J, κ⁻¹ * k * κ ∈ J ∧ χ (κ⁻¹ * k * κ) = χ k) → ∀ T : MMap M, IsMultMap θ M J χ T → ∃ T' : MMap M, IsMultMap θ M J χ T' ∧ ∀ v, T' v = rTr V κ (T v) := by
   first | exact @GlobalTheory.isMultMap_rightTranslate_finite | exact GlobalTheory.isMultMap_rightTranslate_finite | (intros; apply GlobalTheory.isMultMap_rightTranslate_finite <;> assumption)

@@ -6,8 +6,10 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace Filter Topology MeasureTh
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier GlobalTheory.VolBr GlobalTheory.HSAmp
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HSAmp.gens_quot_trBasis | exact GlobalTheory.HSAmp.gens_quot_trBasis | (intros; apply GlobalTheory.HSAmp.gens_quot_trBasis <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HSAmp.gens_quot_trBasis` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSectionQuotientsTranscendenceBasisBasepointFree.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.sectionQuotients_transcendenceBasis_basepointFree : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (P : Pair p), IsAmpleLB P.L.B → ∀ (e : ℕ) (x : Fin (D + 1) → X.functionField), Gens P D e x → (∀ j, x j ≠ 0) ∧ AlgebraicIndependent ℤ (fun j : Fin D => x j.succ / x 0) ∧ FiniteDimensional (ratF x) X.functionField := by
   first | exact @GlobalTheory.HSAmp.gens_quot_trBasis | exact GlobalTheory.HSAmp.gens_quot_trBasis | (intros; apply GlobalTheory.HSAmp.gens_quot_trBasis <;> assumption)

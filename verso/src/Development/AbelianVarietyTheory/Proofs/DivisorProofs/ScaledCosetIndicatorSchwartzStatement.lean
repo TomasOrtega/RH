@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsOpenScaledInt
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open scoped Matrix TensorProduct Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EvAdm.indicator_coset_scaledInt_mem_SB | exact GlobalTheory.EvAdm.indicator_coset_scaledInt_mem_SB | (intros; apply GlobalTheory.EvAdm.indicator_coset_scaledInt_mem_SB <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EvAdm.indicator_coset_scaledInt_mem_SB` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FScaledCosetIndicatorSchwartz.lean&line=42#L42)
 -/
 theorem _root_.GlobalTheory.T.scaled_coset_indicator_schwartz : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (a : F), a ≠ 0 →
     ∀ r : κ → FiniteAdeleRing (𝓞 F) F,

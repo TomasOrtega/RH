@@ -7,8 +7,10 @@ open NumberField Matrix ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheor
 open Formalism.L2.Pj
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.eigenCoord_top_of_triangular | exact GlobalTheory.eigenCoord_top_of_triangular | (intros; apply GlobalTheory.eigenCoord_top_of_triangular <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.eigenCoord_top_of_triangular` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FTriangularFrameEigenScalar.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.triangular_frame_eigen_scalar : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (g : ℕ) (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)) (h : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)), (∀ τ (i : Fin (Dw.mult τ)), ∃ cf : Fin (Dw.mult τ) → ℂ, IsUnit (cf i) ∧ (∀ j, i < j → cf j = 0) ∧ eb e τ i = h (∑ j, cf j • eb e τ j)) → ∀ (τ : E →+* ℂ) (i : Fin (Dw.mult τ)), (∀ j, j ≤ i) → ∃ y : ℂ, ∀ w, h w (e.symm ⟨τ, i⟩) = y * w (e.symm ⟨τ, i⟩) := by
   first | exact @GlobalTheory.eigenCoord_top_of_triangular | exact GlobalTheory.eigenCoord_top_of_triangular | (intros; apply GlobalTheory.eigenCoord_top_of_triangular <;> assumption)

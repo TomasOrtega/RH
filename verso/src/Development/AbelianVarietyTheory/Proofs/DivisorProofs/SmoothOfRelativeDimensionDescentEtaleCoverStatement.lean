@@ -8,8 +8,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.ZM GlobalTheory.SiegLev GlobalTheory.SiegelTor
 open scoped CategoryTheory.Obj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SmoothDescent.smoothOfRelativeDimension_of_etale_cover_noetherian | exact GlobalTheory.SmoothDescent.smoothOfRelativeDimension_of_etale_cover_noetherian | (intros; apply GlobalTheory.SmoothDescent.smoothOfRelativeDimension_of_etale_cover_noetherian <;> …`.
+/- English proof (citation)
+Apply `GlobalTheory.SmoothDescent.smoothOfRelativeDimension_of_etale_cover_noetherian` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSmoothOfRelativeDimensionDescentEtaleCover.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.smoothOfRelativeDimension_descent_etaleCover : ∀ (K : Type) [CommRing K] [IsNoetherianRing K] (X Y : Scheme.{0}) (π : X ⟶ Y) (s : Y ⟶ Sp K) (d : ℕ), Etale π → Surjective π → LocallyOfFiniteType s → SmoothOfRelativeDimension d (π ≫ s) → SmoothOfRelativeDimension d s := by
   first | exact @GlobalTheory.SmoothDescent.smoothOfRelativeDimension_of_etale_cover_noetherian | exact GlobalTheory.SmoothDescent.smoothOfRelativeDimension_of_etale_cover_noetherian | (intros; apply GlobalTheory.SmoothDescent.smoothOfRelativeDimension_of_etale_cover_noetherian <;> assumption)

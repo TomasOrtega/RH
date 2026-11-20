@@ -12,8 +12,10 @@ open GlobalTheory.PairTerm
 open Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.VertPassDeg.passDeg | exact GlobalTheory.VertPassDeg.passDeg | (intros; apply GlobalTheory.VertPassDeg.passDeg <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.VertPassDeg.passDeg` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsCoverWithInducedNorms.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.exists_cover_with_induced_norms : GlobalTheory.Published.ArCalc → ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (M : TrueGeo.Model Y) (ι : Type) [Fintype ι]
     (A : ι → Adl (cxSt F) Y) (L : ι → HermLB M.p) (m : ℕ+) (Ψ : MvPolynomial ι ℝ →ₗ[ℝ] ℝ),

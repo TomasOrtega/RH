@@ -13,8 +13,10 @@ open ReciprocityTheory.PGsh ReciprocityTheory.PGsh.Up ReciprocityTheory.PGsh.Be2
 open ReciprocityTheory.ChartRestriction.G.Chart (sp spMap)
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChF.linPart_act_ringHom | exact GlobalTheory.ChF.linPart_act_ringHom | (intros; apply GlobalTheory.ChF.linPart_act_ringHom <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChF.linPart_act_ringHom` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUnramifiedDepth%2FFormalGroupActionLinearPartRingHom.lean&line=46#L46)
 -/
 theorem _root_.GlobalTheory.T.formalGroupAction_linearPart_ringHom : ∀ (R : Type) [CommRing R] (d : ℕ) (F : FGLaw R d) (OE : Type) [CommRing OE] (act : Geo.Tor.Germ.OAct OE F) (S : Type) [CommRing S] (β : R →+* S), ∃ ρ : OE →+* Matrix (Fin d) (Fin d) S, ∀ a, ρ a = linPart (actMap β act a) ∧ ρ a = (lin (act.act a)).map β := by
   first | exact @GlobalTheory.ChF.linPart_act_ringHom | exact GlobalTheory.ChF.linPart_act_ringHom | (intros; apply GlobalTheory.ChF.linPart_act_ringHom <;> assumption)

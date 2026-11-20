@@ -14,8 +14,10 @@ open GlobalTheory.Doubling (absE)
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SubspaceInt.integrable_and_adm | exact GlobalTheory.SubspaceInt.integrable_and_adm | (intros; apply GlobalTheory.SubspaceInt.integrable_and_adm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SubspaceInt.integrable_and_adm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTraceNondegeneratePartialFourierIntegral.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.trace_nondegenerate_partial_fourier_integral : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ)
     (κ κa κb : Type) [Fintype κ] [Fintype κa] [Fintype κb] (ε : κ ≃ κa ⊕ (κb ⊕ κb)) (C : Matrix κa (Fin n) E),

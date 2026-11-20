@@ -14,8 +14,10 @@ open GlobalTheory.RayEv (Ray)
 open GlobalTheory.Toroidal GlobalTheory.LogKS GlobalTheory.RigChart GlobalTheory.Heat
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EpsThick.existsUnique_add_eps_mul_of_field | exact GlobalTheory.EpsThick.existsUnique_add_eps_mul_of_field | (intros; apply GlobalTheory.EpsThick.existsUnique_add_eps_mul_of_field <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EpsThick.existsUnique_add_eps_mul_of_field` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsUniqueAddEpsMulOnDualNumberThickening.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.existsUnique_add_eps_mul_on_dualNumber_thickening : ∀ (k : Type) [Field k] (Y Y' : Scheme.{0}) (q : Y ⟶ Sp k) (π : Y' ⟶ Sp (DualNumber k)) (ρ : Y' ⟶ Y), IsPullback ρ π q (spMap (algebraMap k (DualNumber k))) → ∀ (O : Y.Opens) (F : Γ(Y', ρ ⁻¹ᵁ O)), ∃! ab : Γ(Y, O) × Γ(Y, O), F = (ρ.app O).hom ab.1 + constFn π _ DualNumber.eps * (ρ.app O).hom ab.2 := by
   first | exact @GlobalTheory.EpsThick.existsUnique_add_eps_mul_of_field | exact GlobalTheory.EpsThick.existsUnique_add_eps_mul_of_field | (intros; apply GlobalTheory.EpsThick.existsUnique_add_eps_mul_of_field <;> assumption)

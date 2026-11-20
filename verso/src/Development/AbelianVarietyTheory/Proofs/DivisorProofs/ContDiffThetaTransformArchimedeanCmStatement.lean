@@ -9,8 +9,10 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open Formalism.IndefR.DatumF
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThetaSmoothF.contDiff_thetaTr_realF | exact GlobalTheory.ThetaSmoothF.contDiff_thetaTr_realF | (intros; apply GlobalTheory.ThetaSmoothF.contDiff_thetaTr_realF <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThetaSmoothF.contDiff_thetaTr_realF` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FContDiffThetaTransformArchimedeanCm.lean&line=103#L103)
 -/
 theorem _root_.GlobalTheory.T.contDiff_thetaTransform_archimedean_cm : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → IsStdCharF (fun w : InfinitePlace F => (B.emb w).1) B.ψ (-1) →

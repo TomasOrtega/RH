@@ -16,8 +16,10 @@ open Formalism.MainNotions.ModuliIntegralCharts.H1.BoxTuple Formalism.MainNotion
 open ReciprocityTheory.ChartRestriction.G.TB (colM dAct)
 open IsDedekindDomain
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.value_translate_pullback_eq_generator | exact GlobalTheory.value_translate_pullback_eq_generator | (intros; apply GlobalTheory.value_translate_pullback_eq_generator <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.value_translate_pullback_eq_generator` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FJetHarmonics%2FValueTranslatePullbackEqGenerator.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.value_translate_pullback_eq_generator' : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l),
  letI := H.starRing

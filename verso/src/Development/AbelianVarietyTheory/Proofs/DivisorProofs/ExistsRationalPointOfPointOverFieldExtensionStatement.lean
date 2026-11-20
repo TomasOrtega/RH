@@ -8,8 +8,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.exists_pt_of_pt_ext | exact GlobalTheory.Mum.exists_pt_of_pt_ext | (intros; apply GlobalTheory.Mum.exists_pt_of_pt_ext <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.exists_pt_of_pt_ext` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsRationalPointOfPointOverFieldExtension.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.exists_rational_point_of_point_over_field_extension : ∀ (H Q : Scheme.{0}) (φ : H ⟶ Q), LocallyOfFiniteType φ → ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] (ν : Sp Ω ⟶ Q) (Ω' : Type) [Field Ω'] (io : Ω →+* Ω') (q : Sp Ω' ⟶ H), q ≫ φ = spMap io ≫ ν → ∃ p : Sp Ω ⟶ H, p ≫ φ = ν := by
   first | exact @GlobalTheory.Mum.exists_pt_of_pt_ext | exact GlobalTheory.Mum.exists_pt_of_pt_ext | (intros; apply GlobalTheory.Mum.exists_pt_of_pt_ext <;> assumption)

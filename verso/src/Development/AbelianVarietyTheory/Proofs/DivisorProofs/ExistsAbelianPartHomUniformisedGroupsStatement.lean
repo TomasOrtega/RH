@@ -8,8 +8,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UT GlobalTheory.Mum GlobalTheory.Mum.Two
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.Two.exists_abelian_hom | exact GlobalTheory.Mum.Two.exists_abelian_hom | (intros; apply GlobalTheory.Mum.Two.exists_abelian_hom <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.Two.exists_abelian_hom` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsAbelianPartHomUniformisedGroups.lean&line=90#L90)
 -/
 theorem _root_.GlobalTheory.T.exists_abelianPart_hom_uniformisedGroups : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R), AdmBase R I → ∀ (D₁ D₂ : DegData R I) (A₁ A₂ : PolAV (Sp (FractionRing R))) (G₁ G₂ : Over (Sp R)) [GrpObj G₁] [IsCommMonObj G₁] [GrpObj G₂] [IsCommMonObj G₂] (U₁ : UnifPre I D₁ A₁ G₁) (U₂ : UnifPre I D₂ A₂ G₂) (a : G₁ ⟶ G₂), IsMonHom a → ∃ b : D₁.toPre.P.A ⟶ D₂.toPre.P.A, IsMonHom b ∧ Over₀ U₁ U₂ a b := by
   first | exact @GlobalTheory.Mum.Two.exists_abelian_hom | exact GlobalTheory.Mum.Two.exists_abelian_hom | (intros; apply GlobalTheory.Mum.Two.exists_abelian_hom <;> assumption)

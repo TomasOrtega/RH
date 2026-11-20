@@ -9,8 +9,10 @@ open GlobalTheory.QFam GlobalTheory.WpFam GlobalTheory.KZ GlobalTheory.FN
 open ReciprocityTheory.ChartRestriction.L1 (DD jT IsMF)
 open ModularForm (E₄ E₆)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ZetaExp.main | exact GlobalTheory.ZetaExp.main | (intros; apply GlobalTheory.ZetaExp.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ZetaExp.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FGaloisExponentRootOfUnityExpTwoPiI.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.galois_exponent_rootOfUnity_expTwoPiI : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (s : Ω ≃ₐ[ℚ] Ω) (N : ℕ), 0 < N → (∃ d : ℤ, s (eOm ε (1 / N)) = eOm ε (1 / N) ^ d) ∧ ∀ d : ℤ, s (eOm ε (1 / N)) = eOm ε (1 / N) ^ d → ∃ u : (ZMod N)ˣ, (u : ZMod N) = d ∧ ∀ g : ℂ ≃+* ℂ, (∀ x, g (ε x) = ε (s x)) → ZetaAct g N u := by
   first | exact @GlobalTheory.ZetaExp.main | exact GlobalTheory.ZetaExp.main | (intros; apply GlobalTheory.ZetaExp.main <;> assumption)

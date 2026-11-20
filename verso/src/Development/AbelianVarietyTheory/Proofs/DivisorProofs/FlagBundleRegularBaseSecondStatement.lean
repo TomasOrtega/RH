@@ -12,8 +12,10 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G Recip
 open GlobalTheory.Cartier GlobalTheory.CovTest.SwapLine
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LineGysin.geoFun_neg_taut_mul_pow | exact GlobalTheory.LineGysin.geoFun_neg_taut_mul_pow | (intros; apply GlobalTheory.LineGysin.geoFun_neg_taut_mul_pow <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LineGysin.geoFun_neg_taut_mul_pow` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFlagBundleRegularBaseSecond.lean&line=81#L81)
 -/
 theorem _root_.GlobalTheory.T.flag_bundle_regular_base_second : ArCalc → ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) [IsIntegral B] [IsIntegral Y] (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (d : ℕ),
     IsArithVar q d → IsArithVar p (d + 1) → (∀ b : B, IsRegularLocalRing (B.presheaf.stalk b)) →

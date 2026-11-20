@@ -9,8 +9,10 @@ open IsDedekindDomain NumberField MeasureTheory Matrix GlobalTheory.ChiGrid Glob
 open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.RowUnf GlobalTheory.RowChain GlobalTheory.SeeSaw GlobalTheory.RowVal GlobalTheory.RowReal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RowShape.shapeAt_big | exact GlobalTheory.RowShape.shapeAt_big | (intros; apply GlobalTheory.RowShape.shapeAt_big <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RowShape.shapeAt_big` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FLastRowLatticesGoodPositionLargeDepth.lean&line=33#L33)
 -/
 theorem _root_.GlobalTheory.T.lastRowLatticesGoodPosition_large_depth : Big fun ch => ShapeAt ch := by
   first | exact @GlobalTheory.RowShape.shapeAt_big | exact GlobalTheory.RowShape.shapeAt_big | (intros; apply GlobalTheory.RowShape.shapeAt_big <;> assumption)

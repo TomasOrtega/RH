@@ -16,8 +16,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LieGenStep.map_fockDeg_add_two_le | exact GlobalTheory.LieGenStep.map_fockDeg_add_two_le | (intros; apply GlobalTheory.LieGenStep.map_fockDeg_add_two_le <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LieGenStep.map_fockDeg_add_two_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFockDegreeEvenMapLe.lean&line=96#L96)
 -/
 theorem _root_.GlobalTheory.T.fock_degree_even_map_le : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W)

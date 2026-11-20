@@ -10,8 +10,10 @@ import Formalism.SharpRestriction.LevelLetterCocycles.ArcLiftingSetup
 import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.BaseSizes
 open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations GlobalTheory.NLink
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.NLink.log_card_levelGroup_le_scale_pow_mul_length | exact GlobalTheory.NLink.log_card_levelGroup_le_scale_pow_mul_length | (intros; apply GlobalTheory.NLink.log_card_levelGroup_le_scale_pow_mul_length <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.NLink.log_card_levelGroup_le_scale_pow_mul_length` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FLogCardLevelGroupLeScalePowMulLength.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.exists_log_card_restRows_le_pow_mul_length : ∀ {eps : ℝ} (Fm : FamP eps), ∃ C x0 : ℝ, ∀ x ≥ x0, Fm.x1 < x → ∀ i : Fm.Ix x, Real.log ((Fm.D x i).what₂.restRowsFiniteGroupCard : ℝ) ≤ C * x ^ C * (Fm.L x i).sc.L := by
   first | exact @GlobalTheory.NLink.log_card_levelGroup_le_scale_pow_mul_length | exact GlobalTheory.NLink.log_card_levelGroup_le_scale_pow_mul_length | (intros; apply GlobalTheory.NLink.log_card_levelGroup_le_scale_pow_mul_length <;> assumption)

@@ -22,8 +22,10 @@ attribute [local instance] GlobalTheory.AdelicUnitaryTop.locallyCompact_finiteAd
   GlobalTheory.DiagForm.measAf GlobalTheory.DiagForm.borelAf
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TensorGlue.exists_pure_operator | exact GlobalTheory.TensorGlue.exists_pure_operator | (intros; apply GlobalTheory.TensorGlue.exists_pure_operator <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TensorGlue.exists_pure_operator` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsAdelicProductOperator.lean&line=92#L92)
 -/
 theorem _root_.GlobalTheory.T.exists_adelic_product_operator : ∀ (F : Type) [Field F] [NumberField F] (ι : Type) [Fintype ι]
     (A : SchwartzMap (ι → mixedEmbedding.mixedSpace F) ℂ →ₗ[ℂ] SchwartzMap (ι → mixedEmbedding.mixedSpace F) ℂ)

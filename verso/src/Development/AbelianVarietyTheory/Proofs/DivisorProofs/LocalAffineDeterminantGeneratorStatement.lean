@@ -8,8 +8,10 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory Car
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.RealMult
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RealMult.Obj.exists_affine_nbhd_detGen_basicOpen | exact GlobalTheory.RealMult.Obj.exists_affine_nbhd_detGen_basicOpen | (intros; apply GlobalTheory.RealMult.Obj.exists_affine_nbhd_detGen_basicOpen <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RealMult.Obj.exists_affine_nbhd_detGen_basicOpen` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLocalAffineDeterminantGenerator.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.local_affine_determinant_generator : ∀ (F : Type) [Field F] [NumberField F] (𝔠 : FracId F) (M : Scheme.{0}) (U : Obj F 𝔠 M) (y : M),
     ∃ (W : M.Opens) (hW : IsAffineOpen W), y ∈ W ∧ ∃ (Y : Obj F 𝔠 (Sp Γ(M, W))) (φ : Y.A.left ⟶ U.A.left),

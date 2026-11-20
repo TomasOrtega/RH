@@ -13,8 +13,10 @@ open scoped ComplexOrder
 open GlobalTheory GlobalTheory.CM GlobalTheory.Frames GlobalTheory.LamT
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LamT.LocClause.step5Loc_cmPt | exact GlobalTheory.LamT.LocClause.step5Loc_cmPt | (intros; apply GlobalTheory.LamT.LocClause.step5Loc_cmPt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LamT.LocClause.step5Loc_cmPt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FCubicalLineBundles%2FLocalLowerBoundCmPointFramePolynomialEveryPrime.lean&line=151#L151)
 -/
 theorem _root_.GlobalTheory.T.localLowerBound_cmPoint_framePolynomial_every_prime : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)] (z : CMPt Xo c) (f : ℕ) (La : ℝ), z.Good f La → ∀ (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ), ∀ F ∈ sec Xo c a n, (∀ la, ∀ v ∈ valSet Xo c (algCls Xo c) la, 0 ≤ v F) → ∀ G : MvPolynomial (FrVar Dw.mult) z.K, IsFrPoly F z.y G → ∀ p, Step5Loc z.e z.Tl.dual z.LamL z.ℓ z.U G n p := by
   first | exact @GlobalTheory.LamT.LocClause.step5Loc_cmPt | exact GlobalTheory.LamT.LocClause.step5Loc_cmPt | (intros; apply GlobalTheory.LamT.LocClause.step5Loc_cmPt <;> assumption)

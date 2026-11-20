@@ -32,8 +32,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CovTop.DgShare.choose_mul_compDeg_le | exact GlobalTheory.CovTop.DgShare.choose_mul_compDeg_le | (intros; apply GlobalTheory.CovTop.DgShare.choose_mul_compDeg_le <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CovTop.DgShare.choose_mul_compDeg_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FBinomialFlagDimensionDegreeBound.lean&line=122#L122)
 -/
 theorem _root_.GlobalTheory.T.binomial_flag_dimension_degree_bound : GlobalTheory.CovTop.HypothesesX → Hypotheses2 → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.SemiAbelianLieSeminegative → DeepGood → Size → FlatDeg → Covers fun Fm x _ ι p i Y PP _ => ∀ Z, (lenT p i PP - 1).choose (GlobalTheory.CompHt.dimFlag (dat p i)) * GlobalTheory.CompHt.compDeg Y.U Z (wtOf (dat p i) (⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).u₁ 0) ≤ Module.finrank Y.d.c₂.F (cuspOn Y.U Z (wtOf (dat p i) ((⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).wt (lenT p i PP)) 0)) := by
   first | exact @GlobalTheory.CovTop.DgShare.choose_mul_compDeg_le | exact GlobalTheory.CovTop.DgShare.choose_mul_compDeg_le | (intros; apply GlobalTheory.CovTop.DgShare.choose_mul_compDeg_le <;> assumption)

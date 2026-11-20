@@ -6,8 +6,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open scoped TensorProduct ContDiff ComplexOrder
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SignBasis.signInv_diag_iff | exact GlobalTheory.SignBasis.signInv_diag_iff | (intros; apply GlobalTheory.SignBasis.signInv_diag_iff <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SignBasis.signInv_diag_iff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FHeightProofs%2FSignInvolutionDiagonalIff.lean&line=109#L109)
 -/
 theorem _root_.GlobalTheory.T.sign_involution_diagonal_iff : ∀ (D : D7) (V : HSp D) (b : Module.Basis (Fin V.rank) D.host.E V.V), (∀ i j, i ≠ j → V.hT (b i) (b j) = 0) → ∀ (τ : D.what₂.Tau) (s : Module.End D.host.E V.V), (IsSignInv V τ s ∧ ∀ i, s (b i) = b i ∨ s (b i) = -b i) ↔ ∀ i, s (b i) = if 0 < (tauE D τ (V.hT (b i) (b i))).re then b i else -b i := by
   first | exact @GlobalTheory.SignBasis.signInv_diag_iff | exact GlobalTheory.SignBasis.signInv_diag_iff | (intros; apply GlobalTheory.SignBasis.signInv_diag_iff <;> assumption)

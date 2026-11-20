@@ -13,8 +13,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UT GlobalTheory.Mum GlobalTheory.Mum.Two
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.GenOne.val_eq_one_of_generic | exact GlobalTheory.Mum.GenOne.val_eq_one_of_generic | (intros; apply GlobalTheory.Mum.GenOne.val_eq_one_of_generic <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.GenOne.val_eq_one_of_generic` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGeneratorValEqOneOfGenericSpecDomain.lean&line=34#L34)
 -/
 theorem _root_.GlobalTheory.T.generator_val_eq_one_of_generic_spec_domain : ∀ (R : Type) [CommRing R] [IsDomain R] {X : Scheme.{0}} (L : LB X), L.IsLB → ∀ {K : Type} [Fintype K] (φ : K → (Spec (CommRingCat.of R) ⟶ X)) (ε : K → ℤ), FormEq φ ε (PEmpty.elim : PEmpty → (Spec (CommRingCat.of R) ⟶ X)) (PEmpty.elim : PEmpty → ℤ) → ∀ t : LB.Gen (LB.LinComb L φ ε), t.IsGen → (∀ (z : (TK R).left) (J : ((TK R).left ⟶ X) → L.ι), Good L z J → val t (jK R) z J = 1) → ∀ (Z : Scheme.{0}) (r : Z ⟶ Spec (CommRingCat.of R)) (z : Z) (J : (Z ⟶ X) → L.ι), Good L z J → val t r z J = 1 := by
   first | exact @GlobalTheory.Mum.GenOne.val_eq_one_of_generic | exact GlobalTheory.Mum.GenOne.val_eq_one_of_generic | (intros; apply GlobalTheory.Mum.GenOne.val_eq_one_of_generic <;> assumption)

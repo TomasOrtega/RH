@@ -9,8 +9,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GroundTheory.Heights₂.Heights TensorProduct
 open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Sl
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.FlagSlope.flag_slope | exact GlobalTheory.CompanionTheory.Ar.FlagSlope.flag_slope | (intros; apply GlobalTheory.CompanionTheory.Ar.FlagSlope.flag_slope <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.FlagSlope.flag_slope` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FAdelicProofs%2FIntegralFlagEmbeddingCriterion.lean&line=263#L263)
 -/
 theorem _root_.GlobalTheory.T.integral_flag_embedding_criterion : ∀ (K : Type) [Field K] [NumberField K] (r n' : ℕ) (J : ℕ → Fin r → K) (A : ℕ → (K →+* ℂ) → ℝ), (∀ i σ, 0 < A i σ) → (∀ (i : ℕ) (c : Fin r → 𝓞 K), (∀ k < i, ∑ j, (c j : K) * J k j = 0) → IsIntegral ℤ (∑ j, (c j : K) * J i j)) → (∀ i ≤ n', ∃ (σ : K →+* ℂ) (c : Fin r → ℂ), (∀ k < i, ∑ j, c j * σ (J k j) = 0) ∧ ∑ j, c j * σ (J i j) ≠ 0) → (∀ i ≤ n', ∀ (σ : K →+* ℂ) (c : Fin r → ℂ), (∀ k < i, ∑ j, c j * σ (J k j) = 0) → ‖∑ j, c j * σ (J i j)‖ ≤ A i σ * √(∑ j, ‖c j‖ ^ 2)) → 0 ≤ ∑ i ∈ Finset.range (n' + 1), ∑ σ : K →+* ℂ, Real.log (A i σ) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.FlagSlope.flag_slope | exact GlobalTheory.CompanionTheory.Ar.FlagSlope.flag_slope | (intros; apply GlobalTheory.CompanionTheory.Ar.FlagSlope.flag_slope <;> assumption)

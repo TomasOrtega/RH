@@ -16,8 +16,10 @@ open GlobalTheory.TrMult
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.TruncKer GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt GlobalTheory.Chamber GlobalTheory.Cusp
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ConjLevi.exists_conj_mem_levi | exact GlobalTheory.ConjLevi.exists_conj_mem_levi | (intros; apply GlobalTheory.ConjLevi.exists_conj_mem_levi <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ConjLevi.exists_conj_mem_levi` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsConjMemStandardLeviOfReducibleCharpoly.lean&line=27#L27)
 -/
 theorem _root_.GlobalTheory.T.exists_conj_mem_standardLevi_of_reducible_charpoly : ∀ {D : D7} {V : HSp D}, 0 < V.rank → GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.RegularSemisimple → ∀ (Φ : WittFrame V) (γ : GF V), IsRegSS γ.1.1 → ¬ Irreducible γ.1.1.charpoly → ¬ IsNonFieldAniso D.sp.cm.sig V.gram γ.1.1 → ∃ (g : GF V) (P : Finset (SV (wittIndex V))), IsPar P ∧ P.Nonempty ∧ rat V (g * γ * g⁻¹) ∈ Φ.levi D.sp.cm (AF D.host.F) P := by
   first | exact @GlobalTheory.ConjLevi.exists_conj_mem_levi | exact GlobalTheory.ConjLevi.exists_conj_mem_levi | (intros; apply GlobalTheory.ConjLevi.exists_conj_mem_levi <;> assumption)

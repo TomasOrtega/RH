@@ -5,8 +5,10 @@ import ReciprocityTheory.ReductiveGroups.TraceFormulas.LatDefs
 open ReciprocityTheory.Gal Formalism.RepresentationBoundsCohomology.LOC ReciprocityTheory.ChartRestriction.T2
 open Formalism.NG (KO)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.map_H2_subtype_injective_of_union | exact GlobalTheory.map_H2_subtype_injective_of_union | (intros; apply GlobalTheory.map_H2_subtype_injective_of_union <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.map_H2_subtype_injective_of_union` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FMapH2SubtypeInjective.lean&line=8#L8)
 -/
 theorem _root_.GlobalTheory.T.map_H2_subtype_injective : ∀ {O : Type} [CommRing O] [TopologicalSpace O] {G : Type} [Group G] [TopologicalSpace G] [CompactSpace G]
     {ε : G →* Oˣ} (Θ : NatInv ε (fun M _ _ _ => IsFGTop O M))

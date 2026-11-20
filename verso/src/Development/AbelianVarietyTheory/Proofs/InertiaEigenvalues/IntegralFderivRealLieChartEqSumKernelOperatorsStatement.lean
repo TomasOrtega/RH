@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IntegralFderiv
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SumLieCoord
 open NumberField MeasureTheory Matrix GlobalTheory.CuspRep GlobalTheory.JSW
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.JSW.integral_fderiv_chart_eq | exact GlobalTheory.JSW.integral_fderiv_chart_eq | (intros; apply GlobalTheory.JSW.integral_fderiv_chart_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.JSW.integral_fderiv_chart_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FIntegralFderivRealLieChartEqSumKernelOperators.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.integral_fderiv_realLieChart_eq_sum_kernelOperators : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (X : Type) [MeasurableSpace X] (ν : Measure X)
     (k : X → ℂ) (γ : X → GL (Fin a) (Cinf E)), IsRapidInf ν k γ → ∀ φ : Sm E a,

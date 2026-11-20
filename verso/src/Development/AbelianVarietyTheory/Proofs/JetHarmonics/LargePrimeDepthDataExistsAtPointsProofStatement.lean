@@ -6,8 +6,10 @@ open scoped BigOperators TensorProduct
 open Classical NumberField IsDedekindDomain Formalism.L2.FormalSeriesBounds Formalism.IncomingBounds Formalism.L2.Pj Formalism.L2.DIV Formalism.BasicNotions GlobalTheory.RowLaw GlobalTheory.RowAt GlobalTheory.GoodDepth
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LargePkg.pkgZero | exact GlobalTheory.LargePkg.pkgZero | (intros; apply GlobalTheory.LargePkg.pkgZero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LargePkg.pkgZero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FJetHarmonics%2FLargePrimeDepthDataExistsAtPointsProof.lean&line=126#L126)
 -/
 theorem _root_.GlobalTheory.T.largePrimeDepthDataExistsAtPoints_proof : (∀ (p : ℕ) [Fact p.Prime], ReciprocityTheory.ChartRestriction.G.Pdiv.ChartF.UpFSt p) → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (lv : Level H) (Xo : Moduli Dw lv) (c : Coeff lv) [StarRing (𝓞 E)], PkgZeroSt Xo c := by
   first | exact @GlobalTheory.LargePkg.pkgZero | exact GlobalTheory.LargePkg.pkgZero | (intros; apply GlobalTheory.LargePkg.pkgZero <;> assumption)

@@ -11,8 +11,10 @@ import Formalism.LocalToGlobal.IndefiniteForms.IndefiniteTree.RealCubicMeans.Lea
 open NumberField IsDedekindDomain MvPolynomial Formalism.BasicNotions Formalism.L2.DIV Formalism.DivisionValues GlobalTheory.TestLat Formalism.L2.Indef.Tree.ArchimedeanLeafBounds.Cuts
 open scoped Matrix ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.extNorm_eq_nat_log_le_bound | exact GlobalTheory.extNorm_eq_nat_log_le_bound | (intros; apply GlobalTheory.extNorm_eq_nat_log_le_bound <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.extNorm_eq_nat_log_le_bound` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FPairingNormalisingConstantLogLeBound.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.pairing_normalising_constant_log_le_bound : ∀ (K : Type) [Field K] [StarRing K] [CharZero K] (ι : Type) [Fintype ι] (n : ℕ) (lam : ι → DomWeight n) (R : ℝ), 1 ≤ R → SpreadLe lam R → ∃ s : ℕ, 0 < s ∧ extNorm K lam = (s : K) ∧ Real.log s ≤ bound (Fintype.card ι) n R := by
   first | exact @GlobalTheory.extNorm_eq_nat_log_le_bound | exact GlobalTheory.extNorm_eq_nat_log_le_bound | (intros; apply GlobalTheory.extNorm_eq_nat_log_le_bound <;> assumption)

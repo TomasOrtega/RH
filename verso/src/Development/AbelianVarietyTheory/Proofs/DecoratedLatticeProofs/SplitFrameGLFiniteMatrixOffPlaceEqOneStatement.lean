@@ -12,8 +12,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.AdForm
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.StabOff.bc_prV_finM_eq_one | exact GlobalTheory.StabOff.bc_prV_finM_eq_one | (intros; apply GlobalTheory.StabOff.bc_prV_finM_eq_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.StabOff.bc_prV_finM_eq_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FSplitFrameGLFiniteMatrixOffPlaceEqOne.lean&line=64#L64)
 -/
 theorem _root_.GlobalTheory.T.splitFrameGL_finiteMatrix_offPlace_eq_one : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : SplitPt D k) (S : HSp D) (n : Type) [Fintype n] [DecidableEq n] (β : Frame p S n) (g : GL n k) (m : ℕ) (hm : S.rank = m) (x : GL (Fin m) (EF D)), x.1 = finM S hm (β.gl g) → ∀ v : Pl D, v ≠ p.v → Formalism.UG.bc (Formalism.UG.prV (E := D.host.E) v) x = 1 := by
   first | exact @GlobalTheory.StabOff.bc_prV_finM_eq_one | exact GlobalTheory.StabOff.bc_prV_finM_eq_one | (intros; apply GlobalTheory.StabOff.bc_prV_finM_eq_one <;> assumption)

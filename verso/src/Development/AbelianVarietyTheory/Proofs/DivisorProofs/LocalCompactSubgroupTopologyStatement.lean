@@ -9,8 +9,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 open GlobalTheory.ThK.LemF.QuotInv
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThK.LemF.QuotInv.KAtCompact.kAt_compact_secondCountable_t2 | exact GlobalTheory.ThK.LemF.QuotInv.KAtCompact.kAt_compact_secondCountable_t2 | (intros; apply GlobalTheory.ThK.LemF.QuotInv.KAtCompact.kAt_compact_secondCountable_t2 <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThK.LemF.QuotInv.KAtCompact.kAt_compact_secondCountable_t2` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLocalCompactSubgroupTopology.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.local_compact_subgroup_topology : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ)
     (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →

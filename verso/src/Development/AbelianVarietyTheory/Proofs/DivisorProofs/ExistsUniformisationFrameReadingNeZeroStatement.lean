@@ -29,8 +29,10 @@ open GlobalTheory.HSApp
 set_option synthInstance.maxHeartbeats 400000
 open GlobalTheory.LamT (CMPt)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.exists_rdU_ne_zero_of_mem_secZ | exact GlobalTheory.exists_rdU_ne_zero_of_mem_secZ | (intros; apply GlobalTheory.exists_rdU_ne_zero_of_mem_secZ <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.exists_rdU_ne_zero_of_mem_secZ` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsUniformisationFrameReadingNeZero.lean&line=34#L34)
 -/
 theorem _root_.GlobalTheory.T.exists_uniformisationFrame_reading_ne_zero : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H)
     (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Unf Xo c σ r), IsUnf U →

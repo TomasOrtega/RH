@@ -13,8 +13,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift (RealMat IsFock
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.StdUnn.KComm.exists_stdInv_comm_K | exact GlobalTheory.StdUnn.KComm.exists_stdInv_comm_K | (intros; apply GlobalTheory.StdUnn.KComm.exists_stdInv_comm_K <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.StdUnn.KComm.exists_stdInv_comm_K` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FExistsStandardCartanInvolutionCommuteCompact.lean&line=56#L56)
 -/
 theorem _root_.GlobalTheory.T.exists_standardCartanInvolution_commute_compact : ∀ (D : D7) (A : HSp D) (μ : D.host.E), IsSkew μ → ∀ κ : GA D (dblSp A) ≃* G D A.rank, IsChart A μ κ → ∀ θ : InfFam D, IsInfFam θ → ∃ s' : RealMat (dblSp A), IsStdInv A μ s' ∧ ∀ k : GA D (dblSp A), κ k ∈ K D A.rank → ∀ τ, compAt θ τ (Formalism.L2.Theta.mt (dblSp A) k) * s' τ = s' τ * compAt θ τ (Formalism.L2.Theta.mt (dblSp A) k) := by
   first | exact @GlobalTheory.StdUnn.KComm.exists_stdInv_comm_K | exact GlobalTheory.StdUnn.KComm.exists_stdInv_comm_K | (intros; apply GlobalTheory.StdUnn.KComm.exists_stdInv_comm_K <;> assumption)

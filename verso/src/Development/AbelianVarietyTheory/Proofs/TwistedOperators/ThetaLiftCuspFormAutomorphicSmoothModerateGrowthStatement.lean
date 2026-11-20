@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Ex
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Datum MeasureTheory NumberField Matrix
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Chain.LiftReg.liftProps_obj | exact GlobalTheory.Chain.LiftReg.liftProps_obj | (intros; apply GlobalTheory.Chain.LiftReg.liftProps_obj <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Chain.LiftReg.liftProps_obj` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FThetaLiftCuspFormAutomorphicSmoothModerateGrowth.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.thetaLift_cuspForm_automorphic_smooth_moderateGrowth : GlobalTheory.Published.CuspRapidDecay → ∀ D : D7, GlobalTheory.IndefiniteRowSideFullHecke.RapidDecayLift.LiftProps D := by
   first | exact @GlobalTheory.Chain.LiftReg.liftProps_obj | exact GlobalTheory.Chain.LiftReg.liftProps_obj | (intros; apply GlobalTheory.Chain.LiftReg.liftProps_obj <;> assumption)

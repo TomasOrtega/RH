@@ -5,8 +5,10 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.Thi
 open AlgebraicGeometry CategoryTheory Limits IsLocalRing
 open ReciprocityTheory.ChartRestriction.G.Out
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.irreducibleSpace_of_smooth_of_geometricallyConnected_domain | exact GlobalTheory.irreducibleSpace_of_smooth_of_geometricallyConnected_domain | (intros; apply GlobalTheory.irreducibleSpace_of_smooth_of_geometricallyConnected_domain <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.irreducibleSpace_of_smooth_of_geometricallyConnected_domain` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIrreducibleSpaceOfSmoothOfGeometricallyConnected.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.irreducibleSpace_of_smooth_geometricallyConnected_domain : ∀ (R : Type) [CommRing R] [IsDomain R] (G : Over (Spec (CommRingCat.of R))), Smooth G.hom → GeometricallyConnected G.hom → Nonempty G.left → IrreducibleSpace G.left := by
   first | exact @GlobalTheory.irreducibleSpace_of_smooth_of_geometricallyConnected_domain | exact GlobalTheory.irreducibleSpace_of_smooth_of_geometricallyConnected_domain | (intros; apply GlobalTheory.irreducibleSpace_of_smooth_of_geometricallyConnected_domain <;> assumption)

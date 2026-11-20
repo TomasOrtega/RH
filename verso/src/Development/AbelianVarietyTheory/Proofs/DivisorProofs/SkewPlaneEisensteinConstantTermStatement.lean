@@ -16,8 +16,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open Matrix
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThK.FixIsoAct.exists_unitary_of_fix | exact GlobalTheory.ThK.FixIsoAct.exists_unitary_of_fix | (intros; apply GlobalTheory.ThK.FixIsoAct.exists_unitary_of_fix <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThK.FixIsoAct.exists_unitary_of_fix` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSkewPlaneEisensteinConstantTerm.lean&line=101#L101)
 -/
 theorem _root_.GlobalTheory.T.skew_plane_eisenstein_constant_term : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (hσ : ∀ x, σ (σ x) = x) (n n₁ : ℕ) (W : Spc F E n) (W₁ : Spc F E n₁) (H : Plane E n n₁), (∀ i j, σ (W.J j i) = -W.J i j) → n = n₁ + 2 →

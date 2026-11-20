@@ -10,8 +10,10 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsCuspFuncti
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Datum MeasureTheory NumberField Matrix
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Size.NearOne.tendsto_growthSize_translate | exact GlobalTheory.Size.NearOne.tendsto_growthSize_translate | (intros; apply GlobalTheory.Size.NearOne.tendsto_growthSize_translate <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Size.NearOne.tendsto_growthSize_translate` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FTendstoModerateGrowthSizeTranslateNearOne.lean&line=126#L126)
 -/
 theorem _root_.GlobalTheory.T.tendsto_moderateGrowthSize_translate_near_one : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) (τ : D.what₂.Tau) (N : ℕ), ∀ φ ∈ GlobalTheory.Mem.AutSpace.SmFun θ V, GlobalTheory.Size.growthSob θ V 1 N φ ≠ ⊤ → Filter.Tendsto (fun u : Matrix (Fin V.rank) (Fin V.rank) ℂ => GlobalTheory.Size.growthSize V N (rTr V (atTau θ V τ u) φ - φ)) (nhdsWithin 1 (Formalism.QuantumDeterminants.UH (gramAt D V τ))) (nhds 0) := by
   first | exact @GlobalTheory.Size.NearOne.tendsto_growthSize_translate | exact GlobalTheory.Size.NearOne.tendsto_growthSize_translate | (intros; apply GlobalTheory.Size.NearOne.tendsto_growthSize_translate <;> assumption)

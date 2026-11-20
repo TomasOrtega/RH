@@ -15,8 +15,10 @@ open scoped TensorProduct Pointwise
 open GlobalTheory.ChainPts
 open GlobalTheory.ChainDesc
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CoverHom.exists_factor_of_affineCover | exact GlobalTheory.CoverHom.exists_factor_of_affineCover | (intros; apply GlobalTheory.CoverHom.exists_factor_of_affineCover <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CoverHom.exists_factor_of_affineCover` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFactorThroughMonoLocalLifts.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.factor_through_mono_local_lifts : ∀ (X : Scheme.{0}) (F E G : X.Modules) [F.IsQuasicoherent] [E.IsQuasicoherent] [G.IsQuasicoherent] (u : F ⟶ G) (ι : E ⟶ G) [Mono ι] (I : Type) (V : I → X.Opens), (∀ i, IsAffineOpen (V i)) → (∀ x : X, ∃ i, x ∈ V i) → (∀ i (s : Γ(F, V i)), ∃ s' : Γ(E, V i), ι.app _ s' = u.app _ s) → ∃ v : F ⟶ E, v ≫ ι = u := by
   first | exact @GlobalTheory.CoverHom.exists_factor_of_affineCover | exact GlobalTheory.CoverHom.exists_factor_of_affineCover | (intros; apply GlobalTheory.CoverHom.exists_factor_of_affineCover <;> assumption)

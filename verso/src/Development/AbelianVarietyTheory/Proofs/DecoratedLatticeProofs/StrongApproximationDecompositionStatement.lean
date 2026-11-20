@@ -7,8 +7,10 @@ open NumberField IsDedekindDomain Matrix MeasureTheory GlobalTheory.Mem GlobalTh
 open scoped TensorProduct Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SplitDec.exists_rat_split_stab | exact GlobalTheory.SplitDec.exists_rat_split_stab | (intros; apply GlobalTheory.SplitDec.exists_rat_split_stab <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SplitDec.exists_rat_split_stab` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FStrongApproximationDecomposition.lean&line=327#L327)
 -/
 theorem _root_.GlobalTheory.T.strong_approximation_decomposition : GlobalTheory.Published.StrongApproxSU → ∀ (D : D7) (V : HSp D) (n : ℕ) (hn : V.rank = n), V.gram = 1 → ∀ g ∈ GfC V, ∃ r s k, IsRatFin V r ∧ s ∈ splitPart V ∧ k ∈ GfC V ∧ Moves V hn k (Formalism.L2.Col.stdLat D.host.E n) ∧ g = r * s * k := by
   first | exact @GlobalTheory.SplitDec.exists_rat_split_stab | exact GlobalTheory.SplitDec.exists_rat_split_stab | (intros; apply GlobalTheory.SplitDec.exists_rat_split_stab <;> assumption)

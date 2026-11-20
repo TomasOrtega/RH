@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSchroedingerE
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchroedingerOperatorHeisenbergPreservesSchwartzBStatement
 open ValuativeRel Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LagVac.exists_vacuum | exact GlobalTheory.LagVac.exists_vacuum | (intros; apply GlobalTheory.LagVac.exists_vacuum <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LagVac.exists_vacuum` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsVacuumTransverseLagrangianLocalField.lean&line=212#L212)
 -/
 theorem _root_.GlobalTheory.T.exists_vacuum_transverseLagrangian_localField : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k]
     [Invertible (2 : k)] {κ : Type} [Fintype κ] {n d : ℕ} (ψ0 : AddChar k ℂ), Continuous ψ0 →

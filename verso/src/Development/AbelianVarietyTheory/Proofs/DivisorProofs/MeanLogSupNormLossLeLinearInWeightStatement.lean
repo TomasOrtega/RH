@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.BlockTheory.ExistenceTori.UnitaryHaarVol
 open NumberField MeasureTheory ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.AR.Inst ReciprocityTheory.ChartRestriction.G.AR.Up ReciprocityTheory.L2DbarEstimates GlobalTheory.LevGeo
 open scoped ENNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LamSize.lamSup_le | exact GlobalTheory.LamSize.lamSup_le | (intros; apply GlobalTheory.LamSize.lamSup_le <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LamSize.lamSup_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FMeanLogSupNormLossLeLinearInWeight.lean&line=111#L111)
 -/
 theorem _root_.GlobalTheory.T.meanLogSupNormLoss_le_linear_in_weight : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r q d M : ℕ) (Om s t L : ℝ), 1 ≤ r → 1 ≤ d → 1 ≤ M → 1 ≤ L → 0 ≤ s → 0 ≤ t → Real.log (fdeg E * r) ≤ L → Real.log M ≤ 30 * L → Real.log (dE E) ≤ 4 * fdeg E * L → Real.log d ≤ 4 * L → Real.log (s + t + 1) ≤ 2 * L → lamSup E r q d M Om s t ≤ ((1 + |Om|) / 2 + L + (2 * q + 1) * (6 * fdeg E + 48) * L) * (s + t) := by
   first | exact @GlobalTheory.LamSize.lamSup_le | exact GlobalTheory.LamSize.lamSup_le | (intros; apply GlobalTheory.LamSize.lamSup_le <;> assumption)

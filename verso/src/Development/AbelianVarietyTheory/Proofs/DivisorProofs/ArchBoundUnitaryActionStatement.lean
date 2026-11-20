@@ -9,8 +9,10 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.ThetaDecay
 open scoped TensorProduct NNReal Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WeilDirBound.norm_piInf_actAB_le_target | exact GlobalTheory.WeilDirBound.norm_piInf_actAB_le_target | (intros; apply GlobalTheory.WeilDirBound.norm_piInf_actAB_le_target <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WeilDirBound.norm_piInf_actAB_le_target` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FArchBoundUnitaryAction.lean&line=91#L91)
 -/
 theorem _root_.GlobalTheory.T.arch_bound_unitary_action : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n d : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (J' : Matrix (Fin d) (Fin d) E) (p : UA σ J × UA σ J')

@@ -6,8 +6,10 @@ open CategoryTheory AlgebraicGeometry NumberField IsDedekindDomain ReciprocityTh
 open Formalism.BasicNotions GlobalTheory GlobalTheory.Cartier GlobalTheory.CechPic GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.Mean4O GlobalTheory.CoverNorm GlobalTheory.ShFam.Pad GlobalTheory.TrivFlag GlobalTheory.WholeFlag GlobalTheory.ConstLat
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ConstLat.unitAt_det_compl_of_atTest | exact GlobalTheory.ConstLat.unitAt_det_compl_of_atTest | (intros; apply GlobalTheory.ConstLat.unitAt_det_compl_of_atTest <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ConstLat.unitAt_det_compl_of_atTest` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCoverChartLeftInverseRegular.lean&line=29#L29)
 -/
 theorem _root_.GlobalTheory.T.cover_chart_left_inverse_regular : ∀ {F : Type} [Field F] [NumberField F] {Y : Var F} {C : CxSt F} {g : ℕ} (A : Fin g → Adl C Y) (p : ℕ), p.Prime →
     ∀ (V : Cover Y) (W : Y.X.Opens), genericPoint Y.X ∈ W → ∀ (U : V.X.Opens)

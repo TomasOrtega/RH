@@ -8,8 +8,10 @@ open GlobalTheory.Orb (archMat)
 open scoped TensorProduct NNReal ENNReal Topology
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.RapidDecay.frameWt_div_le_div_ratio | exact GlobalTheory.CompanionTheory.RapidDecay.frameWt_div_le_div_ratio | (intros; apply GlobalTheory.CompanionTheory.RapidDecay.frameWt_div_le_div_ratio <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.RapidDecay.frameWt_div_le_div_ratio` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FConeFrameWeightRatioBound.lean&line=86#L86)
 -/
 theorem _root_.GlobalTheory.T.cone_frame_weight_ratio_bound : ∀ (r : ℕ) (c : ℝ), 0 < c → ∃ K : ℝ, 0 ≤ K ∧ ∀ (s : Fin r), ∀ t ∈ cone r c, ∀ α β : FrameIx r, frameLev s β < frameLev s α → frameWt t β / frameWt t α ≤ K / ratio t s := by
   first | exact @GlobalTheory.CompanionTheory.RapidDecay.frameWt_div_le_div_ratio | exact GlobalTheory.CompanionTheory.RapidDecay.frameWt_div_le_div_ratio | (intros; apply GlobalTheory.CompanionTheory.RapidDecay.frameWt_div_le_div_ratio <;> assumption)

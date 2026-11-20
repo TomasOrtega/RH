@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsHolFormC
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.PolarisationModuleIndex
 open NumberField GlobalTheory.CMVal GlobalTheory.RealMult
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PolGen.genAt_polMod | exact GlobalTheory.PolGen.genAt_polMod | (intros; apply GlobalTheory.PolGen.genAt_polMod <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PolGen.genAt_polMod` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCmHermitianTraceFormIntegral.lean&line=34#L34)
 -/
 theorem _root_.GlobalTheory.T.cm_hermitian_trace_form_integral : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (L : Submodule (OF E) E) (𝔠 : FracId (maximalRealSubfield E))
     (mu : E) (c1 : maximalRealSubfield E) (Q : E → E → maximalRealSubfield E) (l : ℕ) (c₀ : 𝔠.elt), c1 ≠ 0 →

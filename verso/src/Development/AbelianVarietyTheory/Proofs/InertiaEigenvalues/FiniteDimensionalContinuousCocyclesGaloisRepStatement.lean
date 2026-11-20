@@ -6,8 +6,10 @@ import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
 import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N GlobalTheory.HyodoDef GlobalTheory.Pst TensorProduct Module
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HyodoFin.finite_continuous_cocycles_localGaloisRep | exact GlobalTheory.HyodoFin.finite_continuous_cocycles_localGaloisRep | (intros; apply GlobalTheory.HyodoFin.finite_continuous_cocycles_localGaloisRep <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HyodoFin.finite_continuous_cocycles_localGaloisRep` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FFiniteDimensionalContinuousCocyclesGaloisRep.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.finiteDimensional_continuousCocycles_galoisRep : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : FinExt l) (V : Type) [AddCommGroup V] [Module ℚ_[l] V] [FiniteDimensional ℚ_[l] V] [TopologicalSpace V] [IsModuleTopology ℚ_[l] V] [ContinuousAdd V] [ContinuousConstSMul ℚ_[l] V] (ρ : Representation ℚ_[l] ↥(GK K) V), (∀ v, Continuous fun g => ρ g v) → Module.Finite ℚ_[l] ↥(continuousCocycles ρ) := by
   first | exact @GlobalTheory.HyodoFin.finite_continuous_cocycles_localGaloisRep | exact GlobalTheory.HyodoFin.finite_continuous_cocycles_localGaloisRep | (intros; apply GlobalTheory.HyodoFin.finite_continuous_cocycles_localGaloisRep <;> assumption)

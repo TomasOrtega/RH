@@ -7,8 +7,10 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open scoped Matrix
 open GlobalTheory.Sl2Ad
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Sl2Ad.form_ne_zero_of_isIrr | exact GlobalTheory.Sl2Ad.form_ne_zero_of_isIrr | (intros; apply GlobalTheory.Sl2Ad.form_ne_zero_of_isIrr <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Sl2Ad.form_ne_zero_of_isIrr` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FTraceFormNeZeroOfStableLineIrreducible.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.traceForm_ne_zero_of_stable_line_irreducible : ∀ {K : Type} [Field K] [CharZero K] {Γ : Type} [Group Γ] (ρ : Γ →* GL (Fin 2) K), IsIrr ρ → ∀ y : Fin 3 → K, y ≠ 0 → (∀ g, ∃ c : K, ad (ρ g) *ᵥ y = c • y) → form y y ≠ 0 := by
   first | exact @GlobalTheory.Sl2Ad.form_ne_zero_of_isIrr | exact GlobalTheory.Sl2Ad.form_ne_zero_of_isIrr | (intros; apply GlobalTheory.Sl2Ad.form_ne_zero_of_isIrr <;> assumption)

@@ -11,8 +11,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.QuotLift.exists_section_lift | exact GlobalTheory.QuotLift.exists_section_lift | (intros; apply GlobalTheory.QuotLift.exists_section_lift <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.QuotLift.exists_section_lift` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHenselSmoothSectionLift.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.hensel_smooth_section_lift : ∀ (R₁ R : Type) [CommRing R₁] [IsLocalRing R₁] [IsNoetherianRing R₁] [CommRing R] [IsLocalRing R], IsAdicComplete (maximalIdeal R₁) R₁ → ∀ π : R₁ →+* R, Function.Surjective π → ∀ (U : Over (Sp R₁)), Smooth U.hom → ∀ x₀ : Sp R ⟶ U.left, x₀ ≫ U.hom = spMap π → ∃ x : Sp R₁ ⟶ U.left, x ≫ U.hom = 𝟙 _ ∧ spMap π ≫ x = x₀ := by
   first | exact @GlobalTheory.QuotLift.exists_section_lift | exact GlobalTheory.QuotLift.exists_section_lift | (intros; apply GlobalTheory.QuotLift.exists_section_lift <;> assumption)

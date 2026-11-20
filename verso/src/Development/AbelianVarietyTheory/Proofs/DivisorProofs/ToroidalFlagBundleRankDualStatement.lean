@@ -8,8 +8,10 @@ open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalT
 open GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.ProjVar
 open GlobalTheory.FlagCls
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagCls.agreeAt_of_frame | exact GlobalTheory.FlagCls.agreeAt_of_frame | (intros; apply GlobalTheory.FlagCls.agreeAt_of_frame <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagCls.agreeAt_of_frame` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FToroidalFlagBundleRankDual.lean&line=59#L59)
 -/
 theorem _root_.GlobalTheory.T.toroidal_flag_bundle_rank_dual : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l) (c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l) (Oz : Type) [CommRing Oz] (β : Oz →+* c.F) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β) (F : Type) [Field F] (e : F ≃+* c.F) (r : ℕ) (τ : E →+* ℂ) (dual : Bool) (Bs Bg Y : Scheme.{0}) (M : Bs.Modules) (hM : IsVB M r) (jB : Bg ⟶ Bs) (πB : Bg ⟶ gen Z) (u : FrAssign Z M r jB) (π : Y ⟶ Bs) (fl : Vert.Flag ((Scheme.Modules.pullback π).obj M) r), IsLieFrames Z e jB πB M r τ dual u → ∀ (K : Type) [CommRing K] (y : Sp K ⟶ Y) (xb : Sp K ⟶ Bg) (χ : c.F →+* K), y ≫ π = xb ≫ jB → xb ≫ πB ≫ genStr Z = spMap χ → ∀ (v : Fin r → (Sp (DualNumber K) ⟶ Z.t.G.left)) (V : Bs.Opens) (f : Fin r → Γ(M, V)) (hf : IsFrame f) (hx : ⊤ ≤ (xb ≫ jB) ⁻¹ᵁ V) (d : Matrix (Fin r) (Fin r) K), IsUnit d.det → (∀ i, IsCombAtG Z.t (xb ≫ πB ≫ genι Z) (u V f hf K xb hx) (d i) (v i)) → FlagMat hM π fl hf y (lieMat dual d) → AgreeAt Z hM jB u π fl dual y xb (xb ≫ πB ≫ genι Z) v := by
   first | exact @GlobalTheory.FlagCls.agreeAt_of_frame | exact GlobalTheory.FlagCls.agreeAt_of_frame | (intros; apply GlobalTheory.FlagCls.agreeAt_of_frame <;> assumption)

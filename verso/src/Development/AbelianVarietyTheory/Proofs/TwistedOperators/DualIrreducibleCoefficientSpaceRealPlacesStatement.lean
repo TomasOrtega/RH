@@ -10,8 +10,10 @@ open IsDedekindDomain NumberField MeasureTheory
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DualIrr.dual_irr | exact GlobalTheory.DualIrr.dual_irr | (intros; apply GlobalTheory.DualIrr.dual_irr <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DualIrr.dual_irr` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FDualIrreducibleCoefficientSpaceRealPlaces.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.dual_irreducible_coefficientSpace_realPlaces : ∀ (D : D7) (V : HSp D) (θ : InfFam D) (c : CoefA V), IsInfFam θ → c.Is → ∀ N : Submodule ℂ (Module.Dual ℂ c.W), (∀ τ, ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ), ∀ f ∈ N, (c.ρ (atTau θ V τ g)⁻¹).dualMap f ∈ N) → N = ⊥ ∨ N = ⊤ := by
   first | exact @GlobalTheory.DualIrr.dual_irr | exact GlobalTheory.DualIrr.dual_irr | (intros; apply GlobalTheory.DualIrr.dual_irr <;> assumption)

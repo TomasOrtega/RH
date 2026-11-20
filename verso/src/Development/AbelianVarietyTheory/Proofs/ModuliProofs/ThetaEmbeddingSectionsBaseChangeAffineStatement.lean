@@ -9,8 +9,10 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj TensorProduct
 open GlobalTheory.ZM
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.emb_baseChange | exact GlobalTheory.emb_baseChange | (intros; apply GlobalTheory.emb_baseChange <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.emb_baseChange` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FModuliProofs%2FThetaEmbeddingSectionsBaseChangeAffine.lean&line=291#L291)
 -/
 theorem _root_.GlobalTheory.T.thetaEmbeddingSections_baseChange_affine : Out.Laws2 → ∀ (o : Type) [CommRing o] (g N' : ℕ) (J : Type) (b : TBase o (N' ^ 2)) (S : Scheme.{0}) (s : S ⟶ Sp o) (t : TObj g (N' ^ 2) J b s) (m : ℕ) (T T' : Over S) (h : T' ⟶ T) σ, IsAffine T.left → IsAffine T'.left → t.Emb m T σ → ∃ σ', t.Emb m T' σ' ∧ ∀ (R : Type) [CommRing R] (y : Sp R ⟶ (T' ⊗ t.A).left) (w : Ix g (N' ^ 2) → R), SecCoord _ σ' y w ↔ SecCoord _ σ (y ≫ (h ▷ t.A).left) w := by
   first | exact @GlobalTheory.emb_baseChange | exact GlobalTheory.emb_baseChange | (intros; apply GlobalTheory.emb_baseChange <;> assumption)

@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.DiscreteSpec
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CapelliOperatorOnUnitaryCoefficientEqDerived
 open scoped InnerProductSpace
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.GelfRec.gelfVal_newton | exact GlobalTheory.CompanionTheory.GelfRec.gelfVal_newton | (intros; apply GlobalTheory.CompanionTheory.GelfRec.gelfVal_newton <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.GelfRec.gelfVal_newton` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FTraceElementGelfandPolynomialFormula.lean&line=148#L148)
 -/
 theorem _root_.GlobalTheory.T.trace_element_gelfand_polynomial_formula : ∀ (m : ℕ) (χ : Fin (m + 1) → ℂ) (N : ℕ), ((-1 : Polynomial ℂ) ^ N * ((Polynomial.X - Polynomial.C (m : ℂ)) ^ (N + 1) * ((∏ s, (Polynomial.X + Polynomial.C (χ s - (m : ℂ) / 2))).comp (Polynomial.X + 1) - (∏ s, (Polynomial.X + Polynomial.C (χ s - (m : ℂ) / 2)))) - (∏ s, (Polynomial.X + Polynomial.C (χ s - (m : ℂ) / 2))) * ∑ k ∈ Finset.range N, Polynomial.C ((-1) ^ k * GlobalTheory.Dec.gelfVal χ k) * (Polynomial.X - Polynomial.C (m : ℂ)) ^ (N - k))).coeff (m + 1) = GlobalTheory.Dec.gelfVal χ N := by
   first | exact @GlobalTheory.CompanionTheory.GelfRec.gelfVal_newton | exact GlobalTheory.CompanionTheory.GelfRec.gelfVal_newton | (intros; apply GlobalTheory.CompanionTheory.GelfRec.gelfVal_newton <;> assumption)

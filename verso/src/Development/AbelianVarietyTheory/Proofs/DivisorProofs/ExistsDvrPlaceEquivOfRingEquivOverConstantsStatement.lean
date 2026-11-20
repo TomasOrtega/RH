@@ -7,8 +7,10 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.Discrepancy GlobalTheory.FieldPair
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FieldPair.placeEquiv_ringEquiv | exact GlobalTheory.FieldPair.placeEquiv_ringEquiv | (intros; apply GlobalTheory.FieldPair.placeEquiv_ringEquiv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FieldPair.placeEquiv_ringEquiv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsDvrPlaceEquivOfRingEquivOverConstants.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.exists_dvrPlace_equiv_of_ringEquiv_over_constants : ∀ {k K K' : Type} [Field k] [CharZero k] [Field K] [Field K'] (c : k →+* K) (c' : k →+* K') (e : K ≃+* K'), (∀ a, e (c a) = c' a) → ∃ Φ : Place c ≃ Place c', ∀ E : Place c, (∀ a, e a ∈ (Φ E).ring ↔ a ∈ E.ring) ∧ (∀ a, (Φ E).ord (e a) = E.ord a) ∧ (∀ φ : K →₀ ℚ, (Φ E).ordQ (Finsupp.mapDomain e φ) = E.ordQ φ) ∧ ∀ (n : ℕ) (x : Fin n → K), TrBasis c x → (Φ E).formOrd (dForm c' (e ∘ x)) = E.formOrd (dForm c x) := by
   first | exact @GlobalTheory.FieldPair.placeEquiv_ringEquiv | exact GlobalTheory.FieldPair.placeEquiv_ringEquiv | (intros; apply GlobalTheory.FieldPair.placeEquiv_ringEquiv <;> assumption)

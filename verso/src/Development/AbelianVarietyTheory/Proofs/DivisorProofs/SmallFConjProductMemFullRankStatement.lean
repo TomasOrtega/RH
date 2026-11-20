@@ -10,8 +10,10 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FullRankCoinv.smallF_mul_conj_mem_fullRk | exact GlobalTheory.FullRankCoinv.smallF_mul_conj_mem_fullRk | (intros; apply GlobalTheory.FullRankCoinv.smallF_mul_conj_mem_fullRk <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FullRankCoinv.smallF_mul_conj_mem_fullRk` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSmallFConjProductMemFullRank.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.smallF_conj_product_mem_fullRank : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k]
     (n d : ℕ) (ν : kˣ →* ℂˣ), n ≤ d → GlobalTheory.SmGL.IsSmoothChar ν →

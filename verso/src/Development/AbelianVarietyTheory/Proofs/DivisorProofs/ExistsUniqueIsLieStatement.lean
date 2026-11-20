@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.EqZeroOfForallPowDv
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CobOneEqZeroOfConnecting
 open CategoryTheory TensorProduct MvPowerSeries GlobalTheory GlobalTheory.PDiv GlobalTheory.Katz GlobalTheory.QLog GlobalTheory.PDivGroup
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.QLog.Chart.existsUnique_isLie | exact GlobalTheory.QLog.Chart.existsUnique_isLie | (intros; apply GlobalTheory.QLog.Chart.existsUnique_isLie <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.QLog.Chart.existsUnique_isLie` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsUniqueIsLie.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.existsUnique_isLie_of_isFrame_of_QL : ∀ (p : ℕ) [Fact p.Prime] (O E : Type) [CommRing O] [CommRing E] [Algebra O E], IsFrame p E (RingHom.id O) → ∀ (G : PDivGroup p O) (d : ℕ) (c : QLog.Chart G d), ∀ (f : MvPowerSeries (Fin d) E), QL c.μ ⊤ f → ∃! l : G.dual.Lie, c.IsLie f l := by
   first | exact @GlobalTheory.QLog.Chart.existsUnique_isLie | exact GlobalTheory.QLog.Chart.existsUnique_isLie | (intros; apply GlobalTheory.QLog.Chart.existsUnique_isLie <;> assumption)

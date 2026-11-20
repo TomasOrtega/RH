@@ -8,8 +8,10 @@ open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHeck
 open Formalism.IndefR.DatumF MeasureTheory GlobalTheory.FinWeil
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FinLatF.latRepF_cont | exact GlobalTheory.FinLatF.latRepF_cont | (intros; apply GlobalTheory.FinLatF.latRepF_cont <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FinLatF.latRepF_cont` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLatticeIntertwinerRepContinuousGroup.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.latticeIntertwinerRep_continuous_group : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

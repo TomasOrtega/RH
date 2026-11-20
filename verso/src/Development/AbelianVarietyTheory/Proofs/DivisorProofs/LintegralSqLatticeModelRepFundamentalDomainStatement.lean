@@ -8,8 +8,10 @@ open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHeck
 open Formalism.IndefR.DatumF MeasureTheory GlobalTheory.FinWeil
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FinLatUnitF.lintegral_sq_Om | exact GlobalTheory.FinLatUnitF.lintegral_sq_Om | (intros; apply GlobalTheory.FinLatUnitF.lintegral_sq_Om <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FinLatUnitF.lintegral_sq_Om` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLintegralSqLatticeModelRepFundamentalDomain.lean&line=42#L42)
 -/
 theorem _root_.GlobalTheory.T.lintegral_sq_latticeModelRep_fundamentalDomain : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

@@ -10,8 +10,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.exists_common_field_of_point_eq | exact GlobalTheory.Mum.exists_common_field_of_point_eq | (intros; apply GlobalTheory.Mum.exists_common_field_of_point_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.exists_common_field_of_point_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsCommonFieldOfFieldPointsSamePoint.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.exists_common_field_of_fieldPoints_same_point : ∀ (X : Scheme.{0}) (K₁ K₂ : Type) [Field K₁] [Field K₂] (a : Sp K₁ ⟶ X) (b : Sp K₂ ⟶ X), a (closedPoint K₁) = b (closedPoint K₂) → ∃ (Ω : Type) (_ : Field Ω) (i₁ : K₁ →+* Ω) (i₂ : K₂ →+* Ω), spMap i₁ ≫ a = spMap i₂ ≫ b := by
   first | exact @GlobalTheory.Mum.exists_common_field_of_point_eq | exact GlobalTheory.Mum.exists_common_field_of_point_eq | (intros; apply GlobalTheory.Mum.exists_common_field_of_point_eq <;> assumption)

@@ -12,8 +12,10 @@ open scoped TensorProduct Matrix Topology
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Member
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MarkUniq.mark_unique | exact GlobalTheory.MarkUniq.mark_unique | (intros; apply GlobalTheory.MarkUniq.mark_unique <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MarkUniq.mark_unique` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUnitaryExistence%2FMarkingComponentUniqueFrameUniqueArithmeticGroup.lean&line=113#L113)
 -/
 theorem _root_.GlobalTheory.T.marking_component_unique_frame_unique_arithmeticGroup : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (V : HSp D) (r : ℕ) (C : Ctx Xo c σ V r), C.OK → ∀ h, (∀ k k' γ γ', C.Mark h k γ → C.Mark h k' γ' → k = k') ∧ ∀ k γ γ', C.Mark h k γ → C.Mark h k γ' → ∃ δ ∈ (C.M.X k).Γ, C.fr (γ' * h) k = lact δ (C.fr (γ * h) k) := by
   first | exact @GlobalTheory.MarkUniq.mark_unique | exact GlobalTheory.MarkUniq.mark_unique | (intros; apply GlobalTheory.MarkUniq.mark_unique <;> assumption)

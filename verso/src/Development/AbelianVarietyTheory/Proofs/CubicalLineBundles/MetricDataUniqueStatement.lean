@@ -15,8 +15,10 @@ open scoped ComplexOrder
 open GlobalTheory GlobalTheory.CM GlobalTheory.Frames GlobalTheory.LamT
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LamT.MetUniq.isMetric_unique | exact GlobalTheory.LamT.MetUniq.isMetric_unique | (intros; apply GlobalTheory.LamT.MetUniq.isMetric_unique <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LamT.MetUniq.isMetric_unique` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FCubicalLineBundles%2FMetricDataUnique.lean&line=82#L82)
 -/
 theorem _root_.GlobalTheory.T.metric_data_unique : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (y : FrPt Xo c (CAt σ)) (N N' : ℝ) (Gr Gr' : (∀ b : E →+* ℂ, Matrix (Fin (Dw.mult b)) (Fin (Dw.mult b)) ℂ)), IsMetric y N Gr → IsMetric y N' Gr' → N = N' ∧ Gr = Gr' := by
   first | exact @GlobalTheory.LamT.MetUniq.isMetric_unique | exact GlobalTheory.LamT.MetUniq.isMetric_unique | (intros; apply GlobalTheory.LamT.MetUniq.isMetric_unique <;> assumption)

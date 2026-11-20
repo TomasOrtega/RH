@@ -9,8 +9,10 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WeilContF.continuous_transportF_apply | exact GlobalTheory.WeilContF.continuous_transportF_apply | (intros; apply GlobalTheory.WeilContF.continuous_transportF_apply <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WeilContF.continuous_transportF_apply` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FContinuousWeilDatumTransportCmApply.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.continuous_weilDatum_transport_cm_apply : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

@@ -8,8 +8,10 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsTraceCompatibl
 open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.NormSum GlobalTheory.ThetaConj
 open scoped BigOperators
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ConjugateLattice.lamConj_eq_closure_pair | exact GlobalTheory.ConjugateLattice.lamConj_eq_closure_pair | (intros; apply GlobalTheory.ConjugateLattice.lamConj_eq_closure_pair <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ConjugateLattice.lamConj_eq_closure_pair` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FConjugateLatticeEqClosureIndependentPair.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.conjugateLattice_eq_closure_independent_pair : ∀ (D : D7), admG1 D → ∀ (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), Crv D cc δ → ∀ (M : IntermediateField ℚ ℂ) (ρ : M →ₐ[ℚ] ℂ), g2 (lamOf D cc δ) ∈ M → g3 (lamOf D cc δ) ∈ M → ∃ w₁ w₂ : ℂ, LinearIndependent ℝ ![w₁, w₂] ∧ lamConj M ρ (lamOf D cc δ) = AddSubgroup.closure {w₁, w₂} := by
   first | exact @GlobalTheory.ConjugateLattice.lamConj_eq_closure_pair | exact GlobalTheory.ConjugateLattice.lamConj_eq_closure_pair | (intros; apply GlobalTheory.ConjugateLattice.lamConj_eq_closure_pair <;> assumption)

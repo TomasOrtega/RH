@@ -13,8 +13,10 @@ import Development.WeilBound.CoreStatements.PublishedTheorems.NefNumerics.NefRie
 open CategoryTheory Limits AlgebraicGeometry TopologicalSpace Filter Asymptotics
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Twist
-/- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.nefRiemannRoch | exact _root_.GlobalTheory.nefRiemannRoch | (intros; apply _root_.GlobalTheory.nefRiemannRoch <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.nefRiemannRoch` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FWeilBound%2FCoreStatements%2FPublishedTheorems%2FNefNumerics%2FNefRiemannRoch%2FNefRiemannRoch.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.nef_riemann_roch : GlobalTheory.Published.NefRiemannRoch := by
   first | exact @_root_.GlobalTheory.nefRiemannRoch | exact _root_.GlobalTheory.nefRiemannRoch | (intros; apply _root_.GlobalTheory.nefRiemannRoch <;> assumption)

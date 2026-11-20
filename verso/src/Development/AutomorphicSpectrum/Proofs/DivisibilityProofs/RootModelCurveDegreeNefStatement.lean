@@ -7,8 +7,10 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.I
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.KleimanNefness.KleimanSt
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo Filter Topology GlobalTheory.CompanionTheory.Ar.Top
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Top.nefFib_integral_multiple | exact GlobalTheory.CompanionTheory.Ar.Top.nefFib_integral_multiple | (intros; apply GlobalTheory.CompanionTheory.Ar.Top.nefFib_integral_multiple <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Top.nefFib_integral_multiple` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FDivisibilityProofs%2FRootModelCurveDegreeNef.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.root_model_curve_degree_nef : ∀ (Ψ : Type) [Fintype Ψ] (N : ℕ) (M : RootModel Ψ N) (t : ℝ) (lam : Wt Ψ N) (s : ℝ) (q : ℕ) (n : Option (Ψ × Fin N) → ℤ), (∀ j, (n j : ℝ) = q * M.coef lam s j) → (∀ W : Ideal (MRing M.ι), (geoNum 1 W (fun _ => (combLine (M.line t) n).a) : ℝ) = q * M.curveDeg lam s W) ∧ (M.NefFib lam s → NefOnFibres M.P (combLine (M.line t) n).a) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Top.nefFib_integral_multiple | exact GlobalTheory.CompanionTheory.Ar.Top.nefFib_integral_multiple | (intros; apply GlobalTheory.CompanionTheory.Ar.Top.nefFib_integral_multiple <;> assumption)

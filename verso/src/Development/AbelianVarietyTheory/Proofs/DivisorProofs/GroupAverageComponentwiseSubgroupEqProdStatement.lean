@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.SimpleTwistedTraceF
 open Filter GlobalTheory.BCT
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AvgRestr.avg_restrProd | exact GlobalTheory.AvgRestr.avg_restrProd | (intros; apply GlobalTheory.AvgRestr.avg_restrProd <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AvgRestr.avg_restrProd` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGroupAverageComponentwiseSubgroupEqProd.lean&line=121#L121)
 -/
 theorem _root_.GlobalTheory.T.groupAverage_componentwiseSubgroup_eq_prod : ∀ (ι G : Type) [Group G] (H : ι → Type) [∀ i, Group (H i)] (p : ∀ i, G →* H i) (K : Subgroup G) (KH : ∀ i, Subgroup (H i)) (hK : ∀ x : G, x ∈ K ↔ ∀ i, p i x ∈ KH i) (u : ∀ i, KH i → ℂ), (∀ y : ∀ i, H i, (∀ᶠ i in cofinite, y i ∈ KH i) → ∃ x : G, ∀ i, p i x = y i) → (∀ i, (rStab (u i)).index ≠ 0) → (∀ᶠ i in cofinite, ∀ k, u i k = 1) → avg (fun k : K => ∏ᶠ i, u i ⟨p i k, (hK k).1 k.2 i⟩) = ∏ᶠ i, avg (u i) := by
   first | exact @GlobalTheory.AvgRestr.avg_restrProd | exact GlobalTheory.AvgRestr.avg_restrProd | (intros; apply GlobalTheory.AvgRestr.avg_restrProd <;> assumption)

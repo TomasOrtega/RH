@@ -13,8 +13,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Unf
 open scoped ComplexOrder ENNReal NNReal ContDiff
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Unf.FlatForm.flatAt_isSobForm | exact GlobalTheory.Unf.FlatForm.flatAt_isSobForm | (intros; apply GlobalTheory.Unf.FlatForm.flatAt_isSobForm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Unf.FlatForm.flatAt_isSobForm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FFlatMapIntegrableAndBoundedLinearForm.lean&line=212#L212)
 -/
 theorem _root_.GlobalTheory.T.flatMap_integrable_and_bounded_linearForm : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ θ : InfFam D, IsInfFam θ → ∀ (V V₀ W W₀ : HSp D) (ρ σ : ℕ) (dV : HypDec V V₀ ρ) (dW : HypDec W W₀ σ) (vS : VolM D W.rank ρ) (vT : VolM D σ V₀.rank) (vU : VolU D ρ) (x : Matrix (Fin W.rank) (Fin ρ) D.host.E), LinearIndependent D.host.E x.transpose → ∀ y : Mx D V₀.rank σ, (∀ Ψ, IsThetaFunO ψ V W Ψ → ∀ w, Integrable (flatFun ψ dV dW vS.μ vS.𝓕 vT.μ vT.𝓕 (rat x) y Ψ w) vU.ν) ∧ ∀ w, IsSobForm ψ θ V W fun Ψ => flatAt ψ dV dW vS.μ vS.𝓕 vT.μ vT.𝓕 vU.ν (rat x) y Ψ w := by
   first | exact @GlobalTheory.Unf.FlatForm.flatAt_isSobForm | exact GlobalTheory.Unf.FlatForm.flatAt_isSobForm | (intros; apply GlobalTheory.Unf.FlatForm.flatAt_isSobForm <;> assumption)

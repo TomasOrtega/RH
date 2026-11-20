@@ -6,8 +6,10 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegrableMulCI
 open MeasureTheory Matrix
 open Ad3.K Ad3.K.LC Ad3.K.LC.C GlobalTheory.CompanionTheory.GodementFE
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.GodementFE.Iwasawa.gl2_complex_iwasawa | exact GlobalTheory.CompanionTheory.GodementFE.Iwasawa.gl2_complex_iwasawa | (intros; apply GlobalTheory.CompanionTheory.GodementFE.Iwasawa.gl2_complex_iwasawa <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.GodementFE.Iwasawa.gl2_complex_iwasawa` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FGl2ComplexIwasawaDecomposition.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.gl2_complex_iwasawa_decomposition_upper_unitary : ∀ g : Matrix (Fin 2) (Fin 2) ℂ, g.det ≠ 0 → ∃ (κ : Matrix (Fin 2) (Fin 2) ℂ) (b : ℂ) (R : ℝ),
     0 < R ∧ R ^ 2 = ‖g 1 0‖ ^ 2 + ‖g 1 1‖ ^ 2 ∧ κ * κᴴ = 1 ∧ ‖κ.det‖ = 1 ∧

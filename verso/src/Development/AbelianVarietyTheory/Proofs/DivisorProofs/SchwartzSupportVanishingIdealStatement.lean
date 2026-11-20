@@ -7,8 +7,10 @@ open ValuativeRel
 open scoped Matrix Topology
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SBVanish.mem_span_of_vanish | exact GlobalTheory.SBVanish.mem_span_of_vanish | (intros; apply GlobalTheory.SBVanish.mem_span_of_vanish <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SBVanish.mem_span_of_vanish` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSchwartzSupportVanishingIdeal.lean&line=42#L42)
 -/
 theorem _root_.GlobalTheory.T.schwartz_support_vanishing_ideal : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k]
     {Y Y' : Type} [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y'] (ψ0 : AddChar k ℂ), Continuous ψ0 →

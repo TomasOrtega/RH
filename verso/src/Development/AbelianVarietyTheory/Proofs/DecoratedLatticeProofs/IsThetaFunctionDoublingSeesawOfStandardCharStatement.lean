@@ -11,8 +11,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Core.Rk.IP
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Core.Rk.DeltaTheta.main | exact GlobalTheory.Core.Rk.DeltaTheta.main | (intros; apply GlobalTheory.Core.Rk.DeltaTheta.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Core.Rk.DeltaTheta.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FIsThetaFunctionDoublingSeesawOfStandardChar.lean&line=101#L101)
 -/
 theorem _root_.GlobalTheory.T.isThetaFunction_doublingSeesaw_of_standard_char : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (A B : HSp D), IsStdChar D ψ (-1) → ∀ f₁ f₂, IsThetaFunO ψ A B f₁ → IsThetaFunO ψ A B f₂ → IsThetaFunO ψ (dblSp A) B (delta A B f₁ f₂) := by
   first | exact @GlobalTheory.Core.Rk.DeltaTheta.main | exact GlobalTheory.Core.Rk.DeltaTheta.main | (intros; apply GlobalTheory.Core.Rk.DeltaTheta.main <;> assumption)

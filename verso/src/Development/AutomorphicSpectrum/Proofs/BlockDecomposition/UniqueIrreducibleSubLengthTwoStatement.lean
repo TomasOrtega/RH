@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.SegmentRepresentation
 open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.JHMult
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.SegZRep.segmentRepresentation_of_two | exact GlobalTheory.CompanionTheory.SegZRep.segmentRepresentation_of_two | (intros; apply GlobalTheory.CompanionTheory.SegZRep.segmentRepresentation_of_two <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.SegZRep.segmentRepresentation_of_two` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FUniqueIrreducibleSubLengthTwo.lean&line=416#L416)
 -/
 theorem _root_.GlobalTheory.T.unique_irreducible_sub_length_two : (∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (d : ℕ), 0 < d →
     ∀ σ : IrrRep (GL (Fin d) k), IsCuspidal σ.ρ →

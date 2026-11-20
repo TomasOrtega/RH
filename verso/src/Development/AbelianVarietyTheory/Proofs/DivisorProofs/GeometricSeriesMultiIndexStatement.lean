@@ -4,8 +4,10 @@ import Mathlib
 open MeasureTheory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.tsum_prod_geom_zpow_ge | exact GlobalTheory.tsum_prod_geom_zpow_ge | (intros; apply GlobalTheory.tsum_prod_geom_zpow_ge <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.tsum_prod_geom_zpow_ge` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGeometricSeriesMultiIndex.lean&line=62#L62)
 -/
 theorem _root_.GlobalTheory.T.geometric_series_multi_index : ∀ {ι : Type} [Fintype ι] (a : ι → ℤ) (r : ι → ℂ), (∀ i, r i ≠ 0) → (∀ i, ‖r i‖ < 1) →
     Summable (fun k : ι → ℤ => ‖if (∀ i, a i ≤ k i) then ∏ i, r i ^ k i else 0‖) ∧

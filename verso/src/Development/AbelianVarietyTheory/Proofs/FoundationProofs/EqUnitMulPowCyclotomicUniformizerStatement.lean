@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.NotCoboundaryCon
 open GlobalTheory.AlmostEt GlobalTheory.K5
 open scoped NNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.K5.UnitPow.eq_unit_mul_pow | exact GlobalTheory.K5.UnitPow.eq_unit_mul_pow | (intros; apply GlobalTheory.K5.UnitPow.eq_unit_mul_pow <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.K5.UnitPow.eq_unit_mul_pow` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FEqUnitMulPowCyclotomicUniformizer.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.eq_unit_mul_pow_cyclotomic_uniformizer : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [Algebra (O0 p) Ω], IsClo p Ω → ∀ (T : Tower p Ω), ∀ b ∈ Algebra.adjoin (O0 p) (Set.range T.ζ ∪ Set.range T.qq), b ≠ 0 → ∃ (n k : ℕ), 1 ≤ n ∧ ∃ u ∈ Algebra.adjoin (O0 p) (Set.range T.ζ ∪ Set.range T.qq), ∃ u' ∈ Algebra.adjoin (O0 p) (Set.range T.ζ ∪ Set.range T.qq), u * u' = 1 ∧ b = u * (T.ζ n - 1) ^ k := by
   first | exact @GlobalTheory.K5.UnitPow.eq_unit_mul_pow | exact GlobalTheory.K5.UnitPow.eq_unit_mul_pow | (intros; apply GlobalTheory.K5.UnitPow.eq_unit_mul_pow <;> assumption)

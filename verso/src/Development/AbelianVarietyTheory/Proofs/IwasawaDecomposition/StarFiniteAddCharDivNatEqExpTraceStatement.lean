@@ -6,8 +6,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.L2.Theta Formali
 open scoped TensorProduct Matrix
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mem.CharRat.star_psiEf_divN_inclE | exact GlobalTheory.Mem.CharRat.star_psiEf_divN_inclE | (intros; apply GlobalTheory.Mem.CharRat.star_psiEf_divN_inclE <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mem.CharRat.star_psiEf_divN_inclE` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FStarFiniteAddCharDivNatEqExpTrace.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.star_finiteAddChar_div_nat_eq_exp_trace : ∀ (D : D7) (X : HidaSetting D) (α : 𝓞 D.host.E), star (X.psiEf (divN X.B.I X.B.g (Formalism.UG.inclE (F := X.B.I.F) (Formalism.MainNotions.S.Af X.B.I.F) (X.ιE.symm (α : D.host.E))))) = Complex.exp (2 * Real.pi * Complex.I * ((Algebra.intTrace ℤ (𝓞 D.host.E) α : ℤ) : ℂ) / ((X.B.g : ℕ) : ℂ)) := by
   first | exact @GlobalTheory.Mem.CharRat.star_psiEf_divN_inclE | exact GlobalTheory.Mem.CharRat.star_psiEf_divN_inclE | (intros; apply GlobalTheory.Mem.CharRat.star_psiEf_divN_inclE <;> assumption)

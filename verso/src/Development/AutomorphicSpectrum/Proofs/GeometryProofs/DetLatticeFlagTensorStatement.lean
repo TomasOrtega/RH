@@ -19,8 +19,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp
 open ReciprocityTheory.AnForm (levi)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Relay.det_lattice_flag_tensor | exact GlobalTheory.CompanionTheory.Relay.det_lattice_flag_tensor | (intros; apply GlobalTheory.CompanionTheory.Relay.det_lattice_flag_tensor <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Relay.det_lattice_flag_tensor` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FDetLatticeFlagTensor.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.det_lattice_flag_tensor : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (V : Type) [AddCommGroup V] [Module Ω V] (L : Lat ξ V) (r : ℕ) (b₀ : Fin r → V), LinearIndependent Ω b₀ → L.IsFlagVBOn Set.univ b₀ → detLat L b₀ = Lat.tens (fun i => L.gr b₀ i) (fun _ => 1) := by
   first | exact @GlobalTheory.CompanionTheory.Relay.det_lattice_flag_tensor | exact GlobalTheory.CompanionTheory.Relay.det_lattice_flag_tensor | (intros; apply GlobalTheory.CompanionTheory.Relay.det_lattice_flag_tensor <;> assumption)

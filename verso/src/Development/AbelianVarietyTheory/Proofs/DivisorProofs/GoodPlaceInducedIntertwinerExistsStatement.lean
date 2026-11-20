@@ -11,8 +11,10 @@ open GlobalTheory.Doubling (absE)
 open GlobalTheory.SmGL GlobalTheory.PRep GlobalTheory.LeviBlockExponent GlobalTheory.CuspBlock GlobalTheory.JacLineSplit
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ZetaCoinvSplit.zeta_coinv | exact GlobalTheory.ZetaCoinvSplit.zeta_coinv | (intros; apply GlobalTheory.ZetaCoinvSplit.zeta_coinv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ZetaCoinvSplit.zeta_coinv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGoodPlaceInducedIntertwinerExists.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.good_place_induced_intertwiner_exists : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W),

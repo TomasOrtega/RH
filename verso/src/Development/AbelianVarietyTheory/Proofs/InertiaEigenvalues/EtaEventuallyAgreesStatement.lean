@@ -11,8 +11,10 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocalGlobalAbo
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX NumberField IsDedekindDomain GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw GlobalTheory.HeightCounting GlobalTheory.HeightCounting.Up
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeRec.factG
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EtaMem.etaJ_built | exact GlobalTheory.EtaMem.etaJ_built | (intros; apply GlobalTheory.EtaMem.etaJ_built <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EtaMem.etaJ_built` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FEtaEventuallyAgrees.lean&line=29#L29)
 -/
 theorem _root_.GlobalTheory.T.eta_eventually_agrees : PrN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, PtSt hL → AllSt fun _ _ _ _ _ P x => ∀ l : LC hL x, GlobalTheory.CoefDuty.EvO l.a.A l.mt.M l.c.ch l.c.tp.tup fun D' => SumRepresentations.hypO D' → ∀ j v, 1 ≤ j → j ≤ (Dof x).R.m → ∀ v' : D'.what₂.places.Pl, HEq v' v → D'.what₂.etaJ j v' = P.q.eta j v := by
   first | exact @GlobalTheory.EtaMem.etaJ_built | exact GlobalTheory.EtaMem.etaJ_built | (intros; apply GlobalTheory.EtaMem.etaJ_built <;> assumption)

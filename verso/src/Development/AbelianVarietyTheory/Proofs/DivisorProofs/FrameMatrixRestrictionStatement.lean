@@ -11,8 +11,10 @@ open Formalism.MainNotions.DIV.Cons (intO)
 open scoped Classical
 open GlobalTheory.LieFilt
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LieFilt.locAdapted_of_matrix | exact GlobalTheory.LieFilt.locAdapted_of_matrix | (intros; apply GlobalTheory.LieFilt.locAdapted_of_matrix <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LieFilt.locAdapted_of_matrix` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFrameMatrixRestriction.lean&line=94#L94)
 -/
 theorem _root_.GlobalTheory.T.frame_matrix_restriction : ∀ {X W : Scheme.{0}} (jB : W ⟶ X) {ι : Type} [Fintype ι] {L : X.Modules} {E E' : ι → X.Modules} {r : ι → ℕ} {g : ℕ}
     (o : ι → ℕ) (T : ∀ a, E a ⟶ L) (u : ∀ a, E a ⟶ E' a) {U V V' : X.Opens} (hV : V ≤ U) (hV' : V' ≤ V)

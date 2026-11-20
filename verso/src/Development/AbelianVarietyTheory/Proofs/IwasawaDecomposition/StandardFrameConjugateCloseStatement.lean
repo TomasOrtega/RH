@@ -13,8 +13,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ConjLt.frame_mat_sub_one_lt | exact GlobalTheory.ConjLt.frame_mat_sub_one_lt | (intros; apply GlobalTheory.ConjLt.frame_mat_sub_one_lt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ConjLt.frame_mat_sub_one_lt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FStandardFrameConjugateClose.lean&line=94#L94)
 -/
 theorem _root_.GlobalTheory.T.standard_frame_conjugate_close : ∀ (D : D7) (V : HSp D) (β : GL (Fin V.rank) (EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (N : ℕ), IsSDFrame V β Λ N → ∀ (g : GA D V) (Q : Formalism.L2.DIV.Pl D.host.E), (∀ a b : Fin V.rank, Valued.v (GlobalTheory.StdFrames.cpt Q ((β⁻¹ * (finE V g)⁻¹ * β).val a b - (1 : Matrix (Fin V.rank) (Fin V.rank) (EAf D)) a b)) < 1) → ∀ a b : Fin V.rank, Valued.v (GlobalTheory.StdFrames.cpt (GlobalTheory.IdemSupport.cP Q) ((β⁻¹ * finE V g * β).val a b - (1 : Matrix (Fin V.rank) (Fin V.rank) (EAf D)) a b)) < 1 := by
   first | exact @GlobalTheory.ConjLt.frame_mat_sub_one_lt | exact GlobalTheory.ConjLt.frame_mat_sub_one_lt | (intros; apply GlobalTheory.ConjLt.frame_mat_sub_one_lt <;> assumption)

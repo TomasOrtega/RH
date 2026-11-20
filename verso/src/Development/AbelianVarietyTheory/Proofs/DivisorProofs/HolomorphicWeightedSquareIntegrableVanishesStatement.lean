@@ -25,8 +25,10 @@ open ReciprocityTheory.ChartRestriction.G.AR.Up ReciprocityTheory.ChartRestricti
 open scoped ENNReal
 open scoped ContDiff
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.holo_vanish_of_critical_integrable | exact GlobalTheory.holo_vanish_of_critical_integrable | (intros; apply GlobalTheory.holo_vanish_of_critical_integrable <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.holo_vanish_of_critical_integrable` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHolomorphicWeightedSquareIntegrableVanishes.lean&line=29#L29)
 -/
 theorem _root_.GlobalTheory.T.holomorphic_weighted_square_integrable_vanishes : ∀ {n : ℕ}, 0 < n → ∀ (u : V n → ℂ) (ρ : ℝ), 0 < ρ → DifferentiableOn ℂ u (Metric.ball 0 ρ) → ∫⁻ z in Metric.ball (0 : V n) ρ, ENNReal.ofReal (‖u z‖ ^ 2 * ‖z‖ ^ (-(2 * (n : ℝ)))) < ⊤ → u 0 = 0 := by
   first | exact @GlobalTheory.holo_vanish_of_critical_integrable | exact GlobalTheory.holo_vanish_of_critical_integrable | (intros; apply GlobalTheory.holo_vanish_of_critical_integrable <;> assumption)

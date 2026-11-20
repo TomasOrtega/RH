@@ -8,8 +8,10 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Vert GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.Mean4O GlobalTheory.MixedLocalChains
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FrobRankOne.ck_frob_rankOne | exact GlobalTheory.FrobRankOne.ck_frob_rankOne | (intros; apply GlobalTheory.FrobRankOne.ck_frob_rankOne <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FrobRankOne.ck_frob_rankOne` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFrobeniusChernClassScaling.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.frobenius_chern_class_scaling : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p] (B : GlobalTheory.Vert.Model O), GlobalTheory.IsNormalScheme B.X → ∀ (R R' : Pres B) (g : Γ(B.X, ⊤)), IsRootOfP p g p → R.r = 1 → Kills g R.mod → IsFrob p R.mod R'.mod → ∀ k : ℕ, R'.ck p k = ((p : ℚ) ^ k) • R.ck p k := by
   first | exact @GlobalTheory.FrobRankOne.ck_frob_rankOne | exact GlobalTheory.FrobRankOne.ck_frob_rankOne | (intros; apply GlobalTheory.FrobRankOne.ck_frob_rankOne <;> assumption)

@@ -7,8 +7,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFam GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.TorRef
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GenFan.formallyUnramified_residue_comp_of_isEtaleCompletion | exact GlobalTheory.GenFan.formallyUnramified_residue_comp_of_isEtaleCompletion | (intros; apply GlobalTheory.GenFan.formallyUnramified_residue_comp_of_isEtaleCompletion <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GenFan.formallyUnramified_residue_comp_of_isEtaleCompletion` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FChartRingFormallyUnramified.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.chart_ring_formally_unramified : ∀ (k : Type) [Field k] (m e : ℕ) [CharZero (ChartRing k m e)] {A : Type} [CommRing A] [IsLocalRing A] (φ : A →+* ChartRing k m e), IsEtaleCompletion φ → ((residue (ChartRing k m e)).comp φ).FormallyUnramified := by
   first | exact @GlobalTheory.GenFan.formallyUnramified_residue_comp_of_isEtaleCompletion | exact GlobalTheory.GenFan.formallyUnramified_residue_comp_of_isEtaleCompletion | (intros; apply GlobalTheory.GenFan.formallyUnramified_residue_comp_of_isEtaleCompletion <;> assumption)

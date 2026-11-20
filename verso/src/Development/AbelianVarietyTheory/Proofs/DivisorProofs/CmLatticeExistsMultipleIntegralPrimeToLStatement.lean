@@ -14,8 +14,10 @@ open GlobalTheory.CMVal (OF Af lattice IsBaseCond IsFinSetSplitPlacesCoprimeCond
 open GlobalTheory.LatVal (OneOver)
 open GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds (a0)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HilbFam.LatticeUp.exists_mul_integral | exact GlobalTheory.HilbFam.LatticeUp.exists_mul_integral | (intros; apply GlobalTheory.HilbFam.LatticeUp.exists_mul_integral <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HilbFam.LatticeUp.exists_mul_integral` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCmLatticeExistsMultipleIntegralPrimeToL.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.cmLattice_exists_multiple_integral_prime_to_l : ∀ (E : Type) [Field E] [NumberField E] (l : ℕ) (c : Ideal (OF E)) (y : (Af E)ˣ), l.Prime → OneOver l y → ∃ M : ℕ, ¬ l ∣ M ∧ ∀ x ∈ lattice c y, IsIntegral ℤ ((M : E) * x) := by
   first | exact @GlobalTheory.HilbFam.LatticeUp.exists_mul_integral | exact GlobalTheory.HilbFam.LatticeUp.exists_mul_integral | (intros; apply GlobalTheory.HilbFam.LatticeUp.exists_mul_integral <;> assumption)

@@ -17,8 +17,10 @@ open GlobalTheory.Mem.Col2.AdT
 open Filter Topology
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mem.Col2.AdT.exists_SBof_over_sub | exact GlobalTheory.Mem.Col2.AdT.exists_SBof_over_sub | (intros; apply GlobalTheory.Mem.Col2.AdT.exists_SBof_over_sub <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mem.Col2.AdT.exists_SBof_over_sub` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FExistsBadPrimeOverChartBadPlace.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.exists_badPrime_over_chart_bad_place : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (a : I.ι) (v : HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F)), v ∈ Formalism.L2.Forms.badG (I.rec7 l Z) ∨ I.UnderQ a v → ∃ P : SBof I a, Formalism.L2.Col.IsOver v (GlobalTheory.TwU.seamP (sm I l Z) P.1) := by
   first | exact @GlobalTheory.Mem.Col2.AdT.exists_SBof_over_sub | exact GlobalTheory.Mem.Col2.AdT.exists_SBof_over_sub | (intros; apply GlobalTheory.Mem.Col2.AdT.exists_SBof_over_sub <;> assumption)

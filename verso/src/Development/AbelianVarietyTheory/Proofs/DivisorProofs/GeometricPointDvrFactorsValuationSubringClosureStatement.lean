@@ -12,8 +12,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.AbLaw GlobalTheory.UU GlobalTheory.LN GlobalTheory.Raynaud IsLocalRing
 open scoped CategoryTheory.Obj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.geomPoint_factors_valuationSubring_algClosure | exact GlobalTheory.geomPoint_factors_valuationSubring_algClosure | (intros; apply GlobalTheory.geomPoint_factors_valuationSubring_algClosure <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.geomPoint_factors_valuationSubring_algClosure` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGeometricPointDvrFactorsValuationSubringClosure.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.geometric_point_dvr_factors_valuation_subring_closure : ∀ (W L : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field L] [Algebra W L] [IsFractionRing W L] (k : Type) [Field k] [IsAlgClosed k] (x : Sp k ⟶ Sp W), ∃ (U : ValuationSubring (AlgebraicClosure L)) (j : W →+* U) (h : U →+* k), (algebraMap U (AlgebraicClosure L)).comp j = (algebraMap L (AlgebraicClosure L)).comp (algebraMap W L) ∧ x = spMap h ≫ spMap j := by
   first | exact @GlobalTheory.geomPoint_factors_valuationSubring_algClosure | exact GlobalTheory.geomPoint_factors_valuationSubring_algClosure | (intros; apply GlobalTheory.geomPoint_factors_valuationSubring_algClosure <;> assumption)

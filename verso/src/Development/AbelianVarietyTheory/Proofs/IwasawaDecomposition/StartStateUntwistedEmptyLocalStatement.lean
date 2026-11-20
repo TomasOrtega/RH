@@ -8,8 +8,10 @@ open Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Rows Fo
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mem.R3.Rw.Bare.hasBare_sat | exact GlobalTheory.Mem.R3.Rw.Bare.hasBare_sat | (intros; apply GlobalTheory.Mem.R3.Rw.Bare.hasBare_sat <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mem.R3.Rw.Bare.hasBare_sat` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FStartStateUntwistedEmptyLocal.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.start_state_untwisted_empty_local : HypA → HypH → DatExt0 → StepW Start fun K B f T w => ∃ (P : Pre2 K w) (x : St P), (T = TwDat.untw B T.pl → ∀ v v', GlobalTheory.TwistChoice.OverOne (w.D P.Z₀) v v' → v ∈ P.Wt → v' ∈ P.Wt) ∧ IsEmpty x.o.N.nd.Loc ∧ ∀ j v, x.o.η j v = 0 := by
   first | exact @GlobalTheory.Mem.R3.Rw.Bare.hasBare_sat | exact GlobalTheory.Mem.R3.Rw.Bare.hasBare_sat | (intros; apply GlobalTheory.Mem.R3.Rw.Bare.hasBare_sat <;> assumption)

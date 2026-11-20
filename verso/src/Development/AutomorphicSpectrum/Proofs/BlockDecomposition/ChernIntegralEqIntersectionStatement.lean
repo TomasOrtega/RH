@@ -7,8 +7,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts GlobalTheory.Published.ArDegreeModel
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.ChernDegree.chernInt_fsBasis_eq_inter | exact GlobalTheory.CompanionTheory.ChernDegree.chernInt_fsBasis_eq_inter | (intros; apply GlobalTheory.CompanionTheory.ChernDegree.chernInt_fsBasis_eq_inter <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.ChernDegree.chernInt_fsBasis_eq_inter` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FChernIntegralEqIntersection.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.chern_integral_eq_intersection : ∀ (Y : Var ℂ) (Δ : Y.Dv) (L : LB Y.X) (r : L.ι → Y.Fnˣ) (hL : L.IsLB) (n : ℕ) (b : Fin n → L.Sec) (hb : ⨆ j, nonzeroLocus (b j) = ⊤), Presents Δ L r → (Weight.fsBasis Y.str (RingHom.id ℂ) hL b hb 1 (by simp)).chernInt Y.dim Set.univ (fun _ => 1) = ((Y.inter fun _ => Δ : ℤ) : ℝ) := by
   first | exact @GlobalTheory.CompanionTheory.ChernDegree.chernInt_fsBasis_eq_inter | exact GlobalTheory.CompanionTheory.ChernDegree.chernInt_fsBasis_eq_inter | (intros; apply GlobalTheory.CompanionTheory.ChernDegree.chernInt_fsBasis_eq_inter <;> assumption)

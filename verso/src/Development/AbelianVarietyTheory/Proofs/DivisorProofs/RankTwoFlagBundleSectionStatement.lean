@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.RegularAlt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BcFlag
 open CategoryTheory AlgebraicGeometry Limits ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.CovTest GlobalTheory.Published
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CovTest.Multisection.exists_multisection | exact GlobalTheory.CovTest.Multisection.exists_multisection | (intros; apply GlobalTheory.CovTest.Multisection.exists_multisection <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CovTest.Multisection.exists_multisection` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRankTwoFlagBundleSection.lean&line=28#L28)
 -/
 theorem _root_.GlobalTheory.T.rank_two_flag_bundle_section : ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) [IsIntegral B] [IsIntegral Y] (q : B ⟶ Sp k)
     (p : Y ⟶ Sp k) (d : ℕ), IsArithVar q d → IsArithVar p (d + 1) → ∀ (π : Y ⟶ B) (_ : π ≫ q = p) (E : B.Modules),

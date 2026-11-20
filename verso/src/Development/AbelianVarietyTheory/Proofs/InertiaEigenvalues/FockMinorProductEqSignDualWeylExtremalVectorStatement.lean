@@ -6,8 +6,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open Formalism.IndefR.Links (PolF)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ExportSeries.DeltaExtremal.harmFn_delta | exact GlobalTheory.ExportSeries.DeltaExtremal.harmFn_delta | (intros; apply GlobalTheory.ExportSeries.DeltaExtremal.harmFn_delta <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ExportSeries.DeltaExtremal.harmFn_delta` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FFockMinorProductEqSignDualWeylExtremalVector.lean&line=164#L164)
 -/
 theorem _root_.GlobalTheory.T.fockMinorProduct_eq_sign_dualWeylExtremalVector : ∀ (D : D7) (m n : ℕ) (w : Weight D n) (B : GLR D n), w.Good → (∀ τ, w.p τ + w.q τ ≤ m) → ∃ s : ℤˣ, ∀ x, harmFn m w B (w.delta m) x = ((s : ℤ) : ℂ) * coefFn (RingHom.id ℂ) w.lam (ten fun τ => extremal ℂ n (w.lam τ)) (B⁻¹ * x) := by
   first | exact @GlobalTheory.ExportSeries.DeltaExtremal.harmFn_delta | exact GlobalTheory.ExportSeries.DeltaExtremal.harmFn_delta | (intros; apply GlobalTheory.ExportSeries.DeltaExtremal.harmFn_delta <;> assumption)

@@ -10,8 +10,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj TensorProduct ContDiff
 open GlobalTheory.KS
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThickeningIso.isIso_of_mod_eps | exact GlobalTheory.ThickeningIso.isIso_of_mod_eps | (intros; apply GlobalTheory.ThickeningIso.isIso_of_mod_eps <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThickeningIso.isIso_of_mod_eps` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FModuliProofs%2FIsIsoThickeningMapOfModEps.lean&line=131#L131)
 -/
 theorem _root_.GlobalTheory.T.isIso_thickening_map_of_mod_eps : ∀ (Y Y' Z' : Scheme.{0}) (q : Y ⟶ Sp ℂ) (π : Y' ⟶ Sp (DualNumber ℂ)) (π' : Z' ⟶ Sp (DualNumber ℂ)) (j : Y ⟶ Y') (j' : Y ⟶ Z') (e : Y' ⟶ Z'), IsPullback j q π (spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom) → IsPullback j' q π' (spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom) → Flat π → e ≫ π' = π → j ≫ e = j' → IsIso e := by
   first | exact @GlobalTheory.ThickeningIso.isIso_of_mod_eps | exact GlobalTheory.ThickeningIso.isIso_of_mod_eps | (intros; apply GlobalTheory.ThickeningIso.isIso_of_mod_eps <;> assumption)

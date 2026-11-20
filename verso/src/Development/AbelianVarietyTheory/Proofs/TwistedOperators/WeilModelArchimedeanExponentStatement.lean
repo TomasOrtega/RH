@@ -16,8 +16,10 @@ open scoped ComplexConjugate
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RealDict.FockMap.exists_fockMap | exact GlobalTheory.RealDict.FockMap.exists_fockMap | (intros; apply GlobalTheory.RealDict.FockMap.exists_fockMap <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RealDict.FockMap.exists_fockMap` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FWeilModelArchimedeanExponent.lean&line=520#L520)
 -/
 theorem _root_.GlobalTheory.T.weil_model_archimedean_exponent : GlobalTheory.FunPr.Hypotheses₂ →
   ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →

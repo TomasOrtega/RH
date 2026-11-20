@@ -12,8 +12,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.IndefiniteRowSideFullHecke.PlusPolynomialRoots GlobalTheory.HCChar GlobalTheory.Published
 open scoped ComplexConjugate TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EllipticOrb.orbInt_elliptic | exact GlobalTheory.EllipticOrb.orbInt_elliptic | (intros; apply GlobalTheory.EllipticOrb.orbInt_elliptic <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EllipticOrb.orbInt_elliptic` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPseudoCoefficientRegularCharacter.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.pseudo_coefficient_regular_character : DiscreteSeriesCharacter → ∀ {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S)
     (ρ : D.what₂.Tau) (μ : Measure (GArch D.sp.cm.sig V.gram (placeOf D ρ))) [μ.IsHaarMeasure]

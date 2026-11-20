@@ -13,8 +13,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift (RealMat IsFock
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.StdThetaInt.integrable_theta | exact GlobalTheory.StdThetaInt.integrable_theta | (intros; apply GlobalTheory.StdThetaInt.integrable_theta <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.StdThetaInt.integrable_theta` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FIntegrableStandardPairThetaWeilRange.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.integrable_standardPair_theta_weilRange : GlobalTheory.Published.WeilThetaConvergence → ∀ (D : D7) (n : ℕ) (V : HSp D), 1 ≤ n → n + Formalism.MainNotions.SchurIrreducible.wittIdx V < V.rank → ∀ θ : InfFam D, IsInfFam θ → ∀ (ω : G D n →* Module.End ℂ (schwartzA θ V.rank n)) (ν : Measure (GA D V)), ν.IsHaarMeasure → ∀ (Φ : schwartzA θ V.rank n) (g : G D n), Integrable (GlobalTheory.AutomorphicL2Unitary.descend (GQ V) (theta ω Φ g)) (autMeasure V ν) := by
   first | exact @GlobalTheory.StdThetaInt.integrable_theta | exact GlobalTheory.StdThetaInt.integrable_theta | (intros; apply GlobalTheory.StdThetaInt.integrable_theta <;> assumption)

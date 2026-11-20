@@ -9,8 +9,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.SiegelWeil₂.SiegelEi
 import Development.AbelianVarietyTheory.PublishedTheorems.SiegelWeil₂.SiegelWeilUnitarySchrodinger
 open GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.LiteralAutomorphy
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.hypA_of_artinReciprocity | exact GlobalTheory.hypA_of_artinReciprocity | (intros; apply GlobalTheory.hypA_of_artinReciprocity <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.hypA_of_artinReciprocity` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FArchimedeanInputsImply.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.archimedean_inputs_imply : GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.CMCurveGoodOutsidePrimeSt → GlobalTheory.Published.WeberRayFieldSt → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.DiscreteSeriesClassification → GlobalTheory.Published.DiscreteSeriesCoverExists → GlobalTheory.Published.BesselUniquenessReal → GlobalTheory.Published.FormalDegreeCompactDual → HeckeCharacterZeroLocus.SiegelWeilU.SiegelWeilUnitaryConvergent → HypA := by
   first | exact @GlobalTheory.hypA_of_artinReciprocity | exact GlobalTheory.hypA_of_artinReciprocity | (intros; apply GlobalTheory.hypA_of_artinReciprocity <;> assumption)

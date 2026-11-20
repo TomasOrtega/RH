@@ -11,8 +11,10 @@ open GlobalTheory.UPoinc
 attribute [local instance] Over.cartesianMonoidalCategory
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UPoinc.exists_uIsLabW | exact GlobalTheory.UPoinc.exists_uIsLabW | (intros; apply GlobalTheory.UPoinc.exists_uIsLabW <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UPoinc.exists_uIsLabW` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsLabelsUnitaryClassicalTrait.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.exists_labels_unitaryClassicalTrait : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H), 1 ≤ Dw.p + Dw.q → ∀ (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (cf : Coeff l) (C : UCompact Xo cf), ∀ (X : USetup C) (wi : UWit X) (p : ℕ) [Fact p.Prime] (z : X.M.Z) (ct : UCTrait X p z), ∃ yy : X.S.Gam →+ ModN (X.S.r * X.S.N) ct.T.P.D.toPre.X, UIsLabW X wi ct yy := by
   first | exact @GlobalTheory.UPoinc.exists_uIsLabW | exact GlobalTheory.UPoinc.exists_uIsLabW | (intros; apply GlobalTheory.UPoinc.exists_uIsLabW <;> assumption)

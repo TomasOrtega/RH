@@ -12,8 +12,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (Base Spc Model Ch
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThetaTransformTheta.isThetaFunO_thetaTr | exact GlobalTheory.ThetaTransformTheta.isThetaFunO_thetaTr | (intros; apply GlobalTheory.ThetaTransformTheta.isThetaFunO_thetaTr <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThetaTransformTheta.isThetaFunO_thetaTr` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsThetaFunctionThetaTransformRationalDarboux.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.isThetaFunction_thetaTransform_rationalDarboux : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (S T : HSp D) (JA : Matrix (Fin T.rank) (Fin T.rank) D.host.E) (JB : Matrix (Fin S.rank) (Fin S.rank) D.host.E)

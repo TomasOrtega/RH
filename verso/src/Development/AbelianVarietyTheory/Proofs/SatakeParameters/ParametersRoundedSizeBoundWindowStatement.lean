@@ -5,8 +5,10 @@ import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
 import Formalism.FrobeniusOrbits.HostCorollaries
 open GlobalTheory.HTW Formalism.BasicNotions Formalism.FrobeniusOrbits
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HTW.bHat_window | exact GlobalTheory.HTW.bHat_window | (intros; apply GlobalTheory.HTW.bHat_window <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HTW.bHat_window` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FRoundedSizeBoundWindow.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.roundedSizeBound_window : ∀ {D : D7} (L : SizeData₂ D) (C : ℝ), Roomy L C → L.sc.b - ((D.R.t : ℝ) + 1) / 2 ≤ (bHat L : ℝ) ∧ (bHat L : ℝ) ≤ L.sc.b - ((D.R.t : ℝ) + 1) / 2 + 1 := by
   first | exact @GlobalTheory.HTW.bHat_window | exact GlobalTheory.HTW.bHat_window | (intros; apply GlobalTheory.HTW.bHat_window <;> assumption)

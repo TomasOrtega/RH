@@ -13,8 +13,10 @@ open NumberField MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheor
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CMNormSum.sum_norm_eq | exact GlobalTheory.CMNormSum.sum_norm_eq | (intros; apply GlobalTheory.CMNormSum.sum_norm_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CMNormSum.sum_norm_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHermitianSumNormSumEqual.lean&line=54#L54)
 -/
 theorem _root_.GlobalTheory.T.hermitian_sum_norm_sum_equal : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (w : InfinitePlace F) (k k' : ℕ) (z : Fin k → w.Completion ⊗[F] E) (z' : Fin k' → w.Completion ⊗[F] E),

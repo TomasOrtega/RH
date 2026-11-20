@@ -2,8 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LineFunctionalEqPeriodMul
 import GroundTheory.PAdicHodge.AxLemma
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.line_functional_eq_period_mul | exact GlobalTheory.line_functional_eq_period_mul | (intros; apply GlobalTheory.line_functional_eq_period_mul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.line_functional_eq_period_mul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FLineFunctionalEqPeriodMul.lean&line=8#L8)
 -/
 theorem _root_.GlobalTheory.T.line_functional_eq_period_mul_alt : ∀ (l : ℕ) [Fact l.Prime] (M S : Type) [AddCommGroup M] [Module ℤ_[l] M] (B : Submodule ℤ_[l] M)
   (g : S → Module.End ℤ_[l] M) (ρ : S → Matrix (Fin 2) (Fin 2) (PadicAlgCl l))

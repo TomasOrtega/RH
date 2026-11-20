@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.ProjExi
 import Development.AbelianVarietyTheory.Definitions.Foundations.StrictInterlaceIffDescEnum
 open Formalism.L2.Theta
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WordSep.word_sep | exact GlobalTheory.WordSep.word_sep | (intros; apply GlobalTheory.WordSep.word_sep <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WordSep.word_sep` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FParametersSeparatedByOne.lean&line=71#L71)
 -/
 theorem _root_.GlobalTheory.T.parameters_separated_by_one : ∀ {G : GlobalTheory.SignedHC.GridData} {n : ℕ} {lam : Fin (n + 1) → ℝ} {ε : Fin (n + 1) → Bool} {mu : Fin n → ℝ} {ε' : Fin n → Bool}, 0 < G.ga → (∀ i, 2 ≤ i → i < G.k → G.v (i + 1) + 2 ≤ G.v i) → 2 ≤ G.v G.k + G.b 1 → IsEnum (G.parPi 0) lam ε → IsEnum G.parD0 mu ε' → (∀ a i, mu i < lam a → mu i + 1 < lam a) ∧ ∀ a i, lam a ≠ mu i := by
   first | exact @GlobalTheory.WordSep.word_sep | exact GlobalTheory.WordSep.word_sep | (intros; apply GlobalTheory.WordSep.word_sep <;> assumption)

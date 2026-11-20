@@ -27,8 +27,10 @@ open GlobalTheory.TrMult
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open scoped InnerProductSpace
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TrCopy.isCopyFinDS_finPartDSSm | exact GlobalTheory.TrCopy.isCopyFinDS_finPartDSSm | (intros; apply GlobalTheory.TrCopy.isCopyFinDS_finPartDSSm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TrCopy.isCopyFinDS_finPartDSSm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FIrreducibleUnitaryRepEqFiniteSmoothPartTensorDis.lean&line=30#L30)
 -/
 theorem _root_.GlobalTheory.T.irreducibleUnitaryRep_eq_finiteSmoothPart_tensor_discreteSeries : ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (π : GA D V →* (H →L[ℂ] H)), IsIrrUnitary π → HasDSComp M π → ∀ hU : IsSubrep π ⊤, IsCopyFinDS (finPartDSSm M hU) M π ⊤ := by
   first | exact @GlobalTheory.TrCopy.isCopyFinDS_finPartDSSm | exact GlobalTheory.TrCopy.isCopyFinDS_finPartDSSm | (intros; apply GlobalTheory.TrCopy.isCopyFinDS_finPartDSSm <;> assumption)

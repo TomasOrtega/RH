@@ -7,8 +7,10 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.Sec
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.Frames
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Frames.FramedBaseChange.exists_frMap | exact GlobalTheory.Frames.FramedBaseChange.exists_frMap | (intros; apply GlobalTheory.Frames.FramedBaseChange.exists_frMap <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Frames.FramedBaseChange.exists_frMap` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUnitaryExistence%2FExistsFramedPointBaseChangeAlgebraMap.lean&line=60#L60)
 -/
 theorem _root_.GlobalTheory.T.exists_framedPoint_baseChange_algebraMap : Out.SecBaseChangeSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (S : Type) [CommRing S] [Algebra c.F S] (T : Type) [CommRing T] [Algebra c.F T] (φ : S →ₐ[c.F] T) (y : FrPt Xo c S), ∃ z : FrPt Xo c T, FrMap φ y z := by
   first | exact @GlobalTheory.Frames.FramedBaseChange.exists_frMap | exact GlobalTheory.Frames.FramedBaseChange.exists_frMap | (intros; apply GlobalTheory.Frames.FramedBaseChange.exists_frMap <;> assumption)

@@ -10,8 +10,10 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.QuasiPlurisubhar
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.LieAlgebraMaps
 open NumberField Formalism.BasicNotions Formalism.MainNotions ReciprocityTheory.GeometryOfNumbersTheory GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.Mean4 GlobalTheory.Mean4O GlobalTheory.LieHt GlobalTheory.HeightParts
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.OmCmpProof.om_cmp | exact GlobalTheory.OmCmpProof.om_cmp | (intros; apply GlobalTheory.OmCmpProof.om_cmp <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.OmCmpProof.om_cmp` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FOmegaComparisonStatement.lean&line=85#L85)
 -/
 theorem _root_.GlobalTheory.T.omega_comparison_statement : Hypotheses2 → HypothesesH → OmCmp := by
   first | exact @GlobalTheory.OmCmpProof.om_cmp | exact GlobalTheory.OmCmpProof.om_cmp | (intros; apply GlobalTheory.OmCmpProof.om_cmp <;> assumption)

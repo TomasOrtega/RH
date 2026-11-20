@@ -18,8 +18,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UT
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PELOfUnif.main | exact GlobalTheory.PELOfUnif.main | (intros; apply GlobalTheory.PELOfUnif.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PELOfUnif.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUniformizationProofs%2FUniformisationTripleLinearTorsionIso.lean&line=107#L107)
 -/
 theorem _root_.GlobalTheory.T.uniformisation_triple_linear_torsionIso : LL → TwistBCSpanStatement → TWM.VRatioGtStatement → TWStatement → UUStatement → ∀ (E : Type) [Field E] [NumberField E] [NumberField.IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsDomain R] [CharZero R] (I : Ideal R), AdmBase R I → ∀ (t : SAB H (Sp R)) (D : DegData R I) (A : PolAV (Sp (FractionRing R))) (U : Unif I D A t.G), U.LG = t.PP → ∃ P : PELUnif I t, P.D = D ∧ P.A = A ∧ HEq P.U U ∧ P.TorsionIso := by
   first | exact @GlobalTheory.PELOfUnif.main | exact GlobalTheory.PELOfUnif.main | (intros; apply GlobalTheory.PELOfUnif.main <;> assumption)

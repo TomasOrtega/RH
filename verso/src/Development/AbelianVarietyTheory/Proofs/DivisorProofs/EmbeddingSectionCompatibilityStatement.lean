@@ -18,8 +18,10 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 open GlobalTheory.FlatModel
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlatModel.tan_eig_push | exact GlobalTheory.FlatModel.tan_eig_push | (intros; apply GlobalTheory.FlatModel.tan_eig_push <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlatModel.tan_eig_push` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FEmbeddingSectionCompatibility.lean&line=35#L35)
 -/
 theorem _root_.GlobalTheory.T.embedding_section_compatibility : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H)
     (l l' : Level H) (Xo : Moduli Dw l) (Xo' : Moduli Dw l') (c : Coeff l) (c' : Coeff l') (W : ValuationSubring ℂ)

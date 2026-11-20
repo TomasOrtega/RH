@@ -15,8 +15,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MumMult.exists_pt_chart_of_leadPt | exact GlobalTheory.MumMult.exists_pt_chart_of_leadPt | (intros; apply GlobalTheory.MumMult.exists_pt_chart_of_leadPt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MumMult.exists_pt_chart_of_leadPt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsClosedFibreChartPointMumfordMultiplierNonz.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.exists_closedFibre_chart_point_mumfordMultiplier_nonzero : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (U : Unif (maximalIdeal R) D A G) (b : ∀ e : ℕ, thickObj R (maximalIdeal R) e G ⟶ thickObj R (maximalIdeal R) e G) (m : ∀ (e : ℕ) (i i' : Fin 1 → U.LG.L.ι), Γ((thickObj R (maximalIdeal R) e G).left, GlobalTheory.MumMult.multW U b e i i')), GlobalTheory.MumMult.LeadPt U b m → ∃ y : (thickObj R (maximalIdeal R) 0 G).left, (∃ i' : Fin 1 → U.LG.L.ι, y ∈ (fstG (maximalIdeal R) 0 G).left ⁻¹ᵁ secChart U.LG.L i') ∧ ∀ i i' : Fin 1 → U.LG.L.ι, y ∈ GlobalTheory.MumMult.multW U b 0 i i' → y ∈ (thickObj R (maximalIdeal R) 0 G).left.basicOpen (m 0 i i') := by
   first | exact @GlobalTheory.MumMult.exists_pt_chart_of_leadPt | exact GlobalTheory.MumMult.exists_pt_chart_of_leadPt | (intros; apply GlobalTheory.MumMult.exists_pt_chart_of_leadPt <;> assumption)

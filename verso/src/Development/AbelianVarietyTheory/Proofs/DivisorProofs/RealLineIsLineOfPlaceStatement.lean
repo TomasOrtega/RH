@@ -8,8 +8,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.SiegelSet GlobalTheory.UAut GlobalTheory.LeviHC
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LeviHC.isLineOf_of_isRealLine | exact GlobalTheory.LeviHC.isLineOf_of_isRealLine | (intros; apply GlobalTheory.LeviHC.isLineOf_of_isRealLine <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LeviHC.isLineOf_of_isRealLine` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRealLineIsLineOfPlace.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.real_line_is_line_of_place : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →

@@ -13,8 +13,10 @@ open GlobalTheory.Mum
 open GlobalTheory.Ex GlobalTheory.Mum.TensTor
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.TensTor.tensFacts_holds | exact GlobalTheory.Mum.TensTor.tensFacts_holds | (intros; apply GlobalTheory.Mum.TensTor.tensFacts_holds <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.TensTor.tensFacts_holds` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTensorDataValuesFacts.lean&line=70#L70)
 -/
 theorem _root_.GlobalTheory.T.tensorData_values_facts : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D D' : DegData R (maximalIdeal R)) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) (T : Tens D.toPre D'.toPre W) (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F] (N N' : NumD F) (ν : NumOf D.toPre F N) (ν' : NumOf D'.toPre F N'), TensFacts W (cmp T ν ν') (chi T ν ν') (wv T ν ν') := by
   first | exact @GlobalTheory.Mum.TensTor.tensFacts_holds | exact GlobalTheory.Mum.TensTor.tensFacts_holds | (intros; apply GlobalTheory.Mum.TensTor.tensFacts_holds <;> assumption)

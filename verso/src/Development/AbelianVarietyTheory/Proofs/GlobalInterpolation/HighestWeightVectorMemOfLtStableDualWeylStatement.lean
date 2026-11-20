@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.GoodTopBot
 import Development.AbelianVarietyTheory.PublishedTheorems.GlobalTheta.WeylDualWeylLatticesAgreeOfLowestAlcove
 open MvPolynomial Formalism.GradedWeylDivisibility Formalism.BasicNotions GlobalTheory.Alc
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Alc.hw_mem_of_lt | exact GlobalTheory.Alc.hw_mem_of_lt | (intros; apply GlobalTheory.Alc.hw_mem_of_lt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Alc.hw_mem_of_lt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FGlobalInterpolation%2FHighestWeightVectorMemOfLtStableDualWeyl.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.highestWeightVector_mem_of_lt_stable_dualWeyl : ∀ (p : ℕ), p.Prime → ∀ (k : Type) [Field k] [CharP k p] (N : ℕ) (ν : Fin N → ℕ), Antitone ν → (∀ h : 0 < N, ν ⟨N - 1, by omega⟩ = 0 ∧ ν ⟨0, h⟩ + (N - 1) ≤ p) → ∀ M M' : Submodule k (MvPolynomial (Fin N × Fin N) k), Good M → Good M' → M < M' → M' ≤ dualWeyl k N N ν → hw k le_rfl ν ∈ M' ∧ hw k le_rfl ν ∉ M := by
   first | exact @GlobalTheory.Alc.hw_mem_of_lt | exact GlobalTheory.Alc.hw_mem_of_lt | (intros; apply GlobalTheory.Alc.hw_mem_of_lt <;> assumption)

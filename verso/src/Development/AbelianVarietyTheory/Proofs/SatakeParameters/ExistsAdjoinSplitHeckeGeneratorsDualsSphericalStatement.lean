@@ -11,8 +11,10 @@ open scoped TensorProduct InnerProductSpace
 open GlobalTheory.Hk3
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SplitGen.gen_split | exact GlobalTheory.SplitGen.gen_split | (intros; apply GlobalTheory.SplitGen.gen_split <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SplitGen.gen_split` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FExistsAdjoinSplitHeckeGeneratorsDualsSpherical.lean&line=134#L134)
 -/
 theorem _root_.GlobalTheory.T.exists_adjoin_splitHeckeGenerators_duals_spherical : ∀ {D : D7} (V : HSp D) (P : Pl D.host.E), conjPl P ≠ P → ∀ (M : Type) [AddCommGroup M] [Module ℂ M] (π : GA D V →* Module.End ℂ M) (d : List ℤ), ∃ a ∈ Algebra.adjoin ℂ {x : Module.End ℂ M | ∃ k, k ≤ V.rank ∧ (x = opOf π P (Finsupp.single (splitLab V.rank k) 1) ∨ x = opOf π P (Finsupp.single (dualLab (splitLab V.rank k)) 1))}, ∀ u : M, (∀ k ∈ hyp V P, π k u = u) → a u = opOf π P (Finsupp.single d 1) u := by
   first | exact @GlobalTheory.SplitGen.gen_split | exact GlobalTheory.SplitGen.gen_split | (intros; apply GlobalTheory.SplitGen.gen_split <;> assumption)

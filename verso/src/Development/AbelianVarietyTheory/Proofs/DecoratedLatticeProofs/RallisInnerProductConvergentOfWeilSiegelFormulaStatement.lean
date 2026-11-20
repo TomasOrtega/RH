@@ -18,8 +18,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Core.Rk.IP
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Proof.Corev.convergent_both_orientations | exact GlobalTheory.Proof.Corev.convergent_both_orientations | (intros; apply GlobalTheory.Proof.Corev.convergent_both_orientations <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Proof.Corev.convergent_both_orientations` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FRallisInnerProductConvergentOfWeilSiegelFormula.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.rallisInnerProduct_convergent_of_weilSiegelFormula : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.WeilSiegelFormulaUnitary → GlobalTheory.Published.SiegelEisensteinContinuation → ∀ D : D7, GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.Convergent D := by
   first | exact @GlobalTheory.Proof.Corev.convergent_both_orientations | exact GlobalTheory.Proof.Corev.convergent_both_orientations | (intros; apply GlobalTheory.Proof.Corev.convergent_both_orientations <;> assumption)

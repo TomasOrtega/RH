@@ -3,8 +3,10 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PoitouTateEuler
 import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.PairSums.SumPair
 open NumberField IsDedekindDomain Representation Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.Published GlobalTheory.Published.PoitouTate PositivityTheory.S2pt
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.GaloisCoh.selmer_sha_eq_comap_ker | exact GlobalTheory.CompanionTheory.GaloisCoh.selmer_sha_eq_comap_ker | (intros; apply GlobalTheory.CompanionTheory.GaloisCoh.selmer_sha_eq_comap_ker <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.GaloisCoh.selmer_sha_eq_comap_ker` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FPoitouTateEulerCharacteristic.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.poitou_tate_euler_characteristic : ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (r : ℕ) (M : Type) [AddCommGroup M] [Module (ZMod (l ^ r)) M] [Finite M] [TopologicalSpace M] [DiscreteTopology M] (S : Finset (HeightOneSpectrum (𝓞 F))) (Av : S → ValuationSubring Ω) (μ : GS Ω (S : Set (HeightOneSpectrum (𝓞 F))) →* (ZMod (l ^ r))ˣ) (ρ : Representation (ZMod (l ^ r)) (GS Ω (S : Set (HeightOneSpectrum (𝓞 F)))) M) (hρ : ContAction ρ), (∀ L : LocCond ρ (locFam S Av), Sel ρ (locFam S Av) (continuous_locFam S Av) L = (Submodule.pi Set.univ L).comap (loc1 S Av ρ)) ∧ Sha1 ρ (locFam S Av) (continuous_locFam S Av) = LinearMap.ker (loc1 S Av ρ) ∧ Sha2 ρ (locFam S Av) (continuous_locFam S Av) = LinearMap.ker (loc2 S Av ρ) := by
   first | exact @GlobalTheory.CompanionTheory.GaloisCoh.selmer_sha_eq_comap_ker | exact GlobalTheory.CompanionTheory.GaloisCoh.selmer_sha_eq_comap_ker | (intros; apply GlobalTheory.CompanionTheory.GaloisCoh.selmer_sha_eq_comap_ker <;> assumption)

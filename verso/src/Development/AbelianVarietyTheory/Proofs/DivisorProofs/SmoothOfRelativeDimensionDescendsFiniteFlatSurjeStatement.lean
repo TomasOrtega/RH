@@ -7,8 +7,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FiniteSurjRelDim.smoothOfRelativeDimension_of_finite_surjective | exact GlobalTheory.FiniteSurjRelDim.smoothOfRelativeDimension_of_finite_surjective | (intros; apply GlobalTheory.FiniteSurjRelDim.smoothOfRelativeDimension_of_finite_surjective <;> assum …`.
+/- English proof (citation)
+Apply `GlobalTheory.FiniteSurjRelDim.smoothOfRelativeDimension_of_finite_surjective` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSmoothOfRelativeDimensionDescendsFiniteFlatSurje.lean&line=35#L35)
 -/
 theorem _root_.GlobalTheory.T.smoothOfRelativeDimension_descends_finite_flat_surjective : ∀ (S : Scheme.{0}) (A B : Over S) (g : ℕ) (q : A ⟶ B), SmoothOfRelativeDimension g A.hom → Smooth B.hom → IsFinite q.left → Flat q.left → Surjective q.left → SmoothOfRelativeDimension g B.hom := by
   first | exact @GlobalTheory.FiniteSurjRelDim.smoothOfRelativeDimension_of_finite_surjective | exact GlobalTheory.FiniteSurjRelDim.smoothOfRelativeDimension_of_finite_surjective | (intros; apply GlobalTheory.FiniteSurjRelDim.smoothOfRelativeDimension_of_finite_surjective <;> assumption)

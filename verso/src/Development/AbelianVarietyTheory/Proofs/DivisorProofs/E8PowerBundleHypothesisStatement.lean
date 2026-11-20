@@ -14,8 +14,10 @@ open scoped CategoryTheory.Obj
 open ReciprocityTheory.AnForm.R GlobalTheory.ZH GlobalTheory.Poinc GlobalTheory.Poinc.Sep
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PowE8.hypW_e8LB | exact GlobalTheory.PowE8.hypW_e8LB | (intros; apply GlobalTheory.PowE8.hypW_e8LB <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PowE8.hypW_e8LB` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FE8PowerBundleHypothesis.lean&line=128#L128)
 -/
 theorem _root_.GlobalTheory.T.hypW_e8LB_powObj : ∀ (S : Scheme.{0}) (G₀ : Over S) [GrpObj G₀] [IsCommMonObj G₀] (P : GlobalTheory.UU.CP G₀) (W : Matrix (Fin 8) (Fin 8) ℤ), IsE8 W → GlobalTheory.LN.HypW (powObj G₀ 8) (GlobalTheory.PowE8.e8LB G₀ P.L.L W) := by
   first | exact @GlobalTheory.PowE8.hypW_e8LB | exact GlobalTheory.PowE8.hypW_e8LB | (intros; apply GlobalTheory.PowE8.hypW_e8LB <;> assumption)

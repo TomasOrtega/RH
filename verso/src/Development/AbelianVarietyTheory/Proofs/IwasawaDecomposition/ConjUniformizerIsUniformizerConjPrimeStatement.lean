@@ -9,8 +9,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open Formalism.IndefR.RecTie Formalism.IndefR.Lev Formalism.L2.Rows GlobalTheory.Mem GlobalTheory.Mem.R3 GlobalTheory.Mem.Col2
 open GlobalTheory.Mem.R3.LiftBrg
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mem.UnifConj.conj_unif_isUnif | exact GlobalTheory.Mem.UnifConj.conj_unif_isUnif | (intros; apply GlobalTheory.Mem.UnifConj.conj_unif_isUnif <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mem.UnifConj.conj_unif_isUnif` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FConjUniformizerIsUniformizerConjPrime.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.conj_uniformizer_isUniformizer_conjPrime : ∀ {E : Type} [Field E] [NumberField E] [StarRing E] (Pb : Formalism.L2.DIV.Pl E) (Ut : Formalism.L2.Col.MhlUnif Pb), Formalism.L2.Col.cO E Ut.π ∈ (Formalism.L2.Col.conjPrime₂ Pb).asIdeal ∧ Formalism.L2.Col.cO E Ut.π ∉ (Formalism.L2.Col.conjPrime₂ Pb).asIdeal ^ 2 := by
   first | exact @GlobalTheory.Mem.UnifConj.conj_unif_isUnif | exact GlobalTheory.Mem.UnifConj.conj_unif_isUnif | (intros; apply GlobalTheory.Mem.UnifConj.conj_unif_isUnif <;> assumption)

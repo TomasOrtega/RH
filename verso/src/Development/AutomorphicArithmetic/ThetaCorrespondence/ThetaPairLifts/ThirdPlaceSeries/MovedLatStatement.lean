@@ -13,8 +13,10 @@ open GlobalTheory.RootEx GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Spl
 open scoped TensorProduct Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.MovedLat.movedLat_alt | exact _root_.GlobalTheory.MovedLat.movedLat_alt | (intros; apply _root_.GlobalTheory.MovedLat.movedLat_alt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MovedLat.movedLat_alt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicArithmetic%2FThetaCorrespondence%2FThetaPairLifts%2FThirdPlaceSeries%2FMovedLat.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.exists_selfDual_lattice_moves : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.Fam.PackageHypotheses W → ∀ j, j < D.R.m → ∀ g : GA D (Yc D j), ∃ M : GlobalTheory.FinPl.Lat (Yc D j), IsSelfDualC (Yc D j) M ∧ ∀ P, GlobalTheory.FinPl.Moves (Yc D j) g ((_root_.GlobalTheory.Fam.pk_z W).ΛY j) M P := by
   first | exact @_root_.GlobalTheory.MovedLat.movedLat_alt | exact _root_.GlobalTheory.MovedLat.movedLat_alt | (intros; apply _root_.GlobalTheory.MovedLat.movedLat_alt <;> assumption)

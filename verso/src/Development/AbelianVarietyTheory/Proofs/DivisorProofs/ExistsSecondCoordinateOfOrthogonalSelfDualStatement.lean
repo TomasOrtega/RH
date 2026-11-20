@@ -12,8 +12,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermitianTensorSkew
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.KFinLoc
 open scoped TensorProduct Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.selfDual_exists_snd_of_orth | exact GlobalTheory.selfDual_exists_snd_of_orth | (intros; apply GlobalTheory.selfDual_exists_snd_of_orth <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.selfDual_exists_snd_of_orth` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsSecondCoordinateOfOrthogonalSelfDual.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.exists_second_coordinate_of_orthogonal_selfDual : ∀ {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) {κ : Type} [Fintype κ]
     (ψ₀ : AddChar (Fv F v) ℂ) (Λ : AddSubgroup ((κ → Fv F v) × (κ → Fv F v))),

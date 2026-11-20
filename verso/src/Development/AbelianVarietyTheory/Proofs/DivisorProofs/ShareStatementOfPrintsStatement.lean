@@ -25,8 +25,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CovTop.ShareRowsNef.share | exact GlobalTheory.CovTop.ShareRowsNef.share | (intros; apply GlobalTheory.CovTop.ShareRowsNef.share <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CovTop.ShareRowsNef.share` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FShareStatementOfKnownTheorems.lean&line=170#L170)
 -/
 theorem _root_.GlobalTheory.T.share_of_toroidal : GlobalTheory.CovTop.HypothesesX → Hypotheses2 → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.Published.SemiAbelianLieSeminegative → DeepGood → Size → FlatDeg → Deg → Share := by
   first | exact @GlobalTheory.CovTop.ShareRowsNef.share | exact GlobalTheory.CovTop.ShareRowsNef.share | (intros; apply GlobalTheory.CovTop.ShareRowsNef.share <;> assumption)

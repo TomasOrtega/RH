@@ -6,8 +6,10 @@ import ReciprocityTheory.AnalyticForms.PotentialTheory.ContDiffAtOfIsPotential
 open MeasureTheory ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M GlobalTheory.IndefiniteRowSideFullHecke.BoundaryPolynomialFunctions GlobalTheory.LogResInt
 open scoped ENNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LogNormPullbackBound.lintegral_absLogNorm_le | exact GlobalTheory.LogNormPullbackBound.lintegral_absLogNorm_le | (intros; apply GlobalTheory.LogNormPullbackBound.lintegral_absLogNorm_le <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LogNormPullbackBound.lintegral_absLogNorm_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSncPullbackSectionBound.lean&line=149#L149)
 -/
 theorem _root_.GlobalTheory.T.snc_pullback_section_bound : ∀ (d : ℕ) (X : Type) [TopologicalSpace X] [CompactSpace X] [T2Space X]
     (A : FinHolAtlas d X) (L : LocPot X) (s : X → X → ℂ), IsPotential A L → IsSection A L s →

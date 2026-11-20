@@ -6,8 +6,10 @@ open Matrix Formalism.REAL Formalism.MainNotions.S Formalism.L2.Theta GlobalTheo
 open scoped InnerProductSpace
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TypeSum.CasEquiv.casOp_equivariant | exact GlobalTheory.TypeSum.CasEquiv.casOp_equivariant | (intros; apply GlobalTheory.TypeSum.CasEquiv.casOp_equivariant <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TypeSum.CasEquiv.casOp_equivariant` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FHeightProofs%2FCasimirDifferenceOperatorEquivariant.lean&line=146#L146)
 -/
 theorem _root_.GlobalTheory.T.casimirDifferenceOperator_equivariant : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Mx n → (H →L[ℂ] H)), Std ε σ → ∀ g ∈ UJset ε, ∀ v, Sm ε σ v → casOp σ (kB ε) (pB ε) (σ g v) = σ g (casOp σ (kB ε) (pB ε) v) := by
   first | exact @GlobalTheory.TypeSum.CasEquiv.casOp_equivariant | exact GlobalTheory.TypeSum.CasEquiv.casOp_equivariant | (intros; apply GlobalTheory.TypeSum.CasEquiv.casOp_equivariant <;> assumption)

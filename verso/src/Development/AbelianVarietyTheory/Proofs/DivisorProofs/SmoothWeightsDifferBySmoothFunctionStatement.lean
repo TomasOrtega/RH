@@ -13,8 +13,10 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.R
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points GlobalTheory.CechPic GlobalTheory.ChartGlue GlobalTheory.Mix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mix.weight_sub_cInf | exact GlobalTheory.Mix.weight_sub_cInf | (intros; apply GlobalTheory.Mix.weight_sub_cInf <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mix.weight_sub_cInf` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSmoothWeightsDifferBySmoothFunction.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.smooth_weights_differ_by_smooth_function : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ) (B : LB X) (φ ψ : Weight p σ B), φ.IsCInf → ψ.IsCInf → ∃ u : CxPts p σ → ℝ, (∀ y, CInfAt u y) ∧ ∀ i, ∀ y ∈ ptsIn p σ (B.U i), ψ.φ i y = φ.φ i y + u y := by
   first | exact @GlobalTheory.Mix.weight_sub_cInf | exact GlobalTheory.Mix.weight_sub_cInf | (intros; apply GlobalTheory.Mix.weight_sub_cInf <;> assumption)

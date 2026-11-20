@@ -9,8 +9,10 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace Filter Topology
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier GlobalTheory.VolBr
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.VolBr.NuPow.pow_mem_H_and_nu_pow | exact GlobalTheory.VolBr.NuPow.pow_mem_H_and_nu_pow | (intros; apply GlobalTheory.VolBr.NuPow.pow_mem_H_and_nu_pow <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.VolBr.NuPow.pow_mem_H_and_nu_pow` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHermPairPowSectionMemAndNormPow.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.hermPair_pow_section_mem_and_norm_pow : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (P : Pair p), ∀ (a b : ℤ) (f : X.functionField), f ∈ P.H a b → ∀ n : ℕ, f ^ n ∈ P.H (n * a) (n * b) ∧ ∀ (σ : k →+* ℂ) (y : CxPts p σ), P.nu (n * a) (n * b) σ y (f ^ n) = P.nu a b σ y f ^ n := by
   first | exact @GlobalTheory.VolBr.NuPow.pow_mem_H_and_nu_pow | exact GlobalTheory.VolBr.NuPow.pow_mem_H_and_nu_pow | (intros; apply GlobalTheory.VolBr.NuPow.pow_mem_H_and_nu_pow <;> assumption)

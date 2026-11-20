@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.SqSubLe
 open NumberField IsDedekindDomain GlobalTheory.QNorm
 open scoped WithZero
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.QNorm.two_pow_le_index_locNorm | exact GlobalTheory.QNorm.two_pow_le_index_locNorm | (intros; apply GlobalTheory.QNorm.two_pow_le_index_locNorm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.QNorm.two_pow_le_index_locNorm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FAdelicLatticeProofs%2FTwoPowLeIndexLocalNormsSqrtExtension.lean&line=31#L31)
 -/
 theorem _root_.GlobalTheory.T.two_pow_le_index_localNormsSqrtExtension : ∀ (F : Type) [Field F] [NumberField F] (δ : F) (S : Finset (HeightOneSpectrum (𝓞 F))), δ ≠ 0 → (locNorm F δ S).index ≠ 0 ∧ 2 ^ (tFin F δ S + tReal F δ) ≤ (locNorm F δ S).index := by
   first | exact @GlobalTheory.QNorm.two_pow_le_index_locNorm | exact GlobalTheory.QNorm.two_pow_le_index_locNorm | (intros; apply GlobalTheory.QNorm.two_pow_le_index_locNorm <;> assumption)

@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnifAt
 open NumberField IsDedekindDomain Matrix Polynomial Filter Formalism.UG GlobalTheory.BCT
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GlobHerm.exists_mat_herm | exact GlobalTheory.GlobHerm.exists_mat_herm | (intros; apply GlobalTheory.GlobHerm.exists_mat_herm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GlobHerm.exists_mat_herm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsMatrixCharpolyPreservingHermitianFormCM.lean&line=74#L74)
 -/
 theorem _root_.GlobalTheory.T.exists_matrix_charpoly_preserving_hermitian_form_CM : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (P : E[X]), P ∈ Ell E n → ∃ C H : Matrix (Fin n) (Fin n) E, C.charpoly = P ∧ C.det ≠ 0 ∧ H.det ≠ 0 ∧ cT (IsCMField.complexConj E).toRingEquiv.toRingHom H = H ∧ cT (IsCMField.complexConj E).toRingEquiv.toRingHom C * H * C = H := by
   first | exact @GlobalTheory.GlobHerm.exists_mat_herm | exact GlobalTheory.GlobHerm.exists_mat_herm | (intros; apply GlobalTheory.GlobHerm.exists_mat_herm <;> assumption)

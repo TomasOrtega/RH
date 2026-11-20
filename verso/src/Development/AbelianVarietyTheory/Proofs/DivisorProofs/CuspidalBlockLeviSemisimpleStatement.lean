@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Ha
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IsSemisimpleRepresentationOfISupRangeEquivariant
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.CuspBlock
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CuspBlock.isSemisimple_restrict_mid | exact GlobalTheory.CuspBlock.isSemisimple_restrict_mid | (intros; apply GlobalTheory.CuspBlock.isSemisimple_restrict_mid <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CuspBlock.isSemisimple_restrict_mid` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCuspidalBlockLeviSemisimple.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.cuspidal_block_levi_semisimple : GlobalTheory.Published.BernsteinZelevinskyFiniteness →
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (l n N : ℕ)

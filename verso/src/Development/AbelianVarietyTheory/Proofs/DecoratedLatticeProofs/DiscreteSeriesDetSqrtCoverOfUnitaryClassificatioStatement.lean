@@ -9,8 +9,10 @@ open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible Formalism.
 open GlobalTheory.IndefiniteRowSideFullHecke.IsotypicSignedParameters (SignedPar IsDSPar)
 open Formalism.MainNotions.S (IsURepOn IsIrredOn IsKFin IsKStableOn IsWtOn IsKTypeOf IsDS IsSqIntOn UJset)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CoverDS.discreteSeriesCover_of_classification | exact GlobalTheory.CoverDS.discreteSeriesCover_of_classification | (intros; apply GlobalTheory.CoverDS.discreteSeriesCover_of_classification <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CoverDS.discreteSeriesCover_of_classification` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FDiscreteSeriesDetSqrtCoverOfUnitaryClassificatio.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.discreteSeries_detSqrtCover_of_unitary_classification : GlobalTheory.Published.DiscreteSeriesClassification → GlobalTheory.Published.DiscreteSeriesCover := by
   first | exact @GlobalTheory.CoverDS.discreteSeriesCover_of_classification | exact GlobalTheory.CoverDS.discreteSeriesCover_of_classification | (intros; apply GlobalTheory.CoverDS.discreteSeriesCover_of_classification <;> assumption)

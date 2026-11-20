@@ -4,8 +4,10 @@ import Mathlib
 open NumberField
 open scoped nonZeroDivisors
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.exists_fractionalIdeal_pairing_values | exact GlobalTheory.exists_fractionalIdeal_pairing_values | (intros; apply GlobalTheory.exists_fractionalIdeal_pairing_values <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.exists_fractionalIdeal_pairing_values` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLatticeFormIdealGeneratesDualVector.lean&line=29#L29)
 -/
 theorem _root_.GlobalTheory.T.lattice_form_ideal_generates_dual_vector : ∀ {F V : Type} [Field F] [NumberField F] [AddCommGroup V] [Module F V], Module.finrank F V = 2 → ∀ (B : LinearMap.BilinForm F V), (∀ z, B z z = 0) → ∀ (L : Set V), (0 : V) ∈ L → (∀ x ∈ L, ∀ x' ∈ L, x + x' ∈ L) → (∀ (a : 𝓞 F), ∀ x ∈ L, (a : F) • x ∈ L) →
     ∀ (J : FractionalIdeal (𝓞 F)⁰ F), J ≠ 0 → (∀ z ∈ L, ∀ w ∈ L, B z w ∈ J) →

@@ -8,8 +8,10 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.skew_dual_isHermND | exact GlobalTheory.skew_dual_isHermND | (intros; apply GlobalTheory.skew_dual_isHermND <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.skew_dual_isHermND` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsHermitianNondegenerateNegTraceZeroSmulInvSkewH.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.isHermitianNondegenerate_neg_traceZero_smul_inv_skewHermitian : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (d : ℕ)
     (J : Matrix (Fin d) (Fin d) E), (∀ i j, σ (J j i) = -J i j) → IsUnit J.det → ∀ ξ₀ : E, ξ₀ ≠ 0 → σ ξ₀ = -ξ₀ →

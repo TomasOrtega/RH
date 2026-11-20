@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.ScaledIntegerPer
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MulRightMemSB
 open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.SplitFlip GlobalTheory.KSplit GlobalTheory.GJReg
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GJReg.kInd_mem_SB_and_gjZ_eq_one | exact GlobalTheory.GJReg.kInd_mem_SB_and_gjZ_eq_one | (intros; apply GlobalTheory.GJReg.kInd_mem_SB_and_gjZ_eq_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GJReg.kInd_mem_SB_and_gjZ_eq_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FUnramifiedSphericalZetaIntegralOne.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.unramified_spherical_zeta_integral_one : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k]
     [BorelSpace k] (n : ℕ) (ν : kˣ →* ℂˣ) (s : ℂ), IsUnram ν →

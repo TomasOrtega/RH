@@ -17,8 +17,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.SiegLev GlobalTheory.SiegLevCalc GlobalTheory.SiegelPullComp GlobalTheory.SiegelPull
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThetaFiniteIso.thetaPts_finite | exact GlobalTheory.ThetaFiniteIso.thetaPts_finite | (intros; apply GlobalTheory.ThetaFiniteIso.thetaPts_finite <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThetaFiniteIso.thetaPts_finite` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FThetaConstantsFiniteOfPolarisedAVIsoAlgClosed.lean&line=27#L27)
 -/
 theorem _root_.GlobalTheory.T.thetaConstants_finite_of_polarisedAVIso_algClosed : ∀ (G N' : ℕ) (J : Type) (K : Type) [Field K] [IsAlgClosed K] (b : TBase K (N' ^ 2)) (Q : PolAV (Sp K)), Odd N' → 3 ≤ N' → ∃ V : Set (Ix G (N' ^ 2) → K), V.Finite ∧ ∀ t : TObj G (N' ^ 2) J b (𝟙 (Sp K)), (∃ φ : t.A ≅ Q.A, IsMonHom φ.hom ∧ LBIso t.L (Q.L.pull φ.hom.left)) → ∃ v ∈ V, t.HasTh (𝟙 _) v := by
   first | exact @GlobalTheory.ThetaFiniteIso.thetaPts_finite | exact GlobalTheory.ThetaFiniteIso.thetaPts_finite | (intros; apply GlobalTheory.ThetaFiniteIso.thetaPts_finite <;> assumption)

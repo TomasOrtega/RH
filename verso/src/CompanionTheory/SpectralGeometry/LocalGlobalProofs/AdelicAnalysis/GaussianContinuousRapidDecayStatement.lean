@@ -6,8 +6,10 @@ import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorL
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW GlobalTheory.CompanionTheory.SW.BB NumberField IsDedekindDomain MeasureTheory Topology
 open scoped TensorProduct ENNReal NNReal Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.SW.BB.gaussQ_continuous_rapidDecay | exact GlobalTheory.CompanionTheory.SW.BB.gaussQ_continuous_rapidDecay | (intros; apply GlobalTheory.CompanionTheory.SW.BB.gaussQ_continuous_rapidDecay <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.SW.BB.gaussQ_continuous_rapidDecay` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=CompanionTheory%2FSpectralGeometry%2FLocalGlobalProofs%2FAdelicAnalysis%2FGaussianContinuousRapidDecay.lean&line=111#L111)
 -/
 theorem _root_.GlobalTheory.T.gaussian_continuous_rapid_decay : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M d : ℕ) (b : Module.Basis (Fin d) F E) (e : Ainf F ≃+* (InfinitePlace F → ℝ)), IsHomeomorph e → (∀ y w, |e y w| = ‖y w‖) → ∀ (Pm : InfinitePlace F → Matrix (Fin M × Fin d) (Fin M × Fin d) ℝ), Continuous (gaussQ e b Pm) ∧ ((∀ w, (Pm w).PosDef) → RapidDecay b (fun X => (gaussQ e b Pm X : ℂ))) := by
   first | exact @GlobalTheory.CompanionTheory.SW.BB.gaussQ_continuous_rapidDecay | exact GlobalTheory.CompanionTheory.SW.BB.gaussQ_continuous_rapidDecay | (intros; apply GlobalTheory.CompanionTheory.SW.BB.gaussQ_continuous_rapidDecay <;> assumption)

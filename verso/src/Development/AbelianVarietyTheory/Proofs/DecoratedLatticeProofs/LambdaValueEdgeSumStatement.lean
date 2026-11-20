@@ -12,8 +12,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.S Fo
 open scoped TensorProduct InnerProductSpace Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChainChar.lam_eq_of_red | exact GlobalTheory.ChainChar.lam_eq_of_red | (intros; apply GlobalTheory.ChainChar.lam_eq_of_red <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChainChar.lam_eq_of_red` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FLambdaValueEdgeSum.lean&line=82#L82)
 -/
 theorem _root_.GlobalTheory.T.lambda_value_edge_sum : ∀ (D : D7) (u : D.what₂.Word) (d : GlobalTheory.SeeSaw.Dat D u) (τ : ∀ j h, Matrix (Fin (d.bes j 0 h).L.rank) (Fin d.Lz.rank) D.host.E) (PP : Pl D.host.E) (G : GlobalTheory.LocMod.GAt d τ PP) (x : G.S.P.J) (g : GL (Fin D.R.r) (kP PP)), G.Red x g → ∀ z : 𝓞 D.host.E, Ideal.Quotient.mk PP.asIdeal z = edgeSum (GlobalTheory.chainEdge D.R.k) g → ((G.S.P.lam x : ℂˣ) : ℂ) = (G.S.ψ (((G.S.ϖ⁻¹ : G.kˣ) : G.k) * (GlobalTheory.LocMod.ofSplit G.q).pr (z : D.host.E)) : ℂ) := by
   first | exact @GlobalTheory.ChainChar.lam_eq_of_red | exact GlobalTheory.ChainChar.lam_eq_of_red | (intros; apply GlobalTheory.ChainChar.lam_eq_of_red <;> assumption)

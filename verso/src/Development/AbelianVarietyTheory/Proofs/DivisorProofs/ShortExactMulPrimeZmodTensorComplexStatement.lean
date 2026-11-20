@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ShortExactMulPrimeZ
 import Mathlib
 open CategoryTheory Limits
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.shortExact_mul_p_modP | exact GlobalTheory.shortExact_mul_p_modP | (intros; apply GlobalTheory.shortExact_mul_p_modP <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.shortExact_mul_p_modP` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FShortExactMulPrimeZmodTensorComplex.lean&line=119#L119)
 -/
 theorem _root_.GlobalTheory.T.shortExact_mul_prime_zmod_tensor_complex : ∀ (C : CochainComplex (ModuleCat.{0} ℤ) ℕ) (p : ℕ) [Fact p.Prime], (∀ (n : ℕ) (x : C.X n), (p : ℤ) • x = 0 → x = 0) → ∃ (π : C ⟶ ((ModuleCat.restrictScalars.{0} (Int.castRingHom (ZMod p))).mapHomologicalComplex (ComplexShape.up ℕ)).obj (((ModuleCat.extendScalars (Int.castRingHom (ZMod p))).mapHomologicalComplex (ComplexShape.up ℕ)).obj C)) (hz : ((p : ℤ) • 𝟙 C) ≫ π = 0), (ShortComplex.mk ((p : ℤ) • 𝟙 C) π hz).ShortExact := by
   first | exact @GlobalTheory.shortExact_mul_p_modP | exact GlobalTheory.shortExact_mul_p_modP | (intros; apply GlobalTheory.shortExact_mul_p_modP <;> assumption)

@@ -5,8 +5,10 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SiegMin.exists_semiAbelian_idempotent_image | exact GlobalTheory.SiegMin.exists_semiAbelian_idempotent_image | (intros; apply GlobalTheory.SiegMin.exists_semiAbelian_idempotent_image <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SiegMin.exists_semiAbelian_idempotent_image` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSemiAbelianDirectFactorOfIdempotent.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.semiAbelian_direct_factor_of_idempotent : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ e : G ⟶ G, IsMonHom e → e ≫ e = e → ∃ (H : Over S) (_ : GrpObj H) (i : H ⟶ G) (r : G ⟶ H), IsMonHom i ∧ IsMonHom r ∧ i ≫ r = 𝟙 H ∧ r ≫ i = e ∧ IsSemiAbelian H := by
   first | exact @GlobalTheory.SiegMin.exists_semiAbelian_idempotent_image | exact GlobalTheory.SiegMin.exists_semiAbelian_idempotent_image | (intros; apply GlobalTheory.SiegMin.exists_semiAbelian_idempotent_image <;> assumption)

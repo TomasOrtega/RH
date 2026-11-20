@@ -16,8 +16,10 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 open GlobalTheory.FlatModel
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlatModel.LiftComb.lift_comb | exact GlobalTheory.FlatModel.LiftComb.lift_comb | (intros; apply GlobalTheory.FlatModel.LiftComb.lift_comb <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlatModel.LiftComb.lift_comb` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsTangentLiftCoefficients.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.exists_tangent_lift_coefficients : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l' : Level H) (Xo' : Moduli Dw l') (c' : Coeff l') (W : ValuationSubring ℂ) (Y : Model Xo' c' (c'.V W).subtype) (K : Type) [CommRing K] (yy : Sp K ⟶ Xo'.XF c') (g : ℕ) (e : Fin g → (Sp (DualNumber K) ⟶ Y.t.G.left)), (∀ i, IsTanAtG Y.t (yy ≫ Y.j) (e i)) → ∀ (cf : Fin g → K), ∃ w : Sp (DualNumber K) ⟶ Y.oF.t.G.left, IsCombAtG Y.t (yy ≫ Y.j) e cf (w ≫ Y.m.φ) := by
   first | exact @GlobalTheory.FlatModel.LiftComb.lift_comb | exact GlobalTheory.FlatModel.LiftComb.lift_comb | (intros; apply GlobalTheory.FlatModel.LiftComb.lift_comb <;> assumption)

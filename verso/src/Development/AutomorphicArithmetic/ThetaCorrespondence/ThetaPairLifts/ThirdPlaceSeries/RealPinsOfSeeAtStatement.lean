@@ -16,8 +16,10 @@ section
 open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Top GlobalTheory.Fc GlobalTheory.MiS GlobalTheory.Fam
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.Fam.realPins_bundle_of_bWit | exact _root_.GlobalTheory.Fam.realPins_bundle_of_bWit | (intros; apply _root_.GlobalTheory.Fam.realPins_bundle_of_bWit <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Fam.realPins_bundle_of_bWit` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicArithmetic%2FThetaCorrespondence%2FThetaPairLifts%2FThirdPlaceSeries%2FRealPinsOfSeeAt.lean&line=72#L72)
 -/
 theorem _root_.GlobalTheory.T.realPins_of_bWit_third_place_series : ∀ {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL} {K : Ctx} (q : Bl.WPt p.s K) {c : ℝ} (b : _root_.GlobalTheory.Fc.BundleCondition (q.w.D q.Z) q.O c), _root_.GlobalTheory.Mem.Top.Bl.BundleWitness q b → _root_.Formalism.IndefR.IndefiniteRealisationNormalisation b.B.Q := by
   first | exact @_root_.GlobalTheory.Fam.realPins_bundle_of_bWit | exact _root_.GlobalTheory.Fam.realPins_bundle_of_bWit | (intros; apply _root_.GlobalTheory.Fam.realPins_bundle_of_bWit <;> assumption)

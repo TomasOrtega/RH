@@ -7,8 +7,10 @@ open scoped TensorProduct InnerProductSpace ComplexConjugate
 open GlobalTheory.ChainOnto
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChainOnto.hgt_one_components | exact GlobalTheory.ChainOnto.hgt_one_components | (intros; apply GlobalTheory.ChainOnto.hgt_one_components <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChainOnto.hgt_one_components` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FDoublingHeightEqOneLatticeStabilizerComponents.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.doublingHeight_eq_one_lattice_stabilizer_components : ∀ (D : D7) (V : HSp D) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)), IsSelfDualC V Λ → (∀ v, ∀ k ∈ GlobalTheory.AdelicU.stabLoc D.sp.cm.sig V.gram Λ v, GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.hgtV V Λ v k = 1) ∧ (∀ κ ∈ GfC V, ∀ w, GlobalTheory.AdelicU.projArch D.sp.cm.sig V.gram w κ = 1) ∧ ∀ b ∈ GinfC V, ∀ v, GlobalTheory.AdelicU.proj D.sp.cm.sig V.gram v b = 1 := by
   first | exact @GlobalTheory.ChainOnto.hgt_one_components | exact GlobalTheory.ChainOnto.hgt_one_components | (intros; apply GlobalTheory.ChainOnto.hgt_one_components <;> assumption)

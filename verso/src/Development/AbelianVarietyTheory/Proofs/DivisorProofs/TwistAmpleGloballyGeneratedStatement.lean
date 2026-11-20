@@ -10,8 +10,10 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open ReciprocityTheory.AnForm.M
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points GlobalTheory.CechPic GlobalTheory.ProjVar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ProjVar.exists_generating_secs_tens_lbPow_O1 | exact GlobalTheory.ProjVar.exists_generating_secs_tens_lbPow_O1 | (intros; apply GlobalTheory.ProjVar.exists_generating_secs_tens_lbPow_O1 <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ProjVar.exists_generating_secs_tens_lbPow_O1` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTwistAmpleGloballyGenerated.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.twist_ample_globally_generated : ∀ (Y : Var ℂ) (L : LB Y.X), L.IsLB → ∃ m₀ : ℕ, ∀ m : ℕ, m₀ ≤ m → ∃ (n : ℕ) (u : Fin n → (CechPic.tens L (lbPow ((ProjSpace.O1 ℂ Y.N).pull Y.ι) m)).Sec), ⨆ i, nonzeroLocus (u i) = ⊤ := by
   first | exact @GlobalTheory.ProjVar.exists_generating_secs_tens_lbPow_O1 | exact GlobalTheory.ProjVar.exists_generating_secs_tens_lbPow_O1 | (intros; apply GlobalTheory.ProjVar.exists_generating_secs_tens_lbPow_O1 <;> assumption)

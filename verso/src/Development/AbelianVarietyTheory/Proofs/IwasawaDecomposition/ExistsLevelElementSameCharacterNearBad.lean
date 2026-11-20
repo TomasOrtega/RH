@@ -14,14 +14,18 @@ noncomputable section
 
 namespace GlobalTheory.Mem.Col2.AdT.LevelElt
 
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mem.Col2.AdT.OnePrime.exists_level_elt | exact GlobalTheory.Mem.Col2.AdT.OnePrime.exists_level_elt | (intros; apply GlobalTheory.Mem.Col2.AdT.OnePrime.exists_level_elt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mem.Col2.AdT.OnePrime.exists_level_elt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsLevelElt.lean&line=106#L106)
 -/
 theorem one_prime : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (a : I.ι) (T i : ℕ) (hi : i ≤ B.R.m) (bad : Set (HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F))) (S : StepLevel (I.rec7 l Z).host.F (I.rec7 l Z).host.E (sigD (I.rec7 l Z)) (gramN (I.rec7 l Z) i hi) T (I.rec7 l Z).R.f bad), ChiFin I l Z S → ∀ (P : SBof I a), P.1 ∈ I.Q a → ∀ (v : HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F)), Formalism.L2.Col.IsOver v (GlobalTheory.TwU.seamP (sm I l Z) P.1) → ∀ (N : ℕ) (g₁ g₂ : GA B (B.R.N i)), ∃ z : S.U, S.chi z = 1 ∧ (∀ v', v' ≠ v → bc (prV (E := (I.rec7 l Z).host.E) v') z.1 = 1) ∧ GlobalTheory.TwU.CongAt (GlobalTheory.TwU.seamP (sm I l Z) P.1) N z.1 ∧ ∃ γ : GL (Fin (B.R.N i)) B.fields.E, ∀ r s, adAt B.host.F P.1 (((g₁ * (show GA B (B.R.N i) from z.1) * g₂ : GA B (B.R.N i)) : Matrix (Fin (B.R.N i)) (Fin (B.R.N i)) (AfE B.host.F B.host.E)) r s) = algebraMap B.fields.E (P.1.adicCompletion B.fields.E) ((γ : Matrix (Fin (B.R.N i)) (Fin (B.R.N i)) B.fields.E) r s) := by
   first | exact @GlobalTheory.Mem.Col2.AdT.OnePrime.exists_level_elt | exact GlobalTheory.Mem.Col2.AdT.OnePrime.exists_level_elt | (intros; apply GlobalTheory.Mem.Col2.AdT.OnePrime.exists_level_elt <;> assumption)
 
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mem.Col2.AdT.PlaceUnder.main | exact GlobalTheory.Mem.Col2.AdT.PlaceUnder.main | (intros; apply GlobalTheory.Mem.Col2.AdT.PlaceUnder.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mem.Col2.AdT.PlaceUnder.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsStarNe.lean&line=21#L21)
 -/
 theorem place_under : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (a : I.ι) (P : SBof I a), P.1 ∈ I.Q a → ∃ v : HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F), Formalism.L2.Col.IsOver v (GlobalTheory.TwU.seamP (sm I l Z) P.1) ∧ ∀ P' : SBof I a, P' ≠ P → ¬ Formalism.L2.Col.IsOver v (GlobalTheory.TwU.seamP (sm I l Z) P'.1) := by
   first | exact @GlobalTheory.Mem.Col2.AdT.PlaceUnder.main | exact GlobalTheory.Mem.Col2.AdT.PlaceUnder.main | (intros; apply GlobalTheory.Mem.Col2.AdT.PlaceUnder.main <;> assumption)

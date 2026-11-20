@@ -8,8 +8,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.ZM GlobalTheory.SiegLev GlobalTheory.SiegelTor
 open scoped CategoryTheory.Obj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.siegPB_of_finite_etale_cover | exact GlobalTheory.siegPB_of_finite_etale_cover | (intros; apply GlobalTheory.siegPB_of_finite_etale_cover <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.siegPB_of_finite_etale_cover` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSiegPBOfFiniteEtaleCover.lean&line=232#L232)
 -/
 theorem _root_.GlobalTheory.T.siegPB_of_finite_etale_surjective_cover : ∀ (h n : ℕ) (B : Type) [CommRing B] (b : TBase B n) (S S₁ Y : Scheme.{0}) (s : S ⟶ Sp B) (s₁ : S₁ ⟶ Sp B) (sY : Y ⟶ Sp B) (c : SiegPre h n (b.ζ : B) s) (c₁ : SiegPre h n (b.ζ : B) s₁) (u : SiegPre h n (b.ζ : B) sY) (p : S₁ ⟶ S) (f : S ⟶ Y), 3 ≤ n → Odd n → u.Principal → IsFinite p → Etale p → Surjective p → SiegPB c₁ c p → SiegPB c₁ u (p ≫ f) → SiegPB c u f := by
   first | exact @GlobalTheory.siegPB_of_finite_etale_cover | exact GlobalTheory.siegPB_of_finite_etale_cover | (intros; apply GlobalTheory.siegPB_of_finite_etale_cover <;> assumption)

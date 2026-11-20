@@ -25,8 +25,10 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.ThetaGL GlobalTheory.SplitRead GlobalTheory.NPin
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RowSplitUnit.finTyp_rows_locS_unitarisable | exact GlobalTheory.RowSplitUnit.finTyp_rows_locS_unitarisable | (intros; apply GlobalTheory.RowSplitUnit.finTyp_rows_locS_unitarisable <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RowSplitUnit.finTyp_rows_locS_unitarisable` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FLocalComponentsUnitarisable.lean&line=32#L32)
 -/
 theorem _root_.GlobalTheory.T.local_components_unitarisable : PrN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, GlobalTheory.LiftRef.AtRows hL fun D _ rep _ _ _ => ∀ (j : ℕ) (σ : D.what₂.FT), D.what₂.isot j σ ≠ ⊥ → ∀ s : SplitPlace D.host.E, ∃ τ : GlobalTheory.SmGL.IrrRep (GL (Fin D.R.r) (s.w.adicCompletion D.host.E)), IsLocS (rep σ).S s τ ∧ GlobalTheory.SmGL.IsUnitarisable τ.ρ := by
   first | exact @GlobalTheory.RowSplitUnit.finTyp_rows_locS_unitarisable | exact GlobalTheory.RowSplitUnit.finTyp_rows_locS_unitarisable | (intros; apply GlobalTheory.RowSplitUnit.finTyp_rows_locS_unitarisable <;> assumption)

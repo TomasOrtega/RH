@@ -8,8 +8,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.surjective_mul_of_open_of_irreducible_fibres | exact GlobalTheory.Mum.surjective_mul_of_open_of_irreducible_fibres | (intros; apply GlobalTheory.Mum.surjective_mul_of_open_of_irreducible_fibres <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.surjective_mul_of_open_of_irreducible_fibres` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSurjectiveOpenPartProductMapIrreducibleFibres.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.surjective_openPart_productMap_irreducible_fibres : ∀ (T : Scheme.{0}) (H V : Over T) [GrpObj H] (e : V ⟶ H), IsOpenImmersion e.left → Surjective V.hom → (∀ (K : Type) [Field K] (t : Spec (CommRingCat.of K) ⟶ T), IrreducibleSpace (pullback H.hom t : Scheme.{0})) → Surjective ((fst V V ≫ e) * (snd V V ≫ e)).left := by
   first | exact @GlobalTheory.Mum.surjective_mul_of_open_of_irreducible_fibres | exact GlobalTheory.Mum.surjective_mul_of_open_of_irreducible_fibres | (intros; apply GlobalTheory.Mum.surjective_mul_of_open_of_irreducible_fibres <;> assumption)

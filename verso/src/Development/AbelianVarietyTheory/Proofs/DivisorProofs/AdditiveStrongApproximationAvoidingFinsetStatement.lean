@@ -7,8 +7,10 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open Matrix
 open scoped Quaternion Topology TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AddApproxPlaces.exists_approx_notMem | exact GlobalTheory.AddApproxPlaces.exists_approx_notMem | (intros; apply GlobalTheory.AddApproxPlaces.exists_approx_notMem <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AddApproxPlaces.exists_approx_notMem` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAdditiveStrongApproximationAvoidingFinset.lean&line=165#L165)
 -/
 theorem _root_.GlobalTheory.T.additive_strongApproximation_avoiding_finset : ∀ (F : Type) [Field F] [NumberField F], ∀ (S₁ : Finset (InfinitePlace F)) (S₂ : Finset (HeightOneSpectrum (𝓞 F))) (ε : AF F), IsPlacesIdem S₁ S₂ ε → (S₁.Nonempty ∨ S₂.Nonempty) → ∀ (x : AF F) (U : Set (AF F)), U ∈ 𝓝 x → ∀ Z : Finset F, ∃ t : F, t ∉ Z ∧ ∃ s : AF F, algebraMap F (AF F) t + ε * s ∈ U := by
   first | exact @GlobalTheory.AddApproxPlaces.exists_approx_notMem | exact GlobalTheory.AddApproxPlaces.exists_approx_notMem | (intros; apply GlobalTheory.AddApproxPlaces.exists_approx_notMem <;> assumption)

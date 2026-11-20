@@ -14,8 +14,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (Base Spc Model Ch
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RatVecDomain.exists_fundamentalDomain | exact GlobalTheory.RatVecDomain.exists_fundamentalDomain | (intros; apply GlobalTheory.RatVecDomain.exists_fundamentalDomain <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RatVecDomain.exists_fundamentalDomain` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsFundDomainRationalPointsAdeleTupleFinitePo.lean&line=51#L51)
 -/
 theorem _root_.GlobalTheory.T.exists_fundDomain_rationalPointsAdeleTuple_finite_pos : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (μ : @Measure (κ → AF F) (borel _)), @Measure.IsAddHaarMeasure _ _ _ (borel _) μ →
     ∃ 𝓕₁ : Set (κ → AF F), @IsAddFundamentalDomain (GlobalTheory.ThetaParseval.ratVec F κ) _ _ _ (borel _) 𝓕₁ μ ∧ μ 𝓕₁ ≠ 0 ∧ μ 𝓕₁ ≠ ⊤ := by

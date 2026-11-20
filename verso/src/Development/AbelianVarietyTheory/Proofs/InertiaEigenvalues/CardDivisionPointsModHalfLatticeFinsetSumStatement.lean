@@ -24,8 +24,10 @@ set_option synthInstance.maxHeartbeats 400000
 open GlobalTheory.LevelSeries
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DivPtFourier.card_DQ_sum | exact GlobalTheory.DivPtFourier.card_DQ_sum | (intros; apply GlobalTheory.DivPtFourier.card_DQ_sum <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DivPtFourier.card_DQ_sum` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FCardDivisionPointsModHalfLatticeFinsetSum.lean&line=125#L125)
 -/
 theorem _root_.GlobalTheory.T.card_divisionPointsModHalfLattice_finset_sum : ∀ {D : D7} {S T : HSp D} (Λ : AddSubgroup (WO S T)), (∀ c : AE D, c * c = c → ∀ u ∈ Λ, c • u ∈ Λ) → ∀ {ι : Type} (s : Finset ι) (cs : ι → AE D), (∀ i ∈ s, cs i * cs i = cs i) → (∀ i ∈ s, ∀ j ∈ s, i ≠ j → cs i * cs j = 0) → ∀ N : ℕ, Nat.card (GlobalTheory.DivPtFourier.DQ Λ (∑ i ∈ s, cs i) N) = ∏ i ∈ s, Nat.card (GlobalTheory.DivPtFourier.DQ Λ (cs i) N) := by
   first | exact @GlobalTheory.DivPtFourier.card_DQ_sum | exact GlobalTheory.DivPtFourier.card_DQ_sum | (intros; apply GlobalTheory.DivPtFourier.card_DQ_sum <;> assumption)

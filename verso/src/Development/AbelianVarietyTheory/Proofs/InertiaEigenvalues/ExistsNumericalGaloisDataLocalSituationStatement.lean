@@ -20,8 +20,10 @@ open ReciprocityTheory.Def (Z1 B1 H1)
 open TensorProduct
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TopWindow.exists_topData_galData | exact GlobalTheory.TopWindow.exists_topData_galData | (intros; apply GlobalTheory.TopWindow.exists_topData_galData <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TopWindow.exists_topData_galData` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FExistsNumericalGaloisDataLocalSituation.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.exists_numerical_galoisData_localSituation : ∀ {l : ℕ} [Fact l.Prime] (P : LocPrime l) (H : LocHW l P) (K LL : FinExt l)
     (hA : CaseA K LL) (lam : ↥(OL LL)), Irreducible lam → 5 ≤ (P.PD K).p →

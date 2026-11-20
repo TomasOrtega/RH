@@ -12,8 +12,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Core.Rk.IP
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Core.Rk.IP.integrable_quotHeight_pow_mul_norm_of_rapidDec | exact GlobalTheory.Core.Rk.IP.integrable_quotHeight_pow_mul_norm_of_rapidDec | (intros; apply GlobalTheory.Core.Rk.IP.integrable_quotHeight_pow_mul_norm_of_rapidDec <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Core.Rk.IP.integrable_quotHeight_pow_mul_norm_of_rapidDec` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FIntegrableUnitaryQuotientHeightPowMulRapidlyDecr.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.integrable_unitaryQuotientHeight_pow_mul_rapidlyDecreasing : ∀ (D : D7) (A : HSp D) (m : Measure (GA D A)), m.IsHaarMeasure → ∀ (u : GA D A → ℂ), GlobalTheory.Grow.RapidDec A u → ∀ N : ℕ, Integrable (fun q : AutQ A => GlobalTheory.Grow.quotHeight A q.out ^ N * ‖u q.out‖) (autMeasure A m) := by
   first | exact @GlobalTheory.Core.Rk.IP.integrable_quotHeight_pow_mul_norm_of_rapidDec | exact GlobalTheory.Core.Rk.IP.integrable_quotHeight_pow_mul_norm_of_rapidDec | (intros; apply GlobalTheory.Core.Rk.IP.integrable_quotHeight_pow_mul_norm_of_rapidDec <;> assumption)

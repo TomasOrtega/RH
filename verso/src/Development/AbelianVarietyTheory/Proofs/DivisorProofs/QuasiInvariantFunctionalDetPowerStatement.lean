@@ -10,8 +10,10 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FullRankCoinv.LeftScale.left_scale | exact GlobalTheory.FullRankCoinv.LeftScale.left_scale | (intros; apply GlobalTheory.FullRankCoinv.LeftScale.left_scale <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FullRankCoinv.LeftScale.left_scale` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FQuasiInvariantFunctionalDetPower.lean&line=86#L86)
 -/
 theorem _root_.GlobalTheory.T.quasi_invariant_functional_det_power : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n d : ℕ), n < d →
     ∀ Λ : (Matrix (Fin n) (Fin d) k → ℂ) →ₗ[ℂ] ℂ,

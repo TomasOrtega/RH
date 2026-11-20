@@ -14,8 +14,10 @@ open GlobalTheory.AutomorphicL2Unitary (IsTopIrreducible)
 open GlobalTheory.HCChar GlobalTheory.Published GlobalTheory.Published.Langlands
 open scoped InnerProductSpace Topology ENNReal ComplexConjugate
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.span_orbit_coeff_integrable | exact GlobalTheory.span_orbit_coeff_integrable | (intros; apply GlobalTheory.span_orbit_coeff_integrable <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.span_orbit_coeff_integrable` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FIntegrableMatrixCoeffCyclicSpan.lean&line=87#L87)
 -/
 theorem _root_.GlobalTheory.T.integrable_matrixCoeff_cyclic_span : ∀ (n : ℕ) (ε : Fin n → Bool) (μ : Measure (UJ ε)) [μ.IsHaarMeasure] (U : Type) [NormedAddCommGroup U] [InnerProductSpace ℂ U] (π : UJ ε →* (U →L[ℂ] U)), IsUnitaryRep π → ∀ (p : ℝ), 1 ≤ p → ∀ v : U, Integrable (fun g => ‖⟪v, π g v⟫_ℂ‖ ^ p) μ → ∀ u ∈ Submodule.span ℂ (Set.range fun g => π g v), ∀ u' ∈ Submodule.span ℂ (Set.range fun g => π g v), Integrable (fun g => ‖⟪u', π g u⟫_ℂ‖ ^ p) μ := by
   first | exact @GlobalTheory.span_orbit_coeff_integrable | exact GlobalTheory.span_orbit_coeff_integrable | (intros; apply GlobalTheory.span_orbit_coeff_integrable <;> assumption)

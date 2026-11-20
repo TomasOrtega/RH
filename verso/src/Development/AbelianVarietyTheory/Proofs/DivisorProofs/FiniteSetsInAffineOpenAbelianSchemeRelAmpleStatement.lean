@@ -7,8 +7,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DualCon.FinAffNoeth.finAff_of_relAmple_noetherian | exact GlobalTheory.DualCon.FinAffNoeth.finAff_of_relAmple_noetherian | (intros; apply GlobalTheory.DualCon.FinAffNoeth.finAff_of_relAmple_noetherian <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DualCon.FinAffNoeth.finAff_of_relAmple_noetherian` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFiniteSetsInAffineOpenAbelianSchemeRelAmple.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.finiteSetsInAffineOpen_abelianScheme_relAmple : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (A : Over (Sp R)) [GrpObj A], IsAbelianScheme A → ∀ (L : LB A.left), L.IsLB → Out.RelAmple A L → FinAff A.left := by
   first | exact @GlobalTheory.DualCon.FinAffNoeth.finAff_of_relAmple_noetherian | exact GlobalTheory.DualCon.FinAffNoeth.finAff_of_relAmple_noetherian | (intros; apply GlobalTheory.DualCon.FinAffNoeth.finAff_of_relAmple_noetherian <;> assumption)

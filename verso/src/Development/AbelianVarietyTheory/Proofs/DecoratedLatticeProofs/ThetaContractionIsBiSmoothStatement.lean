@@ -7,8 +7,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Stan
 open GlobalTheory.FinPl GlobalTheory.MixPer GlobalTheory.MixModel GlobalTheory.Unf GlobalTheory.LatPair GlobalTheory.SplitWeil GlobalTheory.SeeSaw
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ContrSmooth.contr_isBiSmooth | exact GlobalTheory.ContrSmooth.contr_isBiSmooth | (intros; apply GlobalTheory.ContrSmooth.contr_isBiSmooth <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ContrSmooth.contr_isBiSmooth` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FThetaContractionIsBiSmooth.lean&line=209#L209)
 -/
 theorem _root_.GlobalTheory.T.theta_contraction_isBiSmooth : ∀ (D : D7) (ρ σ : ℕ) (B : BesLev D ρ) (B' : BesLev D σ) (l : Link B B'.L B'.ζ) (S : HSp D) (vL : VolM D B'.L.rank S.rank) (ψ : AddChar (AF D.host.F) ℂ) (f₁ : WO B.V₀ S → ℂ) (f₂ : WO S B'.V₀ → ℂ), IsThetaFunO ψ B.V₀ S f₁ → IsThetaFunO ψ S B'.V₀ f₂ → IsBiSmooth (contr l S vL f₁ f₂) := by
   first | exact @GlobalTheory.ContrSmooth.contr_isBiSmooth | exact GlobalTheory.ContrSmooth.contr_isBiSmooth | (intros; apply GlobalTheory.ContrSmooth.contr_isBiSmooth <;> assumption)

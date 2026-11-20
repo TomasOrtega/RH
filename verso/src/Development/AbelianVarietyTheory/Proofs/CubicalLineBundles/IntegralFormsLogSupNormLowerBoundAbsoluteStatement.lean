@@ -19,8 +19,10 @@ import Development.AbelianVarietyTheory.Definitions.ThetaValues.Generic
 import Formalism.LocalToGlobal.ProjectiveLattices.AxHLAM
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.WeightAlgebra Formalism.MainNotions.DIV.Cons Formalism.MainNotions.Gaps Formalism.MainNotions.Gaps.EtaleWeightGaps Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.RunJoin
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RunJoin.lamwAt_absolute | exact GlobalTheory.RunJoin.lamwAt_absolute | (intros; apply GlobalTheory.RunJoin.lamwAt_absolute <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RunJoin.lamwAt_absolute` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FCubicalLineBundles%2FIntegralFormsLogSupNormLowerBoundAbsolute.lean&line=28#L28)
 -/
 theorem _root_.GlobalTheory.T.integralForms_logSupNorm_lower_bound_absolute : ∃ CL : ℝ, 0 < CL ∧ ∀ (D : D7) (T : Top D) (h : LawsP T) (large₂ : SizeData₂ D) (CA : ℝ), ParA large₂ CA → ∀ (j : ℕ) (w : WeightFamilies.Wt D j), LAMwAt large₂ (recB h.toLawsCore) j w CL 2 := by
   first | exact @GlobalTheory.RunJoin.lamwAt_absolute | exact GlobalTheory.RunJoin.lamwAt_absolute | (intros; apply GlobalTheory.RunJoin.lamwAt_absolute <;> assumption)

@@ -18,8 +18,10 @@ open ReciprocityTheory.ChartRestriction.G.DVR.FlatBC (algX)
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.CechPic GlobalTheory.CxPts GlobalTheory.TrueGeo
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PullCoordComb.linComb_ratio_and_vanish | exact GlobalTheory.PullCoordComb.linComb_ratio_and_vanish | (intros; apply GlobalTheory.PullCoordComb.linComb_ratio_and_vanish <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PullCoordComb.linComb_ratio_and_vanish` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPulledBackCoordinateCombinationRatioAndVanish.lean&line=31#L31)
 -/
 theorem _root_.GlobalTheory.T.pulledBack_coordinate_combination_ratio_and_vanish : ∀ (K Ω : Type) [Field K] [NumberField K] [Field Ω] [Algebra K Ω] (m : ℕ) (y : Fin (m + 1) → Ω) (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp (𝓞 K)) (g : X ⟶ PSpace (𝓞 K) m) (ψ : Ω →+* X.functionField),
     (∀ a : 𝓞 K, ψ (algebraMap K Ω (a : K)) = fnOf ⊤ (TopologicalSpace.Opens.mem_top _) (algX p ⊤ a)) →

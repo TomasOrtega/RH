@@ -11,8 +11,10 @@ open GlobalTheory.FlagTan (dimFlag)
 open GlobalTheory.HSApp
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompHS.charZero_stalk_Y₀ | exact GlobalTheory.CompHS.charZero_stalk_Y₀ | (intros; apply GlobalTheory.CompHS.charZero_stalk_Y₀ <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompHS.charZero_stalk_Y₀` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCharZeroStalkCompactFlagSpaceOverComponent.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.charZero_stalk_compactFlagSpaceOverComponent : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} (TF : TorFlag Xo c) (Z : Comp Xo c) (y : Y₀ TF.X Z), CharZero ((Y₀ TF.X Z).presheaf.stalk y) := by
   first | exact @GlobalTheory.CompHS.charZero_stalk_Y₀ | exact GlobalTheory.CompHS.charZero_stalk_Y₀ | (intros; apply GlobalTheory.CompHS.charZero_stalk_Y₀ <;> assumption)

@@ -12,8 +12,10 @@ open Formalism.IndefR.RecTie Formalism.IndefR.Lev Formalism.L2.Rows GlobalTheory
 set_option maxHeartbeats 4000000
 set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mem.R3.LiftLatStd.hLat_eq_decoPt_N | exact GlobalTheory.Mem.R3.LiftLatStd.hLat_eq_decoPt_N | (intros; apply GlobalTheory.Mem.R3.LiftLatStd.hLat_eq_decoPt_N <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mem.R3.LiftLatStd.hLat_eq_decoPt_N` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FTranslatedStdLatticeEqDecoratedLatticeReindexed.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.translatedStdLattice_eq_decoratedLattice_reindexed : ∀ (X : Stages) (i : Fin X.toD7.R.m) (Λ : Submodule (𝓞 X.toD7.host.E) (Fin (Vc X.toD7 i).rank → X.toD7.host.E)),
     IsSDFrame (Vc X.toD7 i) 1 Λ 1 → ∀ (SG : Finset (Pl X.toD7.host.E))

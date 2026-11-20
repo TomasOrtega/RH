@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.CentralNilGL
 open NumberField MeasureTheory GlobalTheory.CuspRep
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HCFct.constTerm_cptTranslate_mem | exact GlobalTheory.HCFct.constTerm_cptTranslate_mem | (intros; apply GlobalTheory.HCFct.constTerm_cptTranslate_mem <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HCFct.constTerm_cptTranslate_mem` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFundamentalDomainMeasureFinite.lean&line=30#L30)
 -/
 theorem _root_.GlobalTheory.T.fundamental_domain_measure_finite : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (L : Subgroup (GL (Fin a) (Af E))) (W : Submodule ℂ (Kinf E a → ℂ)), FiniteDimensional ℂ W → ∀ (X : Set (Module.End ℂ (Sm E a) → ℂ)) (N r : ℕ) [MeasurableSpace (BlockIx a r → Ad E)] [BorelSpace (BlockIx a r → Ad E)] (μ : Measure (BlockIx a r → Ad E)) (𝓕 : Set (BlockIx a r → Ad E)), μ.IsAddHaarMeasure → IsAddFundamentalDomain (ratN E a r) 𝓕 μ → μ 𝓕 = 1 → ∀ φ ∈ Submodule.span ℂ (GlobalTheory.HCF.formsGL E a L W X N), ∀ g : GA E a, (fun k : Kinf E a => ∫ x in 𝓕, φ.1 (unip x * (g * infGL E a (Unitary.toUnits k))) ∂μ) ∈ W := by
   first | exact @GlobalTheory.HCFct.constTerm_cptTranslate_mem | exact GlobalTheory.HCFct.constTerm_cptTranslate_mem | (intros; apply GlobalTheory.HCFct.constTerm_cptTranslate_mem <;> assumption)

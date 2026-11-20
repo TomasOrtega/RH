@@ -2,8 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComplexWittBasisNormalForm
 import Mathlib
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MajPosCpx.exists_unip_conj_unitary | exact GlobalTheory.MajPosCpx.exists_unip_conj_unitary | (intros; apply GlobalTheory.MajPosCpx.exists_unip_conj_unitary <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MajPosCpx.exists_unip_conj_unitary` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FComplexWittBasisNormalForm.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.complex_witt_basis_normal_form : ∀ (n r : ℕ) (J : Matrix (Fin n) (Fin n) ℂ), J.conjTranspose = J →
     ∀ (X Y : Matrix (Fin n) (Fin r) ℂ), X.conjTranspose * J * X = 0 → Y.conjTranspose * J * Y = 0 → X.conjTranspose * J * Y = 1 →

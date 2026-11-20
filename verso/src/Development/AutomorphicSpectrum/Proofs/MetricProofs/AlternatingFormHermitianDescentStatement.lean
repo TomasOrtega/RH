@@ -12,8 +12,10 @@ open scoped ENNReal InnerProductSpace
 open scoped ComplexOrder
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Cusp.Dict.LatBil.exists_rat_bilin | exact GlobalTheory.CompanionTheory.Ar.Cusp.Dict.LatBil.exists_rat_bilin | (intros; apply GlobalTheory.CompanionTheory.Ar.Cusp.Dict.LatBil.exists_rat_bilin <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Cusp.Dict.LatBil.exists_rat_bilin` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FAlternatingFormHermitianDescent.lean&line=108#L108)
 -/
 theorem _root_.GlobalTheory.T.alternating_form_hermitian_descent : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Λ : Type) [AddCommGroup Λ] [Module (𝓞 E) Λ] [Module.Free ℤ Λ] [Module.Finite ℤ Λ] (N : ℕ) (e : Λ →+ (Fin N → E)), Function.Injective e → (∀ (a : 𝓞 E) x, e (a • x) = (a : E) • e x) → (∀ v : Fin N → E, ∃ (k : ℕ) (x : Λ), k ≠ 0 ∧ e x = k • v) → ∀ form : Λ →ₗ[ℤ] Λ →ₗ[ℤ] ℤ, (∀ x, form x x = 0) → Function.Bijective form → (∀ a a' : 𝓞 E, (a' : E) = IsCMField.complexConj E (a : E) → ∀ x y, form (a • x) y = form x (a' • y)) → ∃ B : LinearMap.BilinForm ℚ (Fin N → E), (∀ x y, B (e x) (e y) = ((form x y : ℤ) : ℚ)) ∧ (∀ (a : E) u v, B (a • u) v = B u (IsCMField.complexConj E a • v)) ∧ (∀ u v, B u v = - B v u) ∧ ∀ u, (∀ v, B v u = 0) → u = 0 := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Cusp.Dict.LatBil.exists_rat_bilin | exact GlobalTheory.CompanionTheory.Ar.Cusp.Dict.LatBil.exists_rat_bilin | (intros; apply GlobalTheory.CompanionTheory.Ar.Cusp.Dict.LatBil.exists_rat_bilin <;> assumption)

@@ -2,8 +2,10 @@ import Mathlib
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.EqNegSumIicDifferences
 open Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Metric.Telescope.fin_iic_telescope | exact GlobalTheory.CompanionTheory.Metric.Telescope.fin_iic_telescope | (intros; apply GlobalTheory.CompanionTheory.Metric.Telescope.fin_iic_telescope <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Metric.Telescope.fin_iic_telescope` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FEqNegSumIicDifferences.lean&line=7#L7)
 -/
 theorem _root_.GlobalTheory.T.eq_neg_sum_Iic_differences : ∀ (N : ℕ) (M : Type) [AddCommGroup M] (f : Fin N → M) (i : Fin N), f i = -∑ k ∈ Finset.Iic i, (if h : (k : ℕ) = 0 then -f k else f ⟨(k : ℕ) - 1, by have := k.2; omega⟩ - f k) := by
   first | exact @GlobalTheory.CompanionTheory.Metric.Telescope.fin_iic_telescope | exact GlobalTheory.CompanionTheory.Metric.Telescope.fin_iic_telescope | (intros; apply GlobalTheory.CompanionTheory.Metric.Telescope.fin_iic_telescope <;> assumption)

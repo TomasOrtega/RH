@@ -10,8 +10,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 open GlobalTheory.CompanionTheory.GodementH
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.GodementH.exists_mnr_ne_zero_of_left_inverse | exact GlobalTheory.CompanionTheory.GodementH.exists_mnr_ne_zero_of_left_inverse | (intros; apply GlobalTheory.CompanionTheory.GodementH.exists_mnr_ne_zero_of_left_inverse <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.GodementH.exists_mnr_ne_zero_of_left_inverse` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FLeftInvertibleExistsNonzeroMinor.lean&line=29#L29)
 -/
 theorem _root_.GlobalTheory.T.left_invertible_exists_nonzero_minor : ∀ (R : Type) [CommRing R] [Nontrivial R] (ι : Type) [Fintype ι] [DecidableEq ι] (n : ℕ) (M : Matrix ι (Fin n) R) (L : Matrix (Fin n) ι R),
     L * M = 1 → ∃ f, mnr M f ≠ 0 := by

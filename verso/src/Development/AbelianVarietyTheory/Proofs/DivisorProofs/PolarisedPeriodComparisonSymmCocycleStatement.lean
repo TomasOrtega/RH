@@ -9,8 +9,10 @@ open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PolDeg.half_symm_cocycle | exact GlobalTheory.PolDeg.half_symm_cocycle | (intros; apply GlobalTheory.PolDeg.half_symm_cocycle <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PolDeg.half_symm_cocycle` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPolarisedPeriodComparisonSymmCocycle.lean&line=73#L73)
 -/
 theorem _root_.GlobalTheory.T.polarisedPeriod_comparison_symm_cocycle : ∀ (R : Type) [CommRing R] [IsDomain R] (R' : Type) [CommRing R'] [IsDomain R'] (Q : Data R) (ρ : R →+* R') (D : DegPre R') (e : D.X ≃+ Q.X) (f : D.X → D.X → (FractionRing R')ˣ), Function.Injective ρ → Half Q ρ D e f → (∀ a b, f a b = f b a) ∧ ∀ a b c, f (a + b) c * f a b = f a (b + c) * f b c := by
   first | exact @GlobalTheory.PolDeg.half_symm_cocycle | exact GlobalTheory.PolDeg.half_symm_cocycle | (intros; apply GlobalTheory.PolDeg.half_symm_cocycle <;> assumption)

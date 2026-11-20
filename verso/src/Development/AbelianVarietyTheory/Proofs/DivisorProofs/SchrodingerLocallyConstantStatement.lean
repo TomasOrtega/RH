@@ -7,8 +7,10 @@ open scoped TensorProduct GlobalTheory.VacAny
 open Matrix
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SchrSmall.schr_eventually_eq | exact GlobalTheory.SchrSmall.schr_eventually_eq | (intros; apply GlobalTheory.SchrSmall.schr_eventually_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SchrSmall.schr_eventually_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSchrodingerLocallyConstant.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.schrodinger_locally_constant : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (v : Pl F) (ψ : AddChar (Fv F v) ℂ), Continuous ψ →
     ∀ φ ∈ SB (κ → Fv F v), ∀ᶠ w in nhds (0 : (κ → Fv F v) × (κ → Fv F v)), schr ψ w φ = φ := by

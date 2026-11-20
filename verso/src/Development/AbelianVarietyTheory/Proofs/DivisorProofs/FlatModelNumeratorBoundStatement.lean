@@ -13,8 +13,10 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 open scoped ENNReal Classical
 open MvPolynomial GlobalTheory.ArInt
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlatDetModelNum.flat_model_numerator | exact GlobalTheory.FlatDetModelNum.flat_model_numerator | (intros; apply GlobalTheory.FlatDetModelNum.flat_model_numerator <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlatDetModelNum.flat_model_numerator` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFlatModelNumeratorBound.lean&line=45#L45)
 -/
 theorem _root_.GlobalTheory.T.flat_model_numerator_bound : GlobalTheory.CovTop.HypothesesXH → Hypotheses2 → HypothesesH → GlobalTheory.Published.ScholzeWeinsteinB → ∀ (D : D7) (O : Setup D), O.Core → 2 < D.R.f * (O.N - 1) →
     ∀ (A : SlopeTestRemainingChoices O.Y) (T : Real0 O.Y) (H : Ht O.Y) (h : O.Reads A T H) (B : ℝ), 2 ≤ B → ∀ (τ : D.what₂.Tau) (c : O.s.Comp)

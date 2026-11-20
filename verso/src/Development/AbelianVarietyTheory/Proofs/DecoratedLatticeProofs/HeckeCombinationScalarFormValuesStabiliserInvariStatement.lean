@@ -13,8 +13,10 @@ open scoped TensorProduct Pointwise
 open GlobalTheory.AdForm
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AdForm.trans_stab | exact GlobalTheory.AdForm.trans_stab | (intros; apply GlobalTheory.AdForm.trans_stab <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AdForm.trans_stab` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FHeckeCombinationScalarFormValuesStabilizerInvariant.lean&line=75#L75)
 -/
 theorem _root_.GlobalTheory.T.heckeCombination_scalarForm_values_stabiliser_invariant : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι) (Ch : ℕ → Type) (A : TwDat I l Z u a Ch), A.Is → ∀ θ, IsInfFam θ → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type)
     (p : ι → SplitPt (I.rec7 l Z) k) (β : ∀ j i, Frame (p i) ((I.rec7 l Z).sp.X j) (Fin ((I.rec7 l Z).sp.X j).rank))

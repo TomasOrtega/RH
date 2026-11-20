@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsotropicSplitTorusIwasawaUnitaryGroup
 open Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Flag.exists_flag_frame | exact GlobalTheory.CompanionTheory.Flag.exists_flag_frame | (intros; apply GlobalTheory.CompanionTheory.Flag.exists_flag_frame <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Flag.exists_flag_frame` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FFlagOrthonormalAdaptedBasis.lean&line=69#L69)
 -/
 theorem _root_.GlobalTheory.T.flag_orthonormal_adapted_basis : ∀ {n a : ℕ} (W : Fin (a + 1) → Submodule ℂ (Fin n → ℂ)), W 0 = ⊥ → Monotone W → ∃ (D : ℕ) (C : Matrix (Fin n) (Fin D) ℂ) (τ : Fin D → ℕ), Cᴴ * C = 1 ∧ Monotone τ ∧ (∀ c, τ c < a) ∧ ∀ (i : Fin (a + 1)) (y : Fin n → ℂ), y ∈ W i ↔ ∃ v : Fin D → ℂ, y = C *ᵥ v ∧ ∀ c, (i : ℕ) ≤ τ c → v c = 0 := by
   first | exact @GlobalTheory.CompanionTheory.Flag.exists_flag_frame | exact GlobalTheory.CompanionTheory.Flag.exists_flag_frame | (intros; apply GlobalTheory.CompanionTheory.Flag.exists_flag_frame <;> assumption)

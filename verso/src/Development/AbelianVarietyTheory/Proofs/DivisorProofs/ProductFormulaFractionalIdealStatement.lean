@@ -9,8 +9,10 @@ open Formalism.MainNotions.DIV.Cons (intO)
 open GlobalTheory.LieSmooth
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LieSmooth.finsum_sum_log_iSup_eq_idealLog | exact GlobalTheory.LieSmooth.finsum_sum_log_iSup_eq_idealLog | (intros; apply GlobalTheory.LieSmooth.finsum_sum_log_iSup_eq_idealLog <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LieSmooth.finsum_sum_log_iSup_eq_idealLog` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FProductFormulaFractionalIdeal.lean&line=188#L188)
 -/
 theorem _root_.GlobalTheory.T.product_formula_fractional_ideal : ∀ {F : Type} [Field F] [NumberField F] {K : Type} [Field K] [NumberField K] (φ : F →+* K) (𝔞 : Submodule (𝓞 K) K), 𝔞.FG → 𝔞 ≠ ⊥ → (Function.support fun v : HeightOneSpectrum (𝓞 F) => ∑ θ : EmbOver φ, Real.log (⨆ a : 𝔞, (extOf v).w (θ.1 a))).Finite ∧ ∑ᶠ v : HeightOneSpectrum (𝓞 F), ∑ θ : EmbOver φ, Real.log (⨆ a : 𝔞, (extOf v).w (θ.1 a)) = idealLog 𝔞 := by
   first | exact @GlobalTheory.LieSmooth.finsum_sum_log_iSup_eq_idealLog | exact GlobalTheory.LieSmooth.finsum_sum_log_iSup_eq_idealLog | (intros; apply GlobalTheory.LieSmooth.finsum_sum_log_iSup_eq_idealLog <;> assumption)

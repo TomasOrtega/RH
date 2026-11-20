@@ -9,8 +9,10 @@ open GlobalTheory.QFam GlobalTheory.WpFam GlobalTheory.KZ GlobalTheory.FN
 open ReciprocityTheory.ChartRestriction.L1 (DD jT IsMF)
 open ModularForm (E₄ E₆)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FN.cmp_ringEquiv | exact GlobalTheory.FN.cmp_ringEquiv | (intros; apply GlobalTheory.FN.cmp_ringEquiv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FN.cmp_ringEquiv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FExistsRingEquivCompGLTwoPosRatFun.lean&line=35#L35)
 -/
 theorem _root_.GlobalTheory.T.exists_ringEquiv_compGLTwoPosRatFun : ∀ (E : Subring ℂ) (g : GQ), (∀ x : ℚ, Complex.exp (2 * Real.pi * Complex.I * (x : ℂ)) ∈ E) → ∃ σ : GlobalTheory.FN.ring E ≃+* GlobalTheory.FN.ring E, ∀ a, ((σ a : GlobalTheory.FN.ring E) : ℍ → ℂ) = GlobalTheory.FN.cmp g a := by
   first | exact @GlobalTheory.FN.cmp_ringEquiv | exact GlobalTheory.FN.cmp_ringEquiv | (intros; apply GlobalTheory.FN.cmp_ringEquiv <;> assumption)

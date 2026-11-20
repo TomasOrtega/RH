@@ -8,8 +8,10 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.ThK.DescB
 open GlobalTheory.Doubling (absE)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LeviRatSkew.exists_rat_isLevi_one_skew | exact GlobalTheory.LeviRatSkew.exists_rat_isLevi_one_skew | (intros; apply GlobalTheory.LeviRatSkew.exists_rat_isLevi_one_skew <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LeviRatSkew.exists_rat_isLevi_one_skew` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsotropicPlaneRestrictedSkew.lean&line=116#L116)
 -/
 theorem _root_.GlobalTheory.T.isotropic_plane_restricted_skew : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     (∀ x, σ (σ x) = x) → ∀ (n n₁ : ℕ) (Y : Spc F E n) (Y₁ : Spc F E n₁) (H : Plane E n n₁),

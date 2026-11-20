@@ -9,8 +9,10 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open scoped TensorProduct
 open Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EmbColSpan.emb_mulVec_sub_mem_colSpan | exact GlobalTheory.EmbColSpan.emb_mulVec_sub_mem_colSpan | (intros; apply GlobalTheory.EmbColSpan.emb_mulVec_sub_mem_colSpan <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EmbColSpan.emb_mulVec_sub_mem_colSpan` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLocalMatrixActionColumnSpan.lean&line=44#L44)
 -/
 theorem _root_.GlobalTheory.T.local_matrix_action_column_span : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X : Matrix (Fin n) (Fin r) E)
     (v : HeightOneSpectrum (𝓞 F)) (x : GLoc σ J v) (z : Fin n → AF F ⊗[F] E) (I : Set (Fin r)),

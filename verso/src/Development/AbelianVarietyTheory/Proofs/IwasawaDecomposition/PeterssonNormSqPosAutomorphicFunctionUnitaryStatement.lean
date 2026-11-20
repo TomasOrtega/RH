@@ -7,8 +7,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mem.PetPos.petersson_pos | exact GlobalTheory.Mem.PetPos.petersson_pos | (intros; apply GlobalTheory.Mem.PetPos.petersson_pos <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mem.PetPos.petersson_pos` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FPeterssonNormSqPosAutomorphicFunctionUnitary.lean&line=41#L41)
 -/
 theorem _root_.GlobalTheory.T.petersson_normSq_pos_automorphicFunction_unitary : ∀ (D : D7) (V : HSp D) (μ : Measure (GA D V)) (𝓕 : Set (GA D V)), IsQuot V μ 𝓕 → ∀ φ, IsAutFun V φ → φ ≠ 0 → IntegrableOn (fun h => star (φ h) * φ h) 𝓕 μ → 0 < (∫ h in 𝓕, star (φ h) * φ h ∂μ).re := by
   first | exact @GlobalTheory.Mem.PetPos.petersson_pos | exact GlobalTheory.Mem.PetPos.petersson_pos | (intros; apply GlobalTheory.Mem.PetPos.petersson_pos <;> assumption)

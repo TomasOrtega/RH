@@ -16,8 +16,10 @@ open scoped TensorProduct Matrix
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FinUA.isUA_finHom | exact GlobalTheory.FinUA.isUA_finHom | (intros; apply GlobalTheory.FinUA.isUA_finHom <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FinUA.isUA_finHom` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFiniteUnitaryPartIsInvertibleUnitaryAdelic.lean&line=49#L49)
 -/
 theorem _root_.GlobalTheory.T.finiteUnitaryPart_isInvertibleUnitaryAdelic : ∀ (D : D7) (V : Formalism.BasicNotions.TH.HSp D) (g : GA D V),
     GlobalTheory.UCls.IsUA (IsCMField.complexConj D.host.E) (-(V.gram)ᵀ)

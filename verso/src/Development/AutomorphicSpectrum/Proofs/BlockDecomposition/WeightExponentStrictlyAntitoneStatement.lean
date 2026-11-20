@@ -7,8 +7,10 @@ open NumberField IsDedekindDomain Matrix Polynomial GlobalTheory.BCT GlobalTheor
 open scoped Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Wexp.wexp_strictAnti_rev | exact GlobalTheory.CompanionTheory.Wexp.wexp_strictAnti_rev | (intros; apply GlobalTheory.CompanionTheory.Wexp.wexp_strictAnti_rev <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Wexp.wexp_strictAnti_rev` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FWeightExponentStrictlyAntitone.lean&line=41#L41)
 -/
 theorem _root_.GlobalTheory.T.weight_exponent_strictly_antitone : ∀ (n : ℕ) (l : Fin (n / 2) → ℤ), Cone l → StrictAnti (wexp n l) ∧ ∀ i, wexp n l (Fin.rev i) = -wexp n l i := by
   first | exact @GlobalTheory.CompanionTheory.Wexp.wexp_strictAnti_rev | exact GlobalTheory.CompanionTheory.Wexp.wexp_strictAnti_rev | (intros; apply GlobalTheory.CompanionTheory.Wexp.wexp_strictAnti_rev <;> assumption)

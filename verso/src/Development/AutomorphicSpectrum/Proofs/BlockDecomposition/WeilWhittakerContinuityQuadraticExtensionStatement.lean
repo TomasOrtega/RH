@@ -16,8 +16,10 @@ open GlobalTheory.CompanionTheory.WcB
 open scoped Topology
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.WcB.continuous_gaussI | exact GlobalTheory.CompanionTheory.WcB.continuous_gaussI | (intros; apply GlobalTheory.CompanionTheory.WcB.continuous_gaussI <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.WcB.continuous_gaussI` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FWeilWhittakerContinuityQuadraticExtension.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.weil_whittaker_continuity_quadratic_extension : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] [MeasurableSpace E] [BorelSpace E] [Algebra F E] [ValuativeExtension F E] [FiniteDimensional F E] [Algebra.IsSeparable F E] [Fact (Module.finrank F E = 2)] (χ : AddChar F Circle), Continuous χ → ∀ (μ : Measure E) [μ.IsAddHaarMeasure] (Φ : E → ℂ), IsLocallyConstant Φ → HasCompactSupport Φ → Continuous fun p : F × E => gaussI χ μ Φ p.1 p.2 := by
   first | exact @GlobalTheory.CompanionTheory.WcB.continuous_gaussI | exact GlobalTheory.CompanionTheory.WcB.continuous_gaussI | (intros; apply GlobalTheory.CompanionTheory.WcB.continuous_gaussI <;> assumption)

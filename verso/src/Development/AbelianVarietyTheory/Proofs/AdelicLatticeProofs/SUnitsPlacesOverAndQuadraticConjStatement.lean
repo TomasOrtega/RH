@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.SqSubLe
 open NumberField IsDedekindDomain GlobalTheory.QNorm
 open scoped WithZero
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.QNorm.sUnits_over_and_conj | exact GlobalTheory.QNorm.sUnits_over_and_conj | (intros; apply GlobalTheory.QNorm.sUnits_over_and_conj <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.QNorm.sUnits_over_and_conj` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FAdelicLatticeProofs%2FSUnitsPlacesOverAndQuadraticConj.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.sUnits_places_over_and_quadratic_conj : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (δ : F) (θ : E) (σ : E ≃ₐ[F] E), IsQuad δ θ σ → ∀ (S : Finset (HeightOneSpectrum (𝓞 F))) (SE : Finset (HeightOneSpectrum (𝓞 E))), (∀ w : HeightOneSpectrum (𝓞 E), w ∈ SE ↔ w.under (𝓞 F) ∈ S) → (∀ x : Fˣ, Units.map (algebraMap F E : F →* E) x ∈ sUnits E SE ↔ x ∈ sUnits F S) ∧ ∀ y : Eˣ, y ∈ sUnits E SE → Units.map (σ : E →* E) y ∈ sUnits E SE := by
   first | exact @GlobalTheory.QNorm.sUnits_over_and_conj | exact GlobalTheory.QNorm.sUnits_over_and_conj | (intros; apply GlobalTheory.QNorm.sUnits_over_and_conj <;> assumption)

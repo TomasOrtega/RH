@@ -10,8 +10,10 @@ open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TChart.galRigid_stalk_of_isFam | exact GlobalTheory.TChart.galRigid_stalk_of_isFam | (intros; apply GlobalTheory.TChart.galRigid_stalk_of_isFam <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TChart.galRigid_stalk_of_isFam` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTautologicalChartGaloisRigidStalk.lean&line=74#L74)
 -/
 theorem _root_.GlobalTheory.T.tautologicalChart_galois_rigid_stalk : ∀ {g n : ℕ} {φ : InvFun ℤ}, 3 ≤ n → ∀ (F : SFam g n (zetaAway n)) (S : Scheme.{0}) (j : F.X ⟶ S) [IsOpenImmersion j], ∀ (C : Taut (zetaAway n) g n φ) (G₁ : Over (Sp C.R)) [GrpObj G₁] [IsCommMonObj G₁] (y : Sp (FractionRing C.R) ⟶ F.X) (α₁ : pullback G₁.hom (jK C.R) ⟶ F.univ.A.left) (ξ : Sp C.R ⟶ S), C.IsFam F G₁ y α₁ → y ≫ j = jK C.R ≫ ξ → GalRigid (Scheme.stalkClosedPointTo ξ).hom := by
   first | exact @GlobalTheory.TChart.galRigid_stalk_of_isFam | exact GlobalTheory.TChart.galRigid_stalk_of_isFam | (intros; apply GlobalTheory.TChart.galRigid_stalk_of_isFam <;> assumption)

@@ -6,8 +6,10 @@ open Formalism.MainNotions.IntegralHeckeForms (TwOK ClsQ HkIdx V0 Fm0 FullRk SgJ
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LatTranslate.lat_translate | exact GlobalTheory.LatTranslate.lat_translate | (intros; apply GlobalTheory.LatTranslate.lat_translate <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LatTranslate.lat_translate` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FCoefLatLeTranslateSplitPlacesPrimeToL.lean&line=49#L49)
 -/
 theorem _root_.GlobalTheory.T.coefLat_le_translate_splitPlaces_prime_to_l : ∀ (D : D7) (ρ : Setup D.ntw), ρ.Good → ∀ (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool), ∀ k (Q : Finset (Pl D.host.E)) (h hQ : GA D (Vc D j)) P, SplitSet Q → Disjoint Q (D.ntw.S0 i) → h ∈ GfC (Vc D j) → SuppAt (idem Q) (Vc D j) hQ → P ∈ ρ.lat i j b (ρ.eO i b).range h → P ∈ ρ.lat i j b (ρ.eOk i b k).range (h * hQ) := by
   first | exact @GlobalTheory.LatTranslate.lat_translate | exact GlobalTheory.LatTranslate.lat_translate | (intros; apply GlobalTheory.LatTranslate.lat_translate <;> assumption)

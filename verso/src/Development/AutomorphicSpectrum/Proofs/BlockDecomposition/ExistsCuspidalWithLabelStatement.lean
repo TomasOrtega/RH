@@ -5,8 +5,10 @@ open ReciprocityTheory.Ty.Fin
 open Formalism.IrreducibleCountingLemmas.TYPES hiding zIdem IsCuspidal
 open Polynomial CategoryTheory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.TyFin.CuspLabel.exists_cuspidal_label | exact GlobalTheory.CompanionTheory.TyFin.CuspLabel.exists_cuspidal_label | (intros; apply GlobalTheory.CompanionTheory.TyFin.CuspLabel.exists_cuspidal_label <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.TyFin.CuspLabel.exists_cuspidal_label` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FExistsCuspidalWithLabel.lean&line=57#L57)
 -/
 theorem _root_.GlobalTheory.T.exists_cuspidal_with_label : ∀ (K : Type) [Field K] [Fintype K] [DecidableEq K] (C : LabelConv K) (d : ℕ), 1 ≤ d → ∀ P : K[X], P.Monic → Irreducible P → P ≠ X → P.natDegree = d →
     ∃ τ : FDRep ℂ (GL (Fin d) K), Simple τ ∧ IsCuspidal K τ ∧ HasCuspLabel C τ P := by

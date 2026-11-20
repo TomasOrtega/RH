@@ -13,8 +13,10 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Unf GlobalTheory.See
 open scoped TensorProduct Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Fam.realEq_of_colOK | exact GlobalTheory.Fam.realEq_of_colOK | (intros; apply GlobalTheory.Fam.realEq_of_colOK <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Fam.realEq_of_colOK` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FRealEqualityOfColumns.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.real_equality_of_columns : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex) (u : D.what₂.Word), PkHyp W → ∀ f : FamCh W u, f.ColOK → RealEq f.t := by
   first | exact @GlobalTheory.Fam.realEq_of_colOK | exact GlobalTheory.Fam.realEq_of_colOK | (intros; apply GlobalTheory.Fam.realEq_of_colOK <;> assumption)

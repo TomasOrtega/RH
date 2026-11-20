@@ -7,8 +7,10 @@ open GroundTheory.Global GroundTheory.LocalField GroundTheory.Automorphic Ground
 open scoped NumberField.AdeleRing ValuativeRel ENNReal ComplexConjugate SchwartzMap Classical
 open Ad3 Ad3.R
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.RSZeta.Zg_decomposition | exact GlobalTheory.CompanionTheory.RSZeta.Zg_decomposition | (intros; apply GlobalTheory.CompanionTheory.RSZeta.Zg_decomposition <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.RSZeta.Zg_decomposition` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FGlobalZetaIntegralFunctionalEquation.lean&line=81#L81)
 -/
 theorem _root_.GlobalTheory.T.global_zeta_integral_functional_equation : ∀ (μ : Measure G2) (𝓕 : Set G2) (mK : Measure KA) (𝓓 : Set Jd) (H : G2 → ℂ) (Φ Φ' : (Fin 2 → 𝔸[ℚ]) → ℂ) (c : HeckeCharacter ℚ),
   Ad3.R.G1a → Ad3.R.G3 → Set0 μ 𝓕 mK 𝓓 → Aut H → Φ ∈ Adele2.schwartzBruhat2 ℚ → Φ' ∈ Adele2.schwartzBruhat2 ℚ →

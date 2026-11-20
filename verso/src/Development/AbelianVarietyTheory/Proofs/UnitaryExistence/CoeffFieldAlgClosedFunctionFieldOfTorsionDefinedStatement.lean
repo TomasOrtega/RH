@@ -6,8 +6,10 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.PureType GlobalTheory.CompRat
 open scoped CategoryTheory.Obj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompRat.fnAlgClosed_of_curveOver | exact GlobalTheory.CompRat.fnAlgClosed_of_curveOver | (intros; apply GlobalTheory.CompRat.fnAlgClosed_of_curveOver <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompRat.fnAlgClosed_of_curveOver` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUnitaryExistence%2FCoeffFieldAlgClosedFunctionFieldOfTorsionDefined.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.coeffField_algClosed_functionField_of_torsionDefined : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l), 1 ≤ D.p + D.q → l.A = 1 → (D.p = 0 ∨ D.q = 0 ∨ (3 ≤ D.p + D.q ∧ (∃ D₁ : Datum H, D₁.p = 1 ∧ D₁.q = 0))) → CurveOver H c.F l.M → FnAlgClosed Xo c := by
   first | exact @GlobalTheory.CompRat.fnAlgClosed_of_curveOver | exact GlobalTheory.CompRat.fnAlgClosed_of_curveOver | (intros; apply GlobalTheory.CompRat.fnAlgClosed_of_curveOver <;> assumption)

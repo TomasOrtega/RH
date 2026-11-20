@@ -10,8 +10,10 @@ open GlobalTheory.UPoinc
 open GlobalTheory
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GenFibNormal.genericFibre_normal_projective_ample | exact GlobalTheory.GenFibNormal.genericFibre_normal_projective_ample | (intros; apply GlobalTheory.GenFibNormal.genericFibre_normal_projective_ample <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GenFibNormal.genericFibre_normal_projective_ample` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGenericFibreNormalProjectiveAmpleCharZero.lean&line=46#L46)
 -/
 theorem _root_.GlobalTheory.T.generic_fibre_normal_projective_ample_charZero : ∀ (o K : Type) [CommRing o] [IsDomain o] [Field K] [CharZero K] (b : o →+* K), Function.Injective b → ∀ (Z : Scheme.{0}) (z : Z ⟶ Sp o) (L : LB Z), IsProjOver z → GlobalTheory.IsNormalScheme Z → L.IsLB → IsAmpleLB L → IsProjOver (pullback.snd z (spMap b)) ∧ GlobalTheory.IsNormalScheme (pullback z (spMap b)) ∧ (L.pull (pullback.fst z (spMap b))).IsLB ∧ IsAmpleLB (L.pull (pullback.fst z (spMap b))) := by
   first | exact @GlobalTheory.GenFibNormal.genericFibre_normal_projective_ample | exact GlobalTheory.GenFibNormal.genericFibre_normal_projective_ample | (intros; apply GlobalTheory.GenFibNormal.genericFibre_normal_projective_ample <;> assumption)

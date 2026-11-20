@@ -4,8 +4,10 @@ import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.Zelevin
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IrreducibleAdmissibleGL
 open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.JHMult Zc
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.CosocleContra.isCosocle_of_isSocle_contra | exact GlobalTheory.CompanionTheory.CosocleContra.isCosocle_of_isSocle_contra | (intros; apply GlobalTheory.CompanionTheory.CosocleContra.isCosocle_of_isSocle_contra <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.CosocleContra.isCosocle_of_isSocle_contra` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FCosocleOfContragredientSocle.lean&line=88#L88)
 -/
 theorem _root_.GlobalTheory.T.cosocle_of_contragredient_socle : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V), IsSmooth π → HasFiniteLength π → ∀ τ' : IrrRep (GL (Fin N) k), IsSocle τ'.ρ (contra π) → ∃ τ : IrrRep (GL (Fin N) k), IsCosocle τ.ρ π := by
   first | exact @GlobalTheory.CompanionTheory.CosocleContra.isCosocle_of_isSocle_contra | exact GlobalTheory.CompanionTheory.CosocleContra.isCosocle_of_isSocle_contra | (intros; apply GlobalTheory.CompanionTheory.CosocleContra.isCosocle_of_isSocle_contra <;> assumption)

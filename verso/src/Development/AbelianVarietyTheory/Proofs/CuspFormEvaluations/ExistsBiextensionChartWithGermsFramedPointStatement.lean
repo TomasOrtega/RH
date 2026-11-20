@@ -12,8 +12,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ (PS Pt ev pt comp1 FGLaw)
 open MvPolynomial (X)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChartRing.exists_chartAt_with_germs | exact GlobalTheory.ChartRing.exists_chartAt_with_germs | (intros; apply GlobalTheory.ChartRing.exists_chartAt_with_germs <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChartRing.exists_chartAt_with_germs` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FCuspFormEvaluations%2FExistsBiextensionChartWithGermsFramedPoint.lean&line=37#L37)
 -/
 theorem _root_.GlobalTheory.T.exists_biextension_chart_with_germs_framed_point : Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ∀ (S : Type) [CommRing S] [Algebra c.F S] [Algebra ℚ S] (y : FrPt Xo c S), ∃ C : ChartAt Xo c y, FrTruncC y C ∧ ∀ (k : ℕ) (F : LB.Sec (LPow Xo.univ.t.G Xo.univ.t.PP.L k (ptO Xo y.x))), ∃ f, IsGerm y C.d C.x C.B.A.act C.e C.wP k F f := by
   first | exact @GlobalTheory.ChartRing.exists_chartAt_with_germs | exact GlobalTheory.ChartRing.exists_chartAt_with_germs | (intros; apply GlobalTheory.ChartRing.exists_chartAt_with_germs <;> assumption)

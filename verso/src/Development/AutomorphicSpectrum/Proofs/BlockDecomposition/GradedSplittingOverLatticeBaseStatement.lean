@@ -5,8 +5,10 @@ import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomology
 set_option backward.isDefEq.respectTransparency false
 open CategoryTheory AlgebraicGeometry TensorProduct GlobalTheory.LogCris DividedPowers CrystallineSemistableComparison CrystallineSemistableComparison.Pb
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.LatSplit.nonempty_grSplit | exact GlobalTheory.CompanionTheory.LatSplit.nonempty_grSplit | (intros; apply GlobalTheory.CompanionTheory.LatSplit.nonempty_grSplit <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.LatSplit.nonempty_grSplit` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FGradedSplittingOverLatticeBase.lean&line=301#L301)
 -/
 theorem _root_.GlobalTheory.T.graded_splitting_over_lattice_base : ∀ {O A : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CommRing A] [Algebra O A] {I : Ideal A}
     (γ : DividedPowers I) (l m : ℕ), (∀ a : O, a ≠ 0 → ∃ k : ℕ, a ∣ (l : O) ^ k) → LatBase γ l m → Nonempty (GrSplit O γ m) := by

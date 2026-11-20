@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.In
 open GlobalTheory.Chamber
 open scoped InnerProductSpace ContDiff Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.vanish_on_hyperplane_of_vanish_off_others | exact GlobalTheory.vanish_on_hyperplane_of_vanish_off_others | (intros; apply GlobalTheory.vanish_on_hyperplane_of_vanish_off_others <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.vanish_on_hyperplane_of_vanish_off_others` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FContinuousVanishingHyperplaneExtend.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.continuous_vanishing_hyperplane_extend : ∀ {k : ℕ} (b : A0 k) (L : Finset (A0 k)) (N : A0 k → ℂ), Continuous N → (∀ b' ∈ L, ∀ r : ℝ, b' ≠ r • b) →
   (∀ x, ⟪x, b⟫_ℝ = 0 → (∀ b' ∈ L, ⟪x, b'⟫_ℝ ≠ 0) → N x = 0) → ∀ x, ⟪x, b⟫_ℝ = 0 → N x = 0 := by

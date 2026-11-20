@@ -11,8 +11,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.exists_fibre_generator_basis | exact GlobalTheory.exists_fibre_generator_basis | (intros; apply GlobalTheory.exists_fibre_generator_basis <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.exists_fibre_generator_basis` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FModuleActionFractionField.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.module_action_fraction_field : ∀ (R O : Type) [CommRing R] [CommRing O] (J : Type) [Fintype J] (b : Module.Basis J ℤ O)
     (M : Type) [AddCommGroup M] [Module R M] [Module O M] [SMulCommClass R O M]

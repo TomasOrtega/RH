@@ -16,8 +16,10 @@ open scoped TensorProduct Matrix
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MsRepsFwd.conj_rat_congr | exact GlobalTheory.MsRepsFwd.conj_rat_congr | (intros; apply GlobalTheory.MsRepsFwd.conj_rat_congr <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MsRepsFwd.conj_rat_congr` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FArithmeticGroupConjRationalPrincipalCongruence.lean&line=72#L72)
 -/
 theorem _root_.GlobalTheory.T.arithmeticGroup_conj_rational_principalCongruence : ∀ (D : D7) (V : Formalism.BasicNotions.TH.HSp D) (Comp : Type) (X : Comp → Data D.host.E V.rank)
     (dict : GA D V → Σ k, Frame (X k).Ψ V.rank) (Kf : Subgroup (GA D V))

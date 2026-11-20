@@ -15,8 +15,10 @@ set_option autoImplicit false
 open GlobalTheory.CMTorsion
 open GlobalTheory.WeierstrassCurve (scheme toSpec mapHom)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CMTorsion.exists_vector_of_additive_curve_hom | exact GlobalTheory.CMTorsion.exists_vector_of_additive_curve_hom | (intros; apply GlobalTheory.CMTorsion.exists_vector_of_additive_curve_hom <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CMTorsion.exists_vector_of_additive_curve_hom` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FEllipticMapTangentDifferential.lean&line=209#L209)
 -/
 theorem _root_.GlobalTheory.T.elliptic_map_uniformization_line : ∀ (F : Type) [Field F] [NumberField F] (𝔠 : FracId F) (X : Obj F 𝔠 (Sp ℂ)) (c : 𝔠.elt) (n : ℕ) (u : HolUnif X.A (X.diag c) n) (Λ : PeriodPair) (Ω : ℂ), Ω ≠ 0 → ∀ f : scheme (curve Λ Ω) ⟶ X.A.left, f ≫ X.A.hom = toSpec (curve Λ Ω) → ∀ e : ℂ → (𝟙_ (Over (Sp ℂ)) ⟶ X.A), (∀ z w, e (z + w) = e z * e w) → (∀ z, (e z).left = pt Λ Ω z ≫ f) → ∃ β₁ : Fin n → ℂ, ∀ z, pt Λ Ω z ≫ f = (u.ex (z • β₁)).left := by
   first | exact @GlobalTheory.CMTorsion.exists_vector_of_additive_curve_hom | exact GlobalTheory.CMTorsion.exists_vector_of_additive_curve_hom | (intros; apply GlobalTheory.CMTorsion.exists_vector_of_additive_curve_hom <;> assumption)

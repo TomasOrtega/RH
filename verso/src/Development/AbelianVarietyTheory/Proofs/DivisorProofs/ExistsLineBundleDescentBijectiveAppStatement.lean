@@ -7,8 +7,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.lb_descend | exact GlobalTheory.Mum.lb_descend | (intros; apply GlobalTheory.Mum.lb_descend <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.lb_descend` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsLineBundleDescentBijectiveApp.lean&line=168#L168)
 -/
 theorem _root_.GlobalTheory.T.exists_lineBundle_descent_bijective_app : ∀ (Z Y : Scheme.{0}) (p : Z ⟶ Y), (∀ V : Y.Opens, Function.Bijective (p.app V).hom) → ∀ L' : LB Z, L'.IsLB → (∀ y : Y, ∃ V : Y.Opens, y ∈ V ∧ ∃ t : LB.Gen (L'.pull (p ⁻¹ᵁ V).ι), t.IsGen) → ∃ L : LB Y, L.IsLB ∧ LBIso L' (L.pull p) := by
   first | exact @GlobalTheory.Mum.lb_descend | exact GlobalTheory.Mum.lb_descend | (intros; apply GlobalTheory.Mum.lb_descend <;> assumption)

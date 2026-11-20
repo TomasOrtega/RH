@@ -13,8 +13,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.ModelSection.main | exact GlobalTheory.Mum.ModelSection.main | (intros; apply GlobalTheory.Mum.ModelSection.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.ModelSection.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsNonzeroSectionPreUniformisedCompleteNormal.lean&line=65#L65)
 -/
 theorem _root_.GlobalTheory.T.exists_nonzero_section_preUniformised_completeNormal : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegPre R) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (U : GlobalTheory.UU.PreU (maximalIdeal R) D A G), ∃ σ : U.SecGT (𝟙_ _) 1, ∃ j, σ.f j ≠ 0 := by
   first | exact @GlobalTheory.Mum.ModelSection.main | exact GlobalTheory.Mum.ModelSection.main | (intros; apply GlobalTheory.Mum.ModelSection.main <;> assumption)

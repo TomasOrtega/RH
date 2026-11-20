@@ -11,8 +11,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open Formalism.MainNotions.ModuliIntegralCharts.H1.BoxTuple Formalism.MainNotions.ModuliIntegralCharts.H1.BidegreeTwoJet GlobalTheory GlobalTheory.PowGerm
 open ReciprocityTheory.ChartRestriction.G.TB (colM dAct)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.boxTup_of_columns | exact GlobalTheory.boxTup_of_columns | (intros; apply GlobalTheory.boxTup_of_columns <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.boxTup_of_columns` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FJetHarmonics%2FBoxTupOfColumns.lean&line=26#L26)
 -/
 theorem _root_.GlobalTheory.T.boxTupSt_of_laws_of_twistBaseChange : Laws → Laws2 → Laws4 → TwistBaseChangeStatement → BoxTupSt := by
   first | exact @GlobalTheory.boxTup_of_columns | exact GlobalTheory.boxTup_of_columns | (intros; apply GlobalTheory.boxTup_of_columns <;> assumption)

@@ -9,8 +9,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj LaurentSeries PowerSeries
 open GlobalTheory.ConstTan
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ConstTan.exists_tanRel | exact GlobalTheory.ConstTan.exists_tanRel | (intros; apply GlobalTheory.ConstTan.exists_tanRel <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ConstTan.exists_tanRel` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FThetaShiftProofs%2FExistsConstantTorusExtensionTangentRel.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.exists_constantTorusExtension_tangentRel : Out.Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)] (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ] (b : O →+* ℂ) (a : ArcIn D l β ℂ b) (χ : Sp ℂ⟦X⟧ ⟶ Y.X) (W : ArcWit Y a (Ideal.span {PowerSeries.X}) (PowerSeries.C (R := ℂ)) PowerSeries.X χ) (ν : Out.GtPt a.D₀ (epsR ℂ)), ∃ g₁ : Out.GtPt W.P.D.toPre (epsR ℂ⟦X⟧), TanRel W ν g₁ := by
   first | exact @GlobalTheory.ConstTan.exists_tanRel | exact GlobalTheory.ConstTan.exists_tanRel | (intros; apply GlobalTheory.ConstTan.exists_tanRel <;> assumption)

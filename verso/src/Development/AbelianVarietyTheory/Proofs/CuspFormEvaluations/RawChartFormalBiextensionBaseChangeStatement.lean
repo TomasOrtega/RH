@@ -9,8 +9,10 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj Formalism.MainNotions.ModuliIntegralCharts.H1
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.rawChart_baseChange | exact GlobalTheory.rawChart_baseChange | (intros; apply GlobalTheory.rawChart_baseChange <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.rawChart_baseChange` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FCuspFormEvaluations%2FRawChartFormalBiextensionBaseChange.lean&line=47#L47)
 -/
 theorem _root_.GlobalTheory.T.rawChart_formalBiextension_baseChange : RawBCSt := by
   first | exact @GlobalTheory.rawChart_baseChange | exact GlobalTheory.rawChart_baseChange | (intros; apply GlobalTheory.rawChart_baseChange <;> assumption)

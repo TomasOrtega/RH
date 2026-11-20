@@ -21,8 +21,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.Howe
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.GoodReductionCondition
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.RT GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Top GlobalTheory.Mem.Top.Bl GlobalTheory.Fc
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Fc.KapLinked.row_kap_of_row_lam | exact GlobalTheory.Fc.KapLinked.row_kap_of_row_lam | (intros; apply GlobalTheory.Fc.KapLinked.row_kap_of_row_lam <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Fc.KapLinked.row_kap_of_row_lam` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FGlobalInterpolation%2FHarishChandraInputsCombined.lean&line=66#L66)
 -/
 theorem _root_.GlobalTheory.T.harish_chandra_inputs_combined : GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.HarishChandraAnalyticity → GlobalTheory.Published.DiscreteSeriesClassification → GlobalTheory.Published.CuspTraceClass → GlobalTheory.Published.DixmierMalliavinFactorisation → GlobalTheory.Published.FlathFactorisation → GlobalTheory.Published.PseudoCoefficientUpq → GlobalTheory.Published.HarishChandraCharacters → GlobalTheory.Published.LanglandsClassification → GlobalTheory.Published.LabesseWaldspurger → GlobalTheory.Published.ZelevinskyPolynomialRing → GlobalTheory.Published.GeometricLemma → GlobalTheory.Published.GreenCuspidal → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (N : NExt hL) (S : SExt) (Γ : GeoP), RL.At (prmR N S Γ) R1.LambdaPositivityAtBundlePoints → RL.At (prmR N S Γ) RL.KappaCondition := by
   first | exact @GlobalTheory.Fc.KapLinked.row_kap_of_row_lam | exact GlobalTheory.Fc.KapLinked.row_kap_of_row_lam | (intros; apply GlobalTheory.Fc.KapLinked.row_kap_of_row_lam <;> assumption)

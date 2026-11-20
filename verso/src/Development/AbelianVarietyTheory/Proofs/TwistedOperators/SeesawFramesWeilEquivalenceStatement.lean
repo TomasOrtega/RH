@@ -14,8 +14,10 @@ open GlobalTheory.SquareComm
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TripleAssembly.Onto.map_algF_eq_top | exact GlobalTheory.TripleAssembly.Onto.map_algF_eq_top | (intros; apply GlobalTheory.TripleAssembly.Onto.map_algF_eq_top <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TripleAssembly.Onto.map_algF_eq_top` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FSeesawFramesWeilEquivalence.lean&line=121#L121)
 -/
 theorem _root_.GlobalTheory.T.algF_map_mapA_and_mapB_eq_top : GlobalTheory.Published.HoweDualityReal → GlobalTheory.FunPr.Hypotheses₂ →
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →

@@ -10,8 +10,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open Formalism.L2.FormalSeriesBounds IsLocalRing GlobalTheory.AlphaPair
 open scoped CategoryTheory.Obj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AlphaPair.JetEv.jet_hom_spec | exact GlobalTheory.AlphaPair.JetEv.jet_hom_spec | (intros; apply GlobalTheory.AlphaPair.JetEv.jet_hom_spec <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AlphaPair.JetEv.jet_hom_spec` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUnramifiedDepth%2FJetRingHomExistsUniqueSpec.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.jetRing_hom_exists_unique_spec : ∀ (V Ω A : Type) [CommRing V] [CommRing Ω] [CommRing A] [Algebra Ω A] (β : V →+* Ω) (κ : Type) [Fintype κ] [DecidableEq κ] (m : ℕ), (∀ a : κ → A, Ideal.span (Set.range a) ^ (m + 1) = ⊥ → ∃! ψ : Jet V κ m →+* A, (∀ v : V, ψ (algebraMap V _ v) = algebraMap Ω A (β v)) ∧ ∀ i, ψ (Ideal.Quotient.mk _ (MvPolynomial.X i)) = a i) ∧ ∀ ψ : Jet V κ m →+* A, (∀ v : V, ψ (algebraMap V _ v) = algebraMap Ω A (β v)) → Ideal.span (Set.range fun i => ψ (Ideal.Quotient.mk _ (MvPolynomial.X i))) ^ (m + 1) = ⊥ ∧ (∀ i, IsNilpotent (ψ (Ideal.Quotient.mk _ (MvPolynomial.X i)))) ∧ ∀ f : MvPowerSeries κ V, ψ (psJet m f) = nEval (MvPowerSeries.map β f) (fun i => ψ (Ideal.Quotient.mk _ (MvPolynomial.X i))) := by
   first | exact @GlobalTheory.AlphaPair.JetEv.jet_hom_spec | exact GlobalTheory.AlphaPair.JetEv.jet_hom_spec | (intros; apply GlobalTheory.AlphaPair.JetEv.jet_hom_spec <;> assumption)

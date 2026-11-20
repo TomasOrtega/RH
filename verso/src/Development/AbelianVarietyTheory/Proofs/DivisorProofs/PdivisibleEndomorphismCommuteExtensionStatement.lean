@@ -8,8 +8,10 @@ open GlobalTheory GlobalTheory.VB GlobalTheory.LieVB GlobalTheory.CurveRootGeome
 open GlobalTheory.Cris (dp0)
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BadPt.lattice_stable | exact GlobalTheory.BadPt.lattice_stable | (intros; apply GlobalTheory.BadPt.lattice_stable <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BadPt.lattice_stable` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPdivisibleEndomorphismCommuteExtension.lean&line=32#L32)
 -/
 theorem _root_.GlobalTheory.T.pdivisible_endomorphism_commute_extension : ∀ (p : ℕ) [Fact p.Prime] (R : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] (K : Type) [Field K] [Algebra R K] [IsFractionRing R K] (hR : (p : R) = 0) (hK : (p : K) = 0) (Γ' : PDivGroup p R) (𝒜 : PDivGroup p K) (κ : Γ'.baseChange K ⟶ 𝒜) (w : 𝒜 ⟶ 𝒜.dual) [Module R 𝒜.RigExt] [IsScalarTower R K 𝒜.RigExt] (f f' : 𝒜 ⟶ 𝒜) (g g' : Γ' ⟶ Γ'), PDivGroup.baseChangeMap K g ≫ κ = κ ≫ f → PDivGroup.baseChangeMap K g' ≫ κ = κ ≫ f' → f ≫ w = w ≫ dualHom _ _ f' → ∀ x ∈ lattice κ w, rigExtMap f x ∈ lattice κ w := by
   first | exact @GlobalTheory.BadPt.lattice_stable | exact GlobalTheory.BadPt.lattice_stable | (intros; apply GlobalTheory.BadPt.lattice_stable <;> assumption)

@@ -7,8 +7,10 @@ open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.UC
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UCanon.inj_of_canon | exact GlobalTheory.UCanon.inj_of_canon | (intros; apply GlobalTheory.UCanon.inj_of_canon <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UCanon.inj_of_canon` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCanonicalFamilyLocalInjectionsEqSamePoint.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.canonicalFamily_localInjections_eq_same_point : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Geo.Tor.Level H} (Xo : Moduli Dw l) (c : Coeff l) (φ : InvFun (𝓞 E)), 1 ≤ Dw.p + Dw.q → IsPolFan H.bar (min Dw.p Dw.q) φ → NoSelfInt H.bar (min Dw.p Dw.q) φ → ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], GlobalTheory.Mum.Base R → ∀ (C : MonoFam Xo c φ R), Canon C → Inj C := by
   first | exact @GlobalTheory.UCanon.inj_of_canon | exact GlobalTheory.UCanon.inj_of_canon | (intros; apply GlobalTheory.UCanon.inj_of_canon <;> assumption)

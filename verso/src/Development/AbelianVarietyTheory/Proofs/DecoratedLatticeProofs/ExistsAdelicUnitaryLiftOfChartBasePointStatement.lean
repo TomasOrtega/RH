@@ -25,8 +25,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.KJInf Formalism.L2.Ker
 open GlobalTheory.SeeSaw GlobalTheory.Unf
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BasePointLift.exists_lift_of_ptOf | exact GlobalTheory.BasePointLift.exists_lift_of_ptOf | (intros; apply GlobalTheory.BasePointLift.exists_lift_of_ptOf <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BasePointLift.exists_lift_of_ptOf` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FExistsAdelicUnitaryLiftOfChartBasePoint.lean&line=36#L36)
 -/
 theorem _root_.GlobalTheory.T.exists_adelicUnitaryLift_of_chartBasePoint : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (i : ℕ) (hi : i ≤ B.R.m) (k : TC.GA B (B.R.N i)), (∃ p : Formalism.L2.Col.DecoF B.fields.E (B.R.N i) ∅ ∅ ∅, TC.PtOf k p ∧ p.deco.1.N = Formalism.L2.Col.stdLat B.fields.E (B.R.N i)) → ∃ kA : GA (I.rec7 l Z) ((I.rec7 l Z).sp.X i), kA ∈ GfC _ ∧ finM _ (rankN (I.rec7 l Z) i hi) kA = k.1 := by
   first | exact @GlobalTheory.BasePointLift.exists_lift_of_ptOf | exact GlobalTheory.BasePointLift.exists_lift_of_ptOf | (intros; apply GlobalTheory.BasePointLift.exists_lift_of_ptOf <;> assumption)

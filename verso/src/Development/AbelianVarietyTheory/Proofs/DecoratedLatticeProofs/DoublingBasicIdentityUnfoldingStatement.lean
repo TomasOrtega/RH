@@ -12,8 +12,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Core.Rk.IP
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Core.Rk.BasicId.basicIdentity_unfold | exact GlobalTheory.Core.Rk.BasicId.basicIdentity_unfold | (intros; apply GlobalTheory.Core.Rk.BasicId.basicIdentity_unfold <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Core.Rk.BasicId.basicIdentity_unfold` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FDoublingBasicIdentityUnfolding.lean&line=38#L38)
 -/
 theorem _root_.GlobalTheory.T.doubling_basicIdentity_unfolding : ∀ (D : D7) (V : HSp D) (a : GL (Fin V.rank) (AE D)), IsMaj V a → ∀ (μ : (AE D)ˣ →* Circle), IsHeckeChar D μ → ∀ s : ℂ, (V.rank : ℝ) / 2 < s.re → ∀ φ ∈ degPS V a μ s, GlobalTheory.Grow.ModGrowth (dblSp V) (GlobalTheory.Eis.eis V (GlobalTheory.Eis.sph V a (s.re : ℂ))) → ∀ m : Measure (GA D V), m.IsHaarMeasure → ∀ f₁ f₂ : GA D V → ℂ, GlobalTheory.Grow.RapidDec V f₁ → GlobalTheory.Grow.RapidDec V f₂ → IsCuspFun V f₁ → GlobalTheory.Eis.BasicIdentity V μ m φ f₁ f₂ := by
   first | exact @GlobalTheory.Core.Rk.BasicId.basicIdentity_unfold | exact GlobalTheory.Core.Rk.BasicId.basicIdentity_unfold | (intros; apply GlobalTheory.Core.Rk.BasicId.basicIdentity_unfold <;> assumption)

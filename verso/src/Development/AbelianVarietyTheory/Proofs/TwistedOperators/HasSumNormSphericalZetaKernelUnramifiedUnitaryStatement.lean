@@ -13,8 +13,10 @@ open GlobalTheory.LGrp (IsUnitarisable IsIrrSmooth bcParam)
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ZetaAbsU.hasSum_norm_kerU | exact GlobalTheory.ZetaAbsU.hasSum_norm_kerU | (intros; apply GlobalTheory.ZetaAbsU.hasSum_norm_kerU <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ZetaAbsU.hasSum_norm_kerU` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FHasSumNormSphericalZetaKernelUnramifiedUnitary.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.hasSum_norm_sphericalZetaKernel_unramifiedUnitary : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : L) (σ : L →+* L) (q r t : ℕ), IsUnramInv ϖ σ q → r ≤ t → ∀ (z : ℂˣ) (φ : GU σ r → ℂ), ‖(z : ℂ)‖ = 1 → KerU ϖ q (r + t) z φ → ∃ α : Fin (r / 2) → ℂˣ, GlobalTheory.IndefiniteRowSideFullHecke.TrivialParameterBound.TrivialBound q r α ∧ HasSum (fun a : GU σ r ⧸ KU σ r => ((‖φ a.out‖ : ℝ) : ℂ)) (eulerFac (bcParam r α) (((q : ℂ) ^ (t + 1))⁻¹) * ∏ j ∈ Finset.range r, (1 - (-(q : ℂ)) ^ j * ((q : ℂ) ^ (r + t))⁻¹)) := by
   first | exact @GlobalTheory.ZetaAbsU.hasSum_norm_kerU | exact GlobalTheory.ZetaAbsU.hasSum_norm_kerU | (intros; apply GlobalTheory.ZetaAbsU.hasSum_norm_kerU <;> assumption)

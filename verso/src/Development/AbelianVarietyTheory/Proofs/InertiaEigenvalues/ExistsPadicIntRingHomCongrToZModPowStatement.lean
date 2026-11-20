@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FactorMemCocyc
 open Formalism.RepresentationBoundsCohomology.LOC ReciprocityTheory.Gal GlobalTheory.LocDualInt
 open Formalism.NG (KO)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ZpHomAdic.zp_ringHom | exact GlobalTheory.ZpHomAdic.zp_ringHom | (intros; apply GlobalTheory.ZpHomAdic.zp_ringHom <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ZpHomAdic.zp_ringHom` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FExistsPadicIntRingHomCongrToZModPow.lean&line=125#L125)
 -/
 theorem _root_.GlobalTheory.T.exists_padicInt_ringHom_congr_toZModPow : ∀ {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [TopologicalSpace O], IsTopologicalRing O → CompactSpace O → T2Space O → IsAdic (IsLocalRing.maximalIdeal O) → (p : O) ∈ IsLocalRing.maximalIdeal O → ∃ ι : ℤ_[p] →+* O, ∀ (x : ℤ_[p]) (k : ℕ), ι x - ((PadicInt.toZModPow k x).val : O) ∈ Ideal.span {(p : O) ^ k} := by
   first | exact @GlobalTheory.ZpHomAdic.zp_ringHom | exact GlobalTheory.ZpHomAdic.zp_ringHom | (intros; apply GlobalTheory.ZpHomAdic.zp_ringHom <;> assumption)

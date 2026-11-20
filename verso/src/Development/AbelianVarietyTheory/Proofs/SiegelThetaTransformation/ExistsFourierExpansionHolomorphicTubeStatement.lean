@@ -6,8 +6,10 @@ open Matrix Complex NumberField GlobalTheory.SW Filter Topology
 open ReciprocityTheory.ChartRestriction.G.FD (cc herm)
 open scoped ComplexConjugate ComplexOrder Real Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.exists_fourier_expansion_tube | exact GlobalTheory.exists_fourier_expansion_tube | (intros; apply GlobalTheory.exists_fourier_expansion_tube <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.exists_fourier_expansion_tube` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSiegelThetaTransformation%2FExistsFourierExpansionHolomorphicTube.lean&line=78#L78)
 -/
 theorem _root_.GlobalTheory.T.exists_fourier_expansion_holomorphic_tube : ∀ (ι : Type) [Fintype ι] (Ω : Set (ι → ℝ)) (f : (ι → ℂ) → ℂ), IsOpen Ω → Convex ℝ Ω → DifferentiableOn ℂ f {z | (fun i => (z i).im) ∈ Ω} → (∀ z, (fun i => (z i).im) ∈ Ω → ∀ m : ι → ℤ, f (z + fun i => (m i : ℂ)) = f z) → ∃ a : (ι → ℤ) → ℂ, (∀ z, (fun i => (z i).im) ∈ Ω → HasSum (fun ν : ι → ℤ => a ν * cexp (2 * π * I * ∑ i, (ν i : ℂ) * z i)) (f z)) ∧ ∀ y ∈ Ω, ∀ ν : ι → ℤ, a ν = ∫ x in Set.pi Set.univ (fun _ : ι => Set.Ico (0 : ℝ) 1), f (fun i => (x i : ℂ) + I * y i) * cexp (-(2 * π * I * ∑ i, (ν i : ℂ) * ((x i : ℂ) + I * y i))) := by
   first | exact @GlobalTheory.exists_fourier_expansion_tube | exact GlobalTheory.exists_fourier_expansion_tube | (intros; apply GlobalTheory.exists_fourier_expansion_tube <;> assumption)

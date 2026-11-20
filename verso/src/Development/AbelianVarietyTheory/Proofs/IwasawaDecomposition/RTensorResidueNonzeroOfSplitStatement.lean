@@ -6,8 +6,10 @@ open scoped TensorProduct NumberField
 open GlobalTheory.EigenSplit
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.rTensor_reduction_ne_zero_of_form_eq_one | exact GlobalTheory.rTensor_reduction_ne_zero_of_form_eq_one | (intros; apply GlobalTheory.rTensor_reduction_ne_zero_of_form_eq_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.rTensor_reduction_ne_zero_of_form_eq_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FRTensorResidueNonzeroOfSplit.lean&line=8#L8)
 -/
 theorem _root_.GlobalTheory.T.rTensor_residue_nonzero_of_split : ∀ {O R k : Type} [CommRing O] [CommRing R] [IsLocalRing R] [Field k] [Module.Free ℤ O] [Module.Finite ℤ O]
     (ρ₀ : R →+* k), (∀ x, ρ₀ x = 0 → x ∈ IsLocalRing.maximalIdeal R) → ∀ (e : R ⊗[ℤ] O)

@@ -20,8 +20,10 @@ open GlobalTheory.ConstRatio (NegIdx Factor)
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SqStepBig.dict_stage | exact GlobalTheory.SqStepBig.dict_stage | (intros; apply GlobalTheory.SqStepBig.dict_stage <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SqStepBig.dict_stage` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTowerStageFitFactor.lean&line=29#L29)
 -/
 theorem _root_.GlobalTheory.T.tower_stage_fit_factor : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
   GBig fun {D} T _ _ G μ₀ _ _ _ => ∀ (W : G.Weil), IsStdChar D W.ψ (-1) → ∀ (i j : Fin D.R.m) (p q : ℕ) (A A' WW : HSp D)

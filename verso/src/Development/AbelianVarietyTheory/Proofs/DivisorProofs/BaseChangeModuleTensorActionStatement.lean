@@ -11,8 +11,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.invertible_of_baseChange_tensor_int | exact GlobalTheory.invertible_of_baseChange_tensor_int | (intros; apply GlobalTheory.invertible_of_baseChange_tensor_int <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.invertible_of_baseChange_tensor_int` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FBaseChangeModuleTensorAction.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.base_change_module_tensor_action : ∀ (R R' O : Type) [CommRing R] [CommRing R'] [Algebra R R'] [CommRing O] (M : Type) [AddCommGroup M]
     [Module R M] [Module O M] [SMulCommClass R O M] (N : Type) [AddCommGroup N] [Module R' N] [Module O N]

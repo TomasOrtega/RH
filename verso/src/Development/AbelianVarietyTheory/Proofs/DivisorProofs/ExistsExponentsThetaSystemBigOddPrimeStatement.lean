@@ -10,8 +10,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.bigSizes | exact GlobalTheory.Mum.bigSizes | (intros; apply GlobalTheory.Mum.bigSizes <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.bigSizes` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsExponentsThetaSystemBigOddPrime.lean&line=55#L55)
 -/
 theorem _root_.GlobalTheory.T.exists_exponents_thetaSystem_big_odd_prime : ∀ (g n : ℕ), n.Prime → Odd n → ∃ k j : ℕ, 2 ≤ k ∧ 1 ≤ j ∧ ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (S : GlobalTheory.ZH.ThetaSys o Ω), S.g = g → S.N = (n ^ k) ^ 2 → S.r = n ^ j → S.Big := by
   first | exact @GlobalTheory.Mum.bigSizes | exact GlobalTheory.Mum.bigSizes | (intros; apply GlobalTheory.Mum.bigSizes <;> assumption)

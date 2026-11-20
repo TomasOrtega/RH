@@ -13,8 +13,10 @@ open NumberField GlobalTheory.CuspRep GroundTheory.Global GroundTheory.Automorph
 open scoped NumberField.AdeleRing
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.HCRep.liB_skew_mem_span | exact GlobalTheory.CompanionTheory.HCRep.liB_skew_mem_span | (intros; apply GlobalTheory.CompanionTheory.HCRep.liB_skew_mem_span <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.HCRep.liB_skew_mem_span` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FCompactSpanFiniteDimStable.lean&line=31#L31)
 -/
 theorem _root_.GlobalTheory.T.compact_span_finite_dim_stable : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (φ : Sm E a)
     (Z : (AutomorphicForm.isExpLieAlgebra E a).lieSubalgebra),

@@ -18,8 +18,10 @@ open GlobalTheory.Hk3 (Core Good IsSF SchurAll TwoSided FixAll EEc Wcc eH IsLab 
 open GlobalTheory.StdFrame (StdPsi)
 attribute [local instance] Formalism.IndefR.principalLevelFrame.instCMHostI
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SphScalar.spherical_scalar | exact GlobalTheory.SphScalar.spherical_scalar | (intros; apply GlobalTheory.SphScalar.spherical_scalar <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SphScalar.spherical_scalar` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSphericalHeckeScalarOnSphericalVectors.lean&line=318#L318)
 -/
 theorem _root_.GlobalTheory.T.sphericalHecke_scalar_on_spherical_vectors : ∀ {D : D7} {V : HSp D} {n : ℕ} (hF : D.host.F = maximalRealSubfield D.host.E) (Q : principalLevelFrame.RowPsi V n), StdPsi hF Q → ∀ (π : Formalism.L2.NG.FinTyp D.host.E n) Pr d B, SphOp V Pr d B → ∃ a : ℂ, ∀ x ∈ π.S, (∀ κ, Q.ψ κ ∈ hyp V Pr → Formalism.L2.NG.rt D.host.E n κ x = x) → principalLevelFrame.Hecke₃ Q B x = a • x := by
   first | exact @GlobalTheory.SphScalar.spherical_scalar | exact GlobalTheory.SphScalar.spherical_scalar | (intros; apply GlobalTheory.SphScalar.spherical_scalar <;> assumption)

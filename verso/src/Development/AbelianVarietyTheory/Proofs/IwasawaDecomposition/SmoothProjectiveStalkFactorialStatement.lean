@@ -8,8 +8,10 @@ import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.IsRegularR
 open AlgebraicGeometry CategoryTheory Limits
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.SiegelTor
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CycAwayReg.smooth_over_projective_factorial | exact GlobalTheory.CycAwayReg.smooth_over_projective_factorial | (intros; apply GlobalTheory.CycAwayReg.smooth_over_projective_factorial <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CycAwayReg.smooth_over_projective_factorial` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FSmoothProjectiveStalkFactorial.lean&line=81#L81)
 -/
 theorem _root_.GlobalTheory.T.smooth_projective_stalk_factorial : ∀ (n : ℕ) (S : Scheme.{0}) (s : S ⟶ Sp (cycAway n)) (X : Scheme.{0}) (p : X ⟶ S), IsProjOver s → Smooth s → Smooth p → QuasiCompact p → IsLocallyNoetherian X ∧ CompactSpace X ∧ ∀ x : X, IsDomain (X.presheaf.stalk x) ∧ UniqueFactorizationMonoid (X.presheaf.stalk x) := by
   first | exact @GlobalTheory.CycAwayReg.smooth_over_projective_factorial | exact GlobalTheory.CycAwayReg.smooth_over_projective_factorial | (intros; apply GlobalTheory.CycAwayReg.smooth_over_projective_factorial <;> assumption)

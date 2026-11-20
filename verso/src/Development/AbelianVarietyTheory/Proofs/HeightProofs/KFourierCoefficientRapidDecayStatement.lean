@@ -18,8 +18,10 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KFourier.kFourier_coeff_decay | exact GlobalTheory.KFourier.kFourier_coeff_decay | (intros; apply GlobalTheory.KFourier.kFourier_coeff_decay <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KFourier.kFourier_coeff_decay` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FHeightProofs%2FKFourierCoefficientRapidDecay.lean&line=32#L32)
 -/
 theorem _root_.GlobalTheory.T.kFourier_coefficient_rapid_decay : ∀ {n : ℕ} (ε : Fin n → Bool) (N : ℕ) (F : List (Mx n) → Mx n → ℂ), IsDerFam ε F → FamGrowth ε N F → ContinuousOn (F []) (UJset ε) → ∀ e : ℕ → KG ε → ℂ, (∀ i, GlobalTheory.KFourier.IsKer ε i (e i)) → ∀ u : List (Mx n), (∀ X ∈ u, inK ε X) → ∃ b : ℕ → ℝ, Summable b ∧ ∀ i, ∀ y ∈ UJset ε, ‖∫ k, e i k * F u (y * toMK k) ∂(muK ε)‖ ≤ b i * (1 + hs y) ^ N := by
   first | exact @GlobalTheory.KFourier.kFourier_coeff_decay | exact GlobalTheory.KFourier.kFourier_coeff_decay | (intros; apply GlobalTheory.KFourier.kFourier_coeff_decay <;> assumption)

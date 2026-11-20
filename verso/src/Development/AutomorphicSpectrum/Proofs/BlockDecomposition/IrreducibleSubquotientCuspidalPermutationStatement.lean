@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.Irreducibl
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.SegmentRepresentation
 open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.JHMult Zc Zc.Seg
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.SegNcjm.exists_perm_one_le_jm | exact GlobalTheory.CompanionTheory.SegNcjm.exists_perm_one_le_jm | (intros; apply GlobalTheory.CompanionTheory.SegNcjm.exists_perm_one_le_jm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.SegNcjm.exists_perm_one_le_jm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FIrreducibleSubquotientCuspidalPermutation.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.irreducible_subquotient_cuspidal_permutation : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {l N : ℕ} (x : Fin l → IrrGL k) (hx : ∑ a, (x a).1 = N) (hxc : ∀ a, (x a).IsCusp) {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V) (hs : IsSmooth π) (hi : π.IsIrreducible) (h : IsSubquotient π (prodIrr x hx)), ∃ (e : Equiv.Perm (Fin l)) (he : ∑ a, (x (e a)).1 = N), 1 ≤ jm (fun a => x (e a)) he π := by
   first | exact @GlobalTheory.CompanionTheory.SegNcjm.exists_perm_one_le_jm | exact GlobalTheory.CompanionTheory.SegNcjm.exists_perm_one_le_jm | (intros; apply GlobalTheory.CompanionTheory.SegNcjm.exists_perm_one_le_jm <;> assumption)

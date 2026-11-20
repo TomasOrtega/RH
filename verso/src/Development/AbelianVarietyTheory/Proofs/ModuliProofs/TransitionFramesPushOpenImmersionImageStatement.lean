@@ -12,8 +12,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj TensorProduct Pointwise
 open GlobalTheory.Models GlobalTheory.ModelSum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ModelSum.hasFrames_pushLB | exact GlobalTheory.ModelSum.hasFrames_pushLB | (intros; apply GlobalTheory.ModelSum.hasFrames_pushLB <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ModelSum.hasFrames_pushLB` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FModuliProofs%2FTransitionFramesPushOpenImmersionImage.lean&line=91#L91)
 -/
 theorem _root_.GlobalTheory.T.transitionFrames_push_openImmersion_image : ∀ (Z Z' : Scheme.{0}) (G : Over Z) (G' : Over Z') (f : Z' ⟶ Z) [IsOpenImmersion f] (φ : G'.left ⟶ G.left) (L : LB G.left) (L' : LB G'.left), L.IsLB → L'.IsLB → IsPullback φ G'.hom G.hom f → LBIso L' (L.pull φ) → f ⁻¹' abLocus G ⊆ abLocus G' → ∀ (N : ℕ) (A : LB Z') (n : ℕ) (r s : ℤ), HasFrames G' L' N A n r s → HasFrames G L N (pushLB f A) n r s := by
   first | exact @GlobalTheory.ModelSum.hasFrames_pushLB | exact GlobalTheory.ModelSum.hasFrames_pushLB | (intros; apply GlobalTheory.ModelSum.hasFrames_pushLB <;> assumption)

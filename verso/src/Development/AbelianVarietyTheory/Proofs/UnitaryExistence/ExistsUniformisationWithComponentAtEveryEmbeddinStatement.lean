@@ -12,8 +12,10 @@ open scoped TensorProduct Matrix Topology
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Member
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.exists_unf_nonempty_comp_all | exact GlobalTheory.exists_unf_nonempty_comp_all | (intros; apply GlobalTheory.exists_unf_nonempty_comp_all <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.exists_unf_nonempty_comp_all` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUnitaryExistence%2FExistsUniformisationWithComponentAtEveryEmbeddin.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.exists_uniformisation_with_component_at_every_embedding : ∀ (D : D7) (Q : Par D), Q.Pins → (∀ j, 1 ≤ (Q.Dw j).p + (Q.Dw j).q) → ∀ j (σ : Q.c.F →+* ℂ), ∃ U : Unf (Q.Xo j) Q.c σ D.R.r, Nonempty U.Comp := by
   first | exact @GlobalTheory.exists_unf_nonempty_comp_all | exact GlobalTheory.exists_unf_nonempty_comp_all | (intros; apply GlobalTheory.exists_unf_nonempty_comp_all <;> assumption)

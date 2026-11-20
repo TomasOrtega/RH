@@ -8,8 +8,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.PlusPolynomialRoots GlobalTheory.Tr
 open GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups (mapH diagH)
 open scoped TensorProduct ComplexConjugate Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TrUnitLat.isIsom_coordEquiv | exact GlobalTheory.TrUnitLat.isIsom_coordEquiv | (intros; apply GlobalTheory.TrUnitLat.isIsom_coordEquiv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TrUnitLat.isIsom_coordEquiv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FPowerBasisCoordsIsTorusHermitianIsometry.lean&line=29#L29)
 -/
 theorem _root_.GlobalTheory.T.powerBasisCoords_isTorusHermitianIsometry : ∀ (F E : Type) [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) (r : ℕ) (P : PPol σ r) (k : Type) [CommRing k] [Algebra F k], IsIsom P k (GlobalTheory.TrUnitLat.gramOne P) 1 (GlobalTheory.TrUnitLat.coordEquiv P k) := by
   first | exact @GlobalTheory.TrUnitLat.isIsom_coordEquiv | exact GlobalTheory.TrUnitLat.isIsom_coordEquiv | (intros; apply GlobalTheory.TrUnitLat.isIsom_coordEquiv <;> assumption)

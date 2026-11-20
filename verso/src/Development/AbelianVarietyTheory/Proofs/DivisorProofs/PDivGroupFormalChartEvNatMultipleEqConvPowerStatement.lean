@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivGroupFormalChar
 import Development.AbelianVarietyTheory.Definitions.Divisors.EqZeroOfForallPowDvd
 open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory.PDivGroup GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.EpsilonPairingZeta GlobalTheory.PDivLat
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.NMul.ev_nmul | exact GlobalTheory.NMul.ev_nmul | (intros; apply GlobalTheory.NMul.ev_nmul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.NMul.ev_nmul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPDivGroupFormalChartEvNatMultipleEqConvPower.lean&line=31#L31)
 -/
 theorem _root_.GlobalTheory.T.pDivGroupFormalChart_ev_natMultiple_eq_convPower : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (G : PDivGroup p O) (d : ℕ) (c : QLog.Chart G d), ∀ (n k : ℕ) (i : Fin d), c.ev n (nmul c.μ k i) = PDiv.mulBy O (G.A n) k (c.x n i) := by
   first | exact @GlobalTheory.NMul.ev_nmul | exact GlobalTheory.NMul.ev_nmul | (intros; apply GlobalTheory.NMul.ev_nmul <;> assumption)

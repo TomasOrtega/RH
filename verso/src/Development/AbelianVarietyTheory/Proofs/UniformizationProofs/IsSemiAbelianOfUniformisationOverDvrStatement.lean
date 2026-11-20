@@ -10,8 +10,10 @@ open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCate
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.DVR
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.isSemiAbelian_of_unifPre_dvr | exact GlobalTheory.isSemiAbelian_of_unifPre_dvr | (intros; apply GlobalTheory.isSemiAbelian_of_unifPre_dvr <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.isSemiAbelian_of_unifPre_dvr` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUniformizationProofs%2FIsSemiAbelianOfUniformisationOverDvr.lean&line=40#L40)
 -/
 theorem _root_.GlobalTheory.T.isSemiAbelian_of_uniformisation_over_dvr : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (D : DegData V (maximalIdeal V)) (A : PolAV (Spec (CommRingCat.of (FractionRing V)))) (G : Over (Spec (CommRingCat.of V))) [GrpObj G] [IsCommMonObj G], UnifPre (maximalIdeal V) D A G → IsSemiAbelian G := by
   first | exact @GlobalTheory.isSemiAbelian_of_unifPre_dvr | exact GlobalTheory.isSemiAbelian_of_unifPre_dvr | (intros; apply GlobalTheory.isSemiAbelian_of_unifPre_dvr <;> assumption)

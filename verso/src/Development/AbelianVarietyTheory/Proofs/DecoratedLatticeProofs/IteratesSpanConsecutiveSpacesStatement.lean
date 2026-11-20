@@ -13,8 +13,10 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Unf GlobalTheory.See
 open scoped TensorProduct Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Core.Mi.SpanY.itSpans_pk | exact GlobalTheory.Core.Mi.SpanY.itSpans_pk | (intros; apply GlobalTheory.Core.Mi.SpanY.itSpans_pk <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Core.Mi.SpanY.itSpans_pk` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FIteratesSpanConsecutiveSpaces.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.iterates_span_consecutive_spaces : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex), PkHyp W → ∀ j, j + 1 < D.R.m → GlobalTheory.Core.Mi.ItSpans ((pk W).MY j) ((pk W).MY (j + 1)) ((pk W).ItY j) := by
   first | exact @GlobalTheory.Core.Mi.SpanY.itSpans_pk | exact GlobalTheory.Core.Mi.SpanY.itSpans_pk | (intros; apply GlobalTheory.Core.Mi.SpanY.itSpans_pk <;> assumption)

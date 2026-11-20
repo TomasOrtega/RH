@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.IntegralLocallyConstCochainModPow
 open GlobalTheory.K5
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.K5.OrthDecomp.orth | exact GlobalTheory.K5.OrthDecomp.orth | (intros; apply GlobalTheory.K5.OrthDecomp.orth <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.K5.OrthDecomp.orth` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FIsIntegralCoeffsOfGeometricFixedQExpansion.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.isIntegral_coeffs_of_geometric_fixed_qExpansion : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [Algebra (O0 p) Ω], IsClo p Ω →
   ∀ (T : Tower p Ω) (N : ℕ) (c : ℕ → Ω), (∀ j, ∀ g ∈ Ggeo p Ω, g (c j) = c j) →

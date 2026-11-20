@@ -20,8 +20,10 @@ open ReciprocityTheory.ChartRestriction.G.Chart (sp spMap)
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.CompanionTheory.Ar.GR
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.GR.polAV_oAct_int | exact GlobalTheory.CompanionTheory.Ar.GR.polAV_oAct_int | (intros; apply GlobalTheory.CompanionTheory.Ar.GR.polAV_oAct_int <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.GR.polAV_oAct_int` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FAlgebraProofs%2FPolarisedVarietyIntegerAction.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.polarised_variety_integer_action : ∀ (O : Type) [CommRing O] [IsDomain O] [IsLocalRing O] (P : Out.PolAV (Geo.Tor.Sp O)), Nonempty (P.OAct ℤ) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.GR.polAV_oAct_int | exact GlobalTheory.CompanionTheory.Ar.GR.polAV_oAct_int | (intros; apply GlobalTheory.CompanionTheory.Ar.GR.polAV_oAct_int <;> assumption)

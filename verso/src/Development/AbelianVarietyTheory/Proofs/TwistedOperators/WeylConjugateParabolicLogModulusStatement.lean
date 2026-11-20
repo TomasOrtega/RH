@@ -18,8 +18,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Chamber GlobalTheory.TruncKer GlobalTheory.Cusp
 open GlobalTheory.LeviShift
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LeviShift.logDelta_conj_weylRep | exact GlobalTheory.LeviShift.logDelta_conj_weylRep | (intros; apply GlobalTheory.LeviShift.logDelta_conj_weylRep <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LeviShift.logDelta_conj_weylRep` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FWeylConjugateParabolicLogModulus.lean&line=267#L267)
 -/
 theorem _root_.GlobalTheory.T.weyl_conjugate_parabolic_log_modulus : ∀ (D : D7) (V : HSp D) (Φ : WittFrame V) (π : Equiv.Perm (Fin (wittIndex V))) (ε : Fin (wittIndex V) → SignTypeˣ) (w : GF V), Φ.IsWeylRep D.sp.cm π ε w → ∀ (j : Fin (wittIndex V)) (m : GA D V), m ∈ GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.parab D.sp.cm V (AF D.host.F) (Φ.sub (invSV π ε (stdVec j))) → rat V w * m * (rat V w)⁻¹ ∈ GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.parab D.sp.cm V (AF D.host.F) (Φ.sub (stdVec j)) ∧ logDelta Φ (stdVec j) (rat V w * m * (rat V w)⁻¹) = logDelta Φ (invSV π ε (stdVec j)) m := by
   first | exact @GlobalTheory.LeviShift.logDelta_conj_weylRep | exact GlobalTheory.LeviShift.logDelta_conj_weylRep | (intros; apply GlobalTheory.LeviShift.logDelta_conj_weylRep <;> assumption)

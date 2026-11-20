@@ -9,8 +9,10 @@ open GlobalTheory.QFam GlobalTheory.WpFam GlobalTheory.KZ GlobalTheory.FN
 open ReciprocityTheory.ChartRestriction.L1 (DD jT IsMF)
 open ModularForm (E₄ E₆)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.disc_pow_mul_slash | exact GlobalTheory.disc_pow_mul_slash | (intros; apply GlobalTheory.disc_pow_mul_slash <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.disc_pow_mul_slash` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FModularDiscriminantPowMulSlashTwelveMul.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.modularDiscriminant_pow_mul_slash_twelve_mul : ∀ (w : ℕ) (f : ℍ → ℂ) (γ : SL(2, ℤ)), ((fun τ => DD τ ^ w * f τ) ∣[((12 * w : ℕ) : ℤ)] γ) = fun τ => DD τ ^ w * f (γ • τ) := by
   first | exact @GlobalTheory.disc_pow_mul_slash | exact GlobalTheory.disc_pow_mul_slash | (intros; apply GlobalTheory.disc_pow_mul_slash <;> assumption)

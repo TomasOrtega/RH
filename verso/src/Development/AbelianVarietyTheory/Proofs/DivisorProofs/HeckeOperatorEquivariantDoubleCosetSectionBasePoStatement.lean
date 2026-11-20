@@ -6,8 +6,10 @@ open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep 
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BCT.TraceBlocks.levOp_secM_apply_self | exact GlobalTheory.BCT.TraceBlocks.levOp_secM_apply_self | (intros; apply GlobalTheory.BCT.TraceBlocks.levOp_secM_apply_self <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BCT.TraceBlocks.levOp_secM_apply_self` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHeckeOperatorEquivariantDoubleCosetSectionBasePoint.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.heckeOperator_equivariantDoubleCosetSection_basePoint : ∀ (G H V : Type) [Group G] [Group H] [AddCommGroup V] [Module ℂ V] (ι : H →* G), Function.Injective ι → ∀ (ρ : Representation ℂ H V) (K K' : Subgroup G) (F : G → ℂ), (∀ k ∈ K', ∀ x, F (x * k) = F x) → {q : G ⧸ K' | F q.out ≠ 0}.Finite → ∀ x : G, Finite (ι.range ⊓ K'.map (MulAut.conj x).toMonoidHom : Subgroup G) → {h : H | F (x⁻¹ * ι h * x) ≠ 0}.Finite → ∀ v : V, levOp (rightReg ℂ G V) K K' F LinearMap.id (secM ι ρ K' x v) x = ((K'.relIndex K : ℕ) : ℂ)⁻¹ • ((stabCard ι K' x : ℂ))⁻¹ • ∑ᶠ h : H, F (x⁻¹ * ι h * x) • ρ h v := by
   first | exact @GlobalTheory.BCT.TraceBlocks.levOp_secM_apply_self | exact GlobalTheory.BCT.TraceBlocks.levOp_secM_apply_self | (intros; apply GlobalTheory.BCT.TraceBlocks.levOp_secM_apply_self <;> assumption)

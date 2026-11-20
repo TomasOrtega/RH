@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.CovolXOfCovol
 import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsOf
 open GlobalTheory.CovTop GlobalTheory.BigTop
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CovTop.sumC_of_deepGood | exact GlobalTheory.CovTop.sumC_of_deepGood | (intros; apply GlobalTheory.CovTop.sumC_of_deepGood <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CovTop.sumC_of_deepGood` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSumConstantOfDeepGood.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.sum_constant_of_deep_good : DeepGood → SumC := by
   first | exact @GlobalTheory.CovTop.sumC_of_deepGood | exact GlobalTheory.CovTop.sumC_of_deepGood | (intros; apply GlobalTheory.CovTop.sumC_of_deepGood <;> assumption)

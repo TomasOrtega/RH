@@ -9,8 +9,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open Formalism.L2.Host (aboveF)
 open Formalism.UG (IsUnifV qV)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ZetaGL.zeta_sum_GL_trivial | exact GlobalTheory.ZetaGL.zeta_sum_GL_trivial | (intros; apply GlobalTheory.ZetaGL.zeta_sum_GL_trivial <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ZetaGL.zeta_sum_GL_trivial` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSphericalUnramifiedIntegralValue.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.spherical_unramified_integral_value : ∀ (F : Type) [Field F] [NumberField F] (v : Pl F) (n : ℕ) (s : ℂ), (n : ℝ) / 2 < s.re → ∀ (z : ℂˣ) (φ : GL (Fin n) (Fv F v) → ℂ), ‖(z : ℂ)‖ = 1 →
     (∀ (ϖ : (Fv F v)ˣ), IsUnifV F v ϖ.1 → ∀ (e : Fin n → ℤ) (T : GL (Fin n) (Fv F v)), T.1 = Matrix.diagonal (fun i => ϖ.1 ^ e i) → ∀ k₁ ∈ KGL v n, ∀ k₂ ∈ KGL v n, φ (k₁ * T * k₂) = (z : ℂ) ^ (∑ i, e i) * (qV F v : ℂ) ^ (-((n : ℂ) / 2 + s) * ((∑ i, |e i| : ℤ) : ℂ))) →

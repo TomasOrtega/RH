@@ -6,8 +6,10 @@ open scoped Matrix
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.RealLift Formalism.BasicNotions.TH Matrix
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FrameAssemble.assemble | exact GlobalTheory.FrameAssemble.assemble | (intros; apply GlobalTheory.FrameAssemble.assemble <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FrameAssemble.assemble` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHermitianFrameOrthogonalExtension.lean&line=44#L44)
 -/
 theorem _root_.GlobalTheory.T.hermitian_frame_orthogonal_extension : ∀ {n n₁ r₁ s₁ : ℕ} (M θ : Matrix (Fin n) (Fin n) ℂ) (θ₁ : Matrix (Fin n₁) (Fin n₁) ℂ)
     (ι : Matrix (Fin n) (Fin n₁) ℂ) (C₁ : Matrix (Fin n₁) (Ix r₁ s₁) ℂ) (e f : Fin n → ℂ),

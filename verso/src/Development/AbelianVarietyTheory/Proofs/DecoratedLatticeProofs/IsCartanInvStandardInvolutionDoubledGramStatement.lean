@@ -11,8 +11,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero (swSec sZero)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CartStd.isCartanInv_stdInv | exact GlobalTheory.CartStd.isCartanInv_stdInv | (intros; apply GlobalTheory.CartStd.isCartanInv_stdInv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CartStd.isCartanInv_stdInv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FIsCartanInvStandardInvolutionDoubledGram.lean&line=59#L59)
 -/
 theorem _root_.GlobalTheory.T.isCartanInv_standardInvolution_doubledGram : ∀ (D : D7) (A : HSp D) (μ : D.host.E), IsSkew μ → ∀ s : RealMat (dblSp A), IsStdInv A μ s → ∀ τ, IsCartanInv (gramAt D (dblSp A) τ) (s τ) := by
   first | exact @GlobalTheory.CartStd.isCartanInv_stdInv | exact GlobalTheory.CartStd.isCartanInv_stdInv | (intros; apply GlobalTheory.CartStd.isCartanInv_stdInv <;> assumption)

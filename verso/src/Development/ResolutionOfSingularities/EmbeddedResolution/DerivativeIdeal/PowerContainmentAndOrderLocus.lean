@@ -21,10 +21,8 @@ open AlgebraicGeometry CategoryTheory TopologicalSpace
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+At a point of the support of Z, its stalk ideal is contained in the maximal ideal. The inclusion of I in the m-th power of Z passes to the stalk, and taking stalk ideals commutes with powers. Thus the stalk ideal of I is contained in the m-th power of the maximal ideal.
 -/
 theorem support_subset_orderAtLeastLocus_of_le_pow {X : Scheme.{u}} (Z I : X.IdealSheafData) (m : ℕ)
     (h : I ≤ Z ^ m) : (Z.support : Set X) ⊆ orderAtLeastLocus I m := by
@@ -35,10 +33,8 @@ theorem support_subset_orderAtLeastLocus_of_le_pow {X : Scheme.{u}} (Z I : X.Ide
   refine h1.trans (Ideal.pow_right_mono ?_ m)
   exact (mem_support_iff_stalkIdeal_le_maximalIdeal Z x).mp hx
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The stalk ideal is the extension of the affine section ideal to the localization at the point prime. The inverse image of the maximal ideal in that localization is the point prime. Thus containment of the extended ideal in the maximal ideal is equivalent to containment of the section ideal in the point prime. The former is the support criterion.
 -/
 private theorem mem_support_iff_ideal_le_primeIdealOf_of_isAffineOpen {X : Scheme.{u}} (I : X.IdealSheafData) {U : X.Opens}
     (hU : IsAffineOpen U) (x : U) :
@@ -57,10 +53,8 @@ private theorem mem_support_iff_ideal_le_primeIdealOf_of_isAffineOpen {X : Schem
     exact (IsLocalization.AtPrime.to_map_mem_maximal_iff
       (X.presheaf.stalk (x : X)) (hU.primeIdealOf x).asIdeal y).mpr (hle hy)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
+/- English proof (authored)
+The affine open is isomorphic to the spectrum of its sections. Send q to the corresponding point of the open. The inverse affine identification takes this point back to q.
 -/
 private theorem exists_point_primeIdealOf_eq {X : Scheme.{u}} {U : X.Opens} (hU : IsAffineOpen U)
     (q : PrimeSpectrum Γ(X, U)) : ∃ x : U, hU.primeIdealOf x = q := by
@@ -73,8 +67,8 @@ private theorem exists_point_primeIdealOf_eq {X : Scheme.{u}} {U : X.Opens} (hU 
   apply hinj
   exact hU.fromSpec_primeIdealOf ⟨hU.fromSpec.base q, hmem⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The section has a unit germ at a point of its basic open. If the section belonged to the point prime, its germ in the localization would belong to the maximal ideal and could not be a unit.
 -/
 private theorem notMem_primeIdealOf_of_mem_basicOpen {X : Scheme.{u}} {U : X.Opens}
     (hU : IsAffineOpen U) (g : Γ(X, U)) (x : U) (hxg : (x : X) ∈ X.basicOpen g) :
@@ -87,12 +81,8 @@ private theorem notMem_primeIdealOf_of_mem_basicOpen {X : Scheme.{u}} {U : X.Ope
     (X.presheaf.stalk (x : X)) (hU.primeIdealOf x).asIdeal g).mpr hmem
   exact (IsLocalRing.mem_maximalIdeal _).mp h2 hunit
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Each prime containing the affine ideal of Z is the prime of a point of its support. The support inclusion puts that point on the support of J, so the prime also contains the affine ideal of J. Intersecting over all the primes containing the ideal of Z gives its radical, which is the ideal itself.
 -/
 private theorem ideal_le_of_support_subset {X : Scheme.{u}} {U : X.Opens} (hU : IsAffineOpen U)
     (Z J : X.IdealSheafData) (hrad : (Z.ideal ⟨U, hU⟩).IsRadical)
@@ -113,10 +103,8 @@ private theorem ideal_le_of_support_subset {X : Scheme.{u}} {U : X.Opens} (hU : 
   rw [hxq'] at hfin
   exact hfin
 
-/- English proof (translation)
-Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+A proper affine ideal of Z would be contained in a maximal ideal. The point of that maximal ideal would belong to the support inside W. The disjointness hypothesis excludes this, so the ideal is the unit ideal.
 -/
 private theorem ideal_eq_top_of_disjoint_support {X : Scheme.{u}} (Z : X.IdealSheafData)
     (W : X.affineOpens) (hW : ∀ y : X, y ∈ W.1 → y ∉ Z.support) : Z.ideal W = ⊤ := by
@@ -130,26 +118,8 @@ private theorem ideal_eq_top_of_disjoint_support {X : Scheme.{u}} (Z : X.IdealSh
   rw [hxq']
   exact hle
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
-
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+On an affine V, suppose a section a of I does not belong to the m-th power of the section ideal of Z. The ideal of multipliers taking a into that power is then proper. Choose a maximal ideal containing it and consider its point. Choose the basic neighborhood provided by the hypothesis there, with defining section g outside this maximal ideal. On this neighborhood a belongs to the localized ideal power. Clearing a power of g makes a multiple of a belong to the original ideal power. This puts that power of g in the multiplier ideal, hence in the maximal ideal, contradicting primality. The containment holds on every affine open.
 -/
 private theorem le_pow_of_forall_le_pow_basicOpen {X : Scheme.{u}} (Z I : X.IdealSheafData) (m : ℕ)
     (hloc : ∀ (V : X.affineOpens) (x : X), x ∈ V.1 →
@@ -216,8 +186,8 @@ private theorem le_pow_of_forall_le_pow_basicOpen {X : Scheme.{u}} (Z I : X.Idea
     exact hgP (hP.isPrime.mem_of_pow_mem _ hmemP)
   exact key
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The positive integer maps to a nonzero element of the characteristic-zero field k, and hence to a unit there. The algebra map sends that unit to the required scalar in R.
 -/
 private theorem isUnit_natCast_of_algebra_of_charZero (k : Type*) [Field k] [CharZero k]
     (R : Type*) [CommRing R] [Algebra k R] {r : ℕ} (hr : 1 ≤ r) : IsUnit ((r : ℕ) : R) := by
@@ -226,12 +196,8 @@ private theorem isUnit_natCast_of_algebra_of_charZero (k : Type*) [Field k] [Cha
   rw [h1]
   exact IsUnit.map (algebraMap k R) (IsUnit.mk0 ((r : ℕ) : k) h0)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+The chart identifies the ideal of Z with the extension of the selected coordinate ideal from the polynomial ring. Quotienting by it is therefore étale over the polynomial ring in the remaining coordinates. Every localization of this quotient at a maximal ideal is regular local, hence a domain and reduced. Reducedness can be tested at these localizations, so the quotient is reduced and the ideal of Z is radical.
 -/
 theorem isRadical_ideal_of_restrictIdeal_eq_coordIdeal {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) {U : X.Opens} (hU : IsAffineOpen U) {n : ℕ}
@@ -257,32 +223,8 @@ theorem isRadical_ideal_of_restrictIdeal_eq_coordIdeal {X : Scheme.{u}} {k : Typ
     exact ⟨fun x hx => hx.eq_zero⟩
   exact (Ideal.isRadical_iff_quotient_reduced _).mpr hred
 
-/- English proof (translation)
-Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
-
-Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
-
-Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
-
-Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At m equal to zero the containment is automatic. For positive m, write C for the affine ideal of Z, generated by the selected coordinates with their dual partial derivations. The (m − 1)-st derivative iterate of I has support containing the support of Z on U by the order-locus formula. Since C is radical, the section ideal of that iterate is contained in C. Induct on j from one to m to show that the (m − j)-th ring iterate of the affine ideal of I lies in C to the j-th power. The case j = 1 is the support argument. At the next step an element of the (m − j − 1)-st iterate and all its selected partial derivatives lie in the (m − j)-th iterate, hence in the j-th power by induction. The Euler criterion uses the invertibility of j over the characteristic-zero field to put the element in the (j + 1)-st power. At j = m the iterate is the original affine ideal, proving the claim.
 -/
 theorem ideal_le_pow_of_restrictIdeal_eq_coordIdeal {X : Scheme.{u}} {k : Type u} [Field k] [CharZero k]
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] {U : X.Opens}
@@ -377,14 +319,8 @@ theorem ideal_le_pow_of_restrictIdeal_eq_coordIdeal {X : Scheme.{u}} {k : Type u
   rw [Nat.sub_self, derivIdealIterate_zero] at hfin
   exact hfin
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Around any point of the support choose the given chart and a basic open of the current affine contained in it. Restrict the chart and apply the coordinate-ideal power containment using the order-locus hypothesis. Outside the support choose a basic open disjoint from it. The ideal of Z there is the unit ideal, so containment in its power is automatic. The local containment criterion for basic opens then gives the sheaf inclusion.
 -/
 theorem le_pow_of_support_subset_orderAtLeastLocus_of_coordIdeal {X : Scheme.{u}} {k : Type u} [Field k] [CharZero k]
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] (Z I : X.IdealSheafData)
@@ -418,8 +354,8 @@ theorem le_pow_of_support_subset_orderAtLeastLocus_of_coordIdeal {X : Scheme.{u}
     rw [htop, ← Ideal.one_eq_top, one_pow, Ideal.one_eq_top]
     exact le_top
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+The strict normal crossings hypothesis gives, around every point of the center, a chart in which the center ideal is a coordinate ideal. These are the charts required by the power-containment criterion for the given order-locus inclusion.
 -/
 theorem le_pow_of_hasStrictNormalCrossingsWith {X : Scheme.{u}} {k : Type u} [Field k] [CharZero k]
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] (Z I : X.IdealSheafData)

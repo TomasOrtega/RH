@@ -14,14 +14,8 @@ variable (k : Type u) [Field k] [CharZero k] {X : Scheme.{u}}
   (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
   (I : X.IdealSheafData) (m : ℕ)
 
-/- English proof (translation)
-Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Prove the first alternative.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At threshold zero the bound is automatic. Assume m is positive and the order is nonzero. Derivative balance at index m − 1 says that the m-th power of that derivative iterate is contained in I. Hence its order is at least that of I. The order of the power is m times the order of the iterate, so the iterate cannot have order zero. The point therefore belongs to its support, which is the order-at-least-m locus of I.
 -/
 theorem orderAt_eq_zero_or_le_orderAt_of_isDerivBalanced
     (h : IsDerivBalanced k p I m) (x : X) :
@@ -54,10 +48,8 @@ theorem orderAt_eq_zero_or_le_orderAt_of_isDerivBalanced
     exact hmem
   exact (mem_orderAtLeastLocus_iff I m x).mp hx
 
-/- English proof (translation)
-By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
+/- English proof (authored)
+An order at least the positive m is at least one and hence places the point on the support. Conversely a point on the support has nonzero order. The derivative-balance dichotomy then gives order at least m.
 -/
 theorem orderAtLeastLocus_eq_support_of_isDerivBalanced
     (h : IsDerivBalanced k p I m) (hm : 1 ≤ m) :

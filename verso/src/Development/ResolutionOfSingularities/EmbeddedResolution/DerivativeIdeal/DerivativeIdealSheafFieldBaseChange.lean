@@ -18,12 +18,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Suppose the span is proper and choose a maximal ideal containing it. Its point in the affine open lies in some basic open of a member of s. That member must lie outside the maximal ideal, contrary to containment of the span. Thus the span is the unit ideal.
 -/
 private theorem span_eq_top_of_isAffineOpen_of_forall_mem_basicOpen {X : Scheme.{u}} {U : X.Opens}
     (hU : IsAffineOpen U) (s : Set Γ(X, U)) (hcov : ∀ x ∈ U, ∃ g ∈ s, x ∈ X.basicOpen g) :
@@ -42,8 +38,8 @@ private theorem span_eq_top_of_isAffineOpen_of_forall_mem_basicOpen {X : Scheme.
   have hnot : g ∉ m := hmem
   exact hnot (hle (Ideal.subset_span hgs))
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Restriction of either ideal sheaf to the smaller affine amounts to extending its section ideal along the restriction map. Equal ideals on the larger affine have equal extensions.
 -/
 private theorem ideal_eq_of_le {X : Scheme.{u}} (I J : X.IdealSheafData)
     (V W : X.affineOpens) (h : (W : X.Opens) ≤ (V : X.Opens)) (hIJ : I.ideal V = J.ideal V) :
@@ -54,12 +50,8 @@ private theorem ideal_eq_of_le {X : Scheme.{u}} (I J : X.IdealSheafData)
   rw [Scheme.IdealSheafData.comap_id] at h1 h2
   rw [h1, h2, hIJ]
 
-/- English proof (translation)
-Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+On the basic open the restriction map is localization at g. Write the image of s as a fraction with numerator in the given ideal and denominator a power of g. The cross-multiplied equality holds in the source after multiplication by one further power of g. The product of these powers times s is therefore in the ideal.
 -/
 private theorem exists_pow_mul_mem_of_map_mem {X : Scheme.{u}} (U : X.affineOpens)
     (g : Γ(X, U.1)) (Jid : Ideal Γ(X, U.1)) (s : Γ(X, U.1))
@@ -88,16 +80,8 @@ private theorem exists_pow_mul_mem_of_map_mem {X : Scheme.{u}} (U : X.affineOpen
   rw [hrw, hcc]
   exact Ideal.mul_mem_left _ _ hy
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
-
-Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
+/- English proof (authored)
+Take s in the section ideal of I on U. Around each point of U choose an affine with equal section ideals and then a basic open of U inside it. The two ideal values remain equal on this smaller affine. Thus the restriction of s belongs to the localization of the section ideal of J on U. Clearing denominators shows a power of each defining section times s lies in that ideal. These defining sections generate the unit ideal because they cover U. They lie in the radical of the ideal of multipliers taking s into J, so that ideal contains one, giving s in J.
 -/
 private theorem ideal_le_of_locally_eq {X : Scheme.{u}} (I J : X.IdealSheafData)
     (h : ∀ x : ↥X, ∃ V : X.affineOpens, x ∈ (V : X.Opens) ∧ I.ideal V = J.ideal V)
@@ -134,10 +118,8 @@ private theorem ideal_le_of_locally_eq {X : Scheme.{u}} (I J : X.IdealSheafData)
   have hone : (1 : Γ(X, U.1)) ∈ K := by simpa using hn
   simpa using (hK 1).mp hone
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Apply the local-to-affine containment result in both directions. The section ideals agree on every affine open, giving equality of the sheaves.
 -/
 private theorem idealSheafData_eq_of_locally_eq {X : Scheme.{u}} (I J : X.IdealSheafData)
     (h : ∀ x : ↥X, ∃ V : X.affineOpens, x ∈ (V : X.Opens) ∧ I.ideal V = J.ideal V) : I = J := by
@@ -149,10 +131,8 @@ private theorem idealSheafData_eq_of_locally_eq {X : Scheme.{u}} (I J : X.IdealS
     exact ⟨V, hV, hIJ.symm⟩
   exact le_antisymm h1 h2
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-By extensionality, compare the relevant components. A detailed English derivation is pending.
+/- English proof (authored)
+The global section map of the spectrum morphism corresponds to φ under the identifications of global sections with the fields. Pullback on sections along the composite therefore sends a scalar to L through φ and then pulls its scalar section back to W along q.
 -/
 private theorem sectionsAlgebraMap_comp_specMap (k L : Type u) [Field k] [Field L]
     {Y : Scheme.{u}} (q : Y ⟶ Spec (CommRingCat.of L))
@@ -175,18 +155,8 @@ private theorem sectionsAlgebraMap_comp_specMap (k L : Type u) [Field k] [Field 
   ext a
   exact DFunLike.congr_fun (congrArg CommRingCat.Hom.hom key) a
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression.
-
-Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
-
-Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Choose an étale chart on X around the image of y and lift it to a compatible affine chart on Y by field base change. The pullback on section rings is a k-algebra map because the scheme square commutes and the scalar map on the new chart factors through L. It sends every old coordinate to the matching new coordinate. The affine ideals of both pulled-back sheaves are extensions along this section map. Apply the ring-level field-extension formula for derivative ideals on compatible coordinates to identify them on the chosen neighborhood of y.
 -/
 private theorem exists_affineOpen_derivIdealSheaf_comap_eq {k L : Type u} [Field k] [Field L]
     {X Y : Scheme.{u}} {p : X ⟶ Spec (CommRingCat.of k)} [AlgebraicGeometry.Smooth p]
@@ -246,8 +216,8 @@ private theorem exists_affineOpen_derivIdealSheaf_comap_eq {k L : Type u} [Field
   rw [derivIdealSheaf_ideal, hcomapV, hcomapD, derivIdealSheaf_ideal]
   exact key.symm
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+In the field pullback square, compatible affine charts give equality of the section ideals around every point. The local equality criterion gives equality of the derivative ideal sheaves globally.
 -/
 theorem derivIdealSheaf_comap_fieldBaseChange {k L : Type u} [Field k] [Field L]
     {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -258,8 +228,8 @@ theorem derivIdealSheaf_comap_fieldBaseChange {k L : Type u} [Field k] [Field L]
   idealSheafData_eq_of_locally_eq _ _ fun y =>
     exists_affineOpen_derivIdealSheaf_comap_eq (isPullback_pullback_specMap p φ) I y
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+At zero both sides are the pulled-back input. At a successor apply the one-step field base-change formula to the previous iterate, using induction to identify that previous input after pullback.
 -/
 theorem derivIdealSheafIterate_comap_fieldBaseChange {k L : Type u} [Field k] [Field L]
     {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -273,8 +243,8 @@ theorem derivIdealSheafIterate_comap_fieldBaseChange {k L : Type u} [Field k] [F
       rw [derivIdealSheafIterate_succ, derivIdealSheafIterate_succ, ih,
         derivIdealSheaf_comap_fieldBaseChange p φ (derivIdealSheafIterate k p n I)]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The maximal contact ideal is the specified iterate of the derivative ideal sheaf. Rewrite both maximal contact ideals by that description and apply field base change for the iterate.
 -/
 theorem maxContactIdeal_comap_fieldBaseChange {k L : Type u} [Field k] [Field L]
     {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -284,8 +254,8 @@ theorem maxContactIdeal_comap_fieldBaseChange {k L : Type u} [Field k] [Field L]
       (maxContactIdeal k p I m).comap (pullback.fst p (Spec.map φ)) := by
   rw [maxContactIdeal_eq_derivIdealSheafIterate, maxContactIdeal_eq_derivIdealSheafIterate, derivIdealSheafIterate_comap_fieldBaseChange]
 
-/- English proof (translation)
-Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
+/- English proof (authored)
+At threshold zero both sides are the whole scheme. At a positive threshold m, the order locus is the support of the (m − 1)-st derivative ideal iterate on either scheme. Field base change commutes with this iterate, and the support of the pulled-back ideal is the inverse image of the original support. This gives the equality of loci.
 -/
 theorem orderAtLeastLocus_comap_fieldBaseChange {k L : Type u} [Field k] [Field L] [CharZero k]
     [CharZero L] {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k))
@@ -302,8 +272,8 @@ theorem orderAtLeastLocus_comap_fieldBaseChange {k L : Type u} [Field k] [Field 
     ext y
     simp
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
+/- English proof (authored)
+The equality of order loci identifies the two membership conditions for every natural threshold at the chosen point. Thus the two extended orders have exactly the same finite lower bounds, giving equality.
 -/
 theorem orderAt_comap_fieldBaseChange {k L : Type u} [Field k] [Field L] [CharZero k]
     [CharZero L] {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k))

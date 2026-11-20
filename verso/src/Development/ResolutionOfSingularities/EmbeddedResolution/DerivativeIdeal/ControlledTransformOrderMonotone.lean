@@ -16,24 +16,16 @@ open CategoryTheory AlgebraicGeometry
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+A smooth morphism is locally of finite type. Over a field, the affine section rings of a locally finite-type scheme are Noetherian, so the scheme is locally Noetherian.
 -/
 private theorem isLocallyNoetherian_of_smooth_over_field (k : Type u) [Field k]
     {Y : Scheme.{u}} (q : Y ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth q] :
     IsLocallyNoetherian Y :=
   AlgebraicGeometry.LocallyOfFiniteType.isLocallyNoetherian q
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Induct along the marked sequence. At stage zero the structural morphism is the original smooth one and the controlled transform is restriction by the initial open immersion. Order is invariant under this restriction. For the step, the center has strict normal crossings with the current boundary, so blowing it up preserves smoothness and the next scheme is locally Noetherian. The marked order condition along the center implies the required containment of the current ideal in the m-th power of the center ideal. The exceptional-divisibility identity identifies the next ideal with the one-step controlled transform by uniqueness. Apply the one-step order bound to the induction bound at all image points. This proves both assertions at the next stage.
 -/
 theorem smooth_projectionToBase_comp_and_orderAt_controlledTransform_le (k : Type u) [Field k] [CharZero k]
     {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -78,8 +70,8 @@ theorem smooth_projectionToBase_comp_and_orderAt_controlledTransform_le (k : Typ
       exact orderAt_controlledTransform_le_of_forall_le k (d.projectionToBase s ≫ p) (d.map s) (d.center s)
         (d.boundaryFrom E s) hsnc hπ (d.controlledTransform I m s) m hIle ihord x
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Use the order assertion in the simultaneous induction for smoothness and the order bound, and evaluate it at x.
 -/
 theorem orderAt_controlledTransform_le_of_isMarked (k : Type u) [Field k] [CharZero k]
     {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]

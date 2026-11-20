@@ -18,14 +18,8 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Treat this case separately. Prove the components needed by the constructor for the conclusion.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
+/- English proof (authored)
+If a is infinite it is greater than m and at least m + 1. If it is finite, discreteness of the natural order makes being at most m equivalent to failing to be at least m + 1.
 -/
 private theorem le_natCast_iff_not_succ_le (a : ℕ∞) (m : ℕ) :
     a ≤ (m : ℕ∞) ↔ ¬ ((m + 1 : ℕ) : ℕ∞) ≤ a := by
@@ -49,8 +43,8 @@ private theorem le_natCast_iff_not_succ_le (a : ℕ∞) (m : ℕ) :
           exact h (by exact_mod_cast (by omega : m + 1 ≤ n))
         exact_mod_cast h2
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The locus condition is order at least m + 1. The extended-natural order comparison identifies its failure with order at most m.
 -/
 theorem orderAt_le_iff_notMem_orderAtLeastLocus {X : Scheme.{u}} (I : X.IdealSheafData) (m : ℕ)
     (x : X) :
@@ -58,8 +52,8 @@ theorem orderAt_le_iff_notMem_orderAtLeastLocus {X : Scheme.{u}} (I : X.IdealShe
   rw [mem_orderAtLeastLocus_iff]
   exact le_natCast_iff_not_succ_le (orderAt I x) m
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The support of the m-th derivative iterate is the order-at-least-(m + 1) locus of the input. Being outside this locus is equivalent to having order at most m.
 -/
 theorem notMem_support_derivIdealSheafIterate_iff_orderAt_le (k : Type u) [Field k] [CharZero k]
     {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -71,8 +65,8 @@ theorem notMem_support_derivIdealSheafIterate_iff_orderAt_le (k : Type u) [Field
     rw [← SetLike.mem_coe, h0]
   rw [orderAt_le_iff_notMem_orderAtLeastLocus, hiff]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+A stalk ideal is the unit ideal exactly off its sheaf support. For the m-th derivative iterate this is exactly where the original order is at most m.
 -/
 theorem stalkIdeal_derivIdealSheafIterate_eq_top_iff_orderAt_le (k : Type u) [Field k] [CharZero k]
     {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -82,10 +76,8 @@ theorem stalkIdeal_derivIdealSheafIterate_eq_top_iff_orderAt_le (k : Type u) [Fi
     mem_support_iff_stalkIdeal_ne_top]
   simp
 
-/- English proof (translation)
-Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The given order bound at the image point makes the m-th derivative iterate of I the unit ideal in its stalk. Its pullback is still the unit ideal in the stalk upstairs. The blowup derivative bound at iteration m puts this pullback inside the m-th derivative iterate of the controlled transform, since the exceptional factor has exponent zero. Thus the latter stalk ideal is the unit ideal too. The blowup is smooth over the base because the center satisfies the normal crossing hypothesis. Apply the unit-stalk criterion upstairs to conclude that the controlled transform has order at most m.
 -/
 theorem orderAt_controlledTransform_le (k : Type u) [Field k] [CharZero k]
     {X X₁ : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -110,8 +102,8 @@ theorem orderAt_controlledTransform_le (k : Type u) [Field k] [CharZero k]
   exact (stalkIdeal_derivIdealSheafIterate_eq_top_iff_orderAt_le k (π ≫ p)
     (controlledTransform π Z I m hπ hI) m x₁).1 h4
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Apply the pointwise controlled-transform bound with the original point taken to be the image of x₁.
 -/
 theorem orderAt_controlledTransform_le_of_orderAt_image_le (k : Type u) [Field k] [CharZero k]
     {X X₁ : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -121,8 +113,8 @@ theorem orderAt_controlledTransform_le_of_orderAt_image_le (k : Type u) [Field k
     orderAt (controlledTransform π Z I m hπ hI) x₁ ≤ (m : ℕ∞) :=
   orderAt_controlledTransform_le k p π Z E hZ hπ I m hI (π.base x₁) hx₁ x₁ rfl
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The failure of the lower bound m + 1 is equivalent to order at most m. Apply the pointwise controlled-transform bound with this inequality.
 -/
 theorem orderAt_controlledTransform_le_of_not_succ_le (k : Type u) [Field k] [CharZero k]
     {X X₁ : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -134,8 +126,8 @@ theorem orderAt_controlledTransform_le_of_not_succ_le (k : Type u) [Field k] [Ch
   orderAt_controlledTransform_le k p π Z E hZ hπ I m hI z
     ((orderAt_le_iff_notMem_orderAtLeastLocus I m z).2 hz) x₁ hx₁
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The global hypothesis gives the required bound at the image of the chosen point. Apply the pointwise result there.
 -/
 theorem orderAt_controlledTransform_le_of_forall_le (k : Type u) [Field k] [CharZero k]
     {X X₁ : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -145,10 +137,8 @@ theorem orderAt_controlledTransform_le_of_forall_le (k : Type u) [Field k] [Char
     orderAt (controlledTransform π Z I m hπ hI) x₁ ≤ (m : ℕ∞) :=
   orderAt_controlledTransform_le k p π Z E hZ hπ I m hI (π.base x₁) (h (π.base x₁)) x₁ rfl
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
+/- English proof (authored)
+If the image were outside the original threshold locus, its order would be at most m. The controlled-transform bound would give order at most m at the chosen point upstairs, contrary to its belonging to the threshold m + 1 locus.
 -/
 theorem orderAtLeastLocus_controlledTransform_subset_preimage (k : Type u) [Field k] [CharZero k]
     {X X₁ : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]

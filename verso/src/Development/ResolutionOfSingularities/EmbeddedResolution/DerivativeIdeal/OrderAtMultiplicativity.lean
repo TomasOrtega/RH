@@ -19,12 +19,8 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace EtaleCoordinates
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
-
-Take a linear combination of the given relations to obtain the conclusion.
+/- English proof (authored)
+The commutator of the two partial derivations is a derivation. It vanishes on every coordinate because each first derivative of a coordinate is either zero or one, and both are killed by any derivation. Coordinate values determine a derivation, so the commutator is zero. Evaluating at a gives commutativity.
 -/
 theorem partialDeriv_comm (k : Type*) [CommRing k] (ι : Type*) [Fintype ι] [DecidableEq ι]
     (T : Type*) [CommRing T] [Algebra k T] [Algebra (MvPolynomial ι k) T]
@@ -45,12 +41,8 @@ theorem partialDeriv_comm (k : Type*) [CommRing k] (ι : Type*) [Fintype ι] [De
 
 end EtaleCoordinates
 
-/- English proof (translation)
-Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Give A the polynomial algebra structure that sends the variables to w. The unit differential determinant implies formal étaleness of this evaluation map over the polynomial ring. The coordinate partial derivations then take the dual values on w, and they commute by the vanishing of their commutators on coordinates.
 -/
 private theorem exists_commuting_dual_derivations (k : Type*) [CommRing k] (ι : Type*) [Fintype ι]
     [DecidableEq ι] (A : Type*) [CommRing A] [Algebra k A] [Algebra.FormallySmooth k A]
@@ -78,22 +70,8 @@ private theorem exists_commuting_dual_derivations (k : Type*) [CommRing k] (ι :
   · intro i j a
     exact EtaleCoordinates.partialDeriv_comm k ι A i j a
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
-
-Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
-
-Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Use adapted coordinates on S whose selected members generate the maximal ideal after localization at q. Their full differential determinant lies outside q, so its image in A is a unit. Base change of the coordinate differential basis to A identifies this image with the determinant for the images of the adapted coordinates. The local algebra is formally smooth over k by composition of localization with the original formally étale coordinate structure. Construct commuting dual derivations for the full family. Restrict the coordinates and derivations to the selected indices and enumerate them by a finite initial segment. The selected coordinates generate the maximal ideal, and their paired derivations remain dual and commute.
 -/
 theorem exists_regularParameters_of_formallyEtale (k : Type*) [CommRing k] (ι : Type*) [Fintype ι]
     [DecidableEq ι] (S : Type*) [CommRing S] [Algebra k S] [Algebra (MvPolynomial ι k) S]
@@ -158,14 +136,8 @@ theorem exists_regularParameters_of_formallyEtale (k : Type*) [CommRing k] (ι :
   · intro i j a
     exact hDD (ix i) (ix j) a
 
-/- English proof (translation)
-Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
-
-Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
-
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Choose an affine étale chart containing x. The section ring is formally étale over the polynomial coordinate ring, and its localization at the point prime is the stalk. The stalk is Noetherian by smoothness, and its residue field is formally smooth over the characteristic-zero field. The scalar structures are compatible under both maps. Apply the adapted-parameter construction for a prime localization to obtain the stated generators and commuting dual derivations.
 -/
 theorem exists_regularParameters_stalk_of_smooth (k : Type u) [Field k] [CharZero k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] (x : X) :
@@ -200,8 +172,8 @@ theorem exists_regularParameters_stalk_of_smooth (k : Type u) [Field k] [CharZer
   exact exists_regularParameters_of_formallyEtale k (ULift.{u} (Fin m)) Γ(X, U)
     ((hU.primeIdealOf ⟨x, hxU⟩).asIdeal) (X.presheaf.stalk x)
 
-/- English proof (translation)
-Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The product sheaf has the product of the two stalk ideals at x. The smooth stalk has parameters with commuting dual derivations, and positive natural scalars are units. The multiplicativity formula for ideal order in this local ring gives the order of the product as the sum.
 -/
 theorem orderAt_mul (k : Type u) [Field k] [CharZero k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -214,8 +186,8 @@ theorem orderAt_mul (k : Type u) [Field k] [CharZero k] {X : Scheme.{u}}
   exact idealOrder_mul y D hspan hD hDD (fun n hn => isUnit_natCast_stalk k p x hn)
     (stalkIdeal I x) (stalkIdeal J x)
 
-/- English proof (translation)
-Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Taking the stalk takes the sheaf power to the corresponding power of the stalk ideal. Use the order formula for powers in the local ring with the commuting dual derivations provided by smoothness and the invertibility of the positive natural scalars.
 -/
 theorem orderAt_pow (k : Type u) [Field k] [CharZero k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -228,14 +200,8 @@ theorem orderAt_pow (k : Type u) [Field k] [CharZero k] {X : Scheme.{u}}
   exact idealOrder_pow y D hspan hD hDD (fun n hn => isUnit_natCast_stalk k p x hn)
     (stalkIdeal I x) c
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+If a is infinite, multiplication by positive c leaves it infinite, so both inequalities hold. If a is finite, the equivalence is cancellation of the positive common factor c in an inequality of natural numbers.
 -/
 theorem natCast_mul_le_mul_iff {c : ℕ} (hc : 1 ≤ c) (m : ℕ) (a : ℕ∞) :
     (c : ℕ∞) * (m : ℕ∞) ≤ (c : ℕ∞) * a ↔ (m : ℕ∞) ≤ a := by
@@ -257,8 +223,8 @@ theorem natCast_mul_le_mul_iff {c : ℕ} (hc : 1 ≤ c) (m : ℕ) (a : ℕ∞) :
       have h'' : c * m ≤ c * n := Nat.mul_le_mul (le_refl c) h'
       exact_mod_cast h''
 
-/- English proof (translation)
-By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+By the order formula for powers, a point satisfies the threshold c times m for the power precisely when c times the original order is at least c times m. Cancel positive c to obtain the original threshold.
 -/
 theorem orderAtLeastLocus_pow_mul (k : Type u) [Field k] [CharZero k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]

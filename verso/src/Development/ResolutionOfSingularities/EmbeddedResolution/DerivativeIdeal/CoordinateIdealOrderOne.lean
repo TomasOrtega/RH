@@ -16,8 +16,8 @@ namespace FunctorialResolution.EmbeddedResolution
 
 variable {X : Scheme.{u}} {k : Type u} [Field k] (p : X ⟶ Spec (CommRingCat.of k))
 
-/- English proof (translation)
-Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Infinity is at least two, so the hypothesis makes the extended natural number finite. An ordinary natural number below two is at most one.
 -/
 private theorem le_one_of_not_two_le {a : ℕ∞} (h : ¬ ((2 : ℕ) : ℕ∞) ≤ a) : a ≤ 1 := by
   rcases eq_or_ne a ⊤ with rfl | ha
@@ -27,14 +27,8 @@ private theorem le_one_of_not_two_le {a : ℕ∞} (h : ¬ ((2 : ℕ) : ℕ∞) �
     have hm1 : m ≤ 1 := by omega
     exact_mod_cast hm1
 
-/- English proof (translation)
-Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The affine chart is étale over the polynomial ring, and the local ring at y is its localization at the point prime. The coordinate belongs to that prime, so its germ belongs to the local maximal ideal. The cotangent independence theorem for the chart gives a linearly independent family for the singleton containing this coordinate. Its cotangent class is thus nonzero, which excludes membership in the square of the maximal ideal.
 -/
 theorem germ_coord_notMem_maximalIdeal_sq {V : X.Opens} (hV : IsAffineOpen V) {n : ℕ}
     (c : EtaleChart p V n) (j : Fin n) (y : X) (hy : y ∈ V)
@@ -80,12 +74,8 @@ theorem germ_coord_notMem_maximalIdeal_sq {V : X.Opens} (hV : IsAffineOpen V) {n
     exact hcon
   exact hnot h2
 
-/- English proof (translation)
-Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Outside the support the order is zero. On the support, the germ of the chosen coordinate belongs to the stalk ideal because that coordinate generates part of the section ideal. The stalk ideal is contained in the maximal ideal, so the coordinate lies in the point prime. Its germ does not lie in the square by cotangent independence. The stalk ideal therefore cannot lie in that square, so the order is less than two.
 -/
 private theorem orderAt_le_one_of_mem_of_restrictIdeal_eq_coordIdeal {V : X.Opens} (hV : IsAffineOpen V) {n : ℕ}
     (c : EtaleChart p V n) (S : Finset (Fin n)) (j : Fin n) (hj : j ∈ S) (D : X.IdealSheafData)
@@ -108,8 +98,8 @@ private theorem orderAt_le_one_of_mem_of_restrictIdeal_eq_coordIdeal {V : X.Open
   · rw [(orderAt_eq_zero_iff_not_mem_support D y).mpr hys]
     exact zero_le_one
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The singleton coordinate ideal gives the upper bound of one. Membership in the support gives the lower bound of one, so the order equals one.
 -/
 theorem orderAt_eq_one_of_restrictIdeal_eq_coordIdeal_singleton {V : X.Opens}
     (hV : IsAffineOpen V) {n : ℕ} (c : EtaleChart p V n) (j : Fin n) (D : X.IdealSheafData)
@@ -118,8 +108,8 @@ theorem orderAt_eq_one_of_restrictIdeal_eq_coordIdeal_singleton {V : X.Opens}
   le_antisymm (orderAt_le_one_of_mem_of_restrictIdeal_eq_coordIdeal p hV c {j} j (Finset.mem_singleton_self j) D hD y hy)
     ((one_le_orderAt_iff_mem_support D y).mpr hys)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The index j is among the chosen generators. Apply the coordinate-ideal upper bound using that generator.
 -/
 theorem orderAt_le_one_of_restrictIdeal_eq_coordIdeal {V : X.Opens}
     (hV : IsAffineOpen V) {n : ℕ} (c : EtaleChart p V n) (S : Finset (Fin n)) (j : Fin n)
@@ -128,8 +118,8 @@ theorem orderAt_le_one_of_restrictIdeal_eq_coordIdeal {V : X.Opens}
     orderAt D y ≤ 1 :=
   orderAt_le_one_of_mem_of_restrictIdeal_eq_coordIdeal p hV c S j hj D hD y hy
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The chosen generator gives order at most one by the coordinate-ideal upper bound. The point is on the support, giving order at least one.
 -/
 theorem orderAt_eq_one_of_restrictIdeal_eq_coordIdeal {V : X.Opens}
     (hV : IsAffineOpen V) {n : ℕ} (c : EtaleChart p V n) (S : Finset (Fin n)) (j : Fin n)

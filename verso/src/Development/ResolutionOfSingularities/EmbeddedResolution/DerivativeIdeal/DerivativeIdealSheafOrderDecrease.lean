@@ -20,18 +20,16 @@ noncomputable def stalkAlgebraMap (k : Type u) [CommRing k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) (x : X) : Algebra k (X.presheaf.stalk x) :=
   (stalkAlgebraMap k p x).toAlgebra
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The algebra structure on the stalk is given by the specified homomorphism from k. Its structure map is therefore that homomorphism.
 -/
 theorem algebraMap_stalkAlgebra (k : Type u) [CommRing k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) (x : X) :
     @algebraMap k (X.presheaf.stalk x) _ _ (stalkAlgebra k p x) = stalkAlgebraMap k p x :=
   rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The scalar section on U is the restriction of the corresponding global scalar section. Restriction from the whole scheme to U followed by the germ at x is the global germ map. Therefore the scalar maps agree after taking germs.
 -/
 theorem sectionsAlgebraMap_comp_germ (k : Type u) [CommRing k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) (U : X.Opens) (x : X) (hx : x ∈ U) :
@@ -47,16 +45,16 @@ theorem sectionsAlgebraMap_comp_germ (k : Type u) [CommRing k] {X : Scheme.{u}}
       = (X.presheaf.germ (⊤ : X.Opens) x (Opens.mem_top x)).hom.comp (sectionsAlgebraMap k p ⊤)
   rw [← key', RingHom.comp_assoc, sectionsAlgebraMap_comp_restrict k p hle]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Evaluate the equality between the scalar map followed by the germ and the stalk scalar map at a.
 -/
 theorem germ_sectionsAlgebraMap_apply (k : Type u) [CommRing k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) (U : X.Opens) (x : X) (hx : x ∈ U) (a : k) :
     (X.presheaf.germ U x hx).hom (sectionsAlgebraMap k p U a) = stalkAlgebraMap k p x a :=
   DFunLike.congr_fun (sectionsAlgebraMap_comp_germ k p U x hx) a
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The stalk scalar map agrees with the scalar map on U followed by the germ. With the given identifications of the structure maps, this is the scalar tower condition.
 -/
 theorem isScalarTower_stalk (k : Type u) [CommRing k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) (U : X.Opens) (x : X) (hx : x ∈ U)
@@ -68,12 +66,8 @@ theorem isScalarTower_stalk (k : Type u) [CommRing k] {X : Scheme.{u}}
   refine IsScalarTower.of_algebraMap_eq' ?_
   rw [hstalk, hgerm, hU, sectionsAlgebraMap_comp_germ]
 
-/- English proof (translation)
-Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
-
-Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Choose an affine neighborhood of x. The stalk is the localization of its section ring at the prime of x, and the scalar structures agree through the germ map. The differential module of the section ring is finitely presented, so taking the derivative ideal commutes with localization. The two stalk ideals are the extensions of their affine section ideals. The localization formula therefore gives the equality.
 -/
 theorem stalkIdeal_derivIdealSheaf (k : Type u) [CommRing k] [IsNoetherianRing k]
     {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p]
@@ -101,8 +95,8 @@ theorem stalkIdeal_derivIdealSheaf (k : Type u) [CommRing k] [IsNoetherianRing k
       stalkIdeal_eq_map_germ I x U hx, derivIdealSheaf_ideal]
     exact map_derivIdeal (hU.primeIdealOf ⟨x, hx⟩).asIdeal.primeCompl (I.ideal U)
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+At iteration zero the equality is immediate. At each successor the stalk of the derivative ideal sheaf is the derivative ideal of the preceding stalk. Applying induction identifies this preceding stalk with the preceding ring-level iterate.
 -/
 theorem stalkIdeal_derivIdealSheafIterate (k : Type u) [CommRing k] [IsNoetherianRing k]
     {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p] (r : ℕ)
@@ -115,8 +109,8 @@ theorem stalkIdeal_derivIdealSheafIterate (k : Type u) [CommRing k] [IsNoetheria
       have h := stalkIdeal_derivIdealSheaf k p (derivIdealSheafIterate k p r I) x
       rw [derivIdealSheafIterate_succ, h, ih, derivIdealIterate_succ]
 
-/- English proof (translation)
-Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+The given order bound puts the stalk ideal in the (n + r)-th power of the maximal ideal. Taking the r-th derivative iterate lowers the guaranteed exponent by at most r, so the resulting stalk ideal lies in the n-th power. Translate this back into an order bound.
 -/
 theorem le_orderAt_derivIdealSheafIterate (k : Type u) [CommRing k] [IsNoetherianRing k]
     {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p]
@@ -128,10 +122,8 @@ theorem le_orderAt_derivIdealSheafIterate (k : Type u) [CommRing k] [IsNoetheria
     (stalkIdeal I x) (IsLocalRing.maximalIdeal (X.presheaf.stalk x)) (n + r) r h
   rwa [Nat.add_sub_cancel] at key
 
-/- English proof (translation)
-Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+If m is less than r, the target threshold is zero and every point satisfies it. Otherwise apply the previous order lower bound at each point of the original locus with n = m − r.
 -/
 theorem orderAtLeastLocus_subset_orderAtLeastLocus_derivIdealSheafIterate (k : Type u) [CommRing k]
     [IsNoetherianRing k] {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k))
@@ -146,8 +138,8 @@ theorem orderAtLeastLocus_subset_orderAtLeastLocus_derivIdealSheafIterate (k : T
     rw [Nat.sub_add_cancel h]
     exact hx
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The compatible ring isomorphism is an isomorphism of k-algebras. The identity k-algebra is formally smooth over itself, and formal smoothness transfers along this isomorphism.
 -/
 private theorem formallySmooth_of_ringEquiv (k : Type u) [CommRing k] (R : Type u)
     [CommRing R] [Algebra k R] (e : k ≃+* R) (he : ∀ x : k, e x = algebraMap k R x) :
@@ -155,10 +147,8 @@ private theorem formallySmooth_of_ringEquiv (k : Type u) [CommRing k] (R : Type 
   have : Algebra.FormallySmooth k k := inferInstance
   exact Algebra.FormallySmooth.of_equiv (AlgEquiv.ofRingEquiv (f := e) (fun x => he x))
 
-/- English proof (translation)
-Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
-
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Smoothness gives a smooth map from the global sections of the affine base to the section ring of the affine open. This map is formally smooth. The base global sections are isomorphic to k by the affine identification, so formal smoothness over k follows by composition using the specified scalar map.
 -/
 theorem formallySmooth_sections (k : Type u) [Field k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] (U : X.Opens)
@@ -181,10 +171,8 @@ theorem formallySmooth_sections (k : Type u) [Field k] {X : Scheme.{u}}
     IsScalarTower.of_algebraMap_eq' (h.trans rfl)
   exact Algebra.FormallySmooth.comp k Γ(Spec (CommRingCat.of k), ⊤) Γ(X, U)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
+/- English proof (authored)
+The section map from the affine base is smooth and hence finitely presented. Its source is isomorphic to the field k, which is Noetherian. A finite-variable polynomial ring over it is Noetherian, and the section ring is a quotient of such a ring. Thus the section ring is Noetherian.
 -/
 private theorem isNoetherianRing_sections_of_smooth (k : Type u) [Field k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] (U : X.Opens)
@@ -204,8 +192,8 @@ private theorem isNoetherianRing_sections_of_smooth (k : Type u) [Field k] {X : 
   exact isNoetherianRing_of_surjective
     (MvPolynomial (Fin n) (↥Γ(Spec (CommRingCat.of k), ⊤))) (↥Γ(X, U)) f.toRingHom hf
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Every affine section ring is Noetherian by smoothness over the field. The stalk is a localization of an affine section ring, so it too is Noetherian.
 -/
 theorem isNoetherianRing_stalk (k : Type u) [Field k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] (x : X) :
@@ -213,18 +201,16 @@ theorem isNoetherianRing_stalk (k : Type u) [Field k] {X : Scheme.{u}}
   have : IsLocallyNoetherian X := ⟨fun U => isNoetherianRing_sections_of_smooth k p U.1 U.2⟩
   infer_instance
 
-/- English proof (translation)
-Supply the required witnesses or components.
+/- English proof (authored)
+Choose a member of the affine open cover containing the point. Its image in the scheme is an affine open neighborhood.
 -/
 private theorem exists_isAffineOpen_mem (X : Scheme.{u}) (x : X) :
     ∃ U : X.Opens, x ∈ U ∧ IsAffineOpen U :=
   ⟨(X.affineCover.f (X.affineCover.idx x)).opensRange, X.affineCover.covers x,
     isAffineOpen_opensRange _⟩
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Choose an affine neighborhood of x. Its section ring is formally smooth over k, and the germ map identifies the stalk with its localization at the point prime. Localization is formally smooth over the original ring. Composing gives the result over k, since the scalar maps are compatible with the germ.
 -/
 theorem formallySmooth_stalk (k : Type u) [Field k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] (x : X) :
@@ -242,8 +228,8 @@ theorem formallySmooth_stalk (k : Type u) [Field k] {X : Scheme.{u}}
     Algebra.FormallySmooth.of_isLocalization (hU.primeIdealOf ⟨x, hxU⟩).asIdeal.primeCompl
   exact Algebra.FormallySmooth.comp k Γ(X, U) (X.presheaf.stalk x)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The differential module of the localization is the scalar extension of the original differential module. A finite generating family maps to a finite generating family after scalar extension, so the localized module is finite.
 -/
 private theorem finite_kaehlerDifferential_of_isLocalization (k A B : Type u) [CommRing k]
     [CommRing A] [CommRing B] [Algebra k A] [Algebra k B] [Algebra A B] [IsScalarTower k A B]
@@ -257,10 +243,8 @@ private theorem finite_kaehlerDifferential_of_isLocalization (k A B : Type u) [C
   have : Module.Finite B (TensorProduct A B (KaehlerDifferential k A)) := inferInstance
   exact Module.Finite.equiv hbc.equiv
 
-/- English proof (translation)
-Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Take an affine neighborhood of x, whose finite-type section algebra has finitely generated differentials. The stalk is its localization at the point prime, and the scalar maps commute with that localization. The localization formula preserves finite generation of the differential module.
 -/
 theorem finite_kaehlerDifferential_stalk (k : Type u) [Field k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] (x : X) :
@@ -280,8 +264,8 @@ theorem finite_kaehlerDifferential_stalk (k : Type u) [Field k] {X : Scheme.{u}}
   exact finite_kaehlerDifferential_of_isLocalization k Γ(X, U) (X.presheaf.stalk x)
     (hUaff.primeIdealOf ⟨x, hxU⟩).asIdeal.primeCompl inferInstance
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The finite differential module is finitely presented over the Noetherian ring. Formal smoothness makes it projective, hence flat. A finitely presented flat module over a local ring is free.
 -/
 private theorem free_kaehlerDifferential_of_formallySmooth (k : Type u) [Field k] (A : Type u)
     [CommRing A] [IsLocalRing A] [IsNoetherianRing A] [Algebra k A] [Algebra.FormallySmooth k A]
@@ -293,8 +277,8 @@ private theorem free_kaehlerDifferential_of_formallySmooth (k : Type u) [Field k
   have _h3 : Module.Flat A (KaehlerDifferential k A) := inferInstance
   exact Module.free_of_flat_of_isLocalRing
 
-/- English proof (translation)
-Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The stalk ring is local and Noetherian, formally smooth over k, and has finite differential module. The freeness criterion for this situation applies to its differentials.
 -/
 theorem free_kaehlerDifferential_stalk (k : Type u) [Field k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] (x : X) :
@@ -307,8 +291,8 @@ theorem free_kaehlerDifferential_stalk (k : Type u) [Field k] {X : Scheme.{u}}
     finite_kaehlerDifferential_stalk k p x
   exact free_kaehlerDifferential_of_formallySmooth k (X.presheaf.stalk x)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+The positive integer has nonzero image in the characteristic-zero field k and is therefore a unit there. Its image in the stalk remains a unit under the scalar homomorphism.
 -/
 theorem isUnit_natCast_stalk (k : Type u) [Field k] [CharZero k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) (x : X) {n : ℕ} (hn : 1 ≤ n) :
@@ -318,16 +302,8 @@ theorem isUnit_natCast_stalk (k : Type u) [Field k] [CharZero k] {X : Scheme.{u}
   have h := hk.map (stalkAlgebraMap k p x)
   rwa [map_natCast] at h
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The injective map from the domain into L sends each nonzero element to a unit, so it extends to the fraction field. That field is formally smooth over k because it is a localization of the formally smooth domain. An algebraic relation over the domain remains a nonzero polynomial relation over the fraction field, so L is algebraic over that field. In characteristic zero it is separable, hence formally étale over the fraction field. Composition gives formal smoothness over k.
 -/
 private theorem formallySmooth_of_isAlgebraic (k : Type u) [Field k] [CharZero k] (L : Type u)
     [Field L] [Algebra k L] (A₀ : Type u) [CommRing A₀] [IsDomain A₀] [Algebra k A₀] [Algebra A₀ L]
@@ -371,8 +347,8 @@ private theorem formallySmooth_of_isAlgebraic (k : Type u) [Field k] [CharZero k
   have _fs3 : Algebra.FormallySmooth (FractionRing A₀) L := inferInstance
   exact Algebra.FormallySmooth.comp k (FractionRing A₀) L
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The subalgebra generated by the basis is a polynomial k-algebra because the basis is algebraically independent. It is a formally smooth domain, embeds in L, and L is algebraic over it by the spanning property of the transcendence basis. Apply the fraction-field and separability argument to this subalgebra.
 -/
 private theorem formallySmooth_of_isTranscendenceBasis (k : Type u) [Field k] [CharZero k]
     (L : Type u) [Field L] [Algebra k L] {ι : Type u} {x : ι → L}
@@ -385,16 +361,16 @@ private theorem formallySmooth_of_isTranscendenceBasis (k : Type u) [Field k] [C
   exact formallySmooth_of_isAlgebraic k L ↥(Algebra.adjoin k (Set.range x))
     (fun a b h => Subtype.ext h)
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. A detailed English derivation is pending.
+/- English proof (authored)
+Choose a transcendence basis for the extension. The purely transcendental part is formally smooth, and the algebraic extension above it is separable in characteristic zero, as in the transcendence-basis result.
 -/
 private theorem formallySmooth_of_charZero (k : Type u) [Field k] [CharZero k] (L : Type u) [Field L]
     [Algebra k L] : Algebra.FormallySmooth k L := by
   obtain ⟨B, hB⟩ := exists_isTranscendenceBasis k L
   exact formallySmooth_of_isTranscendenceBasis k L hB
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The residue field with the given scalar map is a field extension of k. Over a characteristic-zero base every field extension is formally smooth, by the transcendence-basis argument.
 -/
 theorem formallySmooth_residueField (k : Type u) [Field k] [CharZero k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] (x : X)
@@ -404,12 +380,8 @@ theorem formallySmooth_residueField (k : Type u) [Field k] [CharZero k] {X : Sch
     Algebra.FormallySmooth k (IsLocalRing.ResidueField (X.presheaf.stalk x)) :=
   formallySmooth_of_charZero k (IsLocalRing.ResidueField (X.presheaf.stalk x))
 
-/- English proof (translation)
-Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The stalk is Noetherian and formally smooth over k with a finite free differential module. Its residue field is also formally smooth over k. These facts give local parameters generating the maximal ideal and derivations dual to them. Each positive natural scalar is invertible in the stalk. The ring-level order decrease formula therefore makes the j-th derivative iterate have order r − j for j at most r. Use compatibility of iteration with taking the stalk to obtain the sheaf order.
 -/
 theorem orderAt_derivIdealSheafIterate_eq_sub (k : Type u) [Field k] [CharZero k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] (I : X.IdealSheafData)
@@ -436,26 +408,16 @@ theorem orderAt_derivIdealSheafIterate_eq_sub (k : Type u) [Field k] [CharZero k
   exact idealOrder_derivIdealIterate_of_isUnit_natCast k y δ hδ hspan
     (fun n hn => isUnit_natCast_stalk k p x hn) hI' hj
 
-/- English proof (translation)
-Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
+/- English proof (authored)
+An extended natural number is either infinity or a finite natural number. In the finite case its ordinary natural value represents it.
 -/
 private theorem eq_top_or_exists_eq_natCast (a : ℕ∞) : a = ⊤ ∨ ∃ n : ℕ, a = (n : ℕ∞) := by
   rcases eq_or_ne a ⊤ with h | h
   · exact Or.inl h
   · exact Or.inr ⟨a.toNat, (ENat.natCast_toNat h).symm⟩
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
-
-Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The general lower bound gives the inclusion from the original locus to the locus of the iterate. For the reverse, at a point with infinite original order the threshold is automatic. If its finite order n is below r, the n-th iterate has order zero and all later iterates have order zero because the ideals increase. This contradicts the positive threshold m − r. If n is at least r, the r-th iterate has order n − r. The assumed threshold m − r then gives n at least m.
 -/
 theorem orderAtLeastLocus_derivIdealSheafIterate (k : Type u) [Field k] [CharZero k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] (I : X.IdealSheafData)
@@ -494,10 +456,8 @@ theorem orderAtLeastLocus_derivIdealSheafIterate (k : Type u) [Field k] [CharZer
       rw [hn]
       exact_mod_cast hmn'
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-By extensionality, compare the relevant components. A detailed English derivation is pending.
+/- English proof (authored)
+Use the equality of order loci with r = m − 1. Since m is positive, the corresponding threshold for the iterate is one. The locus of order at least one is exactly the support.
 -/
 theorem support_derivIdealSheafIterate_eq_orderAtLeastLocus (k : Type u) [Field k] [CharZero k]
     {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -511,10 +471,8 @@ theorem support_derivIdealSheafIterate_eq_orderAtLeastLocus (k : Type u) [Field 
   ext x
   exact (mem_orderAtLeastLocus_one_iff (derivIdealSheafIterate k p (m - 1) I) x).symm
 
-/- English proof (translation)
-Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+For threshold zero the locus is the whole scheme. For positive threshold it is the support of the specified derivative ideal sheaf iterate, which is closed.
 -/
 theorem isClosed_orderAtLeastLocus (k : Type u) [Field k] [CharZero k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] (I : X.IdealSheafData)
@@ -527,14 +485,8 @@ theorem isClosed_orderAtLeastLocus (k : Type u) [Field k] [CharZero k] {X : Sche
     rw [← support_derivIdealSheafIterate_eq_orderAtLeastLocus k p I hm1]
     exact (derivIdealSheafIterate k p (m - 1) I).support.2
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
+/- English proof (authored)
+At each point of an affine open U the stalk ideal is the unit ideal because the point is outside the support. Therefore the ideal on U has a section whose germ is a unit at that point. The basic opens of such sections cover U, so the sections generate the unit ideal in the affine section ring. All those sections already belong to the ideal of J on U.
 -/
 private theorem ideal_eq_top_of_support_eq_empty {X : Scheme.{u}} (J : X.IdealSheafData)
     (hJ : (J.support : Set X) = (∅ : Set X)) (U : X.affineOpens) :
@@ -562,10 +514,8 @@ private theorem ideal_eq_top_of_support_eq_empty {X : Scheme.{u}} (J : X.IdealSh
   have hspan := (IsAffineOpen.iSup_basicOpen_eq_self_iff U.2).mp hcover
   rwa [Ideal.span_eq] at hspan
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The support formula at threshold m + 1 identifies the support of the m-th iterate with the empty order locus from the hypothesis. An ideal sheaf with empty support has unit ideal on every affine open, and hence equals the unit ideal sheaf.
 -/
 theorem derivIdealSheafIterate_eq_top_of_orderAtLeastLocus_eq_empty (k : Type u) [Field k] [CharZero k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] (I : X.IdealSheafData)

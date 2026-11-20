@@ -34,16 +34,16 @@ def lastCoordinate (k : Type u) [Field k] (M : ℕ) :
   AffineSpace.coord (Spec (CommRingCat.of k)) (⟨Sum.inr 0⟩ : ULift.{u, 0} (Fin M ⊕ Fin 1))
 
 @[simp]
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The additional factor is an affine line. The last coordinate is defined as the coordinate of its unique index.
 -/
 theorem lastCoordinate_eq (k : Type u) [Field k] (M : ℕ) :
     lastCoordinate k M =
       AffineSpace.coord (Spec (CommRingCat.of k)) (⟨Sum.inr 0⟩ : ULift.{u, 0} (Fin M ⊕ Fin 1)) :=
   rfl
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
+/- English proof (authored)
+The affine-line index set has only one element. The specified index is therefore the defining index of the last coordinate.
 -/
 theorem lastCoordinate_eq_coord (k : Type u) [Field k] (M : ℕ) (j : Fin 1) :
     lastCoordinate k M =
@@ -51,8 +51,8 @@ theorem lastCoordinate_eq_coord (k : Type u) [Field k] (M : ℕ) (j : Fin 1) :
   rw [Subsingleton.elim j (0 : Fin 1)]
   rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The zero-coordinate inclusion pulls the last coordinate back to zero. Further pullback along the given map preserves zero.
 -/
 theorem lastCoordinate_appTop_comp_affineSpaceInl (k : Type u) [Field k] (M : ℕ) {A : Scheme.{u}}
     (f : A ⟶ affineSpaceIndexedBy k (ULift.{u, 0} (Fin M))) :
@@ -71,10 +71,8 @@ def pullbackBasicOpen (k : Type u) [Field k] (M : ℕ)
     (affineSpaceTimesLine k M).Opens :=
   (affineSpaceTimesLine k M).basicOpen (pullbackAlongProjection k M G)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+On the basic open the defining section pulls back to a section whose own basic open is the whole scheme. Its germ is therefore a unit at every point. A section is a unit if it is a unit in every stalk, so the restricted section is invertible.
 -/
 private theorem isUnit_appTop_ι_basicOpen {X : Scheme.{u}}
     (f : ↑(X.presheaf.obj (Opposite.op ⊤))) :
@@ -93,8 +91,8 @@ private theorem isUnit_appTop_ι_basicOpen {X : Scheme.{u}}
   rw [hbo]
   exact Opens.mem_top _
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The open is the basic open of the section pulled back along the projection. Restricting that defining section to its basic open makes it a unit.
 -/
 theorem isUnit_appTop_ι_pullbackAlongProjection (k : Type u) [Field k] (M : ℕ)
     (G : ↑((affineSpaceIndexedBy k (ULift.{u, 0} (Fin M))).presheaf.obj (Opposite.op ⊤))) :
@@ -107,8 +105,8 @@ def unitOnPullbackBasicOpen (k : Type u) [Field k] (M : ℕ)
   (isUnit_appTop_ι_pullbackAlongProjection k M G).unit
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The chosen unit is the one supplied by invertibility of the restricted section. Its underlying section is that restricted section.
 -/
 theorem unitOnPullbackBasicOpen_val (k : Type u) [Field k] (M : ℕ)
     (G : ↑((affineSpaceIndexedBy k (ULift.{u, 0} (Fin M))).presheaf.obj (Opposite.op ⊤))) :
@@ -116,8 +114,8 @@ theorem unitOnPullbackBasicOpen_val (k : Type u) [Field k] (M : ℕ)
       (ConcreteCategory.hom (Scheme.Hom.appTop (pullbackBasicOpen k M G).ι)) (pullbackAlongProjection k M G) :=
   IsUnit.unit_spec _
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Pullback along a composite is successive pullback in reverse order. The first projection pulls the specified coordinate back to the corresponding first-block coordinate of the product, which is then pulled back along the given map.
 -/
 private theorem appTop_comp_projLeft_coord (k : Type u) [Field k] (M : ℕ) {T : Scheme.{u}}
     (t : T ⟶ affineSpaceIndexedBy k (ULift.{u, 0} (Fin M ⊕ Fin 1))) (j : Fin M) :
@@ -128,12 +126,8 @@ private theorem appTop_comp_projLeft_coord (k : Type u) [Field k] (M : ℕ) {T :
           (⟨Sum.inl j⟩ : ULift.{u, 0} (Fin M ⊕ Fin 1))) := by
   rw [Scheme.Hom.comp_appTop, CommRingCat.comp_apply, projLeft_appTop_coord]
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
+/- English proof (authored)
+Use the affine-space coordinate construction over the structural map of the open. Take its first-block entries from the open inclusion and use the given section for the last entry. This gives the prescribed pullbacks and structural map. After projecting to the first block, the resulting map and the projected open inclusion agree over the field and on every first-block coordinate, so the projections agree.
 -/
 private theorem exists_replaceLastCoord (k : Type u) [Field k] (M : ℕ)
     (G : ↑((affineSpaceIndexedBy k (ULift.{u, 0} (Fin M))).presheaf.obj (Opposite.op ⊤)))
@@ -191,8 +185,8 @@ def replaceLastCoord (k : Type u) [Field k] (M : ℕ)
     (↑(pullbackBasicOpen k M G) : Scheme.{u}) ⟶ affineSpaceTimesLine k M :=
   (exists_replaceLastCoord k M G s).choose
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The chosen replacement map was constructed over the same structural map as the open inclusion. Composing with the affine-space structure map therefore gives that structural map.
 -/
 theorem replaceLastCoord_comp_affineSpaceIndexedByToSpec (k : Type u) [Field k] (M : ℕ)
     (G : ↑((affineSpaceIndexedBy k (ULift.{u, 0} (Fin M))).presheaf.obj (Opposite.op ⊤)))
@@ -201,8 +195,8 @@ theorem replaceLastCoord_comp_affineSpaceIndexedByToSpec (k : Type u) [Field k] 
       (pullbackBasicOpen k M G).ι ≫ affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin M ⊕ Fin 1)) :=
   (exists_replaceLastCoord k M G s).choose_spec.1
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The replacement map keeps the original pullbacks of every first-block coordinate. The specified first-block coordinate has exactly the pullback given by the open inclusion.
 -/
 theorem pullbackCoord_replaceLastCoord_inl (k : Type u) [Field k] (M : ℕ)
     (G : ↑((affineSpaceIndexedBy k (ULift.{u, 0} (Fin M))).presheaf.obj (Opposite.op ⊤)))
@@ -211,8 +205,8 @@ theorem pullbackCoord_replaceLastCoord_inl (k : Type u) [Field k] (M : ℕ)
       pullbackCoord (pullbackBasicOpen k M G).ι ⟨Sum.inl a⟩ :=
   (exists_replaceLastCoord k M G s).choose_spec.2.1 a
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The last entry of the defining coordinate vector is the specified section. The section map sends the last coordinate to that entry.
 -/
 theorem replaceLastCoord_appTop_lastCoordinate (k : Type u) [Field k] (M : ℕ)
     (G : ↑((affineSpaceIndexedBy k (ULift.{u, 0} (Fin M))).presheaf.obj (Opposite.op ⊤)))
@@ -221,8 +215,8 @@ theorem replaceLastCoord_appTop_lastCoordinate (k : Type u) [Field k] (M : ℕ)
   (exists_replaceLastCoord k M G s).choose_spec.2.2.1
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The first projection is determined by its structural map and the first-block coordinates. The replacement map preserves all of these, so its first projection agrees with that of the open inclusion.
 -/
 theorem replaceLastCoord_comp_projLeft (k : Type u) [Field k] (M : ℕ)
     (G : ↑((affineSpaceIndexedBy k (ULift.{u, 0} (Fin M))).presheaf.obj (Opposite.op ⊤)))
@@ -231,8 +225,8 @@ theorem replaceLastCoord_comp_projLeft (k : Type u) [Field k] (M : ℕ)
   (exists_replaceLastCoord k M G s).choose_spec.2.2.2
 
 @[simp]
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+First compose the replacement map with the first projection. This gives the projected open inclusion. Composing this equality with the given map gives the result.
 -/
 theorem replaceLastCoord_comp_projLeft_assoc (k : Type u) [Field k] (M : ℕ)
     (G : ↑((affineSpaceIndexedBy k (ULift.{u, 0} (Fin M))).presheaf.obj (Opposite.op ⊤)))
@@ -241,8 +235,8 @@ theorem replaceLastCoord_comp_projLeft_assoc (k : Type u) [Field k] (M : ℕ)
     replaceLastCoord k M G s ≫ projLeft k M 1 ≫ g = (pullbackBasicOpen k M G).ι ≫ projLeft k M 1 ≫ g := by
   rw [← Category.assoc, replaceLastCoord_comp_projLeft, Category.assoc]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The basic open of a pulled-back section is the inverse image of the original basic open. A point belongs to it exactly when its projection belongs to the original open.
 -/
 private theorem mem_pullbackBasicOpen_iff (k : Type u) [Field k] (M : ℕ)
     (G : ↑((affineSpaceIndexedBy k (ULift.{u, 0} (Fin M))).presheaf.obj (Opposite.op ⊤)))
@@ -252,12 +246,8 @@ private theorem mem_pullbackBasicOpen_iff (k : Type u) [Field k] (M : ℕ)
   Iff.symm (iff_of_eq (congrArg (fun U : (affineSpaceTimesLine k M).Opens => y ∈ U)
     (Scheme.preimage_basicOpen (projLeft k M 1) G)))
 
-/- English proof (translation)
-Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+Membership in the pulled-back basic open depends only on the first projection, and coordinate replacement preserves that projection. The replacement map thus lands in the open. The open immersion universal property gives the factorization.
 -/
 private theorem exists_comp_ι_eq_replaceLastCoord (k : Type u) [Field k] (M : ℕ)
     (G : ↑((affineSpaceIndexedBy k (ULift.{u, 0} (Fin M))).presheaf.obj (Opposite.op ⊤)))
@@ -292,8 +282,8 @@ def shiftLastCoord (k : Type u) [Field k] (M : ℕ)
   (exists_comp_ι_eq_replaceLastCoord k M G s).choose
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The map into the open is chosen as the lift of the coordinate replacement through the open immersion. Its composite with that immersion is the replacement map.
 -/
 theorem shiftLastCoord_comp_ι (k : Type u) [Field k] (M : ℕ)
     (G : ↑((affineSpaceIndexedBy k (ULift.{u, 0} (Fin M))).presheaf.obj (Opposite.op ⊤)))
@@ -302,8 +292,8 @@ theorem shiftLastCoord_comp_ι (k : Type u) [Field k] (M : ℕ)
   (exists_comp_ι_eq_replaceLastCoord k M G s).choose_spec
 
 @[simp]
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Compose the lift identity with the given morphism after the open inclusion. Associativity gives the displayed equality.
 -/
 theorem shiftLastCoord_comp_ι_assoc (k : Type u) [Field k] (M : ℕ)
     (G : ↑((affineSpaceIndexedBy k (ULift.{u, 0} (Fin M))).presheaf.obj (Opposite.op ⊤)))
@@ -312,16 +302,16 @@ theorem shiftLastCoord_comp_ι_assoc (k : Type u) [Field k] (M : ℕ)
     shiftLastCoord k M G s ≫ (pullbackBasicOpen k M G).ι ≫ g = replaceLastCoord k M G s ≫ g := by
   rw [← Category.assoc, shiftLastCoord_comp_ι]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+A closed immersion into an affine scheme is induced by a quotient of the ambient section ring, so its map on global sections is surjective.
 -/
 private theorem appTop_surjective_of_isAffine {X Y : Scheme.{u}} (f : X ⟶ Y)
     [IsAffine Y] [IsClosedImmersion f] :
     Function.Surjective (ConcreteCategory.hom (Scheme.Hom.appTop f)) :=
   (IsClosedImmersion.isAffine_surjective_of_isAffine ..).2
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The map on global sections of the closed immersion is surjective because its target is affine. Thus the given section has a preimage in the ambient section ring.
 -/
 private theorem exists_appTop_eq_of_isClosedImmersion (k : Type u) [Field k] (M : ℕ) {A : Scheme.{u}}
     (ρ : A ⟶ affineSpaceIndexedBy k (ULift.{u, 0} (Fin M))) [IsClosedImmersion ρ]
@@ -337,8 +327,8 @@ def globalSectionLift (k : Type u) [Field k] (M : ℕ) {A : Scheme.{u}}
   (exists_appTop_eq_of_isClosedImmersion k M ρ F).choose
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The chosen lift is a preimage under the map on sections of the closed immersion. Applying that map returns the original section.
 -/
 theorem appTop_globalSectionLift (k : Type u) [Field k] (M : ℕ) {A : Scheme.{u}}
     (ρ : A ⟶ affineSpaceIndexedBy k (ULift.{u, 0} (Fin M))) [IsClosedImmersion ρ]
@@ -346,16 +336,16 @@ theorem appTop_globalSectionLift (k : Type u) [Field k] (M : ℕ) {A : Scheme.{u
     (ConcreteCategory.hom (Scheme.Hom.appTop ρ)) (globalSectionLift k M ρ F) = F :=
   (exists_appTop_eq_of_isClosedImmersion k M ρ F).choose_spec
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+This section is defined by pulling the given section back along the first projection.
 -/
 private theorem pullbackAlongProjection_eq (k : Type u) [Field k] (M : ℕ)
     (G : ↑((affineSpaceIndexedBy k (ULift.{u, 0} (Fin M))).presheaf.obj (Opposite.op ⊤))) :
     pullbackAlongProjection k M G = (ConcreteCategory.hom (Scheme.Hom.appTop (projLeft k M 1))) G :=
   rfl
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The section comes from the first projection, and the replacement map has the same first projection as the open inclusion. Functoriality of pullback therefore gives equal values on this section.
 -/
 private theorem replaceLastCoord_appTop_pullbackAlongProjection (k : Type u) [Field k] (M : ℕ)
     (G : ↑((affineSpaceIndexedBy k (ULift.{u, 0} (Fin M))).presheaf.obj (Opposite.op ⊤)))
@@ -365,8 +355,8 @@ private theorem replaceLastCoord_appTop_pullbackAlongProjection (k : Type u) [Fi
   rw [pullbackAlongProjection_eq, ← CommRingCat.comp_apply, ← Scheme.Hom.comp_appTop,
     ← CommRingCat.comp_apply, ← Scheme.Hom.comp_appTop, replaceLastCoord_comp_projLeft]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The unit is the restriction to the open of the section pulled back from the first projection. Pulling it back through the map into the open can be computed using coordinate replacement in the ambient space. That replacement fixes the projected section, so the unit's underlying section is fixed.
 -/
 private theorem shiftLastCoord_appTop_unitOnPullbackBasicOpen_val (k : Type u) [Field k] (M : ℕ)
     (G : ↑((affineSpaceIndexedBy k (ULift.{u, 0} (Fin M))).presheaf.obj (Opposite.op ⊤)))
@@ -376,8 +366,8 @@ private theorem shiftLastCoord_appTop_unitOnPullbackBasicOpen_val (k : Type u) [
   rw [unitOnPullbackBasicOpen_val, ← CommRingCat.comp_apply, ← Scheme.Hom.comp_appTop, shiftLastCoord_comp_ι,
     replaceLastCoord_appTop_pullbackAlongProjection]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Pullback fixes the underlying unit and preserves the product of the unit with its inverse. Thus the image of its inverse is again an inverse of the same unit, which is unique.
 -/
 private theorem shiftLastCoord_appTop_unitOnPullbackBasicOpen_inv_val (k : Type u) [Field k] (M : ℕ)
     (G : ↑((affineSpaceIndexedBy k (ULift.{u, 0} (Fin M))).presheaf.obj (Opposite.op ⊤)))
@@ -389,12 +379,8 @@ private theorem shiftLastCoord_appTop_unitOnPullbackBasicOpen_inv_val (k : Type 
     rw [← shiftLastCoord_appTop_unitOnPullbackBasicOpen_val k M G s, ← map_mul, Units.inv_mul, map_one]
   exact (Units.inv_eq_of_mul_eq_one_left h1).symm
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+It suffices to compare the composite with the identity after the monomorphic open inclusion. Both replacements preserve the structure map and all first-block coordinates. The last coordinate of the composite pulls back to the second replacement section pulled back by the first map, which is the original last coordinate by hypothesis. These data determine the map into affine space, giving the identity.
 -/
 private theorem shiftLastCoord_comp_shiftLastCoord (k : Type u) [Field k] (M : ℕ)
     (G : ↑((affineSpaceIndexedBy k (ULift.{u, 0} (Fin M))).presheaf.obj (Opposite.op ⊤)))
@@ -428,10 +414,8 @@ private theorem shiftLastCoord_comp_shiftLastCoord (k : Type u) [Field k] (M : �
       rw [← lastCoordinate_eq_coord k M b, Scheme.Hom.comp_appTop, CommRingCat.comp_apply,
         replaceLastCoord_appTop_lastCoordinate, ht]
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the claim to the hypotheses of an applicable result.
-
-Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
+/- English proof (authored)
+Use subtraction of the inverse unit from the last coordinate as the inverse to addition of the inverse unit. Both transformations fix that inverse unit because it comes from the first projection. Either composite restores the last coordinate by cancellation and fixes the structural map and first block, so both composites are identities.
 -/
 private theorem isIso_shiftLastCoord_lastCoordinate_add_inv (k : Type u) [Field k] (M : ℕ)
     (G : ↑((affineSpaceIndexedBy k (ULift.{u, 0} (Fin M))).presheaf.obj (Opposite.op ⊤))) :
@@ -450,10 +434,8 @@ private theorem isIso_shiftLastCoord_lastCoordinate_add_inv (k : Type u) [Field 
       ← Scheme.Hom.comp_appTop, shiftLastCoord_comp_ι, replaceLastCoord_appTop_lastCoordinate]
     ring
 
-/- English proof (translation)
-Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+First embed by adding a zero last coordinate, then restrict the closed immersion to the inverse image of the pulled-back basic open. On that open add the inverse of the pulled-back defining section to the last coordinate. This translation is an isomorphism, so the composite is still a closed immersion. Projection to the first block undoes the zero-coordinate inclusion and is unchanged by translation. The last coordinate starts at zero and becomes the inverse of the defining section. Its product with that section is one on the image.
 -/
 private theorem exists_isClosedImmersion_pullbackBasicOpen (k : Type u) [Field k] (M : ℕ) {A : Scheme.{u}}
     (ρ : A ⟶ affineSpaceIndexedBy k (ULift.{u, 0} (Fin M))) [IsClosedImmersion ρ]
@@ -487,8 +469,8 @@ private theorem exists_isClosedImmersion_pullbackBasicOpen (k : Type u) [Field k
       replaceLastCoord_appTop_lastCoordinate, replaceLastCoord_appTop_pullbackAlongProjection, ← unitOnPullbackBasicOpen_val, map_mul,
       map_add, h0, zero_add, ← map_mul, Units.inv_mul, map_one]
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Lift the function defining the source basic open to the ambient affine space. Its pullback along the first projection and then the padded embedding is the original function, since first projection undoes the padding. Thus the inverse image of the ambient pulled-back basic open is the source basic open. Apply the preceding closed immersion construction to this open.
 -/
 private theorem exists_isClosedImmersion_basicOpen_pullbackBasicOpen (k : Type u) [Field k] (M : ℕ) {A : Scheme.{u}}
     (ρ : A ⟶ affineSpaceIndexedBy k (ULift.{u, 0} (Fin M))) [IsClosedImmersion ρ]
@@ -515,8 +497,8 @@ def basicOpenToPullbackBasicOpen (k : Type u) [Field k] (M : ℕ) {A : Scheme.{u
     (↑(A.basicOpen F) : Scheme.{u}) ⟶ (↑(pullbackBasicOpen k M (globalSectionLift k M ρ F)) : Scheme.{u}) :=
   (exists_isClosedImmersion_basicOpen_pullbackBasicOpen k M ρ F).choose
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The selected map was chosen from the construction of a closed immersion into the pulled-back basic open. It therefore has the required closed immersion property.
 -/
 theorem isClosedImmersion_basicOpenToPullbackBasicOpen (k : Type u) [Field k] (M : ℕ) {A : Scheme.{u}}
     (ρ : A ⟶ affineSpaceIndexedBy k (ULift.{u, 0} (Fin M))) [IsClosedImmersion ρ]
@@ -530,8 +512,8 @@ instance instIsClosedImmersionPadLocalEmb (k : Type u) [Field k] (M : ℕ) {A : 
     IsClosedImmersion (basicOpenToPullbackBasicOpen k M ρ F) :=
   isClosedImmersion_basicOpenToPullbackBasicOpen k M ρ F
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The chosen immersion was constructed with original coordinates in its first block. After the open inclusion and the first projection it is the original embedding restricted to the source basic open.
 -/
 theorem basicOpenToPullbackBasicOpen_comp_projLeft (k : Type u) [Field k] (M : ℕ) {A : Scheme.{u}}
     (ρ : A ⟶ affineSpaceIndexedBy k (ULift.{u, 0} (Fin M))) [IsClosedImmersion ρ]
@@ -546,8 +528,8 @@ def basicOpenEmbedding (k : Type u) [Field k] (M : ℕ) {A : Scheme.{u}}
     (↑(A.basicOpen F) : Scheme.{u}) ⟶ affineSpaceTimesLine k M :=
   basicOpenToPullbackBasicOpen k M ρ F ≫ (pullbackBasicOpen k M (globalSectionLift k M ρ F)).ι
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The immersion assigns the inverse of the pulled-back defining function to the last coordinate. Thus the product of that coordinate and the defining function pulls back to one.
 -/
 theorem appTop_basicOpenEmbedding_lastCoordinate_mul (k : Type u) [Field k] (M : ℕ) {A : Scheme.{u}}
     (ρ : A ⟶ affineSpaceIndexedBy k (ULift.{u, 0} (Fin M))) [IsClosedImmersion ρ]
@@ -556,10 +538,8 @@ theorem appTop_basicOpenEmbedding_lastCoordinate_mul (k : Type u) [Field k] (M :
         (lastCoordinate k M * pullbackAlongProjection k M (globalSectionLift k M ρ F)) = 1 :=
   (exists_isClosedImmersion_basicOpen_pullbackBasicOpen k M ρ F).choose_spec.2.2
 
-/- English proof (translation)
-Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+In a local ring either the product of the two images or one minus that product is a unit. The latter would make its negative a unit, contrary to the hypothesis. Hence the product is a unit, and so its second factor is a unit.
 -/
 private theorem isUnit_map_of_not_isUnit_map_mul_sub_one {R S : Type u} [CommRing R] [CommRing S]
     [IsLocalRing S] (φ : R →+* S) (a b : R) (h : ¬ IsUnit (φ (a * b - 1))) : IsUnit (φ b) := by
@@ -570,20 +550,16 @@ private theorem isUnit_map_of_not_isUnit_map_mul_sub_one {R S : Type u} [CommRin
     have h2 := h1.neg
     rwa [neg_sub] at h2
 
-/- English proof (translation)
-Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+A ring map sends zero to zero. In a nontrivial ring zero is not a unit, contradicting the assumption.
 -/
 private theorem false_of_isUnit_map_zero {R S : Type u} [CommRing R] [CommRing S]
     [Nontrivial S] (φ : R →+* S) (h : IsUnit (φ (0 : R))) : False := by
   rw [map_zero] at h
   exact not_isUnit_zero h
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Since the topology on the source is induced, its closed subset is the inverse image of a closed subset of the target. Its image is therefore the intersection of this closed subset with the range of the map. The given image lies in the second closed subset, and that subset lies in the range. Thus intersecting the first closed subset with the second gives exactly the image, proving it is closed.
 -/
 private theorem isClosed_image_of_isInducing {X Y : Type u} [TopologicalSpace X]
     [TopologicalSpace Y] (g : Y → X) (hg : Topology.IsInducing g) (S : Set X) (C : Set Y)
@@ -603,18 +579,8 @@ private theorem isClosed_image_of_isInducing {X Y : Type u} [TopologicalSpace X]
   rw [hEq]
   exact hD.inter hW
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
-
-Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
+/- English proof (authored)
+The map is a closed immersion into the pulled-back basic open followed by an open immersion, so it is a preimmersion. Its image is closed within that open. On its image the last coordinate times the lifted function equals one, so the image lies in the closed zero locus of their product minus one. Conversely, any point of that zero locus has the lifted function invertible in its local ring. Indeed the product minus one is a nonunit there, so the lifted function is a unit by the local-ring criterion. Thus the whole zero locus lies in the pulled-back basic open. A subset closed in that open and contained in this ambient closed locus is closed in the whole ambient space. A preimmersion with closed image is a closed immersion.
 -/
 theorem isClosedImmersion_basicOpenEmbedding (k : Type u) [Field k] (M : ℕ) {A : Scheme.{u}}
     (ρ : A ⟶ affineSpaceIndexedBy k (ULift.{u, 0} (Fin M))) [IsClosedImmersion ρ]
@@ -680,8 +646,8 @@ instance instIsClosedImmersionLocalizationEmb (k : Type u) [Field k] (M : ℕ) {
     IsClosedImmersion (basicOpenEmbedding k M ρ F) :=
   isClosedImmersion_basicOpenEmbedding k M ρ F
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The structure map of the product factors through the first projection. After this projection the constructed embedding is the original embedding on the basic open. The latter is over the given structural map, yielding the asserted composite.
 -/
 theorem basicOpenEmbedding_comp_affineSpaceIndexedByToSpec (k : Type u) [Field k] (M : ℕ) {A : Scheme.{u}}
     (ρ : A ⟶ affineSpaceIndexedBy k (ULift.{u, 0} (Fin M))) [IsClosedImmersion ρ]
@@ -699,16 +665,8 @@ theorem basicOpenEmbedding_comp_affineSpaceIndexedByToSpec (k : Type u) [Field k
       affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin M ⊕ Fin 1)) = (A.basicOpen F).ι ≫ p
   rw [Category.assoc, ← projLeft_comp_affineSpaceIndexedByToSpec k M 1, h2, hp]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At a point of the closed immersion choose a smooth chart inside the open ambient subscheme. Its composite open inclusion into the larger ambient scheme identifies the chart with its open image. Transfer the smooth coordinate map through this isomorphism, preserving the structural map. The ideal of the larger closed immersion restricts on the ambient open to the original ideal. The transferred coordinates therefore pull back to the same restricted ideal and give the same codimension.
 -/
 private theorem hasSmoothCoordCodim_comp_opens_ι {k : Type u} [Field k] {X Y : Scheme.{u}}
     (s : Y ⟶ Spec (CommRingCat.of k)) (O : Y.Opens) (g : X ⟶ (↑O : Scheme.{u})) {c : ℕ}
@@ -753,8 +711,8 @@ private noncomputable def lastCoordinateAddInvUnit (k : Type u) [Field k] (M : �
   (ConcreteCategory.hom (Scheme.Hom.appTop (pullbackBasicOpen k M G).ι)) (lastCoordinate k M) +
     ((unitOnPullbackBasicOpen k M G)⁻¹).val
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The section used for translation is defined as the restriction of the last coordinate plus the inverse of the distinguished unit.
 -/
 private theorem shiftLastCoordSection_eq (k : Type u) [Field k] (M : ℕ)
     (G : ↑((affineSpaceIndexedBy k (ULift.{u, 0} (Fin M))).presheaf.obj (Opposite.op ⊤))) :
@@ -763,30 +721,18 @@ private theorem shiftLastCoordSection_eq (k : Type u) [Field k] (M : ℕ)
         ((unitOnPullbackBasicOpen k M G)⁻¹).val :=
   rfl
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+This section is the last coordinate plus the inverse unit, so the established inverse translation gives an isomorphism.
 -/
 private theorem isIso_shiftLastCoord_shiftLastCoordSection (k : Type u) [Field k] (M : ℕ)
     (G : ↑((affineSpaceIndexedBy k (ULift.{u, 0} (Fin M))).presheaf.obj (Opposite.op ⊤))) :
     IsIso (shiftLastCoord k M G (lastCoordinateAddInvUnit k M G)) :=
   isIso_shiftLastCoord_lastCoordinate_add_inv k M G
 
-/- English proof (translation)
-Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Inside the pulled-back basic open, compare the given immersion with the original immersion padded by a zero and then translated by the inverse defining section. Their first projections coincide by hypothesis, hence their first coordinates and structure maps agree. The product relation determines the last coordinate of the given immersion as the inverse of the pulled-back defining section, which is exactly the last coordinate of the translated immersion. Equality of coordinates identifies the two maps, since the open inclusion is a monomorphism.
 
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+Adding a zero coordinate increases the original codimension by one. Restricting to the pulled-back basic open preserves that codimension, and the translation is an isomorphism over the field, so it preserves it as well. The codimension of the closed immersion into the whole ambient space is then the same as in the open by the preceding open-inclusion result.
 -/
 private theorem hasSmoothCoordCodim_comp_pullbackBasicOpen_ι (hsm : AffineSpaceIsSmooth.{u}) (k : Type u)
     [Field k] (M c : ℕ) {A : Scheme.{u}} (ρ : A ⟶ affineSpaceIndexedBy k (ULift.{u, 0} (Fin M)))
@@ -904,8 +850,8 @@ private theorem hasSmoothCoordCodim_comp_pullbackBasicOpen_ι (hsm : AffineSpace
   exact hasSmoothCoordCodim_comp_opens_ι (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin M ⊕ Fin 1)))
     (pullbackBasicOpen k M G) e hce hceo H3
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The ambient defining section pulls back along the padded original embedding to the source defining section, so the domain is the inverse image of the required ambient open. The constructed immersion has the original first projection and satisfies the inverse-coordinate equation. The codimension result for that construction therefore gives the original codimension plus one. Reindexing the coordinate blocks by an isomorphism over the field preserves the codimension.
 -/
 theorem hasSmoothCoordCodim_basicOpenEmbedding (hsm : AffineSpaceIsSmooth.{u}) (k : Type u) [Field k]
     (M c : ℕ) {A : Scheme.{u}} (ρ : A ⟶ affineSpaceIndexedBy k (ULift.{u, 0} (Fin M)))

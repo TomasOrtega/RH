@@ -25,8 +25,8 @@ def polynomialOfSection (k : Type u) [Field k] (M n q : ℕ)
     (j : Fin q) : MvPolynomial (ULift.{u, 0} (Fin M ⊕ Fin n)) k :=
   (mvPolynomialEquivGlobalSections k (ULift.{u, 0} (Fin M ⊕ Fin n))).symm (F j)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The polynomial of the section is obtained by applying the inverse of the polynomial-to-section equivalence. Applying the forward equivalence recovers the original section.
 -/
 theorem mvPolynomialEquivGlobalSections_polynomialOfSection (k : Type u) [Field k] (M n q : ℕ)
     (F : Fin q →
@@ -40,12 +40,8 @@ def sumVariableMap (M n q : ℕ) (s : Fin q → Fin n) :
   fun i =>
     ULift.up (Sum.elim (fun a : Fin M => Sum.inl a) (fun j : Fin q => Sum.inr (s j)) i.down)
 
-/- English proof (translation)
-Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately.
-
-Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Treat this case separately. Treat this case separately.
-
-Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The map preserves which block an index belongs to. Within the first block it preserves the index itself. Within the second it applies the given injection. Equal outputs therefore come from equal indices in either block.
 -/
 theorem sumVariableMap_injective (M n q : ℕ) (s : Fin q → Fin n) (hs : Function.Injective s) :
     Function.Injective (sumVariableMap.{u} M n q s) := by
@@ -78,8 +74,8 @@ def jacobianMatrixOfSections (k : Type u) [Field k] (M n q : ℕ)
     (MvPolynomial.pderiv (ULift.up (Sum.inr (s i)) : ULift.{u, 0} (Fin M ⊕ Fin n)))
       (polynomialOfSection k M n q F j)
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The matrix is defined by taking the polynomial corresponding to the column's section and differentiating it with respect to the row's selected variable in the second block.
 -/
 theorem jacobianMatrixOfSections_apply (k : Type u) [Field k] (M n q : ℕ)
     (F : Fin q →
@@ -98,8 +94,8 @@ def graphCoordinates (k : Type u) [Field k] (M n q : ℕ)
       (fun a : Fin M => MvPolynomial.X (ULift.up (Sum.inl a) : ULift.{u, 0} (Fin M ⊕ Fin n)))
       (fun j : Fin q => polynomialOfSection k M n q F j) i.down
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+In the first block the graph coordinate polynomial is the corresponding original variable, by the definition of the graph coordinates.
 -/
 theorem graphCoordinates_inl (k : Type u) [Field k] (M n q : ℕ)
     (F : Fin q →
@@ -108,8 +104,8 @@ theorem graphCoordinates_inl (k : Type u) [Field k] (M n q : ℕ)
     graphCoordinates k M n q F (ULift.up (Sum.inl a)) =
       MvPolynomial.X (ULift.up (Sum.inl a) : ULift.{u, 0} (Fin M ⊕ Fin n)) := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The second block is defined by the polynomials associated with the given sections. At the chosen index this gives the polynomial of that section.
 -/
 theorem graphCoordinates_inr (k : Type u) [Field k] (M n q : ℕ)
     (F : Fin q →
@@ -117,18 +113,8 @@ theorem graphCoordinates_inr (k : Type u) [Field k] (M n q : ℕ)
     (j : Fin q) :
     graphCoordinates k M n q F (ULift.up (Sum.inr j)) = polynomialOfSection k M n q F j := rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Split into cases according to the possible forms of the given data. Treat this case separately.
-
-Split into cases according to the possible forms of the given data. Treat this case separately. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Order the rows and columns by the two coordinate blocks. Derivatives of first-block coordinates in first-block variables give an identity block, and derivatives of those coordinates in second-block variables give a zero block below it. The lower right block is the prescribed matrix of derivatives of the graph sections. The matrix is block triangular, so its determinant is the product of the determinants of the identity and the prescribed matrix. Simultaneous reindexing of rows and columns does not change that determinant.
 -/
 private theorem det_graphJacobianMinorMatrix_eq_det_jacobianMatrix (k : Type u) [Field k] (M n q : ℕ)
     (F : Fin q →
@@ -186,8 +172,8 @@ private theorem det_graphJacobianMinorMatrix_eq_det_jacobianMatrix (k : Type u) 
   rw [key, Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, one_mul] at hdet
   exact hdet.symm
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The graph minor determinant is the corresponding polynomial determinant viewed in the graph algebra. The block determinant calculation identifies the polynomial with the determinant of the prescribed section Jacobian, giving the formula.
 -/
 theorem graphJacobianMinorDet_graphCoordinates (k : Type u) [Field k] (M n q : ℕ)
     (F : Fin q →
@@ -218,8 +204,8 @@ def specGraphAwayToSpecGraphAlgebra (k : Type u) [Field k] (M n q : ℕ)
     (algebraMap (GraphAlgebra (graphCoordinates k M n q F))
       (GraphAlgebraAway (graphCoordinates k M n q F) (sumVariableMap.{u} M n q s))))
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. A detailed English derivation is pending.
+/- English proof (authored)
+The map is induced by localizing the graph algebra at the minor determinant. On spectra, localization at one element is an open immersion.
 -/
 theorem isOpenImmersion_specGraphAwayToSpecGraphAlgebra (k : Type u) [Field k] (M n q : ℕ)
     (F : Fin q →
@@ -253,8 +239,8 @@ private def specIsoOfRingEquiv {A B : Type u} [CommRing A] [CommRing B] (e : A �
     Spec (CommRingCat.of B) ≅ Spec (CommRingCat.of A) :=
   Scheme.Spec.mapIso e.toCommRingCatIso.op
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+A ring equivalence induces an isomorphism of spectra in the reverse direction. The inverse is induced by the inverse ring equivalence, since both composites take spectra of identity maps.
 -/
 private theorem isIso_spec_map_ringEquiv {A B : Type u} [CommRing A] [CommRing B]
     (e : A ≃+* B) : IsIso (Spec.map (CommRingCat.ofHom e.toRingHom)) := by
@@ -262,8 +248,8 @@ private theorem isIso_spec_map_ringEquiv {A B : Type u} [CommRing A] [CommRing B
   · exact (specIsoOfRingEquiv e).hom_inv_id
   · exact (specIsoOfRingEquiv e).inv_hom_id
 
-/- English proof (translation)
-Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
+/- English proof (authored)
+The map consists of the basic-open inclusion followed by the affine-space identification with its polynomial spectrum and the isomorphism induced by the graph ring equivalence. An open immersion followed by isomorphisms is an open immersion.
 -/
 theorem isOpenImmersion_basicOpenToSpecGraphAlgebra (k : Type u) [Field k] (M n q : ℕ)
     (F : Fin q →
@@ -283,16 +269,14 @@ instance instIsOpenImmersionGraphChartHom (k : Type u) [Field k] (M n q : ℕ)
     IsOpenImmersion (basicOpenToSpecGraphAlgebra k M n q F s) :=
   isOpenImmersion_basicOpenToSpecGraphAlgebra k M n q F s
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The map on points of a scheme composite is the composite of the maps on points. At the specified point it applies the first map and then the second.
 -/
 private theorem base_comp_apply {X Y Z : Scheme.{u}} (f : X ⟶ Y) (g : Y ⟶ Z) (x : ↥X) :
     ⇑(f ≫ g).base x = ⇑g.base (⇑f.base x) := rfl
 
-/- English proof (translation)
-By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
-
-Supply the required witnesses or components.
+/- English proof (authored)
+A point lies in the range of the composite exactly when it is the second map's image of a point in the first map's range. This gives equality of the two sets.
 -/
 private theorem range_base_comp {X Y Z : Scheme.{u}} (f : X ⟶ Y) (g : Y ⟶ Z) :
     Set.range ⇑(f ≫ g).base = ⇑g.base '' Set.range ⇑f.base := by
@@ -303,10 +287,8 @@ private theorem range_base_comp {X Y Z : Scheme.{u}} (f : X ⟶ Y) (g : Y ⟶ Z)
   · rintro ⟨y, ⟨x, rfl⟩, rfl⟩
     exact ⟨x, base_comp_apply f g x⟩
 
-/- English proof (translation)
-By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
-
-Supply the required witnesses or components.
+/- English proof (authored)
+The image of a point of the subset under the composite is obtained by first taking its image under the first map and then under the second. Each point in the iterated image arises in this way, so the images are equal.
 -/
 private theorem image_base_comp {X Y Z : Scheme.{u}} (f : X ⟶ Y) (g : Y ⟶ Z) (S : Set ↥X) :
     ⇑(f ≫ g).base '' S = ⇑g.base '' (⇑f.base '' S) := by
@@ -317,10 +299,8 @@ private theorem image_base_comp {X Y Z : Scheme.{u}} (f : X ⟶ Y) (g : Y ⟶ Z)
   · rintro ⟨y, ⟨x, hx, rfl⟩, rfl⟩
     exact ⟨x, hx, base_comp_apply f g x⟩
 
-/- English proof (translation)
-By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Every point in the inverse image of the open maps into the open. Conversely, each point of the open has a preimage under the isomorphism, and that preimage lies in the inverse image open. Hence the image is the whole open.
 -/
 private theorem image_hom_preimage_eq {X Y : Scheme.{u}} (e : X ≅ Y) (U : Y.Opens) :
     ⇑e.hom.base '' ((e.hom ⁻¹ᵁ U : X.Opens) : Set ↥X) = (U : Set ↥Y) := by
@@ -334,10 +314,8 @@ private theorem image_hom_preimage_eq {X Y : Scheme.{u}} (e : X ≅ Y) (U : Y.Op
     rw [Scheme.inv_hom_apply e y]
     exact hy
 
-/- English proof (translation)
-By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+A target point is the image of a source point in the open exactly when its inverse image under the isomorphism lies in the open. Thus the image of the open is its inverse image under the inverse isomorphism.
 -/
 private theorem image_hom_eq_preimage_inv {X Y : Scheme.{u}} (e : X ≅ Y) (U : X.Opens) :
     ⇑e.hom.base '' ((U : X.Opens) : Set ↥X) = ((e.inv ⁻¹ᵁ U : Y.Opens) : Set ↥Y) := by
@@ -350,10 +328,8 @@ private theorem image_hom_eq_preimage_inv {X Y : Scheme.{u}} (e : X ≅ Y) (U : 
   · intro hy
     exact ⟨⇑e.inv.base y, hy, Scheme.inv_hom_apply e y⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+A target prime is the contraction of a unique prime under the ring isomorphism. It contains the original element exactly when the corresponding prime contains its image. Passing to the complements gives equality of the basic opens under the map on spectra.
 -/
 private theorem image_basicOpen_spec_map_ringEquiv {A B : Type u} [CommRing A] [CommRing B]
     (e : A ≃+* B) (a : A) :
@@ -399,12 +375,8 @@ private theorem image_basicOpen_spec_map_ringEquiv {A B : Type u} [CommRing A] [
   exact h1.trans (congrArg (fun U : (Spec (CommRingCat.of A)).Opens =>
     (U : Set ↥(Spec (CommRingCat.of A)))) hop)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The localization map has image the basic open of the graph minor determinant. The Jacobian basic open in affine space becomes the basic open of its polynomial determinant under the affine polynomial spectrum identification. The graph algebra isomorphism then sends it to the basic open of the graph minor, because the block determinant calculation identifies the two polynomials under that isomorphism. Thus both maps have the same image.
 -/
 theorem range_specGraphAwayToSpecGraphAlgebra_eq (k : Type u) [Field k] (M n q : ℕ)
     (F : Fin q →
@@ -485,8 +457,8 @@ def specGraphAwayIsoBasicOpen (k : Type u) [Field k] (M n q : ℕ)
   IsOpenImmersion.isoOfRangeEq (specGraphAwayToSpecGraphAlgebra k M n q F s) (basicOpenToSpecGraphAlgebra k M n q F s)
     (range_specGraphAwayToSpecGraphAlgebra_eq k M n q F s)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The isomorphism identifies two open immersions with the same image, so it is over their common target. The inverse followed by the localization immersion is therefore the immersion from the Jacobian basic open.
 -/
 theorem specGraphAwayIsoBasicOpen_inv_comp (k : Type u) [Field k] (M n q : ℕ)
     (F : Fin q →
@@ -507,8 +479,8 @@ def specGraphAwayToAffineSpace (k : Type u) [Field k] (M n q : ℕ)
     (algebraMap (MvPolynomial (ULift.{u, 0} (Fin M ⊕ Fin q)) k)
       (GraphAlgebraAway (graphCoordinates k M n q F) (sumVariableMap.{u} M n q s))))
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The graph algebra map evaluates the chosen graph variable at its prescribed polynomial in the original variables. Applying the inverse graph algebra equivalence recovers that polynomial.
 -/
 private theorem graphAlgebraEquiv_symm_comp_algebraMap_X (k : Type u) [Field k] (M n q : ℕ)
     (F : Fin q →
@@ -520,8 +492,8 @@ private theorem graphAlgebraEquiv_symm_comp_algebraMap_X (k : Type u) [Field k] 
       = graphCoordinates k M n q F i := by
   simp [algebraMap_graphAlgebra]
 
-/- English proof (translation)
-By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Evaluation of a constant polynomial keeps its scalar, and the graph algebra equivalence preserves the coefficient field. Returning by its inverse therefore gives the original scalar as a constant in the source polynomial ring.
 -/
 private theorem graphAlgebraEquiv_symm_comp_algebraMap_comp_C (k : Type u) [Field k] (M n q : ℕ)
     (F : Fin q →
@@ -534,28 +506,18 @@ private theorem graphAlgebraEquiv_symm_comp_algebraMap_comp_C (k : Type u) [Fiel
   ext c
   simp [algebraMap_graphAlgebra, MvPolynomial.algebraMap_eq]
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+Pullback on sections of a composite applies the pullback of the second map and then that of the first.
 -/
 private theorem appTop_comp_apply {X Y Z : Scheme.{u}} (a : X ⟶ Y) (b : Y ⟶ Z)
     (x : ↑(Z.presheaf.obj (Opposite.op ⊤))) :
     (Scheme.Hom.appTop (a ≫ b)) x
       = (Scheme.Hom.appTop a) ((Scheme.Hom.appTop b) x) := rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Factor the localized graph map through the spectrum of the graph algebra. The isomorphism with the Jacobian basic open identifies the first map with the open immersion of that basic open in the graph spectrum. In affine coordinates the remaining map is thus given by the graph algebra evaluation, restricted to the basic open.
 
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
-
-Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
+This evaluation fixes the coefficient field, so the composite has the same structural map as the graph morphism. On the original coordinate block, it pulls back each variable to the same original variable. On the graph coordinate block, it pulls each variable back to the polynomial of the specified function. Passing through the identifications of polynomials with sections gives respectively the original coordinates and the specified functions restricted to the basic open. The two morphisms therefore agree on every coordinate and on the structural map.
 -/
 theorem graphMorphismToAffineSpace_basicOpen_jacobianDetSection_eq (k : Type u) [Field k] (M n q : ℕ)
     (F : Fin q →
@@ -687,8 +649,8 @@ theorem graphMorphismToAffineSpace_basicOpen_jacobianDetSection_eq (k : Type u) 
   · exact (graphMorphismToAffineSpace_comp_affineSpaceIndexedByToSpec k M n q F _).trans hA.symm
   · exact hB
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The selected variable map is injective because it preserves the original block and is injective on the added block. The localized graph algebra is standard smooth for this choice, so the induced affine morphism is smooth. The graph morphism on the Jacobian basic open is this smooth morphism composed with isomorphisms at source and target. Hence it is smooth.
 -/
 theorem smooth_graphMorphismToAffineSpace_basicOpen (k : Type u) [Field k] (M n q : ℕ)
     (F : Fin q →

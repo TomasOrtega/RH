@@ -26,8 +26,8 @@ def affineSpaceOrigin (k : Type u) [Field k] (m : ℕ) :
   AffineSpace.homOfVector (𝟙 (Spec (CommRingCat.of k))) (fun _ => 0)
 
 @[simp]
-/- English proof (translation)
-Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The origin is the affine-space map defined by zero coordinates over the identity of the field spectrum. Composing with the structure map recovers that identity.
 -/
 theorem affineSpaceOrigin_comp_toSpec (k : Type u) [Field k] (m : ℕ) :
     affineSpaceOrigin k m ≫ affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin m)) =
@@ -36,16 +36,16 @@ theorem affineSpaceOrigin_comp_toSpec (k : Type u) [Field k] (m : ℕ) :
   simp
 
 @[simp]
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The origin followed by the structure map is the identity on the field spectrum. Composing with the given map therefore returns the given map.
 -/
 theorem affineSpaceOrigin_comp_toSpec_assoc (k : Type u) [Field k] (m : ℕ) {Z : Scheme.{u}}
     (g : Spec (CommRingCat.of k) ⟶ Z) :
     affineSpaceOrigin k m ≫ affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin m)) ≫ g = g := by
   rw [← Category.assoc, affineSpaceOrigin_comp_toSpec, Category.id_comp]
 
-/- English proof (translation)
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The defining vector of the origin is zero at every coordinate. Its pullback of the specified coordinate is therefore zero.
 -/
 theorem pullbackCoord_affineSpaceOrigin (k : Type u) [Field k] (m : ℕ)
     (i : ULift.{u, 0} (Fin m)) :
@@ -53,8 +53,8 @@ theorem pullbackCoord_affineSpaceOrigin (k : Type u) [Field k] (m : ℕ)
   simp [pullbackCoord_def, affineSpaceOrigin]
 
 @[simp]
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The map on global sections sends each target coordinate to the corresponding entry of the defining vector of the origin. This entry is zero.
 -/
 theorem affineSpaceOrigin_appTop_coord (k : Type u) [Field k] (m : ℕ)
     (i : ULift.{u, 0} (Fin m)) :
@@ -62,8 +62,8 @@ theorem affineSpaceOrigin_appTop_coord (k : Type u) [Field k] (m : ℕ)
         (AffineSpace.coord (Spec (CommRingCat.of k)) i) = 0 := by
   simp [affineSpaceOrigin]
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
+/- English proof (authored)
+A morphism into affine space is determined by its structural map and the pullback of each coordinate. The given map has the identity as its structural map and sends all coordinates to zero, just as the origin does.
 -/
 theorem eq_affineSpaceOrigin_of_pullbackCoord_eq_zero (k : Type u) [Field k] (m : ℕ)
     (f : Spec (CommRingCat.of k) ⟶ affineSpaceIndexedBy k (ULift.{u, 0} (Fin m)))
@@ -76,12 +76,8 @@ theorem eq_affineSpaceOrigin_of_pullbackCoord_eq_zero (k : Type u) [Field k] (m 
     simpa only [affineSpaceOrigin, AffineSpace.homOfVector_appTop_coord, pullbackCoord_def]
       using hcoord i
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The structural map after the origin is the identity, so pullback along the structural map is a right inverse to pullback along the origin on global sections. Thus the origin's section map is surjective. Both schemes are affine, so the origin is a closed immersion.
 -/
 theorem isClosedImmersion_affineSpaceOrigin (k : Type u) [Field k] (m : ℕ) :
     IsClosedImmersion (affineSpaceOrigin k m) := by
@@ -110,15 +106,15 @@ instance instIsClosedImmersionAffineSpaceOrigin (k : Type u) [Field k] (m : ℕ)
     IsClosedImmersion (affineSpaceOrigin k m) :=
   isClosedImmersion_affineSpaceOrigin k m
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+Pullback of global sections is a contravariant functor. Its value on the identity scheme map is the identity ring map.
 -/
 private theorem appTop_id (X : Scheme.{u}) :
     Scheme.Hom.appTop (𝟙 X) = 𝟙 (X.presheaf.obj (Opposite.op ⊤)) := by
   simp [Scheme.Hom.appTop]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
+/- English proof (authored)
+The successive pullbacks are the pullback along the composite of the isomorphism and its inverse. That composite is the identity, which fixes every section.
 -/
 private theorem appTop_hom_appTop_inv_apply {X Y : Scheme.{u}} (e : X ≅ Y)
     (x : ↑(X.presheaf.obj (Opposite.op ⊤))) :
@@ -130,8 +126,8 @@ private theorem appTop_hom_appTop_inv_apply {X Y : Scheme.{u}} (e : X ≅ Y)
   have h2 := congrArg (fun φ => CommRingCat.Hom.hom φ x) h
   simpa using h2
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The global sections of the field spectrum identify with the field. Under this identification zero and one are distinct, so the section ring is nontrivial.
 -/
 private theorem nontrivial_globalSections_spec (k : Type u) [Field k] :
     Nontrivial ↑((Spec (CommRingCat.of k)).presheaf.obj (Opposite.op ⊤)) := by
@@ -150,8 +146,8 @@ private def mvPolynomialFinToAffineSpaceGlobalSections (k : Type u) [Field k] (m
     (CommRingCat.Hom.hom (Scheme.ΓSpecIso
       (CommRingCat.of (MvPolynomial (ULift.{u, 0} (Fin m)) k))).inv)
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The section associated to a polynomial is obtained by first taking its section on the polynomial spectrum and then pulling back along the affine-space isomorphism.
 -/
 private theorem mvPolynomialToSections_apply (k : Type u) [Field k] (m : ℕ)
     (x : MvPolynomial (ULift.{u, 0} (Fin m)) k) :
@@ -161,8 +157,8 @@ private theorem mvPolynomialToSections_apply (k : Type u) [Field k] (m : ℕ)
         (CommRingCat.Hom.hom (Scheme.ΓSpecIso
           (CommRingCat.of (MvPolynomial (ULift.{u, 0} (Fin m)) k))).inv x) := rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Under the inverse affine-space isomorphism, the coordinate pulls back to the section of its corresponding polynomial variable. The polynomial-to-section map then pulls this section back along the forward isomorphism, recovering the original coordinate.
 -/
 private theorem mvPolynomialToSections_X (k : Type u) [Field k] (m : ℕ)
     (i : ULift.{u, 0} (Fin m)) :
@@ -177,8 +173,8 @@ private theorem mvPolynomialToSections_X (k : Type u) [Field k] (m : ℕ)
   rw [mvPolynomialToSections_apply, ← hX]
   exact appTop_hom_appTop_inv_apply _ _
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Given an affine-space section, pull it back along the inverse isomorphism to the polynomial spectrum. Take the polynomial corresponding to this section. Both steps are reversed by the polynomial-to-section map, so the chosen polynomial maps to the original section.
 -/
 private theorem mvPolynomialToSections_surjective (k : Type u) [Field k] (m : ℕ) :
     Function.Surjective (mvPolynomialFinToAffineSpaceGlobalSections k m) := by
@@ -198,10 +194,8 @@ private theorem mvPolynomialToSections_surjective (k : Type u) [Field k] (m : �
     exact CommRingCat.inv_hom_apply ..
   rw [mvPolynomialToSections_apply, hinv, appTop_hom_appTop_inv_apply]
 
-/- English proof (translation)
-Proceed by induction. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Subtract the constant term. Every remaining monomial contains at least one variable and hence lies in the ideal generated by the variables. Equivalently, polynomial induction gives zero for a constant, preserves the assertion under addition, and gives a multiple of a generator for a polynomial multiplied by a variable.
 -/
 private theorem sub_C_constantCoeff_mem_span_X {σ : Type u} {A : Type u} [CommRing A]
     (p : MvPolynomial σ A) :
@@ -227,14 +221,8 @@ private theorem sub_C_constantCoeff_mem_span_X {σ : Type u} {A : Type u} [CommR
     rw [hmul]
     exact Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨i, rfl⟩)
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Each variable maps to zero, so the ideal they generate lies in the kernel. Any polynomial differs from its constant term by an element of this ideal. If it lies in the kernel, its constant term also maps to zero. The restriction of the ring map to the coefficient field is injective because the target is nontrivial, so that constant term is zero. The polynomial then belongs to the variable ideal.
 -/
 private theorem ker_eq_span_range_X {σ : Type u} {K : Type u} [Field K] {T : Type u}
     [CommRing T] [Nontrivial T] (g : MvPolynomial σ K →+* T)
@@ -263,10 +251,8 @@ private theorem ker_eq_span_range_X {σ : Type u} {K : Type u} [Field K] {T : Ty
   rw [hpe]
   exact hsub
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The kernel of the composite is the inverse image of the second map's kernel along the first map. Since the first map is surjective, mapping this inverse image forward recovers the second kernel. Mapping an ideal generated by a set gives the ideal generated by its images, yielding the asserted formula.
 -/
 private theorem ker_eq_span_image_of_surjective {A B C : Type u} [CommRing A] [CommRing B]
     [CommRing C] (ψ : A →+* B) (hsurj : Function.Surjective ψ) (g : B →+* C) (s : Set A)
@@ -280,14 +266,8 @@ private theorem ker_eq_span_image_of_surjective {A B C : Type u} [CommRing A] [C
     Ideal.map_comap_of_surjective ψ hsurj _
   rw [← h2, h1, Ideal.map_span]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
-
-Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Compose the origin's section map with the surjection from polynomials to affine-space sections. The composite sends every variable to zero and has nontrivial target, so its kernel is generated by the variables. By surjectivity, the original kernel is generated by their images in the section ring. Those images are precisely the affine coordinates.
 -/
 private theorem ker_appTop_affineSpaceOrigin (k : Type u) [Field k] (m : ℕ) :
     RingHom.ker (CommRingCat.Hom.hom (Scheme.Hom.appTop (affineSpaceOrigin k m))) =
@@ -317,8 +297,8 @@ private theorem ker_appTop_affineSpaceOrigin (k : Type u) [Field k] (m : ℕ) :
     exact ⟨MvPolynomial.X (ULift.up.{u, 0} i), Set.mem_range_self _,
       mvPolynomialToSections_X k m (ULift.up.{u, 0} i)⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
+/- English proof (authored)
+On an affine scheme the kernel ideal sheaf of this quasi-compact map is determined by the kernel on global sections. This kernel is generated by all the coordinate sections, which is the global ideal of the full coordinate subspace ideal.
 -/
 theorem ker_affineSpaceOrigin (k : Type u) [Field k] (m : ℕ) :
     Scheme.Hom.ker (affineSpaceOrigin k m) = coordSubspaceIdeal k m Finset.univ := by
@@ -331,8 +311,8 @@ theorem ker_affineSpaceOrigin (k : Type u) [Field k] (m : ℕ) :
   rw [coordSubspaceIdeal_eq_ofIdealTop_span_coord]
   simpa using hker
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
+/- English proof (authored)
+Pulling the coordinate back along a composite pulls it back along the second map and then applies the first map's pullback on sections.
 -/
 private theorem pullbackCoord_comp_eq_hom_appTop_apply {k : Type u} [Field k]
     {Y Z : Scheme.{u}} {n : Type u} (f : Y ⟶ Z) (g : Z ⟶ affineSpaceIndexedBy k n) (i : n) :
@@ -342,10 +322,8 @@ private theorem pullbackCoord_comp_eq_hom_appTop_apply {k : Type u} [Field k]
   rfl
 
 @[simp]
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The composite preserves the structural map and pulls each coordinate back to itself because first-block projection recovers the coordinates retained by the first-block inclusion. It is therefore the identity.
 -/
 theorem affineSpaceInl_comp_projLeft (k : Type u) [Field k] (n m : ℕ) :
     affineSpaceInl k n m ≫ projLeft k n m = 𝟙 (affineSpaceIndexedBy k (ULift.{u, 0} (Fin n))) := by
@@ -360,8 +338,8 @@ theorem affineSpaceInl_comp_projLeft (k : Type u) [Field k] (n m : ℕ) :
     simp
 
 @[simp]
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The first-block inclusion followed by its projection is the identity. Following this by the given map returns the given map.
 -/
 theorem affineSpaceInl_comp_projLeft_assoc (k : Type u) [Field k] (n m : ℕ) {Z : Scheme.{u}}
     (g : affineSpaceIndexedBy k (ULift.{u, 0} (Fin n)) ⟶ Z) :
@@ -369,10 +347,8 @@ theorem affineSpaceInl_comp_projLeft_assoc (k : Type u) [Field k] (n m : ℕ) {Z
   rw [← Category.assoc, affineSpaceInl_comp_projLeft, Category.id_comp]
 
 @[simp]
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The composite is over the field and recovers each second-block coordinate retained by the inclusion. By the coordinate characterization it is the identity.
 -/
 theorem affineSpaceInrEmbedding_comp_projRight (k : Type u) [Field k] (n m : ℕ) :
     affineSpaceInrEmbedding k n m ≫ projRight k n m = 𝟙 (affineSpaceIndexedBy k (ULift.{u, 0} (Fin m))) := by
@@ -387,18 +363,16 @@ theorem affineSpaceInrEmbedding_comp_projRight (k : Type u) [Field k] (n m : ℕ
     simp
 
 @[simp]
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The second-block inclusion followed by its projection is the identity. Composing with the given map therefore gives that map.
 -/
 theorem affineSpaceInrEmbedding_comp_projRight_assoc (k : Type u) [Field k] (n m : ℕ) {Z : Scheme.{u}}
     (g : affineSpaceIndexedBy k (ULift.{u, 0} (Fin m)) ⟶ Z) :
     affineSpaceInrEmbedding k n m ≫ projRight k n m ≫ g = g := by
   rw [← Category.assoc, affineSpaceInrEmbedding_comp_projRight, Category.id_comp]
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Both maps have the original structural map to the field. The projection to the second block reads only the zero coordinates appended by the first inclusion, so every coordinate pulls back to zero. This agrees with the map through the origin of the second block.
 -/
 theorem affineSpaceInl_comp_projRight (k : Type u) [Field k] (n m : ℕ) :
     affineSpaceInl k n m ≫ projRight k n m =
@@ -416,10 +390,8 @@ theorem affineSpaceInl_comp_projRight (k : Type u) [Field k] (n m : ℕ) :
       rw [pullbackCoord_comp_eq_hom_appTop_apply, pullbackCoord_affineSpaceOrigin, map_zero]
     rw [← pullbackCoord_def, ← pullbackCoord_def, h, h2]
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The two maps preserve the field structure. The second-block inclusion sets all first-block coordinates to zero, so the first projection after it has the same coordinate pullbacks as the composite through the first-block origin.
 -/
 theorem affineSpaceInrEmbedding_comp_projLeft (k : Type u) [Field k] (n m : ℕ) :
     affineSpaceInrEmbedding k n m ≫ projLeft k n m =
@@ -437,10 +409,8 @@ theorem affineSpaceInrEmbedding_comp_projLeft (k : Type u) [Field k] (n m : ℕ)
       simp
     rw [← pullbackCoord_def, ← pullbackCoord_def, h, h2]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The first-block inclusion is the pullback of the second-block origin along the second projection. To see this, use the affine product square and cancel it from the outer rectangle, which is a pullback because both the first projection of the inclusion and the field projection of the origin are identities. The second projection is smooth and hence flat, and the closed immersions in the square are quasi-compact. The flat pullback formula for kernels gives the equality.
 -/
 theorem ker_affineSpaceInl_eq_comap (hsm : AffineSpaceIsSmooth.{u}) (k : Type u) [Field k] (n m : ℕ) :
     Scheme.Hom.ker (affineSpaceInl k n m) =
@@ -461,8 +431,8 @@ theorem ker_affineSpaceInl_eq_comap (hsm : AffineSpaceIsSmooth.{u}) (k : Type u)
   have : QuasiCompact (affineSpaceInl k n m) := quasiCompact_of_isPullback hsq
   exact ker_eq_comap_ker_of_isPullback_of_flat hsq
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Place the square above the affine product square. The second projection of the inclusion is the identity and the structure map of the first-block origin after that origin is the identity. These identify the outer rectangle with the pullback of an identity. The inner square commutes by the first-projection formula for the second-block inclusion, so cancelling the product square proves the claim.
 -/
 private theorem isPullback_affineSpaceInrEmbedding_projLeft (k : Type u) [Field k] (n m : ℕ) :
     IsPullback (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin m))) (affineSpaceInrEmbedding k n m)
@@ -481,8 +451,8 @@ private theorem isPullback_affineSpaceInrEmbedding_projLeft (k : Type u) [Field 
   exact IsPullback.of_bot s (affineSpaceInrEmbedding_comp_projLeft k n m).symm
     (isPullback_projLeft_projRight k n m)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The second-block inclusion is the base change of the first-block origin along the first projection. This projection is smooth and therefore flat, and the two closed immersions are quasi-compact. Apply the flat pullback formula to identify their kernel ideals.
 -/
 theorem ker_affineSpaceInrEmbedding_eq_comap (hsm : AffineSpaceIsSmooth.{u}) (k : Type u) [Field k] (n m : ℕ) :
     Scheme.Hom.ker (affineSpaceInrEmbedding k n m) =
@@ -493,10 +463,8 @@ theorem ker_affineSpaceInrEmbedding_eq_comap (hsm : AffineSpaceIsSmooth.{u}) (k 
   have hq2 : AlgebraicGeometry.QuasiCompact (affineSpaceInrEmbedding k n m) := inferInstance
   exact ker_eq_comap_ker_of_isPullback_of_flat (isPullback_affineSpaceInrEmbedding_projLeft k n m)
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Check the elementary cases of the proposition. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Use the whole target affine space as the chart domain, with the projection to the second block as the chart. It is smooth and over the field. The kernel of the first-block inclusion is the pullback along this projection of the origin ideal of the second block. That ideal is generated by all its coordinates, giving the stated codimension.
 -/
 theorem hasSmoothCoordCodim_affineSpaceInl (hsm : AffineSpaceIsSmooth.{u}) (k : Type u) [Field k]
     (n m : ℕ) :
@@ -512,10 +480,8 @@ theorem hasSmoothCoordCodim_affineSpaceInl (hsm : AffineSpaceIsSmooth.{u}) (k : 
   · rw [restrictIdeal_eq_comap_ι, ker_affineSpaceInl_eq_comap hsm, ker_affineSpaceOrigin,
       Scheme.IdealSheafData.comap_comp]
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+Take the entire target as the chart and the smooth projection to the first block as its coordinate map over the field. The defining ideal of the inclusion is the pullback of the first-block origin ideal, which is generated by its full set of coordinates. This yields the required codimension.
 -/
 theorem hasSmoothCoordCodim_affineSpaceInrEmbedding (hsm : AffineSpaceIsSmooth.{u}) (k : Type u) [Field k]
     (n m : ℕ) :

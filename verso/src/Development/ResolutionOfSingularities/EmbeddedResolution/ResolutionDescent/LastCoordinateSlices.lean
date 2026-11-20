@@ -35,8 +35,8 @@ def baseFieldToGlobalSections {X : Scheme.{u}} (k : Type u) [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) : k →+* ↑(X.presheaf.obj (Opposite.op ⊤)) :=
   RingHom.comp (Scheme.Hom.appTop p).hom (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Use the affine-space map defined by the original structural map, the original first-block coordinates, and the original last coordinate plus the given scalar section. The coordinate rule for the resulting map gives the required structural and pullback identities.
 -/
 private theorem exists_translateLastCoord (k : Type u) [Field k] (M : ℕ) (a : k) :
     ∃ f : affineSpaceTimesLine k M ⟶ affineSpaceTimesLine k M,
@@ -69,16 +69,16 @@ def translateLastCoord (k : Type u) [Field k] (M : ℕ) (a : k) : affineSpaceTim
   (exists_translateLastCoord k M a).choose
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The translation is constructed over the original structural map to the field, which is therefore its composite with the target projection.
 -/
 theorem translateLastCoord_comp_affineSpaceIndexedByToSpec (k : Type u) [Field k] (M : ℕ) (a : k) :
     translateLastCoord k M a ≫ affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin M ⊕ Fin 1)) =
       affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin M ⊕ Fin 1)) :=
   (exists_translateLastCoord k M a).choose_spec.1
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The defining vector retains all the original first-block coordinates, so the specified coordinate pulls back to itself.
 -/
 theorem pullbackCoord_translateLastCoord_inl (k : Type u) [Field k] (M : ℕ) (a : k) (b : Fin M) :
     pullbackCoord (translateLastCoord k M a) (⟨Sum.inl b⟩ : ULift.{u, 0} (Fin M ⊕ Fin 1)) =
@@ -86,8 +86,8 @@ theorem pullbackCoord_translateLastCoord_inl (k : Type u) [Field k] (M : ℕ) (a
         (⟨Sum.inl b⟩ : ULift.{u, 0} (Fin M ⊕ Fin 1)) :=
   (exists_translateLastCoord k M a).choose_spec.2.1 b
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The last entry of the translation's defining vector is the original last coordinate plus the scalar section. That is its pullback of the last coordinate.
 -/
 theorem translateLastCoord_appTop_lastCoordinate (k : Type u) [Field k] (M : ℕ) (a : k) :
     (ConcreteCategory.hom (Scheme.Hom.appTop (translateLastCoord k M a))) (lastCoordinate k M) =
@@ -95,8 +95,8 @@ theorem translateLastCoord_appTop_lastCoordinate (k : Type u) [Field k] (M : ℕ
         baseFieldToGlobalSections k (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin M ⊕ Fin 1))) a :=
   (exists_translateLastCoord k M a).choose_spec.2.2
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+First view the scalar as a section on the field spectrum. Pull back that section along the structural map to obtain its constant section on the scheme.
 -/
 private theorem baseFieldToGlobalSections_apply (k : Type u) [Field k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) (a : k) :
@@ -105,8 +105,8 @@ private theorem baseFieldToGlobalSections_apply (k : Type u) [Field k] {X : Sche
         ((ConcreteCategory.hom (Scheme.ΓSpecIso (CommRingCat.of k)).inv) a) :=
   rfl
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+A scalar section pulls back from the field. Pulling it back further along the given map is pullback from the field along the composite structural map.
 -/
 private theorem appTop_baseFieldToGlobalSections (k : Type u) [Field k] {X Y : Scheme.{u}}
     (f : X ⟶ Y) (p : Y ⟶ Spec (CommRingCat.of k)) (a : k) :
@@ -115,22 +115,16 @@ private theorem appTop_baseFieldToGlobalSections (k : Type u) [Field k] {X Y : S
   rw [baseFieldToGlobalSections_apply, baseFieldToGlobalSections_apply, Scheme.Hom.comp_appTop,
     CommRingCat.comp_apply]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The assignment of scalar sections is a ring homomorphism, so it preserves additive inverses.
 -/
 private theorem baseFieldToGlobalSections_neg (k : Type u) [Field k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) (a : k) :
     baseFieldToGlobalSections k p (-a) = -baseFieldToGlobalSections k p a :=
   map_neg (baseFieldToGlobalSections k p) a
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
+/- English proof (authored)
+Both translations preserve the structural map and the first block of coordinates. They also fix scalar sections because they are over the field. The last coordinate is consequently translated by the given scalar and its negative in succession, recovering the original coordinate. Thus the composite is the identity.
 -/
 theorem translateLastCoord_comp_translateLastCoord_neg (k : Type u) [Field k] (M : ℕ) (a : k) :
     translateLastCoord k M a ≫ translateLastCoord k M (-a) = 𝟙 (affineSpaceTimesLine k M) := by
@@ -167,8 +161,8 @@ theorem translateLastCoord_comp_translateLastCoord_neg (k : Type u) [Field k] (M
   · exact H0
   · exact H
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+Apply the cancellation identity to the negative scalar. The negative of that scalar is the original scalar, giving the opposite composition identity.
 -/
 theorem translateLastCoord_neg_comp_translateLastCoord (k : Type u) [Field k] (M : ℕ) (a : k) :
     translateLastCoord k M (-a) ≫ translateLastCoord k M a = 𝟙 (affineSpaceTimesLine k M) := by
@@ -182,25 +176,21 @@ def translateLastCoordIso (k : Type u) [Field k] (M : ℕ) (a : k) : affineSpace
   inv_hom_id := translateLastCoord_neg_comp_translateLastCoord k M a
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The forward map of the isomorphism is by definition translation by the given scalar.
 -/
 theorem translateLastCoordIso_hom (k : Type u) [Field k] (M : ℕ) (a : k) :
     (translateLastCoordIso k M a).hom = translateLastCoord k M a := rfl
 
 @[simp]
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The inverse isomorphism is the translation by the negative scalar, whose composites with the forward map are identities.
 -/
 theorem translateLastCoordIso_inv (k : Type u) [Field k] (M : ℕ) (a : k) :
     (translateLastCoordIso k M a).inv = translateLastCoord k M (-a) := rfl
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
-
-Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Construct the map over the field with the old coordinates in the first block and the given scalar in the last coordinate. Its first projection is the identity because it has the original structure map and coordinates. Every source coordinate therefore has a lift to a target coordinate, so the affine closed immersion criterion applies. The pullback of the last coordinate is the chosen scalar section.
 -/
 private theorem exists_sliceAtLastCoord (k : Type u) [Field k] (M : ℕ) (a : k) :
     ∃ f : affineSpaceIndexedBy k (ULift.{u, 0} (Fin M)) ⟶ affineSpaceTimesLine k M,
@@ -238,16 +228,16 @@ def sliceAtLastCoord (k : Type u) [Field k] (M : ℕ) (a : k) :
   (exists_sliceAtLastCoord k M a).choose
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The slice was constructed over the field with the source structure map. Composing its embedding with the larger space's structure map gives the source structure map.
 -/
 theorem sliceAtLastCoord_comp_affineSpaceIndexedByToSpec (k : Type u) [Field k] (M : ℕ) (a : k) :
     sliceAtLastCoord k M a ≫ affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin M ⊕ Fin 1)) =
       affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin M)) :=
   (exists_sliceAtLastCoord k M a).choose_spec.1
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The chosen slice is the closed immersion from the coordinate construction. Its first-block coordinates lift every source coordinate, giving the closed immersion property.
 -/
 theorem isClosedImmersion_sliceAtLastCoord (k : Type u) [Field k] (M : ℕ) (a : k) :
     IsClosedImmersion (sliceAtLastCoord k M a) :=
@@ -258,24 +248,24 @@ instance instIsClosedImmersionHeightSlice (k : Type u) [Field k] (M : ℕ) (a : 
   isClosedImmersion_sliceAtLastCoord k M a
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Projection to the first block recovers the original coordinate vector and the original structural map. Hence it is the identity after the slice inclusion.
 -/
 theorem sliceAtLastCoord_comp_projLeft (k : Type u) [Field k] (M : ℕ) (a : k) :
     sliceAtLastCoord k M a ≫ projLeft k M 1 = 𝟙 (affineSpaceIndexedBy k (ULift.{u, 0} (Fin M))) :=
   (exists_sliceAtLastCoord k M a).choose_spec.2.2.1
 
 @[simp]
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The slice inclusion followed by first projection is the identity. Composing this with the given map gives the map itself.
 -/
 theorem sliceAtLastCoord_comp_projLeft_assoc (k : Type u) [Field k] (M : ℕ) (a : k) {Z : Scheme.{u}}
     (g : affineSpaceIndexedBy k (ULift.{u, 0} (Fin M)) ⟶ Z) :
     sliceAtLastCoord k M a ≫ projLeft k M 1 ≫ g = g := by
   rw [← Category.assoc, sliceAtLastCoord_comp_projLeft, Category.id_comp]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The slice sets the last coordinate to the given scalar. Its pullback sends that coordinate to the corresponding constant section.
 -/
 theorem sliceAtLastCoord_appTop_lastCoordinate (k : Type u) [Field k] (M : ℕ) (a : k) :
     (ConcreteCategory.hom (Scheme.Hom.appTop (sliceAtLastCoord k M a))) (lastCoordinate k M) =
@@ -297,8 +287,8 @@ def coproductSliceMap (k : Type u) [Field k] (M : ℕ) {ι : Type u} (e : ι →
   Sigma.desc fun i => ρ i ≫ sliceAtLastCoord k M (e i)
 
 @[simp]
-/- English proof (translation)
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The coproduct map is defined on each summand by its embedding into the first affine block followed by its assigned slice inclusion. Restricting it to the given summand recovers that composite.
 -/
 theorem sigma_ι_coproductSliceMap (k : Type u) [Field k] (M : ℕ) {ι : Type u} (e : ι → k) (A : ι → Scheme.{u})
     (ρ : ∀ i, A i ⟶ affineSpaceIndexedBy k (ULift.{u, 0} (Fin M))) (i : ι) :
@@ -306,8 +296,8 @@ theorem sigma_ι_coproductSliceMap (k : Type u) [Field k] (M : ℕ) {ι : Type u
   simp [coproductSliceMap]
 
 @[simp]
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Compose the formula for restriction to a summand with the given target morphism. Associativity gives the stated equality.
 -/
 theorem sigma_ι_coproductSliceMap_assoc (k : Type u) [Field k] (M : ℕ) {ι : Type u} (e : ι → k)
     (A : ι → Scheme.{u}) (ρ : ∀ i, A i ⟶ affineSpaceIndexedBy k (ULift.{u, 0} (Fin M))) (i : ι)
@@ -315,8 +305,8 @@ theorem sigma_ι_coproductSliceMap_assoc (k : Type u) [Field k] (M : ℕ) {ι : 
     Sigma.ι A i ≫ coproductSliceMap k M e A ρ ≫ g = ρ i ≫ sliceAtLastCoord k M (e i) ≫ g := by
   rw [← Category.assoc, sigma_ι_coproductSliceMap, Category.assoc]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The slice inclusion followed by first projection is the identity. Pulling a section back along that projection and then along the slice inclusion gives the original section.
 -/
 private theorem sliceAtLastCoord_appTop_pullbackAlongProjection (k : Type u) [Field k] (M : ℕ) (a : k)
     (G : ↑((affineSpaceIndexedBy k (ULift.{u, 0} (Fin M))).presheaf.obj (Opposite.op ⊤))) :
@@ -326,8 +316,8 @@ private theorem sliceAtLastCoord_appTop_pullbackAlongProjection (k : Type u) [Fi
   rw [hp, ← CommRingCat.comp_apply, ← Scheme.Hom.comp_appTop, sliceAtLastCoord_comp_projLeft,
     Scheme.Hom.id_appTop, CommRingCat.id_apply]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+A slice inclusion is over the field, so pulling back a scalar section gives the section of the same scalar for the slice's structure map.
 -/
 private theorem sliceAtLastCoord_appTop_baseFieldToGlobalSections (k : Type u) [Field k] (M : ℕ) (a x : k) :
     (ConcreteCategory.hom (Scheme.Hom.appTop (sliceAtLastCoord k M a)))
@@ -343,12 +333,8 @@ private def lagrangeBasisSection (k : Type u) [Field k] (M : ℕ) {ι : Type u} 
       (lastCoordinate k M -
         baseFieldToGlobalSections k (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin M ⊕ Fin 1))) (e l))
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+On the chosen slice the last coordinate is its assigned field element. Evaluate the Lagrange basis polynomial there. On its own slice every factor in the normalizing product is nonzero because the assigned scalars are distinct. The evaluated product cancels its inverse, giving one. On a different slice, the product includes the factor obtained by subtracting that slice's own scalar, so it is zero.
 -/
 private theorem sliceAtLastCoord_appTop_lagrangeSection (k : Type u) [Field k] (M : ℕ) {ι : Type u}
     [Fintype ι] [DecidableEq ι] (e : ι → k) (he : Function.Injective e) (i j : ι) :
@@ -383,10 +369,8 @@ private theorem sliceAtLastCoord_appTop_lagrangeSection (k : Type u) [Field k] (
         (sub_self (e i))
     rw [if_neg hji, hz, mul_zero, map_zero]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Pull the sum back term by term. The Lagrange section vanishes on the chosen slice for every other index and equals one for the chosen index. The remaining coefficient, pulled back from the first projection, restricts to the originally assigned section on that slice.
 -/
 private theorem sliceAtLastCoord_appTop_sum_mul_lagrangeSection (k : Type u) [Field k] (M : ℕ) {ι : Type u}
     [Fintype ι] [DecidableEq ι] (e : ι → k) (he : Function.Injective e)
@@ -401,12 +385,8 @@ private theorem sliceAtLastCoord_appTop_sum_mul_lagrangeSection (k : Type u) [Fi
     simp only [map_mul, sliceAtLastCoord_appTop_lagrangeSection k M e he i j]
     rw [if_neg hj, mul_zero]
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Use the two sections as coordinates of maps from the coproduct to the affine line over the given base map. The restrictions to each summand agree because they have the same structural map and equal coordinates. The coproduct universal property makes the two maps equal. Pulling back the line coordinate recovers equality of the two sections.
 -/
 private theorem coproduct_globalSections_ext (k : Type u) [Field k] {ι : Type u} (A : ι → Scheme.{u})
     (q : (∐ A) ⟶ Spec (CommRingCat.of k))
@@ -438,10 +418,8 @@ private theorem coproduct_globalSections_ext (k : Type u) [Field k] {ι : Type u
         rw [hfg]
     _ = t := hv t ⟨0⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The finite coproduct of affine schemes is affine. To lift any section on it, first restrict the section to each summand and lift that restriction to a section on the original affine space using its closed immersion. Pull these lifts back to the product and weight each by its Lagrange basis section in the last coordinate. On the assigned slice only the designated lift remains. Pulling back to each summand therefore recovers the prescribed restriction, so the interpolated section pulls back to the original section on the coproduct. The resulting surjection on global sections gives a closed immersion of affine schemes.
 -/
 theorem isClosedImmersion_coproductSliceMap (k : Type u) [Field k] (M : ℕ) {ι : Type u} [Fintype ι]
     [DecidableEq ι] (e : ι → k) (he : Function.Injective e) (A : ι → Scheme.{u})
@@ -465,8 +443,8 @@ theorem isClosedImmersion_coproductSliceMap (k : Type u) [Field k] (M : ℕ) {ι
       appTop_globalSectionLift]
   exact IsClosedImmersion.of_surjective_of_isAffine (coproductSliceMap k M e A ρ) hsurj
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+On each summand the slice inclusion preserves the structure map to the field. Composing the coproduct map with that projection thus gives the prescribed structural map on every summand. The coproduct universal property gives equality of the whole maps.
 -/
 theorem coproductSliceMap_comp_affineSpaceIndexedByToSpec (k : Type u) [Field k] (M : ℕ) {ι : Type u} (e : ι → k)
     (A : ι → Scheme.{u}) (ρ : ∀ i, A i ⟶ affineSpaceIndexedBy k (ULift.{u, 0} (Fin M)))
@@ -476,16 +454,16 @@ theorem coproductSliceMap_comp_affineSpaceIndexedByToSpec (k : Type u) [Field k]
   refine CategoryTheory.Limits.Sigma.hom_ext _ _ fun i => ?_
   rw [sigma_ι_coproductSliceMap_assoc, sliceAtLastCoord_comp_affineSpaceIndexedByToSpec, hq i]
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+The underlying set of the scheme coproduct is the disjoint union of the underlying sets of the summands. Each point therefore comes from a point in one summand.
 -/
 private theorem sigma_ι_base_jointly_surjective {ι : Type u} (A : ι → Scheme.{u}) (x : ↥(∐ A)) :
     ∃ (j : ι) (b : ↥(A j)), (Sigma.ι A j).base b = x := by
   obtain ⟨⟨i, y⟩, rfl⟩ := (sigmaMk A).surjective x
   exact ⟨i, y, (sigmaMk_mk A i y).symm⟩
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The coproduct map restricts to the composite of the specified embedding and the slice inclusion on that summand. Evaluating this equality on the given point gives the formula.
 -/
 private theorem coproductSliceMap_base_sigma_ι (k : Type u) [Field k] (M : ℕ) {ι : Type u} (e : ι → k)
     (A : ι → Scheme.{u}) (ρ : ∀ i, A i ⟶ affineSpaceIndexedBy k (ULift.{u, 0} (Fin M))) (j : ι)
@@ -495,8 +473,8 @@ private theorem coproductSliceMap_base_sigma_ι (k : Type u) [Field k] (M : ℕ)
   show (Sigma.ι A j ≫ coproductSliceMap k M e A ρ).base b = (ρ j ≫ sliceAtLastCoord k M (e j)).base b
   rw [sigma_ι_coproductSliceMap]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Pullback preserves the finite product and differences. On the chosen slice the last coordinate becomes its assigned scalar, while each scalar section remains the corresponding scalar section. Thus the pulled-back product is the section of the stated product of scalar differences.
 -/
 private theorem sliceAtLastCoord_appTop_sliceSeparatingFunction_eq_prod_sub (k : Type u) [Field k] (M : ℕ) {ι : Type u}
     [Fintype ι] [DecidableEq ι] (e : ι → k) (i j : ι) :
@@ -512,8 +490,8 @@ private theorem sliceAtLastCoord_appTop_sliceSeparatingFunction_eq_prod_sub (k :
   rw [map_sub, map_sub, sliceAtLastCoord_appTop_lastCoordinate, appTop_baseFieldToGlobalSections,
     sliceAtLastCoord_comp_affineSpaceIndexedByToSpec]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+First pull the separating section back to the slice, where it is the scalar product of differences. The remaining pullback along the summand embedding sends that scalar to its section for the summand's composite structure map.
 -/
 private theorem comp_sliceAtLastCoord_appTop_sliceSeparatingFunction (k : Type u) [Field k] (M : ℕ) {ι : Type u}
     [Fintype ι] [DecidableEq ι] (e : ι → k) (A : ι → Scheme.{u})
@@ -525,12 +503,8 @@ private theorem comp_sliceAtLastCoord_appTop_sliceSeparatingFunction (k : Type u
   rw [Scheme.Hom.comp_appTop, CommRingCat.comp_apply, sliceAtLastCoord_appTop_sliceSeparatingFunction_eq_prod_sub,
     appTop_baseFieldToGlobalSections]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Check the elementary cases of the proposition. A detailed English derivation is pending.
+/- English proof (authored)
+On its own summand the separating section is the image of the product of differences from all other slice values. Those differences are nonzero by injectivity of the labels, so the product is a unit in the field. Its pullback is a unit, and its basic open is the whole summand.
 -/
 private theorem mem_sliceSeparatingOpen (k : Type u) [Field k] (M : ℕ) {ι : Type u} [Fintype ι]
     [DecidableEq ι] (e : ι → k) (he : Function.Injective e) (A : ι → Scheme.{u})
@@ -555,10 +529,8 @@ private theorem mem_sliceSeparatingOpen (k : Type u) [Field k] (M : ℕ) {ι : T
     rw [hpre]; trivial
   exact hmem
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+On a different summand, one factor of the separating section subtracts that summand's own slice value and is zero. The pulled-back section is zero, whose basic open is empty. Thus the image of the given point cannot lie in the separating open.
 -/
 private theorem not_mem_sliceSeparatingOpen_of_ne (k : Type u) [Field k] (M : ℕ) {ι : Type u} [Fintype ι]
     [DecidableEq ι] (e : ι → k) (A : ι → Scheme.{u})
@@ -579,12 +551,8 @@ private theorem not_mem_sliceSeparatingOpen_of_ne (k : Type u) [Field k] (M : �
   rw [hpre] at hmem'
   simp at hmem'
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
-
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+The restriction to each summand is a composite of closed immersions and hence quasi-compact. The inverse image of a quasi-compact target open is the union of the images under the summand inclusions of the corresponding inverse images. Each is compact because the restriction is quasi-compact and the inclusion is continuous. There are finitely many summands, so the entire inverse image is compact.
 -/
 private theorem quasiCompact_coproductSliceMap (k : Type u) [Field k] (M : ℕ) {ι : Type u} [Fintype ι]
     (e : ι → k) (A : ι → Scheme.{u})
@@ -612,14 +580,8 @@ private theorem quasiCompact_coproductSliceMap (k : Type u) [Field k] (M : ℕ) 
   exact (QuasiCompact.isCompact_preimage (f := ρ j ≫ sliceAtLastCoord k M (e j)) V hV1 hV2).image
     (Sigma.ι A j).continuous
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Separate the alternatives or extract the components of the hypothesis.
-
-Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Since the target open lies in one separating open, its inverse image under the coproduct map consists entirely of points from the designated summand. The open immersion of that summand's inverse image and the full inverse image inclusion have the same image in the coproduct, so their source schemes are isomorphic over it. Under this isomorphism both maps restricted to the target open agree by the formula on the summand. The maps are quasi-compact, so restriction pulls back their kernel ideals to the kernels of the restricted maps. Those kernels agree because the maps differ only by an isomorphism of sources.
 -/
 private theorem comap_ker_coproductSliceMap_eq_of_le_sliceSeparatingOpen (k : Type u) [Field k] (M : ℕ) {ι : Type u}
     [Fintype ι] [DecidableEq ι] (e : ι → k) (A : ι → Scheme.{u})
@@ -665,14 +627,8 @@ private theorem comap_ker_coproductSliceMap_eq_of_le_sliceSeparatingOpen (k : Ty
   rw [← cancel_mono U.ι, Category.assoc, morphismRestrict_ι, ← Category.assoc,
     IsOpenImmersion.isoOfRangeEq_hom_fac, Category.assoc, sigma_ι_coproductSliceMap, morphismRestrict_ι]
 
-/- English proof (translation)
-Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Both maps preserve the field structure. Adding a zero coordinate preserves the first block, and translation leaves it unchanged. The last coordinate of the composite is zero plus the given scalar section. These are the same coordinate pullbacks as for the slice, so the maps are equal.
 -/
 private theorem sliceAtLastCoord_eq_affineSpaceInl_comp_translateLastCoord (k : Type u) [Field k] (M : ℕ) (a : k) :
     sliceAtLastCoord k M a = affineSpaceInl k M 1 ≫ translateLastCoord k M a := by
@@ -701,8 +657,8 @@ private theorem sliceAtLastCoord_eq_affineSpaceInl_comp_translateLastCoord (k : 
       rw [pullbackCoord_def] at h4
       rw [lastCoordinate_eq, h4, zero_add]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+First add one zero coordinate to the given immersion, which raises its smooth coordinate codimension by one. Then translate the new coordinate to the desired scalar. Translation is an isomorphism over the field, so it preserves coordinate codimension. The composite is the slice immersion.
 -/
 private theorem hasSmoothCoordCodim_comp_sliceAtLastCoord (hsm : AffineSpaceIsSmooth.{u}) (k : Type u)
     [Field k] (M c : ℕ) (a : k) {B : Scheme.{u}}
@@ -717,12 +673,8 @@ private theorem hasSmoothCoordCodim_comp_sliceAtLastCoord (hsm : AffineSpaceIsSm
   rw [sliceAtLastCoord_eq_affineSpaceInl_comp_translateLastCoord, ← Category.assoc]
   exact h2
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+A point of the coproduct lies in a summand. Choose a smooth coordinate chart about its image for that summand's slice, which has codimension one more than the original embedding. Intersect the chart with the corresponding separating open, which still contains the point. The restricted chart remains smooth and over the field. On this smaller open the kernel of the coproduct map agrees with the kernel of the summand slice, so the same coordinate equations give the required codimension.
 -/
 theorem hasSmoothCoordCodim_coproductSliceMap (hsm : AffineSpaceIsSmooth.{u}) (k : Type u) [Field k]
     (M c : ℕ) {ι : Type u} [Fintype ι] [DecidableEq ι] (e : ι → k) (he : Function.Injective e)
@@ -755,8 +707,8 @@ def componentSliceOpen (k : Type u) [Field k] (M : ℕ) {ι : Type u} [Fintype �
     (i : ι) : (∐ A).Opens :=
   (Opens.map (coproductSliceMap k M e A ρ).base).obj (sliceSeparatingOpen k M e i)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Replace the map from the specified summand by its embedding followed by its slice. Pullback of the separating section along that composite is the scalar section of the product of differences evaluated at its slice value.
 -/
 private theorem sigma_ι_comp_coproductSliceMap_appTop_sliceSeparatingFunction (k : Type u) [Field k] (M : ℕ) {ι : Type u}
     [Fintype ι] [DecidableEq ι] (e : ι → k) (A : ι → Scheme.{u})
@@ -768,10 +720,8 @@ private theorem sigma_ι_comp_coproductSliceMap_appTop_sliceSeparatingFunction (
   rw [sigma_ι_coproductSliceMap]
   exact comp_sliceAtLastCoord_appTop_sliceSeparatingFunction k M e A ρ i j
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+On the designated summand the separating section is the scalar product of differences from all other slice values. The factors are nonzero by injectivity, so the section is a unit. The inverse image of the basic open is the basic open of this unit and equals the whole summand.
 -/
 private theorem preimage_sliceSeparatingOpen_self (k : Type u) [Field k] (M : ℕ) {ι : Type u} [Fintype ι]
     [DecidableEq ι] (e : ι → k) (he : Function.Injective e) (A : ι → Scheme.{u})
@@ -789,8 +739,8 @@ private theorem preimage_sliceSeparatingOpen_self (k : Type u) [Field k] (M : �
   exact IsUnit.map (baseFieldToGlobalSections k (ρ i ≫ affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin M))))
     (isUnit_iff_ne_zero.mpr hne)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+On a different summand the product defining the pulled-back separating section contains its own slice value minus itself, which is zero. Its basic open is empty, so the inverse image is empty.
 -/
 private theorem preimage_sliceSeparatingOpen_of_ne (k : Type u) [Field k] (M : ℕ) {ι : Type u}
     [Fintype ι] [DecidableEq ι] (e : ι → k) (A : ι → Scheme.{u})
@@ -805,14 +755,8 @@ private theorem preimage_sliceSeparatingOpen_of_ne (k : Type u) [Field k] (M : �
   rw [hpre, sigma_ι_comp_coproductSliceMap_appTop_sliceSeparatingFunction k M e A ρ i j, hzero, map_zero]
   simp
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality.
-
-It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Every point of the specified summand lands in the inverse image of its separating open because that inverse image is the whole summand there. Conversely every point of the coproduct belongs to a summand, and a different summand has empty inverse image of the separating open. Thus the open consists exactly of the image of the specified summand.
 -/
 private theorem range_sigma_ι_eq_range_componentSliceOpen_ι (k : Type u) [Field k] (M : ℕ)
     {ι : Type u} [Fintype ι] [DecidableEq ι] (e : ι → k) (he : Function.Injective e)
@@ -839,8 +783,8 @@ private theorem range_sigma_ι_eq_range_componentSliceOpen_ι (k : Type u) [Fiel
       rw [TopologicalSpace.Opens.coe_bot] at hy'
       exact (Set.mem_empty_iff_false y).mp hy'
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
+/- English proof (authored)
+The summand inclusion and the inclusion of the inverse image open are both open immersions into the coproduct. Their images agree, so there is an isomorphism between their sources over the coproduct.
 -/
 private theorem exists_iso_componentSliceOpen (k : Type u) [Field k] (M : ℕ) {ι : Type u} [Fintype ι]
     [DecidableEq ι] (e : ι → k) (he : Function.Injective e) (A : ι → Scheme.{u})
@@ -858,8 +802,8 @@ def componentIsoSliceOpen (k : Type u) [Field k] (M : ℕ) {ι : Type u} [Fintyp
   (exists_iso_componentSliceOpen k M e he A ρ i).choose
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The chosen isomorphism identifies the two open immersions into the coproduct. Its forward map followed by the inverse image open inclusion is therefore the original summand inclusion.
 -/
 theorem componentIsoSliceOpen_hom_comp_ι (k : Type u) [Field k] (M : ℕ) {ι : Type u} [Fintype ι]
     [DecidableEq ι] (e : ι → k) (he : Function.Injective e) (A : ι → Scheme.{u})
@@ -868,8 +812,8 @@ theorem componentIsoSliceOpen_hom_comp_ι (k : Type u) [Field k] (M : ℕ) {ι :
   (exists_iso_componentSliceOpen k M e he A ρ i).choose_spec
 
 @[simp]
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Compose the identity over the coproduct with the given morphism. The two resulting composites are equal.
 -/
 theorem componentIsoSliceOpen_hom_comp_ι_assoc (k : Type u) [Field k] (M : ℕ) {ι : Type u} [Fintype ι]
     [DecidableEq ι] (e : ι → k) (he : Function.Injective e) (A : ι → Scheme.{u})
@@ -885,8 +829,8 @@ abbrev coproductSliceMapReindexed (k : Type u) [Field k] (M : ℕ) {ι : Type u}
   coproductSliceMap k M e A ρ ≫
     (affineSpaceIsoOfEquiv (uliftFinSumEquiv.{u} M 1) (Spec (CommRingCat.of k))).hom
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The coordinate reindexing isomorphism preserves the field projection. Thus the reindexed map has the same structural composite as the original coproduct slice map, which is the given structural map.
 -/
 theorem coproductSliceMapReindexed_comp_affineSpaceIndexedByToSpec (k : Type u) [Field k] (M : ℕ) {ι : Type u} (e : ι → k)
     (A : ι → Scheme.{u}) (ρ : ∀ i, A i ⟶ affineSpaceIndexedBy k (ULift.{u, 0} (Fin M)))
@@ -896,8 +840,8 @@ theorem coproductSliceMapReindexed_comp_affineSpaceIndexedByToSpec (k : Type u) 
   rw [Category.assoc, affineSpaceIsoOfEquiv_hom_comp_toSpec]
   exact coproductSliceMap_comp_affineSpaceIndexedByToSpec k M e A ρ q hq
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The coproduct slice map is a closed immersion of coordinate codimension one more than that of its summands. Reindexing the coordinates is an isomorphism over the field, so it preserves that codimension.
 -/
 theorem hasSmoothCoordCodim_coproductSliceMapReindexed (hsm : AffineSpaceIsSmooth.{u}) (k : Type u) [Field k]
     (M c : ℕ) {ι : Type u} [Fintype ι] [DecidableEq ι] (e : ι → k) (he : Function.Injective e)

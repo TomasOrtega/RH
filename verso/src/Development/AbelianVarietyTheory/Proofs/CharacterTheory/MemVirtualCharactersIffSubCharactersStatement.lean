@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.CharacterTheory.MemVirtualCharact
 import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.AbByPOfComm
 open GlobalTheory.BI
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BI.mem_virt_iff_sub | exact GlobalTheory.BI.mem_virt_iff_sub | (intros; apply GlobalTheory.BI.mem_virt_iff_sub <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BI.mem_virt_iff_sub` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FCharacterTheory%2FMemVirtualCharactersIffSubCharacters.lean&line=7#L7)
 -/
 theorem _root_.GlobalTheory.T.mem_virtualCharacters_iff_sub_characters : ∀ (K L : Type) [Field K] [Field L] [Algebra K L] (G : Type) [Group G] (f : G → L), f ∈ Virt K L G ↔ ∃ a b : G → L, IsChar K L a ∧ IsChar K L b ∧ f = a - b := by
   first | exact @GlobalTheory.BI.mem_virt_iff_sub | exact GlobalTheory.BI.mem_virt_iff_sub | (intros; apply GlobalTheory.BI.mem_virt_iff_sub <;> assumption)

@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CardGeneralLinea
 import Development.AbelianVarietyTheory.Definitions.Foundations.StandardFiveNontrivial
 open Polynomial Classical GlobalTheory.BadShare
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BadShare.card_GG_eq | exact GlobalTheory.BadShare.card_GG_eq | (intros; apply GlobalTheory.BadShare.card_GG_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BadShare.card_GG_eq` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FCardGeneralLinearGroupPrimeField.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.card_generalLinearGroup_primeField : ∀ (g : ℕ) [Fact g.Prime] (N : ℕ), Fintype.card (GG g N) = g ^ (N * (N - 1) / 2) * ∏ i ∈ Finset.range N, (g ^ (i + 1) - 1) := by
   first | exact @GlobalTheory.BadShare.card_GG_eq | exact GlobalTheory.BadShare.card_GG_eq | (intros; apply GlobalTheory.BadShare.card_GG_eq <;> assumption)

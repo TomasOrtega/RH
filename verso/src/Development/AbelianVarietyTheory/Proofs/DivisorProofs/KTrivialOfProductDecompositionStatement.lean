@@ -13,8 +13,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ZeroSectionBase (IsPrincipalPol sqT
 open MonObj
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KTrivProduct.kTriv_prod | exact GlobalTheory.KTrivProduct.kTriv_prod | (intros; apply GlobalTheory.KTrivProduct.kTriv_prod <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.KTrivProduct.kTriv_prod` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FKTrivialOfProductDecomposition.lean&line=33#L33)
 -/
 theorem _root_.GlobalTheory.T.k_trivial_of_product_decomposition : ∀ {T : Scheme.{0}} {C B₁ B₂ : Over T} [GrpObj C] [GrpObj B₁] [GrpObj B₂] (q₁ : C ⟶ B₁) (q₂ : C ⟶ B₂) [IsMonHom q₁] [IsMonHom q₂], IsLimit (BinaryFan.mk q₁ q₂) → ∀ {L₁ : LB B₁.left} (hL₁ : L₁.IsLB), Out.KTriv B₁ L₁ → ∀ {L₂ : LB B₂.left} (hL₂ : L₂.IsLB), Out.KTriv B₂ L₂ → ∀ {L : LB C.left} (hL : L.IsLB), cls L hL = pull q₁.left (cls L₁ hL₁) + pull q₂.left (cls L₂ hL₂) → Out.KTriv C L := by
   first | exact @GlobalTheory.KTrivProduct.kTriv_prod | exact GlobalTheory.KTrivProduct.kTriv_prod | (intros; apply GlobalTheory.KTrivProduct.kTriv_prod <;> assumption)

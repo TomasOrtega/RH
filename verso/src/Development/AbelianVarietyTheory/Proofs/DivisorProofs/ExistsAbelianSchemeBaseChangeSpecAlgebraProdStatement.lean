@@ -10,8 +10,10 @@ open ReciprocityTheory.ChartRestriction.G.Semi (IsAbelianScheme LB)
 open GlobalTheory GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.DeRham GlobalTheory.PDiv GlobalTheory.PtExt
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.exists_baseChange_spAlg_prod | exact GlobalTheory.exists_baseChange_spAlg_prod | (intros; apply GlobalTheory.exists_baseChange_spAlg_prod <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.exists_baseChange_spAlg_prod` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsAbelianSchemeBaseChangeSpecAlgebraProd.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.exists_abelianScheme_baseChange_spec_algebra_prod : ∀ (R D : Type) [CommRing R] [CommRing D] [Algebra R D] (B : Over (Sp R)) [GrpObj B] (g : ℕ), IsAbelianScheme B → SmoothOfRelativeDimension g B.hom → ∃ (B' : Over (Sp D)) (_ : GrpObj B') (π : B'.left ⟶ B.left) (q : B'.left ⟶ (SpAlg R D ⊗ B).left), IsGrpPullback B' B (spMap (algebraMap R D)) π ∧ IsAbelianScheme B' ∧ SmoothOfRelativeDimension g B'.hom ∧ IsIso q ∧ q ≫ (fst (SpAlg R D) B).left = B'.hom ∧ q ≫ (snd (SpAlg R D) B).left = π := by
   first | exact @GlobalTheory.exists_baseChange_spAlg_prod | exact GlobalTheory.exists_baseChange_spAlg_prod | (intros; apply GlobalTheory.exists_baseChange_spAlg_prod <;> assumption)

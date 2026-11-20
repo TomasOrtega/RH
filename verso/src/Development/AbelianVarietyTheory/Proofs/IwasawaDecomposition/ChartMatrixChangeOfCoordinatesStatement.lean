@@ -9,8 +9,10 @@ open GlobalTheory GlobalTheory.Toroidal GlobalTheory.Cartier GlobalTheory.ProjVa
 open scoped TensorProduct ContDiff
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChernReg.MatCompat.matIn_trans | exact GlobalTheory.ChernReg.MatCompat.matIn_trans | (intros; apply GlobalTheory.ChernReg.MatCompat.matIn_trans <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChernReg.MatCompat.matIn_trans` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FChartMatrixChangeOfCoordinates.lean&line=71#L71)
 -/
 theorem _root_.GlobalTheory.T.chart_matrix_change_of_coordinates : ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) (p : Y ⟶ Sp k) (σ : k →+* ℂ) (d : ℕ) (R : AnRead p σ d) (a : ChartForm p σ d), IsKaehlerForm R a → ∀ c c' : AlgChart p σ d, ∀ v ∈ c.e.target, c.e.symm v ∈ c'.e.source → ∀ ξ ζ : ReciprocityTheory.L2DbarEstimates.V d, (ξ.ofLp ᵥ* matIn a c v) ⬝ᵥ star ζ.ofLp = ((fderiv ℂ (c'.e ∘ c.e.symm) v ξ).ofLp ᵥ* matIn a c' ((c'.e ∘ c.e.symm) v)) ⬝ᵥ star (fderiv ℂ (c'.e ∘ c.e.symm) v ζ).ofLp := by
   first | exact @GlobalTheory.ChernReg.MatCompat.matIn_trans | exact GlobalTheory.ChernReg.MatCompat.matIn_trans | (intros; apply GlobalTheory.ChernReg.MatCompat.matIn_trans <;> assumption)

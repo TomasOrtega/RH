@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PairInfApply
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockFormApply
 open MeasureTheory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FockFamily.fockForm_family_contDiff | exact GlobalTheory.FockFamily.fockForm_family_contDiff | (intros; apply GlobalTheory.FockFamily.fockForm_family_contDiff <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FockFamily.fockForm_family_contDiff` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FContDiffFockGaussianFormOfLinearMapFamily.lean&line=8#L8)
 -/
 theorem _root_.GlobalTheory.T.contDiff_fockGaussianFormOfLinearMap_family : ∀ {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] (β : V →ₗ[ℝ] V →ₗ[ℝ] ℝ)
     (J : ℝ → (V × V) →ₗ[ℝ] (V × V)),

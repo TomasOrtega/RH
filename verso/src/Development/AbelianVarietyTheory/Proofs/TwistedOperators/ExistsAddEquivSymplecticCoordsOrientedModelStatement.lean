@@ -13,8 +13,10 @@ open scoped TensorProduct GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMode
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Twist.exists_addEquiv_symplecticCoords_orientedModel.coords | exact GlobalTheory.Twist.exists_addEquiv_symplecticCoords_orientedModel.coords | (intros; apply GlobalTheory.Twist.exists_addEquiv_symplecticCoords_orientedModel.coords <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Twist.exists_addEquiv_symplecticCoords_orientedModel.coords` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsAddEquivSymplecticCoordsOrientedModel.lean&line=71#L71)
 -/
 theorem _root_.GlobalTheory.T.exists_addEquiv_symplecticCoords_orientedModel : ∀ (D : D7) (S X : HSp D) {d : ℕ} (e : Fin X.rank ≃ Fin d) (c : D.host.E), c ≠ 0 →
     ∃ f : Matrix (Fin S.rank) (Fin d) (AE D) ≃+ WO S X,

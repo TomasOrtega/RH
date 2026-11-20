@@ -10,8 +10,10 @@ open NumberField MeasureTheory Formalism.BasicNotions Formalism.MainNotions.S Fo
 open scoped Classical ENNReal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WeightsFamPf.weightsFam_of | exact GlobalTheory.WeightsFamPf.weightsFam_of | (intros; apply GlobalTheory.WeightsFamPf.weightsFam_of <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WeightsFamPf.weightsFam_of` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FFamilyGenericMassPositiveBoundedProof.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.familyGenericMassPositiveBounded_proof : PI.VolStabS.MassDataS.SWXS → GlobalTheory.SnFam.WeightsFam := by
   first | exact @GlobalTheory.WeightsFamPf.weightsFam_of | exact GlobalTheory.WeightsFamPf.weightsFam_of | (intros; apply GlobalTheory.WeightsFamPf.weightsFam_of <;> assumption)

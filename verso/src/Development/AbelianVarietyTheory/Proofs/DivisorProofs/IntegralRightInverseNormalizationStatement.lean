@@ -8,8 +8,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SubMemTwistSpan
 open ValuativeRel Matrix
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.frame_normalise_integral | exact GlobalTheory.frame_normalise_integral | (intros; apply GlobalTheory.frame_normalise_integral <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.frame_normalise_integral` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIntegralRightInverseNormalization.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.integral_right_inverse_normalization : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (D : Type) [Fintype D] [DecidableEq D] (s : ℕ) (Y : Matrix (Fin s) D k) (Q' : Matrix D (Fin s) k), Y * Q' = 1 → ∃ (h : Matrix (Fin s) (Fin s) k) (Q : Matrix D (Fin s) k), (∀ i j, (h * Y) i j ∈ 𝒪[k]) ∧ (∀ i j, Q i j ∈ 𝒪[k]) ∧ h * Y * Q = 1 := by
   first | exact @GlobalTheory.frame_normalise_integral | exact GlobalTheory.frame_normalise_integral | (intros; apply GlobalTheory.frame_normalise_integral <;> assumption)

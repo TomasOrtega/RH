@@ -8,8 +8,10 @@ import Formalism.RealPlaceAnalysis.StatementE
 import Formalism.RealPlaceAnalysis.StatementB
 open scoped InnerProductSpace
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.freeAlgebra_lift_eq_sum_monomials | exact GlobalTheory.freeAlgebra_lift_eq_sum_monomials | (intros; apply GlobalTheory.freeAlgebra_lift_eq_sum_monomials <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.freeAlgebra_lift_eq_sum_monomials` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FFreeAlgebraLiftMonoidSum.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.freeAlgebra_lift_monoid_sum : ∀ {B : Type} [Ring B] [Algebra ℂ B] {X : Type} (f : X → B) (p : FreeAlgebra ℂ X), FreeAlgebra.lift ℂ f p = Finsupp.sum (FreeAlgebra.equivMonoidAlgebraFreeMonoid p).coeff fun (w : FreeMonoid X) (c : ℂ) => c • (w.toList.map f).prod := by
   first | exact @GlobalTheory.freeAlgebra_lift_eq_sum_monomials | exact GlobalTheory.freeAlgebra_lift_eq_sum_monomials | (intros; apply GlobalTheory.freeAlgebra_lift_eq_sum_monomials <;> assumption)

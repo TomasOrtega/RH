@@ -13,8 +13,10 @@ open ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M
 open GlobalTheory.CompanionTheory.MPDict GlobalTheory.CompanionTheory.MixZ
 open ReciprocityTheory.ChartRestriction.G.Geo (mcPts IsMultiHomog SameOrbit)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.MixZ.Holo.holo | exact GlobalTheory.CompanionTheory.MixZ.Holo.holo | (intros; apply GlobalTheory.CompanionTheory.MixZ.Holo.holo <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.MixZ.Holo.holo` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FHolomorphicLiftGivesHolomorphicSection.lean&line=233#L233)
 -/
 theorem _root_.GlobalTheory.T.holomorphic_lift_gives_holomorphic_section : ∀ (m : ℕ) (n : Fin (m + 1) → ℕ) (X : Scheme.{0}) (i : X ⟶ MP ℤ m n) [IsClosedImmersion i] (D : ℕ)
     (O : Set (Fin D → ℂ)) (γ : (Fin D → ℂ) → (Σ k, Bk n k) → ℂ) (s : (Fin D → ℂ) → GlobalTheory.CxPts (i ≫ mpStr ℤ m n) σ₀),

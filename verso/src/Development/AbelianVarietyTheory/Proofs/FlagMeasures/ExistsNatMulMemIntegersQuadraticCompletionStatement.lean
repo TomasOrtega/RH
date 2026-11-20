@@ -10,8 +10,10 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MemSpanSingleIff
 open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL NumberField IsDedekindDomain
 open scoped Pointwise ENNReal Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HL.Glue.exists_nat_mul_mem | exact GlobalTheory.HL.Glue.exists_nat_mul_mem | (intros; apply GlobalTheory.HL.Glue.exists_nat_mul_mem <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HL.Glue.exists_nat_mul_mem` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FExistsNatMulMemIntegersQuadraticCompletion.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.exists_nat_mul_mem_integers_quadraticCompletion : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {sig : E →ₐ[F] E} (A : Places F E sig), (∀ y : ∀ p, (A.loc p).Ep, {p | y p ∉ (A.L p).O}.Finite → ∃ x : E, ∀ p, ∃ o ∈ (A.L p).O, (A.loc p).ιE x - y p = o) → ∀ (p : HeightOneSpectrum (𝓞 F)) (y : (A.loc p).Ep), ∃ m : ℕ, m ≠ 0 ∧ (m : (A.loc p).Ep) * y ∈ (A.L p).O := by
   first | exact @GlobalTheory.HL.Glue.exists_nat_mul_mem | exact GlobalTheory.HL.Glue.exists_nat_mul_mem | (intros; apply GlobalTheory.HL.Glue.exists_nat_mul_mem <;> assumption)

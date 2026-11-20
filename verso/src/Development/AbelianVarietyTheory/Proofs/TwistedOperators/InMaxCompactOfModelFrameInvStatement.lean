@@ -19,8 +19,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 open scoped TensorProduct
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CuspGK.inK_inv | exact GlobalTheory.CuspGK.inK_inv | (intros; apply GlobalTheory.CuspGK.inK_inv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CuspGK.inK_inv` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FInMaxCompactOfModelFrameInv.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.inMaxCompactOfModelFrame_inv : ∀ {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : Formalism.IndefR.Mult.DSModel V S) (τ : D.what₂.Tau)
     (g : Matrix (Fin V.rank) (Fin V.rank) ℂ), GlobalTheory.CuspGK.InK M τ g → GlobalTheory.CuspGK.InK M τ g⁻¹ ∧ g⁻¹⁻¹ = g := by

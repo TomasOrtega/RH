@@ -41,8 +41,8 @@ def liftSemi {M N : Type} [AddCommGroup M] [Module R M] [AddCommGroup N] [Module
   LinearMap.liftBaseChange S
     { toFun := f, map_add' := f.map_add, map_smul' := fun r x ↦ f.map_smulₛₗ r x }
 
-/- English proof (translation)
-Simplify using `[liftSemi]`.
+/- English proof (authored)
+Through the algebra map R → S, the target is an R-module and the semilinear map f becomes R-linear. The definition of liftSemi extends this map along base change. The extension is S-linear and sends 1 ⊗ x to f(x), so it sends s ⊗ x = s · (1 ⊗ x) to s · f(x).
 -/
 theorem liftSemi_tmul {M N : Type} [AddCommGroup M] [Module R M] [AddCommGroup N] [Module S N]
     (f : M →ₛₗ[algebraMap R S] N) (s : S) (x : M) : liftSemi f (s ⊗ₜ x) = s • f x := by

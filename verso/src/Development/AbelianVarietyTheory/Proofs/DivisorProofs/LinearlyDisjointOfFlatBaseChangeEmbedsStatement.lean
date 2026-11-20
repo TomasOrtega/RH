@@ -8,8 +8,10 @@ open scoped CategoryTheory.Obj
 open GlobalTheory.Desc
 open TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Desc.FlatLinDisj.linDisj_of_flat | exact GlobalTheory.Desc.FlatLinDisj.linDisj_of_flat | (intros; apply GlobalTheory.Desc.FlatLinDisj.linDisj_of_flat <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Desc.FlatLinDisj.linDisj_of_flat` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLinearlyDisjointOfFlatBaseChangeEmbeds.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.linearlyDisjoint_of_flat_baseChange_embeds : ∀ (R R₁ K L : Type) [CommRing R] [CommRing R₁] [CommRing K] [CommRing L] [Algebra R R₁] [Algebra R K] [Module.Flat R R₁] (θ : K →+* L) (c : R₁ →+* L), (∀ (n : ℕ) (u : Fin n → K) (r : Fin n → R₁), ∑ j, c (r j) * θ (u j) = 0 → ∑ j, u j ⊗ₜ[R] r j = 0) → LinDisj (algebraMap R K) c θ := by
   first | exact @GlobalTheory.Desc.FlatLinDisj.linDisj_of_flat | exact GlobalTheory.Desc.FlatLinDisj.linDisj_of_flat | (intros; apply GlobalTheory.Desc.FlatLinDisj.linDisj_of_flat <;> assumption)

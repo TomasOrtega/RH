@@ -23,8 +23,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CovTop.SpanMK.span_MK_eq_top | exact GlobalTheory.CovTop.SpanMK.span_MK_eq_top | (intros; apply GlobalTheory.CovTop.SpanMK.span_MK_eq_top <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CovTop.SpanMK.span_MK_eq_top` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGramLatticeSpanEqTop.lean&line=33#L33)
 -/
 theorem _root_.GlobalTheory.T.gram_lattice_span_eq_top : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
     {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} (p : PtAt ex Csz) (i : Fin D.R.m),

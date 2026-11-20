@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.H1MapSubgroup
 open CategoryTheory GlobalTheory.SelFun
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SelFun.exists_torsion_extension | exact GlobalTheory.SelFun.exists_torsion_extension | (intros; apply GlobalTheory.SelFun.exists_torsion_extension <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SelFun.exists_torsion_extension` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FExistsTorsionModuleExtendingResidueMaps.lean&line=35#L35)
 -/
 theorem _root_.GlobalTheory.T.exists_torsion_module_extending_residue_maps : ∀ (Λ : Type) [CommRing Λ] [IsLocalRing Λ] [IsNoetherianRing Λ] (P : Type) [AddCommGroup P] [Module Λ P] [Module.Finite Λ P] (N : Submodule Λ P),
   ∃ (B : ModuleCat.{0} Λ) (f : IsLocalRing.ResidueField Λ →ₗ[Λ] B), Tors Λ B ∧ Function.Injective f ∧

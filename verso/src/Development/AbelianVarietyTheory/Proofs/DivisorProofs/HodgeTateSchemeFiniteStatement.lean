@@ -17,8 +17,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 attribute [local instance] algPadicInt algPadicField towerPadic factPadic GlobalTheory.PadicComplexHost.isAdicComplete
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FinPartAt.hs_isFinite | exact GlobalTheory.FinPartAt.hs_isFinite | (intros; apply GlobalTheory.FinPartAt.hs_isFinite <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FinPartAt.hs_isFinite` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHodgeTateSchemeFinite.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.hodge_tate_scheme_finite : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X : Scheme.{0}) (t : SAB H X) (R : Type) [CommRing R] (ξ : Sp R ⟶ X) (q : ℕ) (P' : GlobalTheory.HTMap.FP t ξ q) (O : Type) [CommRing O] (x0 : R →+* O) (hu : IsUnit (x0 P'.f)), IsFinite (Hs P' x0 hu).hom := by
   first | exact @GlobalTheory.FinPartAt.hs_isFinite | exact GlobalTheory.FinPartAt.hs_isFinite | (intros; apply GlobalTheory.FinPartAt.hs_isFinite <;> assumption)

@@ -21,8 +21,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup (coefPlus Cols Si
 open GlobalTheory.SepRows GlobalTheory.CoreOnto
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChainLifts.chainEx | exact GlobalTheory.ChainLifts.chainEx | (intros; apply GlobalTheory.ChainLifts.chainEx <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChainLifts.chainEx` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FCoreChainCompositesExistLiftCombinations.lean&line=36#L36)
 -/
 theorem _root_.GlobalTheory.T.core_chain_composites_exist_lift_combinations : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.CasselmanWallach → DepFixed → CoreModels → ChainEx := by
   first | exact @GlobalTheory.ChainLifts.chainEx | exact GlobalTheory.ChainLifts.chainEx | (intros; apply GlobalTheory.ChainLifts.chainEx <;> assumption)

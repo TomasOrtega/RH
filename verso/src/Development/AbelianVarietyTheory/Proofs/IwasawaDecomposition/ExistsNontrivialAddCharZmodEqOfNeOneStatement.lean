@@ -13,8 +13,10 @@ open GlobalTheory.LevCmp
 open GlobalTheory.TwistChoice (Reading ReadsAt)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.exists_nontrivial_addChar_eq_of_ne | exact GlobalTheory.exists_nontrivial_addChar_eq_of_ne | (intros; apply GlobalTheory.exists_nontrivial_addChar_eq_of_ne <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.exists_nontrivial_addChar_eq_of_ne` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsNontrivialAddCharZmodEqOfNeOne.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.exists_nontrivial_addChar_zmod_eq_of_ne_one : ∀ (p : ℕ) [Fact p.Prime] (Pr : Prop) (φ : AddChar (ZMod p) ℂ), (Pr → φ ≠ 1) →
     ∃ ψ' : AddChar (ZMod p) ℂ, ψ' ≠ 1 ∧ (Pr → ψ' = φ) := by

@@ -13,8 +13,10 @@ open GlobalTheory.Orb (IsPseudoCoeff ujMat ujRep)
 open scoped InnerProductSpace
 open PI.DSInfCharCap (actU Egl)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IsotropicPartner.exists_adapted_basis | exact GlobalTheory.IsotropicPartner.exists_adapted_basis | (intros; apply GlobalTheory.IsotropicPartner.exists_adapted_basis <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IsotropicPartner.exists_adapted_basis` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FHyperbolicPairChangeOfBasis.lean&line=30#L30)
 -/
 theorem _root_.GlobalTheory.T.hyperbolic_pair_change_of_basis : ∀ (n : ℕ) (ε : Fin n → Bool) (e : Fin n → ℂ), e ≠ 0 → star e ⬝ᵥ (Jm ε *ᵥ e) = 0 → ∃ (P : Matrix (Fin n) (Fin n) ℂ) (p q : Fin n) (c : ℂ), IsUnit P ∧ p ≠ q ∧ P *ᵥ Pi.single p 1 = e ∧ P *ᵥ Pi.single q 1 = c • (Jm ε *ᵥ e) ∧ ∀ a b, (a = p ∨ a = q ∨ b = p ∨ b = q) → (Pᴴ * Jm ε * P) a b = if (a = p ∧ b = q) ∨ (a = q ∧ b = p) then 1 else 0 := by
   first | exact @GlobalTheory.IsotropicPartner.exists_adapted_basis | exact GlobalTheory.IsotropicPartner.exists_adapted_basis | (intros; apply GlobalTheory.IsotropicPartner.exists_adapted_basis <;> assumption)

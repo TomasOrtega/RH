@@ -2,8 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ValuationCloseMatricesQuotientIntegral
 import Mathlib
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.inv_mul_congr_of_entries_congr_of_det_unit | exact GlobalTheory.inv_mul_congr_of_entries_congr_of_det_unit | (intros; apply GlobalTheory.inv_mul_congr_of_entries_congr_of_det_unit <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.inv_mul_congr_of_entries_congr_of_det_unit` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FValuationCloseMatricesQuotientIntegral.lean&line=7#L7)
 -/
 theorem _root_.GlobalTheory.T.valuation_close_matrices_quotient_integral : ∀ {K : Type} [Field K] (w : AbsoluteValue K ℝ) (O : ValuationSubring K), (∀ x, x ∈ O ↔ w x ≤ 1) →
     ∀ {N : ℕ} (Γa Γb Aa Ab : Matrix (Fin N) (Fin N) K), (∀ i k, w (Γa i k) ≤ 1) → (∀ i k, w (Γb i k) ≤ 1) →

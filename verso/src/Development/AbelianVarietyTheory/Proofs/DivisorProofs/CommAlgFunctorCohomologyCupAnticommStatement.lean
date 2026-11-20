@@ -10,8 +10,10 @@ open scoped TensorProduct CategoryTheory.Obj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.AbLaw GlobalTheory.CatCoh GlobalTheory.CechDR GlobalTheory.AbCoh
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AbCoh.cup_anticomm | exact GlobalTheory.AbCoh.cup_anticomm | (intros; apply GlobalTheory.AbCoh.cup_anticomm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AbCoh.cup_anticomm` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCommAlgFunctorCohomologyCupAnticomm.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.commAlgFunctorCohomologyCup_anticomm : ∀ (R : Type) [CommRing R] (C : Type) [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R) (a b : GlobalTheory.CatCoh.H1 F), cup F a b = - cup F b a := by
   first | exact @GlobalTheory.AbCoh.cup_anticomm | exact GlobalTheory.AbCoh.cup_anticomm | (intros; apply GlobalTheory.AbCoh.cup_anticomm <;> assumption)

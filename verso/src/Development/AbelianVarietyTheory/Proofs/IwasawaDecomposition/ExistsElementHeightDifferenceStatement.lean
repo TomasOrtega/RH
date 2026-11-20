@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsElemen
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.RingKrullDimIntegers
 open CategoryTheory AlgebraicGeometry TopologicalSpace NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.ProjVar GlobalTheory.TrueGeo Formalism.BasicNotions
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.exists_mul_eq_log_adicAbv_sub | exact GlobalTheory.exists_mul_eq_log_adicAbv_sub | (intros; apply GlobalTheory.exists_mul_eq_log_adicAbv_sub <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.exists_mul_eq_log_adicAbv_sub` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsElementHeightDifference.lean&line=48#L48)
 -/
 theorem _root_.GlobalTheory.T.exists_element_height_difference : ∀ (F : Type) [Field F] [NumberField F] (c : HeightOneSpectrum (𝓞 F) → ℝ), (Function.support c).Finite → (∀ v, ∃ (m : ℕ) (z : ℤ), 0 < m ∧ (m : ℝ) * c v = (z : ℝ) * Real.log (Ideal.absNorm v.asIdeal : ℝ)) → ∃ (h : ℕ+) (b b' : 𝓞 F), b ≠ 0 ∧ b' ≠ 0 ∧ ∀ v, ((h : ℕ) : ℝ) * c v = Real.log (NumberField.HeightOneSpectrum.adicAbv F v (algebraMap (𝓞 F) F b)) - Real.log (NumberField.HeightOneSpectrum.adicAbv F v (algebraMap (𝓞 F) F b')) := by
   first | exact @GlobalTheory.exists_mul_eq_log_adicAbv_sub | exact GlobalTheory.exists_mul_eq_log_adicAbv_sub | (intros; apply GlobalTheory.exists_mul_eq_log_adicAbv_sub <;> assumption)

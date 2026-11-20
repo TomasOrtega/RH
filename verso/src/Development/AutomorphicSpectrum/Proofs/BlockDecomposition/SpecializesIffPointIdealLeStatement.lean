@@ -16,8 +16,10 @@ open GlobalTheory.ArithmeticHeightTower GlobalTheory.CompanionTheory.MPDict
 open GlobalTheory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.MPDict.Spec.specializes_iff_ptIdeal_le | exact GlobalTheory.CompanionTheory.MPDict.Spec.specializes_iff_ptIdeal_le | (intros; apply GlobalTheory.CompanionTheory.MPDict.Spec.specializes_iff_ptIdeal_le <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.MPDict.Spec.specializes_iff_ptIdeal_le` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FSpecializesIffPointIdealLe.lean&line=369#L369)
 -/
 theorem _root_.GlobalTheory.T.specializes_iff_point_ideal_le : ∀ (m : ℕ) (n : Fin (m + 1) → ℕ) (x y : MP ℤ m n), x ⤳ y ↔ ptIdeal x ≤ ptIdeal y := by
   first | exact @GlobalTheory.CompanionTheory.MPDict.Spec.specializes_iff_ptIdeal_le | exact GlobalTheory.CompanionTheory.MPDict.Spec.specializes_iff_ptIdeal_le | (intros; apply GlobalTheory.CompanionTheory.MPDict.Spec.specializes_iff_ptIdeal_le <;> assumption)

@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ClmSupBound
 open GlobalTheory.SliceSchwartz GlobalTheory.SliceOp
 open scoped ContDiff
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SliceOpDecay.decay | exact GlobalTheory.SliceOpDecay.decay | (intros; apply GlobalTheory.SliceOpDecay.decay <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SliceOpDecay.decay` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPartialOperatorSchwartzSeminormBound.lean&line=26#L26)
 -/
 theorem _root_.GlobalTheory.T.partial_operator_schwartz_seminorm_bound : ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] (κ κ' κ₁' : Type) [Fintype κ] [Fintype κ'] [Fintype κ₁']
     (P : SchwartzMap (κ' → V) ℂ →L[ℂ] SchwartzMap (κ₁' → V) ℂ) (k : ℕ),

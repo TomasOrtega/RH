@@ -6,8 +6,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Stan
 open GlobalTheory.IndefiniteRowSideFullHecke.AppendedVectorData (lastKer InDual)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FinPl.ExtZero.extFun_tensRow | exact GlobalTheory.FinPl.ExtZero.extFun_tensRow | (intros; apply GlobalTheory.FinPl.ExtZero.extFun_tensRow <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FinPl.ExtZero.extFun_tensRow` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FExtendByZeroTargetTensorRowProduct.lean&line=95#L95)
 -/
 theorem _root_.GlobalTheory.T.extendByZero_target_tensor_row_product : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : SplitPt D k) (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (S A L T : HSp D) (o : OrthDec S A L) (ζ : Fin L.rank → D.host.E), IsLineVec L ζ → ∀ (α : Frame p A n') (α₀ : Frame p S (n' ⊕ Fin 1)) (β : Frame p T n), IsSumFrame o ζ α α₀ → ∀ (Ψ : Matrix n' n k → ℂ) (b : (n → k) → ℂ), extFun β α₀ (tensRow Ψ b) = o.boxT T (extFun β α Ψ) (GlobalTheory.FinPl.ExtZero.rowFun β ζ b) := by
   first | exact @GlobalTheory.FinPl.ExtZero.extFun_tensRow | exact GlobalTheory.FinPl.ExtZero.extFun_tensRow | (intros; apply GlobalTheory.FinPl.ExtZero.extFun_tensRow <;> assumption)

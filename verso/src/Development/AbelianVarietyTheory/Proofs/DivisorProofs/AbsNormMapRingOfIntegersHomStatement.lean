@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbsNormMapRingOfInt
 import Mathlib
 open NumberField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.absNorm_map_ringOfIntegers_hom | exact GlobalTheory.absNorm_map_ringOfIntegers_hom | (intros; apply GlobalTheory.absNorm_map_ringOfIntegers_hom <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.absNorm_map_ringOfIntegers_hom` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAbsNormMapRingOfIntegersHom.lean&line=6#L6)
 -/
 theorem _root_.GlobalTheory.T.absNorm_map_ringOfIntegers_hom' : ∀ (E K : Type) [Field E] [NumberField E] [Field K] [NumberField K] (τ : 𝓞 E →+* 𝓞 K) (𝔞 : Ideal (𝓞 E)), Module.finrank ℚ E ∣ Module.finrank ℚ K ∧ Ideal.absNorm (𝔞.map τ) = Ideal.absNorm 𝔞 ^ (Module.finrank ℚ K / Module.finrank ℚ E) := by
   first | exact @GlobalTheory.absNorm_map_ringOfIntegers_hom | exact GlobalTheory.absNorm_map_ringOfIntegers_hom | (intros; apply GlobalTheory.absNorm_map_ringOfIntegers_hom <;> assumption)

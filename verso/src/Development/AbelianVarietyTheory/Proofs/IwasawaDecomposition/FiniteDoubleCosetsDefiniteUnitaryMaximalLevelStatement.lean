@@ -4,8 +4,10 @@ import Mathlib
 import Formalism.LocalToGlobal.GaloisLevelStructure.DefsAut
 open NumberField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DefiniteClassFinite.exists_finset_double_cosets_Umax | exact GlobalTheory.DefiniteClassFinite.exists_finset_double_cosets_Umax | (intros; apply GlobalTheory.DefiniteClassFinite.exists_finset_double_cosets_Umax <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DefiniteClassFinite.exists_finset_double_cosets_Umax` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FFiniteDoubleCosetsDefiniteUnitaryMaximalLevel.lean&line=196#L196)
 -/
 theorem _root_.GlobalTheory.T.finite_doubleCosets_definiteUnitary_maximalLevel : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ), ∃ T : Finset (Formalism.AUTREP.GAf L n), ∀ g : Formalism.AUTREP.GAf L n, ∃ (γ : ReciprocityTheory.Aut.GQ L n) (t : Formalism.AUTREP.GAf L n) (u : Formalism.AUTREP.GAf L n), t ∈ T ∧ u ∈ ReciprocityTheory.Aut.Umax L n ∧ g = (γ : Formalism.AUTREP.GAf L n) * t * u := by
   first | exact @GlobalTheory.DefiniteClassFinite.exists_finset_double_cosets_Umax | exact GlobalTheory.DefiniteClassFinite.exists_finset_double_cosets_Umax | (intros; apply GlobalTheory.DefiniteClassFinite.exists_finset_double_cosets_Umax <;> assumption)

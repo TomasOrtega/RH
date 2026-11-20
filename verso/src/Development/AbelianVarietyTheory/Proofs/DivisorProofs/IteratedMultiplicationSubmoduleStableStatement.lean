@@ -23,8 +23,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds (IsClassZe
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LatModel.eventually_isPlaceRing | exact GlobalTheory.LatModel.eventually_isPlaceRing | (intros; apply GlobalTheory.LatModel.eventually_isPlaceRing <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LatModel.eventually_isPlaceRing` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIteratedMultiplicationSubmoduleStable.lean&line=36#L36)
 -/
 theorem _root_.GlobalTheory.T.eventually_place_ring : ∀ (E : Type) [Field E] [NumberField E] (l : ℕ) [Fact l.Prime] (lam : algebraicClosure ℚ ℂ →+* ℂ_[l]),
     Eventually l lam (IsPlaceRing E l lam) := by

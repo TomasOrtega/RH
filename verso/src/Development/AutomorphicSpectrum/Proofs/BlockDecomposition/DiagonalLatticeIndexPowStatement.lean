@@ -11,8 +11,10 @@ open scoped Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.CtS.LatDiag.relIndex_intSub_latD | exact GlobalTheory.CompanionTheory.CtS.LatDiag.relIndex_intSub_latD | (intros; apply GlobalTheory.CompanionTheory.CtS.LatDiag.relIndex_intSub_latD <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.CtS.LatDiag.relIndex_intSub_latD` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FDiagonalLatticeIndexPow.lean&line=164#L164)
 -/
 theorem _root_.GlobalTheory.T.diagonal_lattice_index_pow : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a b : ℕ) (w : Pl E) (ϖ : w.adicCompletion E), IsUnifV E w ϖ → ∀ (i j : ℕ), i ≤ a → j ≤ b → (intSub a b w).relIndex (latD ϖ a b i j) = (qV E w) ^ (i * (b - j)) := by
   first | exact @GlobalTheory.CompanionTheory.CtS.LatDiag.relIndex_intSub_latD | exact GlobalTheory.CompanionTheory.CtS.LatDiag.relIndex_intSub_latD | (intros; apply GlobalTheory.CompanionTheory.CtS.LatDiag.relIndex_intSub_latD <;> assumption)

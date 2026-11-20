@@ -18,8 +18,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open ReciprocityTheory.ChartRestriction.G.TB.ValAt ReciprocityTheory.ChartRestriction.G.PullbackSections
 open GlobalTheory.CompanionTheory.Ar.Flat.GagaC
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Flat.GagaC.isUnit_of_forall_complexPoint | exact GlobalTheory.CompanionTheory.Ar.Flat.GagaC.isUnit_of_forall_complexPoint | (intros; apply GlobalTheory.CompanionTheory.Ar.Flat.GagaC.isUnit_of_forall_complexPoint <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Flat.GagaC.isUnit_of_forall_complexPoint` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FIsUnitOfNonvanishingPoints.lean&line=90#L90)
 -/
 theorem _root_.GlobalTheory.T.is_unit_of_nonvanishing_points : ∀ (X : Scheme.{0}) (s : X ⟶ Sp ℂ) (U : X.Opens) (a : Γ(X, U)), LocallyOfFiniteType s → (∀ x : Sp ℂ ⟶ X, x ≫ s = 𝟙 _ → centre x ∈ U → valAt' x U a ≠ 0) → IsUnit a := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Flat.GagaC.isUnit_of_forall_complexPoint | exact GlobalTheory.CompanionTheory.Ar.Flat.GagaC.isUnit_of_forall_complexPoint | (intros; apply GlobalTheory.CompanionTheory.Ar.Flat.GagaC.isUnit_of_forall_complexPoint <;> assumption)

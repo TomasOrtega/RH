@@ -8,8 +8,10 @@ open ReciprocityTheory.L2DbarEstimates (V)
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts GlobalTheory.FlagBundle GlobalTheory.HermFrame GlobalTheory.GoodMetric GlobalTheory.CxForm GlobalTheory.LineForm GlobalTheory.ChernCalc
 open scoped Matrix ContDiff ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChernCalc.sum_trace_pow_mul_sub_mul_pow | exact GlobalTheory.ChernCalc.sum_trace_pow_mul_sub_mul_pow | (intros; apply GlobalTheory.ChernCalc.sum_trace_pow_mul_sub_mul_pow <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChernCalc.sum_trace_pow_mul_sub_mul_pow` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSumTracePowMulSubMulPowTelescope.lean&line=5#L5)
 -/
 theorem _root_.GlobalTheory.T.sum_trace_pow_mul_sub_mul_pow_telescope : ∀ (R : Type) [CommRing R] (r : Type) [Fintype r] [DecidableEq r] (P Q : Matrix r r R) (k : ℕ), ∑ i ∈ Finset.range k, (P ^ i * (P - Q) * Q ^ (k - 1 - i)).trace = (P ^ k).trace - (Q ^ k).trace := by
   first | exact @GlobalTheory.ChernCalc.sum_trace_pow_mul_sub_mul_pow | exact GlobalTheory.ChernCalc.sum_trace_pow_mul_sub_mul_pow | (intros; apply GlobalTheory.ChernCalc.sum_trace_pow_mul_sub_mul_pow <;> assumption)

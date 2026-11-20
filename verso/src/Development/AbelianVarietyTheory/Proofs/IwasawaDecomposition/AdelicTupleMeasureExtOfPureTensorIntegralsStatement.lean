@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.T2SpaceNumbe
 open NumberField IsDedekindDomain MeasureTheory Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.GaugeEx
 open scoped TensorProduct NNReal ENNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GaugeEx.PureUniq.measure_ext_of_pure | exact GlobalTheory.GaugeEx.PureUniq.measure_ext_of_pure | (intros; apply GlobalTheory.GaugeEx.PureUniq.measure_ext_of_pure <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GaugeEx.PureUniq.measure_ext_of_pure` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FAdelicTupleMeasureExtOfPureTensorIntegrals.lean&line=219#L219)
 -/
 theorem _root_.GlobalTheory.T.adelicTupleMeasure_ext_of_pureTensor_integrals : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E], ∀ (d' : ℕ) (b' : Module.Basis (Fin d') F E) (n M : ℕ) (ν ν' : Measure (Fin n → Fin M → AF F ⊗[F] E)), (∀ (Φ : (Fin n → Fin M → AF F ⊗[F] E) → ℂ) (Φinf : (Fin n → Fin M → Ainf F ⊗[F] E) → ℂ) (Φf : (Fin n → Fin M → Af F ⊗[F] E) → ℂ) (Φv : ∀ v : HeightOneSpectrum (𝓞 F), (Fin n → Fin M → Fv F v ⊗[F] E) → ℂ), Continuous Φinf → HasCompactSupport Φinf → IsPureFin b' Φf Φv → IsProdInfFin Φ Φinf Φf → Integrable Φ ν ∧ Integrable Φ ν' ∧ ∫ X, Φ X ∂ν = ∫ X, Φ X ∂ν') → ν = ν' := by
   first | exact @GlobalTheory.GaugeEx.PureUniq.measure_ext_of_pure | exact GlobalTheory.GaugeEx.PureUniq.measure_ext_of_pure | (intros; apply GlobalTheory.GaugeEx.PureUniq.measure_ext_of_pure <;> assumption)

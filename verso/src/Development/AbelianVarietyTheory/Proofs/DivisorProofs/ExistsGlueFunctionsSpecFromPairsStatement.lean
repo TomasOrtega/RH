@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGlueFunctions
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SecPullA
 open CategoryTheory AlgebraicGeometry Opposite ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.CechDR GlobalTheory.CechDR.AffLoc
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CechDR.AffLoc.exists_glue_pair | exact GlobalTheory.CechDR.AffLoc.exists_glue_pair | (intros; apply GlobalTheory.CechDR.AffLoc.exists_glue_pair <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CechDR.AffLoc.exists_glue_pair` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsGlueFunctionsSpecFromPairs.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.exists_glue_functions_spec_from_pairs : ∀ {X : Scheme.{0}} (B : Type) [CommRing B] (x : Sp B ⟶ X) (h : ∀ p : Pair x, Γ(Sp B, p.1.1.1)), (∀ p q : Pair x, ∀ hpq : p ≤ q, ((Sp B).presheaf.map (homOfLE (Pair.le_fst hpq)).op).hom (h q) = h p) → ∃ G : B, ∀ p : Pair x, (secMap (𝟙 (Sp B)) p.1.1.1).hom G = h p := by
   first | exact @GlobalTheory.CechDR.AffLoc.exists_glue_pair | exact GlobalTheory.CechDR.AffLoc.exists_glue_pair | (intros; apply GlobalTheory.CechDR.AffLoc.exists_glue_pair <;> assumption)

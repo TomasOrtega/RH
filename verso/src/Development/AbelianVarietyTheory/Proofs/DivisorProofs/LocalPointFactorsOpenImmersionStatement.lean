@@ -18,8 +18,10 @@ open GlobalTheory.FlatModel
 open GlobalTheory.UnitGlue
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.localSpec_fac_of_closedPoint_mem_range | exact GlobalTheory.localSpec_fac_of_closedPoint_mem_range | (intros; apply GlobalTheory.localSpec_fac_of_closedPoint_mem_range <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.localSpec_fac_of_closedPoint_mem_range` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLocalPointFactorsOpenImmersion.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.local_point_factors_open_immersion : ∀ (S : Type) [CommRing S] [IsLocalRing S] (X : Scheme.{0}) (R : Type) [CommRing R] (ξ : Sp R ⟶ X) (yb : Sp S ⟶ X), IsOpenImmersion ξ → yb (IsLocalRing.closedPoint S) ∈ Set.range ξ → ∃ φ : R →+* S, spMap φ ≫ ξ = yb := by
   first | exact @GlobalTheory.localSpec_fac_of_closedPoint_mem_range | exact GlobalTheory.localSpec_fac_of_closedPoint_mem_range | (intros; apply GlobalTheory.localSpec_fac_of_closedPoint_mem_range <;> assumption)

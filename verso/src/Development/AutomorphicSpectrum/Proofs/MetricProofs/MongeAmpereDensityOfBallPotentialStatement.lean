@@ -8,8 +8,10 @@ import GroundTheory.HeightsAndTheta.Heights.CountingLowerBound.Assembly
 open NumberField Matrix MeasureTheory Filter Topology GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor GroundTheory.Heights₂.Heights.FiniteCovolume
 open scoped ENNReal InnerProductSpace
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Cusp.BallHess.maDensity_half_ballPot | exact GlobalTheory.CompanionTheory.Ar.Cusp.BallHess.maDensity_half_ballPot | (intros; apply GlobalTheory.CompanionTheory.Ar.Cusp.BallHess.maDensity_half_ballPot <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Cusp.BallHess.maDensity_half_ballPot` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FMongeAmpereDensityOfBallPotential.lean&line=361#L361)
 -/
 theorem _root_.GlobalTheory.T.monge_ampere_density_of_ball_potential : ∀ (Ψ : Type) [Fintype Ψ] (j j' n : ℕ) (q : Ψ × Fin j × Fin j' ≃ Fin n), ∃ c : ℝ, 0 < c ∧ ∀ t ∈ ballDom q, maDensity (fun (_ : Fin n) t' => ballPot q t' / 2) t = c * ballDens q t := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Cusp.BallHess.maDensity_half_ballPot | exact GlobalTheory.CompanionTheory.Ar.Cusp.BallHess.maDensity_half_ballPot | (intros; apply GlobalTheory.CompanionTheory.Ar.Cusp.BallHess.maDensity_half_ballPot <;> assumption)

@@ -6,8 +6,10 @@ open scoped TensorProduct Matrix
 open NumberField Formalism.BasicNotions.TH GlobalTheory.RealLift GlobalTheory.FockIncl GlobalTheory.FockInclK
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FockInclK.mul_frame_eq_frame_mul_exp_extMat | exact GlobalTheory.FockInclK.mul_frame_eq_frame_mul_exp_extMat | (intros; apply GlobalTheory.FockInclK.mul_frame_eq_frame_mul_exp_extMat <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FockInclK.mul_frame_eq_frame_mul_exp_extMat` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FEigenvectorFixedByCompactCommuting.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.eigenvector_fixed_by_compact_commuting : ∀ (d d₁ R S : ℕ) (r₀ : Fin (R + 1)) (s₀ : Fin (S + 1)) (K θ : Matrix (Fin d) (Fin d) ℂ)
     (K₁ : Matrix (Fin d₁) (Fin d₁) ℂ) (ιH : Matrix (Fin d) (Fin d₁) ℂ) (Cw : Matrix (Fin d) (Ix (R + 1) (S + 1)) ℂ)

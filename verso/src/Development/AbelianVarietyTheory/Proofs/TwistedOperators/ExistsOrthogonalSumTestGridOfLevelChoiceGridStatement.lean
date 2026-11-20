@@ -15,8 +15,10 @@ open GlobalTheory.Grid GlobalTheory.ChiGrid GlobalTheory.GridJoin
 open scoped Pointwise TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GridJoin.exists_orthogonalSum_testGrid_of_levelChoiceGrid | exact GlobalTheory.GridJoin.exists_orthogonalSum_testGrid_of_levelChoiceGrid | (intros; apply GlobalTheory.GridJoin.exists_orthogonalSum_testGrid_of_levelChoiceGrid <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GridJoin.exists_orthogonalSum_testGrid_of_levelChoiceGrid` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsOrthogonalSumTestGridOfLevelChoiceGrid.lean&line=43#L43)
 -/
 theorem _root_.GlobalTheory.T.exists_extensionData_antiDiagonalSignGram_of_lat_eq : ∀ {D : D7} (A B : GlobalTheory.Grid.Node D) {c : ℕ} {ε : D.host.E} (d : GlobalTheory.ChiGrid.HermitianOrthogonalExtensionData A.V B.V c ε) (𝔟 : Fin c → GlobalTheory.Grid.FrId D), (ε = 1 ∨ ε = -1) → B.Λ = d.lat A.Λ 𝔟 → ∃ d' : GlobalTheory.Grid.HermitianOrthogonalExtensionData A B c, d'.ι = d.ι ∧ d'.Is (fun p q => GlobalTheory.ChiGrid.antiDiagonalSignGramMatrix c ε p q) 𝔟 := by
   first | exact @GlobalTheory.GridJoin.exists_orthogonalSum_testGrid_of_levelChoiceGrid | exact GlobalTheory.GridJoin.exists_orthogonalSum_testGrid_of_levelChoiceGrid | (intros; apply GlobalTheory.GridJoin.exists_orthogonalSum_testGrid_of_levelChoiceGrid <;> assumption)

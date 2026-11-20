@@ -10,8 +10,10 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Unf GlobalTheory.See
 open scoped TensorProduct Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PenVol.relIndex_cosStab_eq_wt | exact GlobalTheory.PenVol.relIndex_cosStab_eq_wt | (intros; apply GlobalTheory.PenVol.relIndex_cosStab_eq_wt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PenVol.relIndex_cosStab_eq_wt` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FRelIndexCouplingCosetStabilizerEqChartWeight.lean&line=103#L103)
 -/
 theorem _root_.GlobalTheory.T.relIndex_couplingCosetStabilizer_eq_chartWeight : ∀ {D : D7} {c : Comm D} {v : VCom c} {B : GlobalTheory.Fam.Base c} {PP : Formalism.L2.DIV.Pl D.host.E} (G : QGeo v B PP) {χ : ℕ → (AE D)ˣ →* Circle} (E : QExt G χ) (y : E.Ch (G.s + 1)), (((GlobalTheory.PenVol.cosStab ((G.T E.δ E.tame E.η).lev (G.s + 1) 0 rfl).J (GlobalTheory.StepData.box _ (G.ϖ ^ E.M)) (E.cos y)).relIndex (GlobalTheory.SplitWeil.KO G.k _) : ℕ) : ℂ) = E.wt (G.s + 1) y := by
   first | exact @GlobalTheory.PenVol.relIndex_cosStab_eq_wt | exact GlobalTheory.PenVol.relIndex_cosStab_eq_wt | (intros; apply GlobalTheory.PenVol.relIndex_cosStab_eq_wt <;> assumption)

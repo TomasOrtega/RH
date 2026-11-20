@@ -6,8 +6,10 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicDouble
 open Matrix GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.BZMir GlobalTheory.BZMir.Leib GlobalTheory.RgGu.Leib GlobalTheory.CompanionTheory.BZPhiPG
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.BZPhiPG.OntoO.onto | exact GlobalTheory.CompanionTheory.BZPhiPG.OntoO.onto | (intros; apply GlobalTheory.CompanionTheory.BZPhiPG.OntoO.onto <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.BZPhiPG.OntoO.onto` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FOpenEvaluationSurjective.lean&line=368#L368)
 -/
 theorem _root_.GlobalTheory.T.open_evaluation_surjective : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (i t : ℕ) (ψ : AddChar k Circle) (hψ : Continuous ψ) (τ : MRep k (i + 1)) (σ : GRep k (t + 1)) (hτ : IsSmooth τ.ρ) (hσ : IsSmooth σ.ρ) (y : cIndSpace (HPG k i (t + 1)) (sigO τ σ ψ)),
   ∃ f : XS τ σ, (∀ x ∈ Cl k i t, evX f x = 0) ∧ eO ψ f = (y : smoothPart (ind (HPG k i (t + 1)) (sigO τ σ ψ))).1.1 := by

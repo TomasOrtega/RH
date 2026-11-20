@@ -8,8 +8,10 @@ open GroundTheory.Automorphic.Spherical GroundTheory.Automorphic.Iwasawa GroundT
 open scoped ValuativeRel
 open GlobalTheory.CompanionTheory.LFUDom
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.LFUDom.whittaker_torus_value_formula | exact GlobalTheory.CompanionTheory.LFUDom.whittaker_torus_value_formula | (intros; apply GlobalTheory.CompanionTheory.LFUDom.whittaker_torus_value_formula <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.LFUDom.whittaker_torus_value_formula` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FWhittakerTorusValueFormulaHolds.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.whittaker_torus_value_formula_holds : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (ψ : AddChar F Circle), Ad3.IsStd ψ → ∀ (ν : Fˣ →* ℂˣ) (a b : ℤ),
   (b ≤ a → Ad3.LFS.s2 ψ ν (torusPow F 2 ![a, b]) =

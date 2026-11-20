@@ -14,8 +14,10 @@ open GlobalTheory GlobalTheory.TorsionForm
 open scoped ContDiff Real CategoryTheory.Obj ComplexOrder
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CxForm.ArRing.ch_ofLB | exact GlobalTheory.CxForm.ArRing.ch_ofLB | (intros; apply GlobalTheory.CxForm.ArRing.ch_ofLB <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CxForm.ArRing.ch_ofLB` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FChernCharacterLineBundleExp.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.chern_character_line_bundle_exp : ∀ (B : BottChern) (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (D : ℕ) (h : IsRegVar p D) (R : ArRing B h) (L : HermLB p), R.ch (.ofLB L) = ∑ j ∈ Finset.range (D + 2), ((j.factorial : ℚ)⁻¹) • R.c1 L ^ j := by
   first | exact @GlobalTheory.CxForm.ArRing.ch_ofLB | exact GlobalTheory.CxForm.ArRing.ch_ofLB | (intros; apply GlobalTheory.CxForm.ArRing.ch_ofLB <;> assumption)

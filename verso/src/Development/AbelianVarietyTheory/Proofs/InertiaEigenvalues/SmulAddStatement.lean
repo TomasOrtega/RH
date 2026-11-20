@@ -5,8 +5,10 @@ import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
 open GlobalTheory.PhiGam GlobalTheory.AdmLoc GlobalTheory.Models GlobalTheory.TopSteps Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc
 open scoped LaurentSeries PowerSeries
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TopSteps.Repr.smul_add | exact GlobalTheory.TopSteps.Repr.smul_add | (intros; apply GlobalTheory.TopSteps.Repr.smul_add <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TopSteps.Repr.smul_add` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FSmulAdd.lean&line=137#L137)
 -/
 theorem _root_.GlobalTheory.T.repr_smul_add : ∀ {k G : Type} [Field k] [Group G] {l n : ℕ} [Fact l.Prime] [CharP k l] [NeZero n] {R : RingPG k l} (F : DFun R n G) (A : Ob k G) (c : k) (z z' : G → Fin A.m → k) (b g b' g' : ZMod n → Vc k A.m), Repr F A z b g → Repr F A z' b' g' → Repr F A (c • z + z') (c • b + b') (c • g + g') := by
   first | exact @GlobalTheory.TopSteps.Repr.smul_add | exact GlobalTheory.TopSteps.Repr.smul_add | (intros; apply GlobalTheory.TopSteps.Repr.smul_add <;> assumption)

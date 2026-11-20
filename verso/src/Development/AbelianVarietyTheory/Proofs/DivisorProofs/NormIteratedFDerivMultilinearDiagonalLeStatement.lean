@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PowForm
 open MeasureTheory Filter Topology
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.norm_iteratedFDeriv_diag_multilinear_le | exact GlobalTheory.norm_iteratedFDeriv_diag_multilinear_le | (intros; apply GlobalTheory.norm_iteratedFDeriv_diag_multilinear_le <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.norm_iteratedFDeriv_diag_multilinear_le` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FNormIteratedFDerivMultilinearDiagonalLe.lean&line=7#L7)
 -/
 theorem _root_.GlobalTheory.T.norm_iteratedFDeriv_multilinear_diagonal_le : ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℝ E] (j : ℕ)
     (f : ContinuousMultilinearMap ℝ (fun _ : Fin j => E) ℂ) (i : ℕ) (y : E),

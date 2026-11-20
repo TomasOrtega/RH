@@ -12,8 +12,10 @@ open GroundTheory.Global.AdicLiesOver
 open GlobalTheory.CompanionTheory.FexTheta
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.FexTheta.lc_pri | exact GlobalTheory.CompanionTheory.FexTheta.lc_pri | (intros; apply GlobalTheory.CompanionTheory.FexTheta.lc_pri <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.FexTheta.lc_pri` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FLocalComponentRationalIdele.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.local_component_rational_idele : ∀ (v : Pl) (α : ℚˣ), ((Ad3.R.lc v (pri α) : (Qv v)ˣ) : Qv v) = (((α : ℚˣ) : ℚ) : Qv v) := by
   first | exact @GlobalTheory.CompanionTheory.FexTheta.lc_pri | exact GlobalTheory.CompanionTheory.FexTheta.lc_pri | (intros; apply GlobalTheory.CompanionTheory.FexTheta.lc_pri <;> assumption)

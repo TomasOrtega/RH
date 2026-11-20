@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGensModNsmulO
 import Mathlib
 open NumberField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GensModNsmul.exists_gens_mod_nsmul | exact GlobalTheory.GensModNsmul.exists_gens_mod_nsmul | (intros; apply GlobalTheory.GensModNsmul.exists_gens_mod_nsmul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GensModNsmul.exists_gens_mod_nsmul` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsGensModNsmulOfFgNumberField.lean&line=81#L81)
 -/
 theorem _root_.GlobalTheory.T.exists_gens_mod_nsmul_of_fg_numberField : ∀ (E : Type) [Field E] [NumberField E] (r M : ℕ) (Λ : Submodule (𝓞 E) (Fin r → E)), 1 ≤ M → Λ.FG → ∃ e : Fin r → Fin r → E, (∀ i, e i ∈ Λ) ∧ ∀ x ∈ Λ, ∃ o : Fin r → 𝓞 E, ∃ y ∈ Λ, x = ∑ i, o i • e i + M • y := by
   first | exact @GlobalTheory.GensModNsmul.exists_gens_mod_nsmul | exact GlobalTheory.GensModNsmul.exists_gens_mod_nsmul | (intros; apply GlobalTheory.GensModNsmul.exists_gens_mod_nsmul <;> assumption)

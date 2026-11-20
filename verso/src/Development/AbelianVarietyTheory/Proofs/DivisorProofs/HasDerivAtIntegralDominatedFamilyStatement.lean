@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasDerivAtIntegralD
 import Mathlib
 open MeasureTheory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.hasDerivAt_integral_of_integral_bounds | exact GlobalTheory.hasDerivAt_integral_of_integral_bounds | (intros; apply GlobalTheory.hasDerivAt_integral_of_integral_bounds <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.hasDerivAt_integral_of_integral_bounds` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHasDerivAtIntegralDominatedFamily.lean&line=145#L145)
 -/
 theorem _root_.GlobalTheory.T.has_deriv_at_integral_dominated_family : ∀ {α : Type} [MeasurableSpace α] (μ : Measure α) (F F₁ F₂ : ℝ → α → ℂ) (B : ℝ),
     (∀ x s, HasDerivAt (fun r => F r x) (F₁ s x) s) → (∀ x s, HasDerivAt (fun r => F₁ r x) (F₂ s x) s) →

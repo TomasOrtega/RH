@@ -11,8 +11,10 @@ open scoped ENNReal InnerProductSpace
 open scoped ComplexOrder
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Cusp.Dict.continuous_moebBall_zero | exact GlobalTheory.CompanionTheory.Ar.Cusp.Dict.continuous_moebBall_zero | (intros; apply GlobalTheory.CompanionTheory.Ar.Cusp.Dict.continuous_moebBall_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Cusp.Dict.continuous_moebBall_zero` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FBallMobiusZeroContinuous.lean&line=54#L54)
 -/
 theorem _root_.GlobalTheory.T.ball_mobius_zero_continuous : ∀ (Ψ : Type) [Fintype Ψ] (j j' n : ℕ) (q : Ψ × Fin j × Fin j' ≃ Fin n) (X : Type) [TopologicalSpace X] (f : X → Ψ → Matrix (Sg j j') (Sg j j') ℂ), (∀ τ, Continuous fun x => f x τ) → (∀ x τ, IsSgU (f x τ)) → Continuous fun x => moebBall q (f x) 0 := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Cusp.Dict.continuous_moebBall_zero | exact GlobalTheory.CompanionTheory.Ar.Cusp.Dict.continuous_moebBall_zero | (intros; apply GlobalTheory.CompanionTheory.Ar.Cusp.Dict.continuous_moebBall_zero <;> assumption)

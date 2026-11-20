@@ -4,8 +4,10 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.Lpart
 open MeasureTheory Matrix GroundTheory.LocalField GroundTheory.Automorphic Ad3 Ad3.K.GL2LocalData GlobalTheory.CompanionTheory.GL2DualWhittakerPair
 open scoped ValuativeRel
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.GL2DualWhittakerPair.ChangeVar.main | exact GlobalTheory.CompanionTheory.GL2DualWhittakerPair.ChangeVar.main | (intros; apply GlobalTheory.CompanionTheory.GL2DualWhittakerPair.ChangeVar.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.GL2DualWhittakerPair.ChangeVar.main` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FDualChangeOfVariablesIdentities.lean&line=86#L86)
 -/
 theorem _root_.GlobalTheory.T.dual_change_of_variables_identities : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (W₀ : GL (Fin 2) F → ℂ) (h z : GL (Fin 2) F) (s : ℂ), e2r (h * (tinv z⁻¹ * w2 * h)⁻¹) = (z⁻¹ : GL (Fin 2) F).val *ᵥ e1 ∧ dW2 W₀ (h * (tinv z⁻¹ * w2 * h)⁻¹) = W₀ z ∧ mp (GeneralLinearGroup.det (tinv z⁻¹ * w2 * h)) s = mp (GeneralLinearGroup.det z) s * mp (GeneralLinearGroup.det h) s := by
   first | exact @GlobalTheory.CompanionTheory.GL2DualWhittakerPair.ChangeVar.main | exact GlobalTheory.CompanionTheory.GL2DualWhittakerPair.ChangeVar.main | (intros; apply GlobalTheory.CompanionTheory.GL2DualWhittakerPair.ChangeVar.main <;> assumption)

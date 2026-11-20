@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsRatioOfWeight
 open Filter Topology MeasureTheory GlobalTheory.HSAmp
 open scoped ComplexOrder Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HSAmp.det_re_le_pow_mul_det_re | exact GlobalTheory.HSAmp.det_re_le_pow_mul_det_re | (intros; apply GlobalTheory.HSAmp.det_re_le_pow_mul_det_re <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HSAmp.det_re_le_pow_mul_det_re` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDetReLePowMulDetRe.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.det_re_le_pow_mul_det_re_of_posDef : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (A B : Matrix ι ι ℂ) (κ : ℝ), A.PosDef → B.PosDef → (∀ c : ι → ℂ, (star c ⬝ᵥ A *ᵥ c).re ≤ κ * (star c ⬝ᵥ B *ᵥ c).re) → A.det.re ≤ κ ^ Fintype.card ι * B.det.re := by
   first | exact @GlobalTheory.HSAmp.det_re_le_pow_mul_det_re | exact GlobalTheory.HSAmp.det_re_le_pow_mul_det_re | (intros; apply GlobalTheory.HSAmp.det_re_le_pow_mul_det_re <;> assumption)

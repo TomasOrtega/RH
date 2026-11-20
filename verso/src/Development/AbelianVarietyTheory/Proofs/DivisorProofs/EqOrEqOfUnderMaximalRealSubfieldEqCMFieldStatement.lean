@@ -5,8 +5,10 @@ open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep 
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BCT.FiberTwo.eq_or_eq_of_under_eq | exact GlobalTheory.BCT.FiberTwo.eq_or_eq_of_under_eq | (intros; apply GlobalTheory.BCT.FiberTwo.eq_or_eq_of_under_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BCT.FiberTwo.eq_or_eq_of_under_eq` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FEqOrEqOfUnderMaximalRealSubfieldEqCMField.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.eq_or_eq_of_under_maximalRealSubfield_eq_CMField : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (w u u' : Pl E), u ≠ w → u.under (𝓞 (maximalRealSubfield E)) = w.under (𝓞 (maximalRealSubfield E)) → u'.under (𝓞 (maximalRealSubfield E)) = w.under (𝓞 (maximalRealSubfield E)) → u' = w ∨ u' = u := by
   first | exact @GlobalTheory.BCT.FiberTwo.eq_or_eq_of_under_eq | exact GlobalTheory.BCT.FiberTwo.eq_or_eq_of_under_eq | (intros; apply GlobalTheory.BCT.FiberTwo.eq_or_eq_of_under_eq <;> assumption)

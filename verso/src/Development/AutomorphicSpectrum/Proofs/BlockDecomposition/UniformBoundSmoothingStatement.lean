@@ -7,8 +7,10 @@ open NumberField IsDedekindDomain Matrix MeasureTheory Filter Topology Polynomia
 open GlobalTheory.CuspRep GlobalTheory.UnitaryBC PositivityTheory.Rg.Rs GlobalTheory.CompanionTheory.Conc
 open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Automorphic.AutomorphicForm
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Conc.uBnd_sm | exact GlobalTheory.CompanionTheory.Conc.uBnd_sm | (intros; apply GlobalTheory.CompanionTheory.Conc.uBnd_sm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Conc.uBnd_sm` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FUniformBoundSmoothing.lean&line=29#L29)
 -/
 theorem _root_.GlobalTheory.T.uniform_bound_smoothing : ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) [MeasurableSpace (archGroup K n)] [BorelSpace (archGroup K n)] (ν : Measure (archGroup K n)) [ν.IsHaarMeasure] (β : archGroup K n → ℝ) (ι : Type) (f : ι → AdelicGLn.AdelicGL K n → ℂ) (m : ℕ → ℝ), Ker ν β → (∀ i, Continuous (f i)) →
   UBnd f m → UBnd (fun i => sm ν β (f i)) m := by

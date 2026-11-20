@@ -4,8 +4,10 @@ import Mathlib
 import Formalism.LocalToGlobal.IndefiniteReal.GramCEqTranspose
 open NumberField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.eOp_comp_self_of_conv_idem | exact GlobalTheory.eOp_comp_self_of_conv_idem | (intros; apply GlobalTheory.eOp_comp_self_of_conv_idem <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.eOp_comp_self_of_conv_idem` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTwistedProjectorIdempotentOfGroupAlgebraIdem.lean&line=7#L7)
 -/
 theorem _root_.GlobalTheory.T.twistedProjector_idempotent_of_groupAlgebra_idem : ∀ {LL Ks : Type} [Field LL] [NumberField LL] [Field Ks] [NumberField Ks] [Algebra Ks LL]
     {WL : Type} [AddCommGroup WL] [Module LL WL] [Module Ks WL] [IsScalarTower Ks LL WL]

@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsEquivOfBases
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Col Formalism.L2.DIV GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Col2.TC GlobalTheory.Mem.R3 GlobalTheory.Mem.ColTie
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mem.ColTie.ipK_eq_card_mul_ipLev | exact GlobalTheory.Mem.ColTie.ipK_eq_card_mul_ipLev | (intros; apply GlobalTheory.Mem.ColTie.ipK_eq_card_mul_ipLev <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mem.ColTie.ipK_eq_card_mul_ipLev` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FRowFormClassSumPrincipalEqCardMulLevel.lean&line=8#L8)
 -/
 theorem _root_.GlobalTheory.T.rowFormClassSum_principal_eq_card_mul_level : ∀ {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m)
     (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (mu : Tup X.F X.E X.K S)

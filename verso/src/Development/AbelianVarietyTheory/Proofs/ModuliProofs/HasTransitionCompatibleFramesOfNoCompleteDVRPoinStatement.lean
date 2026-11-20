@@ -12,8 +12,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj TensorProduct Pointwise
 open GlobalTheory.Models GlobalTheory.ModelSum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ModelSum.hasFrames_rank_of_isEmpty | exact GlobalTheory.ModelSum.hasFrames_rank_of_isEmpty | (intros; apply GlobalTheory.ModelSum.hasFrames_rank_of_isEmpty <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ModelSum.hasFrames_rank_of_isEmpty` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FModuliProofs%2FHasTransitionCompatibleFramesOfNoCompleteDVRPoin.lean&line=38#L38)
 -/
 theorem _root_.GlobalTheory.T.hasTransitionCompatibleFrames_of_no_completeDVR_points : ∀ (Z : Scheme.{0}) (G : Over Z) (L : LB G.left) (N : ℕ) (A : LB Z) (n n' : ℕ) (r s : ℤ), 1 ≤ n' → (∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W], GlobalTheory.LN.CDvr W → IsEmpty (Sp W ⟶ Z)) → HasFrames G L N A n r s → HasFrames G L N A n' r s := by
   first | exact @GlobalTheory.ModelSum.hasFrames_rank_of_isEmpty | exact GlobalTheory.ModelSum.hasFrames_rank_of_isEmpty | (intros; apply GlobalTheory.ModelSum.hasFrames_rank_of_isEmpty <;> assumption)

@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.Irreducibl
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.SegmentRepresentation
 open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.JHMult Zc Zc.Seg
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.FrobInv.exists_map_prodIrr | exact GlobalTheory.CompanionTheory.FrobInv.exists_map_prodIrr | (intros; apply GlobalTheory.CompanionTheory.FrobInv.exists_map_prodIrr <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.FrobInv.exists_map_prodIrr` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FFrobeniusReciprocityNonzero.lean&line=137#L137)
 -/
 theorem _root_.GlobalTheory.T.frobenius_reciprocity_nonzero : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {h N : ℕ} (x : Fin h → IrrGL k) (hd : ∑ a, (x a).1 = N) {V : Type} [AddCommGroup V] [Module ℂ V] (τ : Representation ℂ (GL (Fin N) k) V) (hτ : IsSmooth τ) (f : (jac (stdBlocks (fun a => (x a).1) hd) τ).IntertwiningMap (piTensor fun a => (x a).rep)) (hf : ∃ v, f v ≠ 0), ∃ g : τ.IntertwiningMap (prodIrr x hd), ∃ v, g v ≠ 0 := by
   first | exact @GlobalTheory.CompanionTheory.FrobInv.exists_map_prodIrr | exact GlobalTheory.CompanionTheory.FrobInv.exists_map_prodIrr | (intros; apply GlobalTheory.CompanionTheory.FrobInv.exists_map_prodIrr <;> assumption)

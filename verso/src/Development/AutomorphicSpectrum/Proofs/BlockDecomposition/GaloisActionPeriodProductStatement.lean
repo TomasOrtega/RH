@@ -9,8 +9,10 @@ open GlobalTheory.HeckeGal GlobalTheory.Pst GlobalTheory.TripleGal GlobalTheory.
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.LTPer.actB_prod_periods | exact GlobalTheory.CompanionTheory.LTPer.actB_prod_periods | (intros; apply GlobalTheory.CompanionTheory.LTPer.actB_prod_periods <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.LTPer.actB_prod_periods` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FGaloisActionPeriodProduct.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.galois_action_period_product : ∀ {l : ℕ} [Fact l.Prime] (K : FinExt l) (χ : ↥(GK K) →* (↥K.1)ˣ)
     (t : (↥K.1 →ₐ[ℚ_[l]] Om l) → Formalism.Per6.BdRp l) (s : Finset (↥K.1 →ₐ[ℚ_[l]] Om l)),

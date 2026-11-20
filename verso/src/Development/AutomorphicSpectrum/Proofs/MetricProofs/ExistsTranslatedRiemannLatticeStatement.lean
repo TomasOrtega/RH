@@ -11,8 +11,10 @@ open scoped ENNReal InnerProductSpace
 open scoped ComplexOrder
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Rotate.rotate_exists | exact GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Rotate.rotate_exists | (intros; apply GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Rotate.rotate_exists <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Rotate.rotate_exists` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FExistsTranslatedRiemannLattice.lean&line=292#L292)
 -/
 theorem _root_.GlobalTheory.T.exists_translated_riemann_lattice : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Type) [Fintype Ψ] (j j' n g : ℕ) (Λ : Type) [AddCommGroup Λ] [Module (𝓞 E) Λ] (F : UnivFam E Ψ j j' n g Λ) (C : LatEmb F) (R : RiemLat E g Λ) (a ai : Ψ → Matrix (Fin (j + j')) (Fin (j + j')) ℂ), R.form = F.form → (∀ τ, a τ * ai τ = 1) → (∀ τ, (a τ)ᴴ * C.gr τ * a τ = C.gr τ) → ∃ R' : RiemLat E g Λ, R'.form = R.form ∧ R'.B = R.B ∧ (∀ x, R'.P x = C.perExt R fun τ => ai τ *ᵥ C.vec x τ) ∧ ∀ A, C.IsAdapted R A → C.IsAdapted R' fun τ => a τ * A τ := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Rotate.rotate_exists | exact GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Rotate.rotate_exists | (intros; apply GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Rotate.rotate_exists <;> assumption)

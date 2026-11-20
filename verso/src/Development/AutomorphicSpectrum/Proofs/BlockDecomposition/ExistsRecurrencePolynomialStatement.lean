@@ -3,8 +3,10 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsRecurrenc
 import Development.WeilBound.RepresentationTheoryGL.ResidualSpectrum.ExponentialNegativity.CommonEigenvectors.KillPoly
 open Polynomial
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.KillDeg.killPoly_natDegree_le | exact GlobalTheory.CompanionTheory.KillDeg.killPoly_natDegree_le | (intros; apply GlobalTheory.CompanionTheory.KillDeg.killPoly_natDegree_le <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.KillDeg.killPoly_natDegree_le` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FExistsRecurrencePolynomial.lean&line=122#L122)
 -/
 theorem _root_.GlobalTheory.T.exists_recurrence_polynomial : ∀ (G : Type) [Group G] (a : ℝ → G) (F₀ : G → ℂ) (S : Submodule ℂ (ℝ → ℂ)), (∀ s t, a (s + t) = a s * a t) →
   (∀ g, Continuous fun t => F₀ (a t * g)) → FiniteDimensional ℂ S → (∀ g, (fun t => F₀ (a t * g)) ∈ S) →

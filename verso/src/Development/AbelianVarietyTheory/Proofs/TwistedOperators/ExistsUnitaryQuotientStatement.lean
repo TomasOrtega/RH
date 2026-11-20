@@ -4,8 +4,10 @@ import Formalism.SharpRestriction.Divisibility.SchurIrreducible
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SameBlockOfPosC
 open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GKQuot.exists_unitary_quotient | exact GlobalTheory.GKQuot.exists_unitary_quotient | (intros; apply GlobalTheory.GKQuot.exists_unitary_quotient <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GKQuot.exists_unitary_quotient` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsUnitaryQuotient.lean&line=57#L57)
 -/
 theorem _root_.GlobalTheory.T.exists_unitary_module_quotient_of_invariant_inner : ∀ (p q : ℕ) (M : GKMod p q) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] (E : M.V →ₗ[ℂ] H), (∀ Z x y, inner ℂ (E (M.act Z x)) (E y) = inner ℂ (E x) (E (M.act (adjZ Z) y))) → ∃ (A : UGKMod p q) (f : M.V →ₗ[ℂ] A.M.V) (Eb : A.M.V →ₗ[ℂ] H), Function.Surjective f ∧ Function.Injective Eb ∧ (∀ x, Eb (f x) = E x) ∧ ∀ Z x, f (M.act Z x) = A.M.act Z (f x) := by
   first | exact @GlobalTheory.GKQuot.exists_unitary_quotient | exact GlobalTheory.GKQuot.exists_unitary_quotient | (intros; apply GlobalTheory.GKQuot.exists_unitary_quotient <;> assumption)

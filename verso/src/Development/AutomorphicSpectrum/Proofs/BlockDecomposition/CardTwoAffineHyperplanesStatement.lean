@@ -3,8 +3,10 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CardTwoAffineHy
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MemRiemannRochSpaceIffRegularAtEverywhere
 open Matrix Classical PositivityTheory.Rg.Rs GlobalTheory.CompanionTheory.GLFirstBasisOrbit
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.GapOpCount.card_two_equations | exact GlobalTheory.CompanionTheory.GapOpCount.card_two_equations | (intros; apply GlobalTheory.CompanionTheory.GapOpCount.card_two_equations <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.GapOpCount.card_two_equations` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FCardTwoAffineHyperplanes.lean&line=43#L43)
 -/
 theorem _root_.GlobalTheory.T.card_two_affine_hyperplanes : ∀ (k : Type) [Field k] [Fintype k] (n : ℕ) (a b : Fin (n + 1) → k), a ≠ 0 → (∀ s : k, b ≠ s • a) →
   Fintype.card k ^ 2 * (Finset.univ.filter (fun x : Fin (n + 1) → k => a ⬝ᵥ x = 1 ∧ b ⬝ᵥ x = 1)).card = Fintype.card k ^ (n + 1) := by

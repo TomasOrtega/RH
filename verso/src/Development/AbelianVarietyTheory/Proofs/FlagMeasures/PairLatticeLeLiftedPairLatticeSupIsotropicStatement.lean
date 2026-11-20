@@ -6,8 +6,10 @@ open NumberField Module Matrix Formalism.BasicNotions Formalism.MainNotions.S Fo
 open scoped ENNReal Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LoopC.PairLat.Mlat_le_La_sup | exact GlobalTheory.LoopC.PairLat.Mlat_le_La_sup | (intros; apply GlobalTheory.LoopC.PairLat.Mlat_le_La_sup <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LoopC.PairLat.Mlat_le_La_sup` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FPairLatticeLeLiftedPairLatticeSupIsotropic.lean&line=99#L99)
 -/
 theorem _root_.GlobalTheory.T.pairLattice_le_liftedPairLattice_sup_isotropic : ∀ (E : Type) [Field E] [NumberField E] [StarRing E] (S : HSpace E) (r : ℕ) (T T' : E) (Λ : Submodule (𝓞 E) S.V) (g : ℕ) (F : LFlag S r T) (F' F'' : LFlag S r T') (β : S.V ≃ₗ[E] S.V), IsPair Λ F F' F'' β g → Mlat Λ F F' F'' β g ≤ La Λ g F F'' ⊔ toO S (Xsp F) := by
   first | exact @GlobalTheory.LoopC.PairLat.Mlat_le_La_sup | exact GlobalTheory.LoopC.PairLat.Mlat_le_La_sup | (intros; apply GlobalTheory.LoopC.PairLat.Mlat_le_La_sup <;> assumption)

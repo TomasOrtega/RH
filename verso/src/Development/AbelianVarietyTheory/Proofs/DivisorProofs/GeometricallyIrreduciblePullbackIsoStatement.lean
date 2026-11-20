@@ -16,8 +16,10 @@ open GlobalTheory.FlatModel
 attribute [local instance] Over.cartesianMonoidalCategory
 attribute [local instance] algPadicInt algPadicField towerPadic factPadic GlobalTheory.PadicComplexHost.isAdicComplete
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlatModel.geomIrr_preimage_of_isIso_restrict | exact GlobalTheory.FlatModel.geomIrr_preimage_of_isIso_restrict | (intros; apply GlobalTheory.FlatModel.geomIrr_preimage_of_isIso_restrict <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlatModel.geomIrr_preimage_of_isIso_restrict` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGeometricallyIrreduciblePullbackIso.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.geometrically_irreducible_pullback_iso : ∀ (V : Type) [CommRing V] (X X' : Scheme.{0}) (s : X ⟶ Sp V) (π : X' ⟶ X) (Xw O : X.Opens),
     Xw ≤ O → IsIso (π ∣_ O) → GeomIrr s Xw → GeomIrr (π ≫ s) (π ⁻¹ᵁ Xw) := by

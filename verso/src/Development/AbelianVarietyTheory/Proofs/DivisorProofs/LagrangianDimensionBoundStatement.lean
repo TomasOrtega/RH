@@ -8,8 +8,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.finrank_le_card_of_isotropic_prod_pi | exact GlobalTheory.finrank_le_card_of_isotropic_prod_pi | (intros; apply GlobalTheory.finrank_le_card_of_isotropic_prod_pi <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.finrank_le_card_of_isotropic_prod_pi` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLagrangianDimensionBound.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.lagrangian_dimension_bound : ∀ (F : Type) [Field F] (κ : Type) [Fintype κ] (L : Submodule F ((κ → F) × (κ → F))),
     (∀ a ∈ L, ∀ b ∈ L, a.1 ⬝ᵥ b.2 = b.1 ⬝ᵥ a.2) → Module.finrank F L ≤ Fintype.card κ := by

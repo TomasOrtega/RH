@@ -4,8 +4,10 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AvgVanish
 open Matrix GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.BZMir GlobalTheory.BZMir.Leib GlobalTheory.RgGu.Leib GlobalTheory.CompanionTheory.BZPhiPG
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.BZPhiPG.Glue.extension | exact GlobalTheory.CompanionTheory.BZPhiPG.Glue.extension | (intros; apply GlobalTheory.CompanionTheory.BZPhiPG.Glue.extension <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.BZPhiPG.Glue.extension` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FTwistedJacquetClosedOpenSequence.lean&line=259#L259)
 -/
 theorem _root_.GlobalTheory.T.twisted_jacquet_closed_open_sequence : ∀ {G M Z VC VO AC AO : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Group M]
     [AddCommGroup Z] [Module ℂ Z] [AddCommGroup VC] [Module ℂ VC] [AddCommGroup VO] [Module ℂ VO]

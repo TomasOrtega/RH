@@ -8,8 +8,10 @@ open Formalism.IndefR.Lev Formalism.IndefR.Mult Formalism.IndefR.Datum Formalism
 open GlobalTheory.RawLift GlobalTheory.SWLagTerms
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SWLagTerms.LagrangianFrames.exists_lag_isLagFrame_frameOf | exact GlobalTheory.SWLagTerms.LagrangianFrames.exists_lag_isLagFrame_frameOf | (intros; apply GlobalTheory.SWLagTerms.LagrangianFrames.exists_lag_isLagFrame_frameOf <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SWLagTerms.LagrangianFrames.exists_lag_isLagFrame_frameOf` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FExistsDoubledLagrangianOfRationalUnitaryFrame.lean&line=150#L150)
 -/
 theorem _root_.GlobalTheory.T.exists_doubledLagrangian_of_rational_unitary_frame : ∀ (D : D7) (W : HSp D) (γ : GA D (GlobalTheory.Doubling.dblSp W)) (g₀ : Matrix (Fin (W.rank + W.rank)) (Fin (W.rank + W.rank)) D.host.E), Formalism.L2.Theta.mt (GlobalTheory.Doubling.dblSp W) γ = g₀.map (incA D) → ∃ Y : Lag W, IsLagFrame W Y (frameOf W g₀) := by
   first | exact @GlobalTheory.SWLagTerms.LagrangianFrames.exists_lag_isLagFrame_frameOf | exact GlobalTheory.SWLagTerms.LagrangianFrames.exists_lag_isLagFrame_frameOf | (intros; apply GlobalTheory.SWLagTerms.LagrangianFrames.exists_lag_isLagFrame_frameOf <;> assumption)

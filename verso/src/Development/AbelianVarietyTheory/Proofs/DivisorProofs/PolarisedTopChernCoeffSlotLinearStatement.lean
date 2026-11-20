@@ -5,8 +5,10 @@ open MeasureTheory Filter Topology GlobalTheory GlobalTheory.Cartier GlobalTheor
 open ReciprocityTheory.L2DbarEstimates (V)
 open scoped ContDiff Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GoodTop.mixTop_position_linear | exact GlobalTheory.GoodTop.mixTop_position_linear | (intros; apply GlobalTheory.GoodTop.mixTop_position_linear <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GoodTop.mixTop_position_linear` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPolarisedTopChernCoeffSlotLinear.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.polarisedTopChernCoeff_position_linear : ∀ {n : ℕ} {r : Type} [Fintype r] [DecidableEq r] (K₁ K₀ L L' : EndValuedForm11Coeffs n r) (s t : ℂ) (j : Fin n), mixTop (intersection_update_fsHerm_neg_one K₁ (s • L + t • L') K₀ j) = s * mixTop (intersection_update_fsHerm_neg_one K₁ L K₀ j) + t * mixTop (intersection_update_fsHerm_neg_one K₁ L' K₀ j) := by
   first | exact @GlobalTheory.GoodTop.mixTop_position_linear | exact GlobalTheory.GoodTop.mixTop_position_linear | (intros; apply GlobalTheory.GoodTop.mixTop_position_linear <;> assumption)

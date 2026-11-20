@@ -4,8 +4,10 @@ import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomology
 set_option backward.isDefEq.respectTransparency false
 open CategoryTheory AlgebraicGeometry TopologicalSpace Opposite Limits GroundTheory.Arith.SchemeCoh GlobalTheory.SheafPull CrystallineSemistableComparison CrystallineSemistableComparison.Om CrystallineSemistableComparison.Om.Cech
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.OmCech.cechOmAdd_smul | exact GlobalTheory.CompanionTheory.OmCech.cechOmAdd_smul | (intros; apply GlobalTheory.CompanionTheory.OmCech.cechOmAdd_smul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.OmCech.cechOmAdd_smul` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FCechFormsAddSmul.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.cech_forms_add_smul : ∀ {K : Type} [Field K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) {ι : Type}
     (U : ι → X.Opens) (hU : iSup U = ⊤) (hUaff : ∀ (n : ℕ) (i : Fin (n + 1) → ι), IsAffineOpen (⨅ a, U (i a)))

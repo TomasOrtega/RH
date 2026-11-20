@@ -6,8 +6,10 @@ open scoped TensorProduct Matrix
 open NumberField Formalism.BasicNotions.TH GlobalTheory.RealLift GlobalTheory.FockIncl GlobalTheory.FockInclK
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FockInclAct.polIncl_comp_fockAct2 | exact GlobalTheory.FockInclAct.polIncl_comp_fockAct2 | (intros; apply GlobalTheory.FockInclAct.polIncl_comp_fockAct2 <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FockInclAct.polIncl_comp_fockAct2` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPolynomialInclusionFockActionComm.lean&line=67#L67)
 -/
 theorem _root_.GlobalTheory.T.polynomial_inclusion_fock_action_comm : ∀ (P Q R S : ℕ) (r₀ : Fin (R + 1)) (s₀ : Fin (S + 1)) (Y : Mat R S),
     (polIncl P Q r₀ s₀).toLinearMap ∘ₗ fockAct2 P Q R S Y =

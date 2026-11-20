@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.PrismaticDieudonneP
 open CategoryTheory WittVector GlobalTheory GlobalTheory.PDivGroup GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.EpsilonPairingZeta GlobalTheory.Published GlobalTheory.PerfdLat
 open scoped ChangeOfRings Pointwise
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PerfdLat.OmegaProj.exists_projection | exact GlobalTheory.PerfdLat.OmegaProj.exists_projection | (intros; apply GlobalTheory.PerfdLat.OmegaProj.exists_projection <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PerfdLat.OmegaProj.exists_projection` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPerfectoidLatticeSurjectiveProjection.lean&line=199#L199)
 -/
 theorem _root_.GlobalTheory.T.perfectoid_lattice_surjective_projection : ∀ (p : ℕ) [Fact p.Prime] (D : PrismData p) (S : CycPerfd p) (G : PDivGroup p S.R) (c : ConstTate (eps S) G), Module.IsReflexive S.R G.dual.omega → ∃ pr : H D c 0 →ₗ[S.R] G.dual.omega, Function.Surjective pr ∧ (∀ x : H D c 0, (zeta S.ε 1 - 1) • pr x = c.al (x : Fin G.height → S.R)) ∧ ∀ x : H D c 0, pr x = 0 ↔ (x : Fin G.height → S.R) ∈ LinearMap.range c.alDual := by
   first | exact @GlobalTheory.PerfdLat.OmegaProj.exists_projection | exact GlobalTheory.PerfdLat.OmegaProj.exists_projection | (intros; apply GlobalTheory.PerfdLat.OmegaProj.exists_projection <;> assumption)

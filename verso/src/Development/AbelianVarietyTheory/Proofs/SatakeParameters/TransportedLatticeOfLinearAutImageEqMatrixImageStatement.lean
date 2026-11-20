@@ -9,8 +9,10 @@ import Formalism.SharpRestriction.GlobalSchurBounds.Joints
 open NumberField IsDedekindDomain Matrix Formalism.BasicNotions Formalism.MainNotions Formalism.UG Formalism.L2.Col Formalism.L2.Ker Formalism.L2.DIV GlobalTheory.TwU GlobalTheory.TwV
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RatLat.lat_gmap | exact GlobalTheory.RatLat.lat_gmap | (intros; apply GlobalTheory.RatLat.lat_gmap <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RatLat.lat_gmap` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FTransportedLatticeOfLinearAutImageEqMatrixImage.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.transportedLattice_of_linearAutImage_eq_matrixImage : ∀ {D : D7} {X : Fields} (s : Seam D X) {n : ℕ} (g : Sp X.E n ≃ₗ[X.E] Sp X.E n) (N : Submodule (𝓞 X.E) (Sp X.E n)), s.lat (Formalism.HermitianLatticesTheory.gmap g N) = Formalism.MainNotions.G.KAat.mvL (seamGL s g) (s.lat N) := by
   first | exact @GlobalTheory.RatLat.lat_gmap | exact GlobalTheory.RatLat.lat_gmap | (intros; apply GlobalTheory.RatLat.lat_gmap <;> assumption)

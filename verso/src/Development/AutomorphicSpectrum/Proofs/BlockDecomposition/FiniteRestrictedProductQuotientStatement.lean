@@ -13,8 +13,10 @@ open scoped Classical
 open GlobalTheory.CompanionTheory.FinActS
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.FinActS.finite_cosets_of_components_mem | exact GlobalTheory.CompanionTheory.FinActS.finite_cosets_of_components_mem | (intros; apply GlobalTheory.CompanionTheory.FinActS.finite_cosets_of_components_mem <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.FinActS.finite_cosets_of_components_mem` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FFiniteRestrictedProductQuotient.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.finite_restricted_product_quotient : ∀ {ι Γ : Type} [Group Γ] {Hl : ι → Type} [∀ i, Group (Hl i)] (p : ∀ i, Γ →* Hl i) (V : ∀ i, Subgroup (Hl i)) (Q : ∀ i, Set (Hl i))
     (hQ : ∀ i, ∀ x ∈ Q i, ∀ u ∈ V i, x * u ∈ Q i)

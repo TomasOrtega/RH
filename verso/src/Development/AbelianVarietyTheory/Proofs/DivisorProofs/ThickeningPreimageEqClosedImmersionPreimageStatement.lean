@@ -7,8 +7,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.thick_preimage_eq | exact GlobalTheory.Mum.thick_preimage_eq | (intros; apply GlobalTheory.Mum.thick_preimage_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.thick_preimage_eq` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FThickeningPreimageEqClosedImmersionPreimage.lean&line=47#L47)
 -/
 theorem _root_.GlobalTheory.T.thickening_preimage_eq_closedImmersion_preimage : ∀ (R' : Type) [CommRing R'] (I : Ideal R') (G' : Over (Sp R')) (Y : Scheme.{0}) (φ : ∀ e : ℕ, (thickObj R' I e G').left ⟶ Y), (∀ e, thickMap R' I e G' ≫ φ (e + 1) = φ e) → ∀ (V : G'.left.Opens) (W : Y.Opens), φ 0 ⁻¹ᵁ W = (pullback.fst G'.hom (thick R' I 0)) ⁻¹ᵁ V → ∀ e, φ e ⁻¹ᵁ W = (pullback.fst G'.hom (thick R' I e)) ⁻¹ᵁ V := by
   first | exact @GlobalTheory.Mum.thick_preimage_eq | exact GlobalTheory.Mum.thick_preimage_eq | (intros; apply GlobalTheory.Mum.thick_preimage_eq <;> assumption)

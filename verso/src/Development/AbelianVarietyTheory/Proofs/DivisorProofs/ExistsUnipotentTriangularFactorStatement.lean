@@ -14,8 +14,10 @@ open scoped ContDiff ComplexOrder Classical
 open GlobalTheory.FlagCell GlobalTheory.FlagConnect
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagCell.exists_lu | exact GlobalTheory.FlagCell.exists_lu | (intros; apply GlobalTheory.FlagCell.exists_lu <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagCell.exists_lu` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsUnipotentTriangularFactor.lean&line=41#L41)
 -/
 theorem _root_.GlobalTheory.T.exists_unipotent_triangular_factor : ∀ (R : Type) [CommRing R] (m : ℕ) (A : Matrix (Fin m) (Fin m) R), (∀ l : Fin (m + 1), IsUnit (A.submatrix (Fin.castLE l.is_le) (Fin.castLE l.is_le)).det) → ∃ (n : Low m → R) (M : Matrix (Fin m) (Fin m) R), M.BlockTriangular id ∧ IsUnit M.det ∧ A = uniR n * M := by
   first | exact @GlobalTheory.FlagCell.exists_lu | exact GlobalTheory.FlagCell.exists_lu | (intros; apply GlobalTheory.FlagCell.exists_lu <;> assumption)

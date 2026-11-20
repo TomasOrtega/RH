@@ -10,8 +10,10 @@ open Formalism.DegreeFormula Formalism.MJ GlobalTheory.HodgeDomain GlobalTheory.
 open ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.AR.Inst ReciprocityTheory.ChartRestriction.G.AR.Up GlobalTheory.FramePairGram
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FramePairGram.coef_eq_coW_change | exact GlobalTheory.FramePairGram.coef_eq_coW_change | (intros; apply GlobalTheory.FramePairGram.coef_eq_coW_change <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FramePairGram.coef_eq_coW_change` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FFrameCoefficientEqWeightRatio.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.frame_coefficient_eq_weight_ratio : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r) {j : ℕ} (hj : j ≤ r), X.p0 = r - j → ∀ {x x' : Frame X.Ψ r}, x ∈ X.dom → x' ∈ X.dom → ∀ (τ : X.Ψ), moeb (frameCo X hj x τ) 0 = moeb (frameCo X hj x' τ) 0 → (Matrix.of fun b i : Fin j => coef X x x' τ.1 b i) = (coW X hj x' τ)⁻¹ * coW X hj x τ := by
   first | exact @GlobalTheory.FramePairGram.coef_eq_coW_change | exact GlobalTheory.FramePairGram.coef_eq_coW_change | (intros; apply GlobalTheory.FramePairGram.coef_eq_coW_change <;> assumption)

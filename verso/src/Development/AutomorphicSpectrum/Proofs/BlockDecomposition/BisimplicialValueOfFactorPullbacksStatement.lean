@@ -3,8 +3,10 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BisimplicialVal
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.Cup1CoboundaryMemBoundaries
 open CategoryTheory AlgebraicGeometry TensorProduct Opposite MonoidalCategory CartesianMonoidalCategory MonObj ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.CechDR MainStatements.Hodge GlobalTheory.CompanionTheory.HopfC
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.HopfC.bv_pulln_box | exact GlobalTheory.CompanionTheory.HopfC.bv_pulln_box | (intros; apply GlobalTheory.CompanionTheory.HopfC.bv_pulln_box <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.HopfC.bv_pulln_box` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FBisimplicialValueOfFactorPullbacks.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.bisimplicial_value_of_factor_pullbacks : ∀ {R : Type} [CommRing R] {C : Type} [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R) {N p q : ℕ} (ρ₁ : Fin (N + 1) →o Fin (p + 1)) (ρ₂ : Fin (N + 1) →o Fin (q + 1)) (x : Cn F N), (bv F ρ₁ ρ₂ (pulln (boxL F) N x) = fun a _ ↦ pr F ρ₁ x a ⊗ₜ[R] 1) ∧ (bv F ρ₁ ρ₂ (pulln (boxR F) N x) = fun _ b ↦ 1 ⊗ₜ[R] pr F ρ₂ x b) := by
   first | exact @GlobalTheory.CompanionTheory.HopfC.bv_pulln_box | exact GlobalTheory.CompanionTheory.HopfC.bv_pulln_box | (intros; apply GlobalTheory.CompanionTheory.HopfC.bv_pulln_box <;> assumption)

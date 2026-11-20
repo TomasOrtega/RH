@@ -8,8 +8,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.Emb.exists_lift_fieldExt | exact GlobalTheory.Mum.Emb.exists_lift_fieldExt | (intros; apply GlobalTheory.Mum.Emb.exists_lift_fieldExt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.Emb.exists_lift_fieldExt` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsLiftFieldExt.lean&line=29#L29)
 -/
 theorem _root_.GlobalTheory.T.exists_lift_after_field_extension : ∀ (R : Type) [CommRing R] [IsLocalRing R] (S : Scheme.{0}) (π : S ⟶ Sp R) (G' : Over S) [GrpObj G'] (E : Emb π G') (Ω : Type) [Field Ω] (ν : Sp Ω ⟶ PSpace R E.N) (s : Sp Ω ⟶ S), ν ≫ PSpace.str R E.N = s ≫ π → (∃ g : E.H.toScheme, π (G'.hom (E.H.ι g)) = closedPoint R ∧ E.f g ∈ Set.range ν) → ∃ (Ω' : Type) (_ : Field Ω') (io : Ω →+* Ω') (q : Sp Ω' ⟶ E.H.toScheme), q ≫ E.f = spMap io ≫ ν ∧ q ≫ E.H.ι ≫ G'.hom = spMap io ≫ s := by
   first | exact @GlobalTheory.Mum.Emb.exists_lift_fieldExt | exact GlobalTheory.Mum.Emb.exists_lift_fieldExt | (intros; apply GlobalTheory.Mum.Emb.exists_lift_fieldExt <;> assumption)

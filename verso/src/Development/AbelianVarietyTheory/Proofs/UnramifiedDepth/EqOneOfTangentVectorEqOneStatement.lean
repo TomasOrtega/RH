@@ -10,8 +10,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open Formalism.L2.FormalSeriesBounds IsLocalRing GlobalTheory.AlphaPair
 open scoped CategoryTheory.Obj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AlphaPair.IsAlpha.eq_one_of_tangent | exact GlobalTheory.AlphaPair.IsAlpha.eq_one_of_tangent | (intros; apply GlobalTheory.AlphaPair.IsAlpha.eq_one_of_tangent <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AlphaPair.IsAlpha.eq_one_of_tangent` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUnramifiedDepth%2FEqOneOfTangentVectorEqOne.lean&line=95#L95)
 -/
 theorem _root_.GlobalTheory.T.eq_one_of_tangent_vector_eq_one : ∀ (Ω : Type) [Field Ω] (p : ℕ) [Fact p.Prime] [CharP Ω p] (S : Scheme.{0}) (s : Sp Ω ⟶ S) (G : Over S) [GrpObj G] (g : Fam s G), IsAlpha p s G g → g (DualNumber Ω) DualNumber.eps = 1 → ∀ (A : Type) [CommRing A] [Algebra Ω A] (a : A), a ^ p = 0 → g A a = 1 := by
   first | exact @GlobalTheory.AlphaPair.IsAlpha.eq_one_of_tangent | exact GlobalTheory.AlphaPair.IsAlpha.eq_one_of_tangent | (intros; apply GlobalTheory.AlphaPair.IsAlpha.eq_one_of_tangent <;> assumption)

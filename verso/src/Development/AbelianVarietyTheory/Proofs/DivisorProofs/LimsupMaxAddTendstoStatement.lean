@@ -8,8 +8,10 @@ import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.PshBasic
 import ReciprocityTheory.AnalyticForms.PotentialTheory.PshShiftA
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.limsup_max_add_tendsto_eq_toReal | exact GlobalTheory.limsup_max_add_tendsto_eq_toReal | (intros; apply GlobalTheory.limsup_max_add_tendsto_eq_toReal <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.limsup_max_add_tendsto_eq_toReal` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLimsupMaxAddTendsto.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.limsup_max_add_tendsto : ∀ (α : Type) (l : Filter α) [l.NeBot] (c f : α → ℝ) (c₀ κ M : ℝ), Filter.Tendsto c l (nhds c₀) → (∀ᶠ t in l, f t ≤ M) → Filter.limsup (fun t => max (c t + f t) (-κ)) l = (max ((c₀ : EReal) + Filter.limsup (fun t => (f t : EReal)) l) ((-κ : ℝ) : EReal)).toReal := by
   first | exact @GlobalTheory.limsup_max_add_tendsto_eq_toReal | exact GlobalTheory.limsup_max_add_tendsto_eq_toReal | (intros; apply GlobalTheory.limsup_max_add_tendsto_eq_toReal <;> assumption)

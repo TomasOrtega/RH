@@ -16,8 +16,10 @@ open GlobalTheory.FlagMod (FlagCover)
 open GlobalTheory.FlagTan (dimFlag)
 open GlobalTheory.HSApp
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompHS.TorFlagEx.nonempty_torFlag | exact GlobalTheory.CompHS.TorFlagEx.nonempty_torFlag | (intros; apply GlobalTheory.CompHS.TorFlagEx.nonempty_torFlag <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompHS.TorFlagEx.nonempty_torFlag` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FToroidalFlagNonempty.lean&line=34#L34)
 -/
 theorem _root_.GlobalTheory.T.toroidal_flag_nonempty : GlobalTheory.CovTop.Hypotheses₂ → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), 1 ≤ dimFlag Dw → Nonempty (TorFlag Xo c) := by
   first | exact @GlobalTheory.CompHS.TorFlagEx.nonempty_torFlag | exact GlobalTheory.CompHS.TorFlagEx.nonempty_torFlag | (intros; apply GlobalTheory.CompHS.TorFlagEx.nonempty_torFlag <;> assumption)

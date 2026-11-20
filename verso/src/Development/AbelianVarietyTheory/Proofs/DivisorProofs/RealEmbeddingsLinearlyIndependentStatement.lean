@@ -8,8 +8,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates (defCoord polyd
 open scoped nonZeroDivisors
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.realEmb_linearIndependent_on_integers | exact GlobalTheory.realEmb_linearIndependent_on_integers | (intros; apply GlobalTheory.realEmb_linearIndependent_on_integers <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.realEmb_linearIndependent_on_integers` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRealEmbeddingsLinearlyIndependent.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.real_embeddings_linearly_independent : ∀ (F : Type) [Field F] [NumberField F] (a : (F →+* ℝ) → ℝ),
     (∀ x : 𝓞 F, ∑ τ, a τ * τ (x : F) = 0) → a = 0 := by

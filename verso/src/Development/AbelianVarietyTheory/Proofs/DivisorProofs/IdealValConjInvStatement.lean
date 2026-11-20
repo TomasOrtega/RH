@@ -15,8 +15,10 @@ set_option autoImplicit false
 open GlobalTheory.CMTorsion
 open GlobalTheory.WeierstrassCurve (scheme toSpec mapHom)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CMTorsion.tan_mapHom_conj | exact GlobalTheory.CMTorsion.tan_mapHom_conj | (intros; apply GlobalTheory.CMTorsion.tan_mapHom_conj <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CMTorsion.tan_mapHom_conj` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIdealValConjInv.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.conjugate_curve_tangent_compat : ∀ (W₀ W₁ : WeierstrassCurve ℂ) (g : ℂ →+* ℂ) (h : W₀.map g = W₁) (c : ℂ), tan W₁ (g c) ≫ mapHom W₀ g h = spMap (Chart.dualMapR g) ≫ tan W₀ c := by
   first | exact @GlobalTheory.CMTorsion.tan_mapHom_conj | exact GlobalTheory.CMTorsion.tan_mapHom_conj | (intros; apply GlobalTheory.CMTorsion.tan_mapHom_conj <;> assumption)

@@ -9,8 +9,10 @@ open GlobalTheory GlobalTheory.ZM GlobalTheory.ZH GlobalTheory.UMin GlobalTheory
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.glue_field_points | exact GlobalTheory.glue_field_points | (intros; apply GlobalTheory.glue_field_points <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.glue_field_points` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsRingElementOfLocalFieldPointValues.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.exists_ring_element_of_local_field_point_values : ∀ (R : Type) [CommRing R] (P : (K : Type) → [Field K] → (R →+* K) → K → Prop), (∀ (K : Type) [Field K] (i : R →+* K) (u v : K), P K i u → P K i v → u = v) → (∀ p : Ideal R, p.IsPrime → ∃ f ∉ p, ∃ c : Localization.Away f, ∀ (K : Type) [Field K] (j : Localization.Away f →+* K), P K (j.comp (algebraMap R (Localization.Away f))) (j c)) → ∃ c : R, ∀ (K : Type) [Field K] (i : R →+* K), P K i (i c) := by
   first | exact @GlobalTheory.glue_field_points | exact GlobalTheory.glue_field_points | (intros; apply GlobalTheory.glue_field_points <;> assumption)

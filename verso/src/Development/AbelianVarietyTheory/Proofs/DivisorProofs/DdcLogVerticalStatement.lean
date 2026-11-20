@@ -6,8 +6,10 @@ open Matrix GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe GlobalTheory.T
 open scoped Real ContDiff
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DdcVert.ddc_log_vert | exact GlobalTheory.DdcVert.ddc_log_vert | (intros; apply GlobalTheory.DdcVert.ddc_log_vert <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DdcVert.ddc_log_vert` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDdcLogVertical.lean&line=8#L8)
 -/
 theorem _root_.GlobalTheory.T.ddc_log_vertical : ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {g : ℕ} {B : Set E}
     {h : Pt E g → ℝ} (hB : IsOpen B) (hh : ContDiffOn ℝ ∞ h (cov B g))

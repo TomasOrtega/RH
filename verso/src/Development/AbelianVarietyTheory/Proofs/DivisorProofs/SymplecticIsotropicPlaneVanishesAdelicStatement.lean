@@ -8,8 +8,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MixedLagr.symplectic_isotropic_plane_vanishes | exact GlobalTheory.MixedLagr.symplectic_isotropic_plane_vanishes | (intros; apply GlobalTheory.MixedLagr.symplectic_isotropic_plane_vanishes <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MixedLagr.symplectic_isotropic_plane_vanishes` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSymplecticIsotropicPlaneVanishesAdelic.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.symplectic_isotropic_plane_vanishes_adelic : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (n d d₁ : ℕ) (JX : Matrix (Fin n) (Fin n) E) (JW : Matrix (Fin d) (Fin d) E) (H' : Plane E d d₁),

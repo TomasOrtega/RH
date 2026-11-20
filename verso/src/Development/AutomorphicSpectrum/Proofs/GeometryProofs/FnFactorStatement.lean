@@ -27,8 +27,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GroundTheory.Heights₂.Heights TensorProduct
 open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Sl
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Sl.Fac.fn_factor | exact GlobalTheory.CompanionTheory.Ar.Sl.Fac.fn_factor | (intros; apply GlobalTheory.CompanionTheory.Ar.Sl.Fac.fn_factor <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Sl.Fac.fn_factor` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FFnFactor.lean&line=38#L38)
 -/
 theorem _root_.GlobalTheory.T.theta_add_lattice_eq_of_isFn : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (P : RigLB G) (z : Sp ℂ ⟶ S) (g : ℕ) (a : ArchFrame P z g) (n : ℕ) (s : Out.H0 P.L n) (θ : (Fin g → ℂ) → ℂ), a.IsFn s θ → ∀ (l : a.u.Λ) (w : Fin g → ℂ), θ (w + l) = (a.χ l * Complex.exp (Real.pi * a.herm w l + Real.pi / 2 * a.herm l l)) ^ n * θ w := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Sl.Fac.fn_factor | exact GlobalTheory.CompanionTheory.Ar.Sl.Fac.fn_factor | (intros; apply GlobalTheory.CompanionTheory.Ar.Sl.Fac.fn_factor <;> assumption)

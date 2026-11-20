@@ -8,8 +8,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum.EndThick
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.EndThick.exists_isCoordEnd | exact GlobalTheory.Mum.EndThick.exists_isCoordEnd | (intros; apply GlobalTheory.Mum.EndThick.exists_isCoordEnd <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.EndThick.exists_isCoordEnd` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsThickenedGroupEndomorphismTorusCoordinates.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.exists_thickenedGroup_endomorphism_torusCoordinates : ∀ {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegPre R} {e : ℕ} {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G] (g : GtCoord I D e G) (a a' : D.P.A ⟶ D.P.A) [IsMonHom a] [IsMonHom a'] (h' : D.X →+ D.X), (∀ χ, D.c (h' χ) = D.c χ ≫ a') → ∀ (u : LB.Gen (LB.LinComb D.P.L (rosatiφ D.P.A a' a) rosatiε)), u.IsGen → LB.Gen.Corr D.P.L _ _ _ _ (LB.pullGen D.P.L _ _ u (zero2 D.P.A)) (LB.oneGen D.P.L) → ∃ F, IsCoordEnd g a a' h' u F := by
   first | exact @GlobalTheory.Mum.EndThick.exists_isCoordEnd | exact GlobalTheory.Mum.EndThick.exists_isCoordEnd | (intros; apply GlobalTheory.Mum.EndThick.exists_isCoordEnd <;> assumption)

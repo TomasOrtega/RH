@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.Contin
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsSubquotientDetRepParInd
 open NumberField IsDedekindDomain GlobalTheory.CuspRep GlobalTheory.PRep GlobalTheory.UnitaryBC GlobalTheory.DefU Formalism.BasicNotions Formalism.ConjugateSelfDual GlobalTheory.Cong
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnipFlag.exists_sub | exact GlobalTheory.UnipFlag.exists_sub | (intros; apply GlobalTheory.UnipFlag.exists_sub; all_goals assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnipFlag.exists_sub` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FUnipotentRadicalFlagStabilizer.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.unipotent_radical_flag_stabilizer : ∀ (k : Type) [Field k] (a s : ℕ) (d : Fin s → ℕ) (e : (Σ i, Fin (d i)) ≃ Fin a), GlobalTheory.SmGL.unipRad k e ≠ ⊥ → ∃ W : Submodule k (Fin a → k), W ≠ ⊥ ∧ W ≠ ⊤ ∧ ∀ g : GL (Fin a) k, (∀ v, ((g : Matrix (Fin a) (Fin a) k) - 1).mulVec v ∈ W) → (∀ v ∈ W, ((g : Matrix (Fin a) (Fin a) k) - 1).mulVec v = 0) → g ∈ GlobalTheory.SmGL.unipRad k e := by
   first | exact @GlobalTheory.UnipFlag.exists_sub | exact GlobalTheory.UnipFlag.exists_sub | (intros; apply GlobalTheory.UnipFlag.exists_sub; all_goals assumption)

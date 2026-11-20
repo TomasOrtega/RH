@@ -8,8 +8,10 @@ open MeasureTheory Matrix GroundTheory.LocalField GroundTheory.Automorphic Ad3 A
 open GroundTheory.LocalField.FiltrationCocycleLiftCriterion.WeilRep
 open scoped ValuativeRel
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.WeilPush.push_of_multHaar | exact GlobalTheory.CompanionTheory.WeilPush.push_of_multHaar | (intros; apply GlobalTheory.CompanionTheory.WeilPush.push_of_multHaar <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.WeilPush.push_of_multHaar` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FNonNormGaussIntegralSign.lean&line=120#L120)
 -/
 theorem _root_.GlobalTheory.T.non_norm_gauss_integral_sign : (∀ (F E : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
   [MeasurableSpace F] [BorelSpace F] [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E]

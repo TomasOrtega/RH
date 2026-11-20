@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.UnitLemmaGroup
 open GlobalTheory.UnitLemma Polynomial
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnitLemma.TorusAction.torus_mem_X | exact GlobalTheory.UnitLemma.TorusAction.torus_mem_X | (intros; apply GlobalTheory.UnitLemma.TorusAction.torus_mem_X <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnitLemma.TorusAction.torus_mem_X` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FTorusSubmoduleMulLeftImageMemSelfDualStableLatti.lean&line=39#L39)
 -/
 theorem _root_.GlobalTheory.T.torus_submoduleMulLeftImage_mem_selfDualStableLattices : ∀ (K : UQ) (B : InvAlg K) (x : B.A), ∀ t ∈ B.T, ∀ L ∈ B.X x, mulLat K.O (t : B.A) L ∈ B.X x := by
   first | exact @GlobalTheory.UnitLemma.TorusAction.torus_mem_X | exact GlobalTheory.UnitLemma.TorusAction.torus_mem_X | (intros; apply GlobalTheory.UnitLemma.TorusAction.torus_mem_X <;> assumption)

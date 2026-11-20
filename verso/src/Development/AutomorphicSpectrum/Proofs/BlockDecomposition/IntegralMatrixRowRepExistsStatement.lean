@@ -8,8 +8,10 @@ open GroundTheory.Automorphic.Spherical GroundTheory.Automorphic.Iwasawa GroundT
 open scoped ValuativeRel
 open GlobalTheory.CompanionTheory.LFUDom
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.LFUDom.exists_mul_rowRep_inv_mem | exact GlobalTheory.CompanionTheory.LFUDom.exists_mul_rowRep_inv_mem | (intros; apply GlobalTheory.CompanionTheory.LFUDom.exists_mul_rowRep_inv_mem <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.LFUDom.exists_mul_rowRep_inv_mem` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FIntegralMatrixRowRepExists.lean&line=77#L77)
 -/
 theorem _root_.GlobalTheory.T.integral_matrix_row_rep_exists : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (g : GL (Fin 2) F), (∀ a b, (g : Matrix (Fin 2) (Fin 2) F) a b ∈ 𝒪[F]) →
   ∃ (i j : ℕ) (c : Fin j → 𝓀[F]), g * (rowRep i j c)⁻¹ ∈ integralGL F 2 := by

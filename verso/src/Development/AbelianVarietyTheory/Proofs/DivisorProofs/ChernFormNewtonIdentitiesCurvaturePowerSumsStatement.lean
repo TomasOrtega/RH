@@ -8,8 +8,10 @@ open ReciprocityTheory.L2DbarEstimates (V)
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts GlobalTheory.FlagBundle GlobalTheory.HermFrame GlobalTheory.GoodMetric GlobalTheory.CxForm GlobalTheory.LineForm GlobalTheory.ChernCalc
 open scoped Matrix ContDiff ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChernCalc.chernAt_newton | exact GlobalTheory.ChernCalc.chernAt_newton | (intros; apply GlobalTheory.ChernCalc.chernAt_newton <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChernCalc.chernAt_newton` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FChernFormNewtonIdentitiesCurvaturePowerSums.lean&line=27#L27)
 -/
 theorem _root_.GlobalTheory.T.chernForm_newton_identities_curvature_power_sums : ∀ (n : ℕ) (r : Type) [Fintype r] [DecidableEq r] (G : V n → Matrix r r ℂ) (v : V n), chernAt G v 0 = 1 ∧ ∀ j : ℕ, (j : ℂ) • chernAt G v j = -∑ i ∈ Finset.range j, (-kappa) ^ (i + 1) • (powAt G v (i + 1) * chernAt G v (j - 1 - i)) := by
   first | exact @GlobalTheory.ChernCalc.chernAt_newton | exact GlobalTheory.ChernCalc.chernAt_newton | (intros; apply GlobalTheory.ChernCalc.chernAt_newton <;> assumption)

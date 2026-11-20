@@ -9,8 +9,10 @@ open scoped ENNReal Classical
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory GlobalTheory.ArInt GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.ShFam.Pad GlobalTheory.VertForm GlobalTheory.CoverNorm
 open CategoryTheory.Limits TopologicalSpace
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mean4O.CoverDom.exists_cover_dominating_cover | exact GlobalTheory.Mean4O.CoverDom.exists_cover_dominating_cover | (intros; apply GlobalTheory.Mean4O.CoverDom.exists_cover_dominating_cover <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mean4O.CoverDom.exists_cover_dominating_cover` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCoverDominatingPair.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.cover_dominating_pair : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (W V : Mean4O.Cover Y) (k : W.G ⟶ V.G),
     k ≫ V.π = W.π →

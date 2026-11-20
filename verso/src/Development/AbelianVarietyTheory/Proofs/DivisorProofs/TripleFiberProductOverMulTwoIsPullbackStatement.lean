@@ -7,8 +7,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.TwoTors
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TwoTors.TripleProd.isPullback | exact GlobalTheory.TwoTors.TripleProd.isPullback | (intros; apply GlobalTheory.TwoTors.TripleProd.isPullback <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TwoTors.TripleProd.isPullback` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTripleFiberProductOverMulTwoIsPullback.lean&line=80#L80)
 -/
 theorem _root_.GlobalTheory.T.tripleFiberProductOverMulTwo_isPullback : ∀ {S : Scheme.{0}} (A : Over S) [GrpObj A] [IsCommMonObj A], IsPullback (t₁ A).left (ψ A).left A.hom (Two A ⊗ Two A).hom := by
   first | exact @GlobalTheory.TwoTors.TripleProd.isPullback | exact GlobalTheory.TwoTors.TripleProd.isPullback | (intros; apply GlobalTheory.TwoTors.TripleProd.isPullback <;> assumption)

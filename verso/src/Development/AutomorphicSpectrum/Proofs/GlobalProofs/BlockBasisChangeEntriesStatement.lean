@@ -4,8 +4,10 @@ import Mathlib
 open Matrix
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.IsometricMatrix.main | exact GlobalTheory.CompanionTheory.IsometricMatrix.main | (intros; apply GlobalTheory.CompanionTheory.IsometricMatrix.main <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.IsometricMatrix.main` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGlobalProofs%2FBlockBasisChangeEntries.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.hermitian_form_change_of_basis_lie : ∀ {n n' : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (H' : Matrix (Fin n') (Fin n') ℂ) (J : Matrix (Fin n) (Fin n') ℂ),
     Hᴴ = H → H'ᴴ = H' → IsUnit H.det → IsUnit H'.det → Jᴴ * H * J = H' →

@@ -8,8 +8,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MulRightMemSB
 open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.SplitFlip GlobalTheory.KSplit GlobalTheory.GJReg
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GJReg.exists_gl_rowSpan_int | exact GlobalTheory.GJReg.exists_gl_rowSpan_int | (intros; apply GlobalTheory.GJReg.exists_gl_rowSpan_int <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GJReg.exists_gl_rowSpan_int` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIntegralMatrixLeftFactor.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.integral_matrix_left_factor : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (s : k),
     s ≠ 0 → ∀ X : Matrix (Fin n) (Fin n) k, ∃ (h : GL (Fin n) k) (A B C D : Matrix (Fin n) (Fin n) k),

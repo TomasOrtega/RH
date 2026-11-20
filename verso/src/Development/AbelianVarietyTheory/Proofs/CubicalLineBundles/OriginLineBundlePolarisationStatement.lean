@@ -9,8 +9,10 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.WeierstrassCurve GlobalTheory.AddLaw
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WeierstrassCurve.originLB_polarisation | exact GlobalTheory.WeierstrassCurve.originLB_polarisation | (intros; apply GlobalTheory.WeierstrassCurve.originLB_polarisation <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WeierstrassCurve.originLB_polarisation` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FCubicalLineBundles%2FOriginLineBundlePolarisation.lean&line=64#L64)
 -/
 theorem _root_.GlobalTheory.T.originLineBundle_polarisation : ∀ (R : Type) [CommRing R] (W : WeierstrassCurve R) [GrpObj (schemeOver W)], IsCommMonObj (schemeOver W) → η[schemeOver W].left = zero W → Out.Rigidified (schemeOver W) (originLB W) ∧ Out.Sym (schemeOver W) (originLB W) ∧ Out.RelAmple (schemeOver W) (originLB W) ∧ Out.KTriv (schemeOver W) (originLB W) := by
   first | exact @GlobalTheory.WeierstrassCurve.originLB_polarisation | exact GlobalTheory.WeierstrassCurve.originLB_polarisation | (intros; apply GlobalTheory.WeierstrassCurve.originLB_polarisation <;> assumption)

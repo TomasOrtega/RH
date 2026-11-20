@@ -6,8 +6,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open Matrix GlobalTheory GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Fl
 open scoped ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Fl.RelDiff.exists_local_generator | exact GlobalTheory.CompanionTheory.Ar.Fl.RelDiff.exists_local_generator | (intros; apply GlobalTheory.CompanionTheory.Ar.Fl.RelDiff.exists_local_generator <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Fl.RelDiff.exists_local_generator` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FAlgebraProofs%2FDifferentTwistedGeneratorExists.lean&line=46#L46)
 -/
 theorem _root_.GlobalTheory.T.different_twisted_generator_exists : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (ℓ : Nat.Primes), ∃ δ : E, δ ≠ 0 ∧ ∀ j : E →+* ℂ_[ℓ], Real.log ‖j δ‖ = logIdeal (j.comp (algebraMap (𝓞 E) E)) (differentIdeal ℤ (𝓞 E)) - Real.log ‖j (H.rt : E)‖ ∧ Real.log ‖j (IsCMField.complexConj E δ)‖ = Real.log ‖j δ‖ := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Fl.RelDiff.exists_local_generator | exact GlobalTheory.CompanionTheory.Ar.Fl.RelDiff.exists_local_generator | (intros; apply GlobalTheory.CompanionTheory.Ar.Fl.RelDiff.exists_local_generator <;> assumption)

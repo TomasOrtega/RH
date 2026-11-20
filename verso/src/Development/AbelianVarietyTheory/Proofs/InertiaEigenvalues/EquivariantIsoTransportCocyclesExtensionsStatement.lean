@@ -18,8 +18,10 @@ open ReciprocityTheory.Def (Z1 B1 H1)
 open TensorProduct
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TransportCoef.transport | exact GlobalTheory.TransportCoef.transport | (intros; apply GlobalTheory.TransportCoef.transport <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TransportCoef.transport` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FEquivariantIsoTransportCocyclesExtensions.lean&line=78#L78)
 -/
 theorem _root_.GlobalTheory.T.equivariantIso_transport_cocycles_extensions : ∀ {O G : Type} [CommRing O] [Group G] [TopologicalSpace G] {M M' : Type} [AddCommGroup M]
     [Module O M] [AddCommGroup M'] [Module O M'] (W : Representation O G M) (W' : Representation O G M')

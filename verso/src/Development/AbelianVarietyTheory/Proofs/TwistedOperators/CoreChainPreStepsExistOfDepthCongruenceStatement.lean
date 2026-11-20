@@ -21,8 +21,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup (coefPlus Cols Si
 open GlobalTheory.SepRows GlobalTheory.CoreOnto
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CoreOnto.PreSteps.preOK | exact GlobalTheory.CoreOnto.PreSteps.preOK | (intros; apply GlobalTheory.CoreOnto.PreSteps.preOK <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CoreOnto.PreSteps.preOK` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FCoreChainPreStepsExistOfDepthCongruence.lean&line=35#L35)
 -/
 theorem _root_.GlobalTheory.T.core_chain_pre_steps_exist_of_depth_congruence : DepFixed → PreOK := by
   first | exact @GlobalTheory.CoreOnto.PreSteps.preOK | exact GlobalTheory.CoreOnto.PreSteps.preOK | (intros; apply GlobalTheory.CoreOnto.PreSteps.preOK <;> assumption)

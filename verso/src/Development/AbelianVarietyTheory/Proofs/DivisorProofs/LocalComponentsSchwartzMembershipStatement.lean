@@ -9,8 +9,10 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThKConeB.continuous_I_pure | exact GlobalTheory.ThKConeB.continuous_I_pure | (intros; apply GlobalTheory.ThKConeB.continuous_I_pure <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThKConeB.continuous_I_pure` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLocalComponentsSchwartzMembership.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.continuous_modelI_pure_archComponent : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

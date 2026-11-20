@@ -11,8 +11,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.CompanionTheory.Ar.Flat.CPoint
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Flat.CPoint.exists_det_mul_eq_of_isAdapted | exact GlobalTheory.CompanionTheory.Ar.Flat.CPoint.exists_det_mul_eq_of_isAdapted | (intros; apply GlobalTheory.CompanionTheory.Ar.Flat.CPoint.exists_det_mul_eq_of_isAdapted <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Flat.CPoint.exists_det_mul_eq_of_isAdapted` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FAdaptedBasesChangeByBlockMatrices.lean&line=29#L29)
 -/
 theorem _root_.GlobalTheory.T.adapted_bases_change_by_block_matrices : ∀ (E : Type) [Field E] [NumberField E] (K W : Type) [Field K] [AddCommGroup W] [Module K W]
     (ρH : 𝓞 E →+* Module.End K (W × Module.Dual K W)) (σ : E →+* K) (p q : ℕ) (v v' : Fin p → W) (w w' : Fin q → W)

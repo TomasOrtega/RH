@@ -7,8 +7,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open GlobalTheory GlobalTheory.CxPts GlobalTheory.VB
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ratFibre.isProjCurve | exact GlobalTheory.ratFibre.isProjCurve | (intros; apply GlobalTheory.ratFibre.isProjCurve <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ratFibre.isProjCurve` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRationalFibreProjectiveCurve.lean&line=65#L65)
 -/
 theorem _root_.GlobalTheory.T.rational_fibre_projective_curve : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k), IsArithVar p 1 → IsProjCurve ℚ (ratFibre p) := by
   first | exact @GlobalTheory.ratFibre.isProjCurve | exact GlobalTheory.ratFibre.isProjCurve | (intros; apply GlobalTheory.ratFibre.isProjCurve <;> assumption)

@@ -10,8 +10,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThK.incM_mulVec_cA_surjective | exact GlobalTheory.ThK.incM_mulVec_cA_surjective | (intros; apply GlobalTheory.ThK.incM_mulVec_cA_surjective <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThK.incM_mulVec_cA_surjective` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHermitianFormSurjectiveAdelic.lean&line=30#L30)
 -/
 theorem _root_.GlobalTheory.T.hermitian_form_surjective_adelic : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n r s : ℕ) (X : Spc F E n), B.IsGood σ → X.IsHerm σ B r s → ∀ z : Fin n → AE F E, ∃ y : Fin n → AE F E, (incM F X.J *ᵥ fun k => cA σ (y k)) = z := by
   first | exact @GlobalTheory.ThK.incM_mulVec_cA_surjective | exact GlobalTheory.ThK.incM_mulVec_cA_surjective | (intros; apply GlobalTheory.ThK.incM_mulVec_cA_surjective <;> assumption)

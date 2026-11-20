@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DbarEqZeroOfHolomor
 open Matrix GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe GlobalTheory.TorsionForm GlobalTheory.TorsionForm.FlatAcyc
 open scoped Real ContDiff
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TorsionForm.FlatAcyc.harmonic_weitzenboeck | exact GlobalTheory.TorsionForm.FlatAcyc.harmonic_weitzenboeck | (intros; apply GlobalTheory.TorsionForm.FlatAcyc.harmonic_weitzenboeck <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TorsionForm.FlatAcyc.harmonic_weitzenboeck` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHarmonicSectionLaplacian.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.harmonic_section_laplacian : ∀ {g : ℕ} (G K : Matrix (Fin g) (Fin g) ℂ) (hKG : Kᵀ * G = 2)
     (ψ : (Fin g → ℂ) → ℂ) (hψ : ContDiff ℝ 2 ψ)

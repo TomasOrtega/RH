@@ -11,8 +11,10 @@ open Formalism.MainNotions.DIV.Cons (intO)
 open scoped Classical
 open GlobalTheory.LieFilt
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LieFilt.intAdapted_minor | exact GlobalTheory.LieFilt.intAdapted_minor | (intros; apply GlobalTheory.LieFilt.intAdapted_minor <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LieFilt.intAdapted_minor` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIntegralAdaptedMinorNorms.lean&line=138#L138)
 -/
 theorem _root_.GlobalTheory.T.integral_adapted_minor_norms : ∀ {K : Type} [NormedField K] [IsUltrametricDist K] {κ : Type} [Fintype κ] (bl : κ → ℕ) {g : ℕ}
     (P : Matrix (Fin g) κ K), IntAdapted bl P →

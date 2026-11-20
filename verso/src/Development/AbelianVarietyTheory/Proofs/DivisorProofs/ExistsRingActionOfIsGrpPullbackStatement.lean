@@ -8,8 +8,10 @@ open NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRes
 open AlgebraicGeometry CategoryTheory GlobalTheory.DeRham GlobalTheory.Cris
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.OActPull.exists_oAct_of_isGrpPullback | exact GlobalTheory.OActPull.exists_oAct_of_isGrpPullback | (intros; apply GlobalTheory.OActPull.exists_oAct_of_isGrpPullback <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.OActPull.exists_oAct_of_isGrpPullback` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsRingActionOfIsGrpPullback.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.exists_ringAction_of_isGrpPullback : ∀ {S S' : Scheme.{0}} {G : Over S} [GrpObj G] {O : Type} [CommRing O] (b : OAct O G) {f : S' ⟶ S} {G' : Over S'} [GrpObj G'] {φ : G'.left ⟶ G.left}, IsGrpPullback G' G f φ → ∃ a : OAct O G', ∀ z, (a.act z).left ≫ φ = φ ≫ (b.act z).left := by
   first | exact @GlobalTheory.OActPull.exists_oAct_of_isGrpPullback | exact GlobalTheory.OActPull.exists_oAct_of_isGrpPullback | (intros; apply GlobalTheory.OActPull.exists_oAct_of_isGrpPullback <;> assumption)

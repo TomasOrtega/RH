@@ -12,8 +12,10 @@ import Development.AutomorphicSpectrum.Proofs.MetricProofs.MixedDensityNonnegOff
 open MeasureTheory Metric Filter Topology ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.AnForm.M.FinHolAtlas
 open scoped ContDiff
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Giv.EvPsh.eventually_isPsh_add_pot | exact GlobalTheory.CompanionTheory.Ar.Giv.EvPsh.eventually_isPsh_add_pot | (intros; apply GlobalTheory.CompanionTheory.Ar.Giv.EvPsh.eventually_isPsh_add_pot <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Giv.EvPsh.eventually_isPsh_add_pot` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FRegularFamilyEventuallySmoothPsh.lean&line=38#L38)
 -/
 theorem _root_.GlobalTheory.T.regular_family_eventually_smooth_psh : ∀ {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X) (Θ L : LocPot X) (s : X → X → ℂ) (th : LocPot X) (ph : X → ℝ) (phT : ℝ → X → ℝ) (C t₀ : ℝ), IsPotential A Θ → IsPosPot A Θ → IsPotential A th → IsRegFamily A Θ L s th ph phT C t₀ → ∀ᶠ t in nhdsWithin (0 : ℝ) (Set.Ioi 0), A.Smooth (phT t) ∧ IsPsh A (th + LocPot.ofFun (phT t) + Θ) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Giv.EvPsh.eventually_isPsh_add_pot | exact GlobalTheory.CompanionTheory.Ar.Giv.EvPsh.eventually_isPsh_add_pot | (intros; apply GlobalTheory.CompanionTheory.Ar.Giv.EvPsh.eventually_isPsh_add_pot <;> assumption)

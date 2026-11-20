@@ -9,8 +9,10 @@ open GlobalTheory.RootEx GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Spl
 open scoped TensorProduct Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DiagonalHyperbolic.hyp_diag | exact GlobalTheory.DiagonalHyperbolic.hyp_diag | (intros; apply GlobalTheory.DiagonalHyperbolic.hyp_diag <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DiagonalHyperbolic.hyp_diag` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FWittHyperbolicConjPairingEqOne.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.wittHyperbolic_conj_pairing_eq_one : ∀ (D : D7) (S S₀ : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) (i : Fin ρ), ∑ r, ∑ r', star (d.e r i) * S.gram r r' * d.e' r' i = 1 := by
   first | exact @GlobalTheory.DiagonalHyperbolic.hyp_diag | exact GlobalTheory.DiagonalHyperbolic.hyp_diag | (intros; apply GlobalTheory.DiagonalHyperbolic.hyp_diag <;> assumption)

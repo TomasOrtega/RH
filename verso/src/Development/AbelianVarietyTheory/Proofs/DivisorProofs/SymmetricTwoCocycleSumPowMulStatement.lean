@@ -7,8 +7,10 @@ open ReciprocityTheory.ChartRestriction.G.Semi (IsAbelianScheme LB RigLB Cubical
 open GlobalTheory GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.DeRham GlobalTheory.PDiv GlobalTheory.PtExt
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TwoCocycle.sum_pow_mul | exact GlobalTheory.TwoCocycle.sum_pow_mul | (intros; apply GlobalTheory.TwoCocycle.sum_pow_mul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TwoCocycle.sum_pow_mul` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSymmetricTwoCocycleSumPowMul.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.symmetric_two_cocycle_sum_pow_mul : ∀ (Γ D : Type) [CommGroup Γ] [AddCommGroup D] (c : Γ → Γ → D), (∀ x y, c x y = c y x) → (∀ x y z, c y z - c (x * y) z + c x (y * z) - c x y = 0) → ∀ (n : ℕ) (x y : Γ), ∑ i ∈ Finset.range n, c ((x * y) ^ i) (x * y) + n • c x y = ∑ i ∈ Finset.range n, c (x ^ i) x + ∑ i ∈ Finset.range n, c (y ^ i) y + c (x ^ n) (y ^ n) - c 1 1 := by
   first | exact @GlobalTheory.TwoCocycle.sum_pow_mul | exact GlobalTheory.TwoCocycle.sum_pow_mul | (intros; apply GlobalTheory.TwoCocycle.sum_pow_mul <;> assumption)

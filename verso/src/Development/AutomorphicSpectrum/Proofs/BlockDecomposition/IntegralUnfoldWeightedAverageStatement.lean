@@ -6,8 +6,10 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SecondCountable
 open Matrix MeasureTheory PositivityTheory.Rg.BcB PositivityTheory.Rg.Tf.Loc GlobalTheory.CompanionTheory.LocVan
 open scoped ENNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.LocVan.integral_eq_zero_of_unfolding | exact GlobalTheory.CompanionTheory.LocVan.integral_eq_zero_of_unfolding | (intros; apply GlobalTheory.CompanionTheory.LocVan.integral_eq_zero_of_unfolding <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.LocVan.integral_eq_zero_of_unfolding` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FIntegralUnfoldWeightedAverage.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.integral_unfold_weighted_average : ∀ {G H : Type} [Group G] [MeasurableSpace G] [MeasurableMul₂ G] [MeasurableInv G]
   (μ : Measure G) [μ.IsMulLeftInvariant] [SFinite μ] [MeasurableSpace H] (ν : Measure H) [SFinite ν]

@@ -3,8 +3,10 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompareQuotient
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.LocalSystemQuotients.RedMk
 open CategoryTheory AlgebraicGeometry GlobalTheory.LogCris CrystallineSemistableComparison CrystallineSemistableComparison.Pb CrystallineSemistableComparison.Pb.LsQ
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.LsCmp.cmpq_bijective | exact GlobalTheory.CompanionTheory.LsCmp.cmpq_bijective | (intros; apply GlobalTheory.CompanionTheory.LsCmp.cmpq_bijective <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.LsCmp.cmpq_bijective` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FCompareQuotientBijective.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.compare_quotient_bijective : ∀ (R : Type) [CommRing R] (C : Type 1) [Category.{0} C] (A : C ⥤ CommAlgCat.{0} R) (l n i : ℕ), Function.Bijective ((cmpq A l n).f i) := by
   first | exact @GlobalTheory.CompanionTheory.LsCmp.cmpq_bijective | exact GlobalTheory.CompanionTheory.LsCmp.cmpq_bijective | (intros; apply GlobalTheory.CompanionTheory.LsCmp.cmpq_bijective <;> assumption)

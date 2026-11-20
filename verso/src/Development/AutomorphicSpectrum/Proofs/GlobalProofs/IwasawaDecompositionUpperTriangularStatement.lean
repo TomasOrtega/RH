@@ -4,8 +4,10 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.InstBorelGL
 open MeasureTheory Matrix GlobalTheory.CompanionTheory.QL
 open scoped ComplexConjugate ValuativeRel
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.QL.Iwasawa.exists_upper_mul_int | exact GlobalTheory.CompanionTheory.QL.Iwasawa.exists_upper_mul_int | (intros; apply GlobalTheory.CompanionTheory.QL.Iwasawa.exists_upper_mul_int <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.QL.Iwasawa.exists_upper_mul_int` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGlobalProofs%2FIwasawaDecompositionUpperTriangular.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.iwasawa_decomposition_upperTriangular : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] {O : Subring F} {ϖ : F} {nrm : AbsoluteValue F ℝ} {q : ℕ}, LF O ϖ nrm q → ∀ (n : ℕ) (g : GL (Fin n) F), ∃ b : GL (Fin n) F, (b : Matrix (Fin n) (Fin n) F).BlockTriangular id ∧ ∃ k ∈ GLint O n, g = b * k := by
   first | exact @GlobalTheory.CompanionTheory.QL.Iwasawa.exists_upper_mul_int | exact GlobalTheory.CompanionTheory.QL.Iwasawa.exists_upper_mul_int | (intros; apply GlobalTheory.CompanionTheory.QL.Iwasawa.exists_upper_mul_int <;> assumption)

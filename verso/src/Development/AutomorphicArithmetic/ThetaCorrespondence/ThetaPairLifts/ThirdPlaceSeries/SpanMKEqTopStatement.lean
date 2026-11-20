@@ -16,8 +16,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.CovTop.SpanMK.span_MK_eq_top_alt | exact _root_.GlobalTheory.CovTop.SpanMK.span_MK_eq_top_alt | (intros; apply _root_.GlobalTheory.CovTop.SpanMK.span_MK_eq_top_alt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CovTop.SpanMK.span_MK_eq_top_alt` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicArithmetic%2FThetaCorrespondence%2FThetaPairLifts%2FThirdPlaceSeries%2FSpanMKEqTop.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.gram_MK_spans_of_gramAt : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
     {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} (p : PtAt ex Csz) (i : Fin D.R.m),

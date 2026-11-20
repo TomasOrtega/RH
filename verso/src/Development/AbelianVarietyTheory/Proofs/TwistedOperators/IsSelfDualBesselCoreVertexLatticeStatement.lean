@@ -9,8 +9,10 @@ open GlobalTheory.FinPl (Lat idAt idOff intAt grpAt grpOff MxAt latV latA InK Mo
 open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AscFin.isSelfDualC_lat0 | exact GlobalTheory.AscFin.isSelfDualC_lat0 | (intros; apply GlobalTheory.AscFin.isSelfDualC_lat0 <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AscFin.isSelfDualC_lat0` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FIsSelfDualBesselCoreVertexLattice.lean&line=157#L157)
 -/
 theorem _root_.GlobalTheory.T.isSelfDual_besselCoreVertexLattice : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (F : Frames G), Std F → ∀ (ρ : ℕ) (h : 2 * ρ + 2 ≤ D.R.m), IsSelfDualC (F.V₀ ρ) (lat0 F ρ h) := by
   first | exact @GlobalTheory.AscFin.isSelfDualC_lat0 | exact GlobalTheory.AscFin.isSelfDualC_lat0 | (intros; apply GlobalTheory.AscFin.isSelfDualC_lat0 <;> assumption)

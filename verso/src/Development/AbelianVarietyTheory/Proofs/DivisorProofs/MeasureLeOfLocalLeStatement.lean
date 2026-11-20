@@ -16,8 +16,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.BoundaryPolynomialFunctions (IsProj
 open Formalism.BasicNotions Formalism.L2.Pj GlobalTheory.Toroidal GlobalTheory.ShFam GlobalTheory.ShFam.Hor GlobalTheory.Mean4O
 open scoped ContDiff ComplexOrder ENNReal Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FubCover.le_of_open_cover | exact GlobalTheory.FubCover.le_of_open_cover | (intros; apply GlobalTheory.FubCover.le_of_open_cover <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FubCover.le_of_open_cover` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FMeasureLeOfLocalLe.lean&line=7#L7)
 -/
 theorem _root_.GlobalTheory.T.measure_le_of_local_le : ∀ (X : Type) [TopologicalSpace X] [MeasurableSpace X] [BorelSpace X] [SecondCountableTopology X] (M M' : Measure X) (S : X → Set X) (W : Set X), (∀ x, IsOpen (S x)) → (∀ x ∈ W, x ∈ S x) → M Wᶜ = 0 → (∀ x ∈ W, ∀ A : Set X, MeasurableSet A → A ⊆ S x → M A ≤ M' A) → M ≤ M' := by
   first | exact @GlobalTheory.FubCover.le_of_open_cover | exact GlobalTheory.FubCover.le_of_open_cover | (intros; apply GlobalTheory.FubCover.le_of_open_cover <;> assumption)

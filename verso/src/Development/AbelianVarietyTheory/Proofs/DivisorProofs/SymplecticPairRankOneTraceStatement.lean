@@ -12,8 +12,10 @@ open scoped Classical
 
 noncomputable section
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SympPure.symp_pure | exact GlobalTheory.SympPure.symp_pure | (intros; apply GlobalTheory.SympPure.symp_pure <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SympPure.symp_pure` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSymplecticPairRankOneTrace.lean&line=49#L49)
 -/
 theorem _root_.GlobalTheory.T.symplectic_pair_rank_one_trace : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {n d : ℕ} (J : Matrix (Fin n) (Fin n) E) (K : Matrix (Fin d) (Fin d) E)
     (ξ β : Fin n → E) (x y : Fin d → E) (t : AF F),

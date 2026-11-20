@@ -20,8 +20,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 open scoped GlobalTheory.VacAny
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.VacAny.eq_atPlace_of_at | exact GlobalTheory.VacAny.eq_atPlace_of_at | (intros; apply GlobalTheory.VacAny.eq_atPlace_of_at <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.VacAny.eq_atPlace_of_at` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FEqAdeleSupportedAtFinitePlaceOfSupportedAt.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.eq_adeleSupportedAtFinitePlace_of_supportedAt : ∀ {F : Type} [Field F] [NumberField F] (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) (a : AF F),
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (GlobalTheory.AdelicU.evFin F v) a → a = GlobalTheory.EmbChart.atPlace v (GlobalTheory.AdelicU.evFin F v a) := by

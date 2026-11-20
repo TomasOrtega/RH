@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WeightedOrbitS
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.UnitLemmaGroup
 open GlobalTheory.UnitLemma
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnitLemma.Orbit.orbSum_congr_coe | exact GlobalTheory.UnitLemma.Orbit.orbSum_congr_coe | (intros; apply GlobalTheory.UnitLemma.Orbit.orbSum_congr_coe <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnitLemma.Orbit.orbSum_congr_coe` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FWeightedOrbitSumCongrCoefficientRing.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.weightedOrbitSum_congr_coefficientRing : ∀ {O O' A : Type} [CommRing O] [CommRing O'] [CommRing A] [Algebra O A] [Algebra O' A] (G : Subgroup Aˣ) (X : Set (Submodule O A)) (X' : Set (Submodule O' A)), (∀ L ∈ X, ∃ L' ∈ X', (L' : Set A) = L) → (∀ L' ∈ X', ∃ L ∈ X, (L : Set A) = L') → intUnits O A ⊓ G = intUnits O' A ⊓ G → orbSum O' G X' (fun _ => 1) = orbSum O G X (fun _ => 1) := by
   first | exact @GlobalTheory.UnitLemma.Orbit.orbSum_congr_coe | exact GlobalTheory.UnitLemma.Orbit.orbSum_congr_coe | (intros; apply GlobalTheory.UnitLemma.Orbit.orbSum_congr_coe <;> assumption)

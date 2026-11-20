@@ -16,8 +16,10 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open GlobalTheory.Published GlobalTheory.TheRec GlobalTheory.ContraPair
 open GlobalTheory.CuspRep.InfType GlobalTheory.CuspRep.AlgExpo
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IdeleMapInjective.ideleMap_injective | exact GlobalTheory.IdeleMapInjective.ideleMap_injective | (intros; apply GlobalTheory.IdeleMapInjective.ideleMap_injective <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IdeleMapInjective.ideleMap_injective` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FIdeleMapOfAlgebraMaximalRealSubfieldInjective.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.ideleMapOfAlgebra_maximalRealSubfield_injective : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Function.Injective (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleMap (maximalRealSubfield E) E) := by
   first | exact @GlobalTheory.IdeleMapInjective.ideleMap_injective | exact GlobalTheory.IdeleMapInjective.ideleMap_injective | (intros; apply GlobalTheory.IdeleMapInjective.ideleMap_injective <;> assumption)

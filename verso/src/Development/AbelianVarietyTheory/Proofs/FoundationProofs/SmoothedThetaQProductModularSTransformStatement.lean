@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.HasQIff
 open scoped UpperHalfPlane MatrixGroups Manifold
 open GlobalTheory.Sieg GlobalTheory.QFam
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Sieg.cth_modular_S | exact GlobalTheory.Sieg.cth_modular_S | (intros; apply GlobalTheory.Sieg.cth_modular_S <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Sieg.cth_modular_S` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FSmoothedThetaQProductModularSTransform.lean&line=38#L38)
 -/
 theorem _root_.GlobalTheory.T.smoothedThetaQProduct_modularS_transform : ∀ (c : ℕ) (τ : ℍ) (z : ℂ), 1 < c → Nat.Coprime c 6 → (∀ m n : ℤ, (c : ℂ) * z ≠ (m : ℂ) * (τ : ℂ) + n) → cth c (ee ((ModularGroup.S • τ : ℍ) : ℂ)) (ee (z / (τ : ℂ))) = cth c (ee (τ : ℂ)) (ee z) := by
   first | exact @GlobalTheory.Sieg.cth_modular_S | exact GlobalTheory.Sieg.cth_modular_S | (intros; apply GlobalTheory.Sieg.cth_modular_S <;> assumption)

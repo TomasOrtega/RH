@@ -23,8 +23,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 open GlobalTheory.AdelicU GlobalTheory.WeilM
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.psiLoc_eventually_trivial_integers | exact GlobalTheory.psiLoc_eventually_trivial_integers | (intros; apply GlobalTheory.psiLoc_eventually_trivial_integers <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.psiLoc_eventually_trivial_integers` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLocalAddCharComponentTrivialIntegersEventually.lean&line=52#L52)
 -/
 theorem _root_.GlobalTheory.T.localAddCharComponent_trivial_integers_eventually : ∀ {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), Continuous ψ →
     ∀ᶠ v in Filter.cofinite, ∀ x ∈ (v : HeightOneSpectrum (𝓞 F)).adicCompletionIntegers F, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.psiLoc ψ v x = 1 := by

@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NonemptyInvFunEq
 open MvPolynomial GlobalTheory.IndefiniteRowSideFullHecke.MinorOrderedEntries GlobalTheory.OneFunctional Formalism.BasicNotions GlobalTheory.Branching
 open scoped TensorProduct DirectSum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.OneFunctional.iso_outer_dual | exact GlobalTheory.OneFunctional.iso_outer_dual | (intros; apply GlobalTheory.OneFunctional.iso_outer_dual <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.OneFunctional.iso_outer_dual` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FIsoOuterDual.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.iso_dual_outer_outer_dual : ∀ (ι G : Type) [Fintype ι] [Group G] (V : ι → Type) [∀ τ, AddCommGroup (V τ)] [∀ τ, Module ℂ (V τ)] [∀ τ, FiniteDimensional ℂ (V τ)] (ρ : ∀ τ, Representation ℂ G (V τ)), Iso (outer ρ).dual (outer fun τ => (ρ τ).dual) := by
   first | exact @GlobalTheory.OneFunctional.iso_outer_dual | exact GlobalTheory.OneFunctional.iso_outer_dual | (intros; apply GlobalTheory.OneFunctional.iso_outer_dual <;> assumption)

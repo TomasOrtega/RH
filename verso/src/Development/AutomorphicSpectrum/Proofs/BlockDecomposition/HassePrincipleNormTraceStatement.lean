@@ -6,8 +6,10 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermitianPlaneS
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes IsDedekindDomain NumberField GlobalTheory.Published GlobalTheory.CompanionTheory.PlaneSA Topology
 open scoped TensorProduct Quaternion
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.PlaneSA.GlobalTrace.exists_qn_eq_one_two_mul_re | exact GlobalTheory.CompanionTheory.PlaneSA.GlobalTrace.exists_qn_eq_one_two_mul_re | (intros; apply GlobalTheory.CompanionTheory.PlaneSA.GlobalTrace.exists_qn_eq_one_two_mul_re <;> assum …`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.PlaneSA.GlobalTrace.exists_qn_eq_one_two_mul_re` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FHassePrincipleNormTrace.lean&line=86#L86)
 -/
 theorem _root_.GlobalTheory.T.hasse_principle_norm_trace : ∀ {F : Type} [Field F] [NumberField F] (d β t : F), (∀ x : Q d β F, qn x = 0 → x = 0) →
   (∀ u : Pl F, (∀ x : Q d β (Kp u), qn x = 0 → x = 0) →

@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TangentHaarRealSUOf
 open NumberField MeasureTheory Matrix GlobalTheory.SUVol ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.AR.Up
 open scoped ComplexConjugate
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SUVol.FrameSkew.entries_of_mem | exact GlobalTheory.SUVol.FrameSkew.entries_of_mem | (intros; apply GlobalTheory.SUVol.FrameSkew.entries_of_mem <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SUVol.FrameSkew.entries_of_mem` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSpecialUnitaryLieAlgebraEntriesOrthonormalFrame.lean&line=34#L34)
 -/
 theorem _root_.GlobalTheory.T.specialUnitaryLieAlgebra_entries_orthonormal_frame : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r) (x : Frame X.Ψ r), IsOrth X x → ∀ (Y : EuclideanSpace ℂ (X.Ψ × Fin r × Fin r)), fromFrame x Y ∈ realLie X.Ψ X.Gm → (∀ τ a b, Y (τ, b, a) = -((sgn X.p0 a * sgn X.p0 b : ℝ) : ℂ) * conj (Y (τ, a, b))) ∧ ∀ τ, ∑ a, Y (τ, a, a) = 0 := by
   first | exact @GlobalTheory.SUVol.FrameSkew.entries_of_mem | exact GlobalTheory.SUVol.FrameSkew.entries_of_mem | (intros; apply GlobalTheory.SUVol.FrameSkew.entries_of_mem <;> assumption)

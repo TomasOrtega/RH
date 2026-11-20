@@ -2,8 +2,10 @@ import Mathlib
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.DominatedConvergenceExhaustion
 open MeasureTheory Filter Topology
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Conv.tendsto_integral_of_exhaustion | exact GlobalTheory.CompanionTheory.Conv.tendsto_integral_of_exhaustion | (intros; apply GlobalTheory.CompanionTheory.Conv.tendsto_integral_of_exhaustion <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Conv.tendsto_integral_of_exhaustion` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FDominatedConvergenceExhaustion.lean&line=55#L55)
 -/
 theorem _root_.GlobalTheory.T.dominated_convergence_exhaustion : ∀ {α : Type} [MeasurableSpace α] (μ : Measure α) (l : Filter ℝ) [l.NeBot] [l.IsCountablyGenerated] (E : ℕ → Set α) (L : α → ℝ) (ρ Γ : ℝ → α → ℝ) (ρ0 Γ0 : α → ℝ) (a : ℝ) (b : ℕ → ℝ), (∀ n, MeasurableSet (E n)) → Monotone E → (∀ n, μ (E n) < ⊤) → (∀ᵐ y ∂μ, ∃ n, y ∈ E n) → (∀ᵐ y ∂μ, 0 ≤ L y) → 0 ≤ a → Tendsto b atTop (𝓝 0) → (∀ n, TendstoUniformlyOn ρ ρ0 l (E n)) → (∀ n, TendstoUniformlyOn Γ Γ0 l (E n)) → (∀ n, ∃ M : ℝ, ∀ y ∈ E n, |ρ0 y| ≤ M ∧ |Γ0 y| ≤ M) → (∀ᶠ t in l, AEStronglyMeasurable (ρ t) μ ∧ AEStronglyMeasurable (Γ t) μ ∧ (∀ᵐ y ∂μ, 0 ≤ ρ t y) ∧ (∀ᵐ y ∂μ, y ∉ E 0 → |Γ t y| ≤ a * L y) ∧ ∀ n, IntegrableOn (fun y => L y * ρ t y) (E n)ᶜ μ ∧ ∫ y in (E n)ᶜ, L y * ρ t y ∂μ ≤ b n) → Integrable (fun y => Γ0 y * ρ0 y) μ ∧ (∀ᶠ t in l, Integrable (fun y => Γ t y * ρ t y) μ) ∧ Tendsto (fun t => ∫ y, Γ t y * ρ t y ∂μ) l (𝓝 (∫ y, Γ0 y * ρ0 y ∂μ)) := by
   first | exact @GlobalTheory.CompanionTheory.Conv.tendsto_integral_of_exhaustion | exact GlobalTheory.CompanionTheory.Conv.tendsto_integral_of_exhaustion | (intros; apply GlobalTheory.CompanionTheory.Conv.tendsto_integral_of_exhaustion <;> assumption)

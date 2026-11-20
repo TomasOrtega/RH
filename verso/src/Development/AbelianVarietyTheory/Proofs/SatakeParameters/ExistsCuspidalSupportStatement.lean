@@ -11,8 +11,10 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CuspidalSupportZero.exists_isCuspSupport_zero | exact GlobalTheory.CuspidalSupportZero.exists_isCuspSupport_zero | (intros; apply GlobalTheory.CuspidalSupportZero.exists_isCuspSupport_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CuspidalSupportZero.exists_isCuspSupport_zero` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FExistsCuspidalSupport.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.exists_cuspidal_support : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (π : Irr k 0), ∃ (s : ℕ) (d : Fin s → ℕ) (σ : ∀ a, Irr k (d a)), IsCuspSupport π.π d (fun a => (σ a).π) := by
   first | exact @GlobalTheory.CuspidalSupportZero.exists_isCuspSupport_zero | exact GlobalTheory.CuspidalSupportZero.exists_isCuspSupport_zero | (intros; apply GlobalTheory.CuspidalSupportZero.exists_isCuspSupport_zero <;> assumption)

@@ -2,8 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PluckerMinorsProportional
 import Mathlib
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.jacobi_complementary_minors | exact GlobalTheory.jacobi_complementary_minors | (intros; apply GlobalTheory.jacobi_complementary_minors <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.jacobi_complementary_minors` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPluckerMinorsProportional.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.plucker_minors_proportional : ∀ {K : Type} [Field K] {p q : ℕ} (α : Matrix (Fin p) (Fin p ⊕ Fin q) K) (β : Matrix (Fin q) (Fin p ⊕ Fin q) K),
   α * β.transpose = 0 →

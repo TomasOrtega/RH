@@ -12,8 +12,10 @@ open GlobalTheory.LevDesc (TypeFrame grpHR grpGHR levDet secRing move)
 open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelAut)
 open GlobalTheory.OrbitSep
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.OrbitSep.fromSpecResidueField_comp_eq_of_fixes | exact GlobalTheory.OrbitSep.fromSpecResidueField_comp_eq_of_fixes | (intros; apply GlobalTheory.OrbitSep.fromSpecResidueField_comp_eq_of_fixes <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.OrbitSep.fromSpecResidueField_comp_eq_of_fixes` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFromSpecResidueFieldCompAutEqOfFixes.lean&line=26#L26)
 -/
 theorem _root_.GlobalTheory.T.fromSpecResidueField_comp_aut_eq_of_fixes : ∀ (X : Scheme.{0}) [IsIntegral X] (Γ : Type) [Group Γ] (ρ : Γ →* Aut X) (γ : Γ) (x : X),
     (ρ γ).hom x = x → (∀ u : X.functionFieldˣ, RegAt x u → ZeroAt x ((fnAct ρ γ u : X.functionField) - u)) →

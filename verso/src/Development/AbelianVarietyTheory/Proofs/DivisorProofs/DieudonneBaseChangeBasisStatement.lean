@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KerEqRangeOfRangeEq
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrobKerIdealLeAugIdeal
 open CategoryTheory TensorProduct Coalgebra Bialgebra GlobalTheory GlobalTheory.PDiv GlobalTheory.PDivGroup GlobalTheory.Dieu
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Dieu.Base.smap_toBase_basis | exact GlobalTheory.Dieu.Base.smap_toBase_basis | (intros; apply GlobalTheory.Dieu.Base.smap_toBase_basis <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Dieu.Base.smap_toBase_basis` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDieudonneBaseChangeBasis.lean&line=41#L41)
 -/
 theorem _root_.GlobalTheory.T.dieudonne_baseChange_basis : ∀ (p : ℕ) [Fact p.Prime] (P : ∀ (k : Type) [CommRing k], PDivGroup p k → Prop) (B : Base p P) (k k' : Type) [Field k] [CharP k p] [PerfectRing k p] [Field k'] [CharP k' p] [PerfectRing k' p] [Algebra k k'] (G : PDivGroup p k) (hG : P k G) (hG' : P k' (G.baseChange k')) (ι : Type) [Fintype ι] (b : Module.Basis ι (WittVector p k) (B.M G hG)), ∃ b' : Module.Basis ι (WittVector p k') (B.M (G.baseChange k') hG'), ∀ i, b' i = B.smap hG' hG (G.toBase k') (b i) := by
   first | exact @GlobalTheory.Dieu.Base.smap_toBase_basis | exact GlobalTheory.Dieu.Base.smap_toBase_basis | (intros; apply GlobalTheory.Dieu.Base.smap_toBase_basis <;> assumption)

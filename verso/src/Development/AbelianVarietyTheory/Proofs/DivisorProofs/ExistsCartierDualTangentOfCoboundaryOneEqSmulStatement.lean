@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.EqZeroOfForallPowDv
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CobOneEqZeroOfConnecting
 open CategoryTheory TensorProduct MvPowerSeries GlobalTheory GlobalTheory.PDiv GlobalTheory.Katz GlobalTheory.QLog GlobalTheory.PDivGroup
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PDiv.exists_tangent_of_cobOne_eq_smul | exact GlobalTheory.PDiv.exists_tangent_of_cobOne_eq_smul | (intros; apply GlobalTheory.PDiv.exists_tangent_of_cobOne_eq_smul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PDiv.exists_tangent_of_cobOne_eq_smul` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsCartierDualTangentOfCoboundaryOneEqSmul.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.exists_cartierDual_tangent_of_coboundaryOne_eq_smul : ∀ (O A : Type) [CommRing O] [CommRing A] [Bialgebra O A] [Module.Finite O A] [Module.Projective O A] [Coalgebra.IsCocomm O A] (a : O) (b : A) (z : A ⊗[O] A), cobOne O A b = a • z → ∃ u : Cot O (CartierDual O A) →ₗ[O] O ⧸ Ideal.span {a}, ∀ φ : CartierDual O A, u (dUnit O φ) = Ideal.Quotient.mk _ (φ b) := by
   first | exact @GlobalTheory.PDiv.exists_tangent_of_cobOne_eq_smul | exact GlobalTheory.PDiv.exists_tangent_of_cobOne_eq_smul | (intros; apply GlobalTheory.PDiv.exists_tangent_of_cobOne_eq_smul <;> assumption)

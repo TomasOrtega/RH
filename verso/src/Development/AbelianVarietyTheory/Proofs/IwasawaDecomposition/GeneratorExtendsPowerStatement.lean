@@ -7,8 +7,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFam GlobalTheory.LocM GlobalTheory.TorRef
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TraitGen.extAt_lbPow | exact GlobalTheory.TraitGen.extAt_lbPow | (intros; apply GlobalTheory.TraitGen.extAt_lbPow <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TraitGen.extAt_lbPow` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FGeneratorExtendsPower.lean&line=55#L55)
 -/
 theorem _root_.GlobalTheory.T.generator_extends_power : ∀ (X : Scheme.{0}) (L : LB X) (R : Type) [CommRing R] [IsDomain R] (x : Sp (FractionRing R) ⟶ X)
     (e : LB.Gen (L.pull x)) (m : ℕ), e.IsGen → GlobalTheory.TraitGen.ExtAt L x e →

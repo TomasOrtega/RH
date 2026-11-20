@@ -9,8 +9,10 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 open GlobalTheory.Doubling (absE)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnipSet.mem_unip_iff | exact GlobalTheory.UnipSet.mem_unip_iff | (intros; apply GlobalTheory.UnipSet.mem_unip_iff <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnipSet.mem_unip_iff` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FMemUnipotentRadicalIff.lean&line=43#L43)
 -/
 theorem _root_.GlobalTheory.T.mem_unipotent_radical_iff : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n n₁ : ℕ)
     (X : Spc F E n) (H : Plane E n n₁) (u : UA σ X.J), u ∈ unip σ X H ↔

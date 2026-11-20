@@ -8,8 +8,10 @@ open GlobalTheory.FlagMod (FlagCover)
 open GlobalTheory.FlagTan (dimFlag psiSet TIx IsTanFrame)
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CanonLB.eq_zero_tangent_of_jacobian | exact GlobalTheory.CanonLB.eq_zero_tangent_of_jacobian | (intros; apply GlobalTheory.CanonLB.eq_zero_tangent_of_jacobian <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CanonLB.eq_zero_tangent_of_jacobian` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FEqZeroTangentOfJacobianDerivsVanish.lean&line=97#L97)
 -/
 theorem _root_.GlobalTheory.T.eq_zero_tangent_of_jacobian_derivs_vanish : ∀ {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {D : ℕ} [SmoothOfRelativeDimension D p] (K : GlobalTheory.CanonLB p D) (i : K.bundle.ι) {F : Type} [Field F] (z : Sp F ⟶ Y) (hz : ⊤ ≤ z ⁻¹ᵁ K.bundle.U i) (g : Fin D → Γ(Y, K.bundle.U i)), evalPt z _ hz (K.jacobian i le_rfl g) ≠ 0 → ∀ (w : Sp (DualNumber F) ⟶ Y) (hw : ⊤ ≤ w ⁻¹ᵁ K.bundle.U i), spMap (TrivSqZeroExt.fstHom F F F).toRingHom ≫ w = z → w ≫ p = spMap (TrivSqZeroExt.inlHom F F) ≫ z ≫ p → (∀ a, (evalPt w _ hw (g a)).snd = 0) → w = spMap (TrivSqZeroExt.inlHom F F) ≫ z := by
   first | exact @GlobalTheory.CanonLB.eq_zero_tangent_of_jacobian | exact GlobalTheory.CanonLB.eq_zero_tangent_of_jacobian | (intros; apply GlobalTheory.CanonLB.eq_zero_tangent_of_jacobian <;> assumption)

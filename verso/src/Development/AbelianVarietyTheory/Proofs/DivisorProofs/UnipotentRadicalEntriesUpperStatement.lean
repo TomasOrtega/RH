@@ -9,8 +9,10 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open scoped TensorProduct
 open Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LeviBlockFrame.sub_one_ne_zero_imp | exact GlobalTheory.LeviBlockFrame.sub_one_ne_zero_imp | (intros; apply GlobalTheory.LeviBlockFrame.sub_one_ne_zero_imp <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LeviBlockFrame.sub_one_ne_zero_imp` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FUnipotentRadicalEntriesUpper.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.unipotent_radical_entries_upper : ∀ (R : Type) [CommRing R] (n i : ℕ) (hi : i + 1 ≤ n) (g : GL (Fin n) R), g ∈ GlobalTheory.SmGL.unipRad R (blockIndex hi) →
     ∀ l j : Fin n, (g.1 - 1) l j ≠ 0 → (l : ℕ) ≤ i ∧ (l : ℕ) < j := by

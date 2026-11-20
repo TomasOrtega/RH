@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GermSections
 import Mathlib
 open Filter Topology
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.germSections_halfPlane_global | exact GlobalTheory.germSections_halfPlane_global | (intros; apply GlobalTheory.germSections_halfPlane_global <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.germSections_halfPlane_global` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FGermSectionsHalfPlaneGlobalSection.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.germSections_halfPlane_global_section : ∀ (Y : Type) (G : ℂ → (ℂ → Y) → Prop) (T : ℝ), (∀ w s s', s =ᶠ[𝓝 w] s' → G w s → G w s') → (∀ w : ℂ, T < w.im → ∃ s, ∀ᶠ z in 𝓝 w, G z s) → (∀ (U : Set ℂ) (s s' : ℂ → Y), IsOpen U → Convex ℝ U → (∀ z ∈ U, T < z.im) → (∀ z ∈ U, G z s) → (∀ z ∈ U, G z s') → ∀ w ∈ U, s w = s' w → Set.EqOn s s' U) → (∀ (U : Set ℂ) (s s' : ℂ → Y), IsOpen U → Convex ℝ U → (∀ z ∈ U, T < z.im) → (∀ z ∈ U, G z s) → ∀ w ∈ U, G w s' → ∃ s'' : ℂ → Y, (∀ z ∈ U, G z s'') ∧ s'' w = s' w) → ∃ s : ℂ → Y, ∀ w : ℂ, T < w.im → G w s := by
   first | exact @GlobalTheory.germSections_halfPlane_global | exact GlobalTheory.germSections_halfPlane_global | (intros; apply GlobalTheory.germSections_halfPlane_global <;> assumption)

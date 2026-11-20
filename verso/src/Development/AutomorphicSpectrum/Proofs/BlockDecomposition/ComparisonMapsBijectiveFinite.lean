@@ -20,14 +20,8 @@ def piS {I : Type} {M N : I → Type} [∀ i, AddCommGroup (M i)] [∀ i, Module
   map_add' x y := funext fun i ↦ map_add (u i) _ _
   map_smul' r x := funext fun i ↦ (u i).map_smulₛₗ r (x i)
 
-/- English proof (translation)
-Use `haveI := Fintype.ofFinite I`. Set `e` to `TensorProduct.piRight R S S M`. Establish `key : (liftSemi (piS u) : S ⊗[R] (∀ i, M i) → ∀ i, N i) = (Pi.map fun i ↦ liftSemi (u i)) ∘ e`. Use function extensionality and compare the values at `t`. Proceed by induction on `t using TensorProduct.induction_on with`.
-
-Consider the case `zero`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Consider the case `add a b ha hb`. Simplify using `only [map_add, Function.comp_apply] at ha hb ⊢`.
-
-Rewrite using `[ha, hb]`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Consider the case `tmul s x`. Use function extensionality and compare the values at `i`.
-
-Simplify using `[e, liftSemi_tmul, piS]`. Rewrite using `[key]`. Conclude with `(Function.Bijective.piMap hu).comp e.bijective`.
+/- English proof (authored)
+For the finite index set I, tensoring with S over R identifies the tensor product of S with ∏ᵢ Mᵢ with the product ∏ᵢ (S ⊗ Mᵢ). Under this identification the lifted product map is the product of the individual lifted maps. Indeed, on a pure tensor s ⊗ x its i-th component is s · uᵢ(xᵢ) on both sides. The maps are additive, so the identity holds on all tensors. Each component lift is bijective by hypothesis, and their product composed with the tensor-product identification is bijective.
 -/
 theorem liftSemi_piS_bijective {I : Type} [Finite I] {M N : I → Type} [∀ i, AddCommGroup (M i)]
     [∀ i, Module R (M i)] [∀ i, AddCommGroup (N i)] [∀ i, Module S (N i)]
@@ -66,12 +60,8 @@ def cT (m : BC F F') (T : C) : F.obj T →ₛₗ[algebraMap R S] F'.obj T where
   map_add' := map_add (m.α T)
   map_smul' := m.smul T
 
-/- English proof (translation)
-Take `⟨e, he⟩` from `m.bij T`. Establish `key : (liftSemi (cT m T) : S ⊗[R] F.obj T → F'.obj T) = e`. Use function extensionality and compare the values at `t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`.
-
-Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul s b`. Establish `h1 : s ⊗ₜ[R] b = s • ((1 : S) ⊗ₜ[R] b)` using `by simp [TensorProduct.smul_tmul']`. Rewrite using `[liftSemi_tmul, h1, map_smul, he]`. Both sides reduce to the same expression.
-
-Rewrite using `[key]`. Conclude with `e.bijective`.
+/- English proof (authored)
+The base-change data at T provides an S-linear equivalence e sending 1 ⊗ b to the image of b under m.α at T. By S-linearity e sends s ⊗ b to s times that image. This is also the value of the lift of cT at s ⊗ b by liftSemi_tmul. The lifts agree on pure tensors and extend additively, so the lift of cT equals e and is bijective.
 -/
 theorem liftSemi_cT_bijective (m : BC F F') (T : C) : Function.Bijective (liftSemi (cT m T)) := by
   obtain ⟨e, he⟩ := m.bij T
@@ -87,22 +77,22 @@ theorem liftSemi_cT_bijective (m : BC F F') (T : C) : Function.Bijective (liftSe
   rw [key]
   exact e.bijective
 
-/- English proof (translation)
-The claim follows from `liftSemi_piS_bijective (fun T ↦ cT m T) fun T ↦ liftSemi_cT_bijective m T`.
+/- English proof (authored)
+A degree-zero cochain has one component for each object T. The comparison map is the lift of the product of the maps cT at these objects. Each objectwise lift is bijective by liftSemi_cT_bijective. Apply the finite-product lemma to the object index.
 -/
 theorem comparison_degree_zero_bijective [Finite C] (m : BC F F') : Function.Bijective (th0 m) :=
   liftSemi_piS_bijective (fun T ↦ cT m T) fun T ↦ liftSemi_cT_bijective m T
 
-/- English proof (translation)
-The claim follows from `liftSemi_piS_bijective (fun T ↦ piS fun T' ↦ piS fun _ : T ⟶ T' ↦ cT m T') fun _ ↦ liftSemi_piS_bijective _ fun T' ↦ liftSemi_piS_bijective _ fun _ ↦ liftSemi_cT_bijective m T'`.
+/- English proof (authored)
+A degree-one cochain is indexed by pairs of objects T, T′ and arrows T → T′. On the component for an arrow the semilinear comparison acts by cT at T′. Its lift is bijective by liftSemi_cT_bijective. Apply the finite-product lemma to the arrows for each fixed pair, then to T′ for each T, and finally to T.
 -/
 theorem comparison_degree_one_bijective [Finite C] [∀ T T' : C, Finite (T ⟶ T')] (m : BC F F') :
     Function.Bijective (th1 m) :=
   liftSemi_piS_bijective (fun T ↦ piS fun T' ↦ piS fun _ : T ⟶ T' ↦ cT m T') fun _ ↦
     liftSemi_piS_bijective _ fun T' ↦ liftSemi_piS_bijective _ fun _ ↦ liftSemi_cT_bijective m T'
 
-/- English proof (translation)
-The claim follows from `liftSemi_piS_bijective (fun T ↦ piS fun T' ↦ piS fun T'' ↦ piS fun _ : T ⟶ T' ↦ piS fun _ : T' ⟶ T'' ↦ cT m T'') fun _ ↦ liftSemi_piS_bijective _ fun _ ↦ liftSemi_piS_bijective _ fun T'' ↦ liftSemi_piS_bijective _ fun _ ↦ liftSemi_piS_bijective _ fun _ ↦ liftSemi_cT_bijective m T …`.
+/- English proof (authored)
+A degree-two cochain is indexed by triples of objects T, T′, T″ and composable arrows T → T′ → T″. The component map is cT at the final object T″, whose lift is bijective. Combine these lifts with the finite-product lemma, first over the second arrow, then over the first arrow, and then over T″, T′, and T in that order.
 -/
 theorem comparison_degree_two_bijective [Finite C] [∀ T T' : C, Finite (T ⟶ T')] (m : BC F F') :
     Function.Bijective (th2 m) :=
@@ -113,8 +103,8 @@ theorem comparison_degree_two_bijective [Finite C] [∀ T T' : C, Finite (T ⟶ 
 
 end Cochains
 
-/- English proof (translation)
-Use `haveI : Finite Pᵒᵖ := Finite.of_injective (Opposite.unop : Pᵒᵖ → P) Opposite.unop_injective`. Use `haveI : ∀ T T' : Pᵒᵖ, Finite (T ⟶ T') := fun T T' ↦ inferInstance`. Conclude with `⟨comparison_degree_zero_bijective m, comparison_degree_one_bijective m, comparison_degree_two_bijective m⟩`.
+/- English proof (authored)
+The opposite of the finite poset P has finitely many objects. Each hom-set in its category has at most one element because an arrow is specified by a single order relation. The degree-zero, degree-one, and degree-two comparison lemmas now apply to the given base-change data. Together they prove the three bijectivity assertions.
 -/
 theorem th_bijective (R S P : Type) [CommRing R] [CommRing S] [Algebra R S] [SemilatticeInf P]
     [Finite P] (F : Pᵒᵖ ⥤ CommAlgCat.{0} R) (F' : Pᵒᵖ ⥤ CommAlgCat.{0} S) (m : BC F F') :

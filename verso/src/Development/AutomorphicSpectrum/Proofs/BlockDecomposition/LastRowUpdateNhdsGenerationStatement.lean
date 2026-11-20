@@ -5,8 +5,10 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsCIndValue
 open Matrix GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.BZMir GlobalTheory.BZMir.Leib GlobalTheory.RgGu.Leib GlobalTheory.CompanionTheory.BZPhiPG GlobalTheory.CompanionTheory.BZPhiPG.OntoO Topology
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.BZPhiPG.OntoO.RowRep.row_replacement | exact GlobalTheory.CompanionTheory.BZPhiPG.OntoO.RowRep.row_replacement | (intros; apply GlobalTheory.CompanionTheory.BZPhiPG.OntoO.RowRep.row_replacement <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.BZPhiPG.OntoO.RowRep.row_replacement` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FLastRowUpdateNhdsGeneration.lean&line=169#L169)
 -/
 theorem _root_.GlobalTheory.T.last_row_update_nhds_generation : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (S : Subgroup (GL (Fin (n + 1)) k))
     (hS : ∀ (r : Fin (n + 1) → k), r (Fin.last n) ≠ 0 → ∀ g : GL (Fin (n + 1)) k,

@@ -2,8 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SemisimpleAnnihilatorSpanEndomorphisms
 import Mathlib
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.semisimple_mem_sum_endo_images | exact GlobalTheory.semisimple_mem_sum_endo_images | (intros; apply GlobalTheory.semisimple_mem_sum_endo_images <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.semisimple_mem_sum_endo_images` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSemisimpleAnnihilatorSpanEndomorphisms.lean&line=5#L5)
 -/
 theorem _root_.GlobalTheory.T.semisimple_annihilator_span_endomorphisms : ∀ (R : Type) [Ring R] (M : Type) [AddCommGroup M] [Module R M], IsSemisimpleModule R M → ∀ (n : ℕ) (w : Fin n → M) (v : M), (∀ a : R, (∀ j, a • w j = 0) → a • v = 0) → ∃ f : Fin n → (M →ₗ[R] M), v = ∑ j, f j (w j) := by
   first | exact @GlobalTheory.semisimple_mem_sum_endo_images | exact GlobalTheory.semisimple_mem_sum_endo_images | (intros; apply GlobalTheory.semisimple_mem_sum_endo_images <;> assumption)

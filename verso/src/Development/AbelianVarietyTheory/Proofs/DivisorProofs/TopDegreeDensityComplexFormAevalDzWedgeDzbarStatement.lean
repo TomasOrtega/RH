@@ -8,8 +8,10 @@ open ReciprocityTheory.L2DbarEstimates (V)
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts GlobalTheory.FlagBundle GlobalTheory.HermFrame GlobalTheory.GoodMetric GlobalTheory.CxForm GlobalTheory.LineForm GlobalTheory.ChernCalc
 open scoped Matrix ContDiff ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChernCalc.DensTop.dens_aeval_sym | exact GlobalTheory.ChernCalc.DensTop.dens_aeval_sym | (intros; apply GlobalTheory.ChernCalc.DensTop.dens_aeval_sym <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChernCalc.DensTop.dens_aeval_sym` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTopDegreeDensityComplexFormAevalDzWedgeDzbar.lean&line=112#L112)
 -/
 theorem _root_.GlobalTheory.T.topDegreeDensityComplexForm_aeval_dzWedgeDzbar : ∀ (n : ℕ) (P : MvPolynomial (Fin n × Fin n) ℂ), dens ((aeval sym P : Ev n) : Alt n) = topCoeff P / (Complex.I / 2) ^ n := by
   first | exact @GlobalTheory.ChernCalc.DensTop.dens_aeval_sym | exact GlobalTheory.ChernCalc.DensTop.dens_aeval_sym | (intros; apply GlobalTheory.ChernCalc.DensTop.dens_aeval_sym <;> assumption)

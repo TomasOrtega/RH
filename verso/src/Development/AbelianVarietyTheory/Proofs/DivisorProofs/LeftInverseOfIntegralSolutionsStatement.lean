@@ -2,8 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeftInverseOfIntegralSolutions
 import Mathlib
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.dvr_matrix_exists_leftInverse_of_saturated | exact GlobalTheory.dvr_matrix_exists_leftInverse_of_saturated | (intros; apply GlobalTheory.dvr_matrix_exists_leftInverse_of_saturated <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.dvr_matrix_exists_leftInverse_of_saturated` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLeftInverseOfIntegralSolutions.lean&line=7#L7)
 -/
 theorem _root_.GlobalTheory.T.left_inverse_of_integral_solutions : ∀ (V Fr : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field Fr] [Algebra V Fr] [IsFractionRing V Fr] (n m : ℕ) (A : Matrix (Fin n) (Fin m) V), (∀ (cf : Fin m → Fr) (b : Fin n → V), (A.map (algebraMap V Fr)).mulVec cf = (fun j => algebraMap V Fr (b j)) → ∀ i, ∃ a : V, algebraMap V Fr a = cf i) → ∃ B : Matrix (Fin m) (Fin n) V, B * A = 1 := by
   first | exact @GlobalTheory.dvr_matrix_exists_leftInverse_of_saturated | exact GlobalTheory.dvr_matrix_exists_leftInverse_of_saturated | (intros; apply GlobalTheory.dvr_matrix_exists_leftInverse_of_saturated <;> assumption)

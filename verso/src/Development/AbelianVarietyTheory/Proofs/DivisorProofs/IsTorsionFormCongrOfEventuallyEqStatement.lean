@@ -11,8 +11,10 @@ open ReciprocityTheory.L2DbarEstimates (V)
 open Filter Topology
 open scoped ContDiff
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TorsionGerm.isTorsionForm_congr | exact GlobalTheory.TorsionGerm.isTorsionForm_congr | (intros; apply GlobalTheory.TorsionGerm.isTorsionForm_congr <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TorsionGerm.isTorsionForm_congr` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsTorsionFormCongrOfEventuallyEq.lean&line=74#L74)
 -/
 theorem _root_.GlobalTheory.T.isTorsionForm_congr_of_eventuallyEq : ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] (g n : ℕ) (τ τ' : E → Matrix (Fin g) (Fin g) ℂ) (M : Submodule ℤ (Fl g)) (j : Fl g → Pt E g → ℂ) (h : Pt E g → ℝ) (β : Fin n → E) (b : E) (T : Ext (n + n)), τ =ᶠ[𝓝 b] τ' → IsTorsionForm τ M j h β b T → IsTorsionForm τ' M j h β b T := by
   first | exact @GlobalTheory.TorsionGerm.isTorsionForm_congr | exact GlobalTheory.TorsionGerm.isTorsionForm_congr | (intros; apply GlobalTheory.TorsionGerm.isTorsionForm_congr <;> assumption)

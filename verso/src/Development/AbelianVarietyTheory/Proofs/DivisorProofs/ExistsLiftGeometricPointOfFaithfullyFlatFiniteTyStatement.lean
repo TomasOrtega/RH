@@ -2,8 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLiftGeometricPointOfFaithfullyFlatFiniteTy
 import Mathlib
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GeomPointLift.exists_lift | exact GlobalTheory.GeomPointLift.exists_lift | (intros; apply GlobalTheory.GeomPointLift.exists_lift <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GeomPointLift.exists_lift` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsLiftGeometricPointOfFaithfullyFlatFiniteTy.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.exists_lift_geometricPoint_of_faithfullyFlat_finiteType : ∀ (A B : Type) [CommRing A] [CommRing B] [Algebra A B], Module.FaithfullyFlat A B →
     Algebra.FiniteType A B → ∀ (k : Type) [Field k] [IsAlgClosed k] (φ : A →+* k),

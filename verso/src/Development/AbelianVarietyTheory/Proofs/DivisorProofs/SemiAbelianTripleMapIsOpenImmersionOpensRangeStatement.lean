@@ -7,8 +7,10 @@ open AlgebraicGeometry CategoryTheory Limits NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.LogKS Formalism.L2.Pj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.sabMap_isOpenImmersion_opensRange | exact GlobalTheory.sabMap_isOpenImmersion_opensRange | (intros; apply GlobalTheory.sabMap_isOpenImmersion_opensRange <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.sabMap_isOpenImmersion_opensRange` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSemiAbelianTripleMapIsOpenImmersionOpensRange.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.semiAbelianTripleMap_isOpenImmersion_opensRange : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X X' : Scheme.{0}) (t : SAB H X) (t' : SAB H X') (j : X' ⟶ X) [IsOpenImmersion j] (m : SABMap t' t j), ∃ _ : IsOpenImmersion m.φ, m.φ.opensRange = t.G.hom ⁻¹ᵁ j.opensRange := by
   first | exact @GlobalTheory.sabMap_isOpenImmersion_opensRange | exact GlobalTheory.sabMap_isOpenImmersion_opensRange | (intros; apply GlobalTheory.sabMap_isOpenImmersion_opensRange <;> assumption)

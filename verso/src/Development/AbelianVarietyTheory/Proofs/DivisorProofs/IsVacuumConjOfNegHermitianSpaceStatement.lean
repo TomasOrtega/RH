@@ -9,8 +9,10 @@ open GlobalTheory.SignedHC GlobalTheory.ChiGrid Formalism.L2.DIV Formalism.L2.Ke
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.VacConj.isVacO_conj_negSp | exact GlobalTheory.VacConj.isVacO_conj_negSp | (intros; apply GlobalTheory.VacConj.isVacO_conj_negSp <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.VacConj.isVacO_conj_negSp` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsVacuumConjOfNegHermitianSpace.lean&line=96#L96)
 -/
 theorem _root_.GlobalTheory.T.isVacuum_conj_of_negHermitianSpace : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E)) (f : WO (negSp S) T → ℂ), IsVacO ψ θ (negSp S) T (fun τ => -sS τ) sT LS LT f → IsVacO ψ θ S T sS sT LS LT (fun w => starRingEnd ℂ (f w)) := by
   first | exact @GlobalTheory.VacConj.isVacO_conj_negSp | exact GlobalTheory.VacConj.isVacO_conj_negSp | (intros; apply GlobalTheory.VacConj.isVacO_conj_negSp <;> assumption)

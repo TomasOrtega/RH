@@ -13,8 +13,10 @@ open scoped Classical
 open GlobalTheory.CompanionTheory.FinActS
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.FinActS.SumFiber.finsum_cosets_retraction | exact GlobalTheory.CompanionTheory.FinActS.SumFiber.finsum_cosets_retraction | (intros; apply GlobalTheory.CompanionTheory.FinActS.SumFiber.finsum_cosets_retraction <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.FinActS.SumFiber.finsum_cosets_retraction` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FFiniteSumFiberDecomposition.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.finite_sum_fiber_decomposition : ∀ {Γ H : Type} [Group Γ] [Group H] (p : Γ →* H) (e : H →* Γ) (hpe : ∀ m, p (e m) = m)
     (L : Subgroup Γ) (V : Subgroup H) (hLV : ∀ u ∈ L, p u ∈ V) (φ : Γ → ℂ)

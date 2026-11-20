@@ -19,8 +19,10 @@ open MonoidalCategory
 open ReciprocityTheory.ChartRestriction.G.Semi
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TorsSpec.etaSecL_smul_geom | exact GlobalTheory.TorsSpec.etaSecL_smul_geom | (intros; apply GlobalTheory.TorsSpec.etaSecL_smul_geom <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TorsSpec.etaSecL_smul_geom` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLevelSectionSmulAtGeometricPoint.lean&line=25#L25)
 -/
 theorem _root_.GlobalTheory.T.levelSection_smul_at_geometricPoint : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
     {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} (TF : TorFlag Xo c) (Z : Comp Xo c) {X' : Scheme.{0}}

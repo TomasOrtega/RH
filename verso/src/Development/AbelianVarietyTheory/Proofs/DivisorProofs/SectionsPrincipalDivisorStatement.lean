@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsEqnI
 open CategoryTheory AlgebraicGeometry GlobalTheory.Cartier GlobalTheory.Cartier.CartierDiv
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.sections_principal | exact GlobalTheory.sections_principal | (intros; apply GlobalTheory.sections_principal <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.sections_principal` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSectionsPrincipalDivisor.lean&line=7#L7)
 -/
 theorem _root_.GlobalTheory.T.sections_principal_divisor : ∀ (X : Scheme.{0}) [IsIntegral X] (g : X.functionFieldˣ),
     (principal g).sections = Submodule.span Γ(X, ⊤) {(g : X.functionField)⁻¹} := by

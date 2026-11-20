@@ -7,8 +7,10 @@ open ReciprocityTheory.ChartRestriction.G.Semi (IsAbelianScheme LB RigLB Cubical
 open GlobalTheory GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.DeRham GlobalTheory.PDiv GlobalTheory.PtExt
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PtExt.isCan_add_smul | exact GlobalTheory.PtExt.isCan_add_smul | (intros; apply GlobalTheory.PtExt.isCan_add_smul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PtExt.isCan_add_smul` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCanonicalRigidifiedExtensionDeRhamClassAddSmul.lean&line=86#L86)
 -/
 theorem _root_.GlobalTheory.T.canonicalRigidifiedExtension_deRhamClass_add_smul : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (p : ℕ) (G : PDivGroup p R) (t : G.TorsionTower A), (∀ (c c' : primDR A) (x x' : G.RigExt), IsCan t c x → IsCan t c' x' → IsCan t (c + c') (x + x')) ∧ ∀ (r : R) (c : primDR A) (x : G.RigExt), IsCan t c x → IsCan t (r • c) (r • x) := by
   first | exact @GlobalTheory.PtExt.isCan_add_smul | exact GlobalTheory.PtExt.isCan_add_smul | (intros; apply GlobalTheory.PtExt.isCan_add_smul <;> assumption)

@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsArchOne
 import Development.AbelianVarietyTheory.BlockTheory.PoincareCuspForms.SmallUnipotentElements
 open NumberField Module ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.AR.Inst ReciprocityTheory.ChartRestriction.G.AR.Up GlobalTheory.IndefiniteRowSideFullHecke.FrameWeightGapBounds GlobalTheory.ShareOn
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UpperArith.upper_subgroup | exact GlobalTheory.UpperArith.upper_subgroup | (intros; apply GlobalTheory.UpperArith.upper_subgroup <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UpperArith.upper_subgroup` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsUpperArithmeticGroupUnipotentUnitary.lean&line=57#L57)
 -/
 theorem _root_.GlobalTheory.T.exists_upperArithmeticGroup_unipotentUnitary : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (U C : Type) [Group U] [MulAction U C] (M : TwoLevels E r U C) (c : C) (g : ℕ), M.UnipotentOver g → ∃ Γo : Subgroup (GL (Fin r) E), (∀ γ ∈ Γo, IsUStab (M.comp c).Gm (M.comp c).L' γ) ∧ (∀ γ ∈ Γo, GlobalTheory.IndefiniteRowSideFullHecke.SmallUnipotentElements.IsUnipotentModOver (M.comp c).L' g γ) ∧ ∀ u : U, u • c = c → M.tr u c ∈ Γo := by
   first | exact @GlobalTheory.UpperArith.upper_subgroup | exact GlobalTheory.UpperArith.upper_subgroup | (intros; apply GlobalTheory.UpperArith.upper_subgroup <;> assumption)

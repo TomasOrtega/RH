@@ -12,8 +12,10 @@ open GlobalTheory GlobalTheory.CxForm GlobalTheory.GoodMetric
 open ReciprocityTheory.L2DbarEstimates (V)
 open scoped ContDiff ComplexConjugate Topology
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CxForm.PullChain.delAt_dbarAt_pull_comp | exact GlobalTheory.CxForm.PullChain.delAt_dbarAt_pull_comp | (intros; apply GlobalTheory.CxForm.PullChain.delAt_dbarAt_pull_comp <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CxForm.PullChain.delAt_dbarAt_pull_comp` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDelDbarChainRuleHolomorphicPullback.lean&line=44#L44)
 -/
 theorem _root_.GlobalTheory.T.del_dbar_chainRule_holomorphicPullback : ∀ (m n : ℕ) (τ : V m → V n) (U : Set (V m)) (β : V n → Alt n) (v : V m), IsOpen U → v ∈ U → DifferentiableOn ℂ τ U →
     (∀ S, DifferentiableAt ℝ (fun y => (bas n).repr (β y) S) (τ v)) →

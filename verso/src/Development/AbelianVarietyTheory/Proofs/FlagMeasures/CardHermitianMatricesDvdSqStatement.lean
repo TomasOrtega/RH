@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.PrimOfIsUnitDet
 open GlobalTheory.GramCount
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GramCount.card_hermitian_dvd_sq | exact GlobalTheory.GramCount.card_hermitian_dvd_sq | (intros; apply GlobalTheory.GramCount.card_hermitian_dvd_sq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GramCount.card_hermitian_dvd_sq` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FCardHermitianMatricesDvdSq.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.card_hermitian_matrices_dvd_sq : ∀ {A : Type} [CommRing A] [Finite A] (c : A →+* A), (∀ u, c (c u) = u) → ∀ (ω : A), IsUnit (ω - c ω) → ∀ (p : A), c p = p → ∀ (m : ℕ), Nat.card {H : Matrix (Fin m) (Fin m) A // (∀ a b, c (H b a) = H a b) ∧ ∀ a b, p ∣ H a b} ^ 2 = Nat.card {u : A // p ∣ u} ^ (m * m) := by
   first | exact @GlobalTheory.GramCount.card_hermitian_dvd_sq | exact GlobalTheory.GramCount.card_hermitian_dvd_sq | (intros; apply GlobalTheory.GramCount.card_hermitian_dvd_sq <;> assumption)

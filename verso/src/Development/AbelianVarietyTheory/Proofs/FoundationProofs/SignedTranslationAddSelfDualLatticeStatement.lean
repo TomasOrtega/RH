@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DifferentiableCo
 open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.NormSum GlobalTheory.GalTheta
 open scoped BigOperators
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GalTheta.al_add | exact GlobalTheory.GalTheta.al_add | (intros; apply GlobalTheory.GalTheta.al_add <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GalTheta.al_add` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FSignedTranslationAddSelfDualLattice.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.signedTranslation_add_selfDual_lattice : ∀ (D : D7) (T : Tor D) (N N' : ℕ) (A : AddSubgroup (VC D N N')), (∀ x ∈ A, ∀ y ∈ A, ∃ m : ℤ, (Hf D T x y).im = m) → (∀ x ∈ A, ∃ m : ℤ, qH D T x = m) → (∀ x ∈ A, w0 D • x ∈ A) → ∀ x ∈ A, ∀ y ∈ A, al D T (x + y) = al D T x * al D T y * Complex.exp (-(Real.pi : ℂ) * Complex.I * ((Hf D T x y).im : ℂ)) := by
   first | exact @GlobalTheory.GalTheta.al_add | exact GlobalTheory.GalTheta.al_add | (intros; apply GlobalTheory.GalTheta.al_add <;> assumption)

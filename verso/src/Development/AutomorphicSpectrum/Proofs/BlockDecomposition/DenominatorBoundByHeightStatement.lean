@@ -10,8 +10,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 open GlobalTheory.CompanionTheory.GodementH
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.GodementH.Den.denominator_le | exact GlobalTheory.CompanionTheory.GodementH.Den.denominator_le | (intros; apply GlobalTheory.CompanionTheory.GodementH.Den.denominator_le <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.GodementH.Den.denominator_le` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FDenominatorBoundByHeight.lean&line=56#L56)
 -/
 theorem _root_.GlobalTheory.T.denominator_bound_by_height : ∀ (F : Type) [Field F] [NumberField F] (y : F), ∃ m : ℕ, 0 < m ∧ (m : ℝ≥0) ≤ ∏ᶠ v : Pl F, max 1 ‖algebraMap F (Fv F v) y‖₊ ∧
     IsIntegral ℤ ((m : F) * y) := by

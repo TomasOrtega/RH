@@ -7,8 +7,10 @@ open ReciprocityTheory.ChartRestriction.G.Semi (IsAbelianScheme LB RigLB Cubical
 open GlobalTheory GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.DeRham GlobalTheory.PDiv GlobalTheory.PtExt
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PtExt.Dat.pullTwo_res_coc | exact GlobalTheory.PtExt.Dat.pullTwo_res_coc | (intros; apply GlobalTheory.PtExt.Dat.pullTwo_res_coc <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PtExt.Dat.pullTwo_res_coc` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FBialgebraPullbackTwoVariablesResCocycleEq.lean&line=30#L30)
 -/
 theorem _root_.GlobalTheory.T.bialgebraPullbackTwoVariables_res_cocycle_eq : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (p : ℕ) (G : PDivGroup p R) (t : G.TorsionTower A) (c : primDR A) (d : Dat t c) (n : ℕ), pullbackTwo (G.res n) (d.coc (n + 1)) = d.coc n := by
   first | exact @GlobalTheory.PtExt.Dat.pullTwo_res_coc | exact GlobalTheory.PtExt.Dat.pullTwo_res_coc | (intros; apply GlobalTheory.PtExt.Dat.pullTwo_res_coc <;> assumption)

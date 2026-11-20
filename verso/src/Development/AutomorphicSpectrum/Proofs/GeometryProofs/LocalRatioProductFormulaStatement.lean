@@ -8,8 +8,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GlobalTheory.CompanionTheory.Ar.RootHt GroundTheory.Heights₂.Heights
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.RootHt.RatioSum.ratio_sum | exact GlobalTheory.CompanionTheory.Ar.RootHt.RatioSum.ratio_sum | (intros; apply GlobalTheory.CompanionTheory.Ar.RootHt.RatioSum.ratio_sum <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.RootHt.RatioSum.ratio_sum` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FLocalRatioProductFormula.lean&line=94#L94)
 -/
 theorem _root_.GlobalTheory.T.local_ratio_product_formula : ∀ (L : Type) [Field L] [NumberField L] (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)]
     (a : K → ℤ) (w : (Σ k, J k) → L) (c₀ : (k : K) → J k) (u : L),

@@ -4,8 +4,10 @@ open MeasureTheory Filter Topology Set Module
 open scoped ENNReal
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.integrable_sq_pow_mul_iteratedFDeriv_schwartz | exact GlobalTheory.integrable_sq_pow_mul_iteratedFDeriv_schwartz | (intros; apply GlobalTheory.integrable_sq_pow_mul_iteratedFDeriv_schwartz <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.integrable_sq_pow_mul_iteratedFDeriv_schwartz` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIntegrableSqPowMulIteratedFDerivSchwartz.lean&line=8#L8)
 -/
 theorem _root_.GlobalTheory.T.integrable_sq_norm_pow_mul_iteratedFDeriv_schwartz : ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E] (μ : Measure E) [μ.IsAddHaarMeasure] {F : Type} [NormedAddCommGroup F] [NormedSpace ℝ F] (f : SchwartzMap E F) (i j : ℕ), Integrable (fun z => (‖z‖ ^ i * ‖iteratedFDeriv ℝ j f z‖) ^ 2) μ := by
   first | exact @GlobalTheory.integrable_sq_pow_mul_iteratedFDeriv_schwartz | exact GlobalTheory.integrable_sq_pow_mul_iteratedFDeriv_schwartz | (intros; apply GlobalTheory.integrable_sq_pow_mul_iteratedFDeriv_schwartz <;> assumption)

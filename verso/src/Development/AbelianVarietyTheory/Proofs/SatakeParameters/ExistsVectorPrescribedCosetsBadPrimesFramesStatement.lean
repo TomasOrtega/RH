@@ -8,8 +8,10 @@ open NumberField IsDedekindDomain Matrix Formalism.BasicNotions Formalism.UG For
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CosetApprox.exists_sameCoset | exact GlobalTheory.CosetApprox.exists_sameCoset | (intros; apply GlobalTheory.CosetApprox.exists_sameCoset <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CosetApprox.exists_sameCoset` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FExistsVectorPrescribedCosetsBadPrimesFrames.lean&line=67#L67)
 -/
 theorem _root_.GlobalTheory.T.exists_vector_prescribed_cosets_badPrimes_frames : ∀ {X : Fields} {Pr : Primes X} (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (mu : Tup X.F X.E X.K S)
   (cst : LocCst X (rowSG Pr sel mu)) {n : ℕ} (f : rowSG Pr sel mu → (Sp X.E n ≃ₗ[X.E] Sp X.E n)) (y0 : rowSG Pr sel mu → Sp X.E n),

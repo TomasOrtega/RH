@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ModerateGrow
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.OrbitThickSt
 open NumberField Complex ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.CuspFrom
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CuspDescent.moderate_of_stepBound | exact GlobalTheory.CuspDescent.moderate_of_stepBound | (intros; apply GlobalTheory.CuspDescent.moderate_of_stepBound <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CuspDescent.moderate_of_stepBound` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FModerateGrowthOfFirstMinimumAndFlowBounds.lean&line=357#L357)
 -/
 theorem _root_.GlobalTheory.T.moderate_growth_of_firstMinimum_and_flow_bounds : FlowMajSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (w : ℝ) (φ : Frame X.Ψ r → ℝ), 0 ≤ w → (∀ x ∈ X.dom, 0 ≤ φ x) → ThickBdd X φ → StepBound X w φ → ∃ C A : ℝ, ∀ x ∈ X.dom, φ x ≤ C * X.la1 x ^ (-(A * w)) := by
   first | exact @GlobalTheory.CuspDescent.moderate_of_stepBound | exact GlobalTheory.CuspDescent.moderate_of_stepBound | (intros; apply GlobalTheory.CuspDescent.moderate_of_stepBound <;> assumption)

@@ -20,8 +20,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 noncomputable section
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChiGrid.rankV_add_lt_two_e_add_two_cen | exact GlobalTheory.ChiGrid.rankV_add_lt_two_e_add_two_cen | (intros; apply GlobalTheory.ChiGrid.rankV_add_lt_two_e_add_two_cen <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChiGrid.rankV_add_lt_two_e_add_two_cen` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FChiGridVertexRankAddLtTwoExponentAddCentre.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.chiGridVertexRank_add_lt_two_exponent_add_centre : ∀ {D : D7} (C : ℝ) (τ : D.what₂.Tau) (i j : ℕ) (hi : i < D.R.m) (hj : j < D.R.m),
     ((rankV D (i + 1) (j + 1) + rankV D i j : ℕ) : ℚ) < 2 * (D.hc τ).e ⟨j, hj⟩ + 2 * (cen D C τ (D.R.m - i) : ℚ) := by

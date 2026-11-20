@@ -6,8 +6,10 @@ open NumberField MvPolynomial ReciprocityTheory.ChartRestriction.G ReciprocityTh
 open ReciprocityTheory.L2DbarEstimates (V)
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChernWeilLine.chernTop_pow_sum_c1 | exact GlobalTheory.ChernWeilLine.chernTop_pow_sum_c1 | (intros; apply GlobalTheory.ChernWeilLine.chernTop_pow_sum_c1 <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChernWeilLine.chernTop_pow_sum_c1` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FChernTopPowLinearSum.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.chern_top_pow_linear_sum : ∀ {n : ℕ} {ι : Type} [Fintype ι] (t : ι → ℝ) (G : V n → Mat (fun _ : ι => 1) ℂ) (v : V n), chernTop ((∑ i, C (t i) * X (i, 1)) ^ n) G v = n.factorial / Real.pi ^ n * (∑ i, (t i : ℂ) • Matrix.of fun a b => curv (fun u => G u i) v (coordVec a) (coordVec b) 0 0).det.re := by
   first | exact @GlobalTheory.ChernWeilLine.chernTop_pow_sum_c1 | exact GlobalTheory.ChernWeilLine.chernTop_pow_sum_c1 | (intros; apply GlobalTheory.ChernWeilLine.chernTop_pow_sum_c1 <;> assumption)

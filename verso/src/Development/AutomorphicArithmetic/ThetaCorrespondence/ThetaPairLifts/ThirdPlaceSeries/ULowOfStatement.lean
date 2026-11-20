@@ -8,8 +8,10 @@ set_option synthInstance.maxHeartbeats 200000
 section
 open GlobalTheory.CovTop GlobalTheory.BigTop
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.CovTop.FromComp.u_low_of_cover_hyps | exact _root_.GlobalTheory.CovTop.FromComp.u_low_of_cover_hyps | (intros; apply _root_.GlobalTheory.CovTop.FromComp.u_low_of_cover_hyps <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CovTop.FromComp.u_low_of_cover_hyps` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicArithmetic%2FThetaCorrespondence%2FThetaPairLifts%2FThirdPlaceSeries%2FULowOf.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.uniform_lower_bound_of_sums' : _root_.GlobalTheory.CovTop.DeepGoodness → _root_.GlobalTheory.CovTop.SizeCondition → _root_.GlobalTheory.CovTop.CoverDegree → _root_.GlobalTheory.CovTop.ShareCondition → _root_.GlobalTheory.CovTop.HeightCondition → _root_.GlobalTheory.CovTop.CoverHeightSum → _root_.GlobalTheory.CovTop.SumBoundCondition → _root_.GlobalTheory.CovTop.UniformLowerBound := by
   first | exact @_root_.GlobalTheory.CovTop.FromComp.u_low_of_cover_hyps | exact _root_.GlobalTheory.CovTop.FromComp.u_low_of_cover_hyps | (intros; apply _root_.GlobalTheory.CovTop.FromComp.u_low_of_cover_hyps <;> assumption)

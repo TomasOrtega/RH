@@ -13,8 +13,10 @@ open Formalism.BasicNotions Formalism.L2.Pj GlobalTheory.Toroidal GlobalTheory.S
 open scoped ContDiff ComplexOrder ENNReal Classical
 open GlobalTheory.IrrAn
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IrrAn.holoOn_valR_pt | exact GlobalTheory.IrrAn.holoOn_valR_pt | (intros; apply GlobalTheory.IrrAn.holoOn_valR_pt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IrrAn.holoOn_valR_pt` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHolomorphicOfRegularFunction.lean&line=76#L76)
 -/
 theorem _root_.GlobalTheory.T.holomorphic_of_regular_function : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ) (d : ℕ) (R : AnRead p σ d) (W : (Limits.pullback p (spMap σ) : Scheme.{0}).Opens) (h : Γ(Limits.pullback p (spMap σ), W)), R.HoloOn (GlobalTheory.IrrAn.ptsOf p σ (W : Set (Limits.pullback p (spMap σ) : Scheme.{0}))) (fun y => valR (GlobalTheory.IrrAn.pt p σ y) W h) := by
   first | exact @GlobalTheory.IrrAn.holoOn_valR_pt | exact GlobalTheory.IrrAn.holoOn_valR_pt | (intros; apply GlobalTheory.IrrAn.holoOn_valR_pt <;> assumption)

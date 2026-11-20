@@ -18,8 +18,10 @@ open MvPolynomial Formalism.BasicNotions.DV
 open GlobalTheory.ShFam.Pad GlobalTheory.TrivFlag
 open GlobalTheory.Cartier GlobalTheory.TrueGeo GlobalTheory.ProjVar GlobalTheory.WholeFlag
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WholeFlag.GlueProof.halfFlag_of_halfDataC | exact GlobalTheory.WholeFlag.GlueProof.halfFlag_of_halfDataC | (intros; apply GlobalTheory.WholeFlag.GlueProof.halfFlag_of_halfDataC <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WholeFlag.GlueProof.halfFlag_of_halfDataC` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHalfFlagOfHalfData.lean&line=33#L33)
 -/
 theorem _root_.GlobalTheory.T.halfFlag_of_halfData : ∀ {F : Type} [Field F] [NumberField F] {Y : Var F} {C : CxSt F} {g : ℕ} (A : Fin g → Adl C Y) (p : ℕ), p.Prime → HalfDataC A p → HalfFlag A p := by
   first | exact @GlobalTheory.WholeFlag.GlueProof.halfFlag_of_halfDataC | exact GlobalTheory.WholeFlag.GlueProof.halfFlag_of_halfDataC | (intros; apply GlobalTheory.WholeFlag.GlueProof.halfFlag_of_halfDataC <;> assumption)

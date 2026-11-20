@@ -4,8 +4,10 @@ import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JpUnif
 open Matrix GlobalTheory.CompanionTheory.Jp
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Jp.CountRank.rank_symm | exact GlobalTheory.CompanionTheory.Jp.CountRank.rank_symm | (intros; apply GlobalTheory.CompanionTheory.Jp.CountRank.rank_symm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Jp.CountRank.rank_symm` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FCardRankCompletionSymmetry.lean&line=149#L149)
 -/
 theorem _root_.GlobalTheory.T.card_rank_completion_symmetry : ∀ (k : Type) [Field k] [Fintype k] (n ρ : ℕ), ρ ≤ n →
     Nat.card {D : Matrix (Fin n) (Fin n) k // D.rank = ρ} *

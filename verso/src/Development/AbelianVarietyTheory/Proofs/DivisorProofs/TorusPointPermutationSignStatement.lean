@@ -15,8 +15,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates (IsDefSum polyd
 
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TorusRenumber.isTorusPoint_perm | exact GlobalTheory.TorusRenumber.isTorusPoint_perm | (intros; apply GlobalTheory.TorusRenumber.isTorusPoint_perm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TorusRenumber.isTorusPoint_perm` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTorusPointPermutationSign.lean&line=97#L97)
 -/
 theorem _root_.GlobalTheory.T.torus_point_permutation_sign : ∀ (F : Type) [Field F] [NumberField F] (e : Fin (Module.finrank ℚ F) ≃ (F →+* ℝ))
     (π : Equiv.Perm (Fin (Module.finrank ℚ F))) (𝔞 𝔟 : FracId F) (z : (F →+* ℝ) → ℂ)

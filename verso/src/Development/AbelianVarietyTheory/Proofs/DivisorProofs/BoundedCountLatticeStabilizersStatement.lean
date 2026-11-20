@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.T2SpaceAdeleRing
 open scoped TensorProduct NNReal ENNReal Matrix
 open NumberField IsDedekindDomain MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.AdelicU GlobalTheory.Doubling
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.StabClassCount.exists_card_le | exact GlobalTheory.StabClassCount.exists_card_le | (intros; apply GlobalTheory.StabClassCount.exists_card_le <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.StabClassCount.exists_card_le` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FBoundedCountLatticeStabilizers.lean&line=84#L84)
 -/
 theorem _root_.GlobalTheory.T.bounded_count_lattice_stabilizers : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (L : Submodule (𝓞 E) (Fin n → E)) [Submodule.IsLattice E L],
     ∃ c : ℕ, ∀ m : ℕ, 0 < m → ∃ T : Finset (GAd σ J), T.card ≤ m ^ c ∧ ∀ g : GAd σ J,

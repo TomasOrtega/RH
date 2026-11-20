@@ -5,8 +5,10 @@ import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PAreaMultiplicityWe
 open MeasureTheory ReciprocityTheory.L2DbarEstimates GlobalTheory.CompanionTheory.FSCrofton
 open scoped ENNReal ComplexConjugate
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.FSCrofton.area_formula_neg_comb | exact GlobalTheory.CompanionTheory.FSCrofton.area_formula_neg_comb | (intros; apply GlobalTheory.CompanionTheory.FSCrofton.area_formula_neg_comb <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.FSCrofton.area_formula_neg_comb` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FChangeVariablesZeroCount.lean&line=26#L26)
 -/
 theorem _root_.GlobalTheory.T.change_variables_zero_count : ∀ (d : ℕ) (β : Type) [Fintype β] (U A : Set (V d)) (f : β → V d → ℂ) (C : Fin d → β → ℂ) (h : (Fin d → ℂ) → ℝ≥0∞), IsOpen U → (∀ j, DifferentiableOn ℂ (f j) U) → A ⊆ U → MeasurableSet A → Measurable h → ∫⁻ c : Fin d → ℂ, h c * (({z ∈ A | ∀ k, c k + ∑ j, C k j * f j z = 0}.encard : ℕ∞) : ℝ≥0∞) = ∫⁻ z in A, h (fun k => -∑ j, C k j * f j z) * ENNReal.ofReal (‖(Matrix.of C * (Matrix.of fun j a => fderiv ℂ (f j) z (EuclideanSpace.single a 1) : Matrix β (Fin d) ℂ)).det‖ ^ 2) := by
   first | exact @GlobalTheory.CompanionTheory.FSCrofton.area_formula_neg_comb | exact GlobalTheory.CompanionTheory.FSCrofton.area_formula_neg_comb | (intros; apply GlobalTheory.CompanionTheory.FSCrofton.area_formula_neg_comb <;> assumption)

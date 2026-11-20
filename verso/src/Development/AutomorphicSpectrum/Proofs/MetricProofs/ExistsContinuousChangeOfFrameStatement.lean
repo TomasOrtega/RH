@@ -11,8 +11,10 @@ import Development.AutomorphicSpectrum.Proofs.MetricProofs.RiemannLatticeEigenPr
 open NumberField Matrix Filter Topology GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp GroundTheory.Heights₂.Heights.LowerBoundFree GroundTheory.Heights₂.Heights.Regular
 open GlobalTheory.CompanionTheory.Ar.RiemannLimit GlobalTheory.CompanionTheory.Ar.Cusp.BoundaryLimit
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.SolveCoeff.coeff_continuous | exact GlobalTheory.CompanionTheory.Ar.SolveCoeff.coeff_continuous | (intros; apply GlobalTheory.CompanionTheory.Ar.SolveCoeff.coeff_continuous <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.SolveCoeff.coeff_continuous` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FExistsContinuousChangeOfFrame.lean&line=85#L85)
 -/
 theorem _root_.GlobalTheory.T.exists_continuous_change_of_frame : ∀ (n g m : ℕ) (M f : (Fin n → ℂ) → Fin m → Fin g → ℂ) (T₀ : Matrix (Fin m) (Fin m) ℂ), (∀ i, ContinuousAt (fun z => M z i) 0) → (∀ i, ContinuousAt (fun z => f z i) 0) → LinearIndependent ℂ (M 0) → (∀ i, f 0 i = ∑ j, T₀ j i • M 0 j) → (∀ᶠ z in 𝓝 (0 : Fin n → ℂ), ∀ i, f z i ∈ Submodule.span ℂ (Set.range (M z))) → ∃ T : (Fin n → ℂ) → Matrix (Fin m) (Fin m) ℂ, ContinuousAt T 0 ∧ T 0 = T₀ ∧ ∀ᶠ z in 𝓝 (0 : Fin n → ℂ), ∀ i, f z i = ∑ j, T z j i • M z j := by
   first | exact @GlobalTheory.CompanionTheory.Ar.SolveCoeff.coeff_continuous | exact GlobalTheory.CompanionTheory.Ar.SolveCoeff.coeff_continuous | (intros; apply GlobalTheory.CompanionTheory.Ar.SolveCoeff.coeff_continuous <;> assumption)

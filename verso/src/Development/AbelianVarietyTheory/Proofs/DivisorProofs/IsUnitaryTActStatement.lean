@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUnitaryTAct
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RestrActApply
 open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible GlobalTheory.FockAlg GlobalTheory.SteepMult
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SteepMult.isUnitary_tAct | exact GlobalTheory.SteepMult.isUnitary_tAct | (intros; apply GlobalTheory.SteepMult.isUnitary_tAct <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SteepMult.isUnitary_tAct` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsUnitaryTAct.lean&line=28#L28)
 -/
 theorem _root_.GlobalTheory.T.isUnitary_tAct_formT_of_isUnitary : ∀ (R S k : ℕ) (W : Type) [AddCommGroup W] [Module ℂ W] (actW : Mat R S →ₗ[ℂ] Module.End ℂ W)
     (B : W →ₗ⋆[ℂ] W →ₗ[ℂ] ℂ), IsUnitary actW B → IsUnitary (tAct k actW) (formT k B) := by

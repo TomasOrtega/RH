@@ -13,8 +13,10 @@ open GlobalTheory.Doubling GlobalTheory.ThK.DblKer
 open GlobalTheory.DblDatum
 open GlobalTheory.DblDatum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DblDatum.StabDec.exists_kInf_mul_fin | exact GlobalTheory.DblDatum.StabDec.exists_kInf_mul_fin | (intros; apply GlobalTheory.DblDatum.StabDec.exists_kInf_mul_fin <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DblDatum.StabDec.exists_kInf_mul_fin` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FStabiliserArchFiniteDecomposition.lean&line=42#L42)
 -/
 theorem _root_.GlobalTheory.T.stabiliser_arch_finite_decomposition : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n : ℕ) (X : Spc F E n) (K : Subgroup (UA σ X.J)), IsStab B K →

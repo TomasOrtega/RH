@@ -7,8 +7,10 @@ open scoped TensorProduct NNReal Matrix
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.symp_mul_left | exact GlobalTheory.symp_mul_left | (intros; apply GlobalTheory.symp_mul_left <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.symp_mul_left` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSymplecticFormBaseChangeMatrix.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.symplectic_form_base_change_matrix : ∀ {R S : Type} [CommRing R] [CommRing S] [Algebra R S] (c : S →ₐ[R] S) (ξ : S) {α α' β : Type} [Fintype α] [Fintype α'] [Fintype β]
     (JA : Matrix α α S) (JB : Matrix β β S) (P : Matrix α α' S) (z z' : Matrix α' β S),

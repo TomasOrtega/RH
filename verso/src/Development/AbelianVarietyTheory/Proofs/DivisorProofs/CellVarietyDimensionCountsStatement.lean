@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.EqOfIsomet
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry Matrix
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.FlagZ GlobalTheory.FlagPoly Formalism.DegreeFormula
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagZ.Count.card_cellVar | exact GlobalTheory.FlagZ.Count.card_cellVar | (intros; apply GlobalTheory.FlagZ.Count.card_cellVar <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagZ.Count.card_cellVar` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCellVarietyDimensionCounts.lean&line=42#L42)
 -/
 theorem _root_.GlobalTheory.T.cell_variety_dimension_counts : ∀ (ι : Type) [Fintype ι] (N : ℕ), Nat.card (CellVar (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd) = dimFl ι N ∧ (∀ j : Fin (N + 1), Nat.card (CellVar (id : ι → ι) (fun _ => j)) = dimGr ι N j) ∧ ∀ x : ι × Fin (N + 1), 0 < (x.2 : ℕ) → (x.2 : ℕ) < N → Nat.card (CellVar (fun y : {y // y ≠ x} => y.1.1) (fun y => y.1.2)) + 1 = dimFl ι N := by
   first | exact @GlobalTheory.FlagZ.Count.card_cellVar | exact GlobalTheory.FlagZ.Count.card_cellVar | (intros; apply GlobalTheory.FlagZ.Count.card_cellVar <;> assumption)

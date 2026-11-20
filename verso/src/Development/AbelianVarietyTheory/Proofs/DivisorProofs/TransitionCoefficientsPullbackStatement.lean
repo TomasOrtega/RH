@@ -5,8 +5,10 @@ open CategoryTheory Limits AlgebraicGeometry IsLocalRing NumberField
 open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.QCoh GlobalTheory.ChainPts GlobalTheory.ChainPts.PullHT
 open Formalism.MainNotions.DIV.Cons (intO)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChainPts.PullHT.coef_pulled_frames | exact GlobalTheory.ChainPts.PullHT.coef_pulled_frames | (intros; apply GlobalTheory.ChainPts.PullHT.coef_pulled_frames <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChainPts.PullHT.coef_pulled_frames` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTransitionCoefficientsPullback.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.transition_coefficients_pullback : ∀ {X X' : Scheme.{0}} (g : X' ⟶ X) {F : X.Modules} [F.IsQuasicoherent] {r : ℕ} (d : Bool) {V V' : X.Opens} {U U' : X'.Opens} (hU : U ≤ g ⁻¹ᵁ V) (hU' : U' ≤ g ⁻¹ᵁ V') {e : Fin r → Γ(F, V)} {s : Fin r → Γ(F, V')} (he : GlobalTheory.VB.IsFrame e) (hs : GlobalTheory.VB.IsFrame s) (l i : Fin r), coef d (isFrame_pullS g hU he) (isFrame_pullS g hU' hs) l i = (g.appLE (V ⊓ V') (U ⊓ U') (inf_le_inf hU hU')).hom (coef d he hs l i) := by
   first | exact @GlobalTheory.ChainPts.PullHT.coef_pulled_frames | exact GlobalTheory.ChainPts.PullHT.coef_pulled_frames | (intros; apply GlobalTheory.ChainPts.PullHT.coef_pulled_frames <;> assumption)

@@ -18,8 +18,10 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open scoped TensorProduct
 open Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ColSpanDown.mem_span_comp | exact GlobalTheory.ColSpanDown.mem_span_comp | (intros; apply GlobalTheory.ColSpanDown.mem_span_comp <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ColSpanDown.mem_span_comp` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSplitProjectionColumnSpanMem.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.split_projection_column_span_mem : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
     {v : HeightOneSpectrum (𝓞 F)} (τ : E →ₐ[F] Fv F v) {n r : ℕ} (X : Matrix (Fin n) (Fin r) E) (I : Set (Fin r))

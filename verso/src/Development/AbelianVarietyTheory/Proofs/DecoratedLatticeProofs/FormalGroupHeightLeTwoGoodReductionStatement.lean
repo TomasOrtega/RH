@@ -6,8 +6,10 @@ import Formalism.LocalToGlobal.TorsionIntegrality.TorsionTranslationPowers.State
 import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.StatementK
 open PowerSeries GlobalTheory.Honda Formalism.L2.Th1.CM
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HeightTwo.height_le_two | exact GlobalTheory.HeightTwo.height_le_two | (intros; apply GlobalTheory.HeightTwo.height_le_two <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HeightTwo.height_le_two` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FFormalGroupHeightLeTwoGoodReduction.lean&line=213#L213)
 -/
 theorem _root_.GlobalTheory.T.formalGroup_height_le_two_good_reduction : ∀ (L : PeriodPair) (l : ℕ) [Fact l.Prime], 5 ≤ l → ∀ (ι : ℂ ≃+* ℂ_[l]), ‖ι L.g₂‖ ≤ 1 → ‖ι L.g₃‖ ≤ 1 → ‖ι L.g₂ ^ 3 - 27 * ι L.g₃ ^ 2‖ = 1 → ∃ n, n ≤ l ^ 2 ∧ ‖coeff n (Formalism.L2.Th1.C.mulBy (Formalism.L2.Th1.A.logSer (Formalism.L2.Th1.A.shortW (ι L.g₂) (ι L.g₃))) (Formalism.L2.Th1.A.expSer (Formalism.L2.Th1.A.shortW (ι L.g₂) (ι L.g₃))) (l : ℂ_[l]))‖ = 1 := by
   first | exact @GlobalTheory.HeightTwo.height_le_two | exact GlobalTheory.HeightTwo.height_le_two | (intros; apply GlobalTheory.HeightTwo.height_le_two <;> assumption)

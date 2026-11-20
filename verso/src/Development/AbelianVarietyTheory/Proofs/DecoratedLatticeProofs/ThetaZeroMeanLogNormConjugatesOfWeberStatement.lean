@@ -10,8 +10,10 @@ import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.ThetaConstan
 import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.PeriodLatticeAgreement
 open NumberField Formalism.BasicNotions Formalism.MainNotions.TaylorLogMetric GlobalTheory.Glob.IntegralWittCoefficients GlobalTheory.IndefiniteRowSideFullHecke
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Theta0MeanCore.theta0Mean | exact GlobalTheory.Theta0MeanCore.theta0Mean | (intros; apply GlobalTheory.Theta0MeanCore.theta0Mean <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Theta0MeanCore.theta0Mean` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FThetaZeroMeanLogNormConjugatesOfWeber.lean&line=132#L132)
 -/
 theorem _root_.GlobalTheory.T.thetaZero_mean_log_norm_conjugates_of_weber : PeriodLatticeAgreement.LatticePeriodEta → ThetaConstantWeber.ThetaWeberStatement → SignedLogMeans.Theta0Mean := by
   first | exact @GlobalTheory.Theta0MeanCore.theta0Mean | exact GlobalTheory.Theta0MeanCore.theta0Mean | (intros; apply GlobalTheory.Theta0MeanCore.theta0Mean <;> assumption)

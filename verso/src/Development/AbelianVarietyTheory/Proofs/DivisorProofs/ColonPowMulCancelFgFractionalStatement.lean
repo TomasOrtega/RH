@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.PointShiftSt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.Dets
 open NumberField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ColonPowCancel.colon_pow_mul_cancel | exact GlobalTheory.ColonPowCancel.colon_pow_mul_cancel | (intros; apply GlobalTheory.ColonPowCancel.colon_pow_mul_cancel <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ColonPowCancel.colon_pow_mul_cancel` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FColonPowMulCancelFgFractional.lean&line=39#L39)
 -/
 theorem _root_.GlobalTheory.T.colon_pow_mul_cancel_fg_fractional : ∀ {K : Type} [Field K] [NumberField K] (𝔟 : Submodule (𝓞 K) K), 𝔟.FG → 𝔟 ≠ ⊥ →
     ∀ (p : ℕ) (A N : Submodule (𝓞 K) K),

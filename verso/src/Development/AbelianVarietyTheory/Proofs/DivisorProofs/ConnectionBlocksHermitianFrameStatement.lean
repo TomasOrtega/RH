@@ -9,8 +9,10 @@ open scoped ComplexOrder ContDiff
 open GlobalTheory.HermFrame GlobalTheory.IndefiniteRowSideFullHecke.HermitianCurvatureForms
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SubQuotConn.connBlocks_secondForm | exact GlobalTheory.SubQuotConn.connBlocks_secondForm | (intros; apply GlobalTheory.SubQuotConn.connBlocks_secondForm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SubQuotConn.connBlocks_secondForm` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FConnectionBlocksHermitianFrame.lean&line=155#L155)
 -/
 theorem _root_.GlobalTheory.T.connection_blocks_hermitian_frame : ∀ {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [NormedSpace ℝ V] [IsScalarTower ℝ ℂ V] {m l : Type} [Fintype m] [Fintype l] [DecidableEq m] [DecidableEq l] {U : Set V} {H : V → Matrix (m ⊕ l) (m ⊕ l) ℂ} {z : V} (h : IsHermFrame U H) (hs : ∀ x ∈ U, IsUnit (subGram (H x)).det) (hz : z ∈ U), ConnBlocks H z (fun η => -secondFormAdj H z η) (secondForm H z) := by
   first | exact @GlobalTheory.SubQuotConn.connBlocks_secondForm | exact GlobalTheory.SubQuotConn.connBlocks_secondForm | (intros; apply GlobalTheory.SubQuotConn.connBlocks_secondForm <;> assumption)

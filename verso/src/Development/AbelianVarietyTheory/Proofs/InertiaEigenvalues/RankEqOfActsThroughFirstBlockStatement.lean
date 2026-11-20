@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.ResidualConst
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemSpanRingCornerIdealModuleIff
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N GlobalTheory.IndefiniteRowSideFullHecke.CongruenceModuleMatrices
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.rank_eq_of_acts_through_first_block | exact GlobalTheory.rank_eq_of_acts_through_first_block | (intros; apply GlobalTheory.rank_eq_of_acts_through_first_block <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.rank_eq_of_acts_through_first_block` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FRankEqOfActsThroughFirstBlock.lean&line=8#L8)
 -/
 theorem _root_.GlobalTheory.T.rank_eq_of_mulVec_through_first_block : ∀ {K : Type} [Field K] {n r t : ℕ} (e : (Fin n → K) ≃ₗ[K] ((Fin r → K) × (Fin t → K))) (F : Matrix (Fin n) (Fin n) K) (ε : Matrix (Fin r) (Fin r) K), (∀ u, e (F.mulVec u) = (ε.mulVec (e u).1, 0)) → F.rank = ε.rank := by
   first | exact @GlobalTheory.rank_eq_of_acts_through_first_block | exact GlobalTheory.rank_eq_of_acts_through_first_block | (intros; apply GlobalTheory.rank_eq_of_acts_through_first_block <;> assumption)

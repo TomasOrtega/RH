@@ -6,8 +6,10 @@ open GlobalTheory.CuspRep GlobalTheory.UnitaryBC GlobalTheory.SmGL GlobalTheory.
 open PositivityTheory.Rg.BcB.E PositivityTheory.Rg.BcB.SpectralAccumulation GlobalTheory.CompanionTheory.LimV
 open scoped ContDiff
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.LimV.carries_tw | exact GlobalTheory.CompanionTheory.LimV.carries_tw | (intros; apply GlobalTheory.CompanionTheory.LimV.carries_tw <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.LimV.carries_tw` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FCarriesTwist.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.carries_twist : ∀ {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {N : ℕ} (e : GA E N → ℂ) (U U' : Submodule ℂ (Sm E N)) (z : ℂ), Carries e U U' → Carries e (tw U z) (tw U' z) := by
   first | exact @GlobalTheory.CompanionTheory.LimV.carries_tw | exact GlobalTheory.CompanionTheory.LimV.carries_tw | (intros; apply GlobalTheory.CompanionTheory.LimV.carries_tw <;> assumption)

@@ -5,8 +5,10 @@ import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PAreaMultiplicityWe
 open MeasureTheory ReciprocityTheory.L2DbarEstimates GlobalTheory.CompanionTheory.FSCrofton
 open scoped ENNReal ComplexConjugate
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.FSCrofton.lintegral_gW_norm_det_sq | exact GlobalTheory.CompanionTheory.FSCrofton.lintegral_gW_norm_det_sq | (intros; apply GlobalTheory.CompanionTheory.FSCrofton.lintegral_gW_norm_det_sq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.FSCrofton.lintegral_gW_norm_det_sq` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FGaussianDetSquareIntegral.lean&line=239#L239)
 -/
 theorem _root_.GlobalTheory.T.gaussian_det_square_integral : ∀ (d : ℕ) (β : Type) [Fintype β] [DecidableEq β] (G : Matrix β (Fin d) ℂ), ∫⁻ C : Fin d → β → ℂ, gW d β C * ENNReal.ofReal (‖(Matrix.of C * G).det‖ ^ 2) = ENNReal.ofReal (Real.pi ^ (d * Fintype.card β) * (d.factorial : ℝ) * (G.conjTranspose * G).det.re) := by
   first | exact @GlobalTheory.CompanionTheory.FSCrofton.lintegral_gW_norm_det_sq | exact GlobalTheory.CompanionTheory.FSCrofton.lintegral_gW_norm_det_sq | (intros; apply GlobalTheory.CompanionTheory.FSCrofton.lintegral_gW_norm_det_sq <;> assumption)

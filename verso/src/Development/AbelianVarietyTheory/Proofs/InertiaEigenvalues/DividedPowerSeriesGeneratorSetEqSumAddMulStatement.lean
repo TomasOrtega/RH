@@ -5,8 +5,10 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 open scoped Formalism.Per
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CrysPrism.sdSet_eq_sum_add_mul | exact GlobalTheory.CrysPrism.sdSet_eq_sum_add_mul | (intros; apply GlobalTheory.CrysPrism.sdSet_eq_sum_add_mul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CrysPrism.sdSet_eq_sum_add_mul` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FDividedPowerSeriesGeneratorSetEqSumAddMul.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.dividedPowerSeriesGeneratorSet_eq_sum_add_mul : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (O K : Type) [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K] (t : Wq l a →ₐ[ℤ_[l]] O), ∀ F ∈ SdSet t K e, ∃ (N : ℕ) (v : ℕ → Wq l a), ∃ y ∈ SdSet t K e, F = ∑ n ∈ Finset.range N, cstS t K (v n) * dpS a e n + (l : ZMod a → K⟦X⟧) * y := by
   first | exact @GlobalTheory.CrysPrism.sdSet_eq_sum_add_mul | exact GlobalTheory.CrysPrism.sdSet_eq_sum_add_mul | (intros; apply GlobalTheory.CrysPrism.sdSet_eq_sum_add_mul <;> assumption)

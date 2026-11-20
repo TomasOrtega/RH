@@ -7,8 +7,10 @@ open ReciprocityTheory.ChartRestriction.G.Semi (IsAbelianScheme LB RigLB Cubical
 open GlobalTheory GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.DeRham GlobalTheory.PDiv GlobalTheory.PtExt
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PtExt.OmRes.cotMap_res_om | exact GlobalTheory.PtExt.OmRes.cotMap_res_om | (intros; apply GlobalTheory.PtExt.OmRes.cotMap_res_om <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PtExt.OmRes.cotMap_res_om` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTorsionTowerPresentationCotangentPullbackResRigi.lean&line=85#L85)
 -/
 theorem _root_.GlobalTheory.T.torsionTowerPresentation_cotangentPullback_res_rigidification : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (p : ℕ) (G : PDivGroup p R) (t : G.TorsionTower A) (c : primDR A) (d : Dat t c) (n : ℕ), cotMap (G.res n) (d.om (n + 1)) = d.om n := by
   first | exact @GlobalTheory.PtExt.OmRes.cotMap_res_om | exact GlobalTheory.PtExt.OmRes.cotMap_res_om | (intros; apply GlobalTheory.PtExt.OmRes.cotMap_res_om <;> assumption)

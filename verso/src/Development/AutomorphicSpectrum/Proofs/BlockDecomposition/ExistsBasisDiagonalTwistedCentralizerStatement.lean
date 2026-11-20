@@ -6,8 +6,10 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SecondCountable
 open Matrix MeasureTheory PositivityTheory.Rg.BcB PositivityTheory.Rg.Tf.Loc GlobalTheory.CompanionTheory.LocVan
 open scoped ENNReal
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.LocVan.Frame.eigenframe | exact GlobalTheory.CompanionTheory.LocVan.Frame.eigenframe | (intros; apply GlobalTheory.CompanionTheory.LocVan.Frame.eigenframe <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.LocVan.Frame.eigenframe` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FExistsBasisDiagonalTwistedCentralizer.lean&line=208#L208)
 -/
 theorem _root_.GlobalTheory.T.exists_basis_diagonal_twisted_centralizer : ∀ (n : ℕ) (d : GL (Fin n) ℂ) (W₁ W₂ : Submodule ℂ (Fin n → ℂ)),
   (d * thC n d).val.charpoly.Separable → W₁ ≤ W₂ →

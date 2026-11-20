@@ -4,8 +4,10 @@ import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.HsConjT
 open Matrix
 open CompanionTheory.RgExh.Dec CompanionTheory.RgExh.Dec.L ReciprocityTheory.ChartRestriction.DS GlobalTheory.CompanionTheory.PSubFlag GlobalTheory.CompanionTheory.UGeo
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.UGeo.specpos_inv_eigenvalues | exact GlobalTheory.CompanionTheory.UGeo.specpos_inv_eigenvalues | (intros; apply GlobalTheory.CompanionTheory.UGeo.specpos_inv_eigenvalues <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.UGeo.specpos_inv_eigenvalues` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=CompanionTheory%2FSpectralGeometry%2FLocalGlobalProofs%2FStableLattices%2FInverseGramEigenvaluesSumHs.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.inverse_gram_eigenvalues_sum_hs : ∀ (n : ℕ) (ε : Fin n → Bool) (g : S7.UJ ε) (hT : ((S7.toM g⁻¹)ᴴ * S7.toM g⁻¹).IsHermitian), (∀ i, 0 < hT.eigenvalues i) ∧ ∑ i, hT.eigenvalues i = Formalism.REAL.hs (S7.toM g) := by
   first | exact @GlobalTheory.CompanionTheory.UGeo.specpos_inv_eigenvalues | exact GlobalTheory.CompanionTheory.UGeo.specpos_inv_eigenvalues | (intros; apply GlobalTheory.CompanionTheory.UGeo.specpos_inv_eigenvalues <;> assumption)

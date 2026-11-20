@@ -20,8 +20,10 @@ open GlobalTheory.AbLaw GlobalTheory.CechPic
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RealMult.DiagPull.pull_act_cls_diag | exact GlobalTheory.RealMult.DiagPull.pull_act_cls_diag | (intros; apply GlobalTheory.RealMult.DiagPull.pull_act_cls_diag <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RealMult.DiagPull.pull_act_cls_diag` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRealMultPullbackPolarizationClass.lean&line=53#L53)
 -/
 theorem _root_.GlobalTheory.T.real_mult_pullback_polarization_class : ∀ {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} {S : Scheme.{0}} (X : Obj F 𝔠 S) (b : 𝓞 F) (c : 𝔠.elt), GlobalTheory.CechPic.pull (X.rm.act b).left (cls (X.diag c) (pull_isLB (X.isLB c) _)) = cls (X.diag ((b * b) • c)) (pull_isLB (X.isLB _) _) := by
   first | exact @GlobalTheory.RealMult.DiagPull.pull_act_cls_diag | exact GlobalTheory.RealMult.DiagPull.pull_act_cls_diag | (intros; apply GlobalTheory.RealMult.DiagPull.pull_act_cls_diag <;> assumption)

@@ -8,8 +8,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.chartAroundUnit | exact GlobalTheory.chartAroundUnit | (intros; apply GlobalTheory.chartAroundUnit <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.chartAroundUnit` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsBasicOpenAffineOpenMeetingFibresGrpScheme.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.exists_basicOpen_affineOpen_meeting_fibres_grpScheme : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (s : Sp R), ∃ f : R, s ∈ Set.range (spMap (algebraMap R (Localization.Away f))) ∧ ∃ W : A.left.Opens, IsAffineOpen W ∧ ∀ t ∈ Set.range (spMap (algebraMap R (Localization.Away f))), ∃ x ∈ W, A.hom x = t := by
   first | exact @GlobalTheory.chartAroundUnit | exact GlobalTheory.chartAroundUnit | (intros; apply GlobalTheory.chartAroundUnit <;> assumption)

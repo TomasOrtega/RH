@@ -6,8 +6,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open scoped TensorProduct ContDiff ComplexOrder
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FockCompare.ThetaCont.continuous_of_level_of_smooth | exact GlobalTheory.FockCompare.ThetaCont.continuous_of_level_of_smooth | (intros; apply GlobalTheory.FockCompare.ThetaCont.continuous_of_level_of_smooth <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FockCompare.ThetaCont.continuous_of_level_of_smooth` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FHeightProofs%2FContinuousOfHeisenbergLevelAndSmooth.lean&line=48#L48)
 -/
 theorem _root_.GlobalTheory.T.continuous_of_heisenberg_level_and_smooth : ∀ (D : D7) (θ : InfFam D) (σ : (D.what₂.Tau → ℂ) →+ AE D), Chart θ σ → ∀ (ψ : AddChar (AF D.host.F) ℂ), Continuous ψ → ∀ (V W : HSp D) (f : WA V W → ℂ), (∃ U : AddSubgroup (WA V W), IsOpen (U : Set (WA V W)) ∧ ∀ u ∈ U, u.map (infPart D) = 0 → Heisenberg₂ ψ V W u f = f) → Sm (iotaW σ V W) f → Continuous f := by
   first | exact @GlobalTheory.FockCompare.ThetaCont.continuous_of_level_of_smooth | exact GlobalTheory.FockCompare.ThetaCont.continuous_of_level_of_smooth | (intros; apply GlobalTheory.FockCompare.ThetaCont.continuous_of_level_of_smooth <;> assumption)

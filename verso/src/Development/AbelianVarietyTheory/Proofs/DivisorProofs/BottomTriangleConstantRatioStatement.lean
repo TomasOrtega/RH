@@ -8,8 +8,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions Form
 open GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.FunObj.SqNum GlobalTheory.RowTest GlobalTheory.SqTop
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ConstRatio.bottomTri_factor | exact GlobalTheory.ConstRatio.bottomTri_factor | (intros; apply GlobalTheory.ConstRatio.bottomTri_factor <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ConstRatio.bottomTri_factor` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FBottomTriangleConstantRatio.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.bottom_triangle_constant_ratio : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching → LNe → GBig fun {D} T _ _ G _ _ _ _ => ∀ W : G.Weil, IsStdChar D W.ψ (-1) → ∀ (i j : Fin D.R.m) (A A' WW : HSp D) (X : GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.Tri T A A' WW), IsBottomTri W i j X → ∃ lam : T → ℂ, GlobalTheory.ConstRatio.Factor X W.ψ W.θ lam := by
   first | exact @GlobalTheory.ConstRatio.bottomTri_factor | exact GlobalTheory.ConstRatio.bottomTri_factor | (intros; apply GlobalTheory.ConstRatio.bottomTri_factor <;> assumption)

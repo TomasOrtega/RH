@@ -9,8 +9,10 @@ open CompanionTheory.RgExh CompanionTheory.RgExh.U
 open GlobalTheory.CuspRep GlobalTheory.UnitaryBC GlobalTheory.SmGL GlobalTheory.DiscSpec
 open GlobalTheory.CompanionTheory.RgCOBlock
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.RgCOBlock.norm_cluster_sum_le | exact GlobalTheory.CompanionTheory.RgCOBlock.norm_cluster_sum_le | (intros; apply GlobalTheory.CompanionTheory.RgCOBlock.norm_cluster_sum_le <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.RgCOBlock.norm_cluster_sum_le` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=CompanionTheory%2FSpectralGeometry%2FLocalGlobalProofs%2FStableLattices%2FLevelWeightSumBound.lean&line=73#L73)
 -/
 theorem _root_.GlobalTheory.T.level_weight_sum_bound : ∀ (n M : ℕ) (ε : Fin n → Bool) (lev : Fin n → ℕ) (i : Fin M) (h : ∑ j, sz lev M j = n),
     ‖∑ a ∈ univ.filter (fun a => lev a = (i : ℕ)), ((wt (omU ε lev) a - (2 : ℝ) * PI.UpqRep.rhoC ε a : ℝ) : ℂ) -

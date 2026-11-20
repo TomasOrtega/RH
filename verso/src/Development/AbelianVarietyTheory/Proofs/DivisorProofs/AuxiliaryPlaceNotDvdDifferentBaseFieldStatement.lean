@@ -7,8 +7,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions Form
 open GlobalTheory.ChiGrid GlobalTheory.SqTop
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DifferentAtBasePlace.not_dvd_different | exact GlobalTheory.DifferentAtBasePlace.not_dvd_different | (intros; apply GlobalTheory.DifferentAtBasePlace.not_dvd_different <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DifferentAtBasePlace.not_dvd_different` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAuxiliaryPlaceNotDvdDifferentBaseField.lean&line=29#L29)
 -/
 theorem _root_.GlobalTheory.T.auxiliary_place_not_dvd_different_base_field : ∀ {D : D7} {T : Type} {Lc : LevCh D T} {sc : Consts} (G : GridData Lc sc), ¬ G.pl.v0.asIdeal ∣ differentIdeal ℤ (𝓞 D.host.F) := by
   first | exact @GlobalTheory.DifferentAtBasePlace.not_dvd_different | exact GlobalTheory.DifferentAtBasePlace.not_dvd_different | (intros; apply GlobalTheory.DifferentAtBasePlace.not_dvd_different <;> assumption)

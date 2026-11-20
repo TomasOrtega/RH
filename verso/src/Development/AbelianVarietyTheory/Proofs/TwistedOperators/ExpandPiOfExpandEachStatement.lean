@@ -2,8 +2,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExpandPiOfExpandEach
 import Mathlib
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.expand_pi_of_expand_each | exact GlobalTheory.expand_pi_of_expand_each | (intros; apply GlobalTheory.expand_pi_of_expand_each <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.expand_pi_of_expand_each` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExpandPiOfExpandEach.lean&line=5#L5)
 -/
 theorem _root_.GlobalTheory.T.eq_sum_prod_of_expansion_in_each_coordinate : ∀ {ι : Type} [Fintype ι] [DecidableEq ι] {X : ι → Type} (K : ∀ i, Set (X i)) (m : ι → ℕ)
     (k : ∀ i, Fin (m i) → X i) (hk : ∀ i j, k i j ∈ K i) (c : ∀ i, Fin (m i) → X i → ℂ)

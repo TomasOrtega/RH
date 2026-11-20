@@ -9,8 +9,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 attribute [local instance] Over.cartesianMonoidalCategory
 open scoped CategoryTheory.Obj CategoryTheory.MonObj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Approx.isOpen_of_stable | exact GlobalTheory.CompanionTheory.Ar.Approx.isOpen_of_stable | (intros; apply GlobalTheory.CompanionTheory.Ar.Approx.isOpen_of_stable <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Approx.isOpen_of_stable` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FConstructibleStableOpen.lean&line=34#L34)
 -/
 theorem _root_.GlobalTheory.T.isOpen_of_stable_under_generalization_specialization : ∀ (k : Type) [CommRing k] [IsNoetherianRing k] (U : Set (PrimeSpectrum k)), StableUnderGeneralization U → StableUnderSpecialization U → IsOpen U := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Approx.isOpen_of_stable | exact GlobalTheory.CompanionTheory.Ar.Approx.isOpen_of_stable | (intros; apply GlobalTheory.CompanionTheory.Ar.Approx.isOpen_of_stable <;> assumption)

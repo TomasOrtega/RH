@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EpsOfCZero
 open MeasureTheory Finset GlobalTheory.Chamber
 open scoped InnerProductSpace
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Chamber.DampedCone.damped | exact GlobalTheory.Chamber.DampedCone.damped | (intros; apply GlobalTheory.Chamber.DampedCone.damped <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Chamber.DampedCone.damped` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExponentialGammaIntegralFormula.lean&line=346#L346)
 -/
 theorem _root_.GlobalTheory.T.exponential_gamma_integral_formula : ∀ (k : ℕ) (P R : Finset (SV k)) (Y : A0 k), IsPar P → R ⊆ P → ∃ m : A0 k, ∀ t : ℝ, 0 < t → ∀ l : A0 k, Integrable (fun H : aMQ (aP P) R => eLC l (t • m) H * gamP P R Y H) ∧ ∫ H : aMQ (aP P) R, eLC l (t • m) H * gamP P R Y H = ∑ S ∈ between P R, (-1) ^ (P \ S).card * epsOfC (P \ S) (wt S) l (t • m) * epsOfC (S \ R) (rt S) l (t • m) * eLC l (t • m) (pr S Y - pr R Y) := by
   first | exact @GlobalTheory.Chamber.DampedCone.damped | exact GlobalTheory.Chamber.DampedCone.damped | (intros; apply GlobalTheory.Chamber.DampedCone.damped <;> assumption)

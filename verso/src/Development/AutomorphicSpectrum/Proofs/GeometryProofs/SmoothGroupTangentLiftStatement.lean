@@ -8,8 +8,10 @@ open scoped CategoryTheory.Obj
 open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Chart.exists_chart_at_point | exact GlobalTheory.CompanionTheory.Ar.Chart.exists_chart_at_point | (intros; apply GlobalTheory.CompanionTheory.Ar.Chart.exists_chart_at_point <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Chart.exists_chart_at_point` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FSmoothGroupTangentLift.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.smooth_group_tangent_lift : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [Smooth G.hom] (R : Type) [CommRing R] (x : Sp R ⟶ S) (p : Ideal R) [p.IsPrime],
   ∃ f : R, f ∉ p ∧ ∃ (U : G.left.Opens) (V : S.Opens) (hU : IsAffineOpen U) (_ : IsAffineOpen V) (hUV : U ≤ G.hom ⁻¹ᵁ V),

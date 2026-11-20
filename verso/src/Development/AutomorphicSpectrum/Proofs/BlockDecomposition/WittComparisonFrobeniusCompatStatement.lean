@@ -4,8 +4,10 @@ import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomology
 set_option backward.isDefEq.respectTransparency false
 open CategoryTheory Limits AlgebraicGeometry TensorProduct GroundTheory.PAdicHodge GlobalTheory.LogCris DividedPowers CrystallineSemistableComparison.PAlg CrystallineSemistableComparison CrystallineSemistableComparison.Pb
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.BaseChangeFrob.phiM_bW | exact GlobalTheory.CompanionTheory.BaseChangeFrob.phiM_bW | (intros; apply GlobalTheory.CompanionTheory.BaseChangeFrob.phiM_bW <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.BaseChangeFrob.phiM_bW` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FWittComparisonFrobeniusCompat.lean&line=52#L52)
 -/
 theorem _root_.GlobalTheory.T.witt_comparison_frobenius_compat : ∀ {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} (r : CrystallineSemistableComparison.Res l K) (M : Model l K) (n j : ℕ) (y : (HSW r M j).M n), phiM r M n j (bW r M n j y) = bW r M n j ((Wc.phiS l (B.schFn M.p) r.ρ j).f n y) := by
   first | exact @GlobalTheory.CompanionTheory.BaseChangeFrob.phiM_bW | exact GlobalTheory.CompanionTheory.BaseChangeFrob.phiM_bW | (intros; apply GlobalTheory.CompanionTheory.BaseChangeFrob.phiM_bW <;> assumption)

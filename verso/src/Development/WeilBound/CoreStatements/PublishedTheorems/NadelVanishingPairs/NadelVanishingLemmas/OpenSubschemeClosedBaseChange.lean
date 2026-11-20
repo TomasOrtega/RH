@@ -9,8 +9,10 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace Limits
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.CechPic GlobalTheory.QCoh GlobalTheory.LogPair
 open scoped TensorProduct
-/- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.openSubscheme_closedFibre_lift | exact _root_.GlobalTheory.openSubscheme_closedFibre_lift | (intros; apply _root_.GlobalTheory.openSubscheme_closedFibre_lift <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.openSubscheme_closedFibre_lift` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FOpenSubschemeClosedBaseChange.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.open_subscheme_closed_base_change : ∀ (R R' : Type) [CommRing R] [CommRing R'] (φ : R →+* R') (X X' : Scheme.{0}) (f : X ⟶ Sp R) (f' : X' ⟶ Sp R') (π : X' ⟶ X) (U : X'.Opens), Function.Surjective φ → IsPullback π f' f (spMap φ) → ∃ (W : X.Opens) (ρ : U.toScheme ⟶ W.toScheme), ρ ≫ W.ι = U.ι ≫ π ∧ IsPullback ρ (U.ι ≫ f') (W.ι ≫ f) (spMap φ) := by
   first | exact @_root_.GlobalTheory.openSubscheme_closedFibre_lift | exact _root_.GlobalTheory.openSubscheme_closedFibre_lift | (intros; apply _root_.GlobalTheory.openSubscheme_closedFibre_lift <;> assumption)

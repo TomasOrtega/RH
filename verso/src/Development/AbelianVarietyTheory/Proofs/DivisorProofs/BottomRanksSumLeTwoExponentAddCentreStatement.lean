@@ -12,8 +12,10 @@ open Formalism.L2.Host (HChar)
 open GlobalTheory.ChiGrid GlobalTheory.LeafRestExamples GlobalTheory.FunObj.SqNum
 open GlobalTheory.Mem.Col2.SplitChar (finIdl)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ChiGrid.botBig_add_botSmall_le_two_e_add_two_cen | exact GlobalTheory.ChiGrid.botBig_add_botSmall_le_two_e_add_two_cen | (intros; apply GlobalTheory.ChiGrid.botBig_add_botSmall_le_two_e_add_two_cen <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ChiGrid.botBig_add_botSmall_le_two_e_add_two_cen` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FBottomRanksSumLeTwoExponentAddCentre.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.bottomRanks_sum_le_two_exponent_add_centre : ∀ (D : D7) (C : ℝ) (i j : Fin D.R.m) (τ : D.what₂.Tau), ((GlobalTheory.FunObj.SqNum.botBig D i j + GlobalTheory.FunObj.SqNum.botSmall D i j : ℕ) : ℤ) ≤ 2 * ((GlobalTheory.ChiGrid.num D C τ).e (j + 1) + GlobalTheory.ChiGrid.cen D C τ (D.R.m - i)) := by
   first | exact @GlobalTheory.ChiGrid.botBig_add_botSmall_le_two_e_add_two_cen | exact GlobalTheory.ChiGrid.botBig_add_botSmall_le_two_e_add_two_cen | (intros; apply GlobalTheory.ChiGrid.botBig_add_botSmall_le_two_e_add_two_cen <;> assumption)

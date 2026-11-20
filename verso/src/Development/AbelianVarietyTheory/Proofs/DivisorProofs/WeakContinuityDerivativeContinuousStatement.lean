@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeakContinuityDeriv
 import Mathlib
 open MeasureTheory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WeakDeriv.continuous_iteratedFDeriv_of_weak | exact GlobalTheory.WeakDeriv.continuous_iteratedFDeriv_of_weak | (intros; apply GlobalTheory.WeakDeriv.continuous_iteratedFDeriv_of_weak <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WeakDeriv.continuous_iteratedFDeriv_of_weak` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FWeakContinuityDerivativeContinuous.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.weak_continuity_derivative_continuous : ∀ {D S : Type} [NormedAddCommGroup D] [NormedSpace ℝ D] [FiniteDimensional ℝ D] [TopologicalSpace S]
     (f : S → SchwartzMap D ℂ),

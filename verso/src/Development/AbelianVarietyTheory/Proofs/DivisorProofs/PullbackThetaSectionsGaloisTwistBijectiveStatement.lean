@@ -7,8 +7,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum GlobalTheory.Mum.Conj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.Conj.secTw_bijective | exact GlobalTheory.Mum.Conj.secTw_bijective | (intros; apply GlobalTheory.Mum.Conj.secTw_bijective <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.Conj.secTw_bijective` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPullbackThetaSectionsGaloisTwistBijective.lean&line=42#L42)
 -/
 theorem _root_.GlobalTheory.T.pullbackThetaSectionsGaloisTwist_bijective : ∀ (R : Type) [CommRing R] [IsDomain R] (A : PolAV (Sp (FractionRing R))) (N : ℕ) (σ : Kb R →ₐ[FractionRing R] Kb R), Function.Bijective (secTw A N σ) := by
   first | exact @GlobalTheory.Mum.Conj.secTw_bijective | exact GlobalTheory.Mum.Conj.secTw_bijective | (intros; apply GlobalTheory.Mum.Conj.secTw_bijective <;> assumption)

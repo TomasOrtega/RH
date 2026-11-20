@@ -7,8 +7,10 @@ import ReciprocityTheory.DualLattices.DetPolyMulCayleyOmegaPow
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BlockGraph
 open MvPolynomial ReciprocityTheory.PGsh GlobalTheory.CayleyBlock
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CayleyBlock.cayOp_pow_eq_sum | exact GlobalTheory.CayleyBlock.cayOp_pow_eq_sum | (intros; apply GlobalTheory.CayleyBlock.cayOp_pow_eq_sum <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CayleyBlock.cayOp_pow_eq_sum` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FCayleyOperatorPowEqSignedSumPartialDerivs.lean&line=31#L31)
 -/
 theorem _root_.GlobalTheory.T.cayleyOperator_pow_eq_signed_sum_partialDerivs : ∀ (p q : ℕ), cayOp p ℂ ^ q = ∑ τ : Fin q → Equiv.Perm (Fin p), sgnProd τ • dList (smallList τ) := by
   first | exact @GlobalTheory.CayleyBlock.cayOp_pow_eq_sum | exact GlobalTheory.CayleyBlock.cayOp_pow_eq_sum | (intros; apply GlobalTheory.CayleyBlock.cayOp_pow_eq_sum <;> assumption)

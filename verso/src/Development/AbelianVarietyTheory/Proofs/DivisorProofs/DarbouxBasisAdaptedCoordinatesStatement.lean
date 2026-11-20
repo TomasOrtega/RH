@@ -13,8 +13,10 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SWLink
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SWLink.Darb.exists_adapted | exact GlobalTheory.SWLink.Darb.exists_adapted | (intros; apply GlobalTheory.SWLink.Darb.exists_adapted <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SWLink.Darb.exists_adapted` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDarbouxBasisAdaptedCoordinates.lean&line=164#L164)
 -/
 theorem _root_.GlobalTheory.T.darboux_basis_adapted_coordinates : ∀ (D : D7) (n : ℕ) (V : HSp D) (J : Matrix (Fin n) (Fin n) D.host.E) (J₂ : Matrix (Fin (n + n)) (Fin (n + n)) D.host.E) (T : GL (Fin (n + n)) D.host.E), IsWittBasis D.sp.cm.sig J 1 T → T.1ᵀ * J₂ * T.1.map D.sp.cm.sig = GlobalTheory.StdUnn.Jst D n → ∀ (d : ℕ) (ε : Module.Basis (Fin d) D.host.F D.host.E), ∃ co : Dbx V J₂ d, IsAdapted D.sp.cm.sig co ∧ IsCoord V T ε co := by
   first | exact @GlobalTheory.SWLink.Darb.exists_adapted | exact GlobalTheory.SWLink.Darb.exists_adapted | (intros; apply GlobalTheory.SWLink.Darb.exists_adapted <;> assumption)

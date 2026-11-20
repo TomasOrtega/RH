@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.OneAddSmulVecMulVecMulVec
 open ReciprocityTheory.ChartRestriction.G.FD NumberField GlobalTheory.UnipKill
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnipKill.exists_real_unit_infinite_order | exact GlobalTheory.UnipKill.exists_real_unit_infinite_order | (intros; apply GlobalTheory.UnipKill.exists_real_unit_infinite_order <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnipKill.exists_real_unit_infinite_order` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsRealUnitNotRootOfUnity.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.exists_real_unit_not_root_of_unity : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], 1 < Module.finrank ℚ E / 2 → ∃ u : (𝓞 E)ˣ, cc (u : E) = u ∧ ∀ n : ℕ, 0 < n → (u : E) ^ n ≠ 1 := by
   first | exact @GlobalTheory.UnipKill.exists_real_unit_infinite_order | exact GlobalTheory.UnipKill.exists_real_unit_infinite_order | (intros; apply GlobalTheory.UnipKill.exists_real_unit_infinite_order <;> assumption)

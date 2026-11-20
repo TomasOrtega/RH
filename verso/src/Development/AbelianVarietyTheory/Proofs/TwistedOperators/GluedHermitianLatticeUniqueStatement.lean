@@ -9,8 +9,10 @@ open Formalism.IndefR.Datum (IsSelfDualC)
 open GlobalTheory.IndefiniteRowSideFullHecke.FlatSpaceComponents GlobalTheory.AdIsom
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GlueUnique.glued_unique | exact GlobalTheory.GlueUnique.glued_unique | (intros; apply GlobalTheory.GlueUnique.glued_unique <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GlueUnique.glued_unique` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FGluedHermitianLatticeUnique.lean&line=112#L112)
 -/
 theorem _root_.GlobalTheory.T.gluedHermitianLattice_unique : ∀ (D : D7) (u : D.what₂.Word) (π : 𝓞 D.host.E), IsPi u π → ∀ (Y X : HSp D) (ι : X.V →ₗ[D.host.E] Y.V) (z : Y.V) (L₀ : Lat X) (f₀ : Pl D.host.E → Fin X.rank → EAf D) (L L' : Submodule (𝓞 D.host.E) Y.V), IsGlued Y X ι z u π L₀ f₀ L → IsGlued Y X ι z u π L₀ f₀ L' → L = L' := by
   first | exact @GlobalTheory.GlueUnique.glued_unique | exact GlobalTheory.GlueUnique.glued_unique | (intros; apply GlobalTheory.GlueUnique.glued_unique <;> assumption)

@@ -11,8 +11,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ZH.thetaSys_gen_tuple | exact GlobalTheory.ZH.thetaSys_gen_tuple | (intros; apply GlobalTheory.ZH.thetaSys_gen_tuple <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ZH.thetaSys_gen_tuple` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsTupleThetaConstantRatiosGenerateField.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.exists_tuple_thetaConstant_ratios_generate_field : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (S : GlobalTheory.ZH.ThetaSys o Ω), ∃ (J₀ : Type) (_ : Fintype J₀) (t₀ : J₀ → Ω), (∃ i, t₀ i ≠ 0) ∧ Module.Finite (Subfield.closure (Set.range (algebraMap o Ω) ∪ {x | ∃ i j : S.Gam × J₀, x = S.th j.1 * t₀ j.2 / (S.th i.1 * t₀ i.2)})) Ω := by
   first | exact @GlobalTheory.ZH.thetaSys_gen_tuple | exact GlobalTheory.ZH.thetaSys_gen_tuple | (intros; apply GlobalTheory.ZH.thetaSys_gen_tuple <;> assumption)

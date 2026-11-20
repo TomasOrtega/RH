@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsEquivProdIrrTw
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LocGL.isL_speh_nu | exact GlobalTheory.LocGL.isL_speh_nu | (intros; apply GlobalTheory.LocGL.isL_speh_nu <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LocGL.isL_speh_nu` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FSpehLanglandsQuotient.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.speh_langlands_quotient : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], (∀ (δ δ' : IrrGL k) (Δ Δ' : Segment k), IsLSeg Δ δ.rep → IsUnitarisable δ.rep → IsLSeg Δ' δ'.rep →
       IsUnitarisable δ'.rep → ∀ x y : ℝ, (Δ.nu x).Precedes (Δ'.nu y) → x + 1 ≤ y) →

@@ -12,8 +12,10 @@ open GlobalTheory.HSApp
 open MonoidalCategory CartesianMonoidalCategory MonObj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TanPull.exists_tanM_of_isTan | exact GlobalTheory.TanPull.exists_tanM_of_isTan | (intros; apply GlobalTheory.TanPull.exists_tanM_of_isTan <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TanPull.exists_tanM_of_isTan` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsModelTangentOfPullbackTangent.lean&line=38#L38)
 -/
 theorem _root_.GlobalTheory.T.exists_modelTangent_of_pullback_tangent : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β} {V : Type} [CommRing V] (x : Sp V ⟶ Y.X) (G : SAB H (Sp V)) (ψ : SABMap G Y.t x) (w : epsOver V V ⟶ G.G), IsTan w → ∃ v : ReciprocityTheory.ChartRestriction.G.PullbackSections.TanM x Y.t.G, (ReciprocityTheory.ChartRestriction.G.PullbackSections.tv v).left = w.left ≫ ψ.φ := by
   first | exact @GlobalTheory.TanPull.exists_tanM_of_isTan | exact GlobalTheory.TanPull.exists_tanM_of_isTan | (intros; apply GlobalTheory.TanPull.exists_tanM_of_isTan <;> assumption)

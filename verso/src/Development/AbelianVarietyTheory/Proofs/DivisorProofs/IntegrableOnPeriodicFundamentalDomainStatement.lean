@@ -7,8 +7,10 @@ open Matrix MeasureTheory Set Filter Topology
 open GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe GlobalTheory.TorsionForm GlobalTheory.TorsionForm.OneVec
 open scoped Real ContDiff
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.integrableOn_periodic_of_isLat | exact GlobalTheory.integrableOn_periodic_of_isLat | (intros; apply GlobalTheory.integrableOn_periodic_of_isLat <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.integrableOn_periodic_of_isLat` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIntegrableOnPeriodicFundamentalDomain.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.integrableOn_periodic_fundamental_domain : ∀ {g : ℕ} {V : Type} [NormedAddCommGroup V] (M : Submodule ℤ (Fl g)), IsLat M → ∀ (D : Set (Fl g)), IsAddFundamentalDomain M D volume → ∀ (φ : Fl g → V), Continuous φ → (∀ l ∈ M, ∀ x, φ (x + l) = φ x) → IntegrableOn φ D := by
   first | exact @GlobalTheory.integrableOn_periodic_of_isLat | exact GlobalTheory.integrableOn_periodic_of_isLat | (intros; apply GlobalTheory.integrableOn_periodic_of_isLat <;> assumption)

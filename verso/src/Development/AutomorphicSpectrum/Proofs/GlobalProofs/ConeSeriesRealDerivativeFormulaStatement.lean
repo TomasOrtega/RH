@@ -6,8 +6,10 @@ import Development.AutomorphicSpectrum.Proofs.GlobalProofs.AbelContinuation
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.PartialSum
 open NumberField Formalism.MainNotions.ShortIntervalPrimes GlobalTheory.RayZeta GlobalTheory.CompanionTheory.Hypotheses₂.Shintani GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.DerivDLR.hasDerivAt_DLR_Fr | exact GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.DerivDLR.hasDerivAt_DLR_Fr | (intros; apply GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.DerivDLR.hasDerivAt_D …`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.DerivDLR.hasDerivAt_DLR_Fr` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGlobalProofs%2FConeSeriesRealDerivativeFormula.lean&line=83#L83)
 -/
 theorem _root_.GlobalTheory.T.cone_series_real_derivative_formula : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (r : ℕ) (a : ι → Fin r → ℝ) (b : ι → ℝ), (∀ j i, 0 < a j i) → (∀ j, 0 < b j) →
   ∀ (s : ℂ) (β : ι → ℕ) (cs : List (Fin r)) (i : Fin r) (x : Fin r → ℝ) (τ : ℝ), (∀ k, 0 ≤ x k) → 0 ≤ τ →

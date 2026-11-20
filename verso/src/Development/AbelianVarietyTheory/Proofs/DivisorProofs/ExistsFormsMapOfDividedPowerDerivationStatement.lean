@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Divisors.DivPowerCompatTwoFormDerivativeCompOneForm
 open CategoryTheory AlgebraicGeometry KaehlerDifferential DividedPowers ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.CechDR GlobalTheory.CxCoh GlobalTheory.PDA GlobalTheory.PDForm GlobalTheory.SmoothLift
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PDForm.exists_lift_of_pdDerivation | exact GlobalTheory.PDForm.exists_lift_of_pdDerivation | (intros; apply GlobalTheory.PDForm.exists_lift_of_pdDerivation <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PDForm.exists_lift_of_pdDerivation` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsFormsMapOfDividedPowerDerivation.lean&line=32#L32)
 -/
 theorem _root_.GlobalTheory.T.exists_formsMap_of_dividedPowerDerivation : ∀ (R B : Type) [CommRing R] [CommRing B] [Algebra R B] (J : Ideal B) (δ : DividedPowers J) (C : Type) [CommRing C] [Algebra R C] (JC : Ideal C) (δC : DividedPowers JC) (π : C →ₐ[R] B) (w : C →+ K1 R δ), (∀ x y, w (x * y) = π x • w y + π y • w x) → (∀ r, w (algebraMap R C r) = 0) → (∀ n, ∀ a ∈ JC, w (δC.dpow (n + 1) a) = π (δC.dpow n a) • w a) → ∃ ρ : DR R C → DR R B, (∀ x y, ρ (x + y) - ρ x - ρ y ∈ rel R δ) ∧ (∀ x y, ρ (x * y) - ρ x * ρ y ∈ rel R δ) ∧ (∀ c, ρ (algebraMap C (DR R C) c) - algebraMap B (DR R B) (π c) ∈ rel R δ) ∧ (∀ c ω, Submodule.Quotient.mk ω = w c → ρ (ι1 (D R C c)) - ι1 ω ∈ rel R δ) ∧ (∀ x ∈ rel R δC, ρ x ∈ rel R δ) ∧ (∀ x, ∃ ω, ρ (ι1 x) - ι1 ω ∈ rel R δ) ∧ ∀ (j : ℕ), ∀ x ∈ ⋀[C]^j Ω[C⁄R], ∃ y ∈ ⋀[B]^j Ω[B⁄R], ρ x - y ∈ rel R δ := by
   first | exact @GlobalTheory.PDForm.exists_lift_of_pdDerivation | exact GlobalTheory.PDForm.exists_lift_of_pdDerivation | (intros; apply GlobalTheory.PDForm.exists_lift_of_pdDerivation <;> assumption)

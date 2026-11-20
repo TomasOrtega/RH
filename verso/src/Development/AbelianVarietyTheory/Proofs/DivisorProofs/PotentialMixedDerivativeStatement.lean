@@ -6,8 +6,10 @@ open Matrix GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe GlobalTheory.T
 open scoped Real ContDiff
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TorsionForm.FlatAcyc.dd_real_hessian | exact GlobalTheory.TorsionForm.FlatAcyc.dd_real_hessian | (intros; apply GlobalTheory.TorsionForm.FlatAcyc.dd_real_hessian <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TorsionForm.FlatAcyc.dd_real_hessian` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPotentialMixedDerivative.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.potential_mixed_derivative : ∀ {g : ℕ} (ψ : (Fin g → ℂ) → ℝ) (hψ : ContDiff ℝ 2 ψ)
     (Ω : (Fin g → ℂ) → (Fin g → ℂ) → ℝ) (z : Fin g → ℂ)

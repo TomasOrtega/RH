@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFractionRingTenso
 import Mathlib
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.tensor_fractionRing_of_tensor | exact GlobalTheory.tensor_fractionRing_of_tensor | (intros; apply GlobalTheory.tensor_fractionRing_of_tensor <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.tensor_fractionRing_of_tensor` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsFractionRingTensorOfFractionFields.lean&line=6#L6)
 -/
 theorem _root_.GlobalTheory.T.isFractionRing_tensor_of_fraction_fields : ∀ {k R B K κ L : Type} [Field k] [CommRing R] [CommRing B] [Field K] [Field κ]
     [Field L] [Algebra k R] [Algebra k B] [Algebra k K] [Algebra k κ] [Algebra R K] [Algebra B κ]

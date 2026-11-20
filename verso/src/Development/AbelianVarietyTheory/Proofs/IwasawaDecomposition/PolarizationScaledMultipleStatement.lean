@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsChartOf
 open AlgebraicGeometry CategoryTheory Limits NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.ShFam GlobalTheory.LocM GlobalTheory.TorRef
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TorRef.Scale.scale_pol | exact GlobalTheory.TorRef.Scale.scale_pol | (intros; apply GlobalTheory.TorRef.Scale.scale_pol <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TorRef.Scale.scale_pol` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FPolarizationScaledMultiple.lean&line=95#L95)
 -/
 theorem _root_.GlobalTheory.T.polarization_scaled_multiple : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H} {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} (Z : Model Xo c β) (ψ φ : InvFun (𝓞 E)) (x y m n : ℕ) (BD : EffCartierData Z.X), 0 < n → IsPol (comb x ψ y φ) m Z BD → ∃ BD' : EffCartierData Z.X, IsPol (comb (n * x) ψ (n * y) φ) (n * m) Z BD' := by
   first | exact @GlobalTheory.TorRef.Scale.scale_pol | exact GlobalTheory.TorRef.Scale.scale_pol | (intros; apply GlobalTheory.TorRef.Scale.scale_pol <;> assumption)

@@ -7,8 +7,10 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open GlobalTheory.ArchUniq GlobalTheory.ArchUniq.Coord GlobalTheory.ArchLine
 open scoped Matrix Classical SchwartzMap
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ArchLine.omega_archAct | exact GlobalTheory.ArchLine.omega_archAct | (intros; apply GlobalTheory.ArchLine.omega_archAct <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ArchLine.omega_archAct` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FUnitaryArchimedeanCoordinateActionSymplectic.lean&line=34#L34)
 -/
 theorem _root_.GlobalTheory.T.unitary_archimedean_coordinate_action_symplectic : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
     {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (h : UA σ W.J)

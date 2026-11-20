@@ -9,8 +9,10 @@ open scoped ComplexOrder ContDiff
 open GlobalTheory.HermFrame GlobalTheory.IndefiniteRowSideFullHecke.HermitianCurvatureForms
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LineRankTwo.chernOne_sub_quot_line | exact GlobalTheory.LineRankTwo.chernOne_sub_quot_line | (intros; apply GlobalTheory.LineRankTwo.chernOne_sub_quot_line <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LineRankTwo.chernOne_sub_quot_line` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSubBundleCurvatureRankOne.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.sub_bundle_curvature_rank_one : ∀ {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [NormedSpace ℝ V] [IsScalarTower ℝ ℂ V] {m l : Type} [Fintype m] [Fintype l] [DecidableEq m] [DecidableEq l] {U : Set V} {H : V → Matrix (m ⊕ l) (m ⊕ l) ℂ} {z : V} (h : IsPosFrame U H) (hz : z ∈ U) (hm : Fintype.card m = 1) (hl : Fintype.card l = 1) (hg : ∀ ξ η, curv (gramS H) z ξ η = blockSS (H z) (curv H z ξ η) + wedgeAntiHol (secondFormAdj H z) (secondForm H z) ξ η) (hc : ∀ ξ η, chernOne H z ξ η = chernOne (gramS H) z ξ η + chernOne (gramQ H) z ξ η) (u : m → ℂ) (hu : u ≠ 0) (ξ η : V), chernOne (gramS H) z ξ η = lineCurv H z (incl m l *ᵥ u) ξ η - extTrace H z ξ η ∧ chernOne (gramQ H) z ξ η = chernOne H z ξ η - lineCurv H z (incl m l *ᵥ u) ξ η + extTrace H z ξ η := by
   first | exact @GlobalTheory.LineRankTwo.chernOne_sub_quot_line | exact GlobalTheory.LineRankTwo.chernOne_sub_quot_line | (intros; apply GlobalTheory.LineRankTwo.chernOne_sub_quot_line <;> assumption)

@@ -11,8 +11,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz (schwartzA)
 open GlobalTheory.StdUnn PositivityTheory.GramSchwartzFunctions PositivityTheory.GramSchwartzFunctions.BC PositivityTheory.PfSWUS PositivityTheory.Rg.Rsw
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.FJE.sh_mul_nzx | exact GlobalTheory.CompanionTheory.FJE.sh_mul_nzx | (intros; apply GlobalTheory.CompanionTheory.FJE.sh_mul_nzx <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.FJE.sh_mul_nzx` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FShiftConjHeisenberg.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.shift_conj_heisenberg : ∀ {D : D7} {n ρ p : ℕ} {hn : ρ + p = n} (M : Maps D hn) (y : Mx D ρ p) (z : hermA D ρ) (x : Mx D ρ p), M.sh y * M.nzx z x = M.nzx (z + GlobalTheory.CompanionTheory.FJE.jc y x) x * M.sh y := by
   first | exact @GlobalTheory.CompanionTheory.FJE.sh_mul_nzx | exact GlobalTheory.CompanionTheory.FJE.sh_mul_nzx | (intros; apply GlobalTheory.CompanionTheory.FJE.sh_mul_nzx <;> assumption)

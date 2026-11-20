@@ -10,8 +10,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.CechPic GlobalTheory.QCoh GlobalTheory.LogPair
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LogPair.isEtCoord_openImmersion | exact GlobalTheory.LogPair.isEtCoord_openImmersion | (intros; apply GlobalTheory.LogPair.isEtCoord_openImmersion <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LogPair.isEtCoord_openImmersion` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsEtaleCoordinatesOnOpenPullOpenImmersion.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.isEtaleCoordinatesOnOpen_pull_openImmersion : ∀ (R : Type) [CommRing R] (X Y : Scheme.{0}) (f : X ⟶ Sp R) (e : Y ⟶ X) [IsOpenImmersion e] (U : X.Opens) (W : Y.Opens) (h : W ≤ e ⁻¹ᵁ U) (d : ℕ) (t : Fin d → Γ(X, U)), IsAffineOpen U → IsAffineOpen W → IsEtCoord f U t → IsEtCoord (e ≫ f) W (fun a => (e.appLE U W h).hom (t a)) := by
   first | exact @GlobalTheory.LogPair.isEtCoord_openImmersion | exact GlobalTheory.LogPair.isEtCoord_openImmersion | (intros; apply GlobalTheory.LogPair.isEtCoord_openImmersion <;> assumption)

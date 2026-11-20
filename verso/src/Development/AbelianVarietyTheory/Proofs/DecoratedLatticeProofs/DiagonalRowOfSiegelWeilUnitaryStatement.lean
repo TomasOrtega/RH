@@ -42,8 +42,10 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLat
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S GlobalTheory.Core.Deg
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Core.Rk.rowDiag_of_siegelWeilUnitary | exact GlobalTheory.Core.Rk.rowDiag_of_siegelWeilUnitary | (intros; apply GlobalTheory.Core.Rk.rowDiag_of_siegelWeilUnitary <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Core.Rk.rowDiag_of_siegelWeilUnitary` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FDiagonalRowOfSiegelWeilUnitary.lean&line=50#L50)
 -/
 theorem _root_.GlobalTheory.T.diagonalRow_of_siegelWeil_unitary : HeckeCharacterZeroLocus.SiegelWeilU.SiegelWeilUnitaryConvergent → GlobalTheory.Core.Rk.RowDiag (fun D L C' => GlobalTheory.Core.Rk.IsScaleWithBoundedGamma D L C' ∧ ∀ u, GlobalTheory.Core.Rk.RankMu D u) := by
   first | exact @GlobalTheory.Core.Rk.rowDiag_of_siegelWeilUnitary | exact GlobalTheory.Core.Rk.rowDiag_of_siegelWeilUnitary | (intros; apply GlobalTheory.Core.Rk.rowDiag_of_siegelWeilUnitary <;> assumption)

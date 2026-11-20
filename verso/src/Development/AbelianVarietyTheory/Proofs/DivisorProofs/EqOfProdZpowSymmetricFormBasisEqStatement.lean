@@ -9,8 +9,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.TInj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SymMono.eq_of_prod_zpow_eq | exact GlobalTheory.SymMono.eq_of_prod_zpow_eq | (intros; apply GlobalTheory.SymMono.eq_of_prod_zpow_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.SymMono.eq_of_prod_zpow_eq` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FEqOfProdZpowSymmetricFormBasisEq.lean&line=72#L72)
 -/
 theorem _root_.GlobalTheory.T.eq_of_prod_zpow_symmetricFormBasis_eq : ∀ (F : Type) [Field F] (r : ℕ) (I : Type) [Fintype I] (ε : Module.Basis I ℤ (balForms (id : ℤ → ℤ) (Fin r → ℤ))) (x y : I → F), (∀ i, x i ≠ 0) → (∀ i, y i ≠ 0) → (∀ a b, ∏ i, x i ^ (ε i : LinearMap.BilinForm ℤ (Fin r → ℤ)) a b = ∏ i, y i ^ (ε i : LinearMap.BilinForm ℤ (Fin r → ℤ)) a b) → x = y := by
   first | exact @GlobalTheory.SymMono.eq_of_prod_zpow_eq | exact GlobalTheory.SymMono.eq_of_prod_zpow_eq | (intros; apply GlobalTheory.SymMono.eq_of_prod_zpow_eq <;> assumption)

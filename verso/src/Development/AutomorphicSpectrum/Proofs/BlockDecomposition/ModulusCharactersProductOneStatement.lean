@@ -4,8 +4,10 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AvgVanish
 open Matrix GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.BZMir GlobalTheory.BZMir.Leib GlobalTheory.RgGu.Leib GlobalTheory.CompanionTheory.BZPhiPG
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.BZPhiPG.DetPG.exponents_cancel | exact GlobalTheory.CompanionTheory.BZPhiPG.DetPG.exponents_cancel | (intros; apply GlobalTheory.CompanionTheory.BZPhiPG.DetPG.exponents_cancel <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.BZPhiPG.DetPG.exponents_cancel` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FModulusCharactersProductOne.lean&line=77#L77)
 -/
 theorem _root_.GlobalTheory.T.modulus_characters_product_one : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (i t : ℕ) (h : HPG k i (t + 1)),
   ((dpowM (i + (t + 1)) (-1 / 2) (h : Mir k (i + (t + 1))) : ℂˣ) : ℂ) * ((dpow (t + 1) 1 (pgProj k i (t + 1) h).2 : ℂˣ) : ℂ) *

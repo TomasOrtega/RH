@@ -8,8 +8,10 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.ThK.LemF
 open GlobalTheory.Doubling (absE)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThK.LemF.locOp_comm | exact GlobalTheory.ThK.LemF.locOp_comm | (intros; apply GlobalTheory.ThK.LemF.locOp_comm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThK.LemF.locOp_comm` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLocalWeilActionCompatible.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.local_weil_action_compatible : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E)

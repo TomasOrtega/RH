@@ -15,8 +15,10 @@ open GlobalTheory.DeRham (spOver spOver_comp)
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Div.exists_algHom_quotient_minimalPrime_injective | exact GlobalTheory.Div.exists_algHom_quotient_minimalPrime_injective | (intros; apply GlobalTheory.Div.exists_algHom_quotient_minimalPrime_injective <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Div.exists_algHom_quotient_minimalPrime_injective` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsInjectiveEmbeddingMinimalPrime.lean&line=6#L6)
 -/
 theorem _root_.GlobalTheory.T.exists_injective_embedding_minimal_prime : ∀ (R K : Type) [CommRing R] [IsDomain R] [Field K] [IsAlgClosed K] [Algebra R K] [IsFractionRing R K] (D : Type) [CommRing D] [Algebra R D] [Module.Flat R D] [Algebra.IsAlgebraic R D] (P : Ideal D), P ∈ minimalPrimes D → ∃ em : D ⧸ P →ₐ[R] K, Function.Injective em := by
   first | exact @GlobalTheory.Div.exists_algHom_quotient_minimalPrime_injective | exact GlobalTheory.Div.exists_algHom_quotient_minimalPrime_injective | (intros; apply GlobalTheory.Div.exists_algHom_quotient_minimalPrime_injective <;> assumption)

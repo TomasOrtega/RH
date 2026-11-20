@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IteratedLe
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.PhiTopAgree
 open NumberField IsDedekindDomain MeasureTheory ValuativeRel Matrix Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.L2.DIV Formalism.L2.Col GlobalTheory.SplitWeil GlobalTheory.RootEx GlobalTheory.StepData GlobalTheory.SymChain GlobalTheory.SymBridge
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PatPlaces.pattern_to_places | exact GlobalTheory.PatPlaces.pattern_to_places | (intros; apply GlobalTheory.PatPlaces.pattern_to_places <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PatPlaces.pattern_to_places` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FIteratedLevelPatternToFramePlaces.lean&line=29#L29)
 -/
 theorem _root_.GlobalTheory.T.iteratedLevelPattern_to_framePlaces : ∀ (F : Type) [Zero F] [One F] (κ ρ s τ j : ℕ) (R : ℕ → ℕ → F), (∀ (a b : Ix (Fin κ ⊕ Fin (s + 1)) (Fin τ) j), ¬ FreeIx ρ a b → R (zPos a) (zPos b) = if a = b then 1 else 0) → ((∀ p', p' < κ + s + 1 → R p' p' = 1 ∧ ∀ p, p < κ + s + 1 + j * τ → p ≠ p' →
         (κ + s + 1 ≤ p ∨ symIdx κ ρ p' < symIdx κ ρ p ∨ (p' = κ + ρ ∧ p < κ)) → R p p' = 0) ∧

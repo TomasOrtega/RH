@@ -11,8 +11,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.CechPoset
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CechPoset.restrict_pull2_pullHO2 | exact GlobalTheory.CechPoset.restrict_pull2_pullHO2 | (intros; apply GlobalTheory.CechPoset.restrict_pull2_pullHO2 <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CechPoset.restrict_pull2_pullHO2` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCechH2PullbackRefinementCompat.lean&line=16#L16)
 -/
 theorem _root_.GlobalTheory.T.cech_h2_pullback_refinement_compat : ∀ {R' R'' : Type} [CommRing R'] [CommRing R''] {X' X'' : Scheme.{0}} {s' : X' ⟶ Sp R'} {s'' : X'' ⟶ Sp R''} {σ : R' →+* R''} {ψ : X'' ⟶ X'} (w : ψ ≫ s' = s'' ≫ spMap σ) {κ : Type} [LinearOrder κ] (D' : κ → X'.Opens) (hD' : ∀ I : Finset κ, I.Nonempty → IsAffineOpen (⨅ i ∈ I, D' i)) (D'' : κ → X''.Opens) (hD'' : ∀ I : Finset κ, I.Nonempty → IsAffineOpen (⨅ i ∈ I, D'' i)) (hle : ∀ i, D'' i ≤ ψ ⁻¹ᵁ D' i) (y : HO2 s'), (CoefMap.restrict (OAff s'') (cov_mono D'' hD'').functor.op).pull2 (pullHO2 w y) = (pullCoef w D' hD' D'' hD'' hle).pull2 ((CoefMap.restrict (OAff s') (cov_mono D' hD').functor.op).pull2 y) := by
   first | exact @GlobalTheory.CechPoset.restrict_pull2_pullHO2 | exact GlobalTheory.CechPoset.restrict_pull2_pullHO2 | (intros; apply GlobalTheory.CechPoset.restrict_pull2_pullHO2 <;> assumption)

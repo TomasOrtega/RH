@@ -8,8 +8,10 @@ open GlobalTheory.AutomorphicL2Unitary GlobalTheory.AdelicU GlobalTheory.Doublin
 open GlobalTheory.CompanionTheory.QKAvg
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.QKAvg.isClosed_levM | exact GlobalTheory.CompanionTheory.QKAvg.isClosed_levM | (intros; apply GlobalTheory.CompanionTheory.QKAvg.isClosed_levM <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.QKAvg.isClosed_levM` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FUnipotentRadicalStabilizerProperty.lean&line=75#L75)
 -/
 theorem _root_.GlobalTheory.T.unipotent_radical_stabilizer_property : ∀ (D : D7) (B W : HSp D) (t : ℕ) (d : HypDec B W t), IsClosed (levM d : Set (GlobalTheory.RegSW.stab d)) := by
   first | exact @GlobalTheory.CompanionTheory.QKAvg.isClosed_levM | exact GlobalTheory.CompanionTheory.QKAvg.isClosed_levM | (intros; apply GlobalTheory.CompanionTheory.QKAvg.isClosed_levM <;> assumption)

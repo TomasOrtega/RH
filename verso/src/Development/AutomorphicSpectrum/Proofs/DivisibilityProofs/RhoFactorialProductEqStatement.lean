@@ -4,8 +4,10 @@ import Mathlib
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.IsChainFirst
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I4 GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Top GlobalTheory.CompanionTheory.Ar.Top.FlDeg
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Top.FlDeg.prod_rhoM_factorial | exact GlobalTheory.CompanionTheory.Ar.Top.FlDeg.prod_rhoM_factorial | (intros; apply GlobalTheory.CompanionTheory.Ar.Top.FlDeg.prod_rhoM_factorial <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Top.FlDeg.prod_rhoM_factorial` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FDivisibilityProofs%2FRhoFactorialProductEq.lean&line=27#L27)
 -/
 theorem _root_.GlobalTheory.T.rho_factorial_product_eq : ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ), ∏ p, (((rhoM Ψ N) p).factorial : ℝ) = ∏ _τ : Ψ, ∏ i : Fin N, ∏ k : Fin N, (if i < k then ((k : ℝ) - (i : ℝ)) else 1) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Top.FlDeg.prod_rhoM_factorial | exact GlobalTheory.CompanionTheory.Ar.Top.FlDeg.prod_rhoM_factorial | (intros; apply GlobalTheory.CompanionTheory.Ar.Top.FlDeg.prod_rhoM_factorial <;> assumption)

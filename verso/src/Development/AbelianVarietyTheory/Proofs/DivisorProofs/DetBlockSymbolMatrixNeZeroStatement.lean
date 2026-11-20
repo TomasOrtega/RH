@@ -6,8 +6,10 @@ import ReciprocityTheory.SemistableReduction.TorusL2CauchyInequality
 open NumberField MvPolynomial ReciprocityTheory.MultiplicativeHeights ReciprocityTheory.GeometryOfNumbersTheory
 open GlobalTheory GlobalTheory.ChowHt GlobalTheory.Adelic GlobalTheory.HermTools GlobalTheory.HilbertSamuel GlobalTheory.HSChoice GlobalTheory.HSShort
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.det_blockSymbolMatrix_ne_zero | exact GlobalTheory.det_blockSymbolMatrix_ne_zero | (intros; apply GlobalTheory.det_blockSymbolMatrix_ne_zero <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.det_blockSymbolMatrix_ne_zero` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDetBlockSymbolMatrixNeZero.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.det_blockSymbolMatrix_ne_zero' : ∀ (E : Type) [Field E] (J : Type) [Fintype J] [DecidableEq J] (δ e : ℕ) (g : Fin δ → E) (R : Matrix (Fin δ) (Fin δ) E), (∀ p, g p ≠ 0) → R.det ≠ 0 → (Matrix.of fun i i' : J × Fin δ => if i.1 = i'.1 then g i.2 ^ e * R i.2 i'.2 else 0).det ≠ 0 := by
   first | exact @GlobalTheory.det_blockSymbolMatrix_ne_zero | exact GlobalTheory.det_blockSymbolMatrix_ne_zero | (intros; apply GlobalTheory.det_blockSymbolMatrix_ne_zero <;> assumption)

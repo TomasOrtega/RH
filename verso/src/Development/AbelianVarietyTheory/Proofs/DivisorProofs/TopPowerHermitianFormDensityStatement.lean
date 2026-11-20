@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsTypeIsRealConst
 open GlobalTheory.CxForm
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CxForm.DensPow.dens_pow | exact GlobalTheory.CxForm.DensPow.dens_pow | (intros; apply GlobalTheory.CxForm.DensPow.dens_pow <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CxForm.DensPow.dens_pow` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTopPowerHermitianFormDensity.lean&line=114#L114)
 -/
 theorem _root_.GlobalTheory.T.top_power_hermitian_form_density : ∀ (n : ℕ) (H : Matrix (Fin n) (Fin n) ℂ), GlobalTheory.CxForm.dens (((∑ a, ∑ b, H a b • GlobalTheory.CxForm.sym (a, b) : GlobalTheory.CxForm.Ev n) ^ n : GlobalTheory.CxForm.Ev n) : GlobalTheory.CxForm.Alt n) = (n.factorial : ℂ) * H.det / (Complex.I / 2) ^ n := by
   first | exact @GlobalTheory.CxForm.DensPow.dens_pow | exact GlobalTheory.CxForm.DensPow.dens_pow | (intros; apply GlobalTheory.CxForm.DensPow.dens_pow <;> assumption)

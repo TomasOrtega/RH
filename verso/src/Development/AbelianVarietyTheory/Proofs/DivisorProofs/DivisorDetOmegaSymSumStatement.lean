@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsUniqueLiesUnd
 import Development.AbelianVarietyTheory.Definitions.Divisors.ReferenceMetricMulDualEqOne
 open NumberField Formalism.BasicNotions Formalism.MainNotions GlobalTheory.Mean4 GlobalTheory.Mean4O GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.Cartier CategoryTheory AlgebraicGeometry
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DetOm.div_adl_detOmegaSym | exact GlobalTheory.DetOm.div_adl_detOmegaSym | (intros; apply GlobalTheory.DetOm.div_adl_detOmegaSym <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DetOm.div_adl_detOmegaSym` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDivisorDetOmegaSymSum.lean&line=25#L25)
 -/
 theorem _root_.GlobalTheory.T.divisor_det_omega_sym_sum : ∀ (D : D7) (O : Setup D) (c : O.s.Comp), (O.adl0 c (detOmSym D.host.E (D.R.f * O.N))).D = ∑ k : Fin (D.R.f * O.N), (-1 : ℤ) • (O.adl0 c (Finsupp.single (ArIn.ind ∅, none, Sum.inr (k : ℕ)) 1)).D := by
   first | exact @GlobalTheory.DetOm.div_adl_detOmegaSym | exact GlobalTheory.DetOm.div_adl_detOmegaSym | (intros; apply GlobalTheory.DetOm.div_adl_detOmegaSym <;> assumption)

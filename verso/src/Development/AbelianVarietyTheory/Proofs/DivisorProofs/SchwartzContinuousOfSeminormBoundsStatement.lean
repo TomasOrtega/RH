@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzContinuousO
 import Mathlib
 open MeasureTheory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.continuous_schwartz_of_pointwise_of_bounded | exact GlobalTheory.continuous_schwartz_of_pointwise_of_bounded | (intros; apply GlobalTheory.continuous_schwartz_of_pointwise_of_bounded <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.continuous_schwartz_of_pointwise_of_bounded` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSchwartzContinuousOfSeminormBounds.lean&line=50#L50)
 -/
 theorem _root_.GlobalTheory.T.schwartz_continuous_of_seminorm_bounds : ∀ {D S : Type} [NormedAddCommGroup D] [NormedSpace ℝ D] [FiniteDimensional ℝ D] [TopologicalSpace S]
     (f : S → SchwartzMap D ℂ),

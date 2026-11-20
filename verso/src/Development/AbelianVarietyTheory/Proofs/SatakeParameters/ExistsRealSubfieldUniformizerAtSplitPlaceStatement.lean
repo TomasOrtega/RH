@@ -18,8 +18,10 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.realUnif_split | exact GlobalTheory.realUnif_split | (intros; apply GlobalTheory.realUnif_split <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.realUnif_split` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FExistsRealSubfieldUniformizerAtSplitPlace.lean&line=47#L47)
 -/
 theorem _root_.GlobalTheory.T.exists_realSubfield_uniformizer_at_splitPlace : ∀ {L : Type} [Field L] [NumberField L] [IsCMField L] (s : SplitPlace L),
     ∃ y : 𝓞 L, y ∈ s.w.asIdeal ∧ y ∉ s.w.asIdeal ^ 2 ∧ Formalism.AUTREP.IsUnif L s.v (s.i (y : L)) := by

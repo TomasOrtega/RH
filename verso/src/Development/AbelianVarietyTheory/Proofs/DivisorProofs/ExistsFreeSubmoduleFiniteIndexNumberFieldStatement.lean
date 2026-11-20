@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemBalBil
 open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.PolFan
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.latt_free_sub_full_rank | exact GlobalTheory.latt_free_sub_full_rank | (intros; apply GlobalTheory.latt_free_sub_full_rank <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.latt_free_sub_full_rank` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsFreeSubmoduleFiniteIndexNumberField.lean&line=7#L7)
 -/
 theorem _root_.GlobalTheory.T.exists_free_submodule_finite_index_numberField : ∀ {E : Type} [Field E] [NumberField E] (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Free ℤ X] [Module.Finite ℤ X], ∃ (f : (Fin (Module.finrank (𝓞 E) X) → 𝓞 E) →ₗ[𝓞 E] X) (m : ℕ), 0 < m ∧ Function.Injective f ∧ ∀ x : X, m • x ∈ LinearMap.range f := by
   first | exact @GlobalTheory.latt_free_sub_full_rank | exact GlobalTheory.latt_free_sub_full_rank | (intros; apply GlobalTheory.latt_free_sub_full_rank <;> assumption)

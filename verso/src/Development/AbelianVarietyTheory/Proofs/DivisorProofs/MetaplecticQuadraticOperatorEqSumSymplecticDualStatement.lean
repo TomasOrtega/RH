@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Re
 open scoped Matrix
 open MeasureTheory GlobalTheory.RealWeil
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.quad_eq_sum_symplDual | exact GlobalTheory.quad_eq_sum_symplDual | (intros; apply GlobalTheory.quad_eq_sum_symplDual <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.quad_eq_sum_symplDual` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FMetaplecticQuadraticOperatorEqSumSymplecticDual.lean&line=8#L8)
 -/
 theorem _root_.GlobalTheory.T.metaplecticQuadraticOperator_eq_sum_symplectic_dual : ∀ (l κ : Type) [Fintype l] [DecidableEq l] [Fintype κ] (X : Matrix (l ⊕ l) (l ⊕ l) ℝ) (u v : κ → (l ⊕ l → ℝ)),
     (∀ w, ∑ i, sympl (v i) w • u i = w) →

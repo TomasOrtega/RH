@@ -18,8 +18,10 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.FlagZ
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagZ.TautCell.isFrame_colOn | exact GlobalTheory.FlagZ.TautCell.isFrame_colOn | (intros; apply GlobalTheory.FlagZ.TautCell.isFrame_colOn <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FlagZ.TautCell.isFrame_colOn` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGLColumnsIsFrame.lean&line=29#L29)
 -/
 theorem _root_.GlobalTheory.T.GL_columns_isFrame : ∀ (N : ℕ) (X : Scheme.{0}) (U : X.Opens) (M : GL (Fin N) Γ(X, U)), GlobalTheory.VB.IsFrame (GlobalTheory.FlagZ.TautCell.colOn M.1) := by
   first | exact @GlobalTheory.FlagZ.TautCell.isFrame_colOn | exact GlobalTheory.FlagZ.TautCell.isFrame_colOn | (intros; apply GlobalTheory.FlagZ.TautCell.isFrame_colOn <;> assumption)

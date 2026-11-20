@@ -16,8 +16,10 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil
 set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.isSubquotient_of_exact_middle | exact GlobalTheory.isSubquotient_of_exact_middle | (intros; apply GlobalTheory.isSubquotient_of_exact_middle <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.isSubquotient_of_exact_middle` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FIsSubquotientOfExactMiddleIrreducible.lean&line=19#L19)
 -/
 theorem _root_.GlobalTheory.T.isSubquotient_of_exact_middle_irreducible : ∀ (G : Type) [Group G] (U V A Q : Type) [AddCommGroup U] [Module ℂ U] [AddCommGroup V] [Module ℂ V] [AddCommGroup A] [Module ℂ A] [AddCommGroup Q] [Module ℂ Q] (τ : Representation ℂ G U) (ρ : Representation ℂ G V) (α : Representation ℂ G A) (κ : Representation ℂ G Q) (i : α.IntertwiningMap ρ) (q : ρ.IntertwiningMap κ), τ.IsIrreducible → (∀ v, q v = 0 → ∃ a, i a = v) → IsSubquotient τ ρ → IsSubquotient τ α ∨ IsSubquotient τ κ := by
   first | exact @GlobalTheory.isSubquotient_of_exact_middle | exact GlobalTheory.isSubquotient_of_exact_middle | (intros; apply GlobalTheory.isSubquotient_of_exact_middle <;> assumption)

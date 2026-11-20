@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RadicalEltMovingDua
 import Mathlib
 open scoped ComplexOrder
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.radical_elt_moving_dual_to_majorant | exact GlobalTheory.radical_elt_moving_dual_to_majorant | (intros; apply GlobalTheory.radical_elt_moving_dual_to_majorant <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.radical_elt_moving_dual_to_majorant` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRadicalEltMovingDualToMajorant.lean&line=7#L7)
 -/
 theorem _root_.GlobalTheory.T.exists_unitary_fixing_mulVec_conj_eq_of_majorant : ∀ (n p : ℕ) (J θ : Matrix (Fin n) (Fin n) ℂ), J.conjTranspose = J → θ * θ = 1 → (J * θ).PosDef →
     ∀ (X₂ Y₂ : Matrix (Fin n) (Fin p) ℂ), X₂.conjTranspose * J * X₂ = 0 → Y₂.conjTranspose * J * Y₂ = 0 →

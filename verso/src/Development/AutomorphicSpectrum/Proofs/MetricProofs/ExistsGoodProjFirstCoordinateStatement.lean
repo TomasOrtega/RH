@@ -19,8 +19,10 @@ open GlobalTheory.CompanionTheory.Ar.Pub.CxChart (chartSet chartComponents chart
 open GroundTheory.Heights₂.Heights (chartProjMatrix chartWeight chartPot chartDens chartAbsDens)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Pub.CxGoodProj.exists_goodProj_coord | exact GlobalTheory.CompanionTheory.Ar.Pub.CxGoodProj.exists_goodProj_coord | (intros; apply GlobalTheory.CompanionTheory.Ar.Pub.CxGoodProj.exists_goodProj_coord <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Pub.CxGoodProj.exists_goodProj_coord` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FExistsGoodProjFirstCoordinate.lean&line=315#L315)
 -/
 theorem _root_.GlobalTheory.T.exists_goodProj_first_coordinate : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)]
     (Q : Ideal (MRingOver ℂ ι)) (e : ℕ) (i : (k : K) → ι k),

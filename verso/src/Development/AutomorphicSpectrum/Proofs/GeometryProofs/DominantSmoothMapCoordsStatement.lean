@@ -5,8 +5,10 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.CoordsAt
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EtaleLocalizationAtPrimeTensorOfLowHeight
 open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.ChartSmooth.smooth_chartRing | exact GlobalTheory.CompanionTheory.Ar.ChartSmooth.smooth_chartRing | (intros; apply GlobalTheory.CompanionTheory.Ar.ChartSmooth.smooth_chartRing <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.ChartSmooth.smooth_chartRing` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FDominantSmoothMapCoords.lean&line=63#L63)
 -/
 theorem _root_.GlobalTheory.T.dominant_smooth_map_coords : ∀ (X X' : Scheme.{0}) (Ω₀ Ω : Type) [Field Ω₀] [Field Ω] (ξ : Spec (CommRingCat.of Ω₀) ⟶ X)
     (ξ' : Spec (CommRingCat.of Ω) ⟶ X') (f : X' ⟶ X) (i : Ω₀ →+* Ω) (κ κ' : Type) (x : κ → Ω₀) (x' : κ' → Ω),

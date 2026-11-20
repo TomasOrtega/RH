@@ -6,8 +6,10 @@ open scoped TensorProduct Matrix
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.AdelicU
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.adicEmbedding_integral_place | exact GlobalTheory.adicEmbedding_integral_place | (intros; apply GlobalTheory.adicEmbedding_integral_place <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.adicEmbedding_integral_place` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSplitEmbeddingIntegralAndMaximalIdeal.lean&line=7#L7)
 -/
 theorem _root_.GlobalTheory.T.splitEmbedding_integral_and_maximalIdeal : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (v : HeightOneSpectrum (𝓞 F)) (τ : E →ₐ[F] v.adicCompletion F),

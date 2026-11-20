@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.PointShiftSt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.Dets
 open NumberField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.span_twistDets_eq | exact GlobalTheory.span_twistDets_eq | (intros; apply GlobalTheory.span_twistDets_eq <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.span_twistDets_eq` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSpanScaledMappedRowDetsEqPowMulSpan.lean&line=24#L24)
 -/
 theorem _root_.GlobalTheory.T.span_scaled_mapped_row_dets_eq_pow_mul_span : ∀ {E K : Type} [Field E] [NumberField E] [Field K] [NumberField K]
     (τ : 𝓞 E →+* 𝓞 K) (τE : E →+* K), (∀ x : 𝓞 E, τE x = ((τ x : 𝓞 K) : K)) → ∀ (p : ℕ)

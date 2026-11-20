@@ -7,8 +7,10 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.AdelicU
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.isLattice_comap_mulVecLin_of_leftInverse | exact GlobalTheory.isLattice_comap_mulVecLin_of_leftInverse | (intros; apply GlobalTheory.isLattice_comap_mulVecLin_of_leftInverse <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.isLattice_comap_mulVecLin_of_leftInverse` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsLatticeComapMulVecLinOfLeftInverseMatrix.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.isLattice_comap_mulVecLin_of_leftInverse_matrix : ∀ (E : Type) [Field E] [NumberField E] (n n₁ : ℕ) (L : Submodule (𝓞 E) (Fin n → E)) (ι : Matrix (Fin n) (Fin n₁) E)
     (P : Matrix (Fin n₁) (Fin n) E), P * ι = 1 → L.IsLattice E →

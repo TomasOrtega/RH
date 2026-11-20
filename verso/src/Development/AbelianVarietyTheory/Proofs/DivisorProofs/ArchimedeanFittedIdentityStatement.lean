@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.ToricSymbols
 import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
 open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.BigTop GlobalTheory.BigTop.Fun GlobalTheory.SqTop
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BigTop.Fun.arch_tie | exact GlobalTheory.BigTop.Fun.arch_tie | (intros; apply GlobalTheory.BigTop.Fun.arch_tie <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BigTop.Fun.arch_tie` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FArchimedeanFittedIdentity.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.archimedean_fitted_identity : SetAt → (Closed FamHyp fun Fm _ => EvPt Fm fun x _ i _ => |(Fm.L x i).logDerivativeAtOne| ≤ (Fm.L x i).sc.x ^ (Fm.L x i).sc.eps) → GlobalTheory.NormSum.ArchSt → BotSmall → Arch @Comparison₂ := by
   first | exact @GlobalTheory.BigTop.Fun.arch_tie | exact GlobalTheory.BigTop.Fun.arch_tie | (intros; apply GlobalTheory.BigTop.Fun.arch_tie <;> assumption)

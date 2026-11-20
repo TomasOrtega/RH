@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsAlgClo
 import Mathlib
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.genval | exact GlobalTheory.genval | (intros; apply GlobalTheory.genval <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.genval` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsAlgClosedTranscendentalSpecialisingEverywh.lean&line=58#L58)
 -/
 theorem _root_.GlobalTheory.T.exists_algClosed_transcendental_specialising_everywhere : ∀ (K : Type) [Field K] [IsAlgClosed K], ∃ (L : Type) (_ : Field L) (_ : IsAlgClosed L) (ι : K →+* L) (s : L), (∀ P : Polynomial K, P.eval₂ ι s = 0 → P = 0) ∧ ∀ a : K, ∃ (V : ValuationSubring L) (ιV : K →+* V) (r : V →+* K) (sV : V), (algebraMap V L).comp ιV = ι ∧ r.comp ιV = RingHom.id K ∧ RingHom.ker r = IsLocalRing.maximalIdeal V ∧ algebraMap V L sV = s ∧ r sV = a := by
   first | exact @GlobalTheory.genval | exact GlobalTheory.genval | (intros; apply GlobalTheory.genval <;> assumption)

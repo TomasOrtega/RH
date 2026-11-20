@@ -8,8 +8,10 @@ noncomputable section
 open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.LowDat GlobalTheory.LowFilt
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LowFilt.exists_improves_of_perp | exact GlobalTheory.LowFilt.exists_improves_of_perp | (intros; apply GlobalTheory.LowFilt.exists_improves_of_perp <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LowFilt.exists_improves_of_perp` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsOppositeSubmoduleImprovedModPrimeOfOrthogo.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.exists_oppositeSubmodule_improved_mod_prime_of_orthogonal : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (D : Datum H)
     {X : Type} [AddCommGroup X] [Module (𝓞 E) X] (y : D.La →ₗ[𝓞 E] X) (n : ℕ)

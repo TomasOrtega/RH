@@ -4,8 +4,10 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AvgVanish
 open Matrix GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.BZMir GlobalTheory.BZMir.Leib GlobalTheory.RgGu.Leib GlobalTheory.CompanionTheory.BZPhiPG
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.BZPhiPG.SuppOff.exists_compact_off_Cl | exact GlobalTheory.CompanionTheory.BZPhiPG.SuppOff.exists_compact_off_Cl | (intros; apply GlobalTheory.CompanionTheory.BZPhiPG.SuppOff.exists_compact_off_Cl <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.BZPhiPG.SuppOff.exists_compact_off_Cl` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FSupportCompactModParabolicOffClosed.lean&line=63#L63)
 -/
 theorem _root_.GlobalTheory.T.support_compact_mod_parabolic_off_closed : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (i t : ℕ) (τ : MRep k (i + 1)) (σ : GRep k (t + 1)) (f : XS τ σ) (hf : ∀ x ∈ Cl k i t, evX f x = 0),
   ∃ C : Set (Mir k ((i + 1) + t + 1)), IsCompact C ∧ (∀ c ∈ C, c ∉ Cl k i t) ∧

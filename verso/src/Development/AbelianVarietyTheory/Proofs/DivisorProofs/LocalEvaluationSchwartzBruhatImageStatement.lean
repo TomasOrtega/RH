@@ -9,8 +9,10 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.ThK.PlaneEv
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThK.PlaneEvSB.map_ev_SB | exact GlobalTheory.ThK.PlaneEvSB.map_ev_SB | (intros; apply GlobalTheory.ThK.PlaneEvSB.map_ev_SB <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThK.PlaneEvSB.map_ev_SB` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLocalEvaluationSchwartzBruhatImage.lean&line=73#L73)
 -/
 theorem _root_.GlobalTheory.T.local_evaluation_schwartz_bruhat_image : ∀ (F : Type) [Field F] [NumberField F] (n d d₁ : ℕ) (hd : d = d₁ + 2) (v : Pl F),
     (SB (Fin n × Fin d → Fv F v)).map (ev hd v) = SB (Fin n × Fin d₁ → Fv F v) := by

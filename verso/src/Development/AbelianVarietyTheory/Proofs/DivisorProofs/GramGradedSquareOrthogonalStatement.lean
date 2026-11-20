@@ -9,8 +9,10 @@ open Formalism.MainNotions.DIV.Cons (intO)
 open GlobalTheory.LieSmooth
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LieSmooth.grSq_allFr_tauFr | exact GlobalTheory.LieSmooth.grSq_allFr_tauFr | (intros; apply GlobalTheory.LieSmooth.grSq_allFr_tauFr <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LieSmooth.grSq_allFr_tauFr` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGramGradedSquareOrthogonal.lean&line=112#L112)
 -/
 theorem _root_.GlobalTheory.T.gram_graded_square_orthogonal : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {K : Type} [Field K] [NumberField K] {n : ℕ} (e : Fin n ≃ Letter Dw) (h : HermFam K (Fin n → K)) (σ : K →+* ℂ), (∀ z z' : Letter Dw, z.1 ≠ z'.1 → h.form σ (tauFr K e z.1 z.2) (tauFr K e z'.1 z'.2) = 0) → ∀ k : Fin (letters Dw).length, grSq (h.gram σ (allFr K e)) k = grSq (h.gram σ (tauFr K e ((letters Dw).get k).1)) ((letters Dw).get k).2 := by
   first | exact @GlobalTheory.LieSmooth.grSq_allFr_tauFr | exact GlobalTheory.LieSmooth.grSq_allFr_tauFr | (intros; apply GlobalTheory.LieSmooth.grSq_allFr_tauFr <;> assumption)

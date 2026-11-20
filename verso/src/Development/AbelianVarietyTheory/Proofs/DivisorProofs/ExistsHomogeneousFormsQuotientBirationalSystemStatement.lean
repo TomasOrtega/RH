@@ -8,8 +8,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open GlobalTheory GlobalTheory.ChowHt GlobalTheory.Adelic GlobalTheory.HSCore GlobalTheory.HSChoice GlobalTheory.HSShort
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HSShort.FormRatio.exists_forms | exact GlobalTheory.HSShort.FormRatio.exists_forms | (intros; apply GlobalTheory.HSShort.FormRatio.exists_forms <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HSShort.FormRatio.exists_forms` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsHomogeneousFormsQuotientBirationalSystem.lean&line=61#L61)
 -/
 theorem _root_.GlobalTheory.T.exists_homogeneous_forms_quotient_birational_system : ∀ (F : Type) [Field F] (S : LinSys F), S.IsVariety → S.BasePointFree → S.Birational → ∀ (W : S.Y.Opens) (a : Γ(S.Y, W)), ∃ (d : ℕ) (P Q : MvPolynomial (Fin S.N) F), P.IsHomogeneous d ∧ Q.IsHomogeneous d ∧ Q ∉ S.imageIdeal ∧ (a ≠ 0 → P ∉ S.imageIdeal) ∧ ∀ (K : Type) [Field K] [Algebra F K] (x : S.Pt K), ptOf x.1 ∈ W → valR x.1 W a * aeval (S.coords x.1) Q = aeval (S.coords x.1) P := by
   first | exact @GlobalTheory.HSShort.FormRatio.exists_forms | exact GlobalTheory.HSShort.FormRatio.exists_forms | (intros; apply GlobalTheory.HSShort.FormRatio.exists_forms <;> assumption)

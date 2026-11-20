@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LeMapComapOfLeConjMa
 import Formalism.LocalRingCardinality.DataSpaces
 open NumberField IsDedekindDomain
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnramifiedConj.le_map_comap_of_le_conj | exact GlobalTheory.UnramifiedConj.le_map_comap_of_le_conj | (intros; apply GlobalTheory.UnramifiedConj.le_map_comap_of_le_conj <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.UnramifiedConj.le_map_comap_of_le_conj` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FLeMapComapOfLeConjMaximalCmData.lean&line=36#L36)
 -/
 theorem _root_.GlobalTheory.T.le_map_comap_of_le_conj_maximal_cmData : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E], Formalism.BasicNotions.CMData F E → ∀ (P Q : Ideal (𝓞 E)), Q.IsMaximal → P ≤ Q → P ≤ Q.comap (RingOfIntegers.mapRingHom (starRingEnd E)) → P ≤ Ideal.map (algebraMap (𝓞 F) (𝓞 E)) (Q.comap (algebraMap (𝓞 F) (𝓞 E))) := by
   first | exact @GlobalTheory.UnramifiedConj.le_map_comap_of_le_conj | exact GlobalTheory.UnramifiedConj.le_map_comap_of_le_conj | (intros; apply GlobalTheory.UnramifiedConj.le_map_comap_of_le_conj <;> assumption)

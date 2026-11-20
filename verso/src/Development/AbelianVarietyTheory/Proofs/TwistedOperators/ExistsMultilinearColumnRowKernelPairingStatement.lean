@@ -6,8 +6,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open IsDedekindDomain NumberField MeasureTheory GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.LastVertexInv
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ArrowMultilinear.pairing_multilinear | exact GlobalTheory.ArrowMultilinear.pairing_multilinear | (intros; apply GlobalTheory.ArrowMultilinear.pairing_multilinear <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ArrowMultilinear.pairing_multilinear` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsMultilinearColumnRowKernelPairing.lean&line=150#L150)
 -/
 theorem _root_.GlobalTheory.T.exists_multilinear_columnRowKernelPairing : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T} (S : GridChoice W U) (t : T) (x : ∀ j, FinPt G (.top j)) (y : ∀ i, FinPt G (.grid i D.R.m)) (Ψ₀ : VV ℂ (wt G (.top 0))) (F₀ : VV ℂ (listedWt G (.grid 0 D.R.m))),
     ∃ M : MultilinearMap ℂ (fun j : Fin D.R.m => thSub W (.top t j)) (MultilinearMap ℂ (fun i : Fin D.R.m => thSub W (.chi i D.R.m : Pair T)) ℂ),

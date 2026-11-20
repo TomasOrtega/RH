@@ -5,8 +5,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open scoped ComplexOrder
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DefLift.BilFischer.exists_pair | exact GlobalTheory.DefLift.BilFischer.exists_pair | (intros; apply GlobalTheory.DefLift.BilFischer.exists_pair <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.DefLift.BilFischer.exists_pair` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsBilinearFischerPairingMatrixEntryPolynomia.lean&line=145#L145)
 -/
 theorem _root_.GlobalTheory.T.exists_bilinearFischerPairing_matrixEntryPolynomialRing : ∀ (ι : Type) [Fintype ι] (m n : ℕ), ∃ B : Pol ι m n →ₗ[ℂ] Pol ι m n →ₗ[ℂ] ℂ, (∀ Q, (∀ P, B P Q = 0) → Q = 0) ∧ (∀ a b P Q, B (subst a b P) Q = B P (subst (fun τ => (a τ).transpose) (fun τ => (b τ).transpose) Q)) ∧ ∀ (ℓ : Pol ι m n →ₗ[ℂ] ℂ) (d : ℕ), (∀ α : ι × Fin m × Fin n →₀ ℕ, d < α.degree → ℓ (MvPolynomial.monomial α 1) = 0) → ∃ Q, ∀ P, B P Q = ℓ P := by
   first | exact @GlobalTheory.DefLift.BilFischer.exists_pair | exact GlobalTheory.DefLift.BilFischer.exists_pair | (intros; apply GlobalTheory.DefLift.BilFischer.exists_pair <;> assumption)

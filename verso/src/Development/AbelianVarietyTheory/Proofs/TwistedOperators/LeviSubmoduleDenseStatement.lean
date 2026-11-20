@@ -14,8 +14,10 @@ open GlobalTheory.AutomorphicL2Unitary (IsTopIrreducible)
 open GlobalTheory.HCChar GlobalTheory.Published GlobalTheory.Published.Langlands
 open scoped InnerProductSpace Topology ENNReal ComplexConjugate
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LeviDense.leviSubmoduleDense | exact GlobalTheory.LeviDense.leviSubmoduleDense | (intros; apply GlobalTheory.LeviDense.leviSubmoduleDense <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LeviDense.leviSubmoduleDense` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FLeviSubmoduleDense.lean&line=119#L119)
 -/
 theorem _root_.GlobalTheory.T.levi_submodule_dense : GlobalTheory.Published.IrreducibleUnitaryAdmissible → GlobalTheory.Published.KFiniteCoefficientsAnalytic → GlobalTheory.Published.LeviSubmoduleDense := by
   first | exact @GlobalTheory.LeviDense.leviSubmoduleDense | exact GlobalTheory.LeviDense.leviSubmoduleDense | (intros; apply GlobalTheory.LeviDense.leviSubmoduleDense <;> assumption)

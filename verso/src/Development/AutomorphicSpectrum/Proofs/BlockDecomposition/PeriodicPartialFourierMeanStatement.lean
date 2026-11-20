@@ -7,8 +7,10 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open GlobalTheory.AutomorphicL2Unitary GlobalTheory.AdelicU GlobalTheory.Doubling GlobalTheory.Cont GlobalTheory.MixModel
 open GlobalTheory.StdUnn GlobalTheory.StdUnn.Model PositivityTheory.GramSchwartzFunctions PositivityTheory.GramSchwartzFunctions.BC PositivityTheory.PfSWUS PositivityTheory.Rg.Rsw GlobalTheory.CompanionTheory.PcFc
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.PcFc.isPer_pm | exact GlobalTheory.CompanionTheory.PcFc.isPer_pm | (intros; apply GlobalTheory.CompanionTheory.PcFc.isPer_pm <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.PcFc.isPer_pm` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FPeriodicPartialFourierMean.lean&line=43#L43)
 -/
 theorem _root_.GlobalTheory.T.periodic_partial_fourier_mean : ∀ {D : D7} {n ρ p : ℕ} (hn : ρ + p = n) (m : Meas D ρ p) (ψ : AddChar (AF D.host.F) ℂ) (b₀ : HermE D ρ) (Φ : hermA D n → ℂ), IsPer Φ → IsPer (pm hn m ψ b₀ Φ) := by
   first | exact @GlobalTheory.CompanionTheory.PcFc.isPer_pm | exact GlobalTheory.CompanionTheory.PcFc.isPer_pm | (intros; apply GlobalTheory.CompanionTheory.PcFc.isPer_pm <;> assumption)

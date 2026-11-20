@@ -13,8 +13,10 @@ open NumberField MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheor
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EisRestrict.dim_add_two | exact GlobalTheory.EisRestrict.dim_add_two | (intros; apply GlobalTheory.EisRestrict.dim_add_two <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.EisRestrict.dim_add_two` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FWittFrameOrthogonalDimension.lean&line=22#L22)
 -/
 theorem _root_.GlobalTheory.T.witt_frame_orthogonal_dimension : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E),

@@ -6,8 +6,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Coc.secZ_surj | exact GlobalTheory.CompanionTheory.Ar.Coc.secZ_surj | (intros; apply GlobalTheory.CompanionTheory.Ar.Coc.secZ_surj <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Ar.Coc.secZ_surj` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FZeroSectionSurjective.lean&line=29#L29)
 -/
 theorem _root_.GlobalTheory.T.zero_section_surjective : ∀ (X0 : Scheme.{0}) (G : Over X0) (k : Type) [Field k] (x : Sp k ⟶ X0) (m : ℕ), Function.Surjective (secZ G x m).base := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Coc.secZ_surj | exact GlobalTheory.CompanionTheory.Ar.Coc.secZ_surj | (intros; apply GlobalTheory.CompanionTheory.Ar.Coc.secZ_surj <;> assumption)

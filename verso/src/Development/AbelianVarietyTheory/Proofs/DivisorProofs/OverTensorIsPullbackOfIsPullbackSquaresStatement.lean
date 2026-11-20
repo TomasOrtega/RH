@@ -10,8 +10,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.ZM GlobalTheory.SiegLev GlobalTheory.SiegelTor
 open scoped CategoryTheory.Obj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.over_tensor_isPullback_of_isPullback | exact GlobalTheory.over_tensor_isPullback_of_isPullback | (intros; apply GlobalTheory.over_tensor_isPullback_of_isPullback <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.over_tensor_isPullback_of_isPullback` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FOverTensorIsPullbackOfIsPullbackSquares.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.over_tensor_isPullback_of_isPullback_squares : ∀ {S S' : Scheme.{0}} (s : S' ⟶ S) (A B : Over S') (Y Z : Over S) (j : A.left ⟶ Y.left) (j' : B.left ⟶ Z.left), IsPullback j A.hom Y.hom s → IsPullback j' B.hom Z.hom s → ∃ k : (A ⊗ B).left ⟶ (Y ⊗ Z).left, k ≫ (fst Y Z).left = (fst A B).left ≫ j ∧ k ≫ (snd Y Z).left = (snd A B).left ≫ j' ∧ IsPullback k (A ⊗ B).hom (Y ⊗ Z).hom s := by
   first | exact @GlobalTheory.over_tensor_isPullback_of_isPullback | exact GlobalTheory.over_tensor_isPullback_of_isPullback | (intros; apply GlobalTheory.over_tensor_isPullback_of_isPullback <;> assumption)

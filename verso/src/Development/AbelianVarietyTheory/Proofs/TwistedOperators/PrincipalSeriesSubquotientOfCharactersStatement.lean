@@ -4,8 +4,10 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LeviEmbMulSingle
 open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.InertSupp GlobalTheory.IndefiniteRowSideFullHecke.TameConstituentPlaces ValuativeRel Matrix MeasureTheory
 open GlobalTheory.IwahoriInj (Deep)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PrinProd.isSubquotient_prinSeries_multiProd | exact GlobalTheory.PrinProd.isSubquotient_prinSeries_multiProd | (intros; apply GlobalTheory.PrinProd.isSubquotient_prinSeries_multiProd <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PrinProd.isSubquotient_prinSeries_multiProd` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FPrincipalSeriesSubquotientOfCharacters.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.principal_series_subquotient_of_characters : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (N : ℕ) (χ : Fin N → kˣ →* ℂˣ), IsSubquotient (prinSeries χ) (multiProd (Equiv.sigmaUnique (Fin N) fun _ => Fin 1) fun i => detRep (Fin 1) (χ i)) := by
   first | exact @GlobalTheory.PrinProd.isSubquotient_prinSeries_multiProd | exact GlobalTheory.PrinProd.isSubquotient_prinSeries_multiProd | (intros; apply GlobalTheory.PrinProd.isSubquotient_prinSeries_multiProd <;> assumption)

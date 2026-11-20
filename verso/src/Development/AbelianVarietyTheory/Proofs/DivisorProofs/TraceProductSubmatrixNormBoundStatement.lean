@@ -6,8 +6,10 @@ open Matrix GlobalTheory.MatDeriv
 open scoped Topology
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.trace_mul_submatrix_norm_le | exact GlobalTheory.trace_mul_submatrix_norm_le | (intros; apply GlobalTheory.trace_mul_submatrix_norm_le <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.trace_mul_submatrix_norm_le` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTraceProductSubmatrixNormBound.lean&line=8#L8)
 -/
 theorem _root_.GlobalTheory.T.trace_product_submatrix_norm_bound : ∀ {m : ℕ} (k : Fin (m + 1)) (P : Matrix (Fin k) (Fin k) ℂ) (X : Matrix (Fin m) (Fin m) ℂ) (b g : ℝ), 0 ≤ b → 0 ≤ g → (∀ y, ‖P *ᵥ y‖ ≤ b * ‖y‖) → (∀ x, ‖X *ᵥ x‖ ≤ g * ‖x‖) → ‖(P * X.submatrix (Fin.castLE (Nat.le_of_lt_succ k.isLt)) (Fin.castLE (Nat.le_of_lt_succ k.isLt))).trace‖ ≤ m * (b * g) := by
   first | exact @GlobalTheory.trace_mul_submatrix_norm_le | exact GlobalTheory.trace_mul_submatrix_norm_le | (intros; apply GlobalTheory.trace_mul_submatrix_norm_le <;> assumption)

@@ -4,8 +4,10 @@ import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousMulVec
 open Matrix MeasureTheory GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.BZMir GlobalTheory.BZMir.Leib GlobalTheory.RgGu.Leib GlobalTheory.CompanionTheory.LeibOrd GlobalTheory.SplitWeil GlobalTheory.JHMult GlobalTheory.CompanionTheory.BZShell GlobalTheory.CompanionTheory.MirPair
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.StabForm.form_unique | exact GlobalTheory.CompanionTheory.StabForm.form_unique | (intros; apply GlobalTheory.CompanionTheory.StabForm.form_unique <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.StabForm.form_unique` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FCuspidalMirabolicInvariantPairingScalar.lean&line=461#L461)
 -/
 theorem _root_.GlobalTheory.T.cuspidal_mirabolic_invariant_pairing_scalar : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (m : ℕ) (σ : IrrRep (GL (Fin (m + 1)) k)) (hc : IsCuspidal σ.ρ)

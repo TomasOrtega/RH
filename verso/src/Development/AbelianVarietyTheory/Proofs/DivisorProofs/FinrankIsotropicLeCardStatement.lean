@@ -4,8 +4,10 @@ import Mathlib
 
 open Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.isotropic_finrank_le_card | exact GlobalTheory.isotropic_finrank_le_card | (intros; apply GlobalTheory.isotropic_finrank_le_card <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.isotropic_finrank_le_card` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFinrankIsotropicLeCard.lean&line=5#L5)
 -/
 theorem _root_.GlobalTheory.T.finrank_isotropic_le_card : ∀ (K : Type) [Field K] (κ : Type) [Fintype κ] (L : Submodule K ((κ → K) × (κ → K))), (∀ a ∈ L, ∀ b ∈ L, a.1 ⬝ᵥ b.2 = b.1 ⬝ᵥ a.2) → Module.finrank K L ≤ Fintype.card κ := by
   first | exact @GlobalTheory.isotropic_finrank_le_card | exact GlobalTheory.isotropic_finrank_le_card | (intros; apply GlobalTheory.isotropic_finrank_le_card <;> assumption)

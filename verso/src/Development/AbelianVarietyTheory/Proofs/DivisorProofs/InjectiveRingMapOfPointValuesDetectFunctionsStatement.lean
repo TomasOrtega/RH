@@ -12,8 +12,10 @@ open GlobalTheory.RayEv (Ray)
 open GlobalTheory.Toroidal GlobalTheory.LogKS GlobalTheory.RigChart GlobalTheory.Heat
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ValInj.injective_of_val | exact GlobalTheory.ValInj.injective_of_val | (intros; apply GlobalTheory.ValInj.injective_of_val <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ValInj.injective_of_val` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FInjectiveRingMapOfPointValuesDetectFunctions.lean&line=37#L37)
 -/
 theorem _root_.GlobalTheory.T.injective_ringMap_of_pointValues_detect_functions : ∀ (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] (Ω : Type) [CommRing Ω] (φ : R →+* Ω) (x' : Sp Ω ⟶ G.left), x' ≫ G.hom = spMap φ → (∀ (O : G.left.Opens) (f : Γ(G.left, O)), ⊤ ≤ x' ⁻¹ᵁ O → valR x' O f = 0 → f = 0) → Function.Injective φ := by
   first | exact @GlobalTheory.ValInj.injective_of_val | exact GlobalTheory.ValInj.injective_of_val | (intros; apply GlobalTheory.ValInj.injective_of_val <;> assumption)

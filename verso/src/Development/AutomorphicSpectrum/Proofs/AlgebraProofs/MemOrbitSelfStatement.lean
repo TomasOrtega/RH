@@ -10,8 +10,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.CompanionTheory.FreeQuotProof GlobalTheory.CompanionTheory.Hypotheses₂ GlobalTheory.CompanionTheory.Hypotheses₂.FreeQuot
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.FreeQuotProof.mem_orbit_self | exact GlobalTheory.CompanionTheory.FreeQuotProof.mem_orbit_self | (intros; apply GlobalTheory.CompanionTheory.FreeQuotProof.mem_orbit_self <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.FreeQuotProof.mem_orbit_self` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FAlgebraProofs%2FMemOrbitSelf.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.mem_orbit_self' : ∀ {S : Scheme.{0}} (G X : Over S) [GrpObj G] [ModObj G X] (x : X.left), x ∈ orbit G X x := by
   first | exact @GlobalTheory.CompanionTheory.FreeQuotProof.mem_orbit_self | exact GlobalTheory.CompanionTheory.FreeQuotProof.mem_orbit_self | (intros; apply GlobalTheory.CompanionTheory.FreeQuotProof.mem_orbit_self <;> assumption)

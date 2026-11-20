@@ -9,8 +9,10 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.Discrepancy GlobalTheory.FieldPair
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.OpenSpecField.exists_fieldEquiv | exact GlobalTheory.OpenSpecField.exists_fieldEquiv | (intros; apply GlobalTheory.OpenSpecField.exists_fieldEquiv <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.OpenSpecField.exists_fieldEquiv` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsFunctionFieldEquivOpenImmersionSpec.lean&line=113#L113)
 -/
 theorem _root_.GlobalTheory.T.exists_functionFieldEquiv_openImmersionSpec : ∀ (S : Type) [CommRing S] [IsDomain S] [Algebra ℂ S] (Y : Scheme.{0}) [IsIntegral Y]
     (p : Y ⟶ Sp ℂ) (j : Sp S ⟶ Y) [IsOpenImmersion j], j ≫ p = spMap (algebraMap ℂ S) →

@@ -9,8 +9,10 @@ open scoped CategoryTheory.MonObj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.CompanionTheory.FreeQuotProof GlobalTheory.CompanionTheory.Hypotheses₂ GlobalTheory.CompanionTheory.Hypotheses₂.FreeQuot GlobalTheory.CompanionTheory.FreeQuotGlue
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.FreeQuotGlue.isPullback_of_isChart | exact GlobalTheory.CompanionTheory.FreeQuotGlue.isPullback_of_isChart | (intros; apply GlobalTheory.CompanionTheory.FreeQuotGlue.isPullback_of_isChart <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.FreeQuotGlue.isPullback_of_isChart` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FAlgebraProofs%2FPullbackOfGluedCharts.lean&line=49#L49)
 -/
 theorem _root_.GlobalTheory.T.pullback_of_glued_charts : ∀ {P X Y' : Scheme.{0}} (a b : P ⟶ X) (π : X ⟶ Y') {J : Type} (V : J → X.Opens) (Y : J → Scheme.{0}) (q : ∀ j, (V j).toScheme ⟶ Y j) (em : ∀ j, Y j ⟶ Y') [∀ j, IsOpenImmersion (em j)], (∀ j, IsChart a b (V j) (q j)) → (∀ j, (V j).ι ≫ π = q j ≫ em j) → (∀ j, π ⁻¹ᵁ (em j).opensRange = V j) → (∀ y : Y', ∃ j, ∃ z : Y j, em j z = y) → IsPullback a b π π := by
   first | exact @GlobalTheory.CompanionTheory.FreeQuotGlue.isPullback_of_isChart | exact GlobalTheory.CompanionTheory.FreeQuotGlue.isPullback_of_isChart | (intros; apply GlobalTheory.CompanionTheory.FreeQuotGlue.isPullback_of_isChart <;> assumption)

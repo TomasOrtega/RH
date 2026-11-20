@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsEqAddOfRedVEq
 open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.TorRef GlobalTheory.PolFan
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RedTh.hasRedCover | exact GlobalTheory.RedTh.hasRedCover | (intros; apply GlobalTheory.RedTh.hasRedCover <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RedTh.hasRedCover` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FHasPolyhedralCoverBalancedFormsCMField.lean&line=78#L78)
 -/
 theorem _root_.GlobalTheory.T.hasPolyhedralCover_balancedForms_CMField : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] [Module.Projective (𝓞 E) X], HasRedCover H.bar X := by
   first | exact @GlobalTheory.RedTh.hasRedCover | exact GlobalTheory.RedTh.hasRedCover | (intros; apply GlobalTheory.RedTh.hasRedCover <;> assumption)

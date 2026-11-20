@@ -8,8 +8,10 @@ open Formalism.BasicNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVo
 open scoped TensorProduct ENNReal
 open GlobalTheory.TamSU GlobalTheory.SUVol GlobalTheory.UCls GlobalTheory.AdLat GlobalTheory.Published
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TamCnt.relIndex_congG_succ | exact GlobalTheory.TamCnt.relIndex_congG_succ | (intros; apply GlobalTheory.TamCnt.relIndex_congG_succ <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TamCnt.relIndex_congG_succ` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRelIndexCongruenceSubgroupEqLocal.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.relIndex_congruence_subgroup_eq_local : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (Λ : Submodule (𝓞 E) (Fin M → E)) (v : HeightOneSpectrum (𝓞 F)) (k : ℕ), (GlobalTheory.TamCnt.congG σ J Λ v (k + 1)).relIndex (GlobalTheory.TamCnt.congG σ J Λ v k) = (GlobalTheory.TamCnt.locCong σ J Λ v (k + 1)).relIndex (GlobalTheory.TamCnt.locCong σ J Λ v k) := by
   first | exact @GlobalTheory.TamCnt.relIndex_congG_succ | exact GlobalTheory.TamCnt.relIndex_congG_succ | (intros; apply GlobalTheory.TamCnt.relIndex_congG_succ <;> assumption)

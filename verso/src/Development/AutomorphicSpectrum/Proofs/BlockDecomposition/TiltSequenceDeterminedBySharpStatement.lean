@@ -5,8 +5,10 @@ import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomology
 set_option backward.isDefEq.respectTransparency false
 open CategoryTheory GroundTheory.PAdicHodge CrystallineSemistableComparison CrystallineSemistableComparison.PAlg
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Untilt.tilt_inj | exact GlobalTheory.CompanionTheory.Untilt.tilt_inj | (intros; apply GlobalTheory.CompanionTheory.Untilt.tilt_inj <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.Untilt.tilt_inj` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FTiltSequenceDeterminedBySharp.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.tilt_sequence_determined_by_sharp : ∀ {l : ℕ} [Fact l.Prime] (A : PAlg l) (a b : ℕ → A.A), (∀ i, a (i + 1) ^ l = a i) → (∀ i, b (i + 1) ^ l = b i) → (∀ i, A.sharp (a i) = A.sharp (b i)) → a = b := by
   first | exact @GlobalTheory.CompanionTheory.Untilt.tilt_inj | exact GlobalTheory.CompanionTheory.Untilt.tilt_inj | (intros; apply GlobalTheory.CompanionTheory.Untilt.tilt_inj <;> assumption)

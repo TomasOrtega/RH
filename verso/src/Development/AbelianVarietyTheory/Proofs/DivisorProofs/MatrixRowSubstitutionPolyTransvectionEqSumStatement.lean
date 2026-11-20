@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RowSubst
 open MvPolynomial Formalism.GradedWeylDivisibility GlobalTheory.GenCoef
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RowSubstTransvection.rowSubst_transvection | exact GlobalTheory.RowSubstTransvection.rowSubst_transvection | (intros; apply GlobalTheory.RowSubstTransvection.rowSubst_transvection <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RowSubstTransvection.rowSubst_transvection` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FMatrixRowSubstitutionPolyTransvectionEqSum.lean&line=37#L37)
 -/
 theorem _root_.GlobalTheory.T.matrixRowSubstitutionPoly_transvection_eq_sum : ∀ (O : Type) [CommRing O] (N : ℕ) (R : Type) [CommRing R] [Algebra O R] (a b : Fin N) (r : R) (D : ℕ) (f : MvPolynomial (Fin N × Fin N) O), f.totalDegree ≤ D → rowSubst O N R (Matrix.transvection a b r) f = ∑ k ∈ Finset.range (D + 1), r ^ k • MvPolynomial.map (algebraMap O R) (rowDiv O b a k f) := by
   first | exact @GlobalTheory.RowSubstTransvection.rowSubst_transvection | exact GlobalTheory.RowSubstTransvection.rowSubst_transvection | (intros; apply GlobalTheory.RowSubstTransvection.rowSubst_transvection <;> assumption)

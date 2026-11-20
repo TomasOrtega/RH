@@ -9,8 +9,10 @@ open scoped ENNReal Classical
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory GlobalTheory.ArInt GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.ShFam.Pad GlobalTheory.VertForm GlobalTheory.CoverNorm
 open CategoryTheory.Limits TopologicalSpace
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mean4O.CommonGen.exists_common | exact GlobalTheory.Mean4O.CommonGen.exists_common | (intros; apply GlobalTheory.Mean4O.CommonGen.exists_common <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mean4O.CommonGen.exists_common` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FNormalFiniteDominantRefinement.lean&line=20#L20)
 -/
 theorem _root_.GlobalTheory.T.normal_finite_dominant_refinement : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (V₁ V₂ : Mean4O.Cover Y),
     ∃ (G : Scheme.{0}) (_ : IsIntegral G) (_ : GlobalTheory.IsNormalScheme G) (g : G ⟶ V₁.G) (k : G ⟶ V₂.G),

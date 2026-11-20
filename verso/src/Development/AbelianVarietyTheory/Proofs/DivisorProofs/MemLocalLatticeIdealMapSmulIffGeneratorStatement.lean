@@ -12,8 +12,10 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open scoped Matrix TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LatLocIdealSmul.mem_latLoc_idealMap_smul_iff | exact GlobalTheory.LatLocIdealSmul.mem_latLoc_idealMap_smul_iff | (intros; apply GlobalTheory.LatLocIdealSmul.mem_latLoc_idealMap_smul_iff <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.LatLocIdealSmul.mem_latLoc_idealMap_smul_iff` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FMemLocalLatticeIdealMapSmulIffGenerator.lean&line=37#L37)
 -/
 theorem _root_.GlobalTheory.T.mem_localLattice_idealMap_smul_iff_generator : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ) (L : Submodule (𝓞 E) (Fin n → E)) (I : Ideal (𝓞 F)) (v : IsDedekindDomain.HeightOneSpectrum (𝓞 F)) (z : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v), (∀ d ∈ I, Valued.v (algebraMap F (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v) (d : F)) ≤ Valued.v z) → (∃ d ∈ I, Valued.v (algebraMap F (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v) (d : F)) = Valued.v z) → ∀ y : Fin n → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v ⊗[F] E, y ∈ GlobalTheory.AdelicU.latLoc F (I.map (algebraMap (𝓞 F) (𝓞 E)) • L) v ↔ ∃ x ∈ GlobalTheory.AdelicU.latLoc F L v, y = z • x := by
   first | exact @GlobalTheory.LatLocIdealSmul.mem_latLoc_idealMap_smul_iff | exact GlobalTheory.LatLocIdealSmul.mem_latLoc_idealMap_smul_iff | (intros; apply GlobalTheory.LatLocIdealSmul.mem_latLoc_idealMap_smul_iff <;> assumption)

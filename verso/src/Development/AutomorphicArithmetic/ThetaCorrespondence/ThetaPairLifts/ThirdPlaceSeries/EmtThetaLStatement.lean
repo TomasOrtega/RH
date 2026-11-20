@@ -11,8 +11,10 @@ section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR Formalism.IndefR.NX NumberField IsDedekindDomain GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw GlobalTheory.Mem.R3.Tr GlobalTheory.HeightCounting GlobalTheory.HeightCounting.Up GlobalTheory.HeightCounting.Fin3
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.HeightCounting.Fin3.emtTheta_L_alt | exact _root_.GlobalTheory.HeightCounting.Fin3.emtTheta_L_alt | (intros; apply _root_.GlobalTheory.HeightCounting.Fin3.emtTheta_L_alt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HeightCounting.Fin3.emtTheta_L_alt` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicArithmetic%2FThetaCorrespondence%2FThetaPairLifts%2FThirdPlaceSeries%2FEmtThetaL.lean&line=17#L17)
 -/
 theorem _root_.GlobalTheory.T.emtTheta_of_yRel : ∀ {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {P : Pre2 K w} {x : St P} (L : LocAll (lay0 (Dof x))) (l : _root_.GlobalTheory.HeightCounting.Up.StrictHenselianAcyclicLevel hL x) {p0 : BaseLevelRowSide (w.D (oL x L).Z)} (Y : YT x L p0), YRel L Y → EMtTheta Y (_root_.GlobalTheory.HeightCounting.Fin3.yStructureLocal L l) (_root_.GlobalTheory.HeightCounting.Fin3.characterChoiceLocal L l) := by
   first | exact @_root_.GlobalTheory.HeightCounting.Fin3.emtTheta_L_alt | exact _root_.GlobalTheory.HeightCounting.Fin3.emtTheta_L_alt | (intros; apply _root_.GlobalTheory.HeightCounting.Fin3.emtTheta_L_alt <;> assumption)

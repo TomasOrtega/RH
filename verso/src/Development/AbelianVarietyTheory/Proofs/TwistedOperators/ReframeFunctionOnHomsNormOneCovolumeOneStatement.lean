@@ -11,8 +11,10 @@ open GlobalTheory.AdSpan.ReVec
 open scoped TensorProduct ComplexConjugate Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AdSpan.ReVec.reframeFunctionOnHoms_norm_one_covolumeOne | exact GlobalTheory.AdSpan.ReVec.reframeFunctionOnHoms_norm_one_covolumeOne | (intros; apply GlobalTheory.AdSpan.ReVec.reframeFunctionOnHoms_norm_one_covolumeOne <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.AdSpan.ReVec.reframeFunctionOnHoms_norm_one_covolumeOne` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FReframeFunctionOnHomsNormOneCovolumeOne.lean&line=53#L53)
 -/
 theorem _root_.GlobalTheory.T.reF_norm_one_of_norm_one_covolOne : ∀ (D : D7) (S T : HSp D) (b : Module.Basis (Fin S.rank) D.host.E S.V) (f : WO S T → ℂ), AllSome (fun p : Measure (WO S T) × Set (WO S T) => IsCovolOne (ratL T S) p.1 p.2) (fun p => nrm2 p.1 p.2 f = 1) → AllSome (fun p : Measure (WO (reS S b) T) × Set (WO (reS S b) T) => IsCovolOne (ratL T (reS S b)) p.1 p.2) (fun p => nrm2 p.1 p.2 (reF S T b f) = 1) := by
   first | exact @GlobalTheory.AdSpan.ReVec.reframeFunctionOnHoms_norm_one_covolumeOne | exact GlobalTheory.AdSpan.ReVec.reframeFunctionOnHoms_norm_one_covolumeOne | (intros; apply GlobalTheory.AdSpan.ReVec.reframeFunctionOnHoms_norm_one_covolumeOne <;> assumption)

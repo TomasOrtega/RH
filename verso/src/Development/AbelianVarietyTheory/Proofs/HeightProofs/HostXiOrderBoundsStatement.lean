@@ -7,8 +7,10 @@ import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.DisjointExcep
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj GlobalTheory.Mem GlobalTheory.FinalJoin GlobalTheory.FinalJoin2 GlobalTheory.FieldSize
 open scoped IntermediateField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FieldSize.roots_sizes | exact GlobalTheory.FieldSize.roots_sizes | (intros; apply GlobalTheory.FieldSize.roots_sizes <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FieldSize.roots_sizes` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FHeightProofs%2FHostXiOrderBounds.lean&line=31#L31)
 -/
 theorem _root_.GlobalTheory.T.host_xi_order_bounds : ∀ (P : Pre) (L : ℝ), HostSz P.host L → Real.log P.restRowsFiniteGroupCard ≤ P.R.f * (P.R.r : ℝ) ^ 2 * (18 * L + 2) ∧ (∀ p ∈ [P.host.pde, P.host.pde'], 0 < xiOrd P.host (P.host.g 0 * P.host.g 1 * p) ∧ Real.log (xiOrd P.host (P.host.g 0 * P.host.g 1 * p)) ≤ 1 + Real.log (classNumber P.host.E) + 2 * P.R.f * (21 * L)) ∧ 8 ≤ P.R.f ∧ 2 * P.R.m ≤ P.R.r := by
   first | exact @GlobalTheory.FieldSize.roots_sizes | exact GlobalTheory.FieldSize.roots_sizes | (intros; apply GlobalTheory.FieldSize.roots_sizes <;> assumption)

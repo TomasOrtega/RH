@@ -8,8 +8,10 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.intAt_chart | exact GlobalTheory.Mum.intAt_chart | (intros; apply GlobalTheory.Mum.intAt_chart <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.intAt_chart` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsBasicOpenIntegralOfIntegralAtPoint.lean&line=30#L30)
 -/
 theorem _root_.GlobalTheory.T.exists_basicOpen_integral_of_integral_at_point : ∀ {X Y : Scheme.{0}} (L : LB X) (α : Y ⟶ X) (k : ℕ) (s : SecK L α k) (ζ : X), IntAt L α s ζ → ∀ (j : L.ι) (W : X.Opens) (hW : W ≤ L.U j), IsAffineOpen W → ζ ∈ W → ∃ c : Γ(X, W), ζ ∈ X.basicOpen c ∧ (α.app (X.basicOpen c)).hom.IsIntegralElem ((Y.presheaf.map (homOfLE (α.preimage_mono (X.basicOpen_le c))).op).hom (chartVal L α s j W hW)) := by
   first | exact @GlobalTheory.Mum.intAt_chart | exact GlobalTheory.Mum.intAt_chart | (intros; apply GlobalTheory.Mum.intAt_chart <;> assumption)

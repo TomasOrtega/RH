@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LatticeModelVacu
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.Gam0
 open Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Hk3.one_add_maximal_inv_int | exact GlobalTheory.Hk3.one_add_maximal_inv_int | (intros; apply GlobalTheory.Hk3.one_add_maximal_inv_int <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Hk3.one_add_maximal_inv_int` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FOneAddMaximalMatrixIntegralInverse.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.one_add_maximal_matrix_integral_inverse : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (n : ℕ) (X : Matrix (Fin n) (Fin n) L), (∀ i j, Valued.v (X i j) < 1) →
   ∃ k : GL (Fin n) L, (k : Matrix (Fin n) (Fin n) L) = 1 + X ∧ ∀ i j, ((k⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i j ∈ Formalism.UG.intL L := by

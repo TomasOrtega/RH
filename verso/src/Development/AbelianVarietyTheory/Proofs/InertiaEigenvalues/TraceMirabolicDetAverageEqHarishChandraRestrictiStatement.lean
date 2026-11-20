@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SeriesKillsAvg
 open GlobalTheory.GLq GlobalTheory.MirAvg Polynomial
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ResTr.trace_mir | exact GlobalTheory.ResTr.trace_mir | (intros; apply GlobalTheory.ResTr.trace_mir <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ResTr.trace_mir` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FTraceMirabolicDetAverageEqHarishChandraRestricti.lean&line=181#L181)
 -/
 theorem _root_.GlobalTheory.T.trace_mirabolicDetAverage_eq_harishChandraRestriction : ∀ (g : ℕ) [Fact g.Prime] (n : ℕ) (ψ : Gn g (n + 1) → ℂ) (θ : (ZMod g)ˣ →* ℂˣ),
     tr (mirEl θ (Pi.single (Fin.last n) 1) false) ψ =

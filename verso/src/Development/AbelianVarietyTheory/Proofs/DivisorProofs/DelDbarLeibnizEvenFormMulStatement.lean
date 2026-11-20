@@ -9,8 +9,10 @@ open GlobalTheory GlobalTheory.CxForm GlobalTheory.GoodMetric
 open ReciprocityTheory.L2DbarEstimates (V)
 open scoped ContDiff ComplexConjugate Topology
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CxForm.HolAtlas.del_dbar_even_mul | exact GlobalTheory.CxForm.HolAtlas.del_dbar_even_mul | (intros; apply GlobalTheory.CxForm.HolAtlas.del_dbar_even_mul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CxForm.HolAtlas.del_dbar_even_mul` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDelDbarLeibnizEvenFormMul.lean&line=13#L13)
 -/
 theorem _root_.GlobalTheory.T.del_dbar_leibniz_evenForm_mul : ∀ (M : Type) [TopologicalSpace M] (n : ℕ) (A : HolAtlas M n) (w : A.Pt → Ev n) (β : A.Fld),
     A.IsForm (GlobalTheory.LineForm.fld A w) → A.IsForm β →

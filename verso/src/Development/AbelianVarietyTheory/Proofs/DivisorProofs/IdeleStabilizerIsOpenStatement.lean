@@ -11,8 +11,10 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 open GlobalTheory.Doubling (absE)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IdeleTate.isOpen_stab | exact GlobalTheory.IdeleTate.isOpen_stab | (intros; apply GlobalTheory.IdeleTate.isOpen_stab <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IdeleTate.isOpen_stab` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIdeleStabilizerIsOpen.lean&line=14#L14)
 -/
 theorem _root_.GlobalTheory.T.idele_stabilizer_isOpen : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E],
     IsOpen ((GlobalTheory.IdeleTate.stab F E : Subgroup (AE F E)ˣ) : Set (AE F E)ˣ) := by

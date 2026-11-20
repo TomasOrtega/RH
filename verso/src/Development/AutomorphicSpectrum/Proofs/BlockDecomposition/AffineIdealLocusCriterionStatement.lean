@@ -8,8 +8,10 @@ open scoped CategoryTheory.Obj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.AbLaw GlobalTheory.CechPic GlobalTheory.AbDual PositivityTheory.ObstructionTrivialLocus GlobalTheory.CompanionTheory.TrivLoc
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.TrivLoc.Glue.exists_closed_subscheme | exact GlobalTheory.CompanionTheory.TrivLoc.Glue.exists_closed_subscheme | (intros; apply GlobalTheory.CompanionTheory.TrivLoc.Glue.exists_closed_subscheme <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.TrivLoc.Glue.exists_closed_subscheme` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FAffineIdealLocusCriterion.lean&line=31#L31)
 -/
 theorem _root_.GlobalTheory.T.affine_ideal_locus_criterion : ∀ (Y : Scheme.{0}) (P : ∀ T : Scheme.{0}, (T ⟶ Y) → Prop),
     (∀ (T T' : Scheme.{0}) (h : T' ⟶ T) (t : T ⟶ Y), P T t → P T' (h ≫ t)) →

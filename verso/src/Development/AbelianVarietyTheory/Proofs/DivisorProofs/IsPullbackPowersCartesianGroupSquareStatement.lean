@@ -8,8 +8,10 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.PowCart.isPullback_pow | exact GlobalTheory.Mum.PowCart.isPullback_pow | (intros; apply GlobalTheory.Mum.PowCart.isPullback_pow <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Mum.PowCart.isPullback_pow` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsPullbackPowersCartesianGroupSquare.lean&line=108#L108)
 -/
 theorem _root_.GlobalTheory.T.isPullback_powers_cartesian_group_square : ∀ {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [IsCommMonObj G] [GrpObj G'] [IsCommMonObj G'] {f : S' ⟶ S} {β : G'.left ⟶ G.left} (h : IsGrpPullback G' G f β), IsPullback (lift (pushPt h.1.w (fst G' G')) (pushPt h.1.w (snd G' G'))).left (G2 G').hom (G2 G).hom f ∧ IsPullback (cubeMapOf h).F3 (G3 G').hom (G3 G).hom f ∧ IsPullback (lift (pushPt h.1.w (x4 G' 0)) (lift (pushPt h.1.w (x4 G' 1)) (lift (pushPt h.1.w (x4 G' 2)) (pushPt h.1.w (x4 G' 3))))).left (G4 G').hom (G4 G).hom f := by
   first | exact @GlobalTheory.Mum.PowCart.isPullback_pow | exact GlobalTheory.Mum.PowCart.isPullback_pow | (intros; apply GlobalTheory.Mum.PowCart.isPullback_pow <;> assumption)

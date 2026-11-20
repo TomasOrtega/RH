@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.EpsilonPairingZe
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.HodgeTateKernel
 open GlobalTheory GlobalTheory.HTLat GlobalTheory.PDivGroup GlobalTheory.WeilIntegral GlobalTheory.IndefiniteRowSideFullHecke.HodgeTateKernel TensorProduct CategoryTheory ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Pdiv ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.ChTor CategoryTheory.MonObj
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WeilIntegral.hasTrivialisingOpen | exact GlobalTheory.WeilIntegral.hasTrivialisingOpen | (intros; apply GlobalTheory.WeilIntegral.hasTrivialisingOpen <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WeilIntegral.hasTrivialisingOpen` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTrivialisingOpenExists.lean&line=79#L79)
 -/
 theorem _root_.GlobalTheory.T.trivialising_open_exists : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [Algebra ℤ_[p] O] [Algebra ℤ_[p] C] [IsScalarTower ℤ_[p] O C] (Λ : Type) [CommRing Λ] [StarRing Λ] (P : Point p v O Λ), SpecialFibreNotInClosure p O → HasTrivialisingOpen P := by
   first | exact @GlobalTheory.WeilIntegral.hasTrivialisingOpen | exact GlobalTheory.WeilIntegral.hasTrivialisingOpen | (intros; apply GlobalTheory.WeilIntegral.hasTrivialisingOpen <;> assumption)

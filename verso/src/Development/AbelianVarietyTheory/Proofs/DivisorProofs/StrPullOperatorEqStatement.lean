@@ -7,8 +7,10 @@ open Matrix MeasureTheory Set Filter Topology
 open GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe GlobalTheory.TorsionForm GlobalTheory.TorsionForm.OneVec
 open scoped Real ContDiff
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TorsionForm.OneVec.strN_pullOp | exact GlobalTheory.TorsionForm.OneVec.strN_pullOp | (intros; apply GlobalTheory.TorsionForm.OneVec.strN_pullOp <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TorsionForm.OneVec.strN_pullOp` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FStrPullOperatorEq.lean&line=104#L104)
 -/
 theorem _root_.GlobalTheory.T.str_pull_operator_eq : ∀ {n g : ℕ} (a : Fin n → ℂ) (K : Ext (n + n + g) →L[ℂ] Ext (n + n + g)), strN (pullOp a K) = pullBaseL a (strN K) := by
   first | exact @GlobalTheory.TorsionForm.OneVec.strN_pullOp | exact GlobalTheory.TorsionForm.OneVec.strN_pullOp | (intros; apply GlobalTheory.TorsionForm.OneVec.strN_pullOp <;> assumption)

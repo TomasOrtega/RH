@@ -18,8 +18,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun
 open ValuativeRel
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WeilM.isLocallyConstant_finprod_evalV | exact GlobalTheory.WeilM.isLocallyConstant_finprod_evalV | (intros; apply GlobalTheory.WeilM.isLocallyConstant_finprod_evalV <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.WeilM.isLocallyConstant_finprod_evalV` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsLocallyConstantFinprodSchwartzBruhatFiniteAdel.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.isLocallyConstant_finprod_schwartzBruhat_finiteAdeles : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
     (φ : ∀ v : IsDedekindDomain.HeightOneSpectrum (𝓞 F), (κ → Fv F v) → ℂ), (∀ v, φ v ∈ GlobalTheory.WeilM.SB _) →

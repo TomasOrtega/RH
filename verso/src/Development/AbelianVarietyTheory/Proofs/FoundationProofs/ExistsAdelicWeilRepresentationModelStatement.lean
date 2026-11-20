@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ActAApply
 open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.NormSum GlobalTheory.FinWeil
 open scoped BigOperators
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FinWeil.Model.exists_isModel | exact GlobalTheory.FinWeil.Model.exists_isModel | (intros; apply GlobalTheory.FinWeil.Model.exists_isModel <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.FinWeil.Model.exists_isModel` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FExistsAdelicWeilRepresentationModel.lean&line=67#L67)
 -/
 theorem _root_.GlobalTheory.T.exists_adelicWeilRepresentationModel : ∀ (D : D7), admG1 D → ∀ (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), Crv D cc δ → ∀ (N N' : ℕ), ∃ w γ WA, GlobalTheory.FinWeil.IsModel D cc δ N N' w γ WA := by
   first | exact @GlobalTheory.FinWeil.Model.exists_isModel | exact GlobalTheory.FinWeil.Model.exists_isModel | (intros; apply GlobalTheory.FinWeil.Model.exists_isModel <;> assumption)

@@ -7,8 +7,10 @@ open ReciprocityTheory.L2DbarEstimates (V)
 open scoped ComplexOrder Topology
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PointFormSign.topCoeff_prod_det_sqPoly_pow_nonneg | exact GlobalTheory.PointFormSign.topCoeff_prod_det_sqPoly_pow_nonneg | (intros; apply GlobalTheory.PointFormSign.topCoeff_prod_det_sqPoly_pow_nonneg <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.PointFormSign.topCoeff_prod_det_sqPoly_pow_nonneg` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FTopDegreeFormCoeffProdDetHermitianSquarePowNonne.lean&line=136#L136)
 -/
 theorem _root_.GlobalTheory.T.topDegreeFormCoeff_prod_det_hermitianSquare_pow_nonneg : ∀ {n : ℕ} {κ : Type} [Fintype κ] (m r e : κ → ℕ) (T : ∀ t, V n →ₗ[ℂ] Matrix (Fin (m t)) (Fin (r t)) ℂ),
     0 ≤ topCoeff (∏ t, (sqPoly (T t)).det ^ e t) := by

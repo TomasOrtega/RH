@@ -10,8 +10,10 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 open GlobalTheory.CompanionTheory.GodementH
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.GodementH.absEw_mul_locInf_le | exact GlobalTheory.CompanionTheory.GodementH.absEw_mul_locInf_le | (intros; apply GlobalTheory.CompanionTheory.GodementH.absEw_mul_locInf_le <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.GodementH.absEw_mul_locInf_le` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FLocalNormInfinitePlaceBound.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.local_norm_infinite_place_bound : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (J : Type) [Fintype J] (w : InfinitePlace F) (e : EmbOver E w) (u : J → E) (δ : (w.Completion ⊗[F] E)ˣ) (z : J → w.Completion ⊗[F] E) (c : ℝ≥0),
     (∀ f, z f = ((1 : w.Completion) ⊗ₜ[F] u f) * δ.1) → (∀ f, ‖infEmb e (z f)‖₊ ≤ c) →

@@ -11,8 +11,10 @@ open scoped NumberField.AdeleRing ValuativeRel
 open GroundTheory.Global.AdicLiesOver
 open GlobalTheory.CompanionTheory.CenTheta
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.CenTheta.norm_omR | exact GlobalTheory.CompanionTheory.CenTheta.norm_omR | (intros; apply GlobalTheory.CompanionTheory.CenTheta.norm_omR <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.CenTheta.norm_omR` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FNormRealCentralCharacterEqOne.lean&line=15#L15)
 -/
 theorem _root_.GlobalTheory.T.norm_real_central_character_eq_one : ∀ (n : ℤ) (t : ℝ) (a : ℝˣ), ‖omR n t a‖ = 1 := by
   first | exact @GlobalTheory.CompanionTheory.CenTheta.norm_omR | exact GlobalTheory.CompanionTheory.CenTheta.norm_omR | (intros; apply GlobalTheory.CompanionTheory.CenTheta.norm_omR <;> assumption)

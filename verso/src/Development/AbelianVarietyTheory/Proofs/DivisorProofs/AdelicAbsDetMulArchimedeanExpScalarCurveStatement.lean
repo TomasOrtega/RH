@@ -3,8 +3,10 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicAbsDetMulArch
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemExpSolCons
 open NumberField MeasureTheory GlobalTheory.CuspRep GlobalTheory.HCF Topology
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HCF.absDetA_mul_expCurve | exact GlobalTheory.HCF.absDetA_mul_expCurve | (intros; apply GlobalTheory.HCF.absDetA_mul_expCurve <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HCF.absDetA_mul_expCurve` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAdelicAbsDetMulArchimedeanExpScalarCurve.lean&line=23#L23)
 -/
 theorem _root_.GlobalTheory.T.adelicAbsDet_mul_archimedeanExpScalarCurve : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (g : GA E a) (t : ℝ),
     absDetA (g * expCurve E a t) = absDetA g * Real.exp (t * (a * Module.finrank ℚ E)) := by

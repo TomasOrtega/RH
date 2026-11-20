@@ -5,8 +5,10 @@ open NumberField IsDedekindDomain Matrix Formalism.MainNotions.GlobalTheoryTheor
 open Formalism.UG (cT)
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.KFin.leviMat_map | exact GlobalTheory.CompanionTheory.KFin.leviMat_map | (intros; apply GlobalTheory.CompanionTheory.KFin.leviMat_map <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.KFin.leviMat_map` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FLeviMatrixMapBaseChange.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.levi_matrix_map_base_change : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {r : ℕ} {X Y : Matrix (Fin n) (Fin r) E} (A A' : Type) [CommRing A] [Algebra F A] [CommRing A'] [Algebra F A'] (φ : A →ₐ[F] A') (M : Matrix (Fin n) (Fin n) (A ⊗[F] E)), leviMat σ J A' X Y (M.map (Algebra.TensorProduct.map φ (AlgHom.id F E))) = (leviMat σ J A X Y M).map (Algebra.TensorProduct.map φ (AlgHom.id F E)) := by
   first | exact @GlobalTheory.CompanionTheory.KFin.leviMat_map | exact GlobalTheory.CompanionTheory.KFin.leviMat_map | (intros; apply GlobalTheory.CompanionTheory.KFin.leviMat_map <;> assumption)

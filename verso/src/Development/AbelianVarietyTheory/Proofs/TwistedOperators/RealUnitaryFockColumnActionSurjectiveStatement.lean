@@ -19,8 +19,10 @@ open GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle (Tri)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RowEx MeasureTheory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RealColAct.realCol_surjective | exact GlobalTheory.RealColAct.realCol_surjective | (intros; apply GlobalTheory.RealColAct.realCol_surjective <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.RealColAct.realCol_surjective` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FRealUnitaryFockColumnActionSurjective.lean&line=30#L30)
 -/
 theorem _root_.GlobalTheory.T.realUnitaryFockColumnAction_surjective : ∀ {D : D7} {θ : InfFam D} (hθ : IsInfFam θ) (V : HSp D) (hV : HSpace.gram V = 1), Function.Surjective (GlobalTheory.RealColAct.realCol θ hθ V hV) := by
   first | exact @GlobalTheory.RealColAct.realCol_surjective | exact GlobalTheory.RealColAct.realCol_surjective | (intros; apply GlobalTheory.RealColAct.realCol_surjective <;> assumption)

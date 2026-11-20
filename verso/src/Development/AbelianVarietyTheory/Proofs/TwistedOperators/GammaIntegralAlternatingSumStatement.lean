@@ -6,8 +6,10 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EpsOfCZero
 open MeasureTheory Finset GlobalTheory.Chamber
 open scoped InnerProductSpace
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Chamber.integrable_gamma_and_integral_exp_mul | exact GlobalTheory.Chamber.integrable_gamma_and_integral_exp_mul | (intros; apply GlobalTheory.Chamber.integrable_gamma_and_integral_exp_mul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.Chamber.integrable_gamma_and_integral_exp_mul` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FGammaIntegralAlternatingSum.lean&line=32#L32)
 -/
 theorem _root_.GlobalTheory.T.gamma_integral_alternating_sum : ∀ (k : ℕ) (P R : Finset (SV k)) (Y : A0 k), IsPar P → R ⊆ P → Integrable (fun H : aMQ (aP P) R => gamP P R Y H) ∧ ∀ l ∈ generic k, ∫ H : aMQ (aP P) R, eL l H * gamP P R Y H = ∑ S ∈ between P R, (-1) ^ (P \ S).card * epsHat P S l * eps S R l * eL l (pr S Y - pr R Y) := by
   first | exact @GlobalTheory.Chamber.integrable_gamma_and_integral_exp_mul | exact GlobalTheory.Chamber.integrable_gamma_and_integral_exp_mul | (intros; apply GlobalTheory.Chamber.integrable_gamma_and_integral_exp_mul <;> assumption)

@@ -4,8 +4,10 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeSocleOverOfSimple
 open scoped Topology
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.finite_orbit_of_fixed_near_one | exact GlobalTheory.finite_orbit_of_fixed_near_one | (intros; apply GlobalTheory.finite_orbit_of_fixed_near_one <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.finite_orbit_of_fixed_near_one` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCompactOrbitSmoothVectorFinite.lean&line=7#L7)
 -/
 theorem _root_.GlobalTheory.T.compact_orbit_smooth_vector_finite : ∀ {H V : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [AddCommGroup V]
     [Module ℂ V] (ρ : H →* Module.End ℂ V) (K : Subgroup H) (hK : IsCompact (K : Set H)) (x : V)

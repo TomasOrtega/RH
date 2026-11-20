@@ -6,8 +6,10 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 open GlobalTheory GlobalTheory.QCoh GlobalTheory.LocM GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.ChainPts
 open Formalism.MainNotions.DIV.Cons (intO)
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.VB.IsFrame.of_retract | exact GlobalTheory.VB.IsFrame.of_retract | (intros; apply GlobalTheory.VB.IsFrame.of_retract <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.VB.IsFrame.of_retract` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FProjectionOfFrameIsFrame.lean&line=10#L10)
 -/
 theorem _root_.GlobalTheory.T.projection_of_frame_is_frame : ∀ {X : Scheme.{0}} {F F₁ : X.Modules} (i : F₁ ⟶ F) (q : F ⟶ F₁), i ≫ q = 𝟙 F₁ → ∀ {r r' : ℕ} (σ : Fin r' → Fin r), Function.Injective σ → ∀ {U : X.Opens} (s : Fin r → Γ(F, U)), GlobalTheory.VB.IsFrame s → (∀ k, i.app U (q.app U (s (σ k))) = s (σ k)) → (∀ j, j ∉ Set.range σ → q.app U (s j) = 0) → GlobalTheory.VB.IsFrame (fun k => q.app U (s (σ k))) := by
   first | exact @GlobalTheory.VB.IsFrame.of_retract | exact GlobalTheory.VB.IsFrame.of_retract | (intros; apply GlobalTheory.VB.IsFrame.of_retract <;> assumption)

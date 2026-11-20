@@ -5,8 +5,10 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.PointShiftSt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.Dets
 open NumberField
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.latRank_one_eq_ideal_smul | exact GlobalTheory.latRank_one_eq_ideal_smul | (intros; apply GlobalTheory.latRank_one_eq_ideal_smul <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.latRank_one_eq_ideal_smul` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRankOneFgLatticeEqFractionalIdealSmulVector.lean&line=8#L8)
 -/
 theorem _root_.GlobalTheory.T.rankOne_fg_lattice_eq_fractionalIdeal_smul_vector : ∀ {K : Type} [Field K] [NumberField K] {m : ℕ} (ell : Submodule (𝓞 K) (Fin m → K)),
     ReciprocityTheory.GeometryOfNumbersTheory.latRank K ell = 1 → ell.FG →

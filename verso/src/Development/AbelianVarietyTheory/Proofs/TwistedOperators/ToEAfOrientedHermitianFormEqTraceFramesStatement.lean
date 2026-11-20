@@ -16,8 +16,10 @@ open Formalism.L2.DIV (kP Pl LevelP)
 open Classical
 
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TraceFrames.toEAf_hO_eq_trace_frames | exact GlobalTheory.TraceFrames.toEAf_hO_eq_trace_frames | (intros; apply GlobalTheory.TraceFrames.toEAf_hO_eq_trace_frames <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.TraceFrames.toEAf_hO_eq_trace_frames` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FToEAfOrientedHermitianFormEqTraceFrames.lean&line=31#L31)
 -/
 theorem _root_.GlobalTheory.T.toEAf_orientedHermitianForm_eq_trace_frames : ∀ {D : D7} (S T : HSp D) (βS : GL (Fin S.rank) (Datum.EAf D)) (βT : GL (Fin T.rank) (Datum.EAf D)) (k y : WO S T), toEAf D (hO S T y k) = Matrix.trace (frMapAdj S T βS βT k * frMapO S T βS βT y) := by
   first | exact @GlobalTheory.TraceFrames.toEAf_hO_eq_trace_frames | exact GlobalTheory.TraceFrames.toEAf_hO_eq_trace_frames | (intros; apply GlobalTheory.TraceFrames.toEAf_hO_eq_trace_frames <;> assumption)

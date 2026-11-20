@@ -4,8 +4,10 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EGPgTrueEqLastI
 open Matrix GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.BZMir GlobalTheory.BZMir.Leib GlobalTheory.RgGu.Leib GlobalTheory.CompanionTheory.BZRes Topology
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.BZRes.mem_HPG_iff_conj_mem_parab | exact GlobalTheory.CompanionTheory.BZRes.mem_HPG_iff_conj_mem_parab | (intros; apply GlobalTheory.CompanionTheory.BZRes.mem_HPG_iff_conj_mem_parab <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.CompanionTheory.BZRes.mem_HPG_iff_conj_mem_parab` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FMemHPGIffConjugateParabolic.lean&line=21#L21)
 -/
 theorem _root_.GlobalTheory.T.mem_HPG_iff_conjugate_parabolic : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {i t : ℕ} (h : (i + 1) + t = i + t + 1) (p : Mir k (i + t)), p ∈ HPG k i t ↔ wGL k h * (p : GL (Fin (i + t + 1)) k) * (wGL k h)⁻¹ ∈ parab k (two (stdSum h)) := by
   first | exact @GlobalTheory.CompanionTheory.BZRes.mem_HPG_iff_conj_mem_parab | exact GlobalTheory.CompanionTheory.BZRes.mem_HPG_iff_conj_mem_parab | (intros; apply GlobalTheory.CompanionTheory.BZRes.mem_HPG_iff_conj_mem_parab <;> assumption)

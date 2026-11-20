@@ -13,8 +13,10 @@ open Formalism.BasicNotions Formalism.L2.Pj GlobalTheory.Toroidal GlobalTheory.S
 open scoped ContDiff ComplexOrder ENNReal Classical
 open GlobalTheory.IrrAn
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IrrAn.isAnalyticSubset_ptsOf | exact GlobalTheory.IrrAn.isAnalyticSubset_ptsOf | (intros; apply GlobalTheory.IrrAn.isAnalyticSubset_ptsOf <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.IrrAn.isAnalyticSubset_ptsOf` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTorsionPointsEqOfLocal.lean&line=67#L67)
 -/
 theorem _root_.GlobalTheory.T.closed_subset_analytic : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) [LocallyOfFiniteType p] (σ : k →+* ℂ) (d : ℕ) (R : AnRead p σ d) [CompactSpace (CxPts p σ)] (T : Set (Limits.pullback p (spMap σ) : Scheme.{0})), IsClosed T → R.finAtlas.IsAnalyticSubset (GlobalTheory.IrrAn.ptsOf p σ T) := by
   first | exact @GlobalTheory.IrrAn.isAnalyticSubset_ptsOf | exact GlobalTheory.IrrAn.isAnalyticSubset_ptsOf | (intros; apply GlobalTheory.IrrAn.isAnalyticSubset_ptsOf <;> assumption)

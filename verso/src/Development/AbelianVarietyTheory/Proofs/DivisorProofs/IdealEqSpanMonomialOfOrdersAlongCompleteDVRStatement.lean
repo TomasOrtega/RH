@@ -7,8 +7,10 @@ open GlobalTheory GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan Gl
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.MonoVal.eq_span_monomial_of_forall_cdvr | exact GlobalTheory.MonoVal.eq_span_monomial_of_forall_cdvr | (intros; apply GlobalTheory.MonoVal.eq_span_monomial_of_forall_cdvr <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.MonoVal.eq_span_monomial_of_forall_cdvr` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIdealEqSpanMonomialOfOrdersAlongCompleteDVR.lean&line=12#L12)
 -/
 theorem _root_.GlobalTheory.T.ideal_eq_span_monomial_of_orders_along_completeDVR : ∀ (k : Type) [Field k] [CharZero k] (m e : ℕ) (I : Ideal (ChartRing k m e)) (a : Fin m → ℕ), (∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W], GlobalTheory.LN.CDvr W → ∀ ψ : ChartRing k m e →+* W, Function.Injective ψ → IsLocalHom ψ → I.map ψ = Ideal.span {ψ (∏ i, bdParam k m e i ^ a i)}) → I = Ideal.span {∏ i, bdParam k m e i ^ a i} := by
   first | exact @GlobalTheory.MonoVal.eq_span_monomial_of_forall_cdvr | exact GlobalTheory.MonoVal.eq_span_monomial_of_forall_cdvr | (intros; apply GlobalTheory.MonoVal.eq_span_monomial_of_forall_cdvr <;> assumption)

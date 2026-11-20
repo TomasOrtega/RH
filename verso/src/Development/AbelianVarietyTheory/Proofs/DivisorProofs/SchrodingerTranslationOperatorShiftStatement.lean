@@ -15,8 +15,10 @@ open GlobalTheory.ThK.EvAt0.PolD GlobalTheory.ArchUniq GlobalTheory.ArchUniq.Coo
 open GlobalTheory.Doubling (absE absEv unitFin ideleAt)
 open Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ThK.EvAt0.PolD.schrF_dOp_conj | exact GlobalTheory.ThK.EvAt0.PolD.schrF_dOp_conj | (intros; apply GlobalTheory.ThK.EvAt0.PolD.schrF_dOp_conj <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.ThK.EvAt0.PolD.schrF_dOp_conj` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSchrodingerTranslationOperatorShift.lean&line=18#L18)
 -/
 theorem _root_.GlobalTheory.T.schrodinger_translation_operator_shift : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ]
     (w : (κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F)) (a b : κ → mixedEmbedding.mixedSpace F),

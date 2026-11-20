@@ -9,8 +9,10 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.DegreeFormula Formal
 open GlobalTheory.TwoLat GlobalTheory.OrthFilt GlobalTheory.VdmRec GlobalTheory.MixDens GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.Published
 open scoped Classical
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BaseIso.exists_sameMet | exact GlobalTheory.BaseIso.exists_sameMet | (intros; apply GlobalTheory.BaseIso.exists_sameMet <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.BaseIso.exists_sameMet` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FMetricDescendsSameValue.lean&line=219#L219)
 -/
 theorem _root_.GlobalTheory.T.metric_descends_same_value : ∀ (k k' : Type) [CommRing k] [CommRing k'] (φ : k ≃+* k') (X : Scheme.{0}) (p : X ⟶ Sp k') (d : ℕ), IsArithVar p d → ∀ (E : X.Modules) (r : ℕ) (h : VMetric p E r) (H : h.IsCInf), IsArithVar (p ≫ spMap φ.toRingHom) d ∧ ∃ (h₀ : VMetric (p ≫ spMap φ.toRingHom) E r) (H₀ : h₀.IsCInf), SameMet φ h h₀ ∧ ∀ (F : FlagSp E r) (z : X) (e : ℕ) (a : ℝ), F.IsVal H (VMetric.det H) z e a → F.IsVal H₀ (VMetric.det H₀) z e a := by
   first | exact @GlobalTheory.BaseIso.exists_sameMet | exact GlobalTheory.BaseIso.exists_sameMet | (intros; apply GlobalTheory.BaseIso.exists_sameMet <;> assumption)

@@ -5,8 +5,10 @@ open MeasureTheory Filter Topology GlobalTheory GlobalTheory.Cartier GlobalTheor
 open ReciprocityTheory.L2DbarEstimates (V)
 open scoped ContDiff Matrix
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GoodTop.norm_det_le_of_weighted | exact GlobalTheory.GoodTop.norm_det_le_of_weighted | (intros; apply GlobalTheory.GoodTop.norm_det_le_of_weighted <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GoodTop.norm_det_le_of_weighted` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FNormDetLeOfWeightedEntryBound.lean&line=9#L9)
 -/
 theorem _root_.GlobalTheory.T.norm_det_le_of_weighted_entry_bound : ∀ {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (u : Equiv.Perm (Fin n)) (w : Fin n → ℝ) (c : ℝ), (∀ a, 0 < w a) → (∀ i b, ‖M i b‖ * (w (u i) * w b) ≤ c) → ‖M.det‖ ≤ (n.factorial : ℝ) * |c| ^ n * ∏ a, (w a)⁻¹ ^ 2 := by
   first | exact @GlobalTheory.GoodTop.norm_det_le_of_weighted | exact GlobalTheory.GoodTop.norm_det_le_of_weighted | (intros; apply GlobalTheory.GoodTop.norm_det_le_of_weighted <;> assumption)

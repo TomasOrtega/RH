@@ -10,8 +10,10 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.QuasiPlurisubhar
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.LieAlgebraMaps
 open NumberField Formalism.BasicNotions Formalism.MainNotions ReciprocityTheory.GeometryOfNumbersTheory GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.Mean4 GlobalTheory.Mean4O GlobalTheory.LieHt GlobalTheory.HeightParts
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HeightParts.flatHt | exact GlobalTheory.HeightParts.flatHt | (intros; apply GlobalTheory.HeightParts.flatHt <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.HeightParts.flatHt` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFlatHeightStatement.lean&line=74#L74)
 -/
 theorem _root_.GlobalTheory.T.flat_height_statement : Hypotheses2 → HypothesesH → GlobalTheory.Published.ScholzeWeinsteinB → FlatHt := by
   first | exact @GlobalTheory.HeightParts.flatHt | exact GlobalTheory.HeightParts.flatHt | (intros; apply GlobalTheory.HeightParts.flatHt <;> assumption)

@@ -8,8 +8,10 @@ open Classical
 open Matrix
 open scoped ComplexOrder Topology
 set_option maxHeartbeats 1000000 in
-/- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GoodMetric.goodBound_congr_nhds | exact GlobalTheory.GoodMetric.goodBound_congr_nhds | (intros; apply GlobalTheory.GoodMetric.goodBound_congr_nhds <;> assumption)`.
+/- English proof (citation)
+Apply `GlobalTheory.GoodMetric.goodBound_congr_nhds` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+
+[Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FMumfordGoodGrowthBoundCongrGermGram.lean&line=11#L11)
 -/
 theorem _root_.GlobalTheory.T.mumfordGoodGrowthBound_congr_germ_gram : ∀ (n : ℕ) (r : Type) [Fintype r] [DecidableEq r] (S : Finset (Fin n)) (c : ℝ) (N : ℕ) (G G' : ReciprocityTheory.L2DbarEstimates.V n → Matrix r r ℂ) (v : ReciprocityTheory.L2DbarEstimates.V n), G =ᶠ[nhds v] G' → GlobalTheory.GoodMetric.GoodBound S c N G v → GlobalTheory.GoodMetric.GoodBound S c N G' v := by
   first | exact @GlobalTheory.GoodMetric.goodBound_congr_nhds | exact GlobalTheory.GoodMetric.goodBound_congr_nhds | (intros; apply GlobalTheory.GoodMetric.goodBound_congr_nhds <;> assumption)

@@ -2,16 +2,10 @@ import Mathlib
 
 namespace GlobalTheory
 
-/- English proof (translation)
-Use `set S := hf.toFinset with hS`. Establish `hsupp : Function.support f ⊆ (S : Set A)` using `by simp [hS]`. Establish `hinner : ∀ b, (∑ᶠ a : {a // ρ a = b}, f a.1) = ∑ a ∈ S with ρ a = b, f a`. Introduce `b`. Rewrite using `[finsum_subtype_eq_finsum_cond (fun a => ρ a = b)]`.
+/- English proof (authored)
+Let S be the finite support of f. For each b, the sum of f on the fibre ρ⁻¹(b) is the finite sum over those a in S with ρ(a) = b. To see this, extend the summand on the fibre by zero to all of A. The extension is supported in S, and the terms outside the fibre vanish.
 
-Establish `: (fun a => ∑ᶠ (_ : ρ a = b), f a) = fun a => if ρ a = b then f a else 0`. Use function extensionality and compare the values at `a`. Conclude with `finsum_eq_if`. Rewrite using `[this, finsum_eq_sum_of_support_subset _ (s := S), Finset.sum_filter]`. Introduce `a ha`.
-
-Simplify using `only [Function.mem_support, ne_eq, ite_eq_right_iff, not_forall] at ha`. Take `⟨_, h⟩` from `ha`. Conclude with `hsupp h`. Repeatedly rewrite using `[hinner]`. Rewrite using `[finsum_eq_sum_of_support_subset f hsupp, finsum_eq_sum_of_support_subset _ (s := S.image ρ)]`.
-
-Conclude with `(Finset.sum_fiberwise_of_maps_to (fun a ha => Finset.mem_image_of_mem ρ ha) f).symm`. Introduce `b hb`. Rewrite `hb` using `[Function.mem_support]`. Take `⟨a, ha, hab⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hb`. Rewrite `ha` using `[Finset.mem_filter]`.
-
-Rewrite using `[Finset.coe_image]`. Conclude with `⟨a, ha.1, ha.2⟩`.
+If b lies outside ρ(S), the fibre sum is zero. The outer sum can therefore be taken over the finite image ρ(S). The fibres over this image partition S, so adding their sums gives the sum of f over S, which is the original finitely supported sum.
 -/
 theorem finsum_fiberwise_of_finite_support {A B : Type} (ρ : A → B) (f : A → ℂ)
     (hf : (Function.support f).Finite) :

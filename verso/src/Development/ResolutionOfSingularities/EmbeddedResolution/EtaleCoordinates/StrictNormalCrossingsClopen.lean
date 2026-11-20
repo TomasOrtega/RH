@@ -24,14 +24,14 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The unit ideal sheaf assigns the whole section ring as its ideal on each affine open.
 -/
 private theorem ideal_top {X : Scheme.{u}} (U : X.affineOpens) :
     (⊤ : X.IdealSheafData).ideal U = ⊤ := by simp
 
-/- English proof (translation)
-Rewrite the hypotheses and the conclusion using the stated equalities.
+/- English proof (authored)
+On V, the pulled-back ideal from U is obtained by ideal extension along the map of section rings. The product sheaf on U gives the product of the two section ideals, and ideal extension preserves products. This gives the product of the two extensions on V.
 -/
 private theorem ideal_comap_mul {X Y : Scheme.{u}} (g : X ⟶ Y) (U : Y.affineOpens)
     (V : X.affineOpens) (e : (V : X.Opens) ≤ g ⁻¹ᵁ (U : Y.Opens)) (I J : Y.IdealSheafData) :
@@ -41,24 +41,24 @@ private theorem ideal_comap_mul {X Y : Scheme.{u}} (g : X ⟶ Y) (U : Y.affineOp
     Scheme.IdealSheafData.comap_ideal_eq_map_appLE J g U V e,
     Scheme.IdealSheafData.ideal_mul, Pi.mul_apply, Ideal.map_mul]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Every point of the open subscheme V has image in V by definition of the inclusion. The preimage of V is therefore the whole open subscheme.
 -/
 private theorem top_le_ι_preimage_self {Y : Scheme.{u}} (V : Y.Opens) :
     (⊤ : V.toScheme.Opens) ≤ (Opens.map V.ι.base).obj V := by
   intro x _
   exact x.2
 
-/- English proof (translation)
-Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+/- English proof (authored)
+A section on V viewed as an open of Y becomes a global section of the open subscheme V by the restriction identification. This direction is the inverse of the canonical isomorphism from global sections of the open subscheme to sections on V.
 -/
 private theorem ι_appLE_top_eq_topIso_inv {Y : Scheme.{u}} (V : Y.Opens) :
     V.ι.appLE V ⊤ (top_le_ι_preimage_self V) = V.topIso.inv := by
   simp
   rfl
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The section map is the inverse of the canonical section-ring isomorphism. In particular it is injective and surjective.
 -/
 private theorem ι_appLE_top_bijective {Y : Scheme.{u}} (V : Y.Opens) :
     Function.Injective (CommRingCat.Hom.hom (V.ι.appLE V ⊤ (top_le_ι_preimage_self V))) ∧
@@ -66,12 +66,8 @@ private theorem ι_appLE_top_bijective {Y : Scheme.{u}} (V : Y.Opens) :
   rw [ι_appLE_top_eq_topIso_inv]
   exact V.topIso.commRingCatIsoToRingEquiv.symm.bijective
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
-
-Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Under the isomorphism between sections over V in Y and global sections of the open subscheme V, the ideal on V extends to the ideal of the restricted sheaf. By hypothesis that extension is the whole ring. Pulling the whole ring back along the isomorphism gives the whole section ring of V, so the ideal on V is the unit ideal.
 -/
 private theorem ideal_eq_top_of_isAffineOpen_of_restrictIdeal_eq_top {Y : Scheme.{u}} (D : Y.IdealSheafData)
     {V : Y.Opens} (hV : IsAffineOpen V) (htop : restrictIdeal D V = ⊤) :
@@ -94,18 +90,16 @@ private theorem ideal_eq_top_of_isAffineOpen_of_restrictIdeal_eq_top {Y : Scheme
   rw [key2, Ideal.comap_top] at hcomap
   exact hcomap.symm
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+In the algebra associated to the chart, its j-th coordinate is the image of the j-th polynomial variable. The chart's coordinate-ring map sends that variable to the pullback of the j-th affine-space coordinate, which is the coordinate section of the chart.
 -/
 private theorem etaleChartCoord_eq_coord {X : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} {V : X.Opens} {m : ℕ} (c : EtaleChart p V m) (j : Fin m) :
     @etaleChartCoord k _ m Γ(X, V) _ c.algebra j = c.coord j := by
   rw [etaleChartCoord_def, c.algebraMap_eq_coordRingHom, c.coordRingHom_X]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+On an affine neighbourhood of x, a section belongs to the prime corresponding to x exactly when its germ belongs to the maximal ideal of the local ring. The germ of the restricted section on V′ agrees with the original germ on V. Apply this criterion in both affine neighbourhoods to transfer membership.
 -/
 private theorem presheaf_map_mem_primeIdealOf {X : Scheme.{u}} {V V' : X.Opens}
     (hV : IsAffineOpen V) (hV' : IsAffineOpen V') (hle : V' ≤ V) (x : ↥X)
@@ -125,26 +119,10 @@ private theorem presheaf_map_mem_primeIdealOf {X : Scheme.{u}} {V V' : X.Opens}
   rw [hgerm]
   exact h1
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
+/- English proof (authored)
+Induct on the list of ideals. The empty list gives the unit ideal, generated by the empty product. For a nonempty list, shift the coordinate assignment by one position to apply induction to the tail. This gives a finite set of tail coordinates and a principal generator equal to their product.
 
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
-
-Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+The ideal of the pulled-back full product on V is the product of the pulled-back head ideal and tail ideal. An unassigned head gives the unit ideal and leaves the tail product as the generator. If the head is assigned a coordinate, its ideal on V is generated by that coordinate. Injectivity of the assignment prevents this coordinate from occurring in the tail set. Adjoin it, and multiply the two principal generators. Every index in the resulting set comes from an assigned list entry.
 -/
 private theorem exists_finset_comap_prod_ideal_eq_span_prod_coord {Y W : Scheme.{u}} {k : Type u}
     [Field k] {pY : Y ⟶ Spec (CommRingCat.of k)} (g : Y ⟶ W) (U : W.affineOpens) {V : Y.Opens}
@@ -215,24 +193,12 @@ private theorem exists_finset_comap_prod_ideal_eq_span_prod_coord {Y W : Scheme.
           · rw [hprod, hD, hJ', Ideal.span_singleton_mul_span_singleton,
               Finset.prod_insert hj0]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
+/- English proof (authored)
+Smoothness of the centre follows from its strict normal crossing charts. Its open subscheme T is therefore smooth over the field, so the local ring at y is regular. Choose the chart on T where each restricted divisor is either the unit ideal or generated by a distinct coordinate that vanishes at y. Choose an affine neighbourhood of the image of y in W and shrink the chart to a basic affine open V inside its inverse image. Restricting to V preserves the ideal descriptions, and the coordinate germs at y are the same as before.
 
-Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
+The product of the pulled-back divisor ideals on V is generated by the product of the selected coordinates. Each selected coordinate lies in the prime of y. The ideal of their product is radical by the reducedness result for a product of distinct étale chart coordinates. The coordinate ring of V is nonzero because the point y gives a proper prime. In that ring distinct chart coordinates are different sections.
 
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
-
-It suffices to derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+Extend the selected coordinate sections to sections whose germs form a regular system of parameters at y. Choose a parameter index representing each selected coordinate. Two selected coordinates with the same parameter index would be equal as sections, so the index choice is injective. The product of the selected coordinates is therefore the product of the corresponding subset of parameter sections. Taking the radical has no effect on this ideal. These sections and their selected indices give the required strict normal crossing witnesses.
 -/
 theorem strictNormalCrossingsRestrictToClopen : StrictNormalCrossingsRestrictToClopen.{u} := by
   intro k _ W p _ E Z hE hZ T hTclosed hcomp y

@@ -15,35 +15,35 @@ variable {X : Scheme.{u}} {k : Type u} [Field k]
 noncomputable def filterNeTop (E : List X.IdealSheafData) : List X.IdealSheafData :=
   E.filter (fun D => @decide (D ≠ ⊤) (Classical.propDecidable _))
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+Filtering only retains entries of the original list. The empty list has none, so the filtered list is empty.
 -/
 private theorem filterNeTop_nil : filterNeTop ([] : List X.IdealSheafData) = [] := rfl
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The first ideal passes the test for being different from the unit ideal. It is retained as the first entry, followed by the filtered tail.
 -/
 private theorem filterNeTop_cons_of_ne_top (D : X.IdealSheafData) (T : List X.IdealSheafData)
     (h : D ≠ ⊤) : filterNeTop (D :: T) = D :: filterNeTop T := by
   simp [filterNeTop, h]
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The first ideal is the unit ideal and fails the filter. The result is the filtered tail.
 -/
 private theorem filterNeTop_cons_top (T : List X.IdealSheafData) :
     filterNeTop ((⊤ : X.IdealSheafData) :: T) = filterNeTop T := by
   simp [filterNeTop]
 
-/- English proof (translation)
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Every occurrence retained by the filter comes from an occurrence in the original list, giving the asserted membership.
 -/
 private theorem mem_of_mem_filterNeTop {D : X.IdealSheafData} {E : List X.IdealSheafData}
     (h : D ∈ filterNeTop E) : D ∈ E := by
   simp only [filterNeTop, List.mem_filter] at h
   exact h.1
 
-/- English proof (translation)
-Simplify using the standard rewrite rules. Supply the required witnesses or components.
+/- English proof (authored)
+Take an occurrence of D in E. Since D differs from the unit ideal, the filter retains that occurrence.
 -/
 private theorem mem_filterNeTop {D : X.IdealSheafData} {E : List X.IdealSheafData}
     (hD : D ∈ E) (h : D ≠ ⊤) : D ∈ filterNeTop E := by
@@ -58,48 +58,8 @@ private def shiftIndex (g₀ : ℕ → ℕ) : ℕ → ℕ
   | 0 => 0
   | i + 1 => g₀ i + 1
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Supply the required witnesses or components.
-
-Treat this case separately. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
-
-Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
-
-Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
-
-Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately.
-
-Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
-
-Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
-
-Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Split into cases according to the possible forms of the given data.
-
-Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
-
-Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
-
-Use linear arithmetic over natural numbers and integers. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
+/- English proof (authored)
+Enumerate the positions of the nonunit entries of each list in increasing order. For each nonunit position i of E′, send it to the position of the same rank in this enumeration for E. The enumerations have the same length because the filtered lists are equal, and their entries at each rank carry equal ideals. Distinct nonunit positions of E′ have distinct ranks and hence distinct images. Define the map arbitrarily at all other positions, where the conclusion imposes no requirements.
 -/
 private theorem exists_index_map_of_filterNeTop_eq (n : ℕ) :
     ∀ (E E' : List X.IdealSheafData),
@@ -222,36 +182,26 @@ private def transportAssignment {m : ℕ} (E' : List X.IdealSheafData) (a : ℕ 
     (g : ℕ → ℕ) : ℕ → Option (Fin m) :=
   fun i => if E'[i]? = some ⊤ then none else a (g i)
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The transport rule assigns no coordinate to an entry equal to the unit ideal. Apply that branch of the rule at the given index.
 -/
 private theorem transportAssignment_of_eq_top {m : ℕ} (E' : List X.IdealSheafData)
     (a : ℕ → Option (Fin m)) (g : ℕ → ℕ) (i : ℕ) (h : E'[i]? = some ⊤) :
     transportAssignment E' a g i = none := by
   simp [transportAssignment, h]
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+At a position whose entry is different from the unit ideal, the transport rule uses the original assignment at the matched index. This gives the stated value.
 -/
 private theorem transportAssignment_of_ne_top {m : ℕ} (E' : List X.IdealSheafData)
     (a : ℕ → Option (Fin m)) (g : ℕ → ℕ) (i : ℕ) (h : E'[i]? ≠ some ⊤) :
     transportAssignment E' a g i = a (g i) := by
   simp [transportAssignment, h]
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
+/- English proof (authored)
+Any position assigned a coordinate is nonunit, so it corresponds to an equal ideal at a valid index in E. If two positions receive the same coordinate, injectivity of the original assignment forces their matched indices to agree. Injectivity of the index correspondence then gives equality of the two positions.
 
-Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
-
-Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
-
-Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+A unit entry restricts to the unit ideal. For an unassigned nonunit entry, the matching entry of E is also unassigned and has unit restriction by the original chart. For an assigned entry, the matching entry of E has the same assigned coordinate and therefore restricts to the specified coordinate ideal. The corresponding ideals in E′ have the same restrictions because the entries are equal.
 -/
 private theorem transportAssignment_injective_and_coordIdeal {p : X ⟶ Spec (CommRingCat.of k)} {U : X.Opens} {m : ℕ}
     (c : EtaleChart p U m) (E E' : List X.IdealSheafData) (a : ℕ → Option (Fin m)) (g : ℕ → ℕ)
@@ -310,8 +260,8 @@ private theorem transportAssignment_injective_and_coordIdeal {p : X ⟶ Spec (Co
     rw [← he]
     exact hsome (g i) hgi t hti
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+At each point of the smooth scheme, choose an étale coordinate chart. The unit ideal restricts to the unit ideal on that neighbourhood, so the local coordinate criterion applies everywhere and yields a smooth divisor in the stated sense.
 -/
 theorem isSmoothDivisor_top (p : X ⟶ Spec (CommRingCat.of k))
     [AlgebraicGeometry.Smooth p] :
@@ -321,8 +271,8 @@ theorem isSmoothDivisor_top (p : X ⟶ Spec (CommRingCat.of k))
   obtain ⟨U, m, hxU, hU, ⟨c⟩⟩ := exists_etaleChart p x
   exact ⟨U, hxU, m, c, Or.inl (Scheme.IdealSheafData.comap_top U.ι)⟩
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
+/- English proof (authored)
+Choose the neighbourhood, chart, and assignment for E at x. Equality of the filtered lists gives the injective correspondence from nonunit positions of E′ to equal entries of E. Transport the assignment to E′ by this correspondence and assign no coordinates to whole-scheme unit entries. The transport lemma proves distinctness and both local ideal conditions in the same chart.
 -/
 theorem inStrictNormalCrossingPositionAt_of_filterNeTop_eq (p : X ⟶ Spec (CommRingCat.of k))
     (E E' : List X.IdealSheafData) (h : filterNeTop E = filterNeTop E') (x : X)
@@ -333,10 +283,8 @@ theorem inStrictNormalCrossingPositionAt_of_filterNeTop_eq (p : X ⟶ Spec (Comm
   obtain ⟨k1, k2, k3⟩ := transportAssignment_injective_and_coordIdeal c E E' a g hg1 hg2 hinj hnone hsome
   exact inStrictNormalCrossingPositionAt_of_exists_etaleChart ⟨U, hxU, m, c, transportAssignment E' a g, k1, k2, k3⟩
 
-/- English proof (translation)
-Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At each point, transfer the local chart from E to E′ by equality of the filtered lists. To check smoothness of each entry of E′, use the smooth-divisor result for the unit ideal. Any nonunit entry belongs to the filtered list of E′, hence to the filtered list of E and to E itself. Its smoothness follows from the hypothesis on E.
 -/
 theorem inStrictNormalCrossingPosition_of_filterNeTop_eq (p : X ⟶ Spec (CommRingCat.of k))
     [AlgebraicGeometry.Smooth p] (E E' : List X.IdealSheafData)
@@ -353,10 +301,8 @@ theorem inStrictNormalCrossingPosition_of_filterNeTop_eq (p : X ⟶ Spec (CommRi
     rw [← h] at h1
     exact hsm D (mem_of_mem_filterNeTop h1)
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Supply the required witnesses or components.
+/- English proof (authored)
+Match the nonunit positions of E′ to equal entries of E by their order in the common filtered list. At each point of the support of Z, take the chart for Z and E and transport the divisor assignment through that match. The transport lemma gives the conditions for E′. The chart and the coordinate set cutting out Z are the original witnesses, so they still give the required ideal for Z.
 -/
 theorem hasStrictNormalCrossingsWith_of_filterNeTop_eq (p : X ⟶ Spec (CommRingCat.of k))
     (Z : X.IdealSheafData) (E E' : List X.IdealSheafData)

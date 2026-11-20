@@ -33,14 +33,14 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace DivisorReductionBoundary
 
-/- English proof (translation)
-Unfold both sides to obtain the same proposition, which implies itself.
+/- English proof (authored)
+The open complement of a closed subset has precisely the points outside that closed subset, by definition of complement.
 -/
 private theorem mem_closeds_compl {α : Type u} [TopologicalSpace α]
     (S : TopologicalSpace.Closeds α) (x : α) : x ∈ S.compl ↔ x ∉ S := Iff.rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The total pullback of an ideal is contained in its strict transform. For the identity and the unit ideal, the pullback is unit and the strict transform is its saturation. Thus the saturation contains the unit ideal and is itself unit.
 -/
 private theorem saturation_top_eq_top {Y : Scheme.{u}} (F : Y.IdealSheafData) :
     saturation F (⊤ : Y.IdealSheafData) = ⊤ := by
@@ -49,15 +49,15 @@ private theorem saturation_top_eq_top {Y : Scheme.{u}} (F : Y.IdealSheafData) :
     Scheme.IdealSheafData.comap_id] at h
   exact top_le_iff.mp h
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Restriction is pullback along the open inclusion, and pullback of ideal sheaves preserves products.
 -/
 private theorem restrictIdeal_mul {X : Scheme.{u}} (A B : X.IdealSheafData) (U : X.Opens) :
     restrictIdeal (A * B) U = restrictIdeal A U * restrictIdeal B U :=
   Scheme.IdealSheafData.comap_mul A B U.ι
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Strict transform restricts to an open by restricting the morphism and the ideals to that open. The restricted identity is again the identity. Its strict transform is the saturation by the restricted center because identity pullbacks fix the restricted ideals.
 -/
 private theorem restrictIdeal_strictTransform_id {X : Scheme.{u}} [IsLocallyNoetherian X]
     (Z D : X.IdealSheafData) (U : X.Opens) :
@@ -69,8 +69,8 @@ private theorem restrictIdeal_strictTransform_id {X : Scheme.{u}} [IsLocallyNoet
   rw [h1, Category.comp_id, h2, strictTransform_eq_saturation, Scheme.IdealSheafData.comap_id,
     Scheme.IdealSheafData.comap_id]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the list. The empty list is fixed. For a nonempty list the hypothesis fixes its head at index zero and fixes every entry of its tail using the corresponding successor index. By induction the mapped tail is the original tail, so the whole list is fixed.
 -/
 private theorem map_eq_self_of_getElem {α : Type u} (g : α → α) : ∀ l : List α,
     (∀ (i : ℕ) (h : i < l.length), g (l[i]'h) = l[i]'h) → l.map g = l
@@ -81,8 +81,8 @@ private theorem map_eq_self_of_getElem {α : Type u} (g : α → α) : ∀ l : L
         map_eq_self_of_getElem g t (fun i hi => h (i + 1) (Nat.succ_lt_succ hi))
       rw [List.map_cons, h0, ht]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the list, with the empty case immediate. For deletion at index zero, every entry of the tail is fixed, so the mapped tail equals the tail. At a successor index the head is fixed, and the condition on the remaining indices gives the induction hypothesis for deletion from the tail. Reattach the fixed head.
 -/
 private theorem eraseIdx_map_eq {α : Type u} (g : α → α) : ∀ (l : List α) (j : ℕ),
     (∀ (i : ℕ) (h : i < l.length), i ≠ j → g (l[i]'h) = l[i]'h) →
@@ -101,18 +101,8 @@ private theorem eraseIdx_map_eq {α : Type u} (g : α → α) : ∀ (l : List α
       show g a :: (t.map g).eraseIdx m = a :: t.eraseIdx m
       rw [h0, ht]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities.
-
-Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
-
-Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Check equality locally. Away from the selected center support, the strict transform for the identity is the original ideal. At a point of that support, choose an adapted étale chart. The selected center is a single coordinate ideal. The distinct boundary entry is either unit or cut out by a different coordinate. Saturation by the selected coordinate fixes a unit ideal and fixes the ideal of a distinct coordinate. These local equalities prove the assertion.
 -/
 theorem strictTransform_comap_boundary_of_ne (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (j : ℕ)
     (hj : j < T.boundary.length) (i : ℕ) (hi : i < T.boundary.length) (hij : i ≠ j) :
@@ -157,24 +147,16 @@ theorem strictTransform_comap_boundary_of_ne (T : MarkedIdealWithBoundary.{u}) (
         simpa using h')
     rw [hst, Scheme.IdealSheafData.comap_id]
 
-/- English proof (translation)
-Supply the required witnesses or components.
+/- English proof (authored)
+The selected component ideal is locally generated by a nonzero divisor, and its closed subscheme is smooth over the field. These are the two defining properties of the smooth divisor.
 -/
 theorem isSmoothDivisor_containedComponentsIdeal (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (j : ℕ)
     (hj : j < T.boundary.length) :
     IsSmoothDivisor T.structMap (DivisorReduction.containedComponentsIdeal T j hj) :=
   ⟨isLocallyGeneratedByNonZeroDivisor_containedComponentsIdeal T hV j hj, smooth_subschemeι_containedComponentsIdeal_comp T hV j hj⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
-
-Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Check the product locally. On a chart at a point of the selected center, the selected center and boundary entry are the same coordinate ideal. Its strict transform for the identity is the saturation by itself, hence unit. Multiplication by the center gives the boundary ideal there. Off the center support, the center is unit and the strict transform agrees with the original boundary ideal. This proves the product identity on a cover.
 -/
 theorem strictTransform_mul_containedComponentsIdeal (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (j : ℕ)
     (hj : j < T.boundary.length) :
@@ -220,12 +202,8 @@ theorem strictTransform_mul_containedComponentsIdeal (T : MarkedIdealWithBoundar
     rw [restrictIdeal_mul, hst, Scheme.IdealSheafData.comap_id, hZtop,
       Scheme.IdealSheafData.mul_top]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At any point of the selected center support, choose the adapted chart in which the center and the selected boundary are the same coordinate ideal. Saturating that ideal by itself gives the unit ideal. Thus the strict transform is unit near the point and the point does not lie in its support. This proves disjointness.
 -/
 theorem disjoint_support_strictTransform_containedComponentsIdeal (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (j : ℕ)
     (hj : j < T.boundary.length) :
@@ -252,10 +230,8 @@ theorem disjoint_support_strictTransform_containedComponentsIdeal (T : MarkedIde
     exact c.saturation_coordIdeal_self b
   exact notMem_support_of_mem_opens_of_restrictIdeal_eq_top _ U hres x hxU
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The updated list consists of the strict transforms of the original entries and an appended exceptional ideal. Deleting the selected index removes one of the transformed entries. All other transformed original entries equal their original ideals. They occupy exactly the first original length minus one places, so taking that prefix removes the appended exceptional ideal and gives the original boundary with the selected entry deleted.
 -/
 theorem take_eraseIdx_lowerBoundaryAfterBlowup (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (j : ℕ)
     (hj : j < T.boundary.length) :
@@ -282,8 +258,8 @@ theorem take_eraseIdx_lowerBoundaryAfterBlowup (T : MarkedIdealWithBoundary.{u})
   rw [hlist, List.eraseIdx_append_of_lt_length hlen, key]
   exact List.take_left' (List.length_eraseIdx_of_lt hj)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The deletion and truncation formula identifies the retained list with the original boundary minus the chosen entry. Restricting the remaining entries of a strict normal crossings boundary to the chosen smooth divisor preserves strict normal crossings. This is the stated list and structural map.
 -/
 theorem inStrictNormalCrossingPosition_comap_lowerBoundaryAfterBlowup (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible)
     (j : ℕ) (hj : j < T.boundary.length) :

@@ -20,19 +20,15 @@ open CategoryTheory AlgebraicGeometry
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The image ideal is by definition the kernel of the map obtained by including the subscheme defined by Z and then applying the given morphism.
 -/
 theorem imageIdealSheaf_eq_ker_subschemeι_comp {S X : Scheme.{u}} (f : S ⟶ X) (Z : S.IdealSheafData) :
     imageIdealSheaf f Z = Scheme.Hom.ker (Z.subschemeι ≫ f) :=
   rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
-
-Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The support of the image ideal is the closure of the image of the composite from the subscheme defined by Z. The image of that subscheme in the source is the support of Z, so the composite image is the image of this support under the closed immersion. A closed immersion sends this closed support to a closed subset. Taking its closure therefore leaves it unchanged.
 -/
 theorem support_imageIdealSheaf_eq_image_support {S X : Scheme.{u}} (ι : S ⟶ X)
     [AlgebraicGeometry.IsClosedImmersion ι] (Z : S.IdealSheafData) :
@@ -56,8 +52,8 @@ theorem support_imageIdealSheaf_eq_image_support {S X : Scheme.{u}} (ι : S ⟶ 
     rw [AlgebraicGeometry.Scheme.Hom.support_ker]
   rw [imageIdealSheaf_eq_ker_subschemeι_comp, hsup, hcomp, hclosed.closure_eq]
 
-/- English proof (translation)
-Supply the required witnesses or components.
+/- English proof (authored)
+A closed immersion identifies its source with its scheme-theoretic image. This image is the subscheme of the target defined by its kernel ideal, and the identification followed by inclusion is the original map.
 -/
 private theorem exists_iso_ker_subscheme {W X : Scheme.{u}} (g : W ⟶ X)
     [AlgebraicGeometry.IsClosedImmersion g] :
@@ -65,8 +61,8 @@ private theorem exists_iso_ker_subscheme {W X : Scheme.{u}} (g : W ⟶ X)
       e.hom ≫ (Scheme.Hom.ker g).subschemeι = g :=
   ⟨asIso (Scheme.Hom.toImage g), Scheme.Hom.toImage_imageι g⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
+/- English proof (authored)
+Precompose the given smooth composite with the inverse isomorphism, which is smooth. The two isomorphisms cancel, so the resulting smooth map is p.
 -/
 private theorem smooth_of_smooth_iso_hom_comp {A A' B : Scheme.{u}} (e : A ≅ A') (p : A' ⟶ B)
     (h : AlgebraicGeometry.Smooth (e.hom ≫ p)) : AlgebraicGeometry.Smooth p := by
@@ -74,10 +70,8 @@ private theorem smooth_of_smooth_iso_hom_comp {A A' B : Scheme.{u}} (e : A ≅ A
   have h2 : AlgebraicGeometry.Smooth (e.inv ≫ e.hom ≫ p) := inferInstance
   simpa using h2
 
-/- English proof (translation)
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The composite of the subscheme inclusion with the given closed immersion is a closed immersion. It identifies the original subscheme with the subscheme of its image ideal. The structural map of that image subscheme is smooth after precomposition with this isomorphism by the given hypothesis. Cancel the isomorphism to conclude smoothness.
 -/
 theorem smooth_imageIdealSheaf_subschemeι_comp {S X B : Scheme.{u}} (ι : S ⟶ X)
     [AlgebraicGeometry.IsClosedImmersion ι] (Z : S.IdealSheafData) (f : X ⟶ B)
@@ -92,20 +86,16 @@ theorem smooth_imageIdealSheaf_subschemeι_comp {S X B : Scheme.{u}} (ι : S ⟶
 
 namespace BlowupSequenceData
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The new stage zero is the original base and its initial isomorphism is the identity. The projection at zero is the forward map of that isomorphism.
 -/
 theorem projectionToBase_prepend_zero {X : Scheme.{u}} (Z : X.IdealSheafData)
     (hZ : Blowup.IsBlowupAlongIdealSheaf (CategoryStruct.id X) Z) (d : BlowupSequenceData X) :
     (BlowupSequenceData.prepend Z hZ d).projectionToBase 0 = CategoryStruct.id X := by
   rw [BlowupSequenceData.projectionToBase_zero, BlowupSequenceData.prepend_isoObjZero, CategoryTheory.Iso.refl_hom]
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At the first shifted stage, the map to the new stage zero is the original initial isomorphism, and the projection of that new stage is the identity. This gives the old projection at zero. At each subsequent stage the adjacent map is the original adjacent map at the preceding index. The two projection recursions give the same composite by induction.
 -/
 theorem projectionToBase_prepend_succ {X : Scheme.{u}} (Z : X.IdealSheafData)
     (hZ : Blowup.IsBlowupAlongIdealSheaf (CategoryStruct.id X) Z) (d : BlowupSequenceData X) (t : ℕ) :
@@ -133,8 +123,8 @@ theorem projectionToBase_prepend_succ {X : Scheme.{u}} (Z : X.IdealSheafData)
     rw [e1, e2, ih]
     exact (BlowupSequenceData.projectionToBase_succ d n).symm
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. Both sides reduce to the same expression.
+/- English proof (authored)
+At the first shifted stage the asserted equality is the hypothesis, since the old stage-zero transform is the pullback of I₁ along its initial isomorphism. At the next shifted stage, the adjacent transition and center are the old ones. The two transforms are obtained by the same pullback and residual operation from ideals equal by induction.
 -/
 theorem controlledTransform_prepend_succ {X : Scheme.{u}} (Z : X.IdealSheafData)
     (hZ : Blowup.IsBlowupAlongIdealSheaf (CategoryStruct.id X) Z) (d : BlowupSequenceData X)
@@ -149,10 +139,8 @@ theorem controlledTransform_prepend_succ {X : Scheme.{u}} (Z : X.IdealSheafData)
       BlowupSequenceData.prepend_blowupMorphism_succ Z hZ d n, BlowupSequenceData.prepend_center_succ Z hZ d n]
     rfl
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+At the first shifted stage the given boundary is the pullback of E₁ along the original initial isomorphism, exactly the old stage-zero boundary. At each later stage, the adjacent transition and center are the original ones. The two boundary updates apply the same strict transforms and append the same exceptional ideal to equal preceding lists.
 -/
 theorem boundary_prepend_succ {X : Scheme.{u}} (Z : X.IdealSheafData)
     (hZ : Blowup.IsBlowupAlongIdealSheaf (CategoryStruct.id X) Z) (d : BlowupSequenceData X)
@@ -174,8 +162,8 @@ end BlowupSequenceData
 
 namespace DivisorReduction
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The lower center is smooth over the field by the marking of the lower sequence. The embedding commutes with projection to the original base, so the map of that lower center to the field agrees with its map through the ambient stage. The ambient center is its image under the stage closed immersion. Its closed subscheme is isomorphic to the lower center over the field and is therefore smooth.
 -/
 theorem smooth_ambientBlowupSeq_center_comp (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -213,8 +201,8 @@ theorem smooth_ambientBlowupSeq_center_comp (hres : FunctorialResolution.Blowup.
     (smooth_imageIdealSheaf_subschemeι_comp (embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr t) (s.center t)
       ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).projectionToBase t ≫ T.structMap) key)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The ambient center ideal is the image of the lower center ideal along the stage closed immersion. The support of an image ideal along a closed immersion is the image of the original support. Conversion of the lower marked sequence preserves its center ideal, giving the stated equality.
 -/
 theorem support_ambientBlowupSeq_center_eq_image (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})

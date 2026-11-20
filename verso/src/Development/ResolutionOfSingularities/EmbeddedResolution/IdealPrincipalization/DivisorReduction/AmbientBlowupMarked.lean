@@ -30,10 +30,8 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace BlowupSequenceData
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The given equalities of the initial pullbacks propagate to equality of all the controlled ideals and of all the transformed boundary lists. Thus each exceptional divisibility condition and center order condition transfers through the ideal equality, and each center normal crossings condition transfers through the boundary equality. The center smoothness condition uses the same geometric maps. These are the required marking conditions.
 -/
 theorem IsMarked.of_comap_isoObjZero_eq {k : Type u} [Field k] {X : Scheme.{u}}
     {d : BlowupSequenceData X} {p : X ⟶ Spec (CommRingCat.of k)} {m : ℕ}
@@ -62,8 +60,8 @@ end BlowupSequenceData
 
 namespace DivisorReduction
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
+/- English proof (authored)
+At zero the initial boundary identifications, truncation condition, and strict normal crossings give the initial going-up invariant. At a successor below the length, the preceding invariant applies by induction. The successor theorem uses derivative balance, the positive mark, lower admissibility and the lifting of normal crossings to extend the invariant to that stage.
 -/
 theorem goingUpInvariant_of_le (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -85,12 +83,8 @@ theorem goingUpInvariant_of_le (hres : FunctorialResolution.Blowup.StrictTransfo
   | succ n ih =>
       exact GoingUpInvariant.succ (ih (Nat.le_of_succ_le ht)) hbal hm hV hlift (Nat.lt_of_succ_le ht)
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The ambient sequence has the length of the lower sequence. For any adjacent step, the going-up invariant at the next stage supplies exceptional divisibility, and the invariant at the current stage puts the center in the order locus and gives its strict normal crossings condition. The ambient center is smooth over the field by the center smoothness comparison with the lower sequence. These four facts give the ambient marking.
 -/
 theorem isMarked_ambientBlowupSeq (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -125,8 +119,8 @@ theorem isMarked_ambientBlowupSeq (hres : FunctorialResolution.Blowup.StrictTran
     exact (goingUpInvariant_of_le hres hno T j hj I₀ E₀ s hpr hbal hm hV hlift hE₀ hjE hget htrunc
       i (le_of_lt hi)).hasStrictNormalCrossingsWith_center_boundary hlift hi
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The going-up induction yields the invariant at the indicated stage, since it is at most the length. Its controlled-ideal comparison identifies the restriction along the ambient embedding with the marked ideal of the lower sequence at that stage.
 -/
 theorem comap_controlledTransform_ambientBlowupSeq (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -147,21 +141,15 @@ theorem comap_controlledTransform_ambientBlowupSeq (hres : FunctorialResolution.
   (goingUpInvariant_of_le hres hno T j hj I₀ E₀ s hpr hbal hm hV hlift hE₀ hjE hget htrunc
     t ht).comap_controlledTransform ht
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The untwisted lower ideal is the original ideal pulled back along the identity. This pullback fixes the ideal.
 -/
 private theorem lowerIdealWithoutBlowup_eq_ideal (T : MarkedIdealWithBoundary.{u}) :
     lowerIdealWithoutBlowup T = T.ideal :=
   Scheme.IdealSheafData.comap_id T.ideal
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The untwisted ideal and boundary equal the originals, since they are obtained by identity pullback. Thus derivative balance and strict normal crossings hold for the untwisted data. The selected boundary entry is the same, and removing it leaves exactly the number of entries kept by the truncation. The ambient marking theorem applies using lower admissibility and positive multiplicity. Transport its marking along the initial ideal and boundary equalities to the original data.
 -/
 theorem isMarked_ambientBlowupSeq_of_containedComponentsIdeal_eq_top
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
@@ -200,16 +188,8 @@ theorem isMarked_ambientBlowupSeq_of_containedComponentsIdeal_eq_top
     hbal' hV.one_le_mult hVlow hlift hE₀ hjE (hgetAll hjE) htrunc
   exact BlowupSequenceData.IsMarked.of_comap_isoObjZero_eq (by simp only [hideal]) (by simp only [hbdry]) main
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Use the untwisted ideal and boundary identities to transfer derivative balance and strict normal crossings to the ambient construction's input. The chosen boundary entry matches, and removing it leaves the full truncated list. The general controlled-transform comparison then identifies the restriction with the lower ideal. Since the untwisted initial ideal equals the original ideal, the ambient transform in this comparison is the asserted one.
 -/
 theorem comap_controlledTransform_of_containedComponentsIdeal_eq_top
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})

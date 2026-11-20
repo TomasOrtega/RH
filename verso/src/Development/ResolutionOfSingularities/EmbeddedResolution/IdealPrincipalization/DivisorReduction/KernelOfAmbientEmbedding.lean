@@ -26,8 +26,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At zero the embedding is the lower initial isomorphism followed by the original closed immersion. Precomposition with an isomorphism preserves the kernel ideal, so its kernel is the original kernel. The ambient initial isomorphism is the identity, hence pulling that kernel back along it fixes the ideal.
 -/
 theorem ker_embeddingIntoAmbientBlowupSequence_zero {S X : Scheme.{u}} (ι : S ⟶ X)
     [AlgebraicGeometry.IsClosedImmersion ι] [AlgebraicGeometry.IsNoetherian X]
@@ -47,14 +47,8 @@ theorem ker_embeddingIntoAmbientBlowupSequence_zero {S X : Scheme.{u}} (ι : S �
   rw [h1, h2]
   exact Scheme.Hom.ker_comp_of_isIso s.isoZero.hom ι
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+At zero the embedding kernel is the pullback of the original kernel along the initial ambient isomorphism. The chosen boundary entry is the original kernel, so its initial pullback is equal to that kernel at zero. At a successor, the new embedding kernel is the strict transform of the preceding kernel. The chosen boundary entry is still within the preceding list because the boundary length only grows. Its new value is the strict transform of its preceding value, since the new exceptional ideal is appended. Induction identifies the two ideals.
 -/
 private theorem forall_le_ker_embeddingIntoAmbient_eq_boundary_get {S X : Scheme.{u}} (ι : S ⟶ X)
     [AlgebraicGeometry.IsClosedImmersion ι] [AlgebraicGeometry.IsNoetherian X]
@@ -83,8 +77,8 @@ private theorem forall_le_ker_embeddingIntoAmbient_eq_boundary_get {S X : Scheme
       simp only [List.get_eq_getElem, BlowupSequenceData.boundary_succ]
       rw [List.getElem_append_left (by simpa using hjn), List.getElem_map]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The stagewise induction identifies the kernel with the transformed original boundary entry at every stage through the length. Evaluate it at the given stage and index.
 -/
 theorem ker_embeddingIntoAmbientBlowupSequence_eq_boundary_get {S X : Scheme.{u}} (ι : S ⟶ X)
     [AlgebraicGeometry.IsClosedImmersion ι] [AlgebraicGeometry.IsNoetherian X]
@@ -103,8 +97,8 @@ namespace DivisorReduction
 
 variable (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}) (hno : BlowupPreservesNoetherian.{u})
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Use the general zero-stage kernel formula with the original closed immersion equal to the selected divisor inclusion. Its kernel is the selected boundary ideal. The ambient marked conversion retains the original initial isomorphism, giving the asserted pullback.
 -/
 theorem ker_embeddingIntoAmbient_zero_eq_comap_isoObjZero (T : MarkedIdealWithBoundary.{u})
     [AlgebraicGeometry.IsNoetherian T.scheme] (j : ℕ) (hj : j < T.boundary.length)
@@ -120,10 +114,8 @@ theorem ker_embeddingIntoAmbient_zero_eq_comap_isoObjZero (T : MarkedIdealWithBo
   rw [AlgebraicGeometry.Scheme.IdealSheafData.ker_subschemeι] at h0
   exact h0
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The unprepended ambient embedding at zero has kernel equal to the boundary ideal pulled back along the unprepended initial isomorphism. The prepended sequence starts with the identity isomorphism and its first transition is precisely the unprepended initial isomorphism. Thus the two successive pullbacks in the assertion equal the original single pullback.
 -/
 theorem ker_embeddingIntoAmbient_zero_eq_comap_blowupMorphism (T : MarkedIdealWithBoundary.{u})
     [AlgebraicGeometry.IsNoetherian T.scheme] (j : ℕ) (hj : j < T.boundary.length)
@@ -153,14 +145,8 @@ theorem ker_embeddingIntoAmbient_zero_eq_comap_blowupMorphism (T : MarkedIdealWi
   rw [hA, hB]
   exact h0
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The embedding kernel at the given stage is the transformed entry corresponding to the chosen original boundary divisor. The marked ambient sequence has that transformed boundary list, and its length is the lower sequence length, so the stage is within range. A marked sequence from an admissible input preserves strict normal crossings of its boundary. Each entry of that boundary therefore defines a smooth divisor for its stage structure map, including the embedding kernel.
 -/
 theorem isSmoothDivisor_ker_embeddingIntoAmbient_of_eq_top (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible)
     (_hob : T.IsOrderBoundedByMult) (_hbal : T.IsBalanced hV.locallyOfFiniteType)

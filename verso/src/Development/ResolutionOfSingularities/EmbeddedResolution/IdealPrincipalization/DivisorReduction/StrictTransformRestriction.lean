@@ -18,28 +18,16 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+A section vanishing after pullback along the second morphism vanishes after the additional pullback along the first. The composite is the given map, so the second kernel is contained in the composite kernel.
 -/
 private theorem ker_le_ker_of_comp_eq {A B T : Scheme.{u}} (f : A ⟶ T) (g : B ⟶ T) (e : A ⟶ B)
     (h : e ≫ g = f) : g.ker ≤ f.ker := by
   subst h
   exact Scheme.Hom.le_ker_comp e g
 
-/- English proof (translation)
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+By functoriality, the strict transform along the composite can be computed along the isomorphism using the center and ideal already pulled back by the original map. The total inverse image of the ideal's subscheme is transported by this isomorphism, and the opens away from the two center supports correspond. Restrict the transported map and its inverse to these opens. The resulting immersions into the isomorphic ambient schemes factor through each other after identifying their targets, so their kernel ideals agree by inclusion in both directions. These kernels give the strict transforms, and transport of a kernel along the isomorphism is its pullback.
 -/
 theorem comap_strictTransform_of_iso {X X₁ X₁' : Scheme.{u}} (π : X₁ ⟶ X)
     (f : X₁' ≅ X₁) (Z D : X.IdealSheafData) (_hcart : Blowup.IsLocallyGeneratedByNonZeroDivisor (Z.comap π))
@@ -108,10 +96,8 @@ theorem comap_strictTransform_of_iso {X X₁ X₁' : Scheme.{u}} (π : X₁ ⟶ 
     strictTransform_eq_ker_strictTransformι f.hom (Z.comap π) (D.comap π)]
   exact le_antisymm (ker_le_ker_of_comp_eq _ _ _ hfac1) (ker_le_ker_of_comp_eq _ _ _ hfac2)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The two closed immersions identify their sources with the closed subschemes defined by their kernels. The later kernel is the strict transform of the former by hypothesis, so this gives the claimed source isomorphisms. To compare the resulting maps between the kernel subschemes, compose both with the original kernel subscheme inclusion. The defining property of the strict-transform lift and the given commuting square make the composites agree. The inclusion is a monomorphism, hence the maps agree.
 -/
 theorem exists_iso_subscheme_of_ker_eq_strictTransform {X X₁ S S₁ : Scheme.{u}} (π : X₁ ⟶ X)
     (Z : X.IdealSheafData) (ι : S ⟶ X) (ι₁ : S₁ ⟶ X₁) (ρ : S₁ ⟶ S)
@@ -148,12 +134,8 @@ theorem exists_iso_subscheme_of_ker_eq_strictTransform {X X₁ S S₁ : Scheme.{
   simp only [asIso_hom]
   rw [hu₁, Category.assoc, hu, hsq]
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Identify the two closed subschemes with the ambient kernel subscheme and its strict transform. These identifications commute with the map from the strict transform to the original kernel subscheme. The coordinate normal crossings restriction theorem identifies the restriction of the ambient transform of D to that strict transform with the transform of the restricted D along the induced blowup. Pull this equality back along the later source isomorphism. Strict transform is compatible with this isomorphism, and commutativity identifies the resulting pulled-back center and ideal with those along the given lower map. This gives the stated equality.
 -/
 theorem comap_strictTransform_of_closedImmersion_commSq {X X₁ S S₁ : Scheme.{u}}
     {k : Type u} [Field k] (p : X ⟶ Spec (CommRingCat.of k)) (π : X₁ ⟶ X)
@@ -188,8 +170,8 @@ theorem comap_strictTransform_of_closedImmersion_commSq {X X₁ S S₁ : Scheme.
   · rw [← Scheme.IdealSheafData.comap_comp, ← Scheme.IdealSheafData.comap_comp, hfinal]
   · rw [← Scheme.IdealSheafData.comap_comp, ← Scheme.IdealSheafData.comap_comp, hfinal]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Write both exceptional ideals as pullbacks of center ideals. The two iterated pullbacks are pullbacks of the same center along the two routes in the commuting square, so they agree.
 -/
 theorem comap_exceptionalIdeal_of_commSq {X X₁ S S₁ : Scheme.{u}} (π : X₁ ⟶ X)
     (ι : S ⟶ X) (ι₁ : S₁ ⟶ X₁) (ρ : S₁ ⟶ S) (hsq : ι₁ ≫ π = ρ ≫ ι)
@@ -198,10 +180,8 @@ theorem comap_exceptionalIdeal_of_commSq {X X₁ S S₁ : Scheme.{u}} (π : X₁
   rw [Blowup.exceptionalIdeal_eq_comap, Blowup.exceptionalIdeal_eq_comap, ← Scheme.IdealSheafData.comap_comp,
     ← Scheme.IdealSheafData.comap_comp, hsq]
 
-/- English proof (translation)
-Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+For each original boundary entry the strict-transform restriction theorem identifies the pullback of the ambient transform with the lower transform of the restricted entry. These equalities hold in the list's original order. The appended exceptional ideal restricts to the lower exceptional ideal by the commuting square. Combining the transformed list with this last entry gives equality.
 -/
 theorem map_comap_strictTransform_append_exceptionalIdeal {X X₁ S S₁ : Scheme.{u}}
     {k : Type u} [Field k] (p : X ⟶ Spec (CommRingCat.of k)) (π : X₁ ⟶ X)

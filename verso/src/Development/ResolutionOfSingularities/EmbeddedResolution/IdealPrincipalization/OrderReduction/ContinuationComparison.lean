@@ -34,15 +34,15 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace BoundaryDeletion
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Since the index is in range, the tail beginning there consists of the entry at that index followed by the tail after it. Prepending the initial segment reconstructs the whole list.
 -/
 private theorem take_append_getElem_cons_drop {α : Type v} (L : List α) (i : ℕ)
     (h : i < L.length) : L.take i ++ L[i] :: L.drop (i + 1) = L := by
   rw [List.cons_getElem_drop_succ, List.take_append_drop]
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Substitute the equality of the second boundary lists. The given relation then applies to the required pair.
 -/
 private theorem sameNontrivialBoundary_congr_right {X : Scheme.{u}} (L₁ L₂ L₂' : List X.IdealSheafData)
     (h : L₂ = L₂') (hbe : MarkedIdealWithBoundary.SameNontrivialBoundary L₁ L₂') :
@@ -50,8 +50,8 @@ private theorem sameNontrivialBoundary_congr_right {X : Scheme.{u}} (L₁ L₂ L
   subst h
   exact hbe
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Identify each list with its equal list in the given relation. The same nontrivial boundary condition immediately transfers to the original pair.
 -/
 private theorem sameNontrivialBoundary_congr {X : Scheme.{u}} (L₁ L₁' L₂ L₂' : List X.IdealSheafData)
     (h₁ : L₁ = L₁') (h₂ : L₂ = L₂') (hbe : MarkedIdealWithBoundary.SameNontrivialBoundary L₁' L₂') :
@@ -60,8 +60,8 @@ private theorem sameNontrivialBoundary_congr {X : Scheme.{u}} (L₁ L₁' L₂ L
   subst h₂
   exact hbe
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Substitute the equality of the source sequences into the given pullback relation.
 -/
 private theorem isPullback_congr {X₀ Y₀ : Scheme.{u}} (φ : Y₀ ⟶ X₀) (sbase : SequenceOfBlowups X₀)
     {t₁ t₂ : SequenceOfBlowups Y₀} (h : t₁ = t₂) (hp : IsPullbackBlowupSequence φ t₁ sbase) :
@@ -69,8 +69,8 @@ private theorem isPullback_congr {X₀ Y₀ : Scheme.{u}} (φ : Y₀ ⟶ X₀) (
   subst h
   exact hp
 
-/- English proof (translation)
-Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Identify the triples, so the two comparison maps have the same source and the equality of maps applies there. The assignment gives the same sequence on the common triple. After the two identifications the existing pullback relation is the required one.
 -/
 private theorem isPullback_congr_marked (F : PrincipalizationAssignment.{u}) {X₀ : Scheme.{u}}
     (sbase : SequenceOfBlowups X₀) {T₁ T₂ : MarkedIdealWithBoundary.{u}} (h : T₁ = T₂)
@@ -82,32 +82,32 @@ private theorem isPullback_congr_marked (F : PrincipalizationAssignment.{u}) {X�
   subst hee
   exact hp
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+An equality of marked triples identifies their component data and hence their admissibility conditions. Transfer the given certificate along it.
 -/
 private theorem isAdmissible_of_eq {T₁ T₂ : MarkedIdealWithBoundary.{u}} (h : T₁ = T₂) (hv : T₂.IsAdmissible) :
     T₁.IsAdmissible := by
   subst h
   exact hv
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Equal triples have the same underlying scheme and successor dimension. The given dimension predicate therefore holds for the first triple.
 -/
 private theorem pred_dim_of_eq {T₁ T₂ : MarkedIdealWithBoundary.{u}} (h : T₁ = T₂) (P : ℕ → Prop)
     (hp : P T₂.krullDimSucc) : P T₁.krullDimSucc := by
   subst h
   exact hp
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Equal triples have the same ideal and mark, so the given pointwise order bound applies to either one.
 -/
 private theorem isOrderBoundedByMult_of_eq {T₁ T₂ : MarkedIdealWithBoundary.{u}} (h : T₁ = T₂)
     (ho : T₂.IsOrderBoundedByMult) : T₁.IsOrderBoundedByMult := by
   subst h
   exact ho
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+The two structural maps coincide after identifying the triples, so local finite type transfers to the first structural map.
 -/
 private theorem locallyOfFiniteType_of_eq {T₁ T₂ : MarkedIdealWithBoundary.{u}} (h : T₁ = T₂)
     (h₂ : AlgebraicGeometry.LocallyOfFiniteType T₂.structMap) :
@@ -115,8 +115,8 @@ private theorem locallyOfFiniteType_of_eq {T₁ T₂ : MarkedIdealWithBoundary.{
   subst h
   exact h₂
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+The two tuples of data defining balance agree after identifying the triples. The certificates of local finite type witness the same property, so the given balance condition transfers.
 -/
 private theorem isBalanced_of_eq {T₁ T₂ : MarkedIdealWithBoundary.{u}} (h : T₁ = T₂)
     (h₁ : AlgebraicGeometry.LocallyOfFiniteType T₁.structMap)
@@ -125,8 +125,8 @@ private theorem isBalanced_of_eq {T₁ T₂ : MarkedIdealWithBoundary.{u}} (h : 
   subst h
   exact hd
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The boundary-position invariance property compares the reductions at the distinguished component, since the two prefixes and the two suffixes agree after ignoring unit entries. The given lengths identify the reduction indices with the two prefix lengths. Transport the existing pullback relation through the resulting isomorphism of source reductions.
 -/
 private theorem isPullback_of_sameNontrivialBoundary
     (P : ℕ → Prop) (A : ℕ → PrincipalizationAssignment.{u}) (j c : ℕ)
@@ -147,22 +147,8 @@ private theorem isPullback_of_sameNontrivialBoundary
   rw [hlen, hlen'] at hEq
   exact IsPullbackBlowupSequence.of_isomorphic hpull hEq
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Pulling back the original boundary preserves its length and identifies the distinguished entry with the corresponding entry in the modified boundary. Since the modified triple is admissible and the two full lists have the same nontrivial entries, the unmodified pullback triple is also admissible. Its dimension, order, and balance conditions are unchanged by the replacement of the boundary. Apply smooth functoriality of divisor reduction to this unmodified pullback at the original index. Split both lists at the common distinguished entry. Their prefixes and suffixes have the same nontrivial entries by hypothesis, and their prefix lengths give the desired two indices. Boundary-position invariance transports the pullback relation to the reduction for the modified list.
 -/
 private theorem isPullbackBlowupSequence_pullbackAlong
     (P : ℕ → Prop) (A : ℕ → PrincipalizationAssignment.{u}) (Bl : PrincipalizationAssignment.{u}) (j c : ℕ)
@@ -268,20 +254,8 @@ variable (P : ℕ → Prop) (A : ℕ → PrincipalizationAssignment.{u}) (Bl : P
   (hftT : AlgebraicGeometry.LocallyOfFiniteType
     (s'.proj s'.length ≫ (NontrivialBoundary.pullbackWithNontrivialBoundary S q).structMap))
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The smooth final-stage comparison identifies the derived triple upstairs with the pullback of the downstairs derived triple equipped with the final upstairs boundary. Both triples have the needed order bounds and are balanced by tuning. The final boundaries retain the indices from the original lists, and the distinguished component corresponds to the index counting the preceding surviving components upstairs. The comparison of final boundaries matches the whole lists after removing unit ideals and also matches the prefixes before the distinguished entry and through it. Cancel the latter prefixes to match the suffixes. The smooth pullback comparison with a change of boundary position now applies to the derived triple downstairs and the identified triple upstairs.
 -/
 theorem isPullbackBlowupSequence_derivedTriple
     (hstar : MaxContactCoverProperties.{u})
@@ -362,10 +336,8 @@ theorem isPullbackBlowupSequence_derivedTriple
     HEq.rfl hinner
 
 include Dt in
-/- English proof (translation)
-Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+The two distinguished indices are in range in the corresponding final boundaries. The hypotheses allow the append formula on both sides, with no dropped boundary entries to check. It expresses each reduction as the given sequence followed by its marked continuation. The derived-triple comparison gives a pullback relation for the continuations over the final-stage map. Regard it as a comparison of their underlying blowup data and append it to the given comparison of the initial sequences over the original base map.
 -/
 theorem isPullbackBlowupSequence_appendLowerDimReduction
     (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u})

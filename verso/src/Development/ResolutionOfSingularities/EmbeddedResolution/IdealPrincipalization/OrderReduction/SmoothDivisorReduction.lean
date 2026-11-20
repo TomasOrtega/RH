@@ -26,15 +26,15 @@ open CategoryTheory AlgebraicGeometry
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The support of an ideal sheaf is the underlying closed set of its closed subscheme. The closed immersion has this underlying closed set as its image.
 -/
 private theorem coe_support_eq_range_subschemeι {X : Scheme.{u}} (I : X.IdealSheafData) :
     (↑I.support : Set ↥X) = Set.range (⇑I.subschemeι.base) := by
   simp
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The unit ideal has empty support, which is the image of its closed subscheme. If the subscheme had a point, that image would contain its image point.
 -/
 private theorem isEmpty_subscheme_top (X : Scheme.{u}) :
     IsEmpty ↥((⊤ : X.IdealSheafData).subscheme) := by
@@ -43,10 +43,8 @@ private theorem isEmpty_subscheme_top (X : Scheme.{u}) :
   rw [coe_support_eq_range_subschemeι] at h2
   exact Set.range_eq_empty_iff.mp h2
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The composite of the closed-subscheme inclusion with the given map has unit kernel, since this kernel is the image ideal. It therefore factors through the closed subscheme of the unit ideal in the target. This subscheme is empty, so the original closed subscheme is empty too. Its support is empty, which characterizes the unit ideal.
 -/
 theorem eq_top_of_imageIdealSheaf_eq_top {S X : Scheme.{u}} (σ : S ⟶ X) (J : S.IdealSheafData)
     (h : imageIdealSheaf σ J = ⊤) : J = ⊤ := by
@@ -63,16 +61,16 @@ theorem eq_top_of_imageIdealSheaf_eq_top {S X : Scheme.{u}} (σ : S ⟶ X) (J : 
     Set.range_eq_empty_iff]
   exact hZ
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Dropping trivial boundary entries filters the boundary list. Filtering the empty list gives the empty list.
 -/
 private theorem boundary_dropTrivialBoundary_of_eq_nil (T : MarkedIdealWithBoundary.{u}) (h : T.boundary = []) :
     (MaxContactReduction.dropTrivialBoundary T).boundary = [] := by
   unfold MaxContactReduction.dropTrivialBoundary
   simp [h]
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
+/- English proof (authored)
+At mark one the only derivative index below the mark is zero. The balance condition at that index is the inclusion of the original ideal into itself, so balance holds.
 -/
 private theorem isBalanced_of_mult_eq_one (T : MarkedIdealWithBoundary.{u})
     (hft : AlgebraicGeometry.LocallyOfFiniteType T.structMap) (h : T.mult = 1) :
@@ -81,8 +79,8 @@ private theorem isBalanced_of_mult_eq_one (T : MarkedIdealWithBoundary.{u})
   simp only [h]
   apply isDerivBalanced_one
 
-/- English proof (translation)
-Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
+/- English proof (authored)
+Identify the two triples, including their underlying schemes. The assignment applied to this common triple has a single underlying blowup sequence, which gives the required equality.
 -/
 private theorem toSequenceOfBlowups_heq_of_eq {S₁ S₂ : MarkedIdealWithBoundary.{u}} (h : S₁ = S₂)
     (L : PrincipalizationAssignment.{u}) : HEq (L S₁).toSequenceOfBlowups (L S₂).toSequenceOfBlowups := by
@@ -91,38 +89,10 @@ private theorem toSequenceOfBlowups_heq_of_eq {S₁ S₂ : MarkedIdealWithBounda
 
 namespace MaxContactFunctoriality
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
+/- English proof (authored)
+The dimension decrease makes the lower-dimensional reduction applicable. If the ambient order locus is empty, the ambient reduction has length zero. At mark one this locus is the support, so the ambient ideal is the unit ideal. An ideal with unit image ideal is itself the unit ideal. The lower-dimensional reduction therefore also has length zero, and the given closed immersion compares the two zero-length sequences.
 
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. A detailed English derivation is pending.
+If the ambient order locus is nonempty, trim its boundary and use the cover comparison for a smooth divisor. Over the faithfully flat cover, the ambient reduction and the boundary divisor reduction for the single divisor have the same strict pullback. They are consequently isomorphic downstairs. Identify the smooth divisor with the closed subscheme of the kernel of its immersion, and transport the given ideal to that presentation. Admissibility and the dimension decrease persist, and composition of image ideals identifies its ambient image with the original ideal. The ambient triple with the single divisor is admissible and is balanced at mark one. Boundary divisor reduction therefore expresses its sequence as the pushforward of the lower-dimensional sequence on the kernel subscheme. Smooth surjective functoriality along the isomorphism of divisor presentations identifies the original lower-dimensional sequence as its strict pullback. Transport the pushforward through this isomorphism on the divisor and the ambient sequence isomorphism already obtained.
 -/
 theorem isPushforward_of_isSmoothDivisor
     (hinv : ComapIsoInvariance.{u}) (P Q : ℕ → Prop) (A : ℕ → PrincipalizationAssignment.{u})

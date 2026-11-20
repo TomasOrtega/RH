@@ -31,22 +31,8 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace NontrivialBoundary
 
-/- English proof (translation)
-Establish an intermediate fact. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the number of original boundary entries processed. At zero both sides have empty sequences, giving the base pullback. At a successor the induction hypothesis compares the current sequences, with the upstairs index equal to the number of surviving entries. Their final structural maps are locally of finite type, and the derived triples are admissible with dimensions bounded by the reference dimension. The dimension predicate descends along those bounds, and smooth pullback preserves the order bound. If the next boundary entry pulls back to the unit ideal, the surviving count stays fixed and the corresponding final transform also pulls back to the unit ideal. The trivial-divisor continuation theorem then compares the appended downstairs reduction with the current upstairs sequence. If the entry survives, the upstairs count increases by one. Use the continuation comparison at the two corresponding indices, supported by boundary-position invariance, to compare the appended reductions. These are the defining successors of the separation sequences.
 -/
 theorem nonempty_separateBoundaryPullbackComparison
     (P : ℕ → Prop) (hmono : ∀ a b : ℕ, a ≤ b → P b → P a)

@@ -36,29 +36,29 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace TrivialDivisorContinuation
 
-/- English proof (translation)
-Substitute using the available equality. Both sides reduce to the same expression.
+/- English proof (authored)
+Equal morphisms induce equal maps on points. Evaluate them at the given point.
 -/
 private theorem hom_apply_congr {A B : Scheme.{u}} {f g : A ⟶ B} (h : f = g) (x : ↥A) : f x = g x := by
   subst h; rfl
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Replace the first point by the equal second point and apply the given support membership.
 -/
 private theorem mem_support_of_eq {A : Scheme.{u}} {M : A.IdealSheafData} {x y : ↥A} (h : x = y)
     (hx : y ∈ M.support) : x ∈ M.support := by
   subst h; exact hx
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The projection at stage zero is the initial isomorphism. Applying it to the given point transported by the inverse returns the point.
 -/
 private theorem projectionToBase_zero_isoObjZero_inv_apply {W : Scheme.{u}} (n : FunctorialResolution.EmbeddedResolution.BlowupSequenceData W) (w : ↥W) :
     (n.projectionToBase 0) (n.isoZero.inv w) = w :=
   (hom_apply_congr (FunctorialResolution.EmbeddedResolution.BlowupSequenceData.projectionToBase_zero n) (n.isoZero.inv w)).trans
     (Scheme.inv_hom_apply n.isoZero w)
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The unit ideal has empty support. Thus no point can belong to this support.
 -/
 private theorem notMem_support_of_eq_top {A : Scheme.{u}} {M : A.IdealSheafData} (h : M = ⊤)
     (x : ↥A) : x ∉ M.support := by
@@ -69,8 +69,8 @@ private theorem notMem_support_of_eq_top {A : Scheme.{u}} {M : A.IdealSheafData}
   rw [h2] at hx'
   exact hx'
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The indicated point of the support is the image of the chosen point under the intermediate morphism. The assumed equality puts its image in the image of the base-change map, contradicting disjointness.
 -/
 private theorem false_of_mem_support_comp {X' Y W Z : Scheme.{u}} (q : X' ⟶ Y) (pr : W ⟶ Y)
     (M : W.IdealSheafData)
@@ -79,8 +79,8 @@ private theorem false_of_mem_support_comp {X' Y W Z : Scheme.{u}} (q : X' ⟶ Y)
     (hz : g z ∈ M.support) : False :=
   hImageDisjoint (g z) hz x hx
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Apply the disjointness condition to the support point obtained by the two intermediate maps. Its projection equals the given image of the base-change point, which the condition excludes.
 -/
 private theorem false_of_mem_support_comp_comp {X' Y W Z Z' : Scheme.{u}} (q : X' ⟶ Y)
     (pr : W ⟶ Y) (M : W.IdealSheafData)
@@ -89,34 +89,8 @@ private theorem false_of_mem_support_comp_comp {X' Y W Z Z' : Scheme.{u}} (q : X
     (hz : h (g z) ∈ M.support) : False :=
   hImageDisjoint (h (g z)) hz x hx
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Substitute using the available equality. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
-
-Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Write the distinguished final boundary component as the divisor under consideration. Its support misses the inverse image along the final comparison map because its pullback is the unit ideal. The final comparison square is a pullback, so any point of this support whose projection met the image of the original base-change map would lift to a point of its inverse image. Thus the projected support misses that image. The assigned reduction has centers supported on the successive transforms of the distinguished divisor. At stage zero this divisor is the pullback by the initial identification. At each step its new support lies over its preceding support, both for the exceptional initial total-transform case and for every strict transform. Hence each continuation center projects to the distinguished divisor's support. Once the continuation is appended, its centers therefore miss the image of the base-change map. The disjoint-center append theorem extends the pullback relation with the upstairs sequence kept fixed. The append formula identifies the appended sequence downstairs with the lower-dimensional reduction in the claim.
 -/
 theorem nonempty_pullback_appendLowerDimReduction_of_comap_eq_top
     (P : ℕ → Prop) (A : ℕ → PrincipalizationAssignment.{u}) (B : PrincipalizationAssignment.{u}) (j₁ : ℕ)

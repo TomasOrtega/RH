@@ -11,8 +11,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Pull back the closed subscheme along the isomorphism. Its projection to the original closed subscheme is an isomorphism, and its projection to the new ambient scheme is that isomorphism followed by the original inclusion and the inverse ambient map. The pullback ideal is the kernel of this projection. Precomposing with an isomorphism preserves the kernel, giving the stated description.
 -/
 private theorem comap_eq_ker_subschemeι_comp_inv {A B : Scheme.{u}} (f : A ⟶ B) [IsIso f]
     (I : B.IdealSheafData) :
@@ -26,16 +26,16 @@ private theorem comap_eq_ker_subschemeι_comp_inv {A B : Scheme.{u}} (f : A ⟶ 
   unfold AlgebraicGeometry.Scheme.IdealSheafData.comap
   rw [hw, AlgebraicGeometry.Scheme.Hom.ker_comp_of_isIso]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The image ideal is the kernel of the closed-subscheme inclusion followed by the isomorphism. The formula for pullback along an isomorphism gives the same kernel when applied to the inverse isomorphism.
 -/
 theorem imageIdealSheaf_eq_comap_inv {A B : Scheme.{u}} (f : A ⟶ B) [IsIso f]
     (J : A.IdealSheafData) :
     imageIdealSheaf f J = J.comap (inv f) := by
   rw [imageIdealSheaf_eq_ker, comap_eq_ker_subschemeι_comp_inv (inv f) J, IsIso.inv_inv]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Image under the isomorphism is pullback along its inverse. Together with the original pullback the two operations form pullback along the identity, which fixes the ideal.
 -/
 theorem imageIdealSheaf_comap {A B : Scheme.{u}} (f : A ⟶ B) [IsIso f]
     (I : B.IdealSheafData) :
@@ -43,8 +43,8 @@ theorem imageIdealSheaf_comap {A B : Scheme.{u}} (f : A ⟶ B) [IsIso f]
   rw [imageIdealSheaf_eq_comap_inv, ← AlgebraicGeometry.Scheme.IdealSheafData.comap_comp,
     IsIso.inv_hom_id, AlgebraicGeometry.Scheme.IdealSheafData.comap_id]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Write the image as pullback along the inverse isomorphism. Pulling that ideal back along the original isomorphism gives pullback along the identity, hence the original ideal.
 -/
 theorem comap_imageIdealSheaf {A B : Scheme.{u}} (f : A ⟶ B) [IsIso f]
     (J : A.IdealSheafData) :
@@ -52,18 +52,16 @@ theorem comap_imageIdealSheaf {A B : Scheme.{u}} (f : A ⟶ B) [IsIso f]
   rw [imageIdealSheaf_eq_comap_inv, ← AlgebraicGeometry.Scheme.IdealSheafData.comap_comp,
     IsIso.hom_inv_id, AlgebraicGeometry.Scheme.IdealSheafData.comap_id]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Factor the first morphism through its scheme-theoretic image. In the composite, the kernel is determined by the inclusion of this image followed by the second map. That kernel is the image ideal of the first kernel under the second map.
 -/
 theorem ker_comp_eq_imageIdealSheaf_ker {W A B : Scheme.{u}} (g : W ⟶ A) (w : A ⟶ B) :
     (g ≫ w).ker = imageIdealSheaf w g.ker := by
   rw [imageIdealSheaf_eq_ker, AlgebraicGeometry.Scheme.Hom.ker_comp,
     AlgebraicGeometry.Scheme.Hom.ker_comp, AlgebraicGeometry.Scheme.IdealSheafData.ker_subschemeι]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The inclusion of the pulled-back closed subscheme followed by the isomorphism has kernel equal to the original ideal. The universal property of a closed immersion therefore factors this composite through the original closed subscheme. The inclusion of the original subscheme followed by the inverse isomorphism likewise has kernel equal to the pulled-back ideal and factors in the opposite direction. Compose the two factorizations and check their composites with the closed inclusions. The inverse identities for the ambient isomorphism show that these composites equal the original inclusions. As the inclusions are monomorphisms, the two factorizations are inverse, and the first has the required compatibility.
 -/
 private theorem exists_iso_subscheme_comap_of_isIso {A B : Scheme.{u}} (w : A ⟶ B) [IsIso w]
     (I : B.IdealSheafData) :
@@ -89,8 +87,8 @@ private theorem exists_iso_subscheme_comap_of_isIso {A B : Scheme.{u}} (w : A �
       Category.comp_id, Category.id_comp]
   · exact IsClosedImmersion.lift_fac ..
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The closed subscheme of the pulled-back ideal is isomorphic to the original one, compatibly with the ambient map. Thus its inclusion followed by both maps is the original inclusion followed by the final map, precomposed with this isomorphism. Precomposition with an isomorphism fixes the kernel, which is exactly the image ideal in each case.
 -/
 theorem imageIdealSheaf_comp_comap_of_isIso {A B C : Scheme.{u}} (w : A ⟶ B) [IsIso w] (g : B ⟶ C)
     (I : B.IdealSheafData) :
@@ -99,16 +97,16 @@ theorem imageIdealSheaf_comp_comap_of_isIso {A B C : Scheme.{u}} (w : A ⟶ B) [
   rw [imageIdealSheaf_eq_ker (w ≫ g) (I.comap w), imageIdealSheaf_eq_ker g I, ← Category.assoc, ← hθ,
     Category.assoc, AlgebraicGeometry.Scheme.Hom.ker_comp_of_isIso]
 
-/- English proof (translation)
-By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The support of the pulled-back ideal is the inverse image of the old support. Taking complements commutes with inverse image, so the complement open is the inverse image of the old complement open.
 -/
 private theorem compl_support_comap {A B : Scheme.{u}} (v : A ⟶ B) (I : B.IdealSheafData) :
     (I.comap v).support.compl = (TopologicalSpace.Opens.map v.base).obj I.support.compl := by
   ext x
   simp [AlgebraicGeometry.Scheme.IdealSheafData.support_comap]
 
-/- English proof (translation)
-By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
+/- English proof (authored)
+A point maps into the chosen open under the composite precisely when its first image lies in the inverse image under the second map. Thus the two open sets have the same points.
 -/
 private theorem opens_map_comp {A B C : Scheme.{u}} (f : A ⟶ B) (g : B ⟶ C) (U : C.Opens) :
     (TopologicalSpace.Opens.map (f ≫ g).base).obj U
@@ -116,18 +114,16 @@ private theorem opens_map_comp {A B C : Scheme.{u}} (f : A ⟶ B) (g : B ⟶ C) 
   ext x
   simp
 
-/- English proof (translation)
-By extensionality, compare the relevant components. Unfold both sides to obtain the same proposition, which implies itself.
+/- English proof (authored)
+The inverse image of any open under the identity has exactly its original points.
 -/
 private theorem opens_map_id {B : Scheme.{u}} (W : B.Opens) :
     (TopologicalSpace.Opens.map (𝟙 B : B ⟶ B).base).obj W = W := by
   ext x
   exact Iff.rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The isomorphism carries the inverse image open into the given open. The inverse carries the given open into its inverse image because the two ambient maps are inverse. Restrict both maps to these opens. Their composites become the identity after composing with the respective open inclusions. The inclusions are monomorphisms, so the restricted morphisms are inverse. The restriction identity for the forward map gives the required compatibility.
 -/
 private theorem exists_iso_opens_preimage {A B : Scheme.{u}} (θ : A ≅ B) (V' : A.Opens) (V : B.Opens)
     (hVV' : V' = (TopologicalSpace.Opens.map θ.hom.base).obj V) :
@@ -145,21 +141,15 @@ private theorem exists_iso_opens_preimage {A B : Scheme.{u}} (θ : A ≅ B) (V' 
       Scheme.Hom.resLE_comp_ι, Category.assoc, Iso.inv_hom_id, Category.comp_id, Category.id_comp]
   · exact Scheme.Hom.resLE_comp_ι ..
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The second morphism is obtained by precomposing the first with an isomorphism. Precomposition with an isomorphism leaves the kernel unchanged.
 -/
 private theorem ker_eq_of_iso_comp {P Q T : Scheme.{u}} (c : Q ≅ P) (h₁ : P ⟶ T) (h₂ : Q ⟶ T)
     (hc : c.hom ≫ h₁ = h₂) : h₁.ker = h₂.ker := by
   rw [← hc, AlgebraicGeometry.Scheme.Hom.ker_comp_of_isIso]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+Write the image ideals along the ambient isomorphism as pullbacks along its inverse. Commutativity of the square then identifies their pullbacks to the second blowup scheme with the original pulled-back ideals transported by the upstairs isomorphism. In particular the two pulled-back closed subschemes are isomorphic. This isomorphism identifies their open parts off the pulled-back centers, since the complement of support commutes with pullback. The strict transform is the kernel of the map from this open part to the ambient blowup scheme. The two maps agree after transport by the isomorphisms, and precomposing by the isomorphism of opens preserves the kernel. The kernel on the second blowup scheme is therefore the image of the original strict-transform ideal.
 -/
 theorem imageIdealSheaf_strictTransform_of_comm_sq {X X₁ Y Y₁ : Scheme.{u}}
     (φ : X₁ ⟶ X) (ψ : Y₁ ⟶ Y) (u : X ⟶ Y) (u₁ : X₁ ⟶ Y₁) [IsIso u] [IsIso u₁]
@@ -194,16 +184,8 @@ theorem imageIdealSheaf_strictTransform_of_comm_sq {X X₁ Y Y₁ : Scheme.{u}}
 
 namespace IsPushforwardBlowupSeq
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Compose each closed immersion from the source sequence with the corresponding stage isomorphism of ambient sequences. The sequences have the same length, and these composites are closed immersions. The initial identification and transition identities hold by compatibility of the ambient isomorphisms with the sequence maps. Taking image ideals along the stage isomorphisms carries the old ambient centers to the new ones, so the image-of-center condition persists. It also carries the old strict-transform identity for the immersion kernels to the corresponding new identity, since strict transforms commute with the isomorphisms by their commutative transition squares. These are the required pushforward data.
 -/
 theorem of_isomorphic {S X : Scheme.{u}} (j : S ⟶ X) [IsClosedImmersion j]
     {BS : SequenceOfBlowups S} {B B' : SequenceOfBlowups X}
@@ -250,22 +232,8 @@ theorem of_isomorphic {S X : Scheme.{u}} (j : S ⟶ X) [IsClosedImmersion j]
         hcen, ker_comp_eq_imageIdealSheaf_ker]
     exact hgoal
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The stage maps of the strict pullback along the source isomorphism are isomorphisms. At stage zero this follows from the base identifications, and at a successor it follows from the pullback square and the preceding isomorphism. Precompose the old closed immersions into the ambient sequence with these stage maps. This preserves closed immersions, and compatibility of the initial maps and transition squares gives the required commutativity. Each new source center is the pullback of the old source center, so their images in the ambient scheme agree. Precomposing with stage isomorphisms leaves the immersion kernels unchanged, preserving the strict-transform identity. The common lengths yield the claimed pushforward relation.
 -/
 theorem isIso_comp {S' S X : Scheme.{u}} (e : S' ⟶ S) [IsIso e]
     (j : S ⟶ X) [IsClosedImmersion j] (j' : S' ⟶ X) [IsClosedImmersion j']
@@ -325,10 +293,8 @@ theorem isIso_comp {S' S X : Scheme.{u}} (e : S' ⟶ S) [IsIso e]
       exact hker i hiS
     exact hgoal
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
-
-Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The only stage of either sequence is stage zero. Use the initial isomorphism from the source stage to its base, the given closed immersion, and the inverse initial isomorphism on the target to form the stage immersion. It is a closed immersion and commutes with the two initial identifications. There are no successor stages or centers, so all step conditions are vacuous.
 -/
 theorem of_length_eq_zero {S X : Scheme.{u}} (j : S ⟶ X) [IsClosedImmersion j]
     (BS : SequenceOfBlowups S) (B : SequenceOfBlowups X)

@@ -19,8 +19,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+On each affine open, the product of two ideals is contained in their intersection, hence in the right factor. The sectionwise inclusions give the ideal sheaf inclusion.
 -/
 private theorem mul_le_right {X : Scheme.{u}} (I J : X.IdealSheafData) :
     I * J ≤ J := by
@@ -29,18 +29,16 @@ private theorem mul_le_right {X : Scheme.{u}} (I J : X.IdealSheafData) :
   rw [Scheme.IdealSheafData.ideal_mul]
   exact Ideal.mul_le_inf.trans inf_le_right
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+An open inclusion is a monomorphism. Cancel it from the two equal composites.
 -/
 private theorem eq_of_comp_ι_eq {X : Scheme.{u}} (U : X.Opens) {W : Scheme.{u}}
     {a b : W ⟶ U.toScheme} (h : a ≫ U.ι = b ≫ U.ι) : a = b := by
   have : Mono U.ι := inferInstance
   exact (cancel_mono U.ι).mp h
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The open inclusions form a cover because every point lies in one of their images. Morphisms from a scheme agree if they agree on all members of an open cover, which is the hypothesis.
 -/
 private theorem hom_ext_of_comp_ι_eq_of_opens_cover {X Y : Scheme.{u}} {ι : Type u} (W : ι → X.Opens)
     (hW : ∀ x : ↥X, ∃ i, x ∈ W i) (a b : X ⟶ Y)
@@ -59,18 +57,16 @@ private theorem hom_ext_of_comp_ι_eq_of_opens_cover {X Y : Scheme.{u}} {ι : Ty
   · intro i
     exact h i
 
-/- English proof (translation)
-Supply the required witnesses or components.
+/- English proof (authored)
+Take the ring of sections on the affine open. The canonical map from the affine open to the spectrum of that ring is an isomorphism.
 -/
 private theorem exists_isoSpec_of_isAffineOpen {P : Scheme.{u}} {U : P.Opens}
     (hU : IsAffineOpen U) :
     ∃ (R : Type u) (_ : CommRing R), Nonempty (U.toScheme ≅ Spec (CommRingCat.of R)) :=
   ⟨↥Γ(P, U), inferInstance, ⟨hU.isoSpec⟩⟩
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
-
-Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Take an affine open of the source. Its image under the open immersion is affine, and the open lies in the inverse image of that image. On these affines pullback of an ideal is extension along the map on sections. Extension of ideals commutes with products, so the two sheaves have the same ideals on every affine open.
 -/
 theorem comap_mul_of_isOpenImmersion {X U : Scheme.{u}} (f : U ⟶ X) [IsOpenImmersion f]
     (I J : X.IdealSheafData) :
@@ -86,8 +82,8 @@ theorem comap_mul_of_isOpenImmersion {X U : Scheme.{u}} (f : U ⟶ X) [IsOpenImm
   simp only [Scheme.IdealSheafData.ideal_mul, Pi.mul_apply]
   rw [Ideal.map_mul]
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Take the ideal of sections on the whole affine scheme and identify the global section ring with the given ring. The affine correspondence between ideals and ideal sheaves recovers the original sheaf. Transporting the ideal along the global-sections isomorphism and back cancels the two changes of ring.
 -/
 theorem exists_specIdealSheaf_eq (R : Type u) [CommRing R]
     (I : (Spec (CommRingCat.of R)).IdealSheafData) :
@@ -102,8 +98,8 @@ theorem exists_specIdealSheaf_eq (R : Type u) [CommRing R]
     (Scheme.ΓSpecIso (CommRingCat.of R)).hom_inv_id, CommRingCat.hom_id, Ideal.map_id]
   exact h
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
+/- English proof (authored)
+The closed subscheme defined by the pulled-back ideal is the base change of the original closed subscheme. Its inclusion followed by the base map factors through the original closed subscheme by the pullback square. Precompose the original agreement with this factorization to obtain the two equal composites upstairs.
 -/
 theorem subschemeι_comap_comp_eq_of_subschemeι_comp_eq {X Y P : Scheme.{u}} (f : X ⟶ Y) (u v : Y ⟶ P)
     (𝔟 : Y.IdealSheafData) (hagree : 𝔟.subschemeι ≫ u = 𝔟.subschemeι ≫ v) :
@@ -118,10 +114,8 @@ theorem subschemeι_comap_comp_eq_of_subschemeι_comp_eq {X Y P : Scheme.{u}} (f
     _ = t ≫ 𝔟.subschemeι ≫ v := by rw [hagree]
     _ = (𝔟.comap f).subschemeι ≫ f ≫ v := by rw [← Category.assoc, ← ht, Category.assoc]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The product of the two upstairs factors lies in the second factor. The second factor's closed subscheme therefore maps into the closed subscheme of the pulled-back ideal. The two composites agree on that entire pulled-back closed subscheme by base change of the given agreement. Restrict to the smaller closed subscheme.
 -/
 theorem subschemeι_comp_eq_of_mul_comap {V V₁ P : Scheme.{u}} (f : V₁ ⟶ V) (u v : V ⟶ P)
     (𝔟 : V.IdealSheafData) (hagree : 𝔟.subschemeι ≫ u = 𝔟.subschemeι ≫ v)
@@ -141,12 +135,8 @@ theorem subschemeι_comp_eq_of_mul_comap {V V₁ P : Scheme.{u}} (f : V₁ ⟶ V
     _ = (t ≫ (𝔟.comap f).subschemeι) ≫ f ≫ v := by rw [Category.assoc]
     _ = 𝔟₁.subschemeι ≫ f ≫ v := by rw [ht]
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Express the center sheaf on the spectrum as the sheaf of an ideal of the ring. The affine blowup for this ideal and the given blowup have maps to each other over the spectrum by their universal properties. The composite on the given blowup is the identity by uniqueness. Send both proposed lifts to the affine blowup, where the affine comparison theorem makes them agree on the subscheme of the second factor. Compose back to the given blowup to obtain the asserted equality.
 -/
 theorem subschemeι_comp_eq_of_blowup_lifts_spec {R : Type u} [CommRing R] {B W : Scheme.{u}}
     (p : B ⟶ Spec (CommRingCat.of R)) (J : (Spec (CommRingCat.of R)).IdealSheafData)
@@ -171,22 +161,8 @@ theorem subschemeι_comp_eq_of_blowup_lifts_spec {R : Type u} [CommRing R] {B W 
   simp only [Category.assoc, hβα, Category.comp_id] at hfin
   exact hfin
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
-
-Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
+/- English proof (authored)
+Restrict the target to the chosen affine open and identify it with a spectrum. Open restriction of the blowup is the blowup of the restricted center. Both maps from the source open to the affine target lift to this restricted blowup by the pullback square. The two pullbacks of the restricted center agree because they are restrictions of the equal center pullbacks. The center remains locally generated by a nonzerodivisor, and the product factorization persists because restriction commutes with products. The original agreement on the closed subscheme also pulls back to the source open. Cancellation of the target open inclusion gives agreement of the restricted maps on that subscheme. The comparison over a spectrum therefore gives equality of the two lifts on the subscheme of the restricted second factor. Projecting back to the original blowup gives the claim.
 -/
 theorem subschemeι_comap_ι_comp_eq_of_blowup_lifts_affine {P P₁ V V₁ : Scheme.{u}} (π : P₁ ⟶ P)
     (Z : P.IdealSheafData) (hπ : Blowup.IsBlowupAlongIdealSheaf π Z) (ψ ψ' : V ⟶ P)
@@ -253,8 +229,8 @@ theorem subschemeι_comap_ι_comp_eq_of_blowup_lifts_affine {P P₁ V V₁ : Sch
   have hfin := congrArg (fun m => m ≫ Limits.pullback.fst π U.ι) key
   simpa only [Category.assoc, Limits.pullback.lift_fst] using hfin
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
+/- English proof (authored)
+On the inverse image open of the closed subscheme the closed immersion restricts to a map into the given ambient open. Together with the inverse-image open inclusion it defines a map into the pullback of the closed immersion. Identify this pullback with the closed subscheme of the restricted ideal. The defining projection formula then gives the required composite.
 -/
 private theorem exists_preimage_subscheme_to_subscheme_comap {T : Scheme.{u}} (c : T.IdealSheafData)
     (O : T.Opens) :
@@ -277,8 +253,8 @@ private theorem exists_preimage_subscheme_to_subscheme_comap {T : Scheme.{u}} (c
     _ = c.subschemeι.resLE O (c.subschemeι ⁻¹ᵁ O) le_rfl ≫ O.ι := by rw [hk]
     _ = (c.subschemeι ⁻¹ᵁ O).ι ≫ c.subschemeι := hres
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The inverse image open of the closed subscheme maps to the closed subscheme of the restricted ideal compatibly with their inclusions into the ambient scheme. Precompose the assumed agreement there with this map to obtain agreement on the inverse image open.
 -/
 private theorem preimage_ι_subschemeι_comp_eq_of_comap_ι {T Y : Scheme.{u}} (c : T.IdealSheafData) (O : T.Opens)
     (f' g' : T ⟶ Y)
@@ -297,12 +273,8 @@ private theorem preimage_ι_subschemeι_comp_eq_of_comap_ι {T Y : Scheme.{u}} (
     _ = ((c.subschemeι ⁻¹ᵁ O).ι ≫ c.subschemeι) ≫ g' := by rw [hk]
     _ = (c.subschemeι ⁻¹ᵁ O).ι ≫ c.subschemeι ≫ g' := by rw [Category.assoc]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+The factorization of the pulled-back ideal implies that the two maps into the original scheme agree on the controlled-transform subscheme. At each point of that subscheme choose an affine open around the common image. The intersection of its two inverse images is an ambient neighborhood of the point on which both maps land in this affine open. The affine comparison of blowup lifts gives equality on the restriction of the controlled-transform subscheme there. These inverse-image neighborhoods cover the controlled-transform subscheme, so the two lifts agree on it.
 -/
 theorem blowupLiftEqOnControlledTransform : BlowupLiftEqOnControlledTransform.{u} := by
   intro X Y S T π Z hπ f g hfg ρ hρ f' g' hf' hg' a hagree c hc

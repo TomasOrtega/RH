@@ -33,14 +33,14 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The underlying point map of a composite is obtained by applying the first point map and then applying the second.
 -/
 private theorem base_comp_apply {A B C : Scheme.{u}} (f : A ⟶ B) (g : B ⟶ C) (x : ↥A) :
     (f ≫ g).base x = g.base (f.base x) := by simp
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+An open immersion identifies the source with an open subscheme of the target. Restricting to an open neighborhood does not change the stalk at a point of that neighborhood, so the stalk map is an isomorphism.
 -/
 private theorem isIso_stalkMap_of_isOpenImmersion {A B : Scheme.{u}} (f : A ⟶ B)
     [AlgebraicGeometry.IsOpenImmersion f] (x : ↥A) :
@@ -53,8 +53,8 @@ variable {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}} [AlgebraicGeometry
   {pY : Y ⟶ Spec (CommRingCat.of k)} [AlgebraicGeometry.LocallyOfFiniteType pY]
   (S : AffineSpacePrincipalizationData k Y pY)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Every morphism factors through the closed subscheme defined by its kernel ideal. Thus the image of the chosen source point belongs to the range of that closed subscheme’s inclusion, which is the kernel ideal’s support.
 -/
 private theorem base_apply_mem_support_ker {W Z : Scheme.{u}} (g : W ⟶ Z) (q : ↥W) :
     g.base q ∈ ((AlgebraicGeometry.Scheme.Hom.ker g).support : Set ↥Z) := by
@@ -71,10 +71,8 @@ private theorem base_apply_mem_support_ker {W Z : Scheme.{u}} (g : W ⟶ Z) (q :
       (AlgebraicGeometry.Scheme.Hom.ker g).subschemeι g hle).base q, by
     rw [← base_comp_apply, hfac]⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The point lies in the complement of the detached locus and maps into the ambient center. By the support formula for pullbacks, its lift to the complement therefore lies in the support of the restricted center ideal. Lift it further to the closed subscheme of that ideal. The composite from this closed subscheme to the full strict transform has kernel equal to the center ideal off the detached locus. Its image point lies in that kernel’s support.
 -/
 theorem mem_support_centerOffDetached_of_mem_support_ambientCenter (i : ℕ) (p : ↥(S.strictTransform i))
     (hp : p ∈ ((S.discardedLocusClosureCompl i : (S.strictTransform i).Opens) : Set ↥(S.strictTransform i)))
@@ -98,18 +96,8 @@ theorem mem_support_centerOffDetached_of_mem_support_ambientCenter (i : ℕ) (p 
   rw [S.centerOffDetached_eq i]
   exact hmain
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the stage, with the initial case vacuous because no center has yet been encountered. At a successor, the point projects to the base through its image in the preceding strict transform. If its ambient image lies in the current center, the preceding strict-transform point lies in the complement of the detached locus because it comes from the next strict transform. It is therefore on the center off the detached locus, which maps into the original singular locus by hypothesis. If the ambient image avoids the current center, failure of successor avoidance means that this image failed to avoid an earlier center. The strict-transform square identifies the relevant preceding point, so induction puts its base image in the singular locus as well.
 -/
 private theorem forall_mem_smoothLocusComplement_of_not_avoidsCenters
     (hN : ∀ j ≤ S.ambientLength, AlgebraicGeometry.IsNoetherian (S.ambientLevel j))
@@ -165,8 +153,8 @@ private theorem forall_mem_smoothLocusComplement_of_not_avoidsCenters
           exact hcl
         exact hp ((S.toEmbeddedBlowupSequence.avoidsCenters_succ_iff j ((S.strictTransformι (j + 1)).base p)).mpr ⟨hc, hcl'⟩)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Apply the stagewise result to the given point. Its failure to avoid prior centers puts its image under the projection through stage zero in the complement of the smooth locus.
 -/
 theorem mem_smoothLocusComplement_of_not_avoidsCenters [AlgebraicGeometry.IsReduced Y]
     (hN : ∀ j ≤ S.ambientLength, AlgebraicGeometry.IsNoetherian (S.ambientLevel j))
@@ -178,8 +166,8 @@ theorem mem_smoothLocusComplement_of_not_avoidsCenters [AlgebraicGeometry.IsRedu
       ((smoothLocusComplement pY : TopologicalSpace.Closeds ↥Y) : Set ↥Y) :=
   forall_mem_smoothLocusComplement_of_not_avoidsCenters S hN hopen hcent i hi p hp
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The image lies in the preceding support with the center removed, so the point belongs to the inverse image of that difference. It therefore belongs to its closure, which is the support of the strict-transform ideal.
 -/
 private theorem mem_support_strictTransform_of_mem_support_of_notMem_support {X X₁ : Scheme.{u}} (π : X₁ ⟶ X)
     [AlgebraicGeometry.IsLocallyNoetherian X₁] (Z D : X.IdealSheafData) (x : ↥X₁)
@@ -190,16 +178,8 @@ private theorem mem_support_strictTransform_of_mem_support_of_notMem_support {X 
   rw [FunctorialResolution.EmbeddedResolution.support_strictTransform_eq_closure_preimage π Z D]
   exact subset_closure (Set.mem_preimage.mpr (Set.mem_sdiff_of_mem hD hZ))
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the stage. Initial avoidance is vacuous. At a successor the point avoids all the new boundary, including the new exceptional divisor. This divisor is the pullback of the current center, so the image point avoids the center. If the image belonged to a prior boundary support, the original point, being off the center, would lie in the strict transform of that support. That strict transform is also a member of the new boundary, a contradiction. Hence the image avoids all prior boundary members and avoids the earlier centers by induction. Together these give successor avoidance.
 -/
 private theorem avoidsCenters_of_forall_notMem_support_boundary
     (hN : ∀ j ≤ S.ambientLength, AlgebraicGeometry.IsNoetherian (S.ambientLevel j)) :
@@ -239,8 +219,8 @@ private theorem avoidsCenters_of_forall_notMem_support_boundary
       · exact @_root_.FunctorialResolution.EmbeddedResolution.AffineSpacePrincipalizationData.mem_support_strictTransform_of_mem_support_of_notMem_support (S.principalizationSequence.schemeAt i) (S.principalizationSequence.schemeAt (i + 1))
           (S.principalizationSequence.transitionMapSucc i) hlocNoeth (S.principalizationSequence.center i) E x hmem hnc
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Use the inductive boundary avoidance result on the ambient stage of these principalization data. It identifies avoidance of every current boundary support as sufficient for avoiding all earlier centers.
 -/
 theorem avoidsCenters_of_forall_notMem_boundary
     (hN : ∀ j ≤ S.ambientLength, AlgebraicGeometry.IsNoetherian (S.ambientLevel j))
@@ -250,8 +230,8 @@ theorem avoidsCenters_of_forall_notMem_boundary
     S.toEmbeddedBlowupSequence.AvoidsCenters i x :=
   avoidsCenters_of_forall_notMem_support_boundary S hN i hi x hx
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+If both ring maps are isomorphisms, the composite is inverted by composing their inverses in reverse order.
 -/
 private theorem isIso_comp_of_isIso_commRingCat {P Q R : CommRingCat.{u}} (u : P ⟶ Q) (v : Q ⟶ R)
     (hu : CategoryTheory.IsIso u) (hv : CategoryTheory.IsIso v) :
@@ -260,10 +240,8 @@ private theorem isIso_comp_of_isIso_commRingCat {P Q R : CommRingCat.{u}} (u : P
   have := hv
   infer_instance
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Compose the isomorphic composite with the inverse of the second map. The second map and its inverse cancel, leaving the first map as a composite of isomorphisms.
 -/
 private theorem isIso_of_isIso_comp_right {P Q R : CommRingCat.{u}} (u : P ⟶ Q) (v : Q ⟶ R)
     (hv : CategoryTheory.IsIso v) (huv : CategoryTheory.IsIso (u ≫ v)) :
@@ -276,8 +254,8 @@ private theorem isIso_of_isIso_comp_right {P Q R : CommRingCat.{u}} (u : P ⟶ Q
   rw [h]
   infer_instance
 
-/- English proof (translation)
-Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The stalk map of the composite is the stalk map of the second scheme morphism followed by that of the first. Since the second ring map in this composite is an isomorphism and the composite is an isomorphism, the first ring map is an isomorphism by cancellation.
 -/
 private theorem isIso_stalkMap_of_isIso_stalkMap_comp {A B C : Scheme.{u}} (f : A ⟶ B) (g : B ⟶ C) (x : ↥A)
     (hf : CategoryTheory.IsIso (AlgebraicGeometry.Scheme.Hom.stalkMap f x))
@@ -286,8 +264,8 @@ private theorem isIso_stalkMap_of_isIso_stalkMap_comp {A B C : Scheme.{u}} (f : 
   rw [AlgebraicGeometry.Scheme.Hom.stalkMap_comp] at hfg
   exact isIso_of_isIso_comp_right _ _ hf hfg
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+Pull the equality back along the inverse isomorphism. Successive pullback along the isomorphism and its inverse is pullback along the identity, leaving the original ideal sheaves equal.
 -/
 private theorem idealSheafData_comap_injective_of_isIso {A B : Scheme.{u}} (φ : A ⟶ B)
     [CategoryTheory.IsIso φ] (I J : B.IdealSheafData)
@@ -300,8 +278,8 @@ private theorem idealSheafData_comap_injective_of_isIso {A B : Scheme.{u}} (φ :
     AlgebraicGeometry.Scheme.IdealSheafData.comap_id,
     AlgebraicGeometry.Scheme.IdealSheafData.comap_id] at h2
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The strict-transform ideal is the kernel of the closed immersion formed from the original ideal pulled back over the center complement, followed by inclusion of that open into the blowup. Restricting this kernel to the open gives the kernel of the closed immersion itself. This is exactly the restricted pullback of the original ideal.
 -/
 private theorem strictTransform_comap_ι_eq_comap_restrict {X X₁ : Scheme.{u}} (π : X₁ ⟶ X)
     (Z D : X.IdealSheafData) [TopologicalSpace.NoetherianSpace ↥X₁] :
@@ -311,14 +289,8 @@ private theorem strictTransform_comap_ι_eq_comap_restrict {X X₁ : Scheme.{u}}
   rw [FunctorialResolution.EmbeddedResolution.strictTransform_eq_ker_restrict π Z D]
   exact FunctorialResolution.EmbeddedResolution.comap_ker_subschemeι_comp _ _
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Restrict the ambient map to the given open, where it is an isomorphism. Composing the restricted upper closed immersion with that isomorphism gives a closed immersion into the lower open. Its kernel agrees with the restricted lower closed immersion’s kernel, because their pullbacks along the ambient isomorphism agree by hypothesis and such pullback is injective. Equal kernels give an isomorphism between these two closed subschemes of the open. Compatibility of the original square and cancellation of the lower closed immersion identify the prescribed morphism on the upper open with that isomorphism followed by inclusion of the corresponding lower open. Thus it is an open immersion.
 -/
 private theorem isOpenImmersion_preimage_ι_comp_of_ker_comap_eq {X X₁ A₀ A₁ : Scheme.{u}} (π : X₁ ⟶ X)
     (ι₀ : A₀ ⟶ X) (ι₁ : A₁ ⟶ X₁) (m : A₁ ⟶ A₀) (V : X.Opens)
@@ -376,8 +348,8 @@ private theorem isOpenImmersion_preimage_ι_comp_of_ker_comap_eq {X X₁ A₀ A�
   rw [hfin]
   infer_instance
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The projection from the successor stage to the ambient base factors through the preceding stage by the current blowdown. Composing with the ambient base’s map to the field gives the displayed compatibility.
 -/
 private theorem ambientBlowupMorphism_comp_schemeAtToSpec (j : ℕ) :
     S.ambientBlowupMorphism j ≫ S.schemeAtToSpec j = S.schemeAtToSpec (j + 1) := by
@@ -385,8 +357,8 @@ private theorem ambientBlowupMorphism_comp_schemeAtToSpec (j : ℕ) :
   rw [AffineSpacePrincipalizationData.schemeAtToSpec_def, AffineSpacePrincipalizationData.schemeAtToSpec_def, h,
     CategoryTheory.Category.assoc]
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Induct on the stage. The initial projection is the identity. At a successor the induction hypothesis calculates the composite to the field through the preceding strict transform. The strict-transform transition commutes with the ambient blowdown, and that blowdown commutes with the structure maps to the field. Thus the composite is the new strict-transform inclusion followed by the new ambient structure map.
 -/
 private theorem strictTransformToZero_comp_schemeAtToSpec (i : ℕ) :
     S.strictTransformToZero i ≫ S.strictTransformι 0 ≫ S.schemeAtToSpec 0 = S.strictTransformι i ≫ S.schemeAtToSpec i := by
@@ -397,8 +369,8 @@ private theorem strictTransformToZero_comp_schemeAtToSpec (i : ℕ) :
         ← CategoryTheory.Category.assoc, S.strictTransformMap_comp_strictTransformι j, CategoryTheory.Category.assoc,
         ambientBlowupMorphism_comp_schemeAtToSpec S j]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The map of the discarded piece to the original scheme factors through its strict transform and the initial strict transform. The initial map followed by the morphism to the field agrees with the ambient initial structural map on the strict transform. The successive strict-transform maps commute with all structural maps to the field, so substitution gives the stated equality.
 -/
 private theorem detachedToBase_comp_eq_discardedι_comp_schemeAtToSpec (i : ℕ) :
     S.detachedToBase i ≫ pY = S.discardedι i ≫ S.strictTransformι i ≫ S.schemeAtToSpec i := by
@@ -406,16 +378,8 @@ private theorem detachedToBase_comp_eq_discardedι_comp_schemeAtToSpec (i : ℕ)
     CategoryTheory.Category.assoc, AffineSpacePrincipalizationData.strictTransformZeroToBase_comp,
     ← strictTransformToZero_comp_schemeAtToSpec S i]
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At zero the projection is the identity. At a successor, avoidance places the point above the complement of the current center, where the ambient blowdown is an isomorphism and the new strict-transform ideal is the pullback of the preceding one. The strict-transform map is therefore an open immersion near the point by the restricted kernel comparison. It induces an isomorphism on the stalk. The image point downstairs avoids all earlier centers by the avoidance criterion and the commuting square. By induction its projection to zero induces an isomorphism on stalks as well. The stalk map of the composite to zero is a composite of these isomorphisms.
 -/
 private theorem isIso_stalkMap_strictTransformToZero_of_avoidsCenters
     (hN : ∀ j ≤ S.ambientLength, AlgebraicGeometry.IsNoetherian (S.ambientLevel j)) (j : ℕ) :
@@ -470,8 +434,8 @@ private theorem isIso_stalkMap_strictTransformToZero_of_avoidsCenters
       rw [AffineSpacePrincipalizationData.strictTransformToZero_succ, AlgebraicGeometry.Scheme.Hom.stalkMap_comp]
       exact isIso_comp_of_isIso_commRingCat _ _ hih h2
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+An isomorphism of rings is formally smooth. A map from its target across a nilpotent quotient lifts by transporting the given map from its source along the inverse isomorphism.
 -/
 private theorem formallySmooth_of_isIso {A B : CommRingCat.{u}} (ψ : A ⟶ B)
     [CategoryTheory.IsIso ψ] : (CommRingCat.Hom.hom ψ).FormallySmooth := by
@@ -479,8 +443,8 @@ private theorem formallySmooth_of_isIso {A B : CommRingCat.{u}} (ψ : A ⟶ B)
     CategoryTheory.ConcreteCategory.bijective_of_isIso ψ
   exact RingHom.FormallySmooth.of_bijective hb
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Compose the formally smooth map from the hypothesis with the inverse isomorphism, which is formally smooth. The isomorphisms cancel, so formal smoothness of the composite gives formal smoothness of the original first map.
 -/
 private theorem formallySmooth_of_formallySmooth_comp_isIso {R A B : CommRingCat.{u}} (φ : R ⟶ A) (ψ : A ⟶ B)
     [CategoryTheory.IsIso ψ]
@@ -492,16 +456,8 @@ private theorem formallySmooth_of_formallySmooth_comp_isIso {R A B : CommRingCat
   rw [← h1, CommRingCat.hom_comp]
   exact RingHom.FormallySmooth.comp h (formallySmooth_of_isIso (CategoryTheory.inv ψ))
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The discarded subscheme is the clopen subscheme of the reduced strict transform, so its inclusion induces a stalk isomorphism. The projection to the initial strict transform induces a stalk isomorphism by center avoidance, and the initial map to the base is an open immersion, giving another stalk isomorphism. Their composite is the discarded piece’s map to the base, so its stalk map is an isomorphism. The discarded piece is smooth over the field. Thus the composite from the base field to its local ring is formally smooth. Cancelling the stalk isomorphism gives formal smoothness of the structural stalk map at the image in the base. This places the base image in the smooth locus.
 -/
 theorem notMem_smoothLocusComplement_detachedToBase_of_avoidsCenters [AlgebraicGeometry.IsReduced Y]
     (hN : ∀ j ≤ S.ambientLength, AlgebraicGeometry.IsNoetherian (S.ambientLevel j))
@@ -553,8 +509,8 @@ theorem notMem_smoothLocusComplement_detachedToBase_of_avoidsCenters [AlgebraicG
     AlgebraicGeometry.Scheme.Hom.mem_smoothLocus.mpr hfs2
   exact hmem hin
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+A point outside every ambient boundary support avoids all earlier centers by the boundary avoidance theorem. The stalk argument for such points then shows that its image in the original scheme belongs to the smooth locus.
 -/
 theorem notMem_smoothLocusComplement_detachedToBase_of_notMem_boundary [AlgebraicGeometry.IsReduced Y]
     (hN : ∀ j ≤ S.ambientLength, AlgebraicGeometry.IsNoetherian (S.ambientLevel j))
@@ -573,14 +529,8 @@ theorem notMem_smoothLocusComplement_detachedToBase_of_notMem_boundary [Algebrai
 
 end AffineSpacePrincipalizationData
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
-
-Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+At stage zero the boundary is empty. At a successor, a boundary member is the new exceptional divisor or the strict transform of a previous boundary member. In the first case the image point lies on the current center because the exceptional support is its inverse image. In the second, the strict-transform support is contained in the pullback of the preceding support, so the image belongs to the preceding boundary and fails earlier avoidance by induction. Either case contradicts avoidance through the successor stage.
 -/
 private theorem principalizationSequence_not_avoidsCenters_of_mem_boundary {k : Type u} [Field k] [CharZero k]
     {Y : Scheme.{u}} [AlgebraicGeometry.IsAffine Y] {pY : Y ⟶ Spec (CommRingCat.of k)}
@@ -620,8 +570,8 @@ private theorem principalizationSequence_not_avoidsCenters_of_mem_boundary {k : 
             (S.principalizationSequence.center i) x hx
         exact hcl'.1 hmem2
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Use the inductive boundary result for the principalization sequence of the given affine-space data. The boundary, ambient stage, and avoidance predicate are those of that sequence.
 -/
 theorem not_avoidsCenters_of_mem_support_boundary (A : PrincipalizationAlgorithm.{u})
     (hemb : AffineEmbedsIntoAffineSpace.{u}) (hsnc : NilIsStrictNormalCrossingsOnAffineSpace.{u})
@@ -639,10 +589,8 @@ theorem not_avoidsCenters_of_mem_support_boundary (A : PrincipalizationAlgorithm
   principalizationSequence_not_avoidsCenters_of_mem_boundary (AffineSpacePrincipalizationData.ofAffine A hemb hsnc hsm k Y pY) i hi E hE
     x hx
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+A point of the discarded piece whose ambient image is on the boundary lies in the support of one boundary member. This implies failure of center avoidance. Because the original centers off the detached locus lie over singular points, the earlier induction on failure of center avoidance sends the point in the strict transform to the singular locus. The discarded piece’s map to the base factors through that point, giving the claimed containment.
 -/
 theorem boundary_preimage_subset_smoothLocusComplement_preimage (A : PrincipalizationAlgorithm.{u})
     (hemb : AffineEmbedsIntoAffineSpace.{u}) (hsnc : NilIsStrictNormalCrossingsOnAffineSpace.{u})
@@ -687,10 +635,8 @@ theorem boundary_preimage_subset_smoothLocusComplement_preimage (A : Principaliz
   rw [AffineSpacePrincipalizationData.detachedToBase_def, base_comp_apply]
   exact hsing
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+One inclusion sends points on the ambient boundary to the original singular locus using the center condition. For the converse, suppose a point of the discarded piece lies over the singular locus but its ambient image lies in no boundary support. It then avoids all preceding centers. The local-ring comparison and smoothness of the discarded piece force its image to lie in the smooth locus, a contradiction. This proves equality of the two inverse images.
 -/
 theorem detachedSingularPreimageEqBoundary_ofAffine (A : PrincipalizationAlgorithm.{u})
     (hemb : AffineEmbedsIntoAffineSpace.{u}) (hsnc : NilIsStrictNormalCrossingsOnAffineSpace.{u})
@@ -725,8 +671,8 @@ theorem detachedSingularPreimageEqBoundary_ofAffine (A : PrincipalizationAlgorit
       pY).notMem_smoothLocusComplement_detachedToBase_of_notMem_boundary
     (isNoetherian_ambientLevel_ofAffine A hemb hsnc hsm k Y pY) hopen hsmooth i hi q hboundary hq
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+For any affine input the discarded loci are open and the discarded subschemes are smooth by hypothesis. The induced sequence’s centers lie over the singular locus, so restriction to the strict-transform summand gives that property for its centers off the detached loci. Apply the equality of inverse images for these affine principalization data at every relevant stage.
 -/
 theorem affineDetachedSingularPreimageEqBoundary_of_centersLieOverSing (A : PrincipalizationAlgorithm.{u})
     (hemb : AffineEmbedsIntoAffineSpace.{u}) (hsnc : NilIsStrictNormalCrossingsOnAffineSpace.{u})

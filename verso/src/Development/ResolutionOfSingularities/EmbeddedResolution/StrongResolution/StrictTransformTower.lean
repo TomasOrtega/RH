@@ -41,27 +41,23 @@ def strictTransformMapOfLE {a b : ℕ} (h : a ≤ b) : S.strictTransform b ⟶ S
   Nat.leRec (motive := fun n _ => S.strictTransform n ⟶ S.strictTransform a)
     (𝟙 (S.strictTransform a)) (fun n _ f => S.strictTransformMap n ≫ f) h
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The recursive transition between strict transforms starts with the identity when its two stage indices are the same.
 -/
 @[simp] theorem strictTransformMapOfLE_self (a : ℕ) :
     S.strictTransformMapOfLE (le_refl a) = 𝟙 (S.strictTransform a) := by
   exact Nat.leRec_self ..
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The recursion for the later endpoint at a successor composes the single transition from that successor stage with the transition already defined from the preceding endpoint.
 -/
 private theorem strictTransformMapOfLE_succ_of_le (T : EmbeddedBlowupSequence k Y pY) {a b : ℕ} (h : a ≤ b)
     {h' : a ≤ b + 1} :
     T.strictTransformMapOfLE h' = T.strictTransformMap b ≫ T.strictTransformMapOfLE h := by
   exact Nat.leRec_succ ..
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the later endpoint starting at the earlier stage. In the equal-stage case both transitions are identities. At a successor, factor both transitions through the preceding endpoint. The square for one strict-transform step commutes with the ambient blowdown, and the induction hypothesis makes the remaining square commute. Composing these squares gives the desired equation.
 -/
 theorem strictTransformMapOfLE_strictTransformι {a b : ℕ} (h : a ≤ b) :
     S.strictTransformMapOfLE h ≫ S.strictTransformι a = S.strictTransformι b ≫ S.ambientSeq.transitionMap h := by
@@ -84,8 +80,8 @@ theorem strictTransformMapOfLE_strictTransformι {a b : ℕ} (h : a ≤ b) :
       rw [e1, e2, Category.assoc, ih, ← Category.assoc, e3]
       simp only [Category.assoc]
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
+/- English proof (authored)
+The first coproduct inclusion has a retraction defined by the identity on the first summand and the unique map from the initial second summand. The other composite is the identity on the first summand by the defining coproduct equation and on the second by initiality. Thus the inclusion is the forward map of an isomorphism.
 -/
 private theorem exists_iso_coprod_of_isInitial {A B : Scheme.{u}} (hB : IsInitial B) :
     ∃ u : A ≅ A ⨿ B, u.hom = (coprod.inl : A ⟶ A ⨿ B) := by
@@ -100,8 +96,8 @@ private theorem exists_iso_coprod_of_isInitial {A B : Scheme.{u}} (hB : IsInitia
     _ = (coprod.inl : A ⟶ A ⨿ B) := Category.id_comp _
     _ = (coprod.inl : A ⟶ A ⨿ B) ≫ 𝟙 (A ⨿ B) := (Category.comp_id _).symm
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+The first inclusion into a coproduct with an initial object is an isomorphism. Compose it with the given coproduct isomorphism to obtain the required isomorphism and forward map.
 -/
 private theorem exists_iso_of_coprodIso_of_isInitial {A B Z : Scheme.{u}} (hB : IsInitial B)
     (w : A ⨿ B ≅ Z) :
@@ -111,16 +107,16 @@ private theorem exists_iso_of_coprodIso_of_isInitial {A B Z : Scheme.{u}} (hB : 
   show u.hom ≫ w.hom = (coprod.inl : A ⟶ A ⨿ B) ≫ w.hom
   exact congrArg (fun t => t ≫ w.hom) hu
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+Reassociate the composite so the inverse is followed immediately by the forward isomorphism. Their composite is the identity, and removing it gives the stated morphism.
 -/
 private theorem comp_inv_comp_hom_cancel {A B C D E : Scheme.{u}} (f : A ⟶ B) (g : B ⟶ C)
     (h : C ⟶ E) (i : D ≅ E) :
     (f ≫ g ≫ (h ≫ i.inv)) ≫ i.hom = (f ≫ g) ≫ h := by
   simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id]
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
+/- English proof (authored)
+The initial detached coproduct is initial. The first inclusion therefore identifies the initial strict transform with the initial total space. Compose with the total-space isomorphism to the original scheme. Its compatibility with the transported embedding identifies the composite into the initial ambient scheme with the strict-transform inclusion. Following this equation by the initial ambient isomorphism gives the claimed equation over the original ambient scheme.
 -/
 theorem exists_strictTransformZeroIso :
     ∃ e : S.strictTransform 0 ≅ Y, e.hom ≫ S.emb = S.strictTransformι 0 ≫ S.ambientSeq.isoZero.hom := by
@@ -139,17 +135,15 @@ theorem exists_strictTransformZeroIso :
 
 def strictTransformZeroIso : S.strictTransform 0 ≅ Y := S.exists_strictTransformZeroIso.choose
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The stage-zero strict-transform isomorphism was chosen with the property that its composite with the original embedding is the initial strict-transform inclusion followed by the ambient initial isomorphism.
 -/
 theorem strictTransformZeroIso_hom_emb :
     S.strictTransformZeroIso.hom ≫ S.emb = S.strictTransformι 0 ≫ S.ambientSeq.isoZero.hom :=
   S.exists_strictTransformZeroIso.choose_spec
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Compose the stage-zero strict-transform compatibility with the inverse ambient isomorphism. It shows that the strict-transform isomorphism and the restriction of the total-space isomorphism to the strict-transform summand have the same composite with the transported embedding. That embedding is a monomorphism, so those maps are equal. Precompose the equality with the inverse strict-transform isomorphism and cancel the total-space isomorphism to get the formula for its inverse.
 -/
 theorem totalSpaceZeroIso_inv_eq :
     S.totalSpaceZeroIso.inv =
@@ -164,8 +158,8 @@ theorem totalSpaceZeroIso_inv_eq :
   refine (cancel_mono S.totalSpaceZeroIso.hom).mp ?_
   rw [Iso.inv_hom_id, Category.assoc, h3, Iso.inv_hom_id]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The inverse total-space isomorphism factors as the inverse strict-transform isomorphism followed by the first inclusion. Hence the first inclusion is the strict-transform isomorphism followed by the inverse total-space isomorphism. Composing with the forward total-space isomorphism gives the claimed equality.
 -/
 theorem inl_totalSpaceZeroIso_hom :
     (coprod.inl : S.strictTransform 0 ⟶ S.totalSpace 0) ≫ S.totalSpaceZeroIso.hom =
@@ -178,8 +172,8 @@ theorem inl_totalSpaceZeroIso_hom :
 def strictTransformToBase (i : ℕ) : S.strictTransform i ⟶ Y :=
   S.strictTransformMapOfLE (Nat.zero_le i) ≫ S.strictTransformZeroIso.hom
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The strict-transform projection first passes to the initial strict transform and then uses its isomorphism to the original scheme. Composing with the original embedding replaces this last part by the initial strict-transform inclusion followed by the ambient initial isomorphism. The transition compatibility moves that inclusion to the given stage and leaves the ambient transition to zero. This ambient transition and the initial isomorphism give the ambient projection to the base.
 -/
 theorem strictTransformToBase_emb (i : ℕ) :
     S.strictTransformToBase i ≫ S.emb = S.strictTransformι i ≫ S.ambientSeq.projectionToBase i := by
@@ -193,15 +187,15 @@ theorem strictTransformToBase_emb (i : ℕ) :
 def detachedCoprodInl (i : ℕ) : S.detachedCoprod i ⟶ S.detachedCoprod (i + 1) :=
   (coprod.inl : S.detachedCoprod i ⟶ S.detachedCoprod i ⨿ S.detachedScheme i)
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The inclusion of the previously detached coproduct into the enlarged coproduct is defined as its first summand inclusion.
 -/
 theorem detachedCoprodInl_eq (i : ℕ) :
     S.detachedCoprodInl i = (coprod.inl : S.detachedCoprod i ⟶ S.detachedCoprod i ⨿ S.detachedScheme i) :=
   rfl
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+On the previously detached summand, the next total transition sends it back to the same detached summand of the preceding total space. Restrict the defining coproduct map to that summand to get the equation.
 -/
 theorem detachedCoprodInl_inr_totalTransition (i : ℕ) :
     S.detachedCoprodInl i ≫ (coprod.inr : S.detachedCoprod (i + 1) ⟶ S.totalSpace (i + 1)) ≫
@@ -209,8 +203,8 @@ theorem detachedCoprodInl_inr_totalTransition (i : ℕ) :
       (coprod.inr : S.detachedCoprod i ⟶ S.totalSpace i) :=
   S.inl_inr_totalTransition i
 
-/- English proof (translation)
-Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
+/- English proof (authored)
+Compose the formula for the transition on the previously detached summand with the given morphism, then reassociate.
 -/
 theorem detachedCoprodInl_inr_totalTransition_assoc (i : ℕ) {T : Scheme.{u}}
     (g : S.totalSpace i ⟶ T) :
@@ -229,15 +223,15 @@ theorem detachedCoprodInl_inr_totalTransition_assoc (i : ℕ) {T : Scheme.{u}}
 def detachedCoprodInr (i : ℕ) : S.detachedScheme i ⟶ S.detachedCoprod (i + 1) :=
   (coprod.inr : S.detachedScheme i ⟶ S.detachedCoprod i ⨿ S.detachedScheme i)
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The inclusion of the newly detached scheme into the enlarged detached coproduct is its second summand inclusion by definition.
 -/
 theorem detachedCoprodInr_eq (i : ℕ) :
     S.detachedCoprodInr i = (coprod.inr : S.detachedScheme i ⟶ S.detachedCoprod i ⨿ S.detachedScheme i) :=
   rfl
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The new detached summand maps to the preceding total space through its inclusion in the preceding strict transform. This is the specified restriction of the total transition, so it gives the formula after both summand inclusions.
 -/
 theorem detachedCoprodInr_inr_totalTransition (i : ℕ) :
     S.detachedCoprodInr i ≫ (coprod.inr : S.detachedCoprod (i + 1) ⟶ S.totalSpace (i + 1)) ≫
@@ -245,8 +239,8 @@ theorem detachedCoprodInr_inr_totalTransition (i : ℕ) :
       S.detachedι i ≫ (coprod.inl : S.strictTransform i ⟶ S.totalSpace i) :=
   S.inr_inr_totalTransition i
 
-/- English proof (translation)
-Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
+/- English proof (authored)
+Compose the transition equation on the newly detached summand with the last morphism. Reassociating gives the stated equation.
 -/
 theorem detachedCoprodInr_inr_totalTransition_assoc (i : ℕ) {T : Scheme.{u}}
     (g : S.totalSpace i ⟶ T) :
@@ -264,8 +258,8 @@ theorem detachedCoprodInr_inr_totalTransition_assoc (i : ℕ) {T : Scheme.{u}}
     _ = S.detachedι i ≫ (coprod.inl : S.strictTransform i ⟶ S.totalSpace i) ≫ g :=
         Category.assoc _ _ _
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+At a successor the detached coproduct is the coproduct of its previous part and the newly detached piece. Two morphisms out of this coproduct coincide if they agree on the two inclusions, as assumed.
 -/
 theorem detachedCoprod_succ_hom_ext (i : ℕ) {T : Scheme.{u}}
     {f g : S.detachedCoprod (i + 1) ⟶ T}
@@ -275,30 +269,24 @@ theorem detachedCoprod_succ_hom_ext (i : ℕ) {T : Scheme.{u}}
   · exact hl
   · exact hr
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The piece detached at the specified earlier stage already belongs to the preceding coproduct. By the recursive definition its new inclusion is its preceding inclusion followed by insertion of that coproduct as the first summand.
 -/
 theorem detachedToCoprod_succ_of_lt (s i : ℕ) (h : s < i) :
     S.detachedToCoprod s (i + 1) (Nat.lt_succ_of_lt h) = S.detachedToCoprod s i h ≫ S.detachedCoprodInl i := by
   have hne : ¬ (s = i) := by omega
   exact dif_neg hne
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The piece detached at the current stage first appears in the successor coproduct. Its inclusion there is the second summand inclusion, with the index identification acting as the identity.
 -/
 theorem detachedToCoprod_self (i : ℕ) :
     S.detachedToCoprod i (i + 1) (Nat.lt_succ_self i) = S.detachedCoprodInr i := by
   rw [detachedToCoprod]
   simp [detachedCoprodInr_eq]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the stage. At zero the coproduct is initial, so the two maps agree by uniqueness. At a successor, their restrictions to the newly detached summand agree by the given equality at that index. On the previously detached coproduct they agree on every earlier summand by the recursive inclusion formula, so induction gives equality on that part. The coproduct property then gives equality on the successor.
 -/
 private theorem detachedCoprod_hom_ext_forall (W : EmbeddedBlowupSequence k Y pY) :
     ∀ (i : ℕ) (Z : Scheme.{u}) (f g : W.detachedCoprod i ⟶ Z),
@@ -322,23 +310,23 @@ private theorem detachedCoprod_hom_ext_forall (W : EmbeddedBlowupSequence k Y pY
         rw [W.detachedToCoprod_self i] at h
         exact h
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Apply the inductive coproduct comparison at the specified stage. Agreement after each individual detached summand inclusion is exactly its hypothesis.
 -/
 theorem detachedCoprod_hom_ext (i : ℕ) {T : Scheme.{u}} {f g : S.detachedCoprod i ⟶ T}
     (hf : ∀ s (hs : s < i), S.detachedToCoprod s i hs ≫ f = S.detachedToCoprod s i hs ≫ g) : f = g :=
   detachedCoprod_hom_ext_forall S i T f g hf
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The total transition on the strict-transform summand is defined as the strict-transform transition followed by its inclusion into the preceding total space. This yields the equality.
 -/
 theorem inl_totalTransition (i : ℕ) :
     (coprod.inl : S.strictTransform (i + 1) ⟶ S.totalSpace (i + 1)) ≫ S.totalTransition i =
       S.strictTransformMap i ≫ (coprod.inl : S.strictTransform i ⟶ S.totalSpace i) :=
   S.inl_totalTransition_eq_strictTransformMap_inl i
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Postcompose the equation for the strict-transform summand of the total transition with the given morphism, and use associativity.
 -/
 theorem inl_totalTransition_assoc (i : ℕ) {T : Scheme.{u}} (g : S.totalSpace i ⟶ T) :
     (coprod.inl : S.strictTransform (i + 1) ⟶ S.totalSpace (i + 1)) ≫ S.totalTransition i ≫ g =
@@ -349,32 +337,30 @@ def totalMapOfLE {a b : ℕ} (h : a ≤ b) : S.totalSpace b ⟶ S.totalSpace a :
   Nat.leRec (motive := fun n _ => S.totalSpace n ⟶ S.totalSpace a)
     (𝟙 (S.totalSpace a)) (fun n _ f => S.totalTransition n ≫ f) h
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The recursive total-space transition starts with the identity when the source and target stages coincide.
 -/
 @[simp] theorem totalMapOfLE_self (a : ℕ) :
     S.totalMapOfLE (le_refl a) = 𝟙 (S.totalSpace a) := by
   exact Nat.leRec_self ..
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+For a successor endpoint, the recursive total map first applies the last total transition and then the preceding total map to the fixed starting stage.
 -/
 theorem totalMapOfLE_succ {a b : ℕ} (h : a ≤ b) :
     S.totalMapOfLE (h.trans (Nat.le_succ b)) = S.totalTransition b ≫ S.totalMapOfLE h := by
   simp [totalMapOfLE, Nat.leRec_succ, h]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The recursive formula for a successor endpoint gives the last total transition followed by the previously defined map. The choice of proof of the stage inequality does not affect the recursion.
 -/
 private theorem totalMapOfLE_succ_of_le (T : EmbeddedBlowupSequence k Y pY) {a b : ℕ} (h : a ≤ b)
     {h' : a ≤ b + 1} :
     T.totalMapOfLE h' = T.totalTransition b ≫ T.totalMapOfLE h := by
   exact Nat.leRec_succ ..
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+Induct on the later endpoint. At equality both transitions are identities. At a successor use the single-step formula on the strict-transform summand to move the inclusion through the total transition. Apply the induction hypothesis to the remaining total map. The two successive strict-transform maps form the required iterated map.
 -/
 theorem inl_totalMapOfLE {a b : ℕ} (h : a ≤ b) :
     (coprod.inl : S.strictTransform b ⟶ S.totalSpace b) ≫ S.totalMapOfLE h =
@@ -387,14 +373,8 @@ theorem inl_totalMapOfLE {a b : ℕ} (h : a ≤ b) :
         ← Category.assoc, S.inl_totalTransition b, Category.assoc, ih]
       simp only [Category.assoc]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
-
-Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the stage of the later total space. At zero there is no earlier detached piece. At a successor, if the piece was just detached, its inclusion is the new second summand. The first backward transition sends it into the strict transform at its detachment stage, and the iterated strict-transform compatibility gives the rest of the composite. If it was detached earlier, the first backward transition sends it to the corresponding unchanged summand of the preceding detached coproduct. The induction hypothesis then gives the formula.
 -/
 private theorem detachedToCoprod_inr_totalMapOfLE_forall (W : EmbeddedBlowupSequence k Y pY) :
     ∀ (b a s : ℕ) (hab : a ≤ b) (has : a ≤ s) (hsb : s < b),
@@ -420,8 +400,8 @@ private theorem detachedToCoprod_inr_totalMapOfLE_forall (W : EmbeddedBlowupSequ
           W.detachedCoprodInl_inr_totalTransition_assoc b (W.totalMapOfLE hab')]
         exact ih a s hab' has hsb'
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Apply the iterated transition result to the chosen detached piece and the two total stages. Since the earlier total stage is at or before detachment, the composite passes through the strict transform at detachment and then its projection to the earlier strict-transform summand.
 -/
 theorem detachedToCoprod_inr_totalMapOfLE {a b s : ℕ} (hab : a ≤ b) (has : a ≤ s) (hsb : s < b) :
     S.detachedToCoprod s b hsb ≫ (coprod.inr : S.detachedCoprod b ⟶ S.totalSpace b) ≫ S.totalMapOfLE hab =
@@ -432,32 +412,30 @@ def detachedCoprodMapOfLE {a b : ℕ} (h : a ≤ b) : S.detachedCoprod a ⟶ S.d
   Nat.leRec (motive := fun n _ => S.detachedCoprod a ⟶ S.detachedCoprod n)
     (𝟙 (S.detachedCoprod a)) (fun n _ f => f ≫ S.detachedCoprodInl n) h
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+When the indices coincide, the recursive inclusion of detached coproducts is initialized as the identity.
 -/
 @[simp] theorem detachedCoprodMapOfLE_self (a : ℕ) :
     S.detachedCoprodMapOfLE (le_refl a) = 𝟙 (S.detachedCoprod a) := by
   exact Nat.leRec_self ..
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The inclusion into the successor detached coproduct is obtained from the preceding inclusion by adjoining the new summand and then including the preceding coproduct as the first summand.
 -/
 theorem detachedCoprodMapOfLE_succ {a b : ℕ} (h : a ≤ b) :
     S.detachedCoprodMapOfLE (h.trans (Nat.le_succ b)) = S.detachedCoprodMapOfLE h ≫ S.detachedCoprodInl b := by
   exact Nat.leRec_succ ..
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The recursive step at any successor endpoint first includes the original detached coproduct in the preceding one and then includes that preceding coproduct as the first summand of the new one.
 -/
 private theorem detachedCoprodMapOfLE_succ_of_le (T : EmbeddedBlowupSequence k Y pY) {a b : ℕ} (h : a ≤ b)
     {h' : a ≤ b + 1} :
     T.detachedCoprodMapOfLE h' = T.detachedCoprodMapOfLE h ≫ T.detachedCoprodInl b := by
   exact Nat.leRec_succ ..
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the final index. At equal indices the coproduct map is the identity. At a successor, the induction hypothesis says that including the piece through the original coproduct agrees with its direct inclusion at the preceding stage. Following with the first summand inclusion is exactly the recursive definition of its inclusion at the new stage.
 -/
 theorem detachedToCoprod_detachedCoprodMapOfLE {s a b : ℕ} (hsa : s < a) (hab : a ≤ b) :
     S.detachedToCoprod s a hsa ≫ S.detachedCoprodMapOfLE hab = S.detachedToCoprod s b (lt_of_lt_of_le hsa hab) := by
@@ -481,8 +459,8 @@ theorem detachedToCoprod_detachedCoprodMapOfLE {s a b : ℕ} (hsa : s < a) (hab 
         _ = S.detachedToCoprod s (b + 1) (lt_of_lt_of_le hsa (Nat.le_succ_of_le hb)) :=
             (S.detachedToCoprod_succ_of_lt s b (lt_of_lt_of_le hsa hb)).symm
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+At equal indices both iterates are identities. At a successor, the forward map includes the older detached coproduct through the previous detached part. One backward total transition acts on that part by its inclusion in the preceding total space. The induction hypothesis then cancels the remaining forward inclusions and backward transitions to give the original inclusion.
 -/
 theorem detachedCoprodMapOfLE_inr_totalMapOfLE {a b : ℕ} (hab : a ≤ b) :
     S.detachedCoprodMapOfLE hab ≫ (coprod.inr : S.detachedCoprod b ⟶ S.totalSpace b) ≫ S.totalMapOfLE hab =
@@ -494,8 +472,8 @@ theorem detachedCoprodMapOfLE_inr_totalMapOfLE {a b : ℕ} (hab : a ≤ b) :
       rw [detachedCoprodMapOfLE_succ_of_le S hb, totalMapOfLE_succ_of_le S hb, Category.assoc,
         S.detachedCoprodInl_inr_totalTransition_assoc b (S.totalMapOfLE hb), ih]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The center off the detached locus is obtained by restricting the pulled-back ambient center to the complement and then taking its image ideal under the open inclusion. By the adjunction between ideal pullback and image, containment of the original ideal in that image is equivalent to containment of its restriction in itself.
 -/
 theorem comapAmbientCenter_le_centerOffDetached (i : ℕ) :
     S.comapAmbientCenter i ≤ S.centerOffDetached i := by
@@ -504,18 +482,14 @@ theorem comapAmbientCenter_le_centerOffDetached (i : ℕ) :
   rw [h]
   exact Scheme.IdealSheafData.le_map_iff_comap_le.mpr le_rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The map on points of a composite applies the first map and then the second map to the given point.
 -/
 private theorem hom_comp_base_apply {A B C : Scheme.{u}} (f : A ⟶ B) (g : B ⟶ C)
     (x : ↥A) : ⇑(f ≫ g).base x = ⇑g.base (⇑f.base x) := rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Supply the required witnesses or components.
+/- English proof (authored)
+The ambient center ideal pulled to the strict transform is contained in the center ideal off the detached locus. Thus the center subscheme off that locus maps to the ambient center by the closed-subscheme lifting property. Every point in its support lifts to that subscheme, and its ambient image therefore lies in the support of the ambient center.
 -/
 theorem support_centerOffDetached_subset_preimage (i : ℕ) :
     ((S.centerOffDetached i).support : Set ↥(S.strictTransform i)) ⊆
@@ -544,8 +518,8 @@ end EmbeddedBlowupSequence
 variable {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}} [AlgebraicGeometry.IsAffine Y]
   {pY : Y ⟶ Spec (CommRingCat.of k)} [AlgebraicGeometry.LocallyOfFiniteType pY]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The successor morphism of the induced sequence is the image of the successor order arrow under its underlying total-space tower. By construction that arrow is the total transition.
 -/
 theorem inducedBlowups_blowupMorphism (S : EmbeddedBlowupSequence k Y pY) (h : S.TransitionsAreBlowups) (i : ℕ) :
     (S.inducedBlowups h).transitionMapSucc i = S.totalTransition i := by
@@ -557,12 +531,8 @@ theorem inducedBlowups_blowupMorphism (S : EmbeddedBlowupSequence k Y pY) (h : S
   rw [h1, h2]
   exact S.totalTower_map_succ i
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Establish an intermediate fact. Treat this case separately. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the later endpoint. For identical indices the tower transition and the iterated total map are both identities. At a successor the tower transition factors by functoriality into the last successor morphism and the previous transition. The last is the total transition, and the previous agrees with the iterated total map by induction. This composite is exactly the recursive successor total map.
 -/
 theorem inducedBlowups_transitionMap (S : EmbeddedBlowupSequence k Y pY) (h : S.TransitionsAreBlowups) {a b : ℕ}
     (hab : a ≤ b) : (S.inducedBlowups h).transitionMap hab = S.totalMapOfLE hab := by
@@ -586,10 +556,8 @@ theorem inducedBlowups_transitionMap (S : EmbeddedBlowupSequence k Y pY) (h : S.
         exact rfl
       exact (e1.trans e4).trans e3.symm
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The induced projection is the iterated total map to stage zero followed by the initial total-space isomorphism. On the chosen detached piece, the iterated map factors through its inclusion in the strict transform at detachment, then the transition to the initial strict transform, then the first summand inclusion. The last inclusion followed by the initial total-space isomorphism is the strict-transform isomorphism to the base. This is the desired projection from the piece.
 -/
 theorem detachedToCoprod_inr_inducedBlowups_projectionToBase (S : EmbeddedBlowupSequence k Y pY) (h : S.TransitionsAreBlowups)
     (s i : ℕ) (hs : s < i) :
@@ -618,10 +586,8 @@ theorem detachedToCoprod_inr_inducedBlowups_projectionToBase (S : EmbeddedBlowup
         rw [S.inl_totalSpaceZeroIso_hom]
     _ = S.detachedι s ≫ S.strictTransformToBase s := rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Write the induced projection as the iterated total map to zero followed by the initial total-space isomorphism. Restricting the iterated map to the strict-transform summand gives the iterated strict-transform map to zero followed by the first summand inclusion. That inclusion composed with the initial isomorphism is the strict-transform isomorphism to the base. Their composite defines the claimed strict-transform projection.
 -/
 theorem inl_inducedBlowups_projectionToBase (S : EmbeddedBlowupSequence k Y pY) (h : S.TransitionsAreBlowups) (i : ℕ) :
     (coprod.inl : S.strictTransform i ⟶ S.totalSpace i) ≫ (S.inducedBlowups h).projectionToBase i =

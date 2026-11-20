@@ -38,12 +38,8 @@ variable {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}} [AlgebraicGeometry
 
 variable (S : EmbeddedBlowupSequence k Y pY)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The field spectrum is Noetherian, and the ambient scheme is quasi-compact and locally of finite type over it, so the ambient scheme is Noetherian. Stage zero is isomorphic to it. At each successor the ambient transition is a blowup of the preceding Noetherian scheme, which gives a Noetherian source. Induction proves the property through the final stage.
 -/
 theorem isNoetherian_schemeAt (i : ℕ) (hi : i ≤ S.length) :
     AlgebraicGeometry.IsNoetherian (S.schemeAt i) := by
@@ -67,14 +63,14 @@ theorem isNoetherian_schemeAt (i : ℕ) (hi : i ≤ S.length) :
       ih (Nat.le_of_succ_le hi)
     exact isNoetherian_of_isBlowupAlongIdealSheaf (S.ambientSeq.isBlowupAlongIdealSheaf_blowupMorphism n hi)
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+By construction the strict transform is the closed subscheme of its strict-transform ideal, so its inclusion is the closed immersion defined by that ideal.
 -/
 theorem strictTransformι_eq_subschemeι (j : ℕ) :
     S.strictTransformι j = (S.strictTransformIdeal j).subschemeι := rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The closed immersion identifies its source with a closed subspace of the target. A subspace of a Noetherian space is Noetherian, giving the assertion.
 -/
 private theorem noetherianSpace_of_isClosedImmersion
     {Z X : Scheme.{u}} (f : Z ⟶ X) [AlgebraicGeometry.IsClosedImmersion f]
@@ -84,16 +80,16 @@ private theorem noetherianSpace_of_isClosedImmersion
   have hcl := AlgebraicGeometry.Scheme.Hom.isClosedEmbedding f
   exact hcl.toIsEmbedding.toIsInducing.noetherianSpace
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Apply preservation of Noetherianity under taking a closed subspace to the strict-transform inclusion at the given stage.
 -/
 theorem noetherianSpace_strictTransform_of_noetherianSpace_schemeAt (j : ℕ)
     (h : TopologicalSpace.NoetherianSpace ↥(S.schemeAt j)) :
     TopologicalSpace.NoetherianSpace ↥(S.strictTransform j) :=
   noetherianSpace_of_isClosedImmersion (S.strictTransformIdeal j).subschemeι h
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The new ambient space is Noetherian. The strict-transform immersion is an embedding into that space and its source is Noetherian. Its inverse images of quasi-compact opens are consequently quasi-compact.
 -/
 theorem quasiCompact_strictTransformι_blowdown (i : ℕ)
     (h : TopologicalSpace.NoetherianSpace ↥(S.schemeAt (i + 1))) :
@@ -105,15 +101,15 @@ theorem quasiCompact_strictTransformι_blowdown (i : ℕ)
 def detachedOpens (i : ℕ) (h : IsOpen (S.detachedLocus i)) : (S.strictTransform i).Opens :=
   ⟨S.detachedLocus i, h⟩
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The detached open is the detached locus equipped with a proof that it is open. Its underlying set is therefore that locus.
 -/
 theorem coe_detachedOpens (i : ℕ) (h : IsOpen (S.detachedLocus i)) :
     ((S.detachedOpens i h : (S.strictTransform i).Opens) : Set ↥(S.strictTransform i)) =
       S.detachedLocus i := rfl
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Every point of the detached locus also belongs to its closure. Thus it cannot lie in the complement of that closure, and the two opens are disjoint.
 -/
 theorem disjoint_detachedOpens_detachedClosureCompl (i : ℕ) (h : IsOpen (S.detachedLocus i))
     (_hn : TopologicalSpace.NoetherianSpace ↥(S.strictTransform i)) :
@@ -125,8 +121,8 @@ theorem disjoint_detachedOpens_detachedClosureCompl (i : ℕ) (h : IsOpen (S.det
   have h2 : x ∈ closure (S.detachedLocus i) := subset_closure h1
   exact hx' h2
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+In the Noetherian strict transform the detached locus is closed, so its closure equals the locus. The two opens are the locus and its complement, whose union is the whole space.
 -/
 theorem union_detachedOpens_detachedClosureCompl (i : ℕ) (h : IsOpen (S.detachedLocus i))
     (hn : TopologicalSpace.NoetherianSpace ↥(S.strictTransform i)) :
@@ -136,16 +132,16 @@ theorem union_detachedOpens_detachedClosureCompl (i : ℕ) (h : IsOpen (S.detach
   rw [S.coe_detachedOpens i h, S.detachedClosureCompl_coe i, S.detachedClosure_coe i]
   exact Set.union_compl_self _
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The underlying set of the open complement of the detached closure is the ordinary set complement of that closed subset.
 -/
 theorem coe_detachedClosureCompl (i : ℕ) :
     ((S.detachedClosureCompl i : (S.strictTransform i).Opens) : Set ↥(S.strictTransform i)) =
       ((S.detachedClosure i : TopologicalSpace.Closeds ↥(S.strictTransform i)) :
         Set ↥(S.strictTransform i))ᶜ := rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Noetherianity makes the detached locus equal to its closure. The stated open is therefore the complement of that locus. Since the locus is open by hypothesis, its complement is closed.
 -/
 theorem isClosed_detachedClosureCompl (i : ℕ)
     (hn : TopologicalSpace.NoetherianSpace ↥(S.strictTransform i))
@@ -158,8 +154,8 @@ theorem isClosed_detachedClosureCompl (i : ℕ)
   rw [hc]
   exact isClosed_compl_iff.mpr h
 
-/- English proof (translation)
-Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
+/- English proof (authored)
+A point of the detached locus lies in a detached component. Each such component is defined by requiring its entire ambient image to lie in the center support, so the point’s image lies there.
 -/
 theorem image_detachedLocus_subset_ambientCenter_support (i : ℕ) :
     ⇑(S.strictTransformι i).base '' (S.detachedLocus i) ⊆
@@ -169,12 +165,8 @@ theorem image_detachedLocus_subset_ambientCenter_support (i : ℕ) :
   obtain ⟨C, hC, hyC⟩ := hy
   exact ((S.mem_detachedComponents i C).mp hC).2 ⟨y, hyC, rfl⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
+/- English proof (authored)
+The center off the detached locus has ideal equal to the kernel of the closed subscheme on the complement followed by the open inclusion. This source is Noetherian, so the composite is quasi-compact and the support of its kernel is the closure of the image. The image lies in the complement of the detached locus, which is closed because the locus is open. Its closure therefore lies in that same complement.
 -/
 theorem support_centerOffDetached_subset_detachedClosureCompl (i : ℕ)
     (hn : TopologicalSpace.NoetherianSpace ↥(S.strictTransform i))
@@ -202,12 +194,8 @@ theorem support_centerOffDetached_subset_detachedClosureCompl (i : ℕ)
   rw [← hco, ← hr]
   exact ⟨_, rfl⟩
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+At zero the strict transform is defined by the kernel of the original reduced scheme’s closed immersion, transported through the ambient isomorphism. This kernel defines a reduced subscheme. At a successor, the preceding strict transform is reduced by induction and the strict-transform immersion is quasi-compact in the Noetherian new ambient stage. The strict transform of a reduced closed subscheme under this blowup is reduced, completing the induction.
 -/
 theorem isReduced_strictTransform_of_isNoetherian [AlgebraicGeometry.IsReduced Y]
     (hN : ∀ j ≤ S.length, AlgebraicGeometry.IsNoetherian (S.schemeAt j))
@@ -233,14 +221,8 @@ theorem isReduced_strictTransform_of_isNoetherian [AlgebraicGeometry.IsReduced Y
     exact isReduced_subscheme_strictTransform (S.blowdown n) (S.ambientCenter n)
       (S.strictTransformIdeal n) (S.ambientSeq.isBlowupAlongIdealSheaf_blowupMorphism n hi)
 
-/- English proof (translation)
-Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Every point of the first summand maps into the first target set. Conversely, a point mapping into that set cannot belong to the second summand, whose image lies in the disjoint second target set. Since the two summands cover the source, it belongs to the first.
 -/
 private theorem range_coprod_inl_eq_preimage {A B X : Scheme.{u}} (a : A ⟶ X) (b : B ⟶ X)
     (V W : Set ↥X) (hdisj : Disjoint V W)
@@ -265,12 +247,8 @@ private theorem range_coprod_inl_eq_preimage {A B X : Scheme.{u}} (a : A ⟶ X) 
     rw [Set.mem_preimage, h1] at hz
     exact Set.disjoint_left.mp hdisj hz (hb y)
 
-/- English proof (translation)
-Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Every point of the second summand maps into the second target set. If a point mapping into that set were in the first summand, its image would also lie in the first target set, contradicting disjointness. It therefore lies in the second summand.
 -/
 private theorem range_coprod_inr_eq_preimage {A B X : Scheme.{u}} (a : A ⟶ X) (b : B ⟶ X)
     (V W : Set ↥X) (hdisj : Disjoint V W)
@@ -293,8 +271,8 @@ private theorem range_coprod_inr_eq_preimage {A B X : Scheme.{u}} (a : A ⟶ X) 
     rw [Set.mem_preimage, h1] at hz
     exact Set.disjoint_left.mp hdisj (ha x) hz
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Substitute the vanishing ideal for the given equal ideal. In a reduced scheme the reduced closed subscheme of a closed open set is isomorphic over the ambient scheme to the open subscheme on that set.
 -/
 private theorem exists_iso_subscheme_of_eq_vanishingIdeal {X : Scheme.{u}}
     [AlgebraicGeometry.IsReduced X] (C : X.Opens)
@@ -305,10 +283,8 @@ private theorem exists_iso_subscheme_of_eq_vanishingIdeal {X : Scheme.{u}}
   subst hJ
   exact exists_iso_subscheme_vanishingIdeal_of_isClosed C hC
 
-/- English proof (translation)
-Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The given closed immersion has the ideal used to define the strict transform as its kernel. The canonical lift of the strict transform to the original closed subscheme has the same composite to the ambient scheme as the prescribed map. The closed immersion is a monomorphism, so the two lifts are equal. The blowup result for the canonical lift gives the desired property.
 -/
 private theorem isBlowupAlongIdealSheaf_lift_of_comp_eq {X X₁ S₀ : Scheme.{u}} (j : S₀ ⟶ X)
     [AlgebraicGeometry.IsClosedImmersion j] [Mono j]
@@ -324,22 +300,8 @@ private theorem isBlowupAlongIdealSheaf_lift_of_comp_eq {X X₁ S₀ : Scheme.{u
   rw [h3]
   exact isBlowupAlongIdealSheaf_strictTransformLiftOfClosedImmersion j π Z hπ
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
+/- English proof (authored)
+Because the two target opens are disjoint and the summands map into their respective opens, the inverse image of each open in the coproduct is exactly its source summand. The comparison isomorphisms commute with the restricted maps. Over the first open this identifies the restriction with the given blowup. Over the second it identifies the restriction with the given isomorphism, which is the blowup along the unit ideal there. These two opens cover the target, and the blowup property is local for this cover.
 -/
 private theorem isBlowupAlongIdealSheaf_coprod_desc_of_disjoint_cover {A A' F : Scheme.{u}} (g : A' ⟶ A) (j : F ⟶ A)
     (I : A.IdealSheafData) (V W : A.Opens)
@@ -415,38 +377,8 @@ private theorem isBlowupAlongIdealSheaf_coprod_desc_of_disjoint_cover {A A' F : 
       have hb := hW.iso_hom_comp (pullbackRestrictIsoRestrict (coprod.desc g j) W)
       rwa [pullbackRestrictIsoRestrict_hom_morphismRestrict] at hb
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
-
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
+/- English proof (authored)
+The current strict transform is reduced and Noetherian, so the open detached locus is also closed and its reduced subscheme agrees with that open subscheme. The map from the next strict transform is the blowup along the pulled-back ambient center by the strict-transform lift theorem. Its range lies in the complement of the detached locus. Indeed, the preceding support away from the center lies in the ambient image of this complement, and that image is closed. The closure formula for the next support and the commuting blowdown square therefore put every image point in the complement. Restricting the blowup to this open keeps its whole source and restricts its center to the center off the detached locus. On the detached open the latter center is the unit ideal because its support lies in the closed complement. The map on that summand is an isomorphism. The local blowup criterion on these two disjoint opens now gives the result.
 -/
 theorem isBlowupAlongIdealSheaf_coprod_desc_centerOffDetached [AlgebraicGeometry.IsReduced Y]
     [AlgebraicGeometry.QuasiCompact pY] (i : ℕ) (hi : i < S.length)
@@ -621,20 +553,14 @@ private def coprodSwapAssocIso (A F T : Scheme.{u}) : A ⨿ (T ⨿ F) ≅ (A ⨿
         simp [coprodSwapAssocHom, coprodSwapAssocInv, coprod.inl_desc, coprod.inr_desc]
     · simp [coprodSwapAssocHom, coprodSwapAssocInv, coprod.inl_desc, coprod.inr_desc]
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The forward morphism of the isomorphism was defined to be the map that rearranges and reassociates the three coproduct summands.
 -/
 private theorem coprodSwapAssocIso_hom (A F T : Scheme.{u}) :
     (coprodSwapAssocIso A F T).hom = coprodSwapAssocHom A F T := rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
-
-Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The total center is supported in the previous strict-transform summand. Its pullback to that summand is the center off the detached locus, and its pullback to the already detached summand is the unit ideal. Thus the given blowup on the first summand and the identity on the second form a blowup of the full center. The total transition equals this coproduct map after the canonical rearrangement of the three source summands, as seen by checking each summand. Precomposition with that source isomorphism preserves the blowup property.
 -/
 theorem isBlowupAlongIdealSheaf_totalTransition_of_coprod_desc (i : ℕ)
     (h : Blowup.IsBlowupAlongIdealSheaf (coprod.desc (S.strictTransformMap i) (S.detachedι i)) (S.centerOffDetached i)) :
@@ -685,8 +611,8 @@ def EmbeddedBlowupSequence.AllLevelsNoetherian {k : Type u} [Field k] [CharZero 
     [AlgebraicGeometry.LocallyOfFiniteType pY] (S : EmbeddedBlowupSequence k Y pY) : Prop :=
   ∀ i ≤ S.length, AlgebraicGeometry.IsNoetherian (S.schemeAt i)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+For a stage within the sequence, openness of the detached locus and Noetherianity give the blowup description on the strict-transform summand. The coproduct argument extends it to the full total transition. The successor arrow of the tower is this transition, so each such arrow is the required blowup.
 -/
 theorem transitionsAreBlowups_of_detachedLocusIsOpen {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}}
     [AlgebraicGeometry.IsAffine Y] [AlgebraicGeometry.IsReduced Y]
@@ -706,8 +632,8 @@ def DetachedLocusIsOpenForEmbeddings (A : PrincipalizationAlgorithm.{u}) : Prop 
     [AlgebraicGeometry.IsAffine Y] (D : EmbeddingDatum k Y pY),
     EmbeddedBlowupSequence.DetachedLocusIsOpen (D.toEmbeddedBlowupSequence A)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The finite-stage Noetherianity theorem applies to the embedded blowup sequence obtained from the given embedding and algorithm. It gives the required result at every stage at or below the length.
 -/
 theorem allLevelsNoetherian_toEmbeddedBlowupSequence (A : PrincipalizationAlgorithm.{u}) (k : Type u) [Field k] [CharZero k]
     (Y : Scheme.{u}) (pY : Y ⟶ Spec (CommRingCat.of k))
@@ -718,8 +644,8 @@ theorem allLevelsNoetherian_toEmbeddedBlowupSequence (A : PrincipalizationAlgori
   intro i hi
   exact EmbeddedBlowupSequence.isNoetherian_schemeAt (D.toEmbeddedBlowupSequence A) i hi
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+For any embedding datum the assumed openness holds at every stage. The embedded sequence from the algorithm also has Noetherian ambient stages. The preceding blowup construction applies to these two facts and identifies its transitions as blowups.
 -/
 theorem transitionsAreBlowupsForEmbeddings_of_detachedLocusIsOpen (A : PrincipalizationAlgorithm.{u}) (h : DetachedLocusIsOpenForEmbeddings A) :
     TransitionsAreBlowupsForEmbeddings A := by
@@ -731,16 +657,16 @@ def vanishingIdealClosureImage {X Z : Scheme.{u}} (f : Z ⟶ X) (C : Set ↥Z) :
   Scheme.IdealSheafData.vanishingIdeal
     (⟨closure (⇑f.base '' C), isClosed_closure⟩ : TopologicalSpace.Closeds ↥X)
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The named ideal is defined by taking the topological closure of the set’s image and then its vanishing ideal.
 -/
 theorem vanishingIdealClosureImage_eq {X Z : Scheme.{u}} (f : Z ⟶ X) (C : Set ↥Z) :
     vanishingIdealClosureImage f C =
       Scheme.IdealSheafData.vanishingIdeal
         (⟨closure (⇑f.base '' C), isClosed_closure⟩ : TopologicalSpace.Closeds ↥X) := rfl
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Smoothness over the field gives regular local rings, so distinct irreducible components are disjoint. The scheme is locally Noetherian, so the irreducible components are locally finite. Each component is closed, and its complement is a union of the other components, which is closed by local finiteness. Thus the component is also open.
 -/
 theorem isClopen_of_mem_irreducibleComponents_of_smooth {k : Type u} [Field k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -748,8 +674,8 @@ theorem isClopen_of_mem_irreducibleComponents_of_smooth {k : Type u} [Field k] {
     (hC : C ∈ irreducibleComponents ↥X) : IsClopen C :=
   isClopen_irreducibleComponent_of_smooth p inferInstance hC
 
-/- English proof (translation)
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The original smooth scheme is reduced. Its reduced vanishing subscheme on the given clopen set is isomorphic over the ambient scheme to the open subscheme on that set. The open subscheme has smooth structural morphism by restriction. The identification of the immersions transports smoothness to the vanishing subscheme.
 -/
 theorem smooth_subschemeι_vanishingIdeal_comp_of_isClopen {k : Type u} [Field k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -775,8 +701,8 @@ variable (S : EmbeddedBlowupSequence k Y pY)
 def schemeAtToSpec (i : ℕ) : S.schemeAt i ⟶ Spec (CommRingCat.of k) :=
   S.ambientSeq.projectionToBase i ≫ S.ambientStruct
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The structural map at a stage is defined by its ambient projection to the original ambient scheme followed by that scheme’s structural map to the field.
 -/
 theorem schemeAtToSpec_eq (i : ℕ) :
     S.schemeAtToSpec i = S.ambientSeq.projectionToBase i ≫ S.ambientStruct := rfl
@@ -784,20 +710,14 @@ theorem schemeAtToSpec_eq (i : ℕ) :
 def strictTransformToSpec (i : ℕ) : S.strictTransform i ⟶ Spec (CommRingCat.of k) :=
   S.strictTransformι i ≫ S.schemeAtToSpec i
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The strict-transform structural morphism is obtained by composing its ambient inclusion with the ambient stage’s structural map.
 -/
 theorem strictTransformToSpec_eq (i : ℕ) :
     S.strictTransformToSpec i = S.strictTransformι i ≫ S.schemeAtToSpec i := rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the stage for the projection to the original ambient scheme. The first projection is an isomorphism. Each successor factor is the blowup of a Noetherian scheme and is proper, hence locally of finite type. Composing with the preceding projection preserves this property. Composing each stage projection with the original ambient structure map to the field preserves it once more.
 -/
 theorem locallyOfFiniteType_schemeAtToSpec (i : ℕ) (hi : i ≤ S.length) :
     AlgebraicGeometry.LocallyOfFiniteType (S.schemeAtToSpec i) := by
@@ -826,8 +746,8 @@ theorem locallyOfFiniteType_schemeAtToSpec (i : ℕ) (hi : i ≤ S.length) :
   rw [S.schemeAtToSpec_eq i]
   infer_instance
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The strict-transform inclusion is a closed immersion and hence locally of finite type. The ambient stage’s structural map is locally of finite type as well, so their composite has the property.
 -/
 theorem locallyOfFiniteType_strictTransformToSpec (i : ℕ) (hi : i ≤ S.length) :
     AlgebraicGeometry.LocallyOfFiniteType (S.strictTransformToSpec i) := by

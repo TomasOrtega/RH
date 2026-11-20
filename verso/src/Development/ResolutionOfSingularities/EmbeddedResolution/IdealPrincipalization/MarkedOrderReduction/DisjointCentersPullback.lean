@@ -18,15 +18,15 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace SequenceOfBlowupsPullback
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The underlying point map of the composite acts by applying f first and then g. At x this gives the stated expression.
 -/
 private theorem base_comp_apply {A B C : Scheme.{u}} (f : A ⟶ B) (g : B ⟶ C) (x : ↥A) :
     (f ≫ g).base x = g.base (f.base x) := by
   simp
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The comparison induced by the composite equality is the composite of the two equality-induced morphisms. Evaluating at x gives the equality. Equivalently, substituting both equalities reduces both sides to x.
 -/
 private theorem eqToHom_base_trans {A B C : Scheme.{u}} (h : A = B) (h' : B = C)
     (x : ↥A) : (eqToHom h').base ((eqToHom h).base x) = (eqToHom (h.trans h')).base x := by
@@ -34,22 +34,22 @@ private theorem eqToHom_base_trans {A B C : Scheme.{u}} (h : A = B) (h' : B = C)
   subst h'
   simp
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The endomorphism induced by equality of A with itself is the identity, so its underlying map fixes x.
 -/
 private theorem eqToHom_base_self {A : Scheme.{u}} (h : A = A) (x : ↥A) :
     (eqToHom h).base x = x := by
   simp
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The inverse composed after the forward isomorphism is the identity. Evaluate this identity at x.
 -/
 private theorem inv_base_hom_base {A B : Scheme.{u}} (e : A ≅ B) (x : ↥A) :
     e.inv.base (e.hom.base x) = x := by
   simp
 
-/- English proof (translation)
-Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
+/- English proof (authored)
+Substitute equality of the indices so the two centers agree. The equality-induced map on their stage scheme is the identity, so it preserves the given membership.
 -/
 private theorem eqToHom_base_mem_support_center {X : Scheme.{u}} (d : BlowupSequenceData X) {a b : ℕ}
     (hab : a = b) (h : d.obj a = d.obj b) (z : ↥(d.obj a))
@@ -57,8 +57,8 @@ private theorem eqToHom_base_mem_support_center {X : Scheme.{u}} (d : BlowupSequ
   subst hab
   simpa using hz
 
-/- English proof (translation)
-Substitute using the available equality. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Substitute the equality of indices. The two projections then agree, and the intermediate comparison sends z to itself.
 -/
 private theorem projectionToBase_base_eqToHom_base {X : Scheme.{u}} (d : BlowupSequenceData X) {a b : ℕ}
     (hab : a = b) (h : d.obj a = d.obj b) (z : ↥(d.obj a)) :
@@ -77,15 +77,15 @@ private def mapOfLengthEqOne {X Y : Scheme.{u}} (g : Y ⟶ X) (t : BlowupSequenc
   | 1, _ => eqToHom (t'.toSequenceOfBlowups_schemeAt 1) ≫ q ≫ eqToHom (t.toSequenceOfBlowups_schemeAt 1).symm
   | (_ + 2), h => absurd h (by rw [BlowupSequenceData.toSequenceOfBlowups_length, ht']; omega)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Converting either set of data to a sequence preserves length. Both lengths are one by hypothesis, so they agree.
 -/
 private theorem length_eq_of_length_eq_one {X Y : Scheme.{u}} (t : BlowupSequenceData X) (t' : BlowupSequenceData Y)
     (ht : t.length = 1) (ht' : t'.length = 1) : t'.toSequenceOfBlowups.length = t.toSequenceOfBlowups.length := by
   rw [BlowupSequenceData.toSequenceOfBlowups_length, BlowupSequenceData.toSequenceOfBlowups_length, ht', ht]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The two sequence lengths are equal because both underlying lengths are one. Substitute that equality into the given index bound.
 -/
 private theorem lt_length_of_length_eq_one {X Y : Scheme.{u}} (t : BlowupSequenceData X) (t' : BlowupSequenceData Y)
     (ht : t.length = 1) (ht' : t'.length = 1) :
@@ -94,23 +94,15 @@ private theorem lt_length_of_length_eq_one {X Y : Scheme.{u}} (t : BlowupSequenc
   rw [length_eq_of_length_eq_one t t' ht ht'] at hj
   exact hj
 
-/- English proof (translation)
-Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+A natural number is strictly less than its successor. This gives strict increase of the identity matching.
 -/
 private theorem index_strictMono_of_length_eq_one {Y : Scheme.{u}} (t' : BlowupSequenceData Y)
     (_ht' : t'.length = 1) : ∀ j : ℕ, j < t'.toSequenceOfBlowups.length → j < j + 1 :=
   fun j _ => Nat.lt_succ_self j
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+There are only stages zero and one. At zero, the comparison map is g transported by the two initial isomorphisms. The stage-zero square commutes and is a pullback because the horizontal maps after exchanging the legs are isomorphisms. At stage one, paste the given comparison square of the blowup maps with that initial pullback square. The stage-one projections are the blowup maps followed by the initial isomorphisms, so the pasted square is the asserted one.
 -/
 private theorem isPullback_of_length_eq_one {X Y : Scheme.{u}} (g : Y ⟶ X) (t : BlowupSequenceData X)
     (t' : BlowupSequenceData Y) (_ht : t.length = 1) (ht' : t'.length = 1) (q : t'.obj 1 ⟶ t.obj 1)
@@ -150,10 +142,8 @@ private theorem isPullback_of_length_eq_one {X Y : Scheme.{u}} (g : Y ⟶ X) (t 
     rw [hmap, hs1, hs1']
     exact hq.paste_vert hzero
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The length bound forces j to be zero. The consecutive transitions are the two given blowup maps, and the comparison maps are the initial comparison induced by g and the given stage-one map. Their commutativity is the equality of the two composites in the given pullback square.
 -/
 private theorem blowupMorphism_comp_of_length_eq_one {X Y : Scheme.{u}} (g : Y ⟶ X) (t : BlowupSequenceData X)
     (t' : BlowupSequenceData Y) (_ht : t.length = 1) (ht' : t'.length = 1) (q : t'.obj 1 ⟶ t.obj 1)
@@ -175,10 +165,8 @@ private theorem blowupMorphism_comp_of_length_eq_one {X Y : Scheme.{u}} (g : Y �
   simp only [Category.id_comp, Category.comp_id]
   exact hq.w.symm
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Only j equal to zero is in range. The initial comparison is g transported through the starting isomorphisms, and both centers are the underlying stage-zero data. The assumed pullback equality of those centers is therefore the desired equality.
 -/
 private theorem center_eq_comap_of_length_eq_one {X Y : Scheme.{u}} (g : Y ⟶ X) (t : BlowupSequenceData X)
     (t' : BlowupSequenceData Y) (_ht : t.length = 1) (ht' : t'.length = 1) (q : t'.obj 1 ⟶ t.obj 1)
@@ -197,10 +185,8 @@ private theorem center_eq_comap_of_length_eq_one {X Y : Scheme.{u}} (g : Y ⟶ X
   rw [hmap, BlowupSequenceData.toSequenceOfBlowups_center, BlowupSequenceData.toSequenceOfBlowups_center]
   exact hcen
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Substitute using the available equality.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The only possible step is zero. Converting to a sequence does not change its center, which is assumed to differ from the unit ideal.
 -/
 private theorem center_ne_top_of_length_eq_one {Y : Scheme.{u}} (t' : BlowupSequenceData Y)
     (ht' : t'.length = 1) (hne : t'.center 0 ≠ ⊤) :
@@ -213,10 +199,8 @@ private theorem center_ne_top_of_length_eq_one {Y : Scheme.{u}} (t' : BlowupSequ
   rw [BlowupSequenceData.toSequenceOfBlowups_center]
   exact hne
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The only original step is at index zero, which is also the unique matched step of the upper sequence. The assumption that this index is unmatched contradicts the match at zero. The omitted-center assertion therefore has no applicable step.
 -/
 private theorem disjoint_omitted_centers_of_length_eq_one {X Y : Scheme.{u}} (g : Y ⟶ X) (t : BlowupSequenceData X)
     (t' : BlowupSequenceData Y) (ht : t.length = 1) (ht' : t'.length = 1) :
@@ -249,12 +233,8 @@ def ofLengthOne {X Y : Scheme.{u}} (g : Y ⟶ X) (t : BlowupSequenceData X) (t' 
 
 end
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Commutativity of the square gives equality between the image of y under g and the projection of its image under u. If y lay in the support of the pulled back ideal, its image under u would be a point of the given support with this same projection. That contradicts the range-disjointness assumption. The pulled back support is empty, so the pulled back ideal is the unit ideal.
 -/
 theorem comap_eq_top_of_forall_support_not_mem_range {X Y T : Scheme.{u}} (g : Y ⟶ X) (π : T ⟶ X)
     (I : T.IdealSheafData)
@@ -281,14 +261,8 @@ private def IsDisjointFromCenters {X Y : Scheme.{u}} (g : Y ⟶ X) (t : BlowupSe
   ∀ i : ℕ, i < t.length → ∀ z : ↥(t.obj i), z ∈ (t.center i).support →
     ∀ y : ↥Y, g.base y ≠ (t.projectionToBase i).base z
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The given disjointness makes the center ideal pull back to the unit ideal on Y. This ideal is locally generated by a nonzero divisor, so the blowup universal property gives a lift from Y to the next stage. Pair the lift with the identity of Y to obtain a map to the pullback. It is a right inverse to the projection to Y. For the other composite, the second projection agrees automatically, and the first agrees by uniqueness of blowup lifts because the center still pulls back to the unit ideal on the pullback. Hence the projection is an isomorphism.
 -/
 private theorem isIso_pullbackSnd_of_flat_of_disjoint {X Y : Scheme.{u}} (g : Y ⟶ X) [AlgebraicGeometry.Flat g]
     (t : BlowupSequenceData X) (hmiss : IsDisjointFromCenters g t) (i : ℕ) (hi : i < t.length) (u : Y ⟶ t.obj i)
@@ -321,10 +295,8 @@ private noncomputable def liftSuccOfIsDisjointFromCenters {X Y : Scheme.{u}} (g 
   letI := isIso_pullbackSnd_of_flat_of_disjoint g t hmiss i hi u hu
   inv (pullback.snd (t.map i) u) ≫ pullback.fst (t.map i) u
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The pullback of the next blowup along the current lift is isomorphic to Y by the second projection. Under this isomorphism the first projection is the defined successor lift and the second is the identity. Paste this pullback square with the one for the current lift. The successor projection formula identifies the resulting outer square with the one asserted.
 -/
 private theorem isPullback_liftSuccOfIsDisjointFromCenters {X Y : Scheme.{u}} (g : Y ⟶ X) [AlgebraicGeometry.Flat g]
     (t : BlowupSequenceData X) (hmiss : IsDisjointFromCenters g t) (i : ℕ) (hi : i < t.length) (u : Y ⟶ t.obj i)
@@ -342,10 +314,8 @@ private theorem isPullback_liftSuccOfIsDisjointFromCenters {X Y : Scheme.{u}} (g
   rw [BlowupSequenceData.projectionToBase_succ]
   exact hpaste
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The stage-zero projection is the initial isomorphism. Composing g with its inverse gives the commutative square with identity on Y. After exchanging the legs, the horizontal arrows are isomorphisms, so the square is a pullback.
 -/
 private theorem isPullback_comp_isoObjZero_inv {X Y : Scheme.{u}} (g : Y ⟶ X) (t : BlowupSequenceData X) :
     IsPullback (g ≫ t.isoZero.inv) (𝟙 Y) (t.projectionToBase 0) g := by
@@ -370,8 +340,8 @@ private noncomputable def liftToLastOfFlatOfIsDisjointFromCenters {X Y : Scheme.
     (t : BlowupSequenceData X) (hmiss : IsDisjointFromCenters g t) : Y ⟶ t.obj t.length :=
   (liftOfIsDisjointFromCenters g t hmiss t.length le_rfl).1
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+The sequence obtained from the data has length zero. An index bounded by zero is zero, and the stage-zero scheme is the stage-zero object of the data.
 -/
 private theorem schemeAt_eq_schemeAt_zero_of_length_eq_zero {Y : Scheme.{u}} (e : BlowupSequenceData Y) (he : e.length = 0) (j : ℕ)
     (hj : j ≤ e.toSequenceOfBlowups.length) : e.toSequenceOfBlowups.schemeAt j = e.obj 0 := by
@@ -386,14 +356,14 @@ private noncomputable def mapToLastOfFlatOfLengthEqZero {X Y : Scheme.{u}} (g : 
   eqToHom (schemeAt_eq_schemeAt_zero_of_length_eq_zero e he j hj) ≫ e.isoZero.hom ≫ liftToLastOfFlatOfIsDisjointFromCenters g t hmiss ≫
     eqToHom (t.toSequenceOfBlowups_schemeAt t.length).symm
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Passing from the data to its sequence uses the length recorded in the data. Reverse that length equality to obtain the formula.
 -/
 private theorem length_eq_toSequenceOfBlowups_length {X : Scheme.{u}} (t : BlowupSequenceData X) :
     t.length = t.toSequenceOfBlowups.length := (t.toSequenceOfBlowups_length).symm
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The sequence of e has length zero, so no natural number is strictly below it. The proposed bound is vacuous.
 -/
 private theorem length_lt_toSequenceOfBlowups_length_of_lt {X Y : Scheme.{u}} (t : BlowupSequenceData X) (e : BlowupSequenceData Y)
     (he : e.length = 0) : ∀ j : ℕ, j < e.toSequenceOfBlowups.length → t.length < t.toSequenceOfBlowups.length := by
@@ -401,8 +371,8 @@ private theorem length_lt_toSequenceOfBlowups_length_of_lt {X Y : Scheme.{u}} (t
   rw [BlowupSequenceData.toSequenceOfBlowups_length, he] at hj
   exact absurd hj (Nat.not_lt_zero j)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Conversion preserves the zero length of e. There is consequently no j strictly below that length, so the implication follows from the impossible premise.
 -/
 private theorem length_lt_length_of_lt_length_of_eq_zero {X Y : Scheme.{u}} (t : BlowupSequenceData X) (e : BlowupSequenceData Y)
     (he : e.length = 0) : ∀ j : ℕ, j < e.toSequenceOfBlowups.length → t.length < t.length := by
@@ -410,12 +380,8 @@ private theorem length_lt_length_of_lt_length_of_eq_zero {X Y : Scheme.{u}} (t :
   rw [BlowupSequenceData.toSequenceOfBlowups_length, he] at hj
   exact absurd hj (Nat.not_lt_zero j)
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The only upper stage in range is zero. The lift to the last lower stage has a pullback square by the construction that lifts through the disjoint centers. Precompose with the upper initial isomorphism, whose square over Y is a pullback. The resulting pasted square has the stage-zero upper projection and the last lower projection. The comparison at zero is exactly the composite of the upper initial isomorphism with the lift.
 -/
 private theorem isPullback_of_disjoint_centers {X Y : Scheme.{u}} (g : Y ⟶ X) [AlgebraicGeometry.Flat g]
     (t : BlowupSequenceData X) (hmiss : IsDisjointFromCenters g t) (e : BlowupSequenceData Y) (he : e.length = 0) :
@@ -442,8 +408,8 @@ private theorem isPullback_of_disjoint_centers {X Y : Scheme.{u}} (g : Y ⟶ X) 
   rw [hmap, hs, hf]
   exact hcomp
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The upper sequence is empty, so the bound for an actual upper step is impossible. The transition compatibility consequently holds vacuously.
 -/
 private theorem blowupMorphism_comp_of_disjoint_centers {X Y : Scheme.{u}} (g : Y ⟶ X) [AlgebraicGeometry.Flat g]
     (t : BlowupSequenceData X) (hmiss : IsDisjointFromCenters g t) (e : BlowupSequenceData Y) (he : e.length = 0) :
@@ -455,8 +421,8 @@ private theorem blowupMorphism_comp_of_disjoint_centers {X Y : Scheme.{u}} (g : 
   have hlen : e.toSequenceOfBlowups.length = 0 := e.toSequenceOfBlowups_length.trans he
   exact absurd hj (by rw [hlen]; exact Nat.not_lt_zero j)
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The length of the upper sequence is zero. There is no index below that length, so no center pullback identity needs to be checked.
 -/
 private theorem center_eq_comap_lastCenter_of_disjoint_of_flat {X Y : Scheme.{u}} (g : Y ⟶ X) [AlgebraicGeometry.Flat g]
     (t : BlowupSequenceData X) (hmiss : IsDisjointFromCenters g t) (e : BlowupSequenceData Y) (he : e.length = 0) :
@@ -467,8 +433,8 @@ private theorem center_eq_comap_lastCenter_of_disjoint_of_flat {X Y : Scheme.{u}
   intro j hj
   exact absurd hj (by omega)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+In a length-zero sequence there is no valid step index. Thus the nonunit condition on an actual center holds vacuously.
 -/
 private theorem center_ne_top_of_length_eq_zero {Y : Scheme.{u}} (e : BlowupSequenceData Y) (he : e.length = 0) :
     ∀ j : ℕ, j < e.toSequenceOfBlowups.length → e.toSequenceOfBlowups.center j ≠ ⊤ := by
@@ -476,10 +442,8 @@ private theorem center_ne_top_of_length_eq_zero {Y : Scheme.{u}} (e : BlowupSequ
   rw [BlowupSequenceData.toSequenceOfBlowups_length, he] at hj
   exact absurd hj (Nat.not_lt_zero j)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+Conversion preserves the lower length, center support, and projection. An actual lower step therefore falls under the disjointness assumption, which excludes equality of its projected center point with the image of any new base point.
 -/
 private theorem disjoint_omitted_centers_of_disjoint_centers {X Y : Scheme.{u}} (g : Y ⟶ X) (t : BlowupSequenceData X)
     (hmiss : IsDisjointFromCenters g t) (e : BlowupSequenceData Y) (_he : e.length = 0) :
@@ -515,8 +479,8 @@ end
 
 section
 
-/- English proof (translation)
-Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Through the original endpoint the appended data use the original stage schemes. The bound on j is the same for the original data and their sequence, so converting the two stage schemes gives the asserted equality.
 -/
 private theorem schemeAt_eq_schemeAt_append {X' : Scheme.{u}} (s' : BlowupSequenceData X')
     (n : BlowupSequenceData (s'.obj s'.length)) (j : ℕ) (hj : j ≤ s'.toSequenceOfBlowups.length) :
@@ -525,8 +489,8 @@ private theorem schemeAt_eq_schemeAt_append {X' : Scheme.{u}} (s' : BlowupSequen
   rw [BlowupSequenceData.toSequenceOfBlowups_schemeAt s' j, BlowupSequenceData.toSequenceOfBlowups_schemeAt (s'.append n) j,
     BlowupSequenceData.append_schemeAt_of_le_length s' n hj]
 
-/- English proof (translation)
-Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
+/- English proof (authored)
+The appended length is the original length plus zero, hence is the original length. This transfers the bound on j.
 -/
 private theorem le_length_append_of_length_eq_zero {X' : Scheme.{u}} (s' : BlowupSequenceData X')
     (n : BlowupSequenceData (s'.obj s'.length)) (hn : n.length = 0) (j : ℕ) (hj : j ≤ s'.toSequenceOfBlowups.length) :
@@ -541,8 +505,8 @@ private noncomputable def mapOfAppendLengthEqZero {X X' : Scheme.{u}} (φ : X' �
     s'.toSequenceOfBlowups.schemeAt j ⟶ s.schemeAt (c.idx j) :=
   eqToHom (schemeAt_eq_schemeAt_append s' n j hj) ≫ c.map j (le_length_append_of_length_eq_zero s' n hn j hj)
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Appending a length-zero tail leaves the upper length unchanged. The existing matching sends that endpoint to the lower endpoint, and the index itself has not changed.
 -/
 private theorem index_length_of_append_length_eq_zero {X X' : Scheme.{u}} (φ : X' ⟶ X) (s' : BlowupSequenceData X')
     (s : SequenceOfBlowups X) (n : BlowupSequenceData (s'.obj s'.length)) (hn : n.length = 0)
@@ -553,10 +517,8 @@ private theorem index_length_of_append_length_eq_zero {X X' : Scheme.{u}} (φ : 
   rw [← h1]
   exact c.idx_length
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The original upper sequence and its append have the same length. Thus j is an actual step of the append, and the given comparison places its match strictly below the lower length.
 -/
 private theorem index_lt_length_of_append_length_eq_zero {X X' : Scheme.{u}} (φ : X' ⟶ X) (s' : BlowupSequenceData X')
     (s : SequenceOfBlowups X) (n : BlowupSequenceData (s'.obj s'.length)) (hn : n.length = 0)
@@ -569,8 +531,8 @@ private theorem index_lt_length_of_append_length_eq_zero {X X' : Scheme.{u}} (φ
     omega
   exact c.idx_lt j h
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
+/- English proof (authored)
+The zero tail changes no length, so the given strict increase of indices for the append applies at every original upper step.
 -/
 private theorem index_lt_index_succ_of_append_length_eq_zero {X X' : Scheme.{u}} (φ : X' ⟶ X) (s' : BlowupSequenceData X')
     (s : SequenceOfBlowups X) (n : BlowupSequenceData (s'.obj s'.length)) (hn : n.length = 0)
@@ -582,16 +544,16 @@ private theorem index_lt_index_succ_of_append_length_eq_zero {X X' : Scheme.{u}}
   rw [BlowupSequenceData.toSequenceOfBlowups_length, BlowupSequenceData.append_length, hn]
   omega
 
-/- English proof (translation)
-Substitute using the available equality. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The two comparisons induced by opposite scheme equalities cancel. The resulting identity before g leaves g unchanged.
 -/
 private theorem eqToHom_comp_eqToHom_comp_eq {A B C : Scheme.{u}} (h : A = B) (h' : B = A)
     (g : A ⟶ C) : eqToHom h ≫ eqToHom h' ≫ g = g := by
   subst h
   simp
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Through the joining stage the appended projection is the original projection preceded by the identification of the appended scheme with the original scheme. The displayed map preceding it is the inverse identification, so the two cancel and yield the original projection.
 -/
 private theorem eqToHom_comp_append_projectionToBase {X' : Scheme.{u}} (s' : BlowupSequenceData X')
     (n : BlowupSequenceData (s'.obj s'.length)) (j : ℕ) (hj : j ≤ s'.toSequenceOfBlowups.length) :
@@ -603,10 +565,8 @@ private theorem eqToHom_comp_append_projectionToBase {X' : Scheme.{u}} (s' : Blo
   rw [h1, h2, BlowupSequenceData.projectionToBase_append_of_le_length s' n hjl]
   exact eqToHom_comp_eqToHom_comp_eq _ _ _
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The original upper stage is isomorphic to the appended upper stage, and the two projections to the upper base commute with that identification. This identification gives a pullback square over the identity of the upper base. Paste it with the given pullback square for the append. The new comparison is the old one preceded by the identification, as required.
 -/
 private theorem isPullback_of_append_length_eq_zero {X X' : Scheme.{u}} (φ : X' ⟶ X) (s' : BlowupSequenceData X')
     (s : SequenceOfBlowups X) (n : BlowupSequenceData (s'.obj s'.length)) (hn : n.length = 0)
@@ -626,8 +586,8 @@ private theorem isPullback_of_append_length_eq_zero {X X' : Scheme.{u}} (φ : X'
   rw [Category.id_comp] at hpaste
   exact hpaste
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The formula for f′ conjugates f by the source and target identifications. Composing on the source with the inverse of the source identification cancels that factor, giving the displayed equality. This also follows by substituting both equalities and cancelling identity maps.
 -/
 private theorem comp_eqToHom_eq_eqToHom_comp {A B A' B' : Scheme.{u}} (f : A ⟶ B) (f' : A' ⟶ B')
     (hA : A = A') (hB : B = B') (h : f' = eqToHom hA.symm ≫ f ≫ eqToHom hB) :
@@ -637,12 +597,8 @@ private theorem comp_eqToHom_eq_eqToHom_comp {A B A' B' : Scheme.{u}} (f : A ⟶
   simp only [eqToHom_refl, Category.id_comp, Category.comp_id] at h ⊢
   exact h.symm
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+At each original upper step the stage identifications commute with the original transition and the corresponding transition of the append. The upper length is unchanged, so the given comparison commutes with that appended transition. Compose the two equalities to obtain the step compatibility with the transported maps.
 -/
 private theorem blowupMorphism_comp_of_append_length_eq_zero {X X' : Scheme.{u}} (φ : X' ⟶ X) (s' : BlowupSequenceData X')
     (s : SequenceOfBlowups X) (n : BlowupSequenceData (s'.obj s'.length)) (hn : n.length = 0)
@@ -671,18 +627,16 @@ private theorem blowupMorphism_comp_of_append_length_eq_zero {X X' : Scheme.{u}}
       s.transitionMap (le_of_lt (index_lt_index_succ_of_append_length_eq_zero φ s' s n hn c j hj))
   rw [← Category.assoc, hkey, Category.assoc, hstep, Category.assoc]
 
-/- English proof (translation)
-Substitute using the available equality. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The two equality-induced morphisms are inverse to each other. The successive pullbacks equal pullback by their identity composite and fix the ideal.
 -/
 private theorem comap_eqToHom_comap_eqToHom {A B : Scheme.{u}} (h : A = B) (h' : B = A)
     (I : A.IdealSheafData) : (I.comap (eqToHom h')).comap (eqToHom h) = I := by
   subst h
   simp
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At each upper step the appended center is the pullback of the original upper center through the stage identification from the appended scheme. The original comparison to the lower center gives this appended center by pullback. Pull it back along the inverse stage identification to recover the original upper center. Composition of pullbacks gives the required transported map.
 -/
 private theorem center_eq_comap_of_append_length_eq_zero {X X' : Scheme.{u}} (φ : X' ⟶ X) (s' : BlowupSequenceData X')
     (s : SequenceOfBlowups X) (n : BlowupSequenceData (s'.obj s'.length)) (hn : n.length = 0)
@@ -704,12 +658,8 @@ private theorem center_eq_comap_of_append_length_eq_zero {X X' : Scheme.{u}} (φ
     BlowupSequenceData.toSequenceOfBlowups_center (s'.append n) j, BlowupSequenceData.append_center_of_lt_length s' n hjl]
   exact (comap_eqToHom_comap_eqToHom _ _ _).symm
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The appended center at an original step is a pullback of the original upper center. It differs from the unit ideal by hypothesis on the comparison. If the original center were the unit ideal, its pullback would be the unit ideal too, a contradiction.
 -/
 private theorem center_ne_top_of_append_length_eq_zero {X X' : Scheme.{u}} (φ : X' ⟶ X) (s' : BlowupSequenceData X')
     (s : SequenceOfBlowups X) (n : BlowupSequenceData (s'.obj s'.length)) (hn : n.length = 0)
@@ -727,10 +677,8 @@ private theorem center_ne_top_of_append_length_eq_zero {X X' : Scheme.{u}} (φ :
   rw [htop] at hne
   exact hne (Scheme.IdealSheafData.comap_top _)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
+/- English proof (authored)
+An index is unmatched for the original upper sequence exactly when it is unmatched for its append with a zero tail, because the lengths and matching indices agree. Apply the existing omission property for the append to the given lower center point.
 -/
 private theorem disjoint_omitted_centers_of_append_length_eq_zero {X X' : Scheme.{u}} (φ : X' ⟶ X) (s' : BlowupSequenceData X')
     (s : SequenceOfBlowups X) (n : BlowupSequenceData (s'.obj s'.length)) (hn : n.length = 0)
@@ -765,14 +713,8 @@ end
 
 section
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The center ideal on Y is the unit ideal, so the universal property of the blowup gives a lift of u. Pair this lift with the identity to obtain a map from Y to the pullback. Composing with its second projection yields the identity. The reverse composite agrees with the identity on the second projection, and also on the first by uniqueness of lifts to the blowup, since the center stays the unit ideal after further pullback. The two composites are therefore identities.
 -/
 theorem isIso_pullback_snd_of_comap_eq_top {Y T T' : Scheme.{u}} {π : T' ⟶ T}
     {I : T.IdealSheafData} (hB : Blowup.IsBlowupAlongIdealSheaf π I) (u : Y ⟶ T) (htop : I.comap u = ⊤) :
@@ -795,10 +737,8 @@ theorem isIso_pullback_snd_of_comap_eq_top {Y T T' : Scheme.{u}} {π : T' ⟶ T}
     · rw [Category.assoc, pullback.lift_snd, Category.comp_id, Category.id_comp]
   · rw [pullback.lift_snd]
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The second projection of the canonical pullback is an isomorphism. Use its inverse followed by the first projection to define the lift on Y. Transporting the canonical pullback square along that isomorphism gives the claimed square. Its commutativity shows that the lift followed by the blowup equals u.
 -/
 theorem exists_lift_of_comap_eq_top {Y T T' : Scheme.{u}} {π : T' ⟶ T}
     {I : T.IdealSheafData} (hB : Blowup.IsBlowupAlongIdealSheaf π I) (u : Y ⟶ T) (htop : I.comap u = ⊤) :
@@ -811,10 +751,8 @@ theorem exists_lift_of_comap_eq_top {Y T T' : Scheme.{u}} {π : T' ⟶ T}
     · simp
   · rw [Category.assoc, pullback.condition, IsIso.inv_hom_id_assoc]
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Apply the unit-center lifting theorem to the next blowup and the current map u. The resulting lift composes with the next blowup to u. Pasting its pullback square with the existing square gives the pullback over the original base, since the projection from the successor is the next blowup followed by the current projection.
 -/
 theorem exists_lift_succ_of_comap_center_eq_top {X Y : Scheme.{u}} (g : Y ⟶ X)
     (t : BlowupSequenceData X) (i : ℕ) (hi : i < t.length) (u : Y ⟶ t.obj i)
@@ -827,12 +765,8 @@ theorem exists_lift_succ_of_comap_center_eq_top {X Y : Scheme.{u}} (g : Y ⟶ X)
   rw [BlowupSequenceData.projectionToBase_succ]
   exact hpaste
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Supply the required witnesses or components.
+/- English proof (authored)
+At stage zero, compose g with the inverse of the starting isomorphism to obtain the pullback square. At a successor within the length, induction provides the lift to the previous stage. The hypothesis makes its center pullback the unit ideal, and the successor lifting theorem supplies the next lift and its pullback square.
 -/
 theorem exists_lift_of_forall_comap_eq_top {X Y : Scheme.{u}} (g : Y ⟶ X) (t : BlowupSequenceData X)
     (h : ∀ i : ℕ, i < t.length → ∀ u : Y ⟶ t.obj i, IsPullback u (𝟙 Y) (t.projectionToBase i) g →
@@ -855,16 +789,8 @@ end
 
 section
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At tail index zero, transport the center point first along the tail's initial isomorphism to the joining scheme and then along the identification with the appended stage. The formula for the center at the join and the inverse-image rule for support put this point in the appended center. The projection formula gives the asserted image. At a positive tail index, the appended stage at the shifted index is identified directly with that tail stage. Transport the point by this identification. The shifted center formula preserves support membership, and the appended projection factors through the tail projection and the prefix's last projection.
 -/
 private theorem exists_mem_support_center_append {X : Scheme.{u}} (s : BlowupSequenceData X)
     (n : BlowupSequenceData (s.obj s.length)) :
@@ -904,12 +830,8 @@ private theorem exists_mem_support_center_append {X : Scheme.{u}} (s : BlowupSeq
     · rw [BlowupSequenceData.projectionToBase_append_of_length_lt s n hgt, base_comp_apply, base_comp_apply,
         eqToHom_base_trans, projectionToBase_base_eqToHom_base n hsub.symm]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+If a tail center point had projected image equal to the image of a point under the last comparison map, transport that center point to the appended sequence at its shifted index. Its ambient projection is the lower prefix's last projection of the tail projection. Commutativity of the final pullback square then equates this ambient projection with the image of the upper point's projection under the original base map. This contradicts the range-disjointness assumption for the appended center.
 -/
 private theorem disjoint_centers_lastMap_of_append {X X' : Scheme.{u}} (φ : X' ⟶ X) (s' : BlowupSequenceData X')
     (s : BlowupSequenceData X) (n : BlowupSequenceData (s.obj s.length))
@@ -938,8 +860,8 @@ private theorem disjoint_centers_lastMap_of_append {X X' : Scheme.{u}} (φ : X' 
   exact (h1.symm.trans h3).trans
     ((congrArg (fun w : ↥(s.obj s.length) => (s.projectionToBase s.length).base w) hyeq).trans hp.symm)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+At each stage, any lift that gives a pullback square pulls the step's center ideal back to the unit ideal, by disjointness of the projected support. Apply the inductive lifting result with this property through the full length. It supplies a lift to the final scheme and its pullback square.
 -/
 private theorem exists_lift_schemeAt_length_of_disjoint_centers {X Y : Scheme.{u}} (g : Y ⟶ X) (t : BlowupSequenceData X)
     (hmiss : IsDisjointFromCenters g t) :
@@ -952,8 +874,8 @@ private noncomputable def chosenLiftToLastOfIsDisjointFromCenters {X Y : Scheme.
     (hmiss : IsDisjointFromCenters g t) : Y ⟶ t.obj t.length :=
   (exists_lift_schemeAt_length_of_disjoint_centers g t hmiss).choose
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The lift is chosen from the existence theorem that includes its pullback property. The chosen lift therefore gives the claimed final square.
 -/
 private theorem isPullback_chosenLiftToLastOfIsDisjointFromCenters {X Y : Scheme.{u}} (g : Y ⟶ X) (t : BlowupSequenceData X)
     (hmiss : IsDisjointFromCenters g t) :
@@ -966,12 +888,8 @@ private noncomputable def mapToLastOfLengthEqZero {X Y : Scheme.{u}} (g : Y ⟶ 
   eqToHom (schemeAt_eq_schemeAt_zero_of_length_eq_zero e he j hj) ≫ e.isoZero.hom ≫ chosenLiftToLastOfIsDisjointFromCenters g t hmiss ≫
     eqToHom (t.toSequenceOfBlowups_schemeAt t.length).symm
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Only stage zero of the empty upper sequence is in range. Its comparison map is its initial isomorphism followed by the chosen lift to the last lower stage. The initial isomorphism gives a pullback over identity maps, and the lift gives a pullback over g. Pasting them yields the required square with the two stage projections.
 -/
 private theorem isPullback_mapToLastOfLengthEqZero {X Y : Scheme.{u}} (g : Y ⟶ X) (t : BlowupSequenceData X)
     (hmiss : IsDisjointFromCenters g t) (e : BlowupSequenceData Y) (he : e.length = 0) :
@@ -999,8 +917,8 @@ private theorem isPullback_mapToLastOfLengthEqZero {X Y : Scheme.{u}} (g : Y ⟶
   rw [hmap, hs, hf]
   exact hcomp
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+There is no index strictly below the upper length, which is zero. The step compatibility has an impossible premise.
 -/
 private theorem blowupMorphism_comp_mapToLastOfLengthEqZero {X Y : Scheme.{u}} (g : Y ⟶ X) (t : BlowupSequenceData X)
     (hmiss : IsDisjointFromCenters g t) (e : BlowupSequenceData Y) (he : e.length = 0) :
@@ -1012,8 +930,8 @@ private theorem blowupMorphism_comp_mapToLastOfLengthEqZero {X Y : Scheme.{u}} (
   have hlen : e.toSequenceOfBlowups.length = 0 := e.toSequenceOfBlowups_length.trans he
   exact absurd hj (by rw [hlen]; exact Nat.not_lt_zero j)
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The upper sequence has length zero, so it has no actual center to compare. The stated center equality holds vacuously at every index of an upper step.
 -/
 private theorem center_eq_comap_lastCenter_of_disjoint {X Y : Scheme.{u}} (g : Y ⟶ X) (t : BlowupSequenceData X)
     (hmiss : IsDisjointFromCenters g t) (e : BlowupSequenceData Y) (he : e.length = 0) :
@@ -1038,8 +956,8 @@ private noncomputable def ofIsDisjointFromCenters {X Y : Scheme.{u}} (g : Y ⟶ 
   center_ne_top := center_ne_top_of_length_eq_zero e he
   omitted := disjoint_omitted_centers_of_disjoint_centers g t hmiss e he
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
+/- English proof (authored)
+Disjointness of the projected centers of the appended tail implies that its centers miss the image of the comparison map at the join. Pulling back the tail along this map gives an empty sequence on the upper last scheme, using the lift through all the disjoint centers. Concatenate this tail comparison with the existing comparison of prefixes. The new upper sequence is the old upper sequence followed by a zero-length tail. Remove that tail from the comparison to obtain the desired pullback with the original upper sequence.
 -/
 theorem nonempty_append_of_disjoint_centers {X X' : Scheme.{u}} (φ : X' ⟶ X) (s' : BlowupSequenceData X')
     (s : BlowupSequenceData X) (n : BlowupSequenceData (s.obj s.length))

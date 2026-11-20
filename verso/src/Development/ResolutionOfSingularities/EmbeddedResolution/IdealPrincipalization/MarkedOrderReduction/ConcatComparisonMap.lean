@@ -23,10 +23,8 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace BlowupSequenceData
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Converting the two sets of data to sequences preserves their lengths, stage schemes, initial identifications, successor maps, and centers. Use the given stage isomorphisms. The assumed compatibility with the initial maps, commuting transition squares, and pullback identities for centers therefore give all the conditions of a sequence isomorphism.
 -/
 theorem toSequenceOfBlowups_isomorphic_of_iso {X : Scheme.{u}} (d d' : BlowupSequenceData X)
     (hlen : d.length = d'.length)
@@ -49,10 +47,8 @@ theorem toSequenceOfBlowups_isomorphic_of_iso {X : Scheme.{u}} (d d' : BlowupSeq
     rw [d'.toSequenceOfBlowups_center, d.toSequenceOfBlowups_center]
     exact hcenter i (lt_of_lt_of_eq hi d.toSequenceOfBlowups_length)
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The sequence recovered from its data has the same length and the same scheme at every stage. Compare stages by the identity. The initial isomorphism and each transition map were preserved, so the required diagrams commute. The centers were also preserved, and pulling back by each identity fixes them. These identities give the isomorphism.
 -/
 theorem ofSequenceOfBlowups_toSequenceOfBlowups_isomorphic {X : Scheme.{u}} (s : SequenceOfBlowups X) :
     (ofSequenceOfBlowups s).toSequenceOfBlowups.Isomorphic s := by
@@ -78,28 +74,28 @@ theorem ofSequenceOfBlowups_toSequenceOfBlowups_isomorphic {X : Scheme.{u}} (s :
 def empty (X : Scheme.{u}) : BlowupSequenceData X := emptyBlowupSequenceData X
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The empty blowup data record no steps. Their length is zero.
 -/
 theorem empty_length (X : Scheme.{u}) : (empty X).length = 0 :=
   emptyBlowupSequenceData_length X
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The empty data use the original scheme at every index by their definition.
 -/
 theorem empty_schemeAt (X : Scheme.{u}) (i : ℕ) : (empty X).obj i = X :=
   emptyBlowupSequenceData_schemeAt X i
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+For the empty data the stage-zero object is the original scheme, and the initial identification is defined as its identity isomorphism.
 -/
 theorem empty_isoObjZero (X : Scheme.{u}) : (empty X).isoZero = Iso.refl X :=
   emptyBlowupSequenceData_isoObjZero X
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+The specified index is the length of the first sequence, so it is in the part of the append that uses the first sequence's schemes. At that index the scheme is its last scheme.
 -/
 theorem append_schemeAt_eq_last_of_eq_length {X : Scheme.{u}} (s : BlowupSequenceData X)
     (t : BlowupSequenceData (s.obj s.length)) {j : ℕ} (h : j = s.length) :
@@ -107,8 +103,8 @@ theorem append_schemeAt_eq_last_of_eq_length {X : Scheme.{u}} (s : BlowupSequenc
   subst h
   exact append_schemeAt_of_le_length s t le_rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+A positive tail index puts j strictly after the join. At such an index the appended scheme equals the tail scheme at j minus the first length. The given index equality makes this difference i.
 -/
 theorem append_schemeAt_eq_right_of_pos {X : Scheme.{u}} (s : BlowupSequenceData X)
     (t : BlowupSequenceData (s.obj s.length)) {i j : ℕ} (hi : 0 < i) (h : j = s.length + i) :
@@ -123,8 +119,8 @@ def concatObjIsoRight {X : Scheme.{u}} (s : BlowupSequenceData X) (t : BlowupSeq
     eqToIso (append_schemeAt_eq_last_of_eq_length s t (by omega)) ≪≫ t.isoZero.symm ≪≫
       eqToIso (congrArg (fun n => t.obj n) (show (0 : ℕ) = i by omega))
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+At a positive tail index, the comparison is defined by the equality between the appended scheme and the corresponding tail scheme. Its forward morphism is the one induced by that equality.
 -/
 private theorem concatObjIsoRight_hom_of_pos {X : Scheme.{u}} (s : BlowupSequenceData X)
     (t : BlowupSequenceData (s.obj s.length)) (i j : ℕ) (hi : 0 < i) (h : j = s.length + i) :
@@ -132,8 +128,8 @@ private theorem concatObjIsoRight_hom_of_pos {X : Scheme.{u}} (s : BlowupSequenc
   unfold concatObjIsoRight
   rw [dif_pos hi, eqToIso.hom]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The successor index is positive, so apply the formula for the forward comparison at a positive tail stage.
 -/
 private theorem concatObjIsoRight_hom_succ {X : Scheme.{u}} (s : BlowupSequenceData X)
     (t : BlowupSequenceData (s.obj s.length)) (i j : ℕ) (h : j + 1 = s.length + (i + 1)) :
@@ -141,8 +137,8 @@ private theorem concatObjIsoRight_hom_succ {X : Scheme.{u}} (s : BlowupSequenceD
       eqToHom (append_schemeAt_eq_right_of_pos s t (Nat.succ_pos i) h) :=
   concatObjIsoRight_hom_of_pos s t (i + 1) (j + 1) (Nat.succ_pos i) h
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+At tail index zero, the appended scheme is the joining scheme. The comparison first uses this identification and then the inverse of the tail's initial isomorphism. The final index identification is an identity, so the forward map is the stated composite.
 -/
 private theorem concatObjIsoRight_hom_zero {X : Scheme.{u}} (s : BlowupSequenceData X)
     (t : BlowupSequenceData (s.obj s.length)) (j : ℕ) (h : j = s.length + 0) :
@@ -152,8 +148,8 @@ private theorem concatObjIsoRight_hom_zero {X : Scheme.{u}} (s : BlowupSequenceD
   rw [dif_neg (Nat.lt_irrefl 0)]
   simp
 
-/- English proof (translation)
-Substitute using the available equality. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Substitute equality of the indices. Both blowup maps are then the same, and the comparisons at their endpoints come from self-equalities, hence are identities.
 -/
 private theorem blowupMorphism_eq_eqToHom_conj {Y : Scheme.{u}} (d : BlowupSequenceData Y) {a b : ℕ}
     (hab : a = b) :
@@ -162,10 +158,8 @@ private theorem blowupMorphism_eq_eqToHom_conj {Y : Scheme.{u}} (d : BlowupSeque
   subst hab
   simp
 
-/- English proof (translation)
-Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+At a positive tail index the appended transition is the tail transition with its endpoint schemes identified by equalities. The matching index is i after subtracting the first length, so the two paths agree by composing these identifications. At tail index zero, the appended transition is the first tail transition followed by the tail's initial isomorphism and the join identification. The stage-zero comparison uses their inverses, which cancel and give the same first tail transition as on the other path.
 -/
 theorem concatObjIsoRight_hom_comm_blowupMorphism {X : Scheme.{u}} (s : BlowupSequenceData X)
     (t : BlowupSequenceData (s.obj s.length)) (i j : ℕ) (h : j = s.length + i) :
@@ -187,8 +181,8 @@ theorem concatObjIsoRight_hom_comm_blowupMorphism {X : Scheme.{u}} (s : BlowupSe
       append_blowupMorphism_length s t]
     simp
 
-/- English proof (translation)
-Substitute using the available equality. Both sides reduce to the same expression.
+/- English proof (authored)
+Substitute the equality of the tail indices. The centers agree and the two comparison maps are induced by the same scheme equality, so the pullbacks agree.
 -/
 private theorem center_comap_eqToHom_congr {Z Y : Scheme.{u}} (t : BlowupSequenceData Z)
     {a b : ℕ} (e : a = b) (h1 : Y = t.obj a) (h2 : Y = t.obj b) :
@@ -196,8 +190,8 @@ private theorem center_comap_eqToHom_congr {Z Y : Scheme.{u}} (t : BlowupSequenc
   subst e
   rfl
 
-/- English proof (translation)
-Substitute using the available equality. Simplify using the standard rewrite rules.
+/- English proof (authored)
+After identifying A with B, both equality-induced maps become the identity. The left side is then the pullback along f followed by the identity pullback, which equals the right side.
 -/
 private theorem comap_eqToHom_comap_eq {A B C : Scheme.{u}} (e : A = B)
     (f : B ⟶ C) (I : C.IdealSheafData) (e' : A = B) :
@@ -205,12 +199,8 @@ private theorem comap_eqToHom_comap_eq {A B C : Scheme.{u}} (e : A = B)
   subst e
   simp
 
-/- English proof (translation)
-Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At tail index zero, the appended center is the first tail center pulled back through the inverse initial isomorphism and then the join identification. Composition of pullbacks makes this exactly pullback along the stage comparison. At a positive index the appended center is the pullback of the tail center at the shifted index. That shift gives i, and the comparison is the same stage identification.
 -/
 theorem append_center_eq_comap_concatObjIsoRight {X : Scheme.{u}} (s : BlowupSequenceData X)
     (t : BlowupSequenceData (s.obj s.length)) (i j : ℕ) (h : j = s.length + i) :
@@ -238,16 +228,16 @@ def toSeqComparisonMap {X' X : Scheme.{u}} (d' : BlowupSequenceData X') (d : Blo
   eqToHom (toSequenceOfBlowups_schemeAt d' i) ≫ c i (hi.trans_eq (toSequenceOfBlowups_length d')) ≫
     eqToHom (toSequenceOfBlowups_schemeAt d i).symm
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Conversion from data to sequences preserves both lengths. The given equality of lengths therefore gives equality of the sequence lengths.
 -/
 private theorem toSequenceOfBlowups_length_eq_of_length_eq {X' X : Scheme.{u}} {d' : BlowupSequenceData X'} {d : BlowupSequenceData X}
     (hlen : d'.length = d.length) : d'.toSequenceOfBlowups.length = d.toSequenceOfBlowups.length := by
   rw [toSequenceOfBlowups_length, toSequenceOfBlowups_length]
   exact hlen
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The conversion of the comparison map adds only equality-induced identities at stage zero, so it equals the original stage comparison. The initial isomorphisms of the sequences are also the original ones. Substituting these observations gives the assumed initial commutativity.
 -/
 private theorem toSeqComparisonMap_zero_comp_isoObjZero {X' X : Scheme.{u}} {g : X' ⟶ X} {d' : BlowupSequenceData X'}
     {d : BlowupSequenceData X} (c : ∀ i : ℕ, i ≤ d'.length → (d'.obj i ⟶ d.obj i))
@@ -262,10 +252,8 @@ private theorem toSeqComparisonMap_zero_comp_isoObjZero {X' X : Scheme.{u}} {g :
   rw [hp, hz, hz']
   exact hzero
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The step bound is unchanged by conversion, and the converted comparison maps agree with the data maps under the stage identifications. The successor maps in the sequences are the blowup morphisms in the data. With these identifications, the given pullback square for the data is the required square.
 -/
 private theorem isPullback_toSeqComparisonMap {X' X : Scheme.{u}} {d' : BlowupSequenceData X'} {d : BlowupSequenceData X}
     (c : ∀ i : ℕ, i ≤ d'.length → (d'.obj i ⟶ d.obj i))
@@ -284,10 +272,8 @@ private theorem isPullback_toSeqComparisonMap {X' X : Scheme.{u}} {d' : BlowupSe
   rw [h1, h2, toSequenceOfBlowups_blowupMorphism, toSequenceOfBlowups_blowupMorphism]
   exact hpb i hi'
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+Substitute the scheme equalities first, so the ideals being compared are on the same schemes. Their heterogeneous equalities then identify the respective ideals, and the comparison maps from scheme equalities are identities. The assertion becomes the given pullback equation.
 -/
 private theorem eq_comap_eqToHom_conj_of_heq {A A' B B' : Scheme.{u}} (e1 : A = A') (e2 : B = B')
     (f : A' ⟶ B') (I : B.IdealSheafData) (I' : B'.IdealSheafData)
@@ -301,8 +287,8 @@ private theorem eq_comap_eqToHom_conj_of_heq {A A' B B' : Scheme.{u}} (e1 : A = 
   rw [hI2, hJ2, h]
   simp
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+At the given index, both sequence centers are the centers of their underlying data, and the comparison map is the data map transported along the stage equalities. Transport the assumed center pullback equation along these equalities to obtain the statement for the converted sequences.
 -/
 private theorem toSequenceOfBlowups_center_eq_comap_toSeqComparisonMap {X' X : Scheme.{u}} {d' : BlowupSequenceData X'} {d : BlowupSequenceData X}
     (c : ∀ i : ℕ, i ≤ d'.length → (d'.obj i ⟶ d.obj i))
@@ -336,8 +322,8 @@ def lastMap {X' X : Scheme.{u}} {g : X' ⟶ X} {t : SequenceOfBlowups X'} {s : S
     (D : StrictPullbackBlowupSeq g t s) : t.schemeAt t.length ⟶ s.schemeAt s.length :=
   D.comp t.length le_rfl ≫ eqToHom (congrArg (fun n => s.schemeAt n) D.length_eq)
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The last comparison is defined by the comparison at the final upper index followed by the identification of the lower scheme at that index with the lower final scheme. Equality of the lengths gives this identification.
 -/
 theorem lastMap_eq {X' X : Scheme.{u}} {g : X' ⟶ X} {t : SequenceOfBlowups X'} {s : SequenceOfBlowups X}
     (D : StrictPullbackBlowupSeq g t s) :
@@ -370,8 +356,8 @@ def concatComparisonMap {X' X : Scheme.{u}} (g : X' ⟶ X) (s : BlowupSequenceDa
           eqToHom (toSequenceOfBlowups_schemeAt t (i - s'.length)) ≫
             (s.concatObjIsoRight t (i - s'.length) i (by omega)).inv
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
+/- English proof (authored)
+Strict pullback gives equal lengths for the two prefixes and for the two tails. Conversion preserves those lengths. Each appended length is the sum of its prefix and tail lengths, so the sums agree.
 -/
 theorem append_length_eq_of_strictPullbackBlowupSeq {X' X : Scheme.{u}} (g : X' ⟶ X) (s : BlowupSequenceData X)
     (t : BlowupSequenceData (s.obj s.length)) (s' : BlowupSequenceData X')
@@ -386,10 +372,8 @@ theorem append_length_eq_of_strictPullbackBlowupSeq {X' X : Scheme.{u}} (g : X' 
   show s'.length + t'.length = s.length + t.length
   omega
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Establish an intermediate fact.
-
-Establish an intermediate fact. Substitute using the available equality. Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Identify the schemes using the specified equalities. The equalities between the structure maps then have common domains and identify those maps. All inserted equality-induced morphisms become identities, reducing the assertion to the given commuting composite.
 -/
 private theorem eqToHom_conj_comp_eq_comp_of_heq {P Q Q' R R' S X' X : Scheme.{u}}
     (a₁ : P = Q) (a₂ : Q = Q') (a₃ : R' = R) (a₄ : R = S) (a₅ : S = R)
@@ -409,8 +393,8 @@ private theorem eqToHom_conj_comp_eq_comp_of_heq {P Q Q' R R' S X' X : Scheme.{u
   simp only [eqToHom_refl, Category.id_comp, Category.comp_id]
   exact key
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+At zero the comparison for the append is the prefix comparison transported along the stage identifications, and the appended initial isomorphisms are the prefix ones under those identifications. These maps cancel in the composite by the transport rule. The original prefix comparison commutes with its initial maps, giving the result.
 -/
 private theorem concatComparisonMap_zero_comp_isoObjZero {X' X : Scheme.{u}} (g : X' ⟶ X) (s : BlowupSequenceData X)
     (t : BlowupSequenceData (s.obj s.length)) (s' : BlowupSequenceData X')
@@ -427,8 +411,8 @@ private theorem concatComparisonMap_zero_comp_isoObjZero {X' X : Scheme.{u}} (g 
   · exact heq_of_eq (congrArg (fun e : s.toSequenceOfBlowups.schemeAt 0 ≅ X => e.hom) (toSequenceOfBlowups_isoObjZero s))
   · exact heq_of_eq (congrArg (fun e : s'.toSequenceOfBlowups.schemeAt 0 ≅ X' => e.hom) (toSequenceOfBlowups_isoObjZero s'))
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation.
+/- English proof (authored)
+The four vertex isomorphisms identify the arrows of the new square with the transported arrows of the original square. The equalities make all four diagrams commute by cancellation of inverse isomorphisms. Transporting the pullback universal property through these isomorphisms proves that the new square is a pullback.
 -/
 private theorem isPullback_of_conj_iso {Pa Xa Ya Za Pb Xb Yb Z₂ : Scheme.{u}}
     {fst : Pa ⟶ Xa} {snd : Pa ⟶ Ya} {f : Xa ⟶ Za} {gg : Ya ⟶ Za}
@@ -444,10 +428,8 @@ private theorem isPullback_of_conj_iso {Pa Xa Ya Za Pb Xb Yb Z₂ : Scheme.{u}}
   subst h4
   refine h.of_iso eP eA eB eC ?_ ?_ ?_ ?_ <;> simp
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality.
-
-Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
+/- English proof (authored)
+Substitute the four scheme equalities. The corresponding morphisms are identities, so the given arrow equations identify each new arrow with the old one. The original pullback property then applies.
 -/
 private theorem isPullback_of_conj_eqToHom {Pa Xa Ya Za Pb Xb Yb Z₂ : Scheme.{u}}
     {fst : Pa ⟶ Xa} {snd : Pa ⟶ Ya} {f : Xa ⟶ Za} {gg : Ya ⟶ Za}
@@ -469,12 +451,8 @@ private theorem isPullback_of_conj_eqToHom {Pa Xa Ya Za Pb Xb Yb Z₂ : Scheme.{
   subst h4
   simpa using h
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality.
-
-Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
-
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+Substitute the two scheme equalities. The relevant comparison maps become identities. Apply invariance of a pullback square under the remaining two vertex isomorphisms, using the stated formulas for its four arrows.
 -/
 private theorem isPullback_of_conj_eqToHom_iso {Pa Xa Ya Za Pb Xb Yb Z₂ : Scheme.{u}}
     {fst : Pa ⟶ Xa} {snd : Pa ⟶ Ya} {f : Xa ⟶ Za} {gg : Ya ⟶ Za}
@@ -498,10 +476,8 @@ private theorem isPullback_of_conj_eqToHom_iso {Pa Xa Ya Za Pb Xb Yb Z₂ : Sche
   · simp
   · simp
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality.
-
-Substitute using the available equality. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The three successive source identifications induce the same morphism as the direct source equality. Likewise the three target identifications induce the direct target morphism. Cancel the intermediate transports by composing the equality-induced maps.
 -/
 private theorem eqToHom_comp_eqToHom_conj_eq {A B R1 R1' R2 R2' C Dd : Scheme.{u}} (f : R1 ⟶ R2)
     (a1 : A = B) (a2 : B = R1') (e1 : R1' = R1) (e2 : R2 = R2') (b1 : R2' = C) (b2 : C = Dd)
@@ -516,10 +492,8 @@ private theorem eqToHom_comp_eqToHom_conj_eq {A B R1 R1' R2 R2' C Dd : Scheme.{u
   subst b2
   simp
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+Using the commuting square, replace the composite of u with the target isomorphism by the source isomorphism followed by the old map. Precomposing with the inverse source isomorphism cancels that isomorphism. Transport at the two endpoints by the equalities to obtain the displayed formula for the same map.
 -/
 private theorem eq_iso_inv_comp_comp_hom_of_comm_sq {P Q R1 R2 S1 S2 : Scheme.{u}}
     (tm : R1 ⟶ R2) (z1 : S1 ≅ R1) (z2 : S2 ≅ R2) (u : S1 ⟶ S2)
@@ -535,8 +509,8 @@ private theorem eq_iso_inv_comp_comp_hom_of_comm_sq {P Q R1 R2 S1 S2 : Scheme.{u
   rw [hz]
   simp
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The successor maps in the sequences are the blowup maps of the underlying data. Substitute these equalities in the step square of the strict pullback.
 -/
 private theorem isPullback_blowupMorphism_of_strictPullbackBlowupSeq {Y' Y : Scheme.{u}} {gg : Y' ⟶ Y} {d' : BlowupSequenceData Y'}
     {d : BlowupSequenceData Y} (E : StrictPullbackBlowupSeq gg d'.toSequenceOfBlowups d.toSequenceOfBlowups) (i : ℕ)
@@ -546,8 +520,8 @@ private theorem isPullback_blowupMorphism_of_strictPullbackBlowupSeq {Y' Y : Sch
   rw [← toSequenceOfBlowups_blowupMorphism d' i, ← toSequenceOfBlowups_blowupMorphism d i]
   exact E.pullback i hi
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Specialize the pullback square for a blowup morphism to the first step, which exists by the positive length.
 -/
 private theorem isPullback_blowupMorphism_zero_of_strictPullbackBlowupSeq {Y' Y : Scheme.{u}} {gg : Y' ⟶ Y}
     {d' : BlowupSequenceData Y'}
@@ -557,8 +531,8 @@ private theorem isPullback_blowupMorphism_zero_of_strictPullbackBlowupSeq {Y' Y 
       ((E.comp 0 h2 : d'.obj 0 ⟶ d.obj 0)) :=
   isPullback_blowupMorphism_of_strictPullbackBlowupSeq E 0 hi h1 h2
 
-/- English proof (translation)
-Substitute using the available equality. Both sides reduce to the same expression.
+/- English proof (authored)
+Substituting the equality of indices identifies the two blowup maps. The comparison maps at their domains and codomains are induced by the same respective equalities, so the composites agree.
 -/
 private theorem blowupMorphism_eqToHom_congr {Y : Scheme.{u}} (d : BlowupSequenceData Y) {a b : ℕ} (hab : a = b)
     {A B : Scheme.{u}} (e1 : A = d.obj (a + 1)) (e2 : d.obj a = B)
@@ -567,10 +541,8 @@ private theorem blowupMorphism_eqToHom_congr {Y : Scheme.{u}} (d : BlowupSequenc
   subst hab
   rfl
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality.
-
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+Substitute the equality of indices to use the same comparison map. The successive equality maps on each side of that comparison compose to the direct equality map, giving the same composite.
 -/
 private theorem strictPullback_map_eqToHom_congr {X' X : Scheme.{u}} {g : X' ⟶ X} {u : SequenceOfBlowups X'}
     {v : SequenceOfBlowups X} (D : StrictPullbackBlowupSeq g u v) {a b : ℕ} (hab : a = b)
@@ -586,8 +558,8 @@ private theorem strictPullback_map_eqToHom_congr {X' X : Scheme.{u}} {g : X' ⟶
   subst e4
   simp
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+For a positive tail index the stage isomorphism is induced by the equality of the appended scheme and the tail scheme. Its inverse is induced by the reverse equality.
 -/
 private theorem concatObjIsoRight_inv_of_pos {X : Scheme.{u}} (s : BlowupSequenceData X)
     (t : BlowupSequenceData (s.obj s.length)) (i j : ℕ) (hi : 0 < i) (h : j = s.length + i) :
@@ -595,8 +567,8 @@ private theorem concatObjIsoRight_inv_of_pos {X : Scheme.{u}} (s : BlowupSequenc
   unfold concatObjIsoRight
   rw [dif_pos hi, eqToIso.inv]
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Substitute the joining index. The map there is the first tail blowup followed by the tail's initial isomorphism, with the source and target transported to the appended stages by their identifications.
 -/
 private theorem append_blowupMorphism_of_eq_length {X : Scheme.{u}} (s : BlowupSequenceData X)
     (t : BlowupSequenceData (s.obj s.length)) (j : ℕ) (hj : j = s.length)
@@ -605,8 +577,8 @@ private theorem append_blowupMorphism_of_eq_length {X : Scheme.{u}} (s : BlowupS
   subst hj
   exact append_blowupMorphism_length s t
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Substitute the two given equalities on the arrows. The asserted equality is then the original equality of composites.
 -/
 private theorem comp_eq_of_eq_of_eq {A B C : Scheme.{u}} {u : A ⟶ B} {p p' : B ⟶ C}
     {q q' : A ⟶ C} (h : u ≫ p = q) (hp : p = p') (hq : q = q') : u ≫ p' = q' := by
@@ -614,8 +586,8 @@ private theorem comp_eq_of_eq_of_eq {A B C : Scheme.{u}} {u : A ⟶ B} {p p' : B
   subst hq
   exact h
 
-/- English proof (translation)
-Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Substitute a equal to the last upper index. By definition the last map is the comparison at that index followed by the equality identification of the two lower endpoint indices. Composing with its inverse cancels this extra identification, giving the endpoint comparison.
 -/
 private theorem strictPullback_map_eq_lastMap_of_eq {X' X : Scheme.{u}} {g : X' ⟶ X} {u : SequenceOfBlowups X'}
     {v : SequenceOfBlowups X} (D : StrictPullbackBlowupSeq g u v) (a : ℕ) (ha : a ≤ u.length)
@@ -626,8 +598,8 @@ private theorem strictPullback_map_eq_lastMap_of_eq {X' X : Scheme.{u}} {g : X' 
   rw [StrictPullbackBlowupSeq.lastMap_eq]
   simp
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. A detailed English derivation is pending.
+/- English proof (authored)
+The index bound places the comparison in the prefix branch of the definition. There it identifies the source with the upper prefix stage, applies the prefix comparison, and transports to the corresponding appended lower stage.
 -/
 private theorem concatComparisonMap_of_le {X' X : Scheme.{u}} (g : X' ⟶ X) (s : BlowupSequenceData X)
     (t : BlowupSequenceData (s.obj s.length)) (s' : BlowupSequenceData X')
@@ -642,8 +614,8 @@ private theorem concatComparisonMap_of_le {X' X : Scheme.{u}} (g : X' ⟶ X) (s 
   unfold concatComparisonMap
   exact dif_pos h
 
-/- English proof (translation)
-Substitute using the available equality. Replace the relevant objects with their definitions. A detailed English derivation is pending.
+/- English proof (authored)
+The index lies after the join, so use the tail branch of the comparison. Its shifted index is a by the given equality. Substituting this index gives the composite of upper identification, tail comparison, and inverse lower identification.
 -/
 private theorem concatComparisonMap_of_not_le {X' X : Scheme.{u}} (g : X' ⟶ X) (s : BlowupSequenceData X)
     (t : BlowupSequenceData (s.obj s.length)) (s' : BlowupSequenceData X')
@@ -660,32 +632,10 @@ private theorem concatComparisonMap_of_not_le {X' X : Scheme.{u}} (g : X' ⟶ X)
   unfold concatComparisonMap
   exact dif_neg h
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
+/- English proof (authored)
+Strictness gives equal prefix lengths and equal tail lengths. Before the join, both transitions and both comparisons are those of the prefix under the stage identifications. The pullback square is therefore the transported prefix square. After the join the index shifts by the prefix length, and all four arrows come from the corresponding tail square. The tail pullback property transfers along the stage identifications.
 
-Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+At the joining step, the tail has positive length. Use its first pullback square. At the current stage, transport the tail's initial schemes through their initial isomorphisms to the joining schemes. Initial commutativity of the tail comparison identifies the transported comparison with the last comparison of the prefix. The first appended transitions are likewise the tail transitions composed with the initial isomorphisms, and the successor comparison uses the first positive tail stage. The resulting square is a transport of the first tail pullback square and is therefore a pullback.
 -/
 private theorem isPullback_concatComparisonMap {X' X : Scheme.{u}} (g : X' ⟶ X) (s : BlowupSequenceData X)
     (t : BlowupSequenceData (s.obj s.length)) (s' : BlowupSequenceData X')
@@ -800,8 +750,8 @@ private theorem isPullback_concatComparisonMap {X' X : Scheme.{u}} (g : X' ⟶ X
         concatObjIsoRight_inv_of_pos s t (a + 1) (s'.length + (a + 1)) (Nat.succ_pos a) pfU3]
       exact strictPullback_map_eqToHom_congr D' (rfl : a + 1 = a + 1) pfT pfT _ _ _ _ _ _
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Simplify using the standard rewrite rules.
+/- English proof (authored)
+On either side of the middle map, the composite of the two equality-induced maps is the direct map for the resulting equality. Replace each pair by this direct map.
 -/
 private theorem eqToHom_trans_comp_comp_eqToHom_trans {A A₁ A₂ B₂ B₁ B : Scheme.{u}}
     (a1 : A = A₁) (a2 : A₁ = A₂) (b1 : B₂ = B₁) (b2 : B₁ = B)
@@ -814,10 +764,8 @@ private theorem eqToHom_trans_comp_comp_eqToHom_trans {A A₁ A₂ B₂ B₁ B :
   subst b2
   simp
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality.
-
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The source identifications compose to the direct source comparison. The two target paths induce the same comparison between the same schemes, and associativity allows the middle morphism to be grouped with the first target map. The composites therefore agree.
 -/
 private theorem eqToHom_trans_comp_comp_eqToHom_trans_eq_assoc {A A₁ A₂ B₂ B₃ B₁ B : Scheme.{u}}
     (a1 : A = A₁) (a2 : A₁ = A₂) (b1 : B₂ = B₁) (b2 : B₁ = B)
@@ -831,8 +779,8 @@ private theorem eqToHom_trans_comp_comp_eqToHom_trans_eq_assoc {A A₁ A₂ B₂
   subst b3
   simp
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Replace J by the pullback of K under c. Pulling this back through the upper scheme identification is pullback of K along the resulting composite. On the other side the lower identification cancels its inverse in f, leaving that same composite.
 -/
 private theorem comap_eqToHom_eq_comap_of_eq_comap {A A₁ B B₁ : Scheme.{u}} (e1 : A = A₁) (e2 : B = B₁)
     (c : A₁ ⟶ B₁) (f : A ⟶ B) (hf : f = eqToHom e1 ≫ c ≫ eqToHom e2.symm)
@@ -844,8 +792,8 @@ private theorem comap_eqToHom_eq_comap_of_eq_comap {A A₁ B B₁ : Scheme.{u}} 
   subst e2
   simp
 
-/- English proof (translation)
-Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Replace J by the pullback along c. On the right the two self-equality maps are identities, and the inverse of β cancels its forward map after composing the pullbacks. Both sides are therefore the pullback of K along u followed by c.
 -/
 private theorem comap_eq_comap_iso_hom_of_eq_comap {A A₁ B B₁ : Scheme.{u}} (u : A ⟶ A₁) (β : B ≅ B₁)
     (c : A₁ ⟶ B₁) (J : A₁.IdealSheafData) (K : B₁.IdealSheafData) (hJ : J = K.comap c)
@@ -856,10 +804,8 @@ private theorem comap_eq_comap_iso_hom_of_eq_comap {A A₁ B B₁ : Scheme.{u}} 
   have hb2 : (u ≫ c ≫ β.inv) ≫ β.hom = u ≫ c := by simp
   rw [hb, ← Scheme.IdealSheafData.comap_comp, ← Scheme.IdealSheafData.comap_comp, hb2]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
-
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The commuting square, after composing with the inverse isomorphisms, identifies the composite of the inverse upper isomorphism and u with G followed by the inverse lower isomorphism. Replace J by the pullback along u and combine successive pullbacks on both sides. The two composite maps are equal.
 -/
 private theorem comap_iso_inv_eq_comap_of_comm_sq {P Q A B : Scheme.{u}} (u : P ⟶ Q)
     (α : P ≅ A) (β : Q ≅ B) (G : A ⟶ B)
@@ -873,8 +819,8 @@ private theorem comap_iso_inv_eq_comap_of_comm_sq {P Q A B : Scheme.{u}} (u : P 
   subst hJ
   rw [← Scheme.IdealSheafData.comap_comp, ← Scheme.IdealSheafData.comap_comp, hkey]
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Substitute j equal to the first length. The appended center at the join is the initial tail center pulled back first by its inverse initial isomorphism and then by the join identification.
 -/
 private theorem append_center_of_eq_length {X : Scheme.{u}} (s : BlowupSequenceData X)
     (t : BlowupSequenceData (s.obj s.length)) (j : ℕ) (hj : j = s.length) :
@@ -883,8 +829,8 @@ private theorem append_center_of_eq_length {X : Scheme.{u}} (s : BlowupSequenceD
   subst hj
   exact append_center_length s t
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+Expand the definition of the comparison. Through the prefix endpoint it uses the transported prefix map. Beyond that endpoint it subtracts the prefix length and uses the transported tail map. These are the two displayed branches.
 -/
 private theorem concatComparisonMap_eq_dite {X' X : Scheme.{u}} (g : X' ⟶ X) (s : BlowupSequenceData X)
     (t : BlowupSequenceData (s.obj s.length)) (s' : BlowupSequenceData X')
@@ -907,20 +853,10 @@ private theorem concatComparisonMap_eq_dite {X' X : Scheme.{u}} (g : X' ⟶ X) (
                 (s.concatObjIsoRight t (i - s'.length) i (by omega)).inv) :=
   rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Before the join, both appended centers are transported from their prefixes. The prefix comparison pulls the lower center back to the upper one, and composition with the stage identifications gives the formula. After the join, apply the same argument to the tail centers at the shifted index.
 
-Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+At the join, the step bound makes the first tail center available. Both appended centers come from their stage-zero tail centers by the respective inverse initial isomorphisms. The tail's initial comparison respects the last map of the prefix. Consequently its center pullback identity transports to a center pullback along that last map between the joining schemes. The comparison for the append at the join is just that last map with the scheme identifications, so this is the required identity.
 -/
 private theorem append_center_eq_comap_concatComparisonMap {X' X : Scheme.{u}} (g : X' ⟶ X) (s : BlowupSequenceData X)
     (t : BlowupSequenceData (s.obj s.length)) (s' : BlowupSequenceData X')
@@ -1018,8 +954,8 @@ def concat {X' X : Scheme.{u}} {g : X' ⟶ X} (s : BlowupSequenceData X)
 
 end StrictPullbackBlowupSeq
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Use the comparison assembled from the prefix and the tail. The appended lengths agree, the comparison respects the initial maps, each step square is a pullback, and the centers pull back under the comparison. These properties give the strict pullback of the two appended sequences.
 -/
 theorem isStrictPullbackBlowupSeq_append {X' X : Scheme.{u}} {g : X' ⟶ X} (s : BlowupSequenceData X)
     (t : BlowupSequenceData (s.obj s.length)) (s' : BlowupSequenceData X')
@@ -1029,8 +965,8 @@ theorem isStrictPullbackBlowupSeq_append {X' X : Scheme.{u}} {g : X' ⟶ X} (s :
     IsStrictPullbackBlowupSeq g (s'.append t').toSequenceOfBlowups (s.append t).toSequenceOfBlowups :=
   (StrictPullbackBlowupSeq.concat s t s' t' D D').isStrictPullback
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The empty marked construction uses the empty blowup data of the starting scheme and adds only marked ideal and boundary data. Forgetting those data leaves the stated empty blowup data.
 -/
 theorem emptyMarkedBlowupSequenceData_toBlowupSequenceData {k : Type u} [Field k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData) (m : ℕ)
@@ -1040,12 +976,8 @@ theorem emptyMarkedBlowupSequenceData_toBlowupSequenceData {k : Type u} [Field k
 
 namespace MarkedBlowupSequenceData
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
-
-Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The empty prefix has length zero, so the appended sequence and the tail have equal lengths and matching stage indices. Use the isomorphisms from appended stages to tail stages, including the inverse tail initial isomorphism at zero. This makes the initial maps commute. The transition and center comparisons for an append identify each blowup map and center with those of the tail under these isomorphisms. The data comparison therefore gives an isomorphism of the underlying sequences.
 -/
 theorem emptyMarkedBlowupSequenceData_append_isomorphic {k : Type u} [Field k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData) (m : ℕ)
@@ -1086,14 +1018,8 @@ theorem emptyMarkedBlowupSequenceData_append_isomorphic {k : Type u} [Field k] {
     exact (BlowupSequenceData.append_center_eq_comap_concatObjIsoRight (emptyMarkedBlowupSequenceData p I m E).toBlowupSequenceData
       t.toBlowupSequenceData i i (hpf i)).symm
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Appending a length-zero tail does not increase the length. Through the last stage, identify each scheme of the append with its corresponding prefix scheme. The initial isomorphism, every transition within the length, and every center are transported from the prefix. These comparisons give an isomorphism of the underlying data sequences, and hence an isomorphism of the displayed sequences after forgetting the marking.
 -/
 theorem append_isomorphic_of_length_eq_zero {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ}
@@ -1128,8 +1054,8 @@ theorem append_isomorphic_of_length_eq_zero {k : Type u} [Field k] {X : Scheme.{
   rw [e1, e2]
   exact key
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The marked append has the append of the underlying blowup data as its unmarked sequence. The two given strict comparisons are the comparisons of those underlying prefixes and tails. Apply the strict pullback theorem for appended blowup data to obtain the result.
 -/
 theorem isStrictPullbackBlowupSeq_append {k : Type u} [Field k] {X' X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {p' : X' ⟶ Spec (CommRingCat.of k)}

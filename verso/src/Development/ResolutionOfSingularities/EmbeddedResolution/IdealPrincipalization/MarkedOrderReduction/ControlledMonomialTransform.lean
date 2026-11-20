@@ -47,16 +47,16 @@ def MarkedSequenceOfBlowups.controlledNonMonomialTransform (t : MarkedSequenceOf
       residualByPow ((MarkedSequenceOfBlowups.controlledNonMonomialTransform t N c i).comap (t.transitionMapSucc i)) (t.exceptionalDivisor i) c
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The recursion starts by pulling the nonmonomial ideal back to stage zero along the initial isomorphism.
 -/
 theorem MarkedSequenceOfBlowups.controlledNonMonomialTransform_zero (t : MarkedSequenceOfBlowups p J μ E) (N : X.IdealSheafData)
     (c : ℕ) : MarkedSequenceOfBlowups.controlledNonMonomialTransform t N c 0 = N.comap t.isoZero.hom :=
   rfl
 
 @[simp]
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The successor rule pulls the previous nonmonomial ideal back along the next blowup and takes its residual by the c-th power of the exceptional ideal.
 -/
 theorem MarkedSequenceOfBlowups.controlledNonMonomialTransform_succ (t : MarkedSequenceOfBlowups p J μ E) (N : X.IdealSheafData)
     (c i : ℕ) :
@@ -72,16 +72,16 @@ def MarkedSequenceOfBlowups.controlledMonomialTransform (t : MarkedSequenceOfBlo
         (t.exceptionalDivisor i) a
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+At stage zero the monomial transform is defined to be the original monomial factor pulled back by the initial isomorphism.
 -/
 theorem MarkedSequenceOfBlowups.controlledMonomialTransform_zero (t : MarkedSequenceOfBlowups p J μ E) (M : X.IdealSheafData)
     (a c : ℕ) : MarkedSequenceOfBlowups.controlledMonomialTransform t M a c 0 = M.comap t.isoZero.hom :=
   rfl
 
 @[simp]
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+At a successor stage the recursion pulls back the previous monomial factor, multiplies by the c-th exceptional power, and takes the residual by the a-th exceptional power.
 -/
 theorem MarkedSequenceOfBlowups.controlledMonomialTransform_succ (t : MarkedSequenceOfBlowups p J μ E) (M : X.IdealSheafData)
     (a c i : ℕ) :
@@ -94,14 +94,8 @@ end
 
 section
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+The sum-of-powers order estimate gives the global bound by ms, where m is the original marking. Outside the support of the original ideal, its order is zero. The order of the sum of powers is the minimum of the two weighted orders and is therefore also zero there. Its support lies in the original support, so it contains no irreducible component. The new marking is positive because both factors are positive. All conditions on the scheme, structure map, and boundary are inherited, giving admissibility and the asserted bound.
 -/
 theorem isAdmissible_withIdealAndMult_pow_sup_pow {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
     {N : T.scheme.IdealSheafData} {s : ℕ} (hs : 1 ≤ s)
@@ -139,44 +133,12 @@ theorem isAdmissible_withIdealAndMult_pow_sup_pow {T : MarkedIdealWithBoundary.{
            smooth := hT.smooth
            snc := hT.snc }, hle⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
+/- English proof (authored)
+Write m for the original marking. At stage zero the initial isomorphism preserves order, carries the given monomial splitting to stage zero, and preserves sums and powers of ideals. This gives the companion formula, the splitting, and the bound on the nonmonomial order.
 
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
+At a successor step, the companion formula identifies its current marked order locus with the intersection of the original transform's locus at m and the nonmonomial transform's locus at s. The induction bound forces the nonmonomial order to equal s on the center. Power containment for a center with strict normal crossings gives the divisibilities needed to remove exceptional powers m and s from the original and nonmonomial transforms. The monomial-factor divisibility theorem supplies the remaining factor after multiplying its pullback by the s-th exceptional power and dividing by the m-th. The exceptional divisor is Cartier, so these residuals satisfy the factorization identities. Applying the transform theorem to those identities gives the successor splitting. Raising the two residual identities to powers s and m, adding, and cancelling the common exceptional power ms gives the successor companion formula.
 
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+On the exceptional divisor the controlled-transform estimate bounds the new nonmonomial order by s. Off the exceptional divisor the removed factor has order zero and order of the total pullback agrees with order at the image. A point of the new original order locus maps into the preceding original order locus, where the induction bound applies. This gives the bound everywhere on the new locus and closes the induction.
 -/
 theorem isMonomialSplitting_controlledTransform_of_le_length (hG : PrincipalizationGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
     {M N : T.scheme.IdealSheafData} (hsplit : IsMonomialSplitting T.boundary T.ideal M N)
@@ -367,22 +329,8 @@ theorem isMonomialSplitting_controlledTransform_of_le_length (hG : Principalizat
             exact hord2
   exact key i hi
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Supply the required witnesses or components. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At the current stage the companion ideal is the sum of the two transformed powers. On the center its order is at least ms, so the minimum formula and positivity of both exponents give order at least s for the nonmonomial transform and at least m for the original transform. The bound for the nonmonomial transform on the latter locus gives equality with s. Thus the center lies in the two required order loci. Normal crossings gives containment of the two transformed ideals in the respective powers of the center ideal. On the blowup these containments give factorizations by the powers of the exceptional ideal. The monomial splitting and exact order s on the center now supply the third factorization for the weighted pullback of the monomial factor.
 -/
 theorem exists_exceptionalDivisor_pow_mul_eq_comap_of_lt_length (hG : PrincipalizationGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
     {M N : T.scheme.IdealSheafData} (hsplit : IsMonomialSplitting T.boundary T.ideal M N)
@@ -473,10 +421,8 @@ theorem exists_exceptionalDivisor_pow_mul_eq_comap_of_lt_length (hG : Principali
   · rw [hexc]
     exact hC'
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Both recursions start by pulling back the same ideal through the same initial isomorphism. At each successor they pull back the preceding ideal by the same blowup map and take the residual by the same exceptional power. Induction gives equality at every stage.
 -/
 private theorem controlledTransform_eq_ofMarkedSequence_controlledTransform {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {J : X.IdealSheafData} {μ : ℕ} {E : List X.IdealSheafData}
@@ -493,8 +439,8 @@ private theorem controlledTransform_eq_ofMarkedSequence_controlledTransform {k :
         (fun Jj : (s.schemeAt n).IdealSheafData =>
           residualByPow (Jj.comap (s.transitionMapSucc n)) (s.exceptionalDivisor n) m) ih
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The controlled transforms on the marked sequence and on its underlying data agree at the given stage. Pull both ideals back along the next transition, which is the same morphism in both descriptions.
 -/
 private theorem comap_controlledTransform_eq_comap_ofMarkedSequence {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {J : X.IdealSheafData} {μ : ℕ} {E : List X.IdealSheafData}
@@ -505,12 +451,8 @@ private theorem comap_controlledTransform_eq_comap_ofMarkedSequence {k : Type u}
   congrArg (fun Jj : (s.schemeAt i).IdealSheafData => Jj.comap (s.transitionMapSucc i))
     (controlledTransform_eq_ofMarkedSequence_controlledTransform s I m i)
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Smoothness of the centers and their normal crossing position depend on the existing blowup maps and boundaries, and so are inherited. For each center, the companion comparison gives divisibility of the pulled back original transform by the original marking's exceptional power. It also places the center inside the order locus of the original transform at that marking. The controlled transform computed in the underlying data agrees with the one computed in the marked sequence, so these are the required divisibility and order conditions. The underlying sequence is therefore marked for the original object.
 -/
 theorem isMarked_ofMarkedSequence_of_isMonomialSplitting (hG : PrincipalizationGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : T.IsAdmissible) {M N : T.scheme.IdealSheafData}
@@ -538,10 +480,8 @@ theorem isMarked_ofMarkedSequence_of_isMonomialSplitting (hG : PrincipalizationG
         (controlledTransform_eq_ofMarkedSequence_controlledTransform t T.ideal T.mult i)
     exact (mem_orderAtLeastLocus_iff _ _ _).2 (he ▸ h1)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At the last stage the companion ideal is the sum of the m-th power of the nonmonomial transform and the s-th power of the original transform. Their positive exponents identify its order locus at ms with the intersection of their order loci at s and m, respectively. Emptiness of that intersection means the nonmonomial order is strictly less than s at every point of the original marked order locus.
 -/
 theorem orderAt_controlledNonMonomialTransform_length_lt (hG : PrincipalizationGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
     {M N : T.scheme.IdealSheafData} (hsplit : IsMonomialSplitting T.boundary T.ideal M N)

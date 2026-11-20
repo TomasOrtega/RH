@@ -38,8 +38,8 @@ abbrev companionTriple (T : MarkedIdealWithBoundary.{u})
     (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) : MarkedIdealWithBoundary.{u} :=
   tripleAtLength T s (companionIdeal T s) (T.mult * maxOrderNonMonomialOnOrderLocus T s)
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The order of the last nonmonomial factor has a finite global bound. At any point of the last marked order locus it is therefore at most its maximum on that locus, by the supremum bound for orders on a set.
 -/
 theorem orderAt_lastNonMonomialPart_le_maxOrderNonMonomialOnOrderLocus (hG : PrincipalizationGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : T.IsAdmissible) (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) :
@@ -50,8 +50,8 @@ theorem orderAt_lastNonMonomialPart_le_maxOrderNonMonomialOnOrderLocus (hG : Pri
   exact orderAt_le_maxOrderOn (lastNonMonomialPart T s) hB
     (orderAtLeastLocus (s.ideal s.length) T.mult) hx
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The final marked object is admissible. Its nonmonomial factor has order at most its maximum s on the marked order locus, and the continuation condition makes s positive. The order bound for the sum of powers therefore applies to the companion ideal and gives the bound by the original marking times s.
 -/
 theorem orderAt_companionIdeal_le (hG : PrincipalizationGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
     (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) (hcont : CompanionIdealReductionContinues T s) :
@@ -63,8 +63,8 @@ theorem orderAt_companionIdeal_le (hG : PrincipalizationGeometryHypotheses.{u}) 
   intro x
   exact (isAdmissible_withIdealAndMult_pow_sup_pow hT' hs hord).2 x
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The final original marked object is admissible. The continuation condition makes the nonmonomial maximum s positive, and this maximum bounds the nonmonomial order on the original marked order locus. Apply the admissibility result for the sum of powers with marking equal to the original marking times s.
 -/
 theorem companionTriple_isAdmissible (hG : PrincipalizationGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
     (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) (hcont : CompanionIdealReductionContinues T s) :
@@ -74,8 +74,8 @@ theorem companionTriple_isAdmissible (hG : PrincipalizationGeometryHypotheses.{u
   exact (isAdmissible_withIdealAndMult_pow_sup_pow h1 hv
     (orderAt_lastNonMonomialPart_le_maxOrderNonMonomialOnOrderLocus hG hT s)).1
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+At the final stage the original marked object is admissible and its ideal has the chosen monomial splitting. The nonmonomial order on the original marked locus is bounded by the positive maximum used to form the companion ideal. The comparison theorem for a marked sequence of that companion ideal therefore gives markedness of its blowup data for the original final ideal and marking.
 -/
 theorem isMarked_seqAtEnd_companionIdeal (hG : PrincipalizationGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
     (A : PrincipalizationAssignment.{u}) (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary)
@@ -105,8 +105,8 @@ def continuationByCompanionIdeal (hG : PrincipalizationGeometryHypotheses.{u}) {
     (isMarked_seqAtEnd_companionIdeal hG hT A s hcont)
 
 @[simp]
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The continuation keeps the blowup data of the assigned companion sequence and endows them with the original marking. Its underlying length is unchanged.
 -/
 theorem continuationByCompanionIdeal_length (hG : PrincipalizationGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
     (A : PrincipalizationAssignment.{u}) (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary)
@@ -116,10 +116,8 @@ theorem continuationByCompanionIdeal_length (hG : PrincipalizationGeometryHypoth
         (tripleAtLength_dim_le hG hT s _ _)).length :=
   rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Pulling the ideal back along the isomorphism and then along its inverse returns the original ideal. The inverse map is smooth, so the image of the resulting order locus lies in the given empty locus. A set whose image is empty is empty, giving the result.
 -/
 private theorem orderAtLeastLocus_eq_empty_of_comap_iso {k : Type u} [Field k] [CharZero k]
     {X Y : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -134,14 +132,8 @@ private theorem orderAtLeastLocus_eq_empty_of_comap_iso {k : Type u} [Field k] [
   rw [hcomp, hJ] at key
   exact Set.image_eq_empty.mp (Set.subset_empty_iff.mp key)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The companion triple is admissible, lies in the prescribed dimension range, and has order bounded by its marking. The assignment therefore resolves it. If its sequence had length zero, resolution would give emptiness of the order locus of the initial companion ideal after transport by the initial isomorphism. Emptiness then holds on the original final scheme as well. The two positive exponents in the companion ideal show that every nonmonomial order on the original marked locus would be strictly below its maximum s. The bounded-order supremum comparison would then give s < s, a contradiction. Hence the assigned sequence has positive length.
 -/
 theorem seqAtEnd_companionIdeal_length_pos (hG : PrincipalizationGeometryHypotheses.{u}) {n : ℕ} {A B : PrincipalizationAssignment.{u}}
     (hspec : IsOrderReduction (fun d => d ≤ n) A B) {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
@@ -181,8 +173,8 @@ theorem seqAtEnd_companionIdeal_length_pos (hG : PrincipalizationGeometryHypothe
     exact lt_irrefl _ hlt
   · exact hpos
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The dimension bound allows the recursive call on the companion triple. The assigned blowup data are marked for the current original ideal and marking, so the recursive extension is the append of those data with that marking, which is the stated continuation.
 -/
 theorem extendByCompanionIdeal_eq_append (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible) (A : PrincipalizationAssignment.{u})
@@ -197,8 +189,8 @@ private noncomputable def maxOrderNonMonomialPartOnOrderAtLeastLocus {k : Type u
     (D : MarkedSchemeWithCenter k) : ℕ :=
   maxOrderOn (nonMonomialPart D.boundary D.ideal) (orderAtLeastLocus D.ideal μ)
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Substitute the equality of the ambient schemes. The induced isomorphism is the identity, and transporting the marked data by the identity leaves them unchanged. The maximum assigned to those data therefore agrees.
 -/
 private theorem maxOrderNonMonomial_transport_eqToIso {k : Type u} [Field k] (μ : ℕ)
     (D : MarkedSchemeWithCenter k) {A : Scheme.{u}} (h : A = D.ambient) :
@@ -214,10 +206,8 @@ private noncomputable def companionIdealPrincipalizationSeq (hG : Principalizati
   principalizationSeqAtEnd T (principalizationOfDimLe T A) s (companionIdeal T s) (T.mult * maxOrderNonMonomialOnOrderLocus T s)
     (tripleAtLength_dim_le hG hT s _ _)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
-
-Both sides reduce to the same expression.
+/- English proof (authored)
+At stage zero the continuation ideal is the original final ideal pulled back along the initial isomorphism of the companion sequence. At each successor both descriptions use the same blowup morphism, exceptional ideal, and original marking to form the residual. Induction identifies the two recursions.
 -/
 private theorem continuationByCompanionIdeal_ideal_eq (hG : PrincipalizationGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
     (A : PrincipalizationAssignment.{u}) (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary)
@@ -232,20 +222,10 @@ private theorem continuationByCompanionIdeal_ideal_eq (hG : PrincipalizationGeom
       rw [MarkedSequenceOfBlowups.controlledTransform_succ, ← ih]
       rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
+/- English proof (authored)
+Let s be the positive current maximum on the marked locus. The companion triple is admissible and has dimension and order within the bounds for the assignment, so its assigned sequence resolves the companion ideal. At its last stage the strict nonmonomial order estimate makes the controlled nonmonomial transform have order below s throughout the marked locus of the controlled original ideal.
 
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+The continuation uses that original controlled ideal and the same final boundary. The transformed splitting and uniqueness on the admissible final object identify its nonmonomial factor with the controlled nonmonomial transform. This factor has bounded order, so the pointwise strict bound implies that its maximum on the marked locus is below s. The continuation has positive length. Thus the final data of the append are the continuation's final data transported along the stage identification, which preserves that maximum. This gives the required decrease.
 -/
 theorem maxOrderNonMonomialOnOrderLocus_extendByCompanionIdeal_lt (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u}) {n : ℕ}
     {A B : PrincipalizationAssignment.{u}} (hspec : IsOrderReduction (fun d => d ≤ n) A B)
@@ -338,8 +318,8 @@ theorem maxOrderNonMonomialOnOrderLocus_extendByCompanionIdeal_lt (hG : Principa
   rw [hnonMon, hideal]
   exact maxOrderOn_lt_of_forall_lt _ hBd3 _ hs1 hlt
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Choose a point in the original support and take its inverse image under the isomorphism. Its forward image is the chosen point, so it lies in the support of the pulled back ideal.
 -/
 private theorem support_comap_iso_hom_nonempty {X Y : Scheme.{u}} (e : X ≅ Y)
     (J : Y.IdealSheafData) (h : (J.support : Set ↥Y).Nonempty) :
@@ -351,8 +331,8 @@ private theorem support_comap_iso_hom_nonempty {X Y : Scheme.{u}} (e : X ≅ Y)
     exact hy
   exact (mem_comap_support_iff_base_mem_support e.hom J (e.inv y)).mpr hy2
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
+/- English proof (authored)
+The pullback of the center under an isomorphism has nonempty support because the original center does. At marking at least two, the certificate is provided by the certificate clause for such markings. Together these give the center property for the transported data.
 -/
 private theorem isInvariantUnderIso_hasPrincipalizationCenter_of_two_le {k : Type u} [Field k] {μ : ℕ}
     (hμ : 2 ≤ μ) : IsInvariantUnderIso (fun D : MarkedSchemeWithCenter.{u} k => HasPrincipalizationCenter μ D) := by
@@ -360,10 +340,8 @@ private theorem isInvariantUnderIso_hasPrincipalizationCenter_of_two_le {k : Typ
   exact ⟨support_comap_iso_hom_nonempty e D.center hD.center_nonempty,
     PrincipalizationCertificate.of_two_le _ _ _ _ _ _ hμ⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Supply the required witnesses or components. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The assigned companion sequence has nonempty centers because its triple is admissible and meets the dimension and order bounds. The continuation uses the same centers, and the marking at least two supplies its certificates. The companion extension is the append of this continuation. The required center property holds on the previous sequence by hypothesis and on the continuation by these verifications. Since it is invariant under isomorphisms, the append property gives it at every actual stage of the extension.
 -/
 theorem hasCenter_extendByCompanionIdeal (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u}) {n : ℕ}
     {A B : PrincipalizationAssignment.{u}} (hspec : IsOrderReduction (fun d => d ≤ n) A B)
@@ -387,10 +365,8 @@ theorem hasCenter_extendByCompanionIdeal (hG : PrincipalizationGeometryHypothese
   exact MarkedBlowupSequenceData.append_dataAt_of_forall s (continuationByCompanionIdeal hG hT A s hcont) hinv
     (fun D => HasPrincipalizationCenter T.mult D) (isInvariantUnderIso_hasPrincipalizationCenter_of_two_le hm) hs ht i hi
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the iteration index. At zero the iterate is the starting sequence. For a successor, if the previous iterate continued, apply induction to it. If the previous iterate stopped, the successor equals it and the assumed continuation of the successor gives continuation of that same previous iterate. Induction then again gives continuation at the start.
 -/
 theorem companionIdealReductionContinues_of_continues_iter (hinv : ComapIsoInvariance.{u})
     (T : MarkedIdealWithBoundary.{u}) (rc : (S : MarkedIdealWithBoundary.{u}) → S.krullDimSucc ≤ T.krullDimSucc → S.SequenceOfBlowups)
@@ -408,10 +384,8 @@ theorem companionIdealReductionContinues_of_continues_iter (hinv : ComapIsoInvar
       · rw [companionIdealReductionIter_succ_of_not_continues hinv T rc s₀ n hc] at h
         exact ih h
 
-/- English proof (translation)
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Use linear arithmetic over natural numbers and integers.
+/- English proof (authored)
+After the nonmonomial reduction, the nonmonomial order is strictly below the original marking at all points. Its orders are bounded, so its maximum on the remaining marked locus is also strictly below the marking. The continuation condition makes that maximum at least one. The marking, a natural number strictly above it, is therefore at least two.
 -/
 theorem two_le_mult_of_continues_after_nonMonomialOrderReduction (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     {n : ℕ} {A B : PrincipalizationAssignment.{u}} (hspec : IsOrderReduction (fun d => d ≤ n) A B)
@@ -434,14 +408,8 @@ theorem two_le_mult_of_continues_after_nonMonomialOrderReduction (hG : Principal
   rw [← hpi] at hlt
   omega
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+At iteration zero the maximum is the starting maximum. If the successor iterate continues, the preceding iterate must also have continued, since a stopped iterate is fixed. By induction the preceding maximum plus its iteration index is bounded by the starting maximum. The extension strictly decreases the natural-number maximum, so the successor maximum plus the incremented index has the same bound.
 -/
 theorem maxOrderNonMonomialOnOrderLocus_iter_add_le (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u}) {n : ℕ}
     {A B : PrincipalizationAssignment.{u}} (hspec : IsOrderReduction (fun d => d ≤ n) A B)
@@ -470,12 +438,8 @@ theorem maxOrderNonMonomialOnOrderLocus_iter_add_le (hG : PrincipalizationGeomet
         rw [companionIdealReductionIter_succ_of_not_continues hinv T (principalizationOfDimLe T A) s₀ m hc] at h
         exact hc h
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
-
-Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At iteration zero the center property is the one for the nonmonomial reduction. At a successor, a stopped iterate is unchanged and retains the property. If it continues, the initial nonmonomial reduction also continued when given as input to the companion iteration. Thus the marking is at least two. The induction hypothesis supplies the property on the existing sequence, and the theorem for the companion extension supplies it on the enlarged sequence.
 -/
 theorem hasCenter_companionIdealReductionIter (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u}) {n : ℕ}
     {A B : PrincipalizationAssignment.{u}} (hspec : IsOrderReduction (fun d => d ≤ n) A B)
@@ -508,8 +472,8 @@ theorem hasCenter_companionIdealReductionIter (hG : PrincipalizationGeometryHypo
           (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A)) m hc] at hi ⊢
         exact ih i hi
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
+/- English proof (authored)
+The full companion reduction runs for one more than the starting maximum on the marked locus. If it still continued, the bound for a continuing iterate would put its nonnegative maximum plus that number of iterations at most the starting maximum. The iteration count alone exceeds this bound, a contradiction.
 -/
 theorem not_companionIdealReductionContinues_companionIdealReduction (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u}) {n : ℕ}
     {A B : PrincipalizationAssignment.{u}} (hspec : IsOrderReduction (fun d => d ≤ n) A B)
@@ -521,8 +485,8 @@ theorem not_companionIdealReductionContinues_companionIdealReduction (hG : Princ
     (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A)) (maxOrderNonMonomialOnOrderLocus T (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A)) + 1) h
   omega
 
-/- English proof (translation)
-Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The full companion reduction is its iteration starting from the nonmonomial reduction and run for the specified number of steps. The center theorem for every iterate applies at that number.
 -/
 theorem hasCenter_companionIdealReduction (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u}) {n : ℕ}
     {A B : PrincipalizationAssignment.{u}} (hspec : IsOrderReduction (fun d => d ≤ n) A B)
@@ -533,10 +497,8 @@ theorem hasCenter_companionIdealReduction (hG : PrincipalizationGeometryHypothes
   exact hasCenter_companionIdealReductionIter hG hinv hspec hT hdim
     (maxOrderNonMonomialOnOrderLocus T (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A)) + 1) i hi
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The full reduction has stopped, so its maximum nonmonomial order on the final marked locus is zero. The nonmonomial order has a finite global bound. The zero-maximum equivalence therefore makes the nonmonomial order zero at every point of that locus.
 -/
 theorem orderAt_lastNonMonomialPart_companionIdealReduction_eq_zero (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     {n : ℕ} {A B : PrincipalizationAssignment.{u}} (hspec : IsOrderReduction (fun d => d ≤ n) A B)
@@ -559,10 +521,8 @@ theorem orderAt_lastNonMonomialPart_companionIdealReduction_eq_zero (hG : Princi
     (orderAtLeastLocus ((companionIdealReduction hinv T (principalizationOfDimLe T A)).ideal
       (companionIdealReduction hinv T (principalizationOfDimLe T A)).length) T.mult)).mp hzero
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+For no entries, both products are the unit ideal. Adding one entry multiplies the first factor by the product of the remaining entries in each description. Induction on the number of entries gives the identity.
 -/
 private theorem foldr_ofFn_mul_eq_prod {X : Scheme.{u}} (m : ℕ)
     (g : Fin m → X.IdealSheafData) :
@@ -575,10 +535,8 @@ private theorem foldr_ofFn_mul_eq_prod {X : Scheme.{u}} (m : ℕ)
   | succ p ih =>
       rw [List.ofFn_succ, List.foldr_cons, ih, Fin.prod_univ_succ]
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Supply the required witnesses or components.
+/- English proof (authored)
+The final marked object is admissible by transform invariance. At a point of its marked order locus the nonmonomial order is zero. The local consequence of the monomial splitting therefore gives a neighborhood on which the ideal is a product of powers of the boundary ideals. The finite-product identity expresses that product in the form required for local monomiality. This proves the condition at each point of the locus.
 -/
 theorem isLocallyMonomialTriple_tripleAtLength_companionIdealReduction (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     {n : ℕ} {A B : PrincipalizationAssignment.{u}} (hspec : IsOrderReduction (fun d => d ≤ n) A B)

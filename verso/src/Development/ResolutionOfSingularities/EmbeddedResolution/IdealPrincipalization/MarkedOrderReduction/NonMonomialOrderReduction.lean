@@ -38,8 +38,8 @@ namespace FunctorialResolution.EmbeddedResolution
 
 section
 
-/- English proof (translation)
-Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
+/- English proof (authored)
+Pullback along the identity leaves each ideal unchanged. The empty list is fixed, and the head and tail of each nonempty list are fixed by this fact and induction, respectively.
 -/
 theorem list_map_comap_id (B : Scheme.{u}) (E : List B.IdealSheafData) :
     List.map (fun D : B.IdealSheafData => D.comap (𝟙 B)) E = E := by
@@ -48,16 +48,16 @@ theorem list_map_comap_id (B : Scheme.{u}) (E : List B.IdealSheafData) :
   | nil => rfl
   | cons D E ih => rw [List.map_cons, h D, ih]
 
-/- English proof (translation)
-Substitute using the available equality. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Substitute the equality of schemes. The comparison morphism is the identity, which fixes the ideal by pullback and fixes its locus by inverse image.
 -/
 theorem orderAtLeastLocus_comap_eqToHom {A B : Scheme.{u}} (h : A = B) (J : B.IdealSheafData) (c : ℕ) :
     orderAtLeastLocus (J.comap (eqToHom h)) c = (eqToHom h).base ⁻¹' orderAtLeastLocus J c := by
   subst h
   simp
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Substitute the equalities of the structure map, ideal, marking, and boundary. The target carries exactly the admissibility conditions of the given object.
 -/
 theorem isAdmissible_congr {k : Type u} [Field k] {A : Scheme.{u}}
     {p q : A ⟶ Spec (CommRingCat.of k)} {I J : A.IdealSheafData} {m n : ℕ}
@@ -70,10 +70,8 @@ theorem isAdmissible_congr {k : Type u} [Field k] {A : Scheme.{u}}
   subst hE
   exact h
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At stage zero both boundaries are the original entries pulled back along the initial isomorphism. At each actual step both descriptions take strict transforms of the same previous entries and append the same exceptional ideal. Induction through the sequence length gives the equality.
 -/
 theorem ofMarkedSequence_boundary_eq_of_le {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
@@ -99,28 +97,24 @@ abbrev principalizationOfDimLe (T : MarkedIdealWithBoundary.{u}) (A : Principali
     (S : MarkedIdealWithBoundary.{u}) → S.krullDimSucc ≤ T.krullDimSucc → S.SequenceOfBlowups :=
   fun S _ => A S
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+An inverse image of an affine open is an open subset of the Noetherian source. Every such subset is quasi-compact, so the morphism is quasi-compact.
 -/
 private theorem quasiCompact_of_isNoetherian {X Y : Scheme.{u}} (f : X ⟶ Y)
     (h : AlgebraicGeometry.IsNoetherian X) : AlgebraicGeometry.QuasiCompact f := by
   have := h
   infer_instance
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+A smooth morphism is locally of finite presentation and therefore locally of finite type.
 -/
 private theorem locallyOfFiniteType_of_smooth {X Y : Scheme.{u}} (f : X ⟶ Y)
     (h : AlgebraicGeometry.Smooth f) : AlgebraicGeometry.LocallyOfFiniteType f := by
   have := h
   infer_instance
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components.
+/- English proof (authored)
+The conversion to a marked sequence preserves its length, so the final stage is within range. The marked transform results give a smooth structure map, nonvanishing of the final ideal on components, strict normal crossing position of the boundary, and a Noetherian final scheme. Smoothness gives local finite type and the Noetherian source gives quasi-compactness. The characteristic and positive marking remain those of the original admissible object, proving all the conditions.
 -/
 theorem isAdmissible_tripleAtLength (_hG : PrincipalizationGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
     (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) :
@@ -146,8 +140,8 @@ theorem isAdmissible_tripleAtLength (_hG : PrincipalizationGeometryHypotheses.{u
   exact ⟨hT.charZero, locallyOfFiniteType_of_smooth _ hsm, hnz, hT.one_le_mult,
     quasiCompact_of_isNoetherian _ hno, hsm, hsnc⟩
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+The object with the new ideal and marking uses the final stage scheme. The geometric dimension comparison bounds the dimension of that stage by the original dimension. Passing from the data to the marked sequence preserves the scheme and length, so the same bound applies to this object.
 -/
 theorem tripleAtLength_dim_le (hG : PrincipalizationGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
     (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary)
@@ -159,8 +153,8 @@ theorem tripleAtLength_dim_le (hG : PrincipalizationGeometryHypotheses.{u}) {T :
   have h := hG.monomialInputs.level_schemeDim_le T hT s.toMarkedSequenceOfBlowups s.length hlen
   rwa [MarkedBlowupSequenceData.toMarkedSequence_schemeAt] at h
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The last original marked object is admissible. Its chosen monomial and nonmonomial parts therefore form a splitting by existence of a splitting on admissible objects. These two parts are exactly the factors in the claim.
 -/
 theorem isMonomialSplitting_lastNonMonomialPart (hG : PrincipalizationGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : T.IsAdmissible) (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) :
@@ -170,8 +164,8 @@ theorem isMonomialSplitting_lastNonMonomialPart (hG : PrincipalizationGeometryHy
     (isAdmissible_tripleAtLength hG hT s)
   exact h
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The final ideal is nonzero on components by admissibility of the final marked object. The nonmonomial factor in its splitting is then nonzero on components as well. Apply the geometric bounded-order theorem on that final scheme to obtain a finite uniform bound.
 -/
 theorem exists_orderAt_lastNonMonomialPart_le (hG : PrincipalizationGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : T.IsAdmissible) (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) :
@@ -184,8 +178,8 @@ theorem exists_orderAt_lastNonMonomialPart_le (hG : PrincipalizationGeometryHypo
   exact hG.monomialInputs.orderAt_bounded (tripleAtLength T s (s.ideal s.length) T.mult) hv
     (lastNonMonomialPart T s) hnz'
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Choose a finite uniform bound for the order of the last nonmonomial factor. The order at each point is then bounded by its maximum, defined as the supremum of the witnessed natural-number orders. This is the desired maximum.
 -/
 theorem orderAt_lastNonMonomialPart_le_maxOrderNonMonomial (hG : PrincipalizationGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : T.IsAdmissible) (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary)
@@ -200,10 +194,8 @@ abbrev nonMonomialTriple (T : MarkedIdealWithBoundary.{u})
     (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) : MarkedIdealWithBoundary.{u} :=
   tripleAtLength T s (lastNonMonomialPart T s) (maxOrderNonMonomial T s)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Supply the required witnesses or components.
+/- English proof (authored)
+Use admissibility of the final original marked object for the scheme, structure map, and boundary. Its nonmonomial factor is nonzero on components by the splitting and the nonvanishing of the original final ideal. The continuation condition puts the new marking at least as high as the original positive one. Thus replacing the ideal and marking gives an admissible object.
 -/
 theorem isAdmissible_nonMonomialTriple (hG : PrincipalizationGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
     (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) (hcont : NonMonomialOrderReductionContinues T s) :
@@ -224,10 +216,8 @@ end
 
 section
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The nonmonomial triple is admissible, its dimension is within the assignment bound, and its order is bounded by its own marking, the maximum nonmonomial order. Thus the assignment supplies the order bounds along its sequence. The continuation condition makes that marking at least the original marking. Apply the theorem on reusing a sequence for the nonmonomial factor as a marked sequence for the entire split ideal, using the admissibility and splitting of the original final object.
 -/
 theorem isMarked_seqAtEnd_lastNonMonomialPart (hG : PrincipalizationGeometryHypotheses.{u}) {n : ℕ} {A B : PrincipalizationAssignment.{u}}
     (hspec : IsOrderReduction (fun d => d ≤ n) A B) {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
@@ -267,8 +257,8 @@ def continuationByNonMonomialPart (hG : PrincipalizationGeometryHypotheses.{u}) 
     (isMarked_seqAtEnd_lastNonMonomialPart hG hspec hT hdim s hcont)
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The continuation uses the underlying blowup data of the assigned nonmonomial sequence and changes its marking. The underlying data retain the original number of steps.
 -/
 theorem continuationByNonMonomialPart_length (hG : PrincipalizationGeometryHypotheses.{u}) {n : ℕ} {A B : PrincipalizationAssignment.{u}}
     (hspec : IsOrderReduction (fun d => d ≤ n) A B) {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
@@ -281,10 +271,8 @@ theorem continuationByNonMonomialPart_length (hG : PrincipalizationGeometryHypot
     (principalizationSeqAtEnd T (principalizationOfDimLe T A) s (lastNonMonomialPart T s) (maxOrderNonMonomial T s)
       (tripleAtLength_dim_le hG hT s _ _))
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
+/- English proof (authored)
+Take a point of the original order locus and map it by the inverse isomorphism. Pullback along this inverse of the already transported ideal recovers the original ideal. By smooth invariance under the inverse morphism, the image point lies in the order locus of the transported ideal. It witnesses nonemptiness.
 -/
 private theorem orderAtLeastLocus_comap_iso_nonempty {k : Type u} [Field k] [CharZero k]
     {X Y : Scheme.{u}} (p : Y ⟶ Spec (CommRingCat.of k))
@@ -301,12 +289,8 @@ private theorem orderAtLeastLocus_comap_iso_nonempty {k : Type u} [Field k] [Cha
   rw [hcomp] at hsub
   exact ⟨_, hsub (Set.mem_image_of_mem _ hx)⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The assignment resolves the admissible nonmonomial triple because the dimension and order bounds hold. If its sequence had length zero, resolution would make the order locus of its initial ideal empty at stage zero. But the continuation condition gives a point of the original nonmonomial order locus at its maximum marking. Transport through the initial isomorphism preserves nonemptiness, a contradiction. The length is therefore positive.
 -/
 theorem seqAtEnd_lastNonMonomialPart_length_pos (hG : PrincipalizationGeometryHypotheses.{u}) {n : ℕ} {A B : PrincipalizationAssignment.{u}}
     (hspec : IsOrderReduction (fun d => d ≤ n) A B) {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
@@ -340,8 +324,8 @@ theorem seqAtEnd_lastNonMonomialPart_length_pos (hG : PrincipalizationGeometryHy
     exact absurd hres (Set.nonempty_iff_ne_empty.mp hne)
   exact key
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The final dimension bound permits the recursive call with the last nonmonomial factor and its maximum marking. The resulting data meet the markedness test for the original final ideal and marking. The recursive rule therefore appends those data with the original marking, which is the stated continuation.
 -/
 theorem extendByNonMonomialPart_eq_append (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u}) {n : ℕ}
     {A B : PrincipalizationAssignment.{u}} (hspec : IsOrderReduction (fun d => d ≤ n) A B)
@@ -357,8 +341,8 @@ theorem extendByNonMonomialPart_eq_append (hG : PrincipalizationGeometryHypothes
 private def maxOrderNonMonomialPart {k : Type u} [Field k] (D : MarkedSchemeWithCenter.{u} k) : ℕ :=
   maxOrder (nonMonomialPart D.boundary D.ideal)
 
-/- English proof (translation)
-Substitute using the available equality. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+After substituting the equality of ambient schemes, transport is along the identity isomorphism. It fixes the ideal and boundary, so it fixes the nonmonomial factor and its maximum order.
 -/
 private theorem nonMonomialOrder_transport_eqToIso {k : Type u} [Field k] (D : MarkedSchemeWithCenter.{u} k)
     {Y : Scheme.{u}} (hY : Y = D.ambient) :
@@ -366,8 +350,8 @@ private theorem nonMonomialOrder_transport_eqToIso {k : Type u} [Field k] (D : M
   subst hY
   rw [eqToIso_refl, MarkedSchemeWithCenter.transport_refl]
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Substitute the equality of boundary lists and the equality of starting ideals. The splitting condition is then exactly the one assumed.
 -/
 private theorem isMonomialSplitting_of_boundary_eq_of_ideal_eq {X : Scheme.{u}}
     {E F : List X.IdealSheafData} {I J M N : X.IdealSheafData} (hE : E = F) (hI : I = J)
@@ -376,8 +360,8 @@ private theorem isMonomialSplitting_of_boundary_eq_of_ideal_eq {X : Scheme.{u}}
   subst hI
   exact h
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
+/- English proof (authored)
+The two descriptions start with the same pullback along the initial isomorphism. At the next stage the exceptional ideal and blowup map agree, so applying the same residual construction to equal previous transforms gives equal successor transforms. Induction proves equality at every stage.
 -/
 private theorem controlledTransform_ofMarkedSequence {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
@@ -391,8 +375,8 @@ private theorem controlledTransform_ofMarkedSequence {k : Type u} [Field k] {X :
         (fun Z : (s.schemeAt i).IdealSheafData =>
           residualByPow (Z.comap (s.transitionMapSucc i)) (s.exceptionalDivisor i) c) ih
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The continuation length equals that of the assigned nonmonomial sequence. The latter is positive by resolution and nonemptiness of the starting nonmonomial order locus.
 -/
 private theorem continuationByNonMonomialPart_length_pos (hG : PrincipalizationGeometryHypotheses.{u}) {n : ℕ} {A B : PrincipalizationAssignment.{u}}
     (hspec : IsOrderReduction (fun d => d ≤ n) A B) {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
@@ -402,8 +386,8 @@ private theorem continuationByNonMonomialPart_length_pos (hG : PrincipalizationG
   rw [continuationByNonMonomialPart_length hG hspec hT hdim s hcont]
   exact seqAtEnd_lastNonMonomialPart_length_pos hG hspec hT hdim s hcont
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The continuation uses the underlying blowup sequence and the same starting boundary as the assigned nonmonomial sequence. The comparison of boundary recursions identifies their boundaries at the common final index.
 -/
 private theorem continuationByNonMonomialPart_boundary_length (hG : PrincipalizationGeometryHypotheses.{u}) {n : ℕ}
     {A B : PrincipalizationAssignment.{u}}
@@ -415,8 +399,8 @@ private theorem continuationByNonMonomialPart_boundary_length (hG : Principaliza
       = (A (nonMonomialTriple T s)).boundary (A (nonMonomialTriple T s)).length :=
   ofMarkedSequence_boundary_eq_of_le (A (nonMonomialTriple T s)) (A (nonMonomialTriple T s)).length le_rfl
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The continuation records the controlled transforms of the original final ideal with its original marking on the assigned nonmonomial blowup sequence. The comparison between controlled transforms on the sequence and its underlying data therefore gives the displayed identification at the last stage.
 -/
 private theorem continuationByNonMonomialPart_ideal_length (hG : PrincipalizationGeometryHypotheses.{u}) {n : ℕ} {A B : PrincipalizationAssignment.{u}}
     (hspec : IsOrderReduction (fun d => d ≤ n) A B) {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
@@ -434,10 +418,8 @@ private theorem continuationByNonMonomialPart_ideal_length (hG : Principalizatio
     (principalizationSeqAtEnd T (principalizationOfDimLe T A) s (lastNonMonomialPart T s) (maxOrderNonMonomial T s)
       (tripleAtLength_dim_le hG hT s (lastNonMonomialPart T s) (maxOrderNonMonomial T s))).length
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The assigned sequence has order bounds because the nonmonomial triple is admissible and meets the dimension and initial order bounds. The original marking is at most the nonmonomial marking. The splitting theorem along this sequence identifies the transformed original ideal as a product whose nonmonomial factor is the current ideal of the assigned sequence. At the last stage the continuation has that transformed original ideal and the same boundary. Its final marked object is admissible, so uniqueness of the monomial splitting identifies its chosen nonmonomial factor with the final ideal of the assigned sequence.
 -/
 private theorem nonMonomialPart_continuationByNonMonomialPart_length (hG : PrincipalizationGeometryHypotheses.{u}) {n : ℕ}
     {A B : PrincipalizationAssignment.{u}}
@@ -469,10 +451,8 @@ private theorem nonMonomialPart_continuationByNonMonomialPart_length (hG : Princ
     (isMonomialSplitting_of_boundary_eq_of_ideal_eq (continuationByNonMonomialPart_boundary_length hG hspec hT hdim s hcont)
       (continuationByNonMonomialPart_ideal_length hG hspec hT hdim s hcont) hsp)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The current maximum marking is positive. The assignment resolves the nonmonomial triple since it is admissible and meets the dimension and order bounds, so its final locus at this marking is empty. Its specification also bounds order along the sequence. Apply the maximum-order estimate for an empty locus at a positive threshold to obtain the strict inequality.
 -/
 private theorem maxOrder_idealAtLength_lt_maxOrderNonMonomial (hG : PrincipalizationGeometryHypotheses.{u}) {n : ℕ}
     {A B : PrincipalizationAssignment.{u}}
@@ -494,8 +474,8 @@ private theorem maxOrder_idealAtLength_lt_maxOrderNonMonomial (hG : Principaliza
   exact maxOrder_ideal_length_lt_of_orderAtLeastLocus_eq_empty (A (nonMonomialTriple T s))
     (hspec.order_le (nonMonomialTriple T s) hadmNonMonomial hdim' hob) hres hmu1
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The extension appends a continuation of positive length. Its final data are the final continuation data under the stage identification, which preserves the maximum nonmonomial order. The continuation's final nonmonomial factor equals the last ideal of the assigned nonmonomial sequence by the transformed splitting. Resolution of that sequence makes its maximum strictly smaller than the previous maximum. These identities transfer the decrease to the extension.
 -/
 theorem maxOrderNonMonomial_extendByNonMonomialPart_lt (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u}) {n : ℕ}
     {A B : PrincipalizationAssignment.{u}} (hspec : IsOrderReduction (fun d => d ≤ n) A B)
@@ -522,22 +502,16 @@ end
 
 section
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The empty data end at stage zero with the starting ideal and boundary. Their final nonmonomial factor is therefore the original nonmonomial factor, and their maxima are equal.
 -/
 private theorem maxOrderNonMonomial_emptyMarkedBlowupSequenceData (T : MarkedIdealWithBoundary.{u}) :
     maxOrderNonMonomial T (emptyMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) =
       maxOrder (nonMonomialPart T.boundary T.ideal) := by
   rfl
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Use linear arithmetic over natural numbers and integers. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+At index zero the maximum is the starting maximum. At each successor in range the previous iterate continues, so the extension strictly decreases its natural-number maximum. By induction the previous maximum plus its index is bounded by the initial maximum. The decrease by at least one offsets the increment of the index, giving the bound at the successor.
 -/
 private theorem maxOrderNonMonomial_iter_add_le_of_forall_le (hG : PrincipalizationGeometryHypotheses.{u})
     (hinv : ComapIsoInvariance.{u}) {n : ℕ}
@@ -566,10 +540,8 @@ private theorem maxOrderNonMonomial_iter_add_le_of_forall_le (hG : Principalizat
       rw [hstep]
       omega
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
+/- English proof (authored)
+If the final iterate continued, every earlier iterate would have continued as well, since any stopped iterate stays fixed forever. The maximum-decrease bound would then give that the final maximum plus the iteration count is at most the starting maximum. The iteration count is already one greater than the starting maximum, which is impossible.
 -/
 theorem not_nonMonomialOrderReductionContinues_nonMonomialOrderReduction (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u}) {n : ℕ}
     {A B : PrincipalizationAssignment.{u}} (hspec : IsOrderReduction (fun d => d ≤ n) A B)
@@ -590,8 +562,8 @@ theorem not_nonMonomialOrderReductionContinues_nonMonomialOrderReduction (hG : P
     (maxOrder (nonMonomialPart T.boundary T.ideal) + 1) le_rfl
   omega
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At one more than the original maximum, the iterate is by definition the completed reduction and its continuation condition fails. All subsequent iterates are equal to this stopped iterate. Apply this stability at the given later index.
 -/
 theorem nonMonomialOrderReductionIter_eq_of_maxOrder_lt (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u}) {n : ℕ}
     {A B : PrincipalizationAssignment.{u}} (hspec : IsOrderReduction (fun d => d ≤ n) A B)
@@ -606,8 +578,8 @@ theorem nonMonomialOrderReductionIter_eq_of_maxOrder_lt (hG : PrincipalizationGe
   exact nonMonomialOrderReductionIter_eq_of_not_continues hinv T (principalizationOfDimLe T A)
     (maxOrder (nonMonomialPart T.boundary T.ideal) + 1) hnc g hg
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The data at i have the given center and its support is nonempty. Their boundary support is the marked sequence's boundary locus, so the given certificate is exactly the certificate required for those data.
 -/
 private theorem hasPrincipalizationCenter_of_principalizationCertificate {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
@@ -620,18 +592,8 @@ private theorem hasPrincipalizationCenter_of_principalizationCertificate {k : Ty
   rw [MarkedBlowupSequenceData.boundarySupport_dataAt]
   exact hcert
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The nonmonomial triple meets the assignment's admissibility, dimension, and order bounds. Its assigned sequence therefore has nonempty centers and certificates, and its stage orders satisfy the required bound. The certificate comparison for a monomial splitting transfers each certificate to the original controlled transform with the original marking. The continuation has that transformed ideal, the same center and projection, and the same boundary. The last equality follows from the common boundary recursion, so their boundary loci also agree. Together with nonemptiness of the center, the transferred certificate gives the asserted stage property.
 -/
 private theorem hasCenter_continuationByNonMonomialPart (hG : PrincipalizationGeometryHypotheses.{u}) {n : ℕ} {A B : PrincipalizationAssignment.{u}}
     (hspec : IsOrderReduction (fun d => d ≤ n) A B) {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
@@ -700,12 +662,8 @@ private theorem hasCenter_continuationByNonMonomialPart (hG : PrincipalizationGe
   rw [hproj, hidl, hloc]
   exact hprinc
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
-
-Treat this case separately. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At zero the sequence is empty, so there is no center to check. If an iterate has stopped, the successor is the same sequence and the induction hypothesis applies. Otherwise the successor appends the nonmonomial continuation. The previous stages have the property by induction, and the continuation stages have it by the certificate comparison. Invariance under isomorphism lets the append theorem combine the two.
 -/
 private theorem hasCenter_nonMonomialOrderReductionIter (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u}) {n : ℕ}
     {A B : PrincipalizationAssignment.{u}} (hspec : IsOrderReduction (fun d => d ≤ n) A B)
@@ -734,8 +692,8 @@ private theorem hasCenter_nonMonomialOrderReductionIter (hG : PrincipalizationGe
       · rw [nonMonomialOrderReductionIter_succ_of_not_continues hinv T (principalizationOfDimLe T A) f hc]
         exact ih
 
-/- English proof (translation)
-Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The completed nonmonomial reduction is the iterate at its prescribed stopping bound. The stage property established for every iterate therefore holds for this one.
 -/
 theorem hasCenter_nonMonomialOrderReduction (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u}) {n : ℕ}
     {A B : PrincipalizationAssignment.{u}} (hspec : IsOrderReduction (fun d => d ≤ n) A B)
@@ -745,10 +703,8 @@ theorem hasCenter_nonMonomialOrderReduction (hG : PrincipalizationGeometryHypoth
   rw [nonMonomialOrderReduction_eq hinv T (principalizationOfDimLe T A)] at hi ⊢
   exact hasCenter_nonMonomialOrderReductionIter hG hinv hspec hT hdim _ i hi
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
+/- English proof (authored)
+The given point makes the final scheme nonempty. The final nonmonomial order has a finite upper bound, so its maximum is attained and its maximum-order locus is nonempty. Since the reduction has stopped, the other continuation condition must fail, meaning this maximum is strictly below the original marking. The order at the given point is at most that maximum, giving the claimed strict bound.
 -/
 theorem orderAt_lastNonMonomialPart_nonMonomialOrderReduction_lt (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u}) {n : ℕ}
     {A B : PrincipalizationAssignment.{u}} (hspec : IsOrderReduction (fun d => d ≤ n) A B)

@@ -19,8 +19,8 @@ structure MarkedSchemeWithCenter (k : Type u) [Field k] where
   structMap : ambient ⟶ Spec (CommRingCat.of k)
   center : ambient.IdealSheafData
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The successive pullbacks equal pullback along the inverse followed by the forward isomorphism. This composite is the identity, which fixes the ideal.
 -/
 private theorem comap_inv_comap_hom {X Y : Scheme.{u}} (e : X ≅ Y) (I : Y.IdealSheafData) :
     (I.comap e.hom).comap e.inv = I := by
@@ -39,42 +39,42 @@ def transport (D : MarkedSchemeWithCenter k) {A : Scheme.{u}} (e : A ≅ D.ambie
   center := D.center.comap e.hom
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Transport is defined on the source of the isomorphism, so the ambient scheme of the transported data is A.
 -/
 theorem transport_ambient (D : MarkedSchemeWithCenter k) {A : Scheme.{u}} (e : A ≅ D.ambient) :
     (D.transport e).ambient = A := rfl
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Transport of the marked data defines the new ideal by pulling the old ideal back along the forward isomorphism.
 -/
 theorem transport_ideal (D : MarkedSchemeWithCenter k) {A : Scheme.{u}} (e : A ≅ D.ambient) :
     (D.transport e).ideal = D.ideal.comap e.hom := rfl
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The transported boundary is formed by pulling back each original boundary ideal along the forward isomorphism, keeping the order of the list.
 -/
 theorem transport_boundary (D : MarkedSchemeWithCenter k) {A : Scheme.{u}} (e : A ≅ D.ambient) :
     (D.transport e).boundary = D.boundary.map (fun J => J.comap e.hom) := rfl
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The new structure map is defined by applying the forward isomorphism to the old ambient scheme and then its original structure map.
 -/
 theorem transport_projectionToBase (D : MarkedSchemeWithCenter k) {A : Scheme.{u}} (e : A ≅ D.ambient) :
     (D.transport e).structMap = e.hom ≫ D.structMap := rfl
 
 @[simp]
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The definition transports the center by pulling back its ideal along the forward isomorphism.
 -/
 theorem transport_center (D : MarkedSchemeWithCenter k) {A : Scheme.{u}} (e : A ≅ D.ambient) :
     (D.transport e).center = D.center.comap e.hom := rfl
 
-/- English proof (translation)
-Substitute using the available equality. Both sides reduce to the same expression.
+/- English proof (authored)
+The two marked objects have the same ambient scheme and equal ideals, boundary lists, structure maps, and centers. Substituting these equalities makes the two objects identical.
 -/
 private theorem mk_congr {K : Type u} [Field K] (A : Scheme.{u})
     (I I' : A.IdealSheafData) (B B' : List A.IdealSheafData)
@@ -84,10 +84,8 @@ private theorem mk_congr {K : Type u} [Field K] (A : Scheme.{u})
   subst h1 h2 h3 h4
   rfl
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Pullback along the identity fixes the ideal, each boundary entry, and the center. The composite of the identity with the structure map is the original map. Thus every field of the transported marked data agrees with the original.
 -/
 theorem transport_refl (D : MarkedSchemeWithCenter k) : D.transport (Iso.refl D.ambient) = D := by
   obtain ⟨A, I, B, f, C⟩ := D
@@ -115,42 +113,42 @@ def dataAt (s : MarkedBlowupSequenceData p I m E) (i : ℕ) : MarkedSchemeWithCe
   center := s.toBlowupSequenceData.center i
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+By definition the ambient scheme of the data at stage i is the scheme at stage i in the underlying sequence.
 -/
 theorem dataAt_ambient (s : MarkedBlowupSequenceData p I m E) (i : ℕ) :
     (s.dataAt i).ambient = s.toBlowupSequenceData.obj i := rfl
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The construction assigns the stage-i ideal of the marked sequence as the ideal of the stage data.
 -/
 theorem dataAt_ideal (s : MarkedBlowupSequenceData p I m E) (i : ℕ) :
     (s.dataAt i).ideal = s.ideal i := rfl
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The boundary of the stage data is defined to be the stage-i boundary list of the marked sequence.
 -/
 theorem dataAt_boundary (s : MarkedBlowupSequenceData p I m E) (i : ℕ) :
     (s.dataAt i).boundary = s.boundary i := rfl
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The construction defines the structure map by the stage-i projection to the initial scheme followed by its map to the ground field.
 -/
 theorem dataAt_structMap (s : MarkedBlowupSequenceData p I m E) (i : ℕ) :
     (s.dataAt i).structMap = s.proj i ≫ p := rfl
 
 @[simp]
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The stage data take their center from the underlying blowup sequence at the same index.
 -/
 theorem dataAt_center (s : MarkedBlowupSequenceData p I m E) (i : ℕ) :
     (s.dataAt i).center = s.toBlowupSequenceData.center i := rfl
 
-/- English proof (translation)
-Substitute using the available equality. Both sides reduce to the same expression.
+/- English proof (authored)
+Substitute the equality of the indices. The stage data are then equal and the two identifications of their ambient scheme come from proofs of the same equality. Thus the two transports agree.
 -/
 private theorem transport_dataAt_congr {K : Type u} [Field K] {Y : Scheme.{u}}
     {q : Y ⟶ Spec (CommRingCat.of K)} {J : Y.IdealSheafData} {n : ℕ}
@@ -164,10 +162,8 @@ variable (s : MarkedBlowupSequenceData p I m E)
   (t : MarkedBlowupSequenceData (s.proj s.toBlowupSequenceData.length ≫ p) (s.ideal s.toBlowupSequenceData.length) m
     (s.boundary s.toBlowupSequenceData.length))
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Before the joining stage, the appended sequence is identified with the first sequence at the same index. Its ideal, boundary, and center are the pullbacks of those for the first sequence through this identification. Its structure map is the corresponding composite by the formula for the appended projection. These are the fields of the transported stage data.
 -/
 theorem append_dataAt_of_lt_length (hinv : ComapIsoInvariance.{u}) {i : ℕ} (h : i < s.toBlowupSequenceData.length) :
     (s.append t hinv).dataAt i =
@@ -187,10 +183,8 @@ theorem append_dataAt_of_lt_length (hinv : ComapIsoInvariance.{u}) {i : ℕ} (h 
     appendToBlowupSequenceData_center_of_lt_length s t h
   exact MarkedSchemeWithCenter.mk_congr _ _ _ _ _ _ _ _ _ h1 h2 h3 h4
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+At the joining stage the appended scheme is identified with the last scheme of the first sequence. The inverse of the second sequence's initial isomorphism transports its stage-zero ideal and boundary back to this last scheme. These are the last ideal and boundary of the first sequence, because the two initial pullbacks cancel against their inverses. The analogous composition of projections gives the structure map. The center at the join is the transport of the first center of the second sequence along the same identifications. All the fields therefore agree with the stated double transport.
 -/
 theorem append_dataAt_length (hinv : ComapIsoInvariance.{u}) :
     (s.append t hinv).dataAt s.toBlowupSequenceData.length =
@@ -217,10 +211,8 @@ theorem append_dataAt_length (hinv : ComapIsoInvariance.{u}) :
     appendToBlowupSequenceData_center_length s t
   exact MarkedSchemeWithCenter.mk_congr _ _ _ _ _ _ _ _ _ h1 h2 h3 h4
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+After the join, position i of the appended sequence corresponds to position i minus the first length in the second sequence. The ideal, boundary, and center are pulled back from that stage along the scheme identification. The appended projection similarly gives its structure map after composition with the first sequence's final projection and the original structure map. These formulas identify the complete marked data.
 -/
 theorem append_dataAt_of_length_lt (hinv : ComapIsoInvariance.{u}) {i : ℕ} (h : s.toBlowupSequenceData.length < i) :
     (s.append t hinv).dataAt i =
@@ -244,8 +236,8 @@ theorem append_dataAt_of_length_lt (hinv : ComapIsoInvariance.{u}) {i : ℕ} (h 
     appendToBlowupSequenceData_center_of_length_lt s t h
   exact MarkedSchemeWithCenter.mk_congr _ _ _ _ _ _ _ _ _ h1 h2 h3 h4
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The second sequence has positive length, so the last appended stage lies after the join. Apply the formula for stages after the join. Subtracting the first length from the total leaves the length of the second sequence. Transport along the equal index gives the stated final data.
 -/
 theorem append_dataAt_last (hinv : ComapIsoInvariance.{u}) (h : 0 < t.toBlowupSequenceData.length) :
     (s.append t hinv).dataAt ((s.append t hinv).toBlowupSequenceData.length) =
@@ -259,10 +251,8 @@ theorem append_dataAt_last (hinv : ComapIsoInvariance.{u}) (h : 0 < t.toBlowupSe
     exact transport_dataAt_congr t (by omega) _ _
   exact key
 
-/- English proof (translation)
-Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+If the stage precedes the join, use the property for the corresponding stage in the first sequence and transport it by the stage isomorphism. At the join, the given strict bound implies that the second sequence has a first step. Apply the property there and transport it through its inverse initial isomorphism and then through the join identification. After the join, the corresponding stage of the second sequence lies strictly below its length. Transport its property along the scheme identification. The assumed invariance supplies the result in all three cases.
 -/
 theorem append_dataAt_of_forall (hinv : ComapIsoInvariance.{u}) (P : MarkedSchemeWithCenter.{u} k → Prop)
     (hP : IsInvariantUnderIso P)

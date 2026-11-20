@@ -34,14 +34,8 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace MaxOrderReduction
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Identify the test square with the canonical pullback of B along the field-change projection. The comparison isomorphism for an iterated pullback identifies this scheme with the direct field change of B. Its projection to B is the map in the test square, so pulling back the ideal can be done through the direct field change and then through the isomorphism. Order is unchanged under the isomorphism, and the geometric field-change property identifies the remaining order with the original order at the image point.
 -/
 private theorem orderAtBaseFieldChangeInvariance_of_geometryHypotheses (hG : PrincipalizationGeometryHypotheses.{u}) :
     OrderAtBaseFieldChangeInvariance.{u} := by
@@ -76,8 +70,8 @@ private theorem orderAtBaseFieldChangeInvariance_of_geometryHypotheses (hG : Pri
     simp
   exact h1.trans (h2.trans h3)
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Apply the monomial principalization theorem with the dimension condition that holds for every dimension. The given geometry and the field-change invariance supply the hypotheses. Its certificates, nonempty centers, resolution, and zero length when the marked locus is empty give the stated specification.
 -/
 theorem monomialPrincipalization_spec (hG : PrincipalizationGeometryHypotheses.{u})
     (hinv : ComapIsoInvariance.{u}) : MonomialPrincipalizationHypotheses hinv := by
@@ -89,12 +83,10 @@ theorem monomialPrincipalization_spec (hG : PrincipalizationGeometryHypotheses.{
       resolves := fun T hTm => h.resolves T hTm trivial
       trivial_of_coSupport_empty := fun T hTm hc => h.trivial_of_coSupport_empty T hTm trivial hc }
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
+/- English proof (authored)
+Use the monomial principalization specification to apply the results for the order-reduction sequence. They give stage certificates, nonempty centers, resolution, agreement with the original assignment when the boundary is empty and the order is bounded, and a trivial sequence when the marked order locus is empty.
 
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+For pullback, the comparison of the constructed sequences applies using the base-change data for a field extension or for a smooth map, respectively. Field extension is surjective, and in the strict smooth case surjectivity is an assumption. In either surjective case the nonempty center supports ensure that every original center ideal differs from the unit ideal. The pullback comparison is therefore strict in both cases.
 -/
 theorem isMaxOrderReduction_orderReductionSeq (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u}) (n : ℕ)
     (A B : PrincipalizationAssignment.{u}) (hspec : IsOrderReduction (fun d => d ≤ n) A B) :
@@ -139,8 +131,8 @@ theorem isMaxOrderReduction_orderReductionSeq (hG : PrincipalizationGeometryHypo
       (Scheme.IdealSheafData.support_nonempty_iff_ne_top _).mp
         (center_support_nonempty_orderReductionSeq hG hinv hmon hspec hT hdim i hi)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The canonical maximum-order family is this order-reduction construction with the established invariance under isomorphism. Apply the specification for the order-reduction sequence with that invariance.
 -/
 theorem isMaxOrderReduction_canonicalAlgorithmRules (hG : PrincipalizationGeometryHypotheses.{u})
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}) (n : ℕ) (A B : PrincipalizationAssignment.{u})

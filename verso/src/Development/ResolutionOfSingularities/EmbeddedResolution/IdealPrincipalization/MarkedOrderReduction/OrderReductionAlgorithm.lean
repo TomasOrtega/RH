@@ -35,8 +35,8 @@ def monomialPart (E : List X.IdealSheafData) (I : X.IdealSheafData) : X.IdealShe
 def nonMonomialPart (E : List X.IdealSheafData) (I : X.IdealSheafData) : X.IdealSheafData :=
   (monomialSplitting E I).2
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+A splitting exists by assumption, so the definition selects a pair satisfying the splitting condition. The monomial part and nonmonomial part are the two entries of this selected pair. Their splitting property is the property of the chosen pair.
 -/
 theorem isMonomialSplitting_monomialPart_nonMonomialPart (E : List X.IdealSheafData) (I : X.IdealSheafData)
     (h : ∃ q : X.IdealSheafData × X.IdealSheafData, IsMonomialSplitting E I q.1 q.2) :

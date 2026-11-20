@@ -52,8 +52,8 @@ abbrev upperTriple (S : MarkedPullbackSquare T g) (k' : Type u) [Field k']
     MarkedIdealWithBoundary.{u} :=
   (S.lowerTriple.pullbackOverField S.topScheme k' (S.top ≫ q) S.left).withBoundary E
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Use the lower marked object with the marking of the original object T. It is admissible because its geometric and ideal conditions are unchanged and the marking of T is positive. The given order-pullback property now applies to the square, whose lower map respects the structure map. It identifies the order of the pulled back ideal with the order at the image point.
 -/
 theorem orderAt_comap_verticalMap (S : MarkedPullbackSquare T g) (hT : T.IsAdmissible)
     (hg : OrderAtPullbackInvariant T g) (A : S.baseScheme.IdealSheafData) (y : ↥S.topScheme) :
@@ -70,8 +70,8 @@ theorem orderAt_comap_verticalMap (S : MarkedPullbackSquare T g) (hT : T.IsAdmis
   exact hg S.baseScheme S.bottom S.structMap S.ideal S.boundary hval S.bottom_structMap
     S.topScheme S.left S.top S.isPullback A y
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The order equality for the vertical map replaces the pulled back order by the order at the image in the lower scheme. The assumed bound applies at that image.
 -/
 theorem orderAt_comap_verticalMap_le (S : MarkedPullbackSquare T g) (hT : T.IsAdmissible)
     (hg : OrderAtPullbackInvariant T g) (A : S.baseScheme.IdealSheafData) (c : ℕ∞)
@@ -80,8 +80,8 @@ theorem orderAt_comap_verticalMap_le (S : MarkedPullbackSquare T g) (hT : T.IsAd
   rw [S.orderAt_comap_verticalMap hT hg A y]
   exact hA (S.left.base y)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The vertical map on the left is the base change of the given flat map on the right. Flatness is stable under base change.
 -/
 theorem flat_verticalMap (S : MarkedPullbackSquare T g) [AlgebraicGeometry.Flat g] :
     AlgebraicGeometry.Flat S.left :=

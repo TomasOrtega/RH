@@ -117,8 +117,10 @@ structure MonomialCaseHypotheses : Prop where
     ∀ (T : MarkedIdealWithBoundary.{u}), T.IsAdmissible →
       ∀ D ∈ T.boundary, ∀ x ∈ D.support, orderAt D x = 1
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Use the supplied monomial hypotheses for codimension, smoothness and normal crossings of centers, boundary transforms, incidence, transformed components, smooth strata, and the two order formulas. The center built from a union of components has that union as its support and commutes with flat pullback. The flat component theorems describe images of components and find components above a given point. For smooth maps, apply the same theorems using flatness and the agreement of the boundary indices for pullbacks over the unchanged field.
+
+Smoothness of the strata gives disjointness of their components and openness of the designated unions in the stratum. Noetherianity gives finiteness. The marked transform results give stage admissibility and the dimension bound, and the finite-order theorem gives a uniform bound for ideals nonzero on components. Replacing the boundary by one with the same nonunit entries preserves admissibility. Together these are the monomial geometry requirements.
 -/
 theorem monomialGeometryHypotheses_of_monomialCaseHypotheses (hR : MonomialCaseHypotheses.{u}) :
     MonomialGeometryHypotheses.{u} where
@@ -225,8 +227,10 @@ structure OrderReductionHypotheses : Prop where
                               C = closure ({π ξ'} : Set ↥T.scheme)
   monomial : MonomialCaseHypotheses.{u}
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The maximal-contact certificate descends under isomorphisms. For an irreducible component of the exceptional locus, its defining maximality supplies the maximal irreducible subset condition in the theorem that excludes containment in the controlled-transform support. Admissibility gives the smoothness, characteristic, and Noetherian hypotheses used there. It also allows application of order invariance under field extension.
+
+The order estimate for the controlled transform and the strict-transform component description are part of the supplied hypotheses. Monomial splitting is preserved by flat pullback along a field extension and by smooth pullback. Existence and uniqueness of the splitting follow from the smooth normal crossing geometry and nonvanishing on components. The monomial geometry construction supplies the remaining inputs.
 -/
 theorem geometricHypotheses_of_orderReductionHypotheses (hR : OrderReductionHypotheses.{u}) : PrincipalizationGeometryHypotheses.{u} where
   maxContactTransport := FunctorialResolution.EmbeddedResolution.isoInvariantOrderCertificateDescend

@@ -86,8 +86,8 @@ structure MonomialCenterHypotheses : Prop where
                                   Set ↥X')) ∧
                             ∀ ξ : ↥T.scheme, IsGenericPoint ξ C → π ξ' = ξ
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The supplied conditions give smoothness and normal crossings for centers, the boundary total-transform formula, the criterion for a component to lie in a boundary divisor, and the description of transformed components. For the other fields, use the codimension bound for nonempty strata, smoothness of boundary intersections, order invariance off the exceptional locus, and order one for a boundary divisor on its support.
 -/
 theorem monomialCaseHypotheses_of_monomialCenterHypotheses (h : MonomialCenterHypotheses.{u}) : MonomialCaseHypotheses.{u} where
   card_lt_dim := MonomialCodimension.card_lt_krullDimSucc_of_nonempty
@@ -122,8 +122,8 @@ structure StrictTransformHypotheses : Prop extends MonomialCenterCase.MonomialCe
                             ¬ C ⊆ (Z.support : Set ↥T.scheme) ∧
                               C = closure ({π ξ'} : Set ↥T.scheme)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Use the given strict-transform component property directly. Apply the monomial case construction to the underlying center hypotheses to obtain the second required property.
 -/
 theorem strictTransformHypotheses_of_residualHypotheses (h : StrictTransformHypotheses.{u}) : StrictTransformAndMonomialCaseHypotheses.{u} where
   strictTransform_components := h.strictTransform_components

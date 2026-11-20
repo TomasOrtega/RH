@@ -24,8 +24,8 @@ private noncomputable def appendSchemeAtIsoOfLengthLt {X : Scheme.{u}} (s : Blow
   eqToIso (append_schemeAt_eq_right_of_pos s t₁ hj hij) ≪≫ e j hjl ≪≫
     (eqToIso (append_schemeAt_eq_right_of_pos s t₂ hj hij)).symm
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+At a positive stage of the appended tail, the isomorphism first identifies the source with the relevant stage of the first tail, applies the given stage isomorphism, and uses the inverse identification with the appended target. The forward map is their composite by definition.
 -/
 private theorem appendObjIsoRight_hom {X : Scheme.{u}} (s : BlowupSequenceData X)
     (t₁ t₂ : BlowupSequenceData (s.obj s.length))
@@ -35,8 +35,8 @@ private theorem appendObjIsoRight_hom {X : Scheme.{u}} (s : BlowupSequenceData X
       eqToHom (append_schemeAt_eq_right_of_pos s t₁ hj hij) ≫ (e j hjl).hom ≫
         eqToHom (append_schemeAt_eq_right_of_pos s t₂ hj hij).symm := rfl
 
-/- English proof (translation)
-Substitute using the available equality. Both sides reduce to the same expression.
+/- English proof (authored)
+Substitute the equality of the two tail indices. The stage comparisons then use the same scheme identifications and the same tail isomorphism. The proofs of the bounds do not affect the resulting map.
 -/
 private theorem appendObjIsoRight_congr {X : Scheme.{u}} (s : BlowupSequenceData X)
     (t₁ t₂ : BlowupSequenceData (s.obj s.length))
@@ -58,8 +58,8 @@ private noncomputable def appendSchemeAtIso {X : Scheme.{u}} (s : BlowupSequence
   else
     appendSchemeAtIsoOfLengthLt s t₁ t₂ e (i - s.length) i (by omega) (by omega) (by omega)
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
+/- English proof (authored)
+For a stage at or before the joining index, both appended schemes are identified with the same stage of the common sequence. The definition uses these identifications to compare them, so its forward map is the asserted equality-induced map.
 -/
 private theorem appendObjIso_hom_of_le {X : Scheme.{u}} (s : BlowupSequenceData X)
     (t₁ t₂ : BlowupSequenceData (s.obj s.length))
@@ -70,8 +70,8 @@ private theorem appendObjIso_hom_of_le {X : Scheme.{u}} (s : BlowupSequenceData 
   unfold appendSchemeAtIso
   simp only [dif_pos h, eqToIso.hom]
 
-/- English proof (translation)
-Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Writing the stage as the common length plus a positive j places it after the join. The definition there uses the shifted index given by subtracting the common length, which is j. Substitute this equality in the tail comparison.
 -/
 private theorem appendObjIso_eq_right_of_pos {X : Scheme.{u}} (s : BlowupSequenceData X)
     (t₁ t₂ : BlowupSequenceData (s.obj s.length))
@@ -85,22 +85,10 @@ private theorem appendObjIso_eq_right_of_pos {X : Scheme.{u}} (s : BlowupSequenc
   exact appendObjIsoRight_congr s t₁ t₂ e (i - s.length) j i (by omega) (by omega) (by omega)
     (by omega) hij hj hjl
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
+/- English proof (authored)
+The tails have equal length, so both appended sequences have equal length. Compare stages through the join using their identifications with the common prefix. At later stages use the given tail isomorphisms at shifted indices. At stage zero both comparisons preserve the initial isomorphism of the prefix.
 
-Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Substitute using the available equality.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Substitute using the available equality.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+For a step before the join, the maps and center ideals come from the common prefix, so the comparisons commute with the maps and preserve centers by transport. At the join, the transition map is the first tail map followed by its initial identification. The given first transition square and agreement of initial isomorphisms make those composites commute. Their inverse-identification formula likewise gives equality of the transported first tail centers. Afterwards the commuting squares and center equalities are exactly the given tail comparisons with indices shifted. This gives an isomorphism of the appended sequences.
 -/
 theorem append_isomorphic_of_iso {X : Scheme.{u}} (s : BlowupSequenceData X)
     (t₁ t₂ : BlowupSequenceData (s.obj s.length)) (hlen : t₁.length = t₂.length)
@@ -164,10 +152,8 @@ theorem append_isomorphic_of_iso {X : Scheme.{u}} (s : BlowupSequenceData X)
       rw [← hcenter (i - s.length) hj3]
       simp only [← Scheme.IdealSheafData.comap_comp]
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Extract the equal lengths, stage isomorphisms, initial compatibility, commuting transitions, and center identities from the isomorphism of the tail sequences. Their underlying blowup data have the same lengths and maps as the displayed sequences. Apply the append isomorphism construction to these data.
 -/
 theorem append_isomorphic_of_isomorphic {X : Scheme.{u}} (s : BlowupSequenceData X)
     (t₁ t₂ : BlowupSequenceData (s.obj s.length)) (h : t₁.toSequenceOfBlowups.Isomorphic t₂.toSequenceOfBlowups) :
@@ -189,8 +175,8 @@ end BlowupSequenceData
 
 namespace MarkedBlowupSequenceData
 
-/- English proof (translation)
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Forget the marked data in the given isomorphism of the tails. The underlying blowup data of a marked append are the append of the underlying blowup data. Apply invariance of append under isomorphism of its second sequence and read the result as the isomorphism of the two underlying marked appends.
 -/
 theorem append_isomorphic_of_isomorphic {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ}

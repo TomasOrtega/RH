@@ -20,15 +20,15 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The boundary-intersection theorem describes the transformed components for a blowup along the specified ideal sheaf. The strict-transform component theorem supplies the description of each irreducible component by the closure of a point off the exceptional locus. Together they give the two required component properties.
 -/
 theorem MonomialStrictTransformComponents.transformedComponentHypotheses : MonomialStrictTransformComponents.TransformedComponentHypotheses.{u} where
   transformed_components := intersectionComponents_transformedBoundary_of_isBlowupAlongIdealSheaf
   strictTransform_components := exists_eq_closure_of_isIrreducibleComponentOf_strictTransform
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Begin with the two component properties for transformed boundaries and strict transforms. These supply the residual hypotheses for the monomial strict-transform construction, which in turn give the strict-transform and monomial case hypotheses. Add the controlled-transform order estimate to obtain the order-reduction hypotheses. The construction of principalization geometry from those hypotheses then gives the claimed result.
 -/
 theorem principalizationGeometryHypotheses : PrincipalizationGeometryHypotheses.{u} :=
   geometricHypotheses_of_orderReductionHypotheses

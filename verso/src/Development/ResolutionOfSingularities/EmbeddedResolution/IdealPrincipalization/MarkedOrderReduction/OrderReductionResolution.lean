@@ -46,19 +46,15 @@ structure MonomialPrincipalizationHypotheses (hinv : ComapIsoInvariance.{u}) : P
   trivial_of_coSupport_empty : ∀ T : MarkedIdealWithBoundary.{u}, MonomialCenter.IsLocallyMonomialTriple T →
     orderAtLeastLocus T.ideal T.mult = ∅ → (monomialPrincipalization hinv T).length = 0
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Transport by the scheme equality pulls the order locus back along the induced map. The inverse image of the given empty order locus is empty.
 -/
 theorem orderAtLeastLocus_comap_eqToHom_eq_empty {A B : Scheme.{u}} (h : A = B) (J : B.IdealSheafData)
     (c : ℕ) (hJ : orderAtLeastLocus J c = ∅) : orderAtLeastLocus (J.comap (eqToHom h)) c = ∅ := by
   rw [orderAtLeastLocus_comap_eqToHom, hJ, Set.preimage_empty]
 
-/- English proof (translation)
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
-
-Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
-
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The order locus of the pulled back ideal is the inverse image of the original order locus under the isomorphism. If the original locus contained a point, its inverse image under the isomorphism would give a point in the empty pulled back locus. Hence the original locus is empty.
 -/
 private theorem orderAtLeastLocus_eq_empty_of_comap_iso_hom_eq_empty (hinv : ComapIsoInvariance.{u}) {A B : Scheme.{u}}
     (e : A ≅ B) (J : B.IdealSheafData) (c : ℕ)
@@ -78,8 +74,8 @@ private theorem orderAtLeastLocus_eq_empty_of_comap_iso_hom_eq_empty (hinv : Com
   rw [h] at hmem
   simp at hmem
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The construction tests whether the initial marked order locus is empty. Under the hypothesis it returns the empty marked sequence, whose length is zero.
 -/
 theorem orderReductionSeq_length_eq_zero_of_orderAtLeastLocus_empty (hinv : ComapIsoInvariance.{u})
     (T : MarkedIdealWithBoundary.{u}) (f : PrincipalizationAssignment.{u}) (h : orderAtLeastLocus T.ideal T.mult = ∅) :
@@ -99,8 +95,8 @@ abbrev orderReductionMonomialSequence (hinv : ComapIsoInvariance.{u}) (T : Marke
       ((companionIdealReduction hinv T (principalizationOfDimLe T f)).boundary (companionIdealReduction hinv T (principalizationOfDimLe T f)).length) :=
   MarkedBlowupSequenceData.ofMarkedSequence (monomialPrincipalization hinv (orderReductionMonomialTriple hinv T f))
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The order-reduction data first run the companion-ideal reduction, then run monomial principalization on the final marked object of that reduction. The second sequence is expressed using its underlying marked blowup data, so the construction is exactly the stated append.
 -/
 theorem orderReductionData_eq_append (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u})
     (f : PrincipalizationAssignment.{u}) :
@@ -108,8 +104,8 @@ theorem orderReductionData_eq_append (hinv : ComapIsoInvariance.{u}) (T : Marked
       (companionIdealReduction hinv T (principalizationOfDimLe T f)).append (orderReductionMonomialSequence hinv T f) hinv :=
   orderReductionData_eq hinv T (principalizationOfDimLe T f)
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The converted data at this stage retain the given center, so its support is nonempty. The stage ideal and structure map are unchanged and the boundary support is the original sequence's boundary locus. The given certificate thus gives the required certificate on the converted data.
 -/
 private theorem hasPrincipalizationCenter_ofMarkedSequence {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
@@ -122,8 +118,8 @@ private theorem hasPrincipalizationCenter_ofMarkedSequence {k : Type u} [Field k
   · rw [MarkedBlowupSequenceData.boundarySupport_dataAt]
     exact hc
 
-/- English proof (translation)
-Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+Conversion from a marked sequence to its data preserves length. Substitute that equality into the given index bound.
 -/
 private theorem lt_length_of_lt_ofMarkedSequence_length {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
@@ -131,10 +127,8 @@ private theorem lt_length_of_lt_ofMarkedSequence_length {k : Type u} [Field k] {
     (hi : i < (MarkedBlowupSequenceData.ofMarkedSequence s).length) : i < s.length := by
   rwa [MarkedBlowupSequenceData.ofMarkedSequence_length] at hi
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The companion reduction ends in a locally monomial marked object. Every actual stage of the companion reduction has the prescribed center property. The monomial sequence has nonempty centers and certificates by its specification, and these give the same center property at its actual stages after conversion to data. The property is invariant under scheme isomorphism, so the append theorem gives it at every actual stage of the order-reduction data.
 -/
 private theorem hasCenter_orderReductionData (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     (hmon : MonomialPrincipalizationHypotheses hinv) {n : ℕ} {A B : PrincipalizationAssignment.{u}}
@@ -160,8 +154,8 @@ private theorem hasCenter_orderReductionData (hG : PrincipalizationGeometryHypot
     (hmon.center_nonempty _ hlocMon j hj')
     (hmon.cert _ hlocMon j hj')
 
-/- English proof (translation)
-Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+If the initial marked order locus is empty, the sequence has length zero, contrary to the stage bound. Otherwise it is the marked sequence of the order-reduction data. The center property for those data gives nonemptiness of the center support at the indicated stage.
 -/
 theorem center_support_nonempty_orderReductionSeq (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     (hmon : MonomialPrincipalizationHypotheses hinv) {n : ℕ} {A B : PrincipalizationAssignment.{u}}
@@ -176,8 +170,8 @@ theorem center_support_nonempty_orderReductionSeq (hG : PrincipalizationGeometry
   · exact absurd (orderReductionSeq_length_eq_zero_of_orderAtLeastLocus_empty hinv T A
       (Set.not_nonempty_iff_eq_empty.mp hne)) (by omega)
 
-/- English proof (translation)
-Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The stage bound excludes the empty sequence, so the initial marked order locus is nonempty and the construction uses the order-reduction data. The center property for those data includes a principalization certificate. Passing to the marked sequence retains the stage ideal, structure map, center, and boundary locus, so it retains that certificate.
 -/
 theorem certificate_orderReductionSeq (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     (hmon : MonomialPrincipalizationHypotheses hinv) {n : ℕ} {A B : PrincipalizationAssignment.{u}}
@@ -195,8 +189,8 @@ theorem certificate_orderReductionSeq (hG : PrincipalizationGeometryHypotheses.{
   · exact absurd (orderReductionSeq_length_eq_zero_of_orderAtLeastLocus_empty hinv T A
       (Set.not_nonempty_iff_eq_empty.mp hne)) (by omega)
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Substitute the equality of the indices to identify both ideals and their order loci. The original emptiness applies to the resulting stage.
 -/
 private theorem orderAtLeastLocus_ideal_congr {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
@@ -205,8 +199,8 @@ private theorem orderAtLeastLocus_ideal_congr {k : Type u} [Field k] {X : Scheme
   subst h
   exact hh
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Conversion of a marked sequence to data preserves its length and stage ideals. The final order locus of the data is therefore the given final order locus of the sequence and is empty.
 -/
 private theorem orderAtLeastLocus_ofMarkedSequence_last_eq_empty {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
@@ -216,10 +210,8 @@ private theorem orderAtLeastLocus_ofMarkedSequence_last_eq_empty {k : Type u} [F
   rw [MarkedBlowupSequenceData.ofMarkedSequence_length, MarkedBlowupSequenceData.ofMarkedSequence_ideal]
   exact h
 
-/- English proof (translation)
-Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+If the second sequence has positive length, the final ideal of the append is the final ideal of the second sequence transported by the scheme identification. Its empty order locus remains empty after transport. If the second sequence has length zero, the append ends at the last stage of the first sequence. The second sequence's final ideal is its stage-zero ideal, which is pulled back from the first sequence's final ideal by the second initial isomorphism. Emptiness descends through this isomorphism and then persists under the scheme identification at the join. These cases give the claimed final emptiness.
 -/
 private theorem orderAtLeastLocus_append_last_eq_empty {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
@@ -243,10 +235,8 @@ private theorem orderAtLeastLocus_append_last_eq_empty {k : Type u} [Field k] {X
     rw [MarkedBlowupSequenceData.append_ideal_length_add_length s t hinv hpos]
     exact orderAtLeastLocus_comap_eqToHom_eq_empty _ _ _ ht
 
-/- English proof (translation)
-Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Resolution means that the last ideal has empty marked order locus. If the initial locus is empty, there are no steps and the last ideal is the initial ideal transported by an isomorphism, so the locus remains empty. Otherwise the companion reduction ends in a locally monomial object. The monomial specification resolves that object, giving empty order locus at the last stage of its sequence. The append comparison transfers that emptiness to the last stage of the complete order-reduction sequence, proving resolution.
 -/
 theorem isResolution_orderReductionSeq (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     (hmon : MonomialPrincipalizationHypotheses hinv) {n : ℕ} {A B : PrincipalizationAssignment.{u}}

@@ -16,8 +16,8 @@ section
 
 variable {X : Scheme.{u}}
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+A natural number in the set is bounded by the order at some point. That order is at most B, so the same inequality holds between the natural number and B. Thus B bounds the entire set.
 -/
 theorem bddAbove_setOf_le_orderAt (N : X.IdealSheafData) {B : ℕ}
     (hB : ∀ x : ↥X, orderAt N x ≤ (B : ℕ∞)) :
@@ -28,10 +28,8 @@ theorem bddAbove_setOf_le_orderAt (N : X.IdealSheafData) {B : ℕ}
   have hnB : (n : ℕ∞) ≤ (B : ℕ∞) := le_trans hx (hB x)
   exact_mod_cast hnB
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The finite bound makes the order at x a natural number, say m. The point x witnesses that m belongs to the set defining the maximum order, and the set is bounded. Its supremum is therefore at least m.
 -/
 theorem orderAt_le_maxOrder (N : X.IdealSheafData) {B : ℕ}
     (hB : ∀ x : ↥X, orderAt N x ≤ (B : ℕ∞)) (x : ↥X) :
@@ -48,14 +46,8 @@ theorem orderAt_le_maxOrder (N : X.IdealSheafData) {B : ℕ}
   rw [← hm]
   exact_mod_cast hle
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
+/- English proof (authored)
+Since the scheme is nonempty, zero lies in the set of attained lower bounds for the orders. The given bound makes this a bounded set of natural numbers, so its supremum belongs to the set. Choose a point witnessing that membership. Its order is at least the supremum, while its finite order is itself in the set and is therefore at most the supremum.
 -/
 theorem exists_orderAt_eq_maxOrder [Nonempty ↥X] (N : X.IdealSheafData) {B : ℕ}
     (hB : ∀ x : ↥X, orderAt N x ≤ (B : ℕ∞)) :
@@ -80,8 +72,8 @@ theorem exists_orderAt_eq_maxOrder [Nonempty ↥X] (N : X.IdealSheafData) {B : �
   calc orderAt N x = (n : ℕ∞) := hn.symm
     _ ≤ ((sSup {n : ℕ | ∃ x : ↥X, (n : ℕ∞) ≤ orderAt N x} : ℕ) : ℕ∞) := by exact_mod_cast hle
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+Choose a point attaining the maximum order, which exists by boundedness and nonemptiness. Its order is at least the threshold defining the locus, so it belongs to that locus.
 -/
 theorem orderAtLeastLocus_maxOrder_nonempty [Nonempty ↥X] (N : X.IdealSheafData) {B : ℕ}
     (hB : ∀ x : ↥X, orderAt N x ≤ (B : ℕ∞)) :
@@ -89,8 +81,8 @@ theorem orderAtLeastLocus_maxOrder_nonempty [Nonempty ↥X] (N : X.IdealSheafDat
   obtain ⟨x, hx⟩ := exists_orderAt_eq_maxOrder N hB
   exact ⟨x, (mem_orderAtLeastLocus_iff N (maxOrder N) x).mpr hx.ge⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The order at the given point is at most the maximum order, and the maximum order is strictly below c. The asserted strict inequality follows.
 -/
 theorem orderAt_lt_of_maxOrder_lt (N : X.IdealSheafData) {B : ℕ}
     (hB : ∀ x : ↥X, orderAt N x ≤ (B : ℕ∞)) {c : ℕ} (hc : maxOrder N < c) (x : ↥X) :
@@ -99,14 +91,8 @@ theorem orderAt_lt_of_maxOrder_lt (N : X.IdealSheafData) {B : ℕ}
   have h2 : ((maxOrder N : ℕ) : ℕ∞) < (c : ℕ∞) := by exact_mod_cast hc
   exact lt_of_le_of_lt h1 h2
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Any natural number in the set defining the maximum is at most the order of some point. If that number were at least c, the point would belong to the empty order locus at c. Therefore every number in the set is at most c−1. The supremum is at most c−1 as well, which is strictly below c by positivity.
 -/
 theorem maxOrder_lt_of_orderAtLeastLocus_eq_empty (N : X.IdealSheafData) {B : ℕ}
     (_hB : ∀ x : ↥X, orderAt N x ≤ (B : ℕ∞)) {c : ℕ} (hc : 1 ≤ c)
@@ -136,8 +122,8 @@ section
 
 variable {X : Scheme.{u}}
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+For each number in the set there is a point of S where the order is at least that number. The global bound B also holds at this point. Consequently B is an upper bound for these natural numbers.
 -/
 theorem bddAbove_setOf_le_orderAt_of_mem (N : X.IdealSheafData) {B : ℕ}
     (hB : ∀ x : ↥X, orderAt N x ≤ (B : ℕ∞)) (S : Set ↥X) :
@@ -148,10 +134,8 @@ theorem bddAbove_setOf_le_orderAt_of_mem (N : X.IdealSheafData) {B : ℕ}
   have hnB : (n : ℕ∞) ≤ (B : ℕ∞) := le_trans hx (hB x)
   exact_mod_cast hnB
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+By the finite bound, the order at x is a natural number. Since x lies in S, this number is a member of the bounded set used to define the maximum order on S. It is at most the supremum of that set.
 -/
 theorem orderAt_le_maxOrderOn (N : X.IdealSheafData) {B : ℕ}
     (hB : ∀ x : ↥X, orderAt N x ≤ (B : ℕ∞)) (S : Set ↥X) {x : ↥X} (hx : x ∈ S) :
@@ -167,10 +151,8 @@ theorem orderAt_le_maxOrderOn (N : X.IdealSheafData) {B : ℕ}
   rw [← hm]
   exact_mod_cast hle
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
+/- English proof (authored)
+Every number in the defining set is at most the order of a point of S and hence strictly less than c. Because c is positive and the numbers are natural, c−1 bounds the set. Its supremum is therefore less than c.
 -/
 theorem maxOrderOn_lt_of_forall_lt (N : X.IdealSheafData) {B : ℕ}
     (_hB : ∀ x : ↥X, orderAt N x ≤ (B : ℕ∞)) (S : Set ↥X) {c : ℕ} (hc : 1 ≤ c)
@@ -186,14 +168,8 @@ theorem maxOrderOn_lt_of_forall_lt (N : X.IdealSheafData) {B : ℕ}
     omega
   omega
 
-/- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+If the maximum on S is zero, the inequality with the maximum gives that every order on S is at most zero, hence is zero. Conversely, if every order on S is zero, then every natural number witnessed by a point of S is at most zero. The supremum is bounded by zero and, being a natural number, equals zero.
 -/
 theorem maxOrderOn_eq_zero_iff (N : X.IdealSheafData) {B : ℕ}
     (hB : ∀ x : ↥X, orderAt N x ≤ (B : ℕ∞)) (S : Set ↥X) :
@@ -224,16 +200,16 @@ section
 
 variable {X : Scheme.{u}}
 
-/- English proof (translation)
-By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The order of the sum of two ideals is the minimum of their orders. A point has that minimum at least c exactly when both individual orders are at least c. This is membership in the intersection.
 -/
 theorem orderAtLeastLocus_sup (A J : X.IdealSheafData) (c : ℕ) :
     orderAtLeastLocus (A ⊔ J) c = orderAtLeastLocus A c ∩ orderAtLeastLocus J c := by
   ext x
   simp only [Set.mem_inter_iff, mem_orderAtLeastLocus_iff, orderAt_sup, le_min_iff]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The order of the sum is the minimum of the two summand orders. The order of each power is its exponent times the order of its base ideal. Substituting both power formulas gives the stated minimum.
 -/
 theorem orderAt_pow_sup_pow (k : Type u) [Field k] [CharZero k]
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -242,8 +218,8 @@ theorem orderAt_pow_sup_pow (k : Type u) [Field k] [CharZero k]
       = min ((m : ℕ∞) * orderAt N x) ((s : ℕ∞) * orderAt I x) := by
   rw [orderAt_sup, orderAt_pow k p, orderAt_pow k p]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The order locus of the sum is the intersection of the order loci of the two powers. The positive exponent m cancels from both sides of the first threshold inequality, leaving order at least s for N. For the other summand, the positive exponent s cancels and leaves order at least m for I.
 -/
 theorem orderAtLeastLocus_pow_sup_pow (k : Type u) [Field k] [CharZero k]
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -252,10 +228,8 @@ theorem orderAtLeastLocus_pow_sup_pow (k : Type u) [Field k] [CharZero k]
   rw [orderAtLeastLocus_sup, orderAtLeastLocus_pow_mul k p N hm s, mul_comm m s,
     orderAtLeastLocus_pow_mul k p I hs m]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
+/- English proof (authored)
+Use the expression as the minimum of the two weighted orders. On the order locus of I at m, the bound on N makes the first weighted order at most ms. Off that locus, the order of I is below m, so the second weighted order is at most sm. In either case the minimum is at most ms.
 -/
 theorem orderAt_pow_sup_pow_le (k : Type u) [Field k] [CharZero k]
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -274,12 +248,8 @@ theorem orderAt_pow_sup_pow_le (k : Type u) [Field k] [CharZero k]
     calc (s : ℕ∞) * orderAt I x ≤ (s : ℕ∞) * (m : ℕ∞) := by gcongr
       _ = ((m * s : ℕ) : ℕ∞) := by rw [Nat.cast_mul]; exact mul_comm _ _
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
-
-Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The locus of the sum of powers is the intersection of the order locus of I at m and that of N at s. If this intersection is empty, each point in the first locus has order for N less than s. Conversely, that strict bound at every point of the first locus leaves no point in both loci.
 -/
 theorem orderAtLeastLocus_pow_sup_pow_eq_empty_iff (k : Type u) [Field k] [CharZero k]
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -308,8 +278,8 @@ section
 
 variable {X Y : Scheme.{u}}
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Smooth pullback makes the order locus of the pulled back ideal the inverse image of the original order locus. The image of this inverse image lies in the original locus.
 -/
 theorem image_orderAtLeastLocus_comap_subset (k : Type u) [Field k] [CharZero k]
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]

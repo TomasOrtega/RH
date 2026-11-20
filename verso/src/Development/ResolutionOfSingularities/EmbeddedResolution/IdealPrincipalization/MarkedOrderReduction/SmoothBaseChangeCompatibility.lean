@@ -25,24 +25,24 @@ namespace MarkedPullbackSquare
 
 variable {T : MarkedIdealWithBoundary.{u}} {Y : Scheme.{u}} {g : Y ⟶ T.scheme}
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The left map in the marked pullback square is the base change of the smooth map on the right. Smoothness is stable under base change.
 -/
 theorem smooth_verticalMap (S : MarkedPullbackSquare T g) [AlgebraicGeometry.Smooth g] :
     AlgebraicGeometry.Smooth S.left :=
   MorphismProperty.IsStableUnderBaseChange.of_isPullback
     (P := @AlgebraicGeometry.Smooth) S.isPullback.flip ‹AlgebraicGeometry.Smooth g›
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The lower structure map factors through the bottom map, and the given structure map on Y factors through g. The two composites then agree by commutativity of the pullback square.
 -/
 theorem verticalMap_comp_lowerStructMap (S : MarkedPullbackSquare T g) (q : Y ⟶ Spec (CommRingCat.of T.base))
     (hq : g ≫ T.structMap = q) :
     S.left ≫ S.structMap = S.top ≫ q := by
   rw [← S.bottom_structMap, ← hq, ← Category.assoc, S.isPullback.w, Category.assoc]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The pulled back lower triple has the same scheme, structure map, ideal, and marking as the upper triple. Its boundary is the entrywise pullback of the lower boundary. By hypothesis this boundary and the chosen admissible boundary agree after dropping unit entries. The monomial geometry's boundary-replacement property therefore gives admissibility for the pulled back triple.
 -/
 theorem pullbackOverField_isAdmissible_of_sameNontrivialBoundary (hGeom : MonomialGeometryHypotheses.{u}) (S : MarkedPullbackSquare T g)
     (k' : Type u) [Field k'] (q : Y ⟶ Spec (CommRingCat.of k'))
@@ -53,8 +53,8 @@ theorem pullbackOverField_isAdmissible_of_sameNontrivialBoundary (hGeom : Monomi
   hGeom.withBoundary_valid (S.upperTriple k' q E) hV
     ((S.lowerTriple.pullbackOverField S.topScheme k' (S.top ≫ q) S.left).boundary) hE.symm
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Apply the vertical pullback order comparison to the ideal of the square and the bound by the marking at every point of the lower scheme. The resulting bound holds for the pulled back ideal at the given point.
 -/
 theorem orderAt_comap_verticalMap_le_of_forall_orderAt_le (S : MarkedPullbackSquare T g) (hT : T.IsAdmissible)
     (hg : OrderAtPullbackInvariant T g)
@@ -64,10 +64,8 @@ theorem orderAt_comap_verticalMap_le_of_forall_orderAt_le (S : MarkedPullbackSqu
 
 end MarkedPullbackSquare
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Smoothness of g gives order invariance for its pullbacks. In each marked square the vertical map is smooth and respects the indicated structure maps. The lower dimension bound follows from the square's dimension comparison, and vertical order invariance preserves the order bound on the upper ideal. Thus the smooth compatibility of the order-reduction assignment gives the first sequence comparison. For monomial triples, apply smooth compatibility of monomial principalization to the same vertical map. For the nonmonomial part, the equivalence of boundaries gives admissibility for the actual pulled back boundary by boundary replacement. Apply the geometric formula for pullback of the nonmonomial part. These comparisons and the smooth order invariance give the required base-change data.
 -/
 theorem baseChangeCompatible_of_smooth (hG : PrincipalizationGeometryHypotheses.{u}) (τ : ComapIsoInvariance.{u}) (n : ℕ)
     (F G : PrincipalizationAssignment.{u}) (hF : IsOrderReduction (fun d => d ≤ n) F G)

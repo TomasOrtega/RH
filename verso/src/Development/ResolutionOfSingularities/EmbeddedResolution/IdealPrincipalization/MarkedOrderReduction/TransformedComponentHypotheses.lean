@@ -66,8 +66,8 @@ structure TransformedComponentHypotheses : Prop where
                             ¬ C ⊆ (Z.support : Set ↥T.scheme) ∧
                               C = closure ({π ξ'} : Set ↥T.scheme)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The two component descriptions are exactly the given hypotheses. The geometric results on component unions give smoothness and strict normal crossings of the center. The total-transform theorem supplies the local exceptional factor for each boundary divisor, and the incidence theorem says that a stratum component lies in a boundary divisor exactly when that divisor is indexed in the stratum. These results supply all remaining fields.
 -/
 theorem strictTransformHypotheses_of_transformedComponents (h : TransformedComponentHypotheses.{u}) :
     StrictTransformCase.StrictTransformHypotheses.{u} where

@@ -24,8 +24,8 @@ def OrderAtPullbackInvariant (T : MarkedIdealWithBoundary.{u}) {Y : Scheme.{u}} 
     ∀ (A : B.IdealSheafData) (y : ↥Q),
       orderAt (A.comap q) y = orderAt A (q.base y)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+In the test pullback square, the projection to B is a base change of the given smooth morphism, so it is smooth. Admissibility of the marked object on B gives a smooth structure map over a characteristic-zero field. The smooth invariance theorem for order gives equality at each point of the pullback and its image in B.
 -/
 theorem orderAtPullbackInvariant_of_smooth (T : MarkedIdealWithBoundary.{u}) (_hT : T.IsAdmissible)
     {Y : Scheme.{u}} (g : Y ⟶ T.scheme) [AlgebraicGeometry.Smooth g] :
@@ -38,12 +38,8 @@ theorem orderAtPullbackInvariant_of_smooth (T : MarkedIdealWithBoundary.{u}) (_h
       (P := @AlgebraicGeometry.Smooth) hpb.flip inferInstance
   exact orderAt_comap T.base pB q A y
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Paste the test pullback square with the ground-field extension square. The resulting pullback describes Q as a base change of B to the larger field, because the map from B to the starting scheme respects the structure maps. The canonical pullback isomorphism commutes with the projections to B. Factor the projection through this isomorphism and pull back the ideal in two steps. Order is unchanged by the isomorphism and is preserved under field extension by the given geometric hypothesis. The resulting value is the order at the image in B.
 -/
 theorem orderAtPullbackInvariant_baseChange_field (hG : PrincipalizationGeometryHypotheses.{u}) (T : MarkedIdealWithBoundary.{u})
     (_hT : T.IsAdmissible) (L : Type u) [Field L] [CharZero L] (f : T.base →+* L) :

@@ -23,8 +23,8 @@ variable {k : Type u} [Field k]
 def boundarySupport (D : MarkedSchemeWithCenter.{u} k) : Set ↥D.ambient :=
   {x : ↥D.ambient | ∃ J ∈ D.boundary, x ∈ (↑J.support : Set ↥D.ambient)}
 
-/- English proof (translation)
-Unfold both sides to obtain the same proposition, which implies itself.
+/- English proof (authored)
+The boundary support is defined as the set of points lying in the support of at least one boundary entry. The stated existence condition is that definition.
 -/
 theorem mem_boundarySupport_iff (D : MarkedSchemeWithCenter.{u} k) (x : ↥D.ambient) :
     x ∈ D.boundarySupport ↔ ∃ J ∈ D.boundary, x ∈ (↑J.support : Set ↥D.ambient) :=
@@ -32,8 +32,8 @@ theorem mem_boundarySupport_iff (D : MarkedSchemeWithCenter.{u} k) (x : ↥D.amb
 
 end MarkedSchemeWithCenter
 
-/- English proof (translation)
-Simplify using the standard rewrite rules. Unfold both sides to obtain the same proposition, which implies itself.
+/- English proof (authored)
+The support of a pulled back ideal is the inverse image of the original support. Thus membership is equivalent to membership of the image point in the original support.
 -/
 theorem mem_comap_support_iff_base_mem_support {X Y : Scheme.{u}} (f : X ⟶ Y)
     (J : Y.IdealSheafData) (x : ↥X) :
@@ -45,10 +45,8 @@ namespace MarkedSchemeWithCenter
 
 variable {k : Type u} [Field k]
 
-/- English proof (translation)
-By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
-
-Assume the hypotheses and unpack their components. Supply the required witnesses or components.
+/- English proof (authored)
+The boundary of the transported marked object consists of the pullbacks of the original boundary entries. A point is in the support of one of these pullbacks exactly when its image lies in the support of the corresponding original entry. Taking the union proves the equality.
 -/
 theorem boundarySupport_transport (D : MarkedSchemeWithCenter.{u} k) {A : Scheme.{u}} (e : A ≅ D.ambient) :
     (D.transport e).boundarySupport = e.hom.base ⁻¹' D.boundarySupport := by
@@ -68,8 +66,8 @@ namespace MarkedBlowupSequenceData
 variable {k : Type u} [Field k] {X : Scheme.{u}} {p : X ⟶ Spec (CommRingCat.of k)}
   {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
 
-/- English proof (translation)
-By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+The marked data at stage i use the same boundary list as the stage-i marked sequence. Both sets consist of points lying in the support of some entry of that list.
 -/
 theorem boundarySupport_dataAt (s : MarkedBlowupSequenceData p I m E) (i : ℕ) :
     (s.dataAt i).boundarySupport = s.toMarkedSequenceOfBlowups.boundaryLocus i := by
@@ -83,12 +81,8 @@ structure HasPrincipalizationCenter {k : Type u} [Field k] (μ : ℕ) (D : Marke
   center_nonempty : (↑D.center.support : Set ↥D.ambient).Nonempty
   cert : PrincipalizationCertificate D.ambient D.structMap D.ideal μ D.boundarySupport D.center
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Choose a point of the original center and take its inverse image under the isomorphism. It lies in the transported center by the support formula for pullback, so the new center is nonempty. Transport the certificate by the same isomorphism. The transported boundary support is the inverse image of the old one, so the certificate has the required memory set and center.
 -/
 theorem isInvariantUnderIso_hasPrincipalizationCenter {k : Type u} [Field k] (hT : OrderCertificateIsoInvariantOfMaxContact.{u}) (μ : ℕ) :
     IsInvariantUnderIso (fun D : MarkedSchemeWithCenter.{u} k => HasPrincipalizationCenter μ D) := by
@@ -110,12 +104,8 @@ namespace MarkedBlowupSequenceData
 variable {k : Type u} [Field k] {X : Scheme.{u}} {p : X ⟶ Spec (CommRingCat.of k)}
   {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
 
-/- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The underlying data and the resulting marked sequence have the same length, so the assumed property applies at each actual stage. The centers are the same, giving nonempty supports. The stage data and sequence also agree on the ideal, structure map, and boundary locus, so the certificate in the stage property gives the desired sequence certificate.
 -/
 theorem nonempty_center_and_certificate_of_hasPrincipalizationCenter (s : MarkedBlowupSequenceData p I m E) (μ : ℕ)
     (hs : ∀ i < s.toBlowupSequenceData.length, HasPrincipalizationCenter μ (s.dataAt i)) :

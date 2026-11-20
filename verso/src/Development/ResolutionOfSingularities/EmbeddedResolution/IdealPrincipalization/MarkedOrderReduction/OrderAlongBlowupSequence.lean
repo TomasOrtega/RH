@@ -20,19 +20,15 @@ def OrderAtComapOffExceptionalLocus : Prop :=
       ∀ x' : ↥X', x' ∉ (Blowup.exceptionalIdeal π Z).support →
         ∀ A : T.scheme.IdealSheafData, orderAt (A.comap π) x' = orderAt A (π x')
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The supplied monomial geometry includes invariance of order for a pulled back ideal off the exceptional locus. Taking that property gives the desired statement.
 -/
 theorem orderAtComapOffExceptionalLocus_of_monomialGeometryHypotheses (h : MonomialGeometryHypotheses.{u}) :
     OrderAtComapOffExceptionalLocus.{u} :=
   h.orderAt_comap_off_exceptional
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Take a point of the transformed order locus. If it lies on the exceptional divisor, it maps into the center, where the original ideal has order at least μ and hence at least c. Elsewhere the order of the total pullback equals the original order at the image. The total pullback is the exceptional power times the transformed ideal, so its order is at least the order of the transformed ideal by the order inequality for products. This is at least c, proving the inclusion in both cases.
 -/
 theorem orderAtLeastLocus_subset_preimage_of_isBlowupAlongIdealSheaf (hgeom : OrderAtComapOffExceptionalLocus.{u})
     (T : MarkedIdealWithBoundary.{u}) (hT : T.IsAdmissible) (Z : T.scheme.IdealSheafData)
@@ -59,16 +55,16 @@ theorem orderAtLeastLocus_subset_preimage_of_isBlowupAlongIdealSheaf (hgeom : Or
     have h3 : (c : ℕ∞) ≤ orderAt J' x' := (mem_orderAtLeastLocus_iff J' c x').1 hx'
     exact le_trans h3 (le_trans le_add_self h2)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The transition map from a stage to itself is the identity morphism. Its underlying map sends every point to itself.
 -/
 private theorem transitionMap_refl_apply {X : Scheme.{u}} (s : SequenceOfBlowups X) {i : ℕ} (h : i ≤ i)
     (x : ↥(s.schemeAt i)) : s.transitionMap h x = x :=
   congrFun (congrArg (fun f : s.schemeAt i ⟶ s.schemeAt i => (f : ↥(s.schemeAt i) → ↥(s.schemeAt i)))
     (s.transitionMap_self h)) x
 
-/- English proof (translation)
-Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
+/- English proof (authored)
+Evaluate the composition rule for the transition maps at x. Applying the map from the last stage to the middle stage and then the map to the first stage therefore gives the image under the direct transition.
 -/
 private theorem transitionMap_comp_apply {X : Scheme.{u}} (s : SequenceOfBlowups X) {i j l : ℕ} (hij : i ≤ j)
     (hjl : j ≤ l) (x : ↥(s.schemeAt l)) :
@@ -79,8 +75,8 @@ private theorem transitionMap_comp_apply {X : Scheme.{u}} (s : SequenceOfBlowups
 
 namespace MarkedSequenceOfBlowups
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The current transformed object is admissible, and the next morphism is the blowup at its chosen center. Markedness places the center in the current order locus at the marking. The next ideal satisfies the exceptional-power factorization of the current pullback. Apply the one-step inclusion at the threshold c, which is at most the marking.
 -/
 theorem orderAtLeastLocus_succ_subset_preimage_blowupMorphism (hgeom : OrderAtComapOffExceptionalLocus.{u})
     (T : MarkedIdealWithBoundary.{u}) (s : T.SequenceOfBlowups)
@@ -94,12 +90,8 @@ theorem orderAtLeastLocus_succ_subset_preimage_blowupMorphism (hgeom : OrderAtCo
     (s.toSequenceOfBlowups.isBlowupAlongIdealSheaf_blowupMorphism i hi) (s.ideal i) T.mult (s.center_order i hi)
     (s.ideal (i + 1)) (s.ideal_succ i hi) c hc
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the number of steps from i to j. When the two stages agree, the transition is the identity. At a successor, the one-step inclusion maps each point of the successor order locus into the order locus at the preceding stage. Induction then maps its image into the locus at stage i. The composition rule identifies these successive maps with the direct transition.
 -/
 theorem orderAtLeastLocus_subset_preimage_transitionMap (hgeom : OrderAtComapOffExceptionalLocus.{u})
     (T : MarkedIdealWithBoundary.{u}) (s : T.SequenceOfBlowups)

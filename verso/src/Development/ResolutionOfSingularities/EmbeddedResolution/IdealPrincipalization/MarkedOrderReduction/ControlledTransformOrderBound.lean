@@ -27,12 +27,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Every center point has order c for J. The power containment theorem for a center with strict normal crossings gives J contained in the c-th power of the center ideal. The given factorization of the pulled back J identifies J′ with its controlled transform, by uniqueness of division by the exceptional power. A point on the exceptional divisor maps into the center and its image therefore has order exactly c. The controlled-transform order estimate at a point whose image has order at most c bounds the order of J′ there by c.
 -/
 theorem orderAt_controlledTransform_le_of_orderAt_eq_on_center :
     ∀ (T : MarkedIdealWithBoundary.{u}), T.IsAdmissible →
@@ -85,8 +81,8 @@ structure StrictTransformAndMonomialCaseHypotheses : Prop where
                               C = closure ({π ξ'} : Set ↥T.scheme)
   monomial : MonomialCaseHypotheses.{u}
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Use the controlled-transform order bound for the first requirement. The strict-transform component property and the monomial case are already part of the supplied hypotheses and give the other two requirements directly.
 -/
 theorem OrderReductionHypotheses.of_strictTransformHypotheses (h : StrictTransformAndMonomialCaseHypotheses.{u}) :
     OrderReductionHypotheses.{u} where

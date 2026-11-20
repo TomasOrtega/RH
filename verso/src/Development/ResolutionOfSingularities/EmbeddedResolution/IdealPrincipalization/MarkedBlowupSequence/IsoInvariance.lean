@@ -16,10 +16,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Replace the ideal by the kernel of the closed immersion. Its canonical subscheme inclusion and the given closed immersion then have the same kernel. The lifting property factors each inclusion through the other. Their two composites become the original inclusions after composition, so monomorphism of both inclusions makes the factors inverse. This gives the isomorphism and the required compatibility.
 -/
 private theorem exists_isIso_subschemeι_eq_comp_of_eq_ker {A X : Scheme.{u}} (g : A ⟶ X)
     [IsClosedImmersion g] (I : X.IdealSheafData) (hI : I = g.ker) :
@@ -40,24 +38,22 @@ private theorem exists_isIso_subschemeι_eq_comp_of_eq_ker {A X : Scheme.{u}} (g
   · rw [← cancel_mono (Scheme.Hom.ker g).subschemeι, Category.assoc, hψ, hφ, Category.id_comp]
   · rw [← cancel_mono g, Category.assoc, hφ, hψ, Category.id_comp]
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The forward isomorphism followed by its inverse is the identity, so their maps on points have the stated composite.
 -/
 private theorem iso_inv_base_hom_base_apply {X Y : Scheme.{u}} (e : X ≅ Y) (x : X) :
     e.inv.base (e.hom.base x) = x := by
   simp
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The inverse followed by the forward isomorphism is the identity of the target. Apply the induced maps to the specified target point.
 -/
 private theorem iso_hom_base_inv_base_apply {X Y : Scheme.{u}} (e : X ≅ Y) (y : Y) :
     e.hom.base (e.inv.base y) = y := by
   simp
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The inverse scheme map takes the original open into the inverse image open because the two maps are inverse. Restrict it to give the candidate inverse to the restricted forward map. After composing with the respective open inclusions the two composites are identities by ambient compatibility. Since the open inclusions are monomorphisms, the restricted maps are inverse.
 -/
 private theorem isIso_resLE_iso_hom {X Y : Scheme.{u}} (e : X ≅ Y) (U : Y.Opens) :
     IsIso (e.hom.resLE U ((Opens.map e.hom.base).obj U) le_rfl) := by
@@ -74,10 +70,8 @@ private theorem isIso_resLE_iso_hom {X Y : Scheme.{u}} (e : X ≅ Y) (U : Y.Open
       Scheme.Hom.resLE_comp_ι, ← Category.assoc, Scheme.Hom.resLE_comp_ι, Category.assoc,
       e.inv_hom_id, Category.comp_id, Category.id_comp]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
+/- English proof (authored)
+The order inequality for pullback compares the original order at the image point with the pulled-back order. Apply it also to the inverse isomorphism. The inverse sends the image point back and pulls the ideal back to the original ideal, giving the reverse order inequality. Thus the two orders agree, and the loci of order at least the given marking correspond by inverse image.
 -/
 theorem orderAtLeastLocus_comap_iso_hom_eq_preimage {X Y : Scheme.{u}} (e : X ≅ Y) (J : Y.IdealSheafData) (n : ℕ) :
     orderAtLeastLocus (J.comap e.hom) n = ⇑e.hom.base ⁻¹' orderAtLeastLocus J n := by
@@ -90,8 +84,8 @@ theorem orderAtLeastLocus_comap_iso_hom_eq_preimage {X Y : Scheme.{u}} (e : X �
   simp only [Set.mem_preimage, mem_orderAtLeastLocus_iff]
   exact ⟨fun hm => le_trans hm h2, fun hm => le_trans hm h1⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Pulling back the center and divisor ideals along the composite is the same as first pulling them back along the isomorphism and then along the given map. The constructions of the strict-transform open and the subscheme immersion use exactly these two pullbacks. The corresponding immersions therefore have the same kernel, which is their strict transform ideal.
 -/
 theorem strictTransform_comp_iso_hom {X X₁ Y : Scheme.{u}} (π : X₁ ⟶ X) (e : X ≅ Y)
     (Z D : Y.IdealSheafData) :
@@ -103,12 +97,8 @@ theorem strictTransform_comp_iso_hom {X X₁ Y : Scheme.{u}} (π : X₁ ⟶ X) (
   rw [Blowup.strictTransform_eq_ker, Blowup.strictTransform_eq_ker, Blowup.strictTransformImmersion_eq,
     Blowup.strictTransformImmersion_eq, Blowup.strictTransformOpens_eq, Blowup.strictTransformOpens_eq, hZ, hD]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Pull back the closed center inclusion along the ambient isomorphism. The second projection of the pullback is an isomorphism to the old center, while the first is a closed immersion with the pulled-back defining ideal. The closed subscheme of that ideal is isomorphic to this pullback over the new ambient. Thus its structure map is the old center's smooth structure map preceded by the composite isomorphism of centers, and is smooth.
 -/
 theorem smooth_comap_iso {k : Type u} [Field k] {X Y : Scheme.{u}}
     (q : Y ⟶ Spec (CommRingCat.of k)) (e : X ≅ Y) (Z : Y.IdealSheafData)
@@ -133,8 +123,8 @@ theorem smooth_comap_iso {k : Type u} [Field k] {X Y : Scheme.{u}}
   have : AlgebraicGeometry.Smooth (Z.subschemeι ≫ q) := h
   infer_instance
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Restriction of an ideal to an open is pullback along the open inclusion. The two composites from the new open to the original ambient agree because the open restriction square commutes. Pulling back the ideal along these composites gives the equality.
 -/
 theorem restrictIdeal_comap {X Y : Scheme.{u}} (f : X ⟶ Y) (J : Y.IdealSheafData) (U : Y.Opens) :
     restrictIdeal (J.comap f) ((Opens.map f.base).obj U) =
@@ -142,8 +132,8 @@ theorem restrictIdeal_comap {X Y : Scheme.{u}} (f : X ⟶ Y) (J : Y.IdealSheafDa
   rw [restrictIdeal_eq_comap_ι, restrictIdeal_eq_comap_ι, ← Scheme.IdealSheafData.comap_comp,
     ← Scheme.IdealSheafData.comap_comp, Scheme.Hom.resLE_comp_ι]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The original chart has structure map given by the open inclusion followed by the original structural map. Precompose with the restricted isomorphism, then use its compatibility with the two open inclusions. This gives the structure map of the inverse image open.
 -/
 private theorem ofIso_map_comp_affineSpaceFinToSpec {k : Type u} [Field k] {X Y : Scheme.{u}}
     (q : Y ⟶ Spec (CommRingCat.of k)) (e : X ≅ Y) {U : Y.Opens} {m : ℕ}
@@ -152,8 +142,8 @@ private theorem ofIso_map_comp_affineSpaceFinToSpec {k : Type u} [Field k] {X Y 
       Scheme.Opens.ι ((Opens.map e.hom.base).obj U) ≫ (e.hom ≫ q) := by
   rw [Category.assoc, c.comp_struct, ← Category.assoc, Scheme.Hom.resLE_comp_ι, Category.assoc]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The restricted ambient isomorphism is étale, as is the original chart map. Their composite is étale.
 -/
 private theorem etale_resLE_comp_map_of_iso {k : Type u} [Field k] {X Y : Scheme.{u}}
     (q : Y ⟶ Spec (CommRingCat.of k)) (e : X ≅ Y) {U : Y.Opens} {m : ℕ}
@@ -173,8 +163,8 @@ def EtaleChart.ofIso {k : Type u} [Field k] {X Y : Scheme.{u}}
   comp_struct := ofIso_map_comp_affineSpaceFinToSpec q e c
   isEtale := etale_resLE_comp_map_of_iso q e c
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+A chart coordinate ideal is the corresponding coordinate ideal of affine space pulled back along the chart map. The transported chart map first uses the restricted isomorphism and then the original chart. Functoriality of pullback gives the original chart ideal pulled back along that restricted isomorphism.
 -/
 theorem EtaleChart.ofIso_coordIdeal {k : Type u} [Field k] {X Y : Scheme.{u}}
     (q : Y ⟶ Spec (CommRingCat.of k)) (e : X ≅ Y) {U : Y.Opens} {m : ℕ}
@@ -186,14 +176,8 @@ theorem EtaleChart.ofIso_coordIdeal {k : Type u} [Field k] {X Y : Scheme.{u}}
       (e.hom.resLE U ((Opens.map e.hom.base).obj U) le_rfl ≫ c.map) = _
   rw [Scheme.IdealSheafData.comap_comp]
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+A point of the pulled-back center support maps to the original center support, so choose normal crossing coordinates for the center and boundary there. Transfer the chart to the inverse image open using the restricted ambient isomorphism. Keep the same coordinate indices for the center and list entries. Unit boundary ideals are preserved by pullback, and each original equation expressed by a coordinate ideal becomes the same equation for the transported chart. This applies both to boundary entries and to the center, giving the required normal crossing condition.
 -/
 theorem hasStrictNormalCrossingsWith_comap_iso {k : Type u} [Field k] {X Y : Scheme.{u}}
     (q : Y ⟶ Spec (CommRingCat.of k)) (e : X ≅ Y) (Z : Y.IdealSheafData)
@@ -220,8 +204,8 @@ theorem hasStrictNormalCrossingsWith_comap_iso {k : Type u} [Field k] {X Y : Sch
     rw [hmap, restrictIdeal_comap, h3 i hi' t hai, EtaleChart.ofIso_coordIdeal]
   · rw [restrictIdeal_comap, h4, EtaleChart.ofIso_coordIdeal]
 
-/- English proof (translation)
-Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The order locus comparison supplies transport of the cosupport. The chart argument supplies transport of the center's crossing condition with the boundary, and the pullback of the closed subscheme gives smoothness of the transported center. The kernel description of strict transform gives its compatibility with the isomorphism. These four statements are the required invariance properties.
 -/
 theorem comapIsoInvariance : ComapIsoInvariance.{u} where
   coSupport_comap := fun e J n => orderAtLeastLocus_comap_iso_hom_eq_preimage e J n

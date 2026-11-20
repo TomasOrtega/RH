@@ -18,31 +18,25 @@ def withBotSuccToNat : WithBot ℕ∞ → ℕ
   | ⊥ => 0
   | (n : ℕ∞) => n.toNat + 1
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The successor conversion assigns zero to the bottom element.
 -/
 theorem withBotSuccToNat_bot : withBotSuccToNat ⊥ = 0 := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+On an extended natural number viewed in the larger ordered set, the conversion takes its natural-number value and adds one.
 -/
 theorem withBotSuccToNat_coe (n : ℕ∞) : withBotSuccToNat (n : WithBot ℕ∞) = n.toNat + 1 := rfl
 
 def krullDimSucc (X : Scheme.{u}) : ℕ := withBotSuccToNat (topologicalKrullDim ↥X)
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The dimension index is defined by applying the successor conversion to the topological Krull dimension of the underlying space.
 -/
 theorem krullDimSucc_eq_withBotSuccToNat_topologicalKrullDim (X : Scheme.{u}) : krullDimSucc X = withBotSuccToNat (topologicalKrullDim ↥X) := rfl
 
-/- English proof (translation)
-Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
+/- English proof (authored)
+If the first dimension is bottom, its successor index is zero. Otherwise both dimensions are non-bottom because the first is at most the second. The upper dimension is below top, so both are embedded finite natural numbers. Their natural-number values have the same order, and adding one to both preserves the inequality.
 -/
 theorem krullDimSucc_le_krullDimSucc_of_topologicalKrullDim_le (X Y : Scheme.{u})
     (h : topologicalKrullDim ↥X ≤ topologicalKrullDim ↥Y)
@@ -85,8 +79,8 @@ structure MarkedIdealWithBoundary : Type (u + 1) where
 
 attribute [instance] MarkedIdealWithBoundary.instField
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
+/- English proof (authored)
+The two marked ideals already have the same field, ambient and marking. Substituting the equal structure maps, ideals and boundaries makes every component agree, so the data are equal.
 -/
 theorem MarkedIdealWithBoundary.mk_eq_mk {k : Type u} [instk : Field k] (X : Scheme.{u}) (m : ℕ)
     {p p' : X ⟶ Spec (CommRingCat.of k)} {I I' : X.IdealSheafData}
@@ -99,8 +93,8 @@ theorem MarkedIdealWithBoundary.mk_eq_mk {k : Type u} [instk : Field k] (X : Sch
 
 abbrev MarkedIdealWithBoundary.krullDimSucc (T : MarkedIdealWithBoundary.{u}) : ℕ := EmbeddedResolution.krullDimSucc T.scheme
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The dimension index of the marked ideal is defined to be the dimension index of its ambient scheme.
 -/
 theorem MarkedIdealWithBoundary.krullDimSucc_eq_krullDimSucc_scheme (T : MarkedIdealWithBoundary.{u}) : T.krullDimSucc = EmbeddedResolution.krullDimSucc T.scheme := rfl
 
@@ -144,8 +138,8 @@ def projectionToSpec (s : MarkedSequenceOfBlowups p I m E) (i : ℕ) :
     s.toSequenceOfBlowups.schemeAt i ⟶ Spec (CommRingCat.of k) :=
   s.toSequenceOfBlowups.projectionToBase i ≫ p
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The projection from the stage to the field is defined by composing its projection to the base with the original structural map.
 -/
 theorem projectionToSpec_eq (s : MarkedSequenceOfBlowups p I m E) (i : ℕ) :
     s.projectionToSpec i = s.toSequenceOfBlowups.projectionToBase i ≫ p := rfl
@@ -154,8 +148,8 @@ def exceptionalDivisor (s : MarkedSequenceOfBlowups p I m E) (i : ℕ) :
     (s.toSequenceOfBlowups.schemeAt (i + 1)).IdealSheafData :=
   Blowup.exceptionalIdeal (s.toSequenceOfBlowups.transitionMapSucc i) (s.toSequenceOfBlowups.center i)
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The exceptional ideal of the stage is the center ideal pulled back along that stage's blowup transition.
 -/
 theorem exceptionalDivisor_eq (s : MarkedSequenceOfBlowups p I m E) (i : ℕ) :
     s.exceptionalDivisor i = (s.toSequenceOfBlowups.center i).comap (s.toSequenceOfBlowups.transitionMapSucc i) := rfl
@@ -164,8 +158,8 @@ def lastIdeal (s : MarkedSequenceOfBlowups p I m E) :
     (s.toSequenceOfBlowups.schemeAt s.toSequenceOfBlowups.length).IdealSheafData :=
   s.ideal s.toSequenceOfBlowups.length
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The last ideal is the ideal at the index given by the sequence's length.
 -/
 theorem lastIdeal_eq (s : MarkedSequenceOfBlowups p I m E) :
     s.lastIdeal = s.ideal s.toSequenceOfBlowups.length := rfl
@@ -174,8 +168,8 @@ def lastBoundary (s : MarkedSequenceOfBlowups p I m E) :
     List (s.toSequenceOfBlowups.schemeAt s.toSequenceOfBlowups.length).IdealSheafData :=
   s.boundary s.toSequenceOfBlowups.length
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The last boundary is the boundary list at the final index, which is the length of the underlying sequence.
 -/
 theorem lastBoundary_eq (s : MarkedSequenceOfBlowups p I m E) :
     s.lastBoundary = s.boundary s.toSequenceOfBlowups.length := rfl
@@ -183,8 +177,8 @@ theorem lastBoundary_eq (s : MarkedSequenceOfBlowups p I m E) :
 def IsResolution (s : MarkedSequenceOfBlowups p I m E) : Prop :=
   orderAtLeastLocus s.lastIdeal m = ∅
 
-/- English proof (translation)
-Unfold both sides to obtain the same proposition, which implies itself.
+/- English proof (authored)
+The sequence is a resolution precisely when the final ideal's locus of order at least the marking is empty. This is its defining resolution condition.
 -/
 theorem isResolution_iff (s : MarkedSequenceOfBlowups p I m E) :
     s.IsResolution ↔ orderAtLeastLocus s.lastIdeal m = ∅ := Iff.rfl
@@ -198,8 +192,8 @@ def emptySequenceOfBlowups (X : Scheme.{u}) : SequenceOfBlowups X where
   center := fun _ => ⊥
   isBlowup := fun i hi => absurd hi (Nat.not_lt_zero i)
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The empty sequence is defined with length zero.
 -/
 theorem emptySequenceOfBlowups_length (X : Scheme.{u}) : (emptySequenceOfBlowups X).length = 0 := rfl
 
@@ -217,8 +211,8 @@ def emptyMarkedSequenceOfBlowups {k : Type u} [Field k] {X : Scheme.{u}}
   ideal_succ := fun i hi => absurd hi (Nat.not_lt_zero i)
   boundary_succ := fun i hi => absurd hi (Nat.not_lt_zero i)
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The empty marked sequence uses the empty ordinary sequence as its underlying sequence, so its length is zero.
 -/
 theorem emptyMarkedSequenceOfBlowups_length {k : Type u} [Field k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData) (m : ℕ)
@@ -230,8 +224,8 @@ abbrev MarkedIdealWithBoundary.SequenceOfBlowups (T : MarkedIdealWithBoundary.{u
 
 def PrincipalizationAssignment : Type (u + 1) := ∀ T : MarkedIdealWithBoundary.{u}, T.SequenceOfBlowups
 
-/- English proof (translation)
-Substitute using the available equality. Both sides reduce to the same expression.
+/- English proof (authored)
+Identify the two marked ideals using the given equality. The assignment is then applied to the same input on both sides, so the underlying blowup sequences are equal under that identification.
 -/
 theorem PrincipalizationAssignment.toSequenceOfBlowups_heq_of_eq (L : PrincipalizationAssignment.{u})
     {T T' : MarkedIdealWithBoundary.{u}} (h : T = T') :
@@ -261,22 +255,22 @@ def HasReducedCenters (s : MarkedSequenceOfBlowups p I m E) : Prop :=
         (J.support : Set ↥(s.toSequenceOfBlowups.schemeAt i)) →
       J ≤ s.toSequenceOfBlowups.center i
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The stage-zero ideal is pulled back along its chosen isomorphism to the base. This isomorphism is the projection at stage zero, giving the claimed formula.
 -/
 theorem markedSequenceOfBlowups_ideal_zero (s : MarkedSequenceOfBlowups p I m E) :
     s.ideal 0 = I.comap (s.toSequenceOfBlowups.projectionToBase 0) := by
   rw [s.ideal_zero, s.toSequenceOfBlowups.projectionToBase_zero]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The initial boundary is the pullback of the input list along the stage-zero isomorphism. Since the projection at zero is that same isomorphism, the displayed formula follows.
 -/
 theorem markedSequenceOfBlowups_boundary_zero (s : MarkedSequenceOfBlowups p I m E) :
     s.boundary 0 = E.map (fun D => D.comap (s.toSequenceOfBlowups.projectionToBase 0)) := by
   rw [s.boundary_zero, s.toSequenceOfBlowups.projectionToBase_zero]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+Apply the controlled-transform identity at the given valid stage. The marking is one, so the first power of the exceptional ideal is the ideal itself.
 -/
 theorem markedSequenceOfBlowups_exceptionalIdeal_mul_ideal_succ (s : MarkedSequenceOfBlowups p I 1 E) (i : ℕ)
     (h : i < s.toSequenceOfBlowups.length) :
@@ -285,10 +279,8 @@ theorem markedSequenceOfBlowups_exceptionalIdeal_mul_ideal_succ (s : MarkedSeque
   have hs := s.ideal_succ i h
   rwa [pow_one] at hs
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The center support is in the locus where the stage ideal has order at least one. This locus is the ideal's support. The reduced-center condition turns that containment of supports into containment of the stage ideal in the center ideal, which means it vanishes along the center.
 -/
 theorem markedSequenceOfBlowups_ideal_vanishesAlong_center (s : MarkedSequenceOfBlowups p I 1 E)
     (hmax : HasReducedCenters s) (i : ℕ) (h : i < s.toSequenceOfBlowups.length) :
@@ -314,16 +306,16 @@ def MarkedSequenceOfBlowups.toIdealBlowupSequence (s : MarkedSequenceOfBlowups p
   boundary_succ := s.boundary_succ
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The conversion to an ideal blowup sequence adds the properties of the ideal transforms but retains the same underlying sequence of schemes and blowup maps.
 -/
 theorem MarkedSequenceOfBlowups.toMarkedSequence_toSequenceOfBlowups (s : MarkedSequenceOfBlowups p I 1 E)
     (hmax : HasReducedCenters s) :
     (s.toIdealBlowupSequence hmax).toSequenceOfBlowups = s.toSequenceOfBlowups := rfl
 
 @[simp]
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The conversion retains the underlying sequence and the ideal at every stage. Evaluating the same ideals at the same final index gives equal last ideals.
 -/
 theorem MarkedSequenceOfBlowups.toMarkedSequence_lastIdeal (s : MarkedSequenceOfBlowups p I 1 E)
     (hmax : HasReducedCenters s) :

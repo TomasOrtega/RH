@@ -26,8 +26,8 @@ structure AmbientEmbedding {S : Scheme.{u}} (s : BlowupSequenceData S) (n : ℕ)
   emb_isClosedImmersion : AlgebraicGeometry.IsClosedImmersion emb
   isNoetherian_ambient_of_le_length : n ≤ s.length → AlgebraicGeometry.IsNoetherian ambient
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The stage-zero isomorphism is a closed immersion, and the original embedding is a closed immersion by hypothesis. The property is preserved by composition.
 -/
 private theorem isClosedImmersion_isoObjZero_hom_comp {S X : Scheme.{u}} (ι : S ⟶ X)
     [AlgebraicGeometry.IsClosedImmersion ι] (s : BlowupSequenceData S) :
@@ -35,8 +35,8 @@ private theorem isClosedImmersion_isoObjZero_hom_comp {S X : Scheme.{u}} (ι : S
   have : AlgebraicGeometry.IsClosedImmersion s.isoZero.hom := inferInstance
   infer_instance
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The canonical projection is a blowup along the given ideal. The assumed Noetherian preservation for blowups applies because its target is Noetherian.
 -/
 private theorem isNoetherian_blowup_of_isNoetherian (hno : BlowupPreservesNoetherian.{u})
     {A : Scheme.{u}} (hA : AlgebraicGeometry.IsNoetherian A) (Z : A.IdealSheafData) :
@@ -44,8 +44,8 @@ private theorem isNoetherian_blowup_of_isNoetherian (hno : BlowupPreservesNoethe
   have := hA
   exact hno A (Blowup.blowup Z) (Blowup.blowup.proj Z) Z (Blowup.blowup.isBlowupAlongIdealSheaf_proj Z)
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The image ideal sheaf is the image of the original ideal along the closed immersion. Pulling this image back along the closed immersion recovers the original ideal by the ideal image formula for closed immersions.
 -/
 private theorem comap_imageIdealSheaf_of_isClosedImmersion {S' A : Scheme.{u}} (σ : S' ⟶ A)
     [AlgebraicGeometry.IsClosedImmersion σ] (J : S'.IdealSheafData) :
@@ -54,23 +54,15 @@ private theorem comap_imageIdealSheaf_of_isClosedImmersion {S' A : Scheme.{u}} (
   rw [h]
   exact Blowup.comap_map_of_isClosedImmersion σ J
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The support of a pulled-back ideal is the inverse image of the original support. In particular, the indicated inverse image is contained in it.
 -/
 private theorem preimage_support_subset_support_comap {S' A : Scheme.{u}} (σ : S' ⟶ A) (Z : A.IdealSheafData) :
     σ.base ⁻¹' (Z.support : Set ↥A) ⊆ ((Z.comap σ).support : Set ↥S') := by
   simp [Scheme.IdealSheafData.support_comap]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Push the center ideal forward through the closed immersion. Its pullback is the original center ideal. If an irreducible component of the embedded scheme mapped entirely into the pushed-forward center support, the support pullback identity would put it inside the original center support, contrary to the hypothesis. The strict-transform blowup theorem therefore identifies the ambient strict transform of the embedded scheme as a blowup along the original center. The given source is also such a blowup, so their universal properties give mutually inverse maps over the embedded scheme. Compose this isomorphism with the inclusion of the ambient strict transform. This is a closed immersion compatible with both blowup projections. Its kernel is the strict-transform ideal because the first map is an isomorphism and the second is the inclusion defined by that ideal.
 -/
 private theorem exists_closedImmersion_blowup_of_isBlowupAlongIdealSheaf (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     {S' A : Scheme.{u}} [AlgebraicGeometry.IsLocallyNoetherian A] (σ : S' ⟶ A)
@@ -109,8 +101,8 @@ private theorem exists_closedImmersion_blowup_of_isBlowupAlongIdealSheaf (hres :
   · rw [Scheme.Hom.ker_comp_of_isIso]
     exact Scheme.IdealSheafData.ker_subschemeι _
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+At a valid stage the transition is a blowup of the specified center. The ambient is Noetherian and hence locally Noetherian. Apply the result on embedding a blowup into the ambient blowup of the image ideal, using the given closed immersion and center condition.
 -/
 private theorem exists_closedImmersion_blowup_imageIdealSheaf_of_lt_length (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (_hno : BlowupPreservesNoetherian.{u}) {S : Scheme.{u}} (s : BlowupSequenceData S)
@@ -137,8 +129,8 @@ private def embeddingIntoAmbientBlowup (hres : FunctorialResolution.Blowup.Stric
     s.obj (n + 1) ⟶ Blowup.blowup (imageIdealSheaf σ (s.center n)) :=
   (exists_closedImmersion_blowup_imageIdealSheaf_of_lt_length hres hno s n hn A σ hσ hA hc).choose
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The chosen next-stage embedding is the one supplied by the ambient blowup comparison, which is a closed immersion.
 -/
 private theorem isClosedImmersion_embeddingIntoBlowupImageIdealSheaf (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) {S : Scheme.{u}} (s : BlowupSequenceData S)
@@ -149,8 +141,8 @@ private theorem isClosedImmersion_embeddingIntoBlowupImageIdealSheaf (hres : Fun
     AlgebraicGeometry.IsClosedImmersion (embeddingIntoAmbientBlowup hres hno s n hn A σ hσ hA hc) :=
   (exists_closedImmersion_blowup_imageIdealSheaf_of_lt_length hres hno s n hn A σ hσ hA hc).choose_spec.1
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The chosen immersion identifies the source blowup with the strict transform in the ambient blowup over the preceding embedded scheme. Its projection to the old ambient is therefore the source transition followed by the old embedding.
 -/
 private theorem embeddingIntoBlowupImageIdealSheaf_comp_proj (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) {S : Scheme.{u}} (s : BlowupSequenceData S)
@@ -162,8 +154,8 @@ private theorem embeddingIntoBlowupImageIdealSheaf_comp_proj (hres : FunctorialR
       s.map n ≫ σ :=
   (exists_closedImmersion_blowup_imageIdealSheaf_of_lt_length hres hno s n hn A σ hσ hA hc).choose_spec.2.1
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The chosen new embedding has image the ambient strict transform of the preceding embedded scheme. Its defining kernel is the strict transform of the preceding embedding ideal.
 -/
 private theorem ker_embeddingIntoBlowupImageIdealSheaf (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) {S : Scheme.{u}} (s : BlowupSequenceData S)
@@ -207,8 +199,8 @@ private def ambientEmbeddingSucc (hres : FunctorialResolution.Blowup.StrictTrans
        isNoetherian_ambient_of_le_length := fun hle => absurd (Nat.lt_of_succ_le hle) h },
      s.map n ≫ st.emb⟩
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At an active step the construction uses the canonical projection from the blowup of the image of the center ideal. This projection is a blowup along that image ideal.
 -/
 private theorem isBlowupAlongIdealSheaf_succAmbientEmbeddingMorphism (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) {S : Scheme.{u}} (s : BlowupSequenceData S)
@@ -220,8 +212,8 @@ private theorem isBlowupAlongIdealSheaf_succAmbientEmbeddingMorphism (hres : Fun
   rw [dif_pos h]
   exact Blowup.blowup.isBlowupAlongIdealSheaf_proj _
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At an active step the compatibility follows from the chosen embedding into the ambient blowup. After the active range, the new embedding is the identity and the new ambient map is the source transition followed by the old embedding. The same equality then follows from the identity law.
 -/
 private theorem succAmbientEmbedding_comp_blowupMorphism (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) {S : Scheme.{u}} (s : BlowupSequenceData S)
@@ -238,8 +230,8 @@ private theorem succAmbientEmbedding_comp_blowupMorphism (hres : FunctorialResol
   · rw [dif_neg h]
     exact Category.id_comp _
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At a valid step the new embedding is the chosen strict-transform embedding, and the ambient map is the canonical blowup of the image center. The kernel calculation for that embedding gives the stated strict transform.
 -/
 private theorem ker_succAmbientEmbedding_eq_strictTransform (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) {S : Scheme.{u}} (s : BlowupSequenceData S)
@@ -273,8 +265,8 @@ private def ambientEmbeddingSuccMap {S X : Scheme.{u}} (ι : S ⟶ X)
     (ambientEmbedding ι s hres hno hcen (n + 1)).ambient ⟶ (ambientEmbedding ι s hres hno hcen n).ambient :=
   (ambientEmbeddingSucc hres hno s hcen n (ambientEmbedding ι s hres hno hcen n)).2
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The transition map of the recursive ambient sequence is the successor ambient map at the chosen stage. At every valid index this map is a blowup along the image of the current center.
 -/
 private theorem isBlowupAlongIdealSheaf_ambientBlowupMorphism {S X : Scheme.{u}} (ι : S ⟶ X)
     [AlgebraicGeometry.IsClosedImmersion ι] [AlgebraicGeometry.IsNoetherian X]
@@ -309,8 +301,8 @@ def embeddingIntoAmbientBlowupSequence {S X : Scheme.{u}} (ι : S ⟶ X)
   (ambientEmbedding ι s hres hno hcen n).emb
 
 @[simp]
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The ambient blowup sequence is assigned the same number of active steps as the original sequence.
 -/
 theorem ambientBlowupSequence_length {S X : Scheme.{u}} (ι : S ⟶ X)
     [AlgebraicGeometry.IsClosedImmersion ι] [AlgebraicGeometry.IsNoetherian X]
@@ -320,8 +312,8 @@ theorem ambientBlowupSequence_length {S X : Scheme.{u}} (ι : S ⟶ X)
         ¬ T ⊆ ((s.center i).support : Set ↥(s.obj i))) :
     (ambientBlowupSequence ι s hres hno hcen).length = s.length := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The recursive ambient sequence starts with the given ambient scheme.
 -/
 theorem ambientBlowupSequence_schemeAt_zero {S X : Scheme.{u}} (ι : S ⟶ X)
     [AlgebraicGeometry.IsClosedImmersion ι] [AlgebraicGeometry.IsNoetherian X]
@@ -331,8 +323,8 @@ theorem ambientBlowupSequence_schemeAt_zero {S X : Scheme.{u}} (ι : S ⟶ X)
         ¬ T ⊆ ((s.center i).support : Set ↥(s.obj i))) :
     (ambientBlowupSequence ι s hres hno hcen).obj 0 = X := rfl
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Since the initial ambient is the given ambient itself, the construction uses its identity isomorphism at stage zero.
 -/
 theorem ambientBlowupSequence_isoObjZero {S X : Scheme.{u}} (ι : S ⟶ X)
     [AlgebraicGeometry.IsClosedImmersion ι] [AlgebraicGeometry.IsNoetherian X]
@@ -343,8 +335,8 @@ theorem ambientBlowupSequence_isoObjZero {S X : Scheme.{u}} (ι : S ⟶ X)
     (ambientBlowupSequence ι s hres hno hcen).isoZero = Iso.refl X := rfl
 
 @[simp]
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The ambient center at a stage is defined by taking the image of the original center ideal through its stage embedding.
 -/
 theorem ambientBlowupSequence_center {S X : Scheme.{u}} (ι : S ⟶ X)
     [AlgebraicGeometry.IsClosedImmersion ι] [AlgebraicGeometry.IsNoetherian X]
@@ -355,8 +347,8 @@ theorem ambientBlowupSequence_center {S X : Scheme.{u}} (ι : S ⟶ X)
     (ambientBlowupSequence ι s hres hno hcen).center n =
       imageIdealSheaf (embeddingIntoAmbientBlowupSequence ι s hres hno hcen n) (s.center n) := rfl
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The initial ambient is Noetherian, and each actual subsequent ambient arises by blowing up the preceding Noetherian ambient along the image center. The preservation assumption gives Noetherianity throughout the stated range.
 -/
 theorem isNoetherian_ambientBlowupSequence_schemeAt {S X : Scheme.{u}} (ι : S ⟶ X)
     [AlgebraicGeometry.IsClosedImmersion ι] [AlgebraicGeometry.IsNoetherian X]
@@ -367,8 +359,8 @@ theorem isNoetherian_ambientBlowupSequence_schemeAt {S X : Scheme.{u}} (ι : S �
     AlgebraicGeometry.IsNoetherian ((ambientBlowupSequence ι s hres hno hcen).obj n) :=
   (ambientEmbedding ι s hres hno hcen n).isNoetherian_ambient_of_le_length hn
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Every stage of the recursive ambient construction supplies a closed immersion. At zero it is the original immersion composed with the initial isomorphism, at an actual successor it is the strict-transform immersion, and beyond the active stages the construction uses the identity.
 -/
 theorem isClosedImmersion_embeddingIntoAmbientBlowupSequence {S X : Scheme.{u}} (ι : S ⟶ X)
     [AlgebraicGeometry.IsClosedImmersion ι] [AlgebraicGeometry.IsNoetherian X]
@@ -379,8 +371,8 @@ theorem isClosedImmersion_embeddingIntoAmbientBlowupSequence {S X : Scheme.{u}} 
     AlgebraicGeometry.IsClosedImmersion (embeddingIntoAmbientBlowupSequence ι s hres hno hcen n) :=
   (ambientEmbedding ι s hres hno hcen n).emb_isClosedImmersion
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The initial embedding is defined as the original sequence's stage-zero isomorphism followed by the given ambient immersion.
 -/
 theorem embeddingIntoAmbientBlowupSequence_zero {S X : Scheme.{u}} (ι : S ⟶ X)
     [AlgebraicGeometry.IsClosedImmersion ι] [AlgebraicGeometry.IsNoetherian X]
@@ -390,8 +382,8 @@ theorem embeddingIntoAmbientBlowupSequence_zero {S X : Scheme.{u}} (ι : S ⟶ X
         ¬ T ⊆ ((s.center i).support : Set ↥(s.obj i))) :
     embeddingIntoAmbientBlowupSequence ι s hres hno hcen 0 = s.isoZero.hom ≫ ι := rfl
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The two maps at consecutive stages are the recursive embeddings, with the ambient transition given by the successor construction. Its compatibility with the original transition is the successor commutative square already established.
 -/
 theorem embeddingIntoAmbientBlowupSequence_succ_comp_map {S X : Scheme.{u}} (ι : S ⟶ X)
     [AlgebraicGeometry.IsClosedImmersion ι] [AlgebraicGeometry.IsNoetherian X]
@@ -403,8 +395,8 @@ theorem embeddingIntoAmbientBlowupSequence_succ_comp_map {S X : Scheme.{u}} (ι 
       s.map n ≫ embeddingIntoAmbientBlowupSequence ι s hres hno hcen n :=
   succAmbientEmbedding_comp_blowupMorphism hres hno s hcen n (ambientEmbedding ι s hres hno hcen n)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+At this actual step, the next stage is embedded as the strict transform of the previous stage in the ambient blowup. The successor kernel formula therefore identifies its ideal with the strict transform along the ambient map and center of that step.
 -/
 theorem ker_embeddingIntoAmbientBlowupSequence_succ {S X : Scheme.{u}} (ι : S ⟶ X)
     [AlgebraicGeometry.IsClosedImmersion ι] [AlgebraicGeometry.IsNoetherian X]
@@ -418,10 +410,8 @@ theorem ker_embeddingIntoAmbientBlowupSequence_succ {S X : Scheme.{u}} (ι : S �
         (embeddingIntoAmbientBlowupSequence ι s hres hno hcen n).ker :=
   ker_succAmbientEmbedding_eq_strictTransform hres hno s hcen n (ambientEmbedding ι s hres hno hcen n) hn
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The two sequences have equal length. Take the recursive closed immersion at every stage. At zero it agrees with the original immersion through the initial isomorphisms. The successor squares commute by the stage compatibility. Each ambient center is the image of the original center, and the defining ideal of each successor embedding is the corresponding strict transform. These are the required pushforward comparison data.
 -/
 theorem isPushforwardBlowupSeq_ambientBlowupSequence {S X : Scheme.{u}} (ι : S ⟶ X)
     [AlgebraicGeometry.IsClosedImmersion ι] [AlgebraicGeometry.IsNoetherian X]

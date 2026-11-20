@@ -23,14 +23,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+A pulled-back boundary entry is a pulled-back smooth divisor because the original list has strict normal crossing position. At each point start with an étale chart at its image and transport the chart through the isomorphism of inverse image opens. The boundary indices and their distinct assigned coordinates are unchanged. Pullback preserves unit ideals, and each coordinate ideal pulls back to the same coordinate ideal of the transported chart. These are the required local normal crossing presentations.
 -/
 theorem inStrictNormalCrossingPosition_comap_iso {k : Type u} [Field k] {X Y : Scheme.{u}}
     (q : Y ⟶ Spec (CommRingCat.of k)) (e : X ≅ Y) (L : List Y.IdealSheafData)
@@ -62,15 +56,15 @@ namespace MarkedSequenceOfBlowups
 variable {k : Type u} [Field k] {X : Scheme.{u}} {p : X ⟶ Spec (CommRingCat.of k)}
   {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The stage-zero projection to the original ambient is its chosen isomorphism. Composing with the original structural map gives the stage-zero structure map.
 -/
 theorem projectionToSpec_zero (s : MarkedSequenceOfBlowups p I m E) :
     s.projectionToSpec 0 = s.toSequenceOfBlowups.isoZero.hom ≫ p := by
   rw [MarkedSequenceOfBlowups.projectionToSpec_eq, MarkedSequenceOfBlowups.projectionToBase_zero]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The successor projection to the base is the transition map followed by the preceding projection. Compose with the base field map and associate the arrows to obtain the formula.
 -/
 theorem projectionToSpec_succ (s : MarkedSequenceOfBlowups p I m E) (i : ℕ) :
     s.projectionToSpec (i + 1) = s.toSequenceOfBlowups.transitionMapSucc i ≫ s.projectionToSpec i := by
@@ -80,10 +74,8 @@ theorem projectionToSpec_succ (s : MarkedSequenceOfBlowups p I m E) (i : ℕ) :
     exact s.toSequenceOfBlowups.transitionMap_comp_projectionToBase (Nat.le_succ i)
   rw [MarkedSequenceOfBlowups.projectionToSpec_eq, MarkedSequenceOfBlowups.projectionToSpec_eq, ← h, Category.assoc]
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Establish an intermediate fact. Treat this case separately. Establish an intermediate fact.
-
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The original scheme is Noetherian by admissibility, and the initial stage is isomorphic to it. Induct along the sequence. At each actual step the transition is a blowup of the preceding Noetherian scheme, hence its source is Noetherian.
 -/
 theorem isNoetherian_schemeAt (_hcart : EffectiveCartierSupportContainsNoComponent.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : T.IsAdmissible) (s : T.SequenceOfBlowups) (i : ℕ) (hi : i ≤ s.toSequenceOfBlowups.length) :
@@ -99,16 +91,8 @@ theorem isNoetherian_schemeAt (_hcart : EffectiveCartierSupportContainsNoCompone
 
 end MarkedSequenceOfBlowups
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the stage. Initially the scheme is identified with the original one, transferring smoothness and the strict normal crossing condition of the initial boundary. At a successor the preceding ambient is smooth and its boundary has strict normal crossings by induction. The center is in strict normal crossing position with that boundary and the transition is its blowup. The smooth blowup theorem gives a smooth successor structure map. Since the successor is Noetherian, the boundary blowup theorem gives strict normal crossing position for the strict transforms of the old boundary with the exceptional ideal appended. The stage formulas identify these with the desired structure morphism and boundary.
 -/
 private theorem smooth_and_inStrictNormalCrossingPosition_projectionToSpec (hcart : EffectiveCartierSupportContainsNoComponent.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : T.IsAdmissible) (s : T.SequenceOfBlowups) :
@@ -145,16 +129,16 @@ private theorem smooth_and_inStrictNormalCrossingPosition_projectionToSpec (hcar
 
 namespace MarkedSequenceOfBlowups
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The simultaneous induction on ambient smoothness and the boundary condition supplies smoothness at every stage in the allowed range. Take its smoothness conclusion at this stage.
 -/
 theorem smooth_projectionToSpec (hcart : EffectiveCartierSupportContainsNoComponent.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : T.IsAdmissible) (s : T.SequenceOfBlowups) (i : ℕ) (hi : i ≤ s.toSequenceOfBlowups.length) :
     AlgebraicGeometry.Smooth (s.projectionToSpec i) :=
   (smooth_and_inStrictNormalCrossingPosition_projectionToSpec hcart hT s i hi).1
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Take the boundary conclusion of the simultaneous induction on stage smoothness and strict normal crossings at the specified valid stage.
 -/
 theorem inStrictNormalCrossingPosition_projectionToSpec_boundary (hcart : EffectiveCartierSupportContainsNoComponent.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : T.IsAdmissible) (s : T.SequenceOfBlowups) (i : ℕ) (hi : i ≤ s.toSequenceOfBlowups.length) :
@@ -179,58 +163,56 @@ def transformAt (T : MarkedIdealWithBoundary.{u}) (s : T.SequenceOfBlowups) (i :
   boundary := s.boundary i
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The transformed marked ideal retains the original base field.
 -/
 theorem transformAt_baseField (T : MarkedIdealWithBoundary.{u}) (s : T.SequenceOfBlowups) (i : ℕ) :
     (T.transformAt s i).base = T.base := rfl
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The transform uses the ambient scheme of the specified blowup stage.
 -/
 theorem transformAt_scheme (T : MarkedIdealWithBoundary.{u}) (s : T.SequenceOfBlowups) (i : ℕ) :
     (T.transformAt s i).scheme = s.toSequenceOfBlowups.schemeAt i := rfl
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The structure map of the transform is the map from the specified stage to the field spectrum.
 -/
 theorem transformAt_structureMorphism (T : MarkedIdealWithBoundary.{u}) (s : T.SequenceOfBlowups) (i : ℕ) :
     (T.transformAt s i).structMap = s.projectionToSpec i := rfl
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The ideal of the transformed datum is the ideal assigned to that stage in the sequence.
 -/
 theorem transformAt_ideal (T : MarkedIdealWithBoundary.{u}) (s : T.SequenceOfBlowups) (i : ℕ) :
     (T.transformAt s i).ideal = s.ideal i := rfl
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Transforming the marked ideal retains its marking.
 -/
 theorem transformAt_mult (T : MarkedIdealWithBoundary.{u}) (s : T.SequenceOfBlowups) (i : ℕ) :
     (T.transformAt s i).mult = T.mult := rfl
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The transform takes the boundary list from the specified stage.
 -/
 theorem transformAt_boundary (T : MarkedIdealWithBoundary.{u}) (s : T.SequenceOfBlowups) (i : ℕ) :
     (T.transformAt s i).boundary = s.boundary i := rfl
 
 @[simp]
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The transform's dimension index depends only on its ambient scheme, which is the scheme at the specified stage.
 -/
 theorem transformAt_dim (T : MarkedIdealWithBoundary.{u}) (s : T.SequenceOfBlowups) (i : ℕ) :
     (T.transformAt s i).krullDimSucc = EmbeddedResolution.krullDimSucc (s.toSequenceOfBlowups.schemeAt i) := rfl
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
-
-Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+The field and positive marking are those of the original admissible input. The stage is smooth over the field and its boundary has strict normal crossings by the stage induction. Smoothness gives local finite type. The stage is Noetherian, so inverse images of quasi-compact opens are compact and its structural morphism is quasi-compact. The transformed ideal is nonzero on components by the controlled-transform induction. These give every admissibility condition.
 -/
 theorem IsAdmissible.transformAt (hcart : EffectiveCartierSupportContainsNoComponent.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : T.IsAdmissible) (s : T.SequenceOfBlowups) (i : ℕ) (hi : i ≤ s.toSequenceOfBlowups.length) :
@@ -253,8 +235,8 @@ theorem IsAdmissible.transformAt (hcart : EffectiveCartierSupportContainsNoCompo
   · show AlgebraicGeometry.QuasiCompact (s.projectionToSpec i)
     exact ⟨fun _ _ _ => TopologicalSpace.NoetherianSpace.isCompact _⟩
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Dimension nonincrease along blowups bounds the dimension index of the specified stage by the original one. The transform uses exactly that stage as its ambient scheme.
 -/
 theorem transformAt_dim_le (hdim : DimensionNonincreasingAlongBlowups.{u}) {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
     (s : T.SequenceOfBlowups) (i : ℕ) (hi : i ≤ s.toSequenceOfBlowups.length) :

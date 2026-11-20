@@ -27,16 +27,16 @@ noncomputable def BlowupSequenceData.controlledTransform {X : Scheme.{u}} (d : B
         (Blowup.exceptionalIdeal (d.map i) (d.center i)) m
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The recursion begins with the original ideal pulled back along the stage-zero isomorphism.
 -/
 theorem BlowupSequenceData.controlledTransform_zero {X : Scheme.{u}} (d : BlowupSequenceData X)
     (I : X.IdealSheafData) (m : ℕ) :
     d.controlledTransform I m 0 = I.comap d.isoZero.hom := rfl
 
 @[simp]
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+For the successor pull back the preceding transform along the transition and take its residual ideal with respect to the exceptional ideal raised to the marking.
 -/
 theorem BlowupSequenceData.controlledTransform_succ {X : Scheme.{u}} (d : BlowupSequenceData X)
     (I : X.IdealSheafData) (m : ℕ) (i : ℕ) :
@@ -44,8 +44,8 @@ theorem BlowupSequenceData.controlledTransform_succ {X : Scheme.{u}} (d : Blowup
       residualByPow ((d.controlledTransform I m i).comap (d.map i))
         (Blowup.exceptionalIdeal (d.map i) (d.center i)) m := rfl
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The successor transform is the selected residual ideal. The given divisibility supplies a factorization, so multiplying that selected ideal by the exceptional power recovers the pulled-back preceding transform.
 -/
 theorem BlowupSequenceData.pow_exceptionalIdeal_mul_controlledTransform_succ {X : Scheme.{u}} (d : BlowupSequenceData X)
     (I : X.IdealSheafData) (m : ℕ) (i : ℕ)
@@ -65,16 +65,16 @@ noncomputable def BlowupSequenceData.boundaryFrom {X : Scheme.{u}} (d : BlowupSe
         [Blowup.exceptionalIdeal (d.map i) (d.center i)]
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The boundary recursion starts by pulling back every member of the original ordered boundary along the stage-zero isomorphism.
 -/
 theorem BlowupSequenceData.boundary_zero {X : Scheme.{u}} (d : BlowupSequenceData X)
     (E : List X.IdealSheafData) :
     d.boundaryFrom E 0 = E.map (fun D => D.comap d.isoZero.hom) := rfl
 
 @[simp]
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The successor boundary first takes the strict transforms of the ordered preceding list and then appends the exceptional ideal of the transition.
 -/
 theorem BlowupSequenceData.boundary_succ {X : Scheme.{u}} (d : BlowupSequenceData X)
     (E : List X.IdealSheafData) (i : ℕ) :
@@ -82,10 +82,8 @@ theorem BlowupSequenceData.boundary_succ {X : Scheme.{u}} (d : BlowupSequenceDat
       (d.boundaryFrom E i).map (Blowup.strictTransform (d.map i) (d.center i)) ++
         [Blowup.exceptionalIdeal (d.map i) (d.center i)] := rfl
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Treat this case separately.
-
-Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
+/- English proof (authored)
+At zero the pullback of the original list has its original length. At each successor, taking strict transforms preserves the length and appending the exceptional ideal increases it by one. Induction gives the original length plus the number of steps.
 -/
 theorem BlowupSequenceData.boundary_length {X : Scheme.{u}} (d : BlowupSequenceData X)
     (E : List X.IdealSheafData) (i : ℕ) :
@@ -136,63 +134,63 @@ variable {k : Type u} [Field k] {X : Scheme.{u}} (d : BlowupSequenceData X)
   (E : List X.IdealSheafData) (h : d.IsMarked p I m E)
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The construction adds marking, ideals, boundary and compatibility data to the given blowup sequence. Its underlying blowup sequence data are the original data.
 -/
 theorem BlowupSequenceData.toMarkedBlowupSequenceData_toBlowupSequenceData :
     (d.toMarkedBlowupSequenceData p I m E h).toBlowupSequenceData = d := rfl
 
 @[simp]
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The marked construction keeps the length of the underlying blowup sequence.
 -/
 theorem BlowupSequenceData.toMarkedBlowupSequenceData_length :
     (d.toMarkedBlowupSequenceData p I m E h).length = d.length := rfl
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The marked construction uses the same scheme at every stage as the original sequence data.
 -/
 theorem BlowupSequenceData.toMarkedBlowupSequenceData_schemeAt (i : ℕ) :
     (d.toMarkedBlowupSequenceData p I m E h).obj i = d.obj i := rfl
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The center of the marked sequence is the original center at the specified stage.
 -/
 theorem BlowupSequenceData.toMarkedBlowupSequenceData_center (i : ℕ) :
     (d.toMarkedBlowupSequenceData p I m E h).center i = d.center i := rfl
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The marked sequence retains the original transition map at the given stage.
 -/
 theorem BlowupSequenceData.toMarkedBlowupSequenceData_blowupMorphism (i : ℕ) :
     (d.toMarkedBlowupSequenceData p I m E h).map i = d.map i := rfl
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The projection of the marked sequence data is assigned to be the projection to the base of the underlying blowup data.
 -/
 theorem BlowupSequenceData.toMarkedBlowupSequenceData_projectionToBase (i : ℕ) :
     (d.toMarkedBlowupSequenceData p I m E h).proj i = d.projectionToBase i := rfl
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The ideal assignment of the marked data is defined to be the recursively computed controlled transform.
 -/
 theorem BlowupSequenceData.toMarkedBlowupSequenceData_ideal (i : ℕ) :
     (d.toMarkedBlowupSequenceData p I m E h).ideal i = d.controlledTransform I m i := rfl
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The marked data use the boundary list produced by the boundary recursion at the given stage.
 -/
 theorem BlowupSequenceData.toMarkedBlowupSequenceData_boundary (i : ℕ) :
     (d.toMarkedBlowupSequenceData p I m E h).boundary i = d.boundaryFrom E i := rfl
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Passing from marked data to the sequence retains the underlying ordinary blowup data. Applying the ordinary sequence construction to those data therefore gives the original sequence.
 -/
 theorem BlowupSequenceData.toMarkedBlowupSequenceData_toSequenceOfBlowups :
     (d.toMarkedBlowupSequenceData p I m E h).toMarkedSequenceOfBlowups.toSequenceOfBlowups = d.toSequenceOfBlowups :=
@@ -200,10 +198,8 @@ theorem BlowupSequenceData.toMarkedBlowupSequenceData_toSequenceOfBlowups :
 
 end
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Take an element of the first ideal. Its product with the given generator belongs to the product of the principal ideal and the first ideal, hence also to the product with the second ideal by equality. It is therefore the generator times an element of the second ideal. Cancel the generator using that it is a non-zero-divisor. The initial element lies in the second ideal.
 -/
 private theorem le_of_span_singleton_mul_eq_mul {R : Type u} [CommRing R] {f : R}
     (hf : f ∈ nonZeroDivisors R) {I J : Ideal R}
@@ -217,18 +213,16 @@ private theorem le_of_span_singleton_mul_eq_mul {R : Type u} [CommRing R] {f : R
   rw [hza]
   exact hz
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The cancellation argument gives containment of the first ideal in the second. Apply it to the reversed product equality to obtain the reverse containment.
 -/
 private theorem eq_of_span_singleton_mul_eq_mul {R : Type u} [CommRing R] {f : R}
     (hf : f ∈ nonZeroDivisors R) {I J : Ideal R}
     (h : Ideal.span ({f} : Set R) * I = Ideal.span ({f} : Set R) * J) : I = J :=
   le_antisymm (le_of_span_singleton_mul_eq_mul hf h) (le_of_span_singleton_mul_eq_mul hf h.symm)
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Near the given point the common factor is generated by a non-zero-divisor on an affine open. Its germ remains a non-zero-divisor because the stalk is a localization there. Taking stalks of the equality of products gives equality of the products of the stalk ideals with the principal ideal of this germ. Cancel the principal ideal to conclude.
 -/
 private theorem stalkIdeal_eq_of_mul_eq_mul {Y : Scheme.{u}} {F A B : Y.IdealSheafData}
     (hF : Blowup.IsLocallyGeneratedByNonZeroDivisor F) (h : F * A = F * B) (x : ↥Y) :
@@ -254,12 +248,8 @@ private theorem stalkIdeal_eq_of_mul_eq_mul {Y : Scheme.{u}} {F A B : Y.IdealShe
   rw [hstalk] at hmul
   exact eq_of_span_singleton_mul_eq_mul hnzd hmul
 
-/- English proof (translation)
-Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+On any affine open, the localizations of its two section ideals at a maximal ideal are the corresponding stalk ideals. These are equal by hypothesis. Ideals in a ring are determined by their localizations at all maximal ideals, so the section ideals on every affine open are equal. They determine the ideal sheaves.
 -/
 private theorem eq_of_stalkIdeal_eq {Y : Scheme.{u}} {A B : Y.IdealSheafData}
     (h : ∀ x : ↥Y, stalkIdeal A x = stalkIdeal B x) : A = B := by
@@ -284,8 +274,8 @@ private theorem eq_of_stalkIdeal_eq {Y : Scheme.{u}} {A B : Y.IdealSheafData}
   rw [stalkIdeal_eq_map_germ A _ V hx, stalkIdeal_eq_map_germ B _ V hx] at key
   exact IsLocalization.map_eq_map_of_map_eq_map P.primeCompl key
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The exceptional ideal is the center ideal pulled back to the blowup. For a blowup this pullback is locally generated by a non-zero-divisor, giving the asserted property.
 -/
 theorem isLocallyGeneratedByNonZeroDivisor_exceptionalIdeal {X' X : Scheme.{u}} {f : X' ⟶ X}
     {Z : X.IdealSheafData} (h : Blowup.IsBlowupAlongIdealSheaf f Z) :
@@ -293,10 +283,8 @@ theorem isLocallyGeneratedByNonZeroDivisor_exceptionalIdeal {X' X : Scheme.{u}} 
   rw [Blowup.exceptionalIdeal_eq_comap]
   exact Blowup.IsBlowupAlongIdealSheaf.isLocallyGeneratedByNonZeroDivisor_comap h
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+On an affine neighborhood where the ideal is generated by a non-zero-divisor, its power is generated by the same power of that element. Powers of non-zero-divisors are non-zero-divisors, giving the required local generators.
 -/
 theorem isLocallyGeneratedByNonZeroDivisor_pow {Y : Scheme.{u}} {F : Y.IdealSheafData}
     (hF : Blowup.IsLocallyGeneratedByNonZeroDivisor F) (m : ℕ) : Blowup.IsLocallyGeneratedByNonZeroDivisor (F ^ m) := by
@@ -307,22 +295,22 @@ theorem isLocallyGeneratedByNonZeroDivisor_pow {Y : Scheme.{u}} {F : Y.IdealShea
   show F.ideal U ^ m = _
   rw [hFU, Ideal.span_singleton_pow]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+At every point cancel the common locally principal factor in the stalk by the non-zero-divisor argument. Equal stalk ideals give equal ideal sheaves.
 -/
 theorem eq_of_isLocallyGeneratedByNonZeroDivisor_mul_eq_mul {Y : Scheme.{u}} {F A B : Y.IdealSheafData}
     (hF : Blowup.IsLocallyGeneratedByNonZeroDivisor F) (h : F * A = F * B) : A = B :=
   eq_of_stalkIdeal_eq (stalkIdeal_eq_of_mul_eq_mul hF h)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The power of the common factor is still locally generated by non-zero-divisors. Apply the cancellation theorem to that power.
 -/
 theorem eq_of_isLocallyGeneratedByNonZeroDivisor_pow_mul_eq_mul {Y : Scheme.{u}} {F A B : Y.IdealSheafData}
     (hF : Blowup.IsLocallyGeneratedByNonZeroDivisor F) (m : ℕ) (h : F ^ m * A = F ^ m * B) : A = B :=
   eq_of_isLocallyGeneratedByNonZeroDivisor_mul_eq_mul (isLocallyGeneratedByNonZeroDivisor_pow hF m) h
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+At the valid stage the map is a blowup, whose exceptional ideal is locally generated by non-zero-divisors. The cancellation theorem for powers of such ideals gives equality of the two factors.
 -/
 theorem BlowupSequenceData.eq_of_pow_exceptionalIdeal_mul_eq_mul {X : Scheme.{u}} (d : BlowupSequenceData X)
     {i : ℕ} (hi : i < d.length) (m : ℕ) (A B : (d.obj (i + 1)).IdealSheafData)
@@ -333,8 +321,8 @@ theorem BlowupSequenceData.eq_of_pow_exceptionalIdeal_mul_eq_mul {X : Scheme.{u}
 
 namespace MarkedBlowupSequenceData
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately.
+/- English proof (authored)
+Both projections at zero are the chosen initial isomorphism. For a successor both compose the same transition map with the preceding projection. Induction therefore gives equality at every index.
 -/
 theorem projectionToBase_eq_toBlowupSequenceData_projectionToBase {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ}
@@ -344,12 +332,8 @@ theorem projectionToBase_eq_toBlowupSequenceData_projectionToBase {k : Type u} [
   | zero => rw [s.proj_zero, s.toBlowupSequenceData.projectionToBase_zero]
   | succ j ih => rw [s.proj_succ j, s.toBlowupSequenceData.projectionToBase_succ j, ih]
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the stage. The initial ideal and boundary from the recursions coincide with the marked data's initial pullbacks. At a successor, the recorded next ideal is a residual factor for the pulled-back previous ideal by the marked transition equation. The recursively chosen ideal satisfies the same equation, because that factorization exists and the preceding ideals agree by induction. The assumed cancellation identifies the two residual factors. The boundary recursions agree because both take the same strict transforms of the equal old lists and append the same exceptional ideal.
 -/
 theorem controlledTransform_and_boundary_eq_of_cancel {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ}
@@ -384,8 +368,8 @@ theorem controlledTransform_and_boundary_eq_of_cancel {k : Type u} [Field k] {X 
       · rw [BlowupSequenceData.boundary_succ, ih2]
         exact (s.boundary_succ j hj).symm
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+At each valid step any two residual factors satisfying the marked transition equation have equal products with the same exceptional power. This power can be cancelled by the blowup cancellation theorem. Thus the uniqueness hypothesis of the simultaneous ideal and boundary comparison holds.
 -/
 theorem controlledTransform_and_boundary_eq {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ}
@@ -398,8 +382,8 @@ theorem controlledTransform_and_boundary_eq {k : Type u} [Field k] {X : Scheme.{
       s.toBlowupSequenceData.eq_of_pow_exceptionalIdeal_mul_eq_mul hj m A B (hA.trans hB.symm))
     i hi
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The simultaneous comparison of the recursive and recorded data gives equality of the two ideals at the specified valid stage.
 -/
 theorem toBlowupSequenceData_controlledTransform_eq {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ}
@@ -408,8 +392,8 @@ theorem toBlowupSequenceData_controlledTransform_eq {k : Type u} [Field k] {X : 
     s.toBlowupSequenceData.controlledTransform I m i = s.ideal i :=
   (s.controlledTransform_and_boundary_eq i hi).1
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The simultaneous comparison gives equality of the recursive boundary and the original marked boundary at this stage.
 -/
 theorem toBlowupSequenceData_boundary_eq_boundary_of_le {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ}
@@ -418,12 +402,8 @@ theorem toBlowupSequenceData_boundary_eq_boundary_of_le {k : Type u} [Field k] {
     s.toBlowupSequenceData.boundaryFrom E i = s.boundary i :=
   (s.controlledTransform_and_boundary_eq i hi).2
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At every active step take the recorded successor ideal as the divisibility witness, using equality of the recorded preceding ideal with its recursive controlled transform. The same equality transfers the center's order condition. The projections to the base agree with those of the marked sequence, so the center's smoothness carries over. The recursive and recorded boundaries agree as well, so the same center has the required strict normal crossing condition.
 -/
 theorem isMarked_toBlowupSequenceData {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ}
@@ -447,8 +427,8 @@ theorem isMarked_toBlowupSequenceData {k : Type u} [Field k] {X : Scheme.{u}}
     rw [s.toBlowupSequenceData_boundary_eq_boundary_of_le i (le_of_lt hi)]
     exact h
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The data associated to a marked sequence retain its stage ideals. Apply the comparison with the recursive controlled transform to those data at the specified valid stage.
 -/
 theorem ofMarkedSequence_controlledTransform {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ}
@@ -457,8 +437,8 @@ theorem ofMarkedSequence_controlledTransform {k : Type u} [Field k] {X : Scheme.
     (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData.controlledTransform I m i = s.ideal i :=
   (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData_controlledTransform_eq i hi
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The marked sequence data retain the sequence's boundary list at each stage. Its comparison with the boundary recursion yields the required equality.
 -/
 theorem ofMarkedSequence_boundary {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ}

@@ -43,8 +43,8 @@ abbrev chartPullbackFst (c₁ c₂ : EtaleChart q V n) : chartPullback c₁ c₂
 abbrev chartPullbackSnd (c₁ c₂ : EtaleChart q V n) : chartPullback c₁ c₂ ⟶ P :=
   pullback.snd c₁.map c₂.map ≫ V.ι
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The first projection is the base change of the second chart map along the first one. The second chart is étale, and étaleness is preserved by base change.
 -/
 theorem etale_pullback_fst_map (c₁ c₂ : EtaleChart q V n) :
     AlgebraicGeometry.Etale (pullback.fst c₁.map c₂.map) := by
@@ -55,8 +55,8 @@ instance instEtalePullbackFstChart (c₁ c₂ : EtaleChart q V n) :
     AlgebraicGeometry.Etale (pullback.fst c₁.map c₂.map) :=
   etale_pullback_fst_map c₁ c₂
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The second projection is the base change of the first chart map along the second one. It is étale because the first chart is étale.
 -/
 theorem etale_pullback_snd_map (c₁ c₂ : EtaleChart q V n) :
     AlgebraicGeometry.Etale (pullback.snd c₁.map c₂.map) := by
@@ -68,8 +68,8 @@ instance instEtalePullbackSndChart (c₁ c₂ : EtaleChart q V n) :
     AlgebraicGeometry.Etale (pullback.snd c₁.map c₂.map) :=
   etale_pullback_snd_map c₁ c₂
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Étale morphisms are closed under composition. Apply this to the given étale maps f and g.
 -/
 private theorem etale_comp {A B C : Scheme.{u}} (f : A ⟶ B) (g : B ⟶ C)
     (hf : AlgebraicGeometry.Etale f) (hg : AlgebraicGeometry.Etale g) :
@@ -78,8 +78,8 @@ private theorem etale_comp {A B C : Scheme.{u}} (f : A ⟶ B) (g : B ⟶ C)
   have := hg
   infer_instance
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The map to P through the first factor is the first étale projection followed by the open immersion of V into P. Open immersions are étale, so the composite is étale.
 -/
 theorem etale_chartPullbackFst (c₁ c₂ : EtaleChart q V n) :
     AlgebraicGeometry.Etale (chartPullbackFst c₁ c₂) := by
@@ -93,8 +93,8 @@ instance instEtaleChartPairFst (c₁ c₂ : EtaleChart q V n) :
     AlgebraicGeometry.Etale (chartPullbackFst c₁ c₂) :=
   etale_chartPullbackFst c₁ c₂
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The map to P through the second factor is the second étale projection followed by the open immersion of V into P. Both maps are étale, hence so is their composite.
 -/
 theorem etale_chartPullbackSnd (c₁ c₂ : EtaleChart q V n) :
     AlgebraicGeometry.Etale (chartPullbackSnd c₁ c₂) := by
@@ -108,15 +108,15 @@ instance instEtaleChartPairSnd (c₁ c₂ : EtaleChart q V n) :
     AlgebraicGeometry.Etale (chartPullbackSnd c₁ c₂) :=
   etale_chartPullbackSnd c₁ c₂
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+Global sections are contravariant in the scheme. Pulling a section back along the composite first pulls it back along g and then along f, giving the stated equality on the section.
 -/
 private theorem appTop_comp_apply {A B C : Scheme.{u}} (f : A ⟶ B) (g : B ⟶ C)
     (x : C.presheaf.obj (op ⊤)) :
     (f ≫ g).appTop.hom x = f.appTop.hom (g.appTop.hom x) := rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The two composites from the fibre product to affine space agree by the defining property of the fibre product. Pull back the j-th affine coordinate along these equal maps. Functoriality writes the two pullbacks as the chart coordinate pulled back along its corresponding projection.
 -/
 theorem chartPullback_coordTop_eq (c₁ c₂ : EtaleChart q V n) (j : Fin n) :
     (pullback.fst c₁.map c₂.map).appTop.hom (c₁.coordTop j) =
@@ -127,8 +127,8 @@ theorem chartPullback_coordTop_eq (c₁ c₂ : EtaleChart q V n) (j : Fin n) :
   rw [appTop_comp_apply, appTop_comp_apply] at h
   exact h
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
+/- English proof (authored)
+The two maps from the fibre product to affine space agree. Compose them with its structure map to the spectrum of k. For each chart the resulting composite also factors through the open inclusion of V in P followed by q, giving the claimed equality.
 -/
 theorem chartPullbackFst_comp_eq_chartPullbackSnd_comp (c₁ c₂ : EtaleChart q V n) :
     chartPullbackFst c₁ c₂ ≫ q = chartPullbackSnd c₁ c₂ ≫ q := by
@@ -139,8 +139,8 @@ theorem chartPullbackFst_comp_eq_chartPullbackSnd_comp (c₁ c₂ : EtaleChart q
   rw [c₁.comp_struct, c₂.comp_struct] at h
   simpa only [Category.assoc] using h
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Each chart ideal is the pullback of the same coordinate subspace ideal on affine space. Pulling it back along either projection therefore gives the pullback along the corresponding composite into affine space. Those composites agree.
 -/
 theorem chartPullback_comap_coordIdeal_eq (c₁ c₂ : EtaleChart q V n) (S : Finset (Fin n)) :
     (c₁.coordIdeal S).comap (pullback.fst c₁.map c₂.map) =
@@ -158,8 +158,8 @@ def chartPullbackLift (c₁ c₂ : EtaleChart q V n) (p : ↥P) (hp : p ∈ V)
   pullback.lift (V.toScheme.fromSpecResidueField (pointOfMem V p hp))
     (V.toScheme.fromSpecResidueField (pointOfMem V p hp)) h
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Agreement of the charts on the residue field permits the two copies of the residue-field point to define a map into the fibre product. By its defining property, the first projection of this map is the first of those copies.
 -/
 @[simp] theorem chartPullbackLift_fst (c₁ c₂ : EtaleChart q V n) (p : ↥P) (hp : p ∈ V)
     (h : ChartsAgreeAt c₁ c₂ p hp) :
@@ -167,8 +167,8 @@ A detailed English derivation is pending.
       V.toScheme.fromSpecResidueField (pointOfMem V p hp) :=
   pullback.lift_fst _ _ _
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The lift is formed from two copies of the canonical map from the residue field to V. Composing the lift with the second projection recovers the second copy.
 -/
 @[simp] theorem chartPullbackLift_snd (c₁ c₂ : EtaleChart q V n) (p : ↥P) (hp : p ∈ V)
     (h : ChartsAgreeAt c₁ c₂ p hp) :
@@ -176,8 +176,8 @@ A detailed English derivation is pending.
       V.toScheme.fromSpecResidueField (pointOfMem V p hp) :=
   pullback.lift_snd _ _ _
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Compose the first projection identity for the residue-field lift with g. Associativity identifies this with the stated composite.
 -/
 @[simp] theorem chartPullbackLift_fst_assoc {W : Scheme.{u}} (c₁ c₂ : EtaleChart q V n) (p : ↥P)
     (hp : p ∈ V) (h : ChartsAgreeAt c₁ c₂ p hp) (g : V.toScheme ⟶ W) :
@@ -185,8 +185,8 @@ Rewrite the conclusion using the stated equalities.
       V.toScheme.fromSpecResidueField (pointOfMem V p hp) ≫ g := by
   rw [← Category.assoc, chartPullbackLift_fst]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Compose the second projection identity for the residue-field lift with g and reassociate the maps.
 -/
 @[simp] theorem chartPullbackLift_snd_assoc {W : Scheme.{u}} (c₁ c₂ : EtaleChart q V n) (p : ↥P)
     (hp : p ∈ V) (h : ChartsAgreeAt c₁ c₂ p hp) (g : V.toScheme ⟶ W) :
@@ -198,10 +198,8 @@ def chartPullbackPoint (c₁ c₂ : EtaleChart q V n) (p : ↥P) (hp : p ∈ V)
     (h : ChartsAgreeAt c₁ c₂ p hp) : ↥(chartPullback c₁ c₂) :=
   (chartPullbackLift c₁ c₂ p hp h).base (specResidueFieldPoint (pointOfMem V p hp))
 
-/- English proof (translation)
-Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The fibre-product point is the image of the unique point of the residue-field spectrum. By the first projection identity it maps to the point of V lying over p, and the inclusion of V takes that point to p.
 -/
 theorem chartPullbackFst_base_chartPullbackPoint (c₁ c₂ : EtaleChart q V n) (p : ↥P) (hp : p ∈ V)
     (h : ChartsAgreeAt c₁ c₂ p hp) :
@@ -219,16 +217,14 @@ theorem chartPullbackFst_base_chartPullbackPoint (c₁ c₂ : EtaleChart q V n) 
       = V.ι.base (pointOfMem V p hp) := by rw [key]
   exact key2
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The underlying map of a composite of scheme morphisms is the composite of their underlying maps. Evaluating at x gives the result.
 -/
 private theorem comp_base_apply {A B C : Scheme.{u}} (f : A ⟶ B) (g : B ⟶ C)
     (x : ↥A) : (f ≫ g).base x = g.base (f.base x) := rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The second projection of the residue-field lift is the canonical residue-field map to V. The unique point of the residue-field spectrum therefore maps first to the point of V represented by p and then to p under the inclusion.
 -/
 theorem chartPullbackSnd_base_chartPullbackPoint (c₁ c₂ : EtaleChart q V n) (p : ↥P) (hp : p ∈ V)
     (h : ChartsAgreeAt c₁ c₂ p hp) :
@@ -250,8 +246,8 @@ theorem chartPullbackSnd_base_chartPullbackPoint (c₁ c₂ : EtaleChart q V n) 
     rw [key]
   exact hA.symm.trans (h3.trans (hB.trans ((congrArg (fun z => V.ι.base z) e1).trans e2)))
 
-/- English proof (translation)
-Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
+/- English proof (authored)
+A map to affine space over the spectrum of K is determined by its composite to that base and the pullbacks of the coordinate functions. The two hypotheses identify these data for f and g, so the affine-space universal property gives equality.
 -/
 private theorem affineSpaceFin_hom_ext {K : Type u} [Field K] {m : ℕ} {Z : Scheme.{u}}
     (f g : Z ⟶ affineSpaceFin K m)
@@ -264,19 +260,15 @@ private theorem affineSpaceFin_hom_ext {K : Type u} [Field K] {m : ℕ} {Z : Sch
   · exact h₁
   · exact h₂
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+A unit cannot lie in a proper ideal because multiplying it by its inverse would put 1 there. Apply this to the maximal ideal.
 -/
 private theorem not_isUnit_of_mem_maximalIdeal {R : Type u} [CommRing R] [IsLocalRing R] {a : R}
     (ha : a ∈ IsLocalRing.maximalIdeal R) : ¬ IsUnit a :=
   (IsLocalRing.mem_maximalIdeal a).mp ha
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The ring of global sections of the spectrum of the residue field is isomorphic to that field. If the image of t were nonzero, its inverse in the field would give an inverse to t in the section ring. Since t is not a unit, its image is zero and so is t.
 -/
 private theorem specResidueField_eq_zero_of_not_isUnit {X : Scheme.{u}} (x : ↥X)
     (t : Γ(Spec (X.residueField x), ⊤)) (ht : ¬ IsUnit t) : t = 0 := by
@@ -300,12 +292,8 @@ private theorem specResidueField_eq_zero_of_not_isUnit {X : Scheme.{u}} (x : ↥
   rw [h2] at hu2
   exact ht hu2
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The canonical map from the residue-field spectrum evaluates a global section by passing from its germ in the local ring to its residue class. The germ of s lies in the maximal ideal, so this residue class is zero. Thus the pulled-back global section vanishes.
 -/
 private theorem fromSpecResidueField_appTop_eq_zero {X : Scheme.{u}} (x : ↥X)
     (hx : x ∈ (⊤ : X.Opens)) (s : Γ(X, ⊤))
@@ -331,10 +319,8 @@ private theorem fromSpecResidueField_appTop_eq_zero {X : Scheme.{u}} (x : ↥X)
       ((Spec (X.residueField x)).presheaf.germ ⊤ (specResidueFieldPoint x) (by trivial)).hom
   exact specResidueField_eq_zero_of_not_isUnit x _ hnu
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The two residue-field maps into affine space have the same structure map to the spectrum of k because both charts lie over q. For each coordinate, the difference of its two pullbacks has germ in the maximal ideal. It therefore vanishes after passage to the residue field, giving equality of the two pulled-back coordinates. The universal property of affine space identifies the maps.
 -/
 theorem chartsAgreeAt_of_germ_sub_mem_maximalIdeal (c₁ c₂ : EtaleChart q V n) (p : ↥P)
     (hp : p ∈ V)
@@ -377,8 +363,8 @@ def chartPullbackSndStalkMap (c₁ c₂ : EtaleChart q V n) (p : ↥P) (hp : p �
       (chartPullbackSnd_base_chartPullbackPoint c₁ c₂ p hp h).symm) ≫
     (chartPullbackSnd c₁ c₂).stalkMap (chartPullbackPoint c₁ c₂ p hp h)
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The first projection sends the chosen fibre-product point to p. The first map on local rings is defined by this identification of the source stalk followed by the map induced by the first projection.
 -/
 theorem chartPullbackFstStalkMap_eq (c₁ c₂ : EtaleChart q V n) (p : ↥P) (hp : p ∈ V)
     (h : ChartsAgreeAt c₁ c₂ p hp) :
@@ -387,8 +373,8 @@ theorem chartPullbackFstStalkMap_eq (c₁ c₂ : EtaleChart q V n) (p : ↥P) (h
           (chartPullbackFst_base_chartPullbackPoint c₁ c₂ p hp h).symm) ≫
         (chartPullbackFst c₁ c₂).stalkMap (chartPullbackPoint c₁ c₂ p hp h) := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The second projection sends the chosen fibre-product point to p. The second map on local rings is defined by identifying the stalk at the image with the stalk at p and applying the map induced by that projection.
 -/
 theorem chartPullbackSndStalkMap_eq (c₁ c₂ : EtaleChart q V n) (p : ↥P) (hp : p ∈ V)
     (h : ChartsAgreeAt c₁ c₂ p hp) :

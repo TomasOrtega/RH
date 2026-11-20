@@ -8,10 +8,8 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace SmoothEtaleChart
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Reindex the polynomial variables by the canonical bijection from the lifted index set to the original index set. This gives a polynomial-ring isomorphism that fixes the constants. Precomposing g with it preserves the original map on R and preserves étaleness.
 -/
 private theorem exists_etale_mvPolynomial_ulift {R S : Type u} [CommRing R] [CommRing S] {n : ℕ}
     (g : MvPolynomial (Fin n) R →+* S) (hg : g.Etale) (f : R →+* S)
@@ -28,10 +26,8 @@ private theorem exists_etale_mvPolynomial_ulift {R S : Type u} [CommRing R] [Com
   simp only [RingHom.coe_comp, Function.comp_apply, RingEquiv.toRingHom_eq_coe,
     RingEquiv.coe_toRingHom, h1, h2]
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Standard smoothness factors the ring map through an étale map from a polynomial ring over R. Reindex its variables to the index set used for affine space. Taking spectra gives an étale morphism from the spectrum of S to the spectrum of that polynomial ring, which is the relative affine space over the spectrum of R. The equality of the composite on constants becomes the required equality of maps to the base.
 -/
 private theorem exists_etale_over_affineSpace_of_isStandardSmooth {R S : CommRingCat.{u}}
     (φ : R ⟶ S) (hφ : RingHom.IsStandardSmooth (CommRingCat.Hom.hom φ)) :
@@ -51,8 +47,8 @@ private theorem exists_etale_over_affineSpace_of_isStandardSmooth {R S : CommRin
   rw [Category.assoc, AffineSpace.SpecIso_inv_over, ← Spec.map_comp]
   exact congrArg Spec.map hcomp
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The canonical affine identifications turn the map of section rings into a map between the two affine opens, in the opposite direction. Its composite with the inclusion of W in X agrees with the composite of the inclusion of V with h by naturality of these identifications. The restricted scheme map has this same composite. Cancel the monomorphism given by the inclusion of W.
 -/
 private theorem resLE_eq_isoSpec_conj_SpecMap_appLE {X Y : Scheme.{u}} (h : Y ⟶ X) {W : X.Opens}
     {V : Y.Opens} (hW : IsAffineOpen W) (hV : IsAffineOpen V) (e : V ≤ h ⁻¹ᵁ W) :
@@ -62,10 +58,8 @@ private theorem resLE_eq_isoSpec_conj_SpecMap_appLE {X Y : Scheme.{u}} (h : Y �
   rw [hW.isoSpec_inv_ι, IsAffineOpen.SpecMap_appLE_fromSpec h hW hV e, ← hV.isoSpec_inv_ι]
   simp
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Apply the affine factorization for standard smooth ring maps to the map on sections from W to V. Transport its étale map along the affine identifications of V and W with spectra, using the induced identification of relative affine spaces over the base. Isomorphisms preserve étaleness. Naturality of the affine-space projection identifies the composite to W with the restricted map.
 -/
 private theorem exists_etale_over_affineSpace_resLE_of_isStandardSmooth {X Y : Scheme.{u}} (h : Y ⟶ X)
     {W : X.Opens} {V : Y.Opens}
@@ -88,8 +82,8 @@ private theorem exists_etale_over_affineSpace_resLE_of_isStandardSmooth {X Y : S
   rw [Category.assoc, Category.assoc, AffineSpace.map_over, ← Category.assoc g₀, hg₀]
   exact resLE_eq_isoSpec_conj_SpecMap_appLE h hW hV e
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Check smoothness on affine opens in the restricted source and target. Their images under the open inclusions into Y and X are affine, and the restricted map on their sections is the section-ring map of h on these images. Since h is smooth, each of these ring maps is smooth, proving the claim.
 -/
 private theorem smooth_resLE {X Y : Scheme.{u}} (h : Y ⟶ X) [Smooth h] (W : X.Opens)
     (V : Y.Opens) (e : V ≤ h ⁻¹ᵁ W) : Smooth (h.resLE W V e) := by
@@ -100,16 +94,10 @@ private theorem smooth_resLE {X Y : Scheme.{u}} (h : Y ⟶ X) [Smooth h] (W : X.
     ⟨W.ι ''ᵁ U.1, U.2.image_of_isOpenImmersion _⟩
     ⟨V.ι ''ᵁ U'.1, U'.2.image_of_isOpenImmersion _⟩ _
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
+/- English proof (authored)
+First restrict h to the intersection of V₀ with the inverse image of W₀, mapping that intersection to W₀. The point y belongs to the intersection and the restricted map remains smooth. Choose affine neighbourhoods of the point and its image on which the map on section rings is standard smooth. Viewed inside Y and X through the open inclusions, these are affine opens V and W with V contained in V₀, W contained in W₀, and h(V) contained in W.
 
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components.
-
-Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
-
-Supply the required witnesses or components. A detailed English derivation is pending.
+The maps on sections agree under these open identifications, so the map for V and W is also standard smooth. Apply the affine factorization to obtain the étale map to a relative affine space over W. Its composite with the projection is the restriction of h, and the source open contains y.
 -/
 private theorem exists_affineOpen_etale_over_affineSpace_resLE_le {X Y : Scheme.{u}} (h : Y ⟶ X) [Smooth h]
     (y : Y) (W₀ : X.Opens) (hW₀ : h.base y ∈ W₀) (V₀ : Y.Opens) (hV₀ : y ∈ V₀) :
@@ -150,8 +138,8 @@ private theorem exists_affineOpen_etale_over_affineSpace_resLE_le {X Y : Scheme.
   exact ⟨W₀.ι ''ᵁ W', (V₀ ⊓ h ⁻¹ᵁ W₀ : Y.Opens).ι ''ᵁ V', d, e, hWaff, hVaff,
     ⟨⟨y, hy'⟩, hyV', rfl⟩, hWle, hVle, g, hg, hgπ⟩
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Apply the preceding construction to the specified neighbourhoods of y and its image. It supplies the two contained affine opens, the relative affine space, and the étale factorization of the restricted map.
 -/
 theorem exists_isAffineOpen_etale_resLE_le {X Y : Scheme.{u}} (h : Y ⟶ X) [Smooth h]
     (y : Y) (W₀ : X.Opens) (hW₀ : h.base y ∈ W₀) (V₀ : Y.Opens) (hV₀ : y ∈ V₀) :

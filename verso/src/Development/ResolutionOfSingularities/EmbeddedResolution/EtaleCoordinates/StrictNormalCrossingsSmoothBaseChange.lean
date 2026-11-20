@@ -24,31 +24,31 @@ namespace FunctorialResolution.EmbeddedResolution
 
 variable {k : Type u} [Field k] {X Y : Scheme.{u}}
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The section-ring identification is an isomorphism. Applying its inverse to x and then applying the forward map returns x.
 -/
 private theorem topIso_hom_inv_apply {Z : Scheme.{u}} (V : Z.Opens) (x : Γ(Z, V)) :
     V.topIso.hom.hom (V.topIso.inv.hom x) = x :=
   V.topIso.commRingCatIsoToRingEquiv.right_inv x
 
-/- English proof (translation)
-Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
+/- English proof (authored)
+Pullback of a section on V along its open inclusion regards the section as a global section of the open subscheme V. This is precisely the inverse of the canonical identification of those global sections with sections on V.
 -/
 private theorem ι_appLE_self_top_eq_topIso_inv {Z : Scheme.{u}} (V : Z.Opens) :
     V.ι.appLE V ⊤ (by simp) = V.topIso.inv := by
   simp
   apply Scheme.presheaf_map_eq_of_parallel
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Pulling back a section from U to V only uses its values over W, since the image of V is contained in W. Compatibility of pullback with restriction identifies the direct map with restriction from U to W followed by pullback.
 -/
 private theorem appLE_eq_map_comp_appLE (f : Y ⟶ X) {U W : X.Opens} {V : Y.Opens} (hWU : W ≤ U)
     (e : V ≤ f ⁻¹ᵁ W) (hVU : V ≤ f ⁻¹ᵁ U) :
     f.appLE U V hVU = X.presheaf.map (homOfLE hWU).op ≫ f.appLE W V e := by
   rw [Scheme.Hom.map_appLE]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Changing the source ring by an isomorphism preserves étaleness. The composite with e is that change of source applied to f.
 -/
 private theorem etale_comp_ringEquiv {A B C : Type u} [CommRing A] [CommRing B] [CommRing C]
     (f : B →+* C) (e : A ≃+* B) (hf : f.Etale) : (f.comp e.toRingHom).Etale :=
@@ -58,25 +58,23 @@ private def uliftFinAddEquivSum (m d : ℕ) :
     ULift.{u} (Fin (m + d)) ≃ ULift.{u} (Fin m) ⊕ ULift.{u} (Fin d) :=
   Equiv.ulift.trans (finSumFinEquiv.symm.trans (Equiv.sumCongr Equiv.ulift.symm Equiv.ulift.symm))
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+In the partition of the m+d indices into an initial block of size m and a final block of size d, the index coming from j in the first block corresponds to j in the first summand.
 -/
 private theorem sumEquiv_castAdd_eq_inl (m d : ℕ) (j : Fin m) :
     uliftFinAddEquivSum m d (ULift.up (Fin.castAdd d j)) = Sum.inl (ULift.up j) := by
   simp [uliftFinAddEquivSum]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+A formally étale algebra of finite presentation is étale. The hypotheses give the two conditions for the algebra induced by f.
 -/
 private theorem etale_of_formallyEtale_of_finitePresentation {A B : Type u} [CommRing A] [CommRing B] (f : A →+* B)
     (h1 : @Algebra.FormallyEtale A B _ _ f.toAlgebra)
     (h2 : @Algebra.FinitePresentation A B _ _ f.toAlgebra) : f.Etale :=
   @Algebra.Etale.mk A B _ _ f.toAlgebra h1 h2
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Extend the image ideal along g. This is I because the composite of the two ring maps is the identity. It is also the unit ideal, since extension takes the unit ideal of B to the unit ideal of A.
 -/
 private theorem ideal_eq_top_of_map_eq_top_of_leftInverse {A B : Type u} [CommRing A] [CommRing B] (f : A →+* B)
     (g : B →+* A) (hgf : ∀ x, g (f x) = x) (I : Ideal A) (hI : Ideal.map f I = ⊤) : I = ⊤ := by
@@ -87,8 +85,8 @@ private theorem ideal_eq_top_of_map_eq_top_of_leftInverse {A B : Type u} [CommRi
   rw [hI, Ideal.map_top] at h2
   exact h2.symm
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The ideal of the restricted sheaf on the affine scheme V is the extension of the section ideal on V along the canonical map to its global section ring. That section ideal is the unit ideal, whose extension is again the unit ideal. An ideal sheaf on an affine scheme is determined by its global ideal, so the restricted sheaf is the unit ideal sheaf.
 -/
 private theorem restrictIdeal_eq_top_of_ideal_eq_top {Z : Scheme.{u}} {V : Z.Opens}
     (hV : IsAffineOpen V) (D : Z.IdealSheafData) (hD : D.ideal ⟨V, hV⟩ = ⊤) :
@@ -102,10 +100,8 @@ private theorem restrictIdeal_eq_top_of_ideal_eq_top {Z : Scheme.{u}} {V : Z.Ope
     hD, Ideal.map_top]
   simp
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The global ideal of the restriction to V is the extension of the section ideal on V along the canonical section-ring isomorphism. By hypothesis this extension is the whole ring. Applying the inverse ring isomorphism gives the whole original section ring.
 -/
 private theorem ideal_affineOpen_eq_top_of_restrictIdeal_eq_top {Z : Scheme.{u}} {V : Z.Opens}
     (hV : IsAffineOpen V) (D : Z.IdealSheafData) (hD : restrictIdeal D V = ⊤) :
@@ -119,8 +115,8 @@ private theorem ideal_affineOpen_eq_top_of_restrictIdeal_eq_top {Z : Scheme.{u}}
   rw [ι_appLE_self_top_eq_topIso_inv] at h1
   exact ideal_eq_top_of_map_eq_top_of_leftInverse _ V.topIso.hom.hom (topIso_hom_inv_apply V) _ h1
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The composite Y → X → Spec k is smooth because both maps are smooth. On the affine open V, its structure algebra of sections is therefore of finite type over k.
 -/
 private theorem finiteType_sectionsAlgebra_of_isAffineOpen (p : X ⟶ Spec (CommRingCat.of k)) [Smooth p] (h : Y ⟶ X)
     [Smooth h] {V : Y.Opens} (hV : IsAffineOpen V) :
@@ -128,24 +124,10 @@ private theorem finiteType_sectionsAlgebra_of_isAffineOpen (p : X ⟶ Spec (Comm
   @finiteType_sections k _ Y (h ≫ p) _ ⟨V, hV⟩ (sectionsAlgebra k (h ≫ p) V)
     (algebraMap_sectionsAlgebra k (h ≫ p) V)
 
-/- English proof (translation)
-Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
+/- English proof (authored)
+Write A for the ring of sections on W and B for the ring of sections on V. The chart on W gives a formally étale map from the polynomial ring over k in m variables to A. Adjoining the d relative variables on both sides is a base change, so the resulting map from the polynomial ring in all m+d variables to the polynomial ring over A in d variables is formally étale. The relative chart on V gives a formally étale evaluation map from that last ring to B. Hence the composite is formally étale.
 
-Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
-
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+Under this composite a scalar from k first becomes the corresponding scalar section on W and then its pullback on V. An old variable first becomes the corresponding coordinate section on W and then its pullback. These identifications show that the composite is compatible with the k-algebra structure on B. The ring B is of finite type over k by smoothness, so it is also of finite type over the polynomial source. That source is Noetherian, making the composite finitely presented and therefore étale. Reindex the variables by putting the old block first and the relative block last. This polynomial-ring isomorphism preserves both the scalar formula and the required old-coordinate formula.
 -/
 private theorem exists_etale_mvPolynomialHom_castAdd_coord (p : X ⟶ Spec (CommRingCat.of k)) [Smooth p] (h : Y ⟶ X) [Smooth h]
     {W : X.Opens} (hW : IsAffineOpen W) {m : ℕ} (cW : EtaleChart p W m)
@@ -231,18 +213,10 @@ private theorem exists_etale_mvPolynomialHom_castAdd_coord (p : X ⟶ Spec (Comm
     rw [sumEquiv_castAdd_eq_inl]
     exact hXval j
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
+/- English proof (authored)
+Near y, use smoothness to choose affine opens W contained in U and V above W, with V étale over a relative affine space of dimension d over W. Restrict the original chart to W. The polynomial-ring construction combines its m coordinates with the d relative coordinates to give an étale map from V to affine space of dimension m+d over k. The old coordinates occur in the first m positions. Their sections are the pullbacks from W, which are also the pullbacks from U by compatibility with restriction.
 
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+If an ideal sheaf restricts to the unit ideal on U, its section ideal on W is the unit ideal and remains so after extension to V. If it is the chart ideal of a set S on U, on W its section ideal is generated by the restricted coordinate sections indexed by S. Extension to V takes these generators to the corresponding first-block coordinates. On the affine open V this ideal of sections determines the restricted ideal sheaf, which is exactly the new chart ideal of the image of S.
 -/
 private theorem exists_etaleChart_comap_restrictIdeal_eq_coordIdeal (p : X ⟶ Spec (CommRingCat.of k)) [Smooth p] (h : Y ⟶ X)
     [Smooth h] {U : X.Opens} {m : ℕ} (c : EtaleChart p U m) (y : Y) (hy : h.base y ∈ U) :
@@ -303,8 +277,8 @@ private theorem exists_etaleChart_comap_restrictIdeal_eq_coordIdeal (p : X ⟶ S
       exact ((hcoordEq i).trans (hψX i)).symm
     exact Set.image_congr (fun i _ => hEq i)
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+Apply the preceding chart construction at y above U. It gives an affine neighbourhood inside the inverse image of U and an étale chart there with the original coordinates pulled back into the first block. These are the asserted witnesses.
 -/
 theorem exists_etaleChart_comap_coord_eq (p : X ⟶ Spec (CommRingCat.of k)) [Smooth p]
     (h : Y ⟶ X) [Smooth h] {U : X.Opens} {m : ℕ} (c : EtaleChart p U m) (y : Y)
@@ -316,14 +290,8 @@ theorem exists_etaleChart_comap_coord_eq (p : X ⟶ Spec (CommRingCat.of k)) [Sm
   obtain ⟨V, d, c', hVU, hV, hyV, hcoord, -, -⟩ := exists_etaleChart_comap_restrictIdeal_eq_coordIdeal p h c y hy
   exact ⟨V, hVU, d, c', hV, hyV, hcoord⟩
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
-
-Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Choose an occurrence of D in the list E. At each point y of Y, take a strict normal crossing chart at its image in X and extend it to a chart near y. In the original chart the occurrence of D either has unit restriction or is cut out by one coordinate. In the new chart its pullback has unit restriction in the first case and is cut out by the corresponding first-block coordinate in the second. The local coordinate criterion therefore gives a smooth divisor.
 -/
 theorem isSmoothDivisor_comap_of_mem_inStrictNormalCrossingPosition (p : X ⟶ Spec (CommRingCat.of k)) [Smooth p]
     (h : Y ⟶ X) [Smooth h] (E : List X.IdealSheafData) (hE : InStrictNormalCrossingPosition p E)
@@ -350,22 +318,10 @@ theorem isSmoothDivisor_comap_of_mem_inStrictNormalCrossingPosition (p : X ⟶ S
       rw [Finset.map_singleton, Fin.castAddEmb_apply] at h2
       exact h2
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
+/- English proof (authored)
+The list of pullbacks has the same positions as E. Leave each unassigned position unassigned, and send each assigned coordinate to its index in the first block of the larger chart. If two positions get the same new coordinate, injectivity of the inclusion of the first block gives the same original coordinate, and the old assignment gives equality of the positions.
 
-Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately.
-
-Simplify using the standard rewrite rules. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
-
-Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+An unassigned position had unit restriction on U, so its pullback has unit restriction on V by hypothesis. For an assigned position, apply the pullback formula for coordinate ideals to the singleton containing its original coordinate. Its image is the singleton containing the new coordinate, as required.
 -/
 private theorem strictNormalCrossings_chart_conditions_comap (p : X ⟶ Spec (CommRingCat.of k)) (h : Y ⟶ X)
     (E : List X.IdealSheafData) {U : X.Opens} {m : ℕ} (c : EtaleChart p U m)
@@ -424,12 +380,8 @@ private theorem strictNormalCrossings_chart_conditions_comap (p : X ⟶ Spec (Co
       rw [Finset.map_singleton, Fin.castAddEmb_apply, e1] at h2
       exact h2
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
-
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Each member of the pulled-back list comes from a member of E, so its smoothness follows from the pulled-back divisor result. At an arbitrary y in Y, take the chart for E at the image of y and extend it to a chart near y. Transport the coordinate assignment by including the old index set into the first block. The preceding verification gives distinctness and both ideal conditions, establishing the local chart requirement at y.
 -/
 theorem inStrictNormalCrossingPosition_comap (p : X ⟶ Spec (CommRingCat.of k)) [Smooth p] (h : Y ⟶ X) [Smooth h]
     (E : List X.IdealSheafData) (hE : InStrictNormalCrossingPosition p E) :
@@ -447,8 +399,8 @@ theorem inStrictNormalCrossingPosition_comap (p : X ⟶ Spec (CommRingCat.of k))
     exact ⟨V, hyV, m + d, c', fun i => Option.map (Fin.castAdd d) (a i),
       hL.1, hL.2.1, hL.2.2⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Apply the list pullback theorem to the list with sole entry H. Its pulled-back list has sole entry equal to the pullback of H.
 -/
 theorem inStrictNormalCrossingPosition_comap_singleton (p : X ⟶ Spec (CommRingCat.of k)) [Smooth p]
     (h : Y ⟶ X) [Smooth h] (H : X.IdealSheafData) (hH : InStrictNormalCrossingPosition p [H]) :
@@ -457,18 +409,16 @@ theorem inStrictNormalCrossingPosition_comap_singleton (p : X ⟶ Spec (CommRing
   rw [List.map_cons, List.map_nil] at hcomp
   exact hcomp
 
-/- English proof (translation)
-Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The support of the pulled-back ideal is the inverse image of the support of I. Thus a point in that support maps into the support of I.
 -/
 private theorem base_mem_support_of_mem_support_comap (f : Y ⟶ X) (I : X.IdealSheafData) (y : Y)
     (hy : y ∈ (I.comap f).support) : f.base y ∈ I.support := by
   rw [AlgebraicGeometry.Scheme.IdealSheafData.support_comap] at hy
   exact hy
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Supply the required witnesses or components.
+/- English proof (authored)
+A point in the support of the pulled-back centre maps into the support of Z. At that image choose a common chart for Z and E, and extend the chart near the chosen point of Y by adding the relative coordinates. Transport the assignment for the divisors into the first coordinate block. The transported chart satisfies the divisor conditions by the preceding verification. The centre was cut out by S in the original chart, so its pullback is cut out by the image of S in that same first block. This gives the required common chart.
 -/
 theorem hasStrictNormalCrossingsWith_comap (p : X ⟶ Spec (CommRingCat.of k)) [Smooth p] (h : Y ⟶ X) [Smooth h]
     (Z : X.IdealSheafData) (E : List X.IdealSheafData) (hZ : HasStrictNormalCrossingsWith p Z E) :

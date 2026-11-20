@@ -13,8 +13,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The stalk at x is the localization of the section ring on U at the prime corresponding to x. The germ map is that localization map. The maximal ideal of this local ring contracts to the prime used in the localization, giving the equivalence.
 -/
 theorem germ_mem_maximalIdeal_iff {X : Scheme.{u}} {U : X.Opens} (hU : IsAffineOpen U)
     (x : X) (hx : x ∈ U) (s : Γ(X, U)) :
@@ -30,14 +30,10 @@ theorem germ_mem_maximalIdeal_iff {X : Scheme.{u}} {U : X.Opens} (hU : IsAffineO
 variable {X : Scheme.{u}} {k : Type u} [Field k] {p : X ⟶ Spec (CommRingCat.of k)}
   {U : X.Opens} {m : ℕ}
 
-/- English proof (translation)
-Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
+/- English proof (authored)
+The étale chart makes the section ring an étale algebra over the coordinate polynomial ring, and its coordinate sections are the images of the polynomial variables. Identify the local ring at x with the localization of the section ring at the prime for x. The germ criterion puts each chosen coordinate in this prime.
 
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
-
-Supply the required witnesses or components. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
+Apply the local algebra result that extends chosen étale coordinates in a prime to sections giving regular parameters at that prime. It supplies sections belonging to the prime, includes every chosen coordinate, and gives a list of length equal to the local dimension whose localized images generate the maximal ideal. The localization map is the germ map, so these are all the asserted properties.
 -/
 theorem exists_sections_span_eq_maximalIdeal_with_coords (hU : IsAffineOpen U)
     (c : EtaleChart p U m) (x : X) (hx : x ∈ U) (J₀ : Finset (Fin m))
@@ -77,8 +73,8 @@ theorem exists_sections_span_eq_maximalIdeal_with_coords (hU : IsAffineOpen U)
     exact ⟨i, by rw [hi, hcoord j]⟩
   · simpa only [halg] using hf3
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+The chosen coordinates have germs in the maximal ideal by the affine germ criterion. Apply the extension result to obtain sections containing those coordinates. Their germs span the maximal ideal and their number is the Krull dimension, which are the two conditions for the stated regular system of parameters.
 -/
 theorem exists_isRegularParameterSystem_with_coords_of_mem_prime (hU : IsAffineOpen U)
     (c : EtaleChart p U m) (x : X) (hx : x ∈ U) (J₀ : Finset (Fin m))
@@ -92,8 +88,8 @@ theorem exists_isRegularParameterSystem_with_coords_of_mem_prime (hU : IsAffineO
       (fun j hj => (germ_mem_maximalIdeal_iff hU x hx (c.coord j)).mpr (hJ₀ j hj))
   exact ⟨d, f, h2, h3, h4⟩
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The affine germ criterion turns the hypothesis on each coordinate germ into membership of that coordinate section in the prime for x. Apply the preceding extension result for coordinates in the prime.
 -/
 theorem exists_isRegularParameterSystem_with_coords_of_germ_mem
     (hU : IsAffineOpen U) (c : EtaleChart p U m) (x : X) (hx : x ∈ U) (J₀ : Finset (Fin m))

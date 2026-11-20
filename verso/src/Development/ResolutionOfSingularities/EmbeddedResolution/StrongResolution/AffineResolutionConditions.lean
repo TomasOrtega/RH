@@ -35,16 +35,16 @@ variable {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}} [AlgebraicGeometry
 def schemeAtToSpec (i : ℕ) : S.ambientLevel i ⟶ Spec (CommRingCat.of k) :=
   S.ambientBlowups.projectionToBase i ≫ S.ambientToSpec
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The structural map at stage i is defined by composing the ambient projection to the original affine space with that affine space’s structural map to the field.
 -/
 @[simp] theorem schemeAtToSpec_def (i : ℕ) :
     S.schemeAtToSpec i = S.ambientBlowups.projectionToBase i ≫ S.ambientToSpec := rfl
 
 def boundary (i : ℕ) : List (S.ambientLevel i).IdealSheafData := S.principalizationSequence.boundary i
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The ambient boundary at each stage is taken from the principalization sequence at that stage.
 -/
 theorem boundary_def (i : ℕ) : S.boundary i = S.principalizationSequence.boundary i := rfl
 
@@ -52,13 +52,13 @@ def strictTransformToZero (i : ℕ) : S.strictTransform i ⟶ S.strictTransform 
   Nat.rec (motive := fun j => S.strictTransform j ⟶ S.strictTransform 0) (𝟙 _)
     (fun j ih => S.strictTransformMap j ≫ ih) i
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The recursion begins at stage zero with the identity on the initial strict transform.
 -/
 @[simp] theorem strictTransformToZero_zero : S.strictTransformToZero 0 = 𝟙 (S.strictTransform 0) := rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+By the recursive definition, the projection of the successor strict transform to the initial one first passes to the preceding strict transform and then applies the preceding projection.
 -/
 @[simp] theorem strictTransformToZero_succ (i : ℕ) :
     S.strictTransformToZero (i + 1) = S.strictTransformMap i ≫ S.strictTransformToZero i := rfl
@@ -66,16 +66,14 @@ Both sides reduce to the same expression.
 def strictTransformZeroToBase : S.strictTransform 0 ⟶ Y :=
   (coprod.inl : S.strictTransform 0 ⟶ S.totalSpace 0) ≫ S.totalSpaceZeroIso.hom
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The map from the initial strict transform to the original scheme is the inclusion of its summand in the initial total space followed by the chosen initial isomorphism.
 -/
 theorem strictTransformZeroToBase_def :
     S.strictTransformZeroToBase = (coprod.inl : S.strictTransform 0 ⟶ S.totalSpace 0) ≫ S.totalSpaceZeroIso.hom := rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The initial total-space isomorphism is compatible with the original embedding transported into the initial ambient stage. Composing that compatibility with the initial ambient structural morphism cancels the ambient isomorphism with its inverse. What remains is the original embedding followed by its structure map, which is the original structural morphism over the field. This gives the claimed agreement.
 -/
 theorem strictTransformZeroToBase_comp : S.strictTransformZeroToBase ≫ pY = S.strictTransformι 0 ≫ S.schemeAtToSpec 0 := by
   have hemb : S.emb ≫ S.ambientToSpec = pY := S.emb_comp
@@ -95,8 +93,8 @@ theorem strictTransformZeroToBase_comp : S.strictTransformZeroToBase ≫ pY = S.
 def detachedToBase (i : ℕ) : S.discardedSubscheme i ⟶ Y :=
   S.discardedι i ≫ S.strictTransformToZero i ≫ S.strictTransformZeroToBase
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+By definition the discarded piece maps to the base by inclusion into its strict transform, projection to the initial strict transform, and then the initial map to the original scheme.
 -/
 theorem detachedToBase_def (i : ℕ) :
     S.detachedToBase i = S.discardedι i ≫ S.strictTransformToZero i ≫ S.strictTransformZeroToBase := rfl
@@ -144,14 +142,8 @@ def AllLevelsSmooth : Prop :=
 def BoundaryInStrictNormalCrossingPosition : Prop :=
   ∀ i, i ≤ S.ambientLength → InStrictNormalCrossingPosition (S.schemeAtToSpec i) (S.boundary i)
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+At zero this is the defining formula for the map from the initial strict transform to the base. At a successor, factor the total-space projection through the preceding stage. The total transition on the strict-transform summand is the strict-transform transition followed by the preceding summand inclusion. Use the induction hypothesis for that inclusion and its projection to obtain the stated composite.
 -/
 theorem inl_comp_blowupSequence_projectionToBase (h : S.TransitionsAreBlowups) (j : ℕ) :
     (coprod.inl : S.strictTransform j ⟶ S.totalSpace j) ≫ (S.blowupSequence h).projectionToBase j =
@@ -278,8 +270,8 @@ def AffineBoundaryInStrictNormalCrossingPosition (A : PrincipalizationAlgorithm.
     [AlgebraicGeometry.IsAffine Y],
     (AffineSpacePrincipalizationData.ofAffine A hemb hsnc hsm k Y pY).BoundaryInStrictNormalCrossingPosition
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Every morphism from the initial scheme is its unique map to the target. This empty-source map is smooth, since smoothness is local on the source and there are no points to check.
 -/
 private theorem smooth_from_initial {Z : Scheme.{u}} (f : (⊥_ Scheme.{u}) ⟶ Z) :
     AlgebraicGeometry.Smooth f := by
@@ -287,44 +279,44 @@ private theorem smooth_from_initial {Z : Scheme.{u}} (f : (⊥_ Scheme.{u}) ⟶ 
   rw [hf]
   infer_instance
 
-/- English proof (translation)
-By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
+/- English proof (authored)
+For each point of the first source, membership in the inverse image under the composite means that its second image belongs to the set. This is precisely membership in the inverse image of the second map’s inverse image.
 -/
 private theorem preimage_comp_base_eq_preimage_preimage {A B C : Scheme.{u}} (f : A ⟶ B) (g : B ⟶ C) (W : Set ↥C) :
     (f ≫ g).base ⁻¹' W = f.base ⁻¹' (g.base ⁻¹' W) := by
   ext x
   simp
 
-/- English proof (translation)
-Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Density asks that every point lie in the closure of the subset. In an empty space the condition is vacuous.
 -/
 private theorem dense_of_isEmpty {α : Type u} [TopologicalSpace α] [IsEmpty α]
     (T : Set α) : Dense T := fun x => isEmptyElim x
 
-/- English proof (translation)
-Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+The strict normal crossings condition asks for a local description at each point. The scheme is empty, so every ideal satisfies this condition.
 -/
 private theorem isStrictNormalCrossingsDivisor_of_isEmpty {X : Scheme.{u}} (hX : IsEmpty ↥X)
     (D : X.IdealSheafData) : IsStrictNormalCrossingsDivisor D := fun x => (hX.false x).elim
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The two morphisms are equal. Substituting the second for the first gives the given smoothness hypothesis.
 -/
 private theorem smooth_of_eq {X Z : Scheme.{u}} {f g : X ⟶ Z} (h : f = g)
     (hg : AlgebraicGeometry.Smooth g) : AlgebraicGeometry.Smooth f := by
   rw [h]
   exact hg
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Equal morphisms have identical underlying point maps and hence identical inverse-image sets. Transfer the given density along this equality.
 -/
 private theorem dense_preimage_of_eq {X Z : Scheme.{u}} {f g : X ⟶ Z} (h : f = g) (W : Set ↥Z)
     (hg : Dense (g.base ⁻¹' W)) : Dense (f.base ⁻¹' W) := by
   rw [h]
   exact hg
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Equal maps define the same inverse-image closed set and the same reduced vanishing ideal. The strict normal crossings condition therefore transfers.
 -/
 private theorem isStrictNormalCrossingsDivisor_reducedInverseImage_of_eq {X Z : Scheme.{u}} {f g : X ⟶ Z} (h : f = g)
     (W : TopologicalSpace.Closeds ↥Z) (hg : IsStrictNormalCrossingsDivisor (reducedInverseImage g W)) :
@@ -332,16 +324,8 @@ private theorem isStrictNormalCrossingsDivisor_reducedInverseImage_of_eq {X Z : 
   rw [h]
   exact hg
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
-
-Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Take a nonempty open of the disjoint union and choose a point in it. The point belongs to one of the two summands, on which the inverse image of the open is nonempty and open. Density in that summand gives a point of the restricted set in this open. Its image belongs to the original open and the original set.
 -/
 private theorem dense_of_dense_preimage_inl_inr {A B : Scheme.{u}} (T : Set ↥(A ⨿ B))
     (hA : Dense ((coprod.inl : A ⟶ A ⨿ B).base ⁻¹' T))
@@ -372,8 +356,8 @@ private theorem dense_of_dense_preimage_inl_inr {A B : Scheme.{u}} (T : Set ↥(
     obtain ⟨x, hxU, hxT⟩ := (dense_iff_inter_open.mp hB) _ hopen hne2
     exact ⟨(coprod.inr : B ⟶ A ⨿ B).base x, hxU, hxT⟩
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
+/- English proof (authored)
+The inverse image of the target set along the composite from each summand is the restriction of the global inverse image to that summand. These two restrictions are dense by hypothesis. The disjoint-union density criterion gives density of the global inverse image.
 -/
 private theorem dense_preimage_of_dense_preimage_inl_inr_comp {A B Z : Scheme.{u}} (g : A ⨿ B ⟶ Z) (W : Set ↥Z)
     (hA : Dense (((coprod.inl : A ⟶ A ⨿ B) ≫ g).base ⁻¹' W))
@@ -383,8 +367,8 @@ private theorem dense_preimage_of_dense_preimage_inl_inr_comp {A B Z : Scheme.{u
   · rwa [preimage_comp_base_eq_preimage_preimage] at hA
   · rwa [preimage_comp_base_eq_preimage_preimage] at hB
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The map defined on the coproduct restricts to the two given maps on the summands. Their inverse images are dense, so the inverse image under the coproduct map is dense by the summand criterion.
 -/
 private theorem dense_preimage_coprod_desc {P Q Z : Scheme.{u}} (a : P ⟶ Z) (b : Q ⟶ Z)
     (W : Set ↥Z) (ha : Dense (a.base ⁻¹' W)) (hb : Dense (b.base ⁻¹' W)) :
@@ -395,8 +379,8 @@ private theorem dense_preimage_coprod_desc {P Q Z : Scheme.{u}} (a : P ⟶ Z) (b
   · rw [coprod.inr_desc]
     exact hb
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The two open summands cover the coproduct. On each, the reduced inverse image is the reduced inverse image under the corresponding given map, which has strict normal crossings. The locality of this condition on the summands proves it for the entire coproduct.
 -/
 private theorem isStrictNormalCrossingsDivisor_reducedInverseImage_coprod_desc {P Q Z : Scheme.{u}} (a : P ⟶ Z) (b : Q ⟶ Z)
     (W : TopologicalSpace.Closeds ↥Z)
@@ -408,8 +392,8 @@ private theorem isStrictNormalCrossingsDivisor_reducedInverseImage_coprod_desc {
   · rw [coprod.inr_desc]
     exact hb
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The restriction to the empty summand is smooth vacuously, and the restriction to the other summand is smooth by hypothesis. The map is the coproduct of its two restrictions, so it is smooth.
 -/
 private theorem smooth_of_isEmpty_left {A P Z : Scheme.{u}} (g : A ⨿ P ⟶ Z) (hA : IsEmpty ↥A)
     (hP : AlgebraicGeometry.Smooth ((coprod.inr : P ⟶ A ⨿ P) ≫ g)) :
@@ -422,8 +406,8 @@ private theorem smooth_of_isEmpty_left {A P Z : Scheme.{u}} (g : A ⨿ P ⟶ Z) 
     exact Blowup.smooth_of_isEmpty _
   exact smooth_of_eq hdesc.symm (Blowup.smooth_coprod_desc _ _ hA' hP)
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The inverse image in the empty summand is automatically dense, and in the other summand it is dense by hypothesis. The coproduct density criterion gives density on the whole source.
 -/
 private theorem dense_preimage_of_isEmpty_left {A P Z : Scheme.{u}} (g : A ⨿ P ⟶ Z) (W : Set ↥Z)
     (hA : IsEmpty ↥A)
@@ -431,8 +415,8 @@ private theorem dense_preimage_of_isEmpty_left {A P Z : Scheme.{u}} (g : A ⨿ P
   have := hA
   exact dense_preimage_of_dense_preimage_inl_inr_comp g W (dense_of_isEmpty _) hP
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The empty summand satisfies the pointwise strict normal crossings condition vacuously. The other summand satisfies it by hypothesis. Applying locality on the two open summands gives the result.
 -/
 private theorem isStrictNormalCrossingsDivisor_reducedInverseImage_of_isEmpty_left {A P Z : Scheme.{u}} (g : A ⨿ P ⟶ Z)
     (W : TopologicalSpace.Closeds ↥Z) (hA : IsEmpty ↥A)
@@ -440,8 +424,8 @@ private theorem isStrictNormalCrossingsDivisor_reducedInverseImage_of_isEmpty_le
     IsStrictNormalCrossingsDivisor (reducedInverseImage g W) :=
   IsStrictNormalCrossingsDivisor.reducedInverseImage_coprod g W (isStrictNormalCrossingsDivisor_of_isEmpty hA _) hP
 
-/- English proof (translation)
-Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Identify the two equal source schemes. The transport morphism is then the identity, so its composition with the given maps is the original smooth composite.
 -/
 private theorem smooth_eqToHom_comp_comp {X₁ X₂ Z W : Scheme.{u}} (e : X₁ = X₂) (g : X₂ ⟶ Z)
     (p : Z ⟶ W) (hg : AlgebraicGeometry.Smooth (g ≫ p)) :
@@ -450,8 +434,8 @@ private theorem smooth_eqToHom_comp_comp {X₁ X₂ Z W : Scheme.{u}} (e : X₁ 
   rw [eqToHom_refl, Category.id_comp]
   exact hg
 
-/- English proof (translation)
-Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Identify the equal source schemes. Transport is then the identity, so the composite is the original proper morphism.
 -/
 private theorem isProper_eqToHom_comp {X₁ X₂ Z : Scheme.{u}} (e : X₁ = X₂) (g : X₂ ⟶ Z)
     (hg : AlgebraicGeometry.IsProper g) : AlgebraicGeometry.IsProper (eqToHom e ≫ g) := by
@@ -459,8 +443,8 @@ private theorem isProper_eqToHom_comp {X₁ X₂ Z : Scheme.{u}} (e : X₁ = X�
   rw [eqToHom_refl, Category.id_comp]
   exact hg
 
-/- English proof (translation)
-Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+After identifying the equal sources, the transport is the identity. The two maps therefore have the same inverse image of the subset, which is dense by hypothesis.
 -/
 private theorem dense_preimage_eqToHom_comp {X₁ X₂ Z : Scheme.{u}} (e : X₁ = X₂) (g : X₂ ⟶ Z)
     (W : Set ↥Z) (hg : Dense (g.base ⁻¹' W)) : Dense ((eqToHom e ≫ g).base ⁻¹' W) := by
@@ -468,8 +452,8 @@ private theorem dense_preimage_eqToHom_comp {X₁ X₂ Z : Scheme.{u}} (e : X₁
   rw [eqToHom_refl, Category.id_comp]
   exact hg
 
-/- English proof (translation)
-Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Identifying the equal source schemes makes transport the identity. The reduced inverse-image ideal for the composite is then the given one, with its strict normal crossings property.
 -/
 private theorem isStrictNormalCrossingsDivisor_reducedInverseImage_eqToHom_comp {X₁ X₂ Z : Scheme.{u}} (e : X₁ = X₂)
     (g : X₂ ⟶ Z) (W : TopologicalSpace.Closeds ↥Z) (hg : IsStrictNormalCrossingsDivisor (reducedInverseImage g W)) :
@@ -478,10 +462,8 @@ private theorem isStrictNormalCrossingsDivisor_reducedInverseImage_eqToHom_comp 
   rw [eqToHom_refl, Category.id_comp]
   exact hg
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
+/- English proof (authored)
+The continuous inverse sends the component to an irreducible set. To prove maximality, take any irreducible set containing that image and apply the forward map. Its image is irreducible and contains the original component, so maximality forces it inside the original component. Applying the inverse map forces the larger set inside the desired image, giving maximality.
 -/
 private theorem image_mem_irreducibleComponents_of_continuous_inverse {α β : Type u} [TopologicalSpace α]
     [TopologicalSpace β] (f : α → β) (g : β → α) (hf : Continuous f) (hg : Continuous g)
@@ -499,10 +481,8 @@ private theorem image_mem_irreducibleComponents_of_continuous_inverse {α β : T
   intro x hx
   exact ⟨f x, hmax' ⟨x, hx, rfl⟩, hgf x⟩
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
-
-Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+For the empty list the product is the unit ideal and its support is empty. At each step the support of a product is the union of the two supports. Induction yields the union of the supports of all list members.
 -/
 private theorem support_prod_eq_iUnion {X : Scheme.{u}} (L : List X.IdealSheafData) :
     ((L.prod.support : TopologicalSpace.Closeds ↥X) : Set ↥X)
@@ -515,20 +495,16 @@ private theorem support_prod_eq_iUnion {X : Scheme.{u}} (L : List X.IdealSheafDa
       rw [Blowup.idealSheafData_prod_cons]
       simp [AlgebraicGeometry.Scheme.IdealSheafData.support_mul, ih]
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The zero locus of the pulled-back ideal is the inverse image of the original zero locus. These zero loci are the respective supports, giving the stated equality.
 -/
 private theorem support_comap_eq_preimage {X Z : Scheme.{u}} (f : X ⟶ Z) (I : Z.IdealSheafData) :
     (((I.comap f).support : TopologicalSpace.Closeds ↥X) : Set ↥X)
       = f.base ⁻¹' ((I.support : TopologicalSpace.Closeds ↥Z) : Set ↥Z) := by
   simp [AlgebraicGeometry.Scheme.IdealSheafData.support_comap]
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the stage. The initial projection is an isomorphism and hence proper. At a successor, the preceding stage is Noetherian by the Noetherianity theorem for blowup sequences. The next transition is therefore proper by the blowup properness hypothesis. Its composite with the proper preceding projection is the next projection and is proper.
 -/
 private theorem isProper_projectionToBase (hproper : FunctorialResolution.Blowup.BlowupIsProper.{u}) {X : Scheme.{u}}
     [AlgebraicGeometry.IsNoetherian X] (s : SequenceOfBlowups X) :
@@ -553,12 +529,8 @@ private theorem isProper_projectionToBase (hproper : FunctorialResolution.Blowup
       rw [← h1]
       infer_instance
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+At stage zero the projection of the strict transform is the identity. At a successor, first use the preceding equality to identify the composite to the field after the strict-transform transition. The commuting square with the ambient blowdown replaces this transition followed by inclusion by inclusion followed by blowdown. The ambient structural maps commute with that blowdown, giving the structural map at the new stage.
 -/
 private theorem strictTransformToZero_comp_schemeAtToSpec {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}}
     [AlgebraicGeometry.IsAffine Y] {pY : Y ⟶ Spec (CommRingCat.of k)}
@@ -582,8 +554,8 @@ private theorem strictTransformToZero_comp_schemeAtToSpec {k : Type u} [Field k]
         _ = S.strictTransformι (j + 1) ≫ (S.ambientBlowupMorphism j ≫ S.schemeAtToSpec j) := by rw [Category.assoc]
         _ = S.strictTransformι (j + 1) ≫ S.schemeAtToSpec (j + 1) := by rw [h1]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Expand the discarded piece’s projection to the base. The initial strict-transform map to the base followed by the field map equals the initial ambient structural map restricted to the strict transform. The strict-transform projection to zero is compatible with the ambient maps to the field. Substituting these equalities gives the claimed composite from the discarded piece.
 -/
 private theorem detachedToBase_comp_eq {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}}
     [AlgebraicGeometry.IsAffine Y] {pY : Y ⟶ Spec (CommRingCat.of k)}
@@ -592,8 +564,8 @@ private theorem detachedToBase_comp_eq {k : Type u} [Field k] [CharZero k] {Y : 
   rw [S.detachedToBase_def i, Category.assoc, Category.assoc, S.strictTransformZeroToBase_comp,
     strictTransformToZero_comp_schemeAtToSpec S i]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
+/- English proof (authored)
+Factor the final map through the transition using the stated equation. On the previous discarded summand the transition restricts to its inclusion in the preceding total space. On the newly discarded summand it factors through the preceding strict transform, and by hypothesis its composite to the target is the prescribed map. The two composites therefore agree on both summands and are equal by the coproduct property.
 -/
 private theorem inr_comp_eq_coprod_desc {A₁ A₀ P Q Z : Scheme.{u}} (φ : Q ⟶ A₀)
     (τ : (A₁ ⨿ (P ⨿ Q)) ⟶ (A₀ ⨿ P)) (u : (A₁ ⨿ (P ⨿ Q)) ⟶ Z) (v : (A₀ ⨿ P) ⟶ Z)
@@ -607,22 +579,8 @@ private theorem inr_comp_eq_coprod_desc {A₁ A₀ P Q Z : Scheme.{u}} (φ : Q �
   rw [← hw, ← hv, ← Category.assoc (coprod.inr : (P ⨿ Q) ⟶ (A₁ ⨿ (P ⨿ Q))) τ v, hτ]
   apply coprod.hom_ext <;> simp
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Identify the discarded piece with its open and closed subscheme of the current center. The identification preserves ambient images and matches their irreducible components, so no component of this open subscheme lies in a boundary member. The ambient boundary is in strict normal crossings position and the center meets it in strict normal crossings. The restriction result therefore gives strict normal crossings for the radical of the boundary product pulled back to the open subscheme. Its support is the pullback of the union of boundary supports. By the prescribed description on the discarded piece, this is exactly the inverse image of the original singular locus. Hence that radical is the required reduced inverse-image ideal after transporting through the isomorphism. The strict normal crossings property descends along this isomorphism to the discarded piece.
 -/
 private theorem isStrictNormalCrossingsDivisor_reducedInverseImage_detachedToBase {k : Type u} [Field k] [CharZero k]
     {Y : Scheme.{u}} [AlgebraicGeometry.IsAffine Y] {pY : Y ⟶ Spec (CommRingCat.of k)}
@@ -693,12 +651,8 @@ private theorem isStrictNormalCrossingsDivisor_reducedInverseImage_detachedToBas
     rw [comap_reducedInverseImage_of_isOpenImmersion e.inv (S.detachedToBase i) (smoothLocusComplement pY), hrp]
     exact hsnc1
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+At stage zero the accumulated discarded scheme is empty, so its map to the field is smooth. At a successor the prescribed map is the coproduct of the previous accumulated map and the map of the newly discarded piece. After composing with the field map the preceding summand is smooth by induction. The new summand is smooth by the discarded smoothness hypothesis and agreement of its two structural maps. Hence the coproduct is smooth.
 -/
 private theorem smooth_discardedUnion_comp {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}}
     [AlgebraicGeometry.IsAffine Y] {pY : Y ⟶ Spec (CommRingCat.of k)}
@@ -723,10 +677,8 @@ private theorem smooth_discardedUnion_comp {k : Type u} [Field k] [CharZero k] {
       refine Blowup.smooth_coprod_desc _ _ (ih (le_of_lt hj')) ?_
       exact smooth_of_eq (detachedToBase_comp_eq S j) (hSmooth j hj')
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+At zero the discarded union is empty and density is vacuous. At a successor the two summands map by the previous union map and the newly discarded map. Their inverse images of the smooth locus are dense by induction and the hypothesis on newly discarded pieces. Density then holds on their disjoint union.
 -/
 private theorem dense_preimage_smoothLocus_of_discardedUnion {k : Type u} [Field k] [CharZero k]
     {Y : Scheme.{u}} [AlgebraicGeometry.IsAffine Y] {pY : Y ⟶ Spec (CommRingCat.of k)}
@@ -747,10 +699,8 @@ private theorem dense_preimage_smoothLocus_of_discardedUnion {k : Type u} [Field
       refine dense_preimage_of_eq (hG j) _ ?_
       exact dense_preimage_coprod_desc _ _ _ (ih (le_of_lt hj')) (hDense j hj')
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+At zero there are no points at which to check strict normal crossings. At every successor the reduced inverse image restricts on the two summands to the reduced inverse image for the previous union and for the newly discarded piece. The induction hypothesis handles the first, and the calculation using the clopen center description and boundary handles the second. The coproduct criterion gives strict normal crossings on the full union.
 -/
 private theorem isStrictNormalCrossingsDivisor_reducedInverseImage_discardedUnion {k : Type u} [Field k] [CharZero k]
     {Y : Scheme.{u}} [AlgebraicGeometry.IsAffine Y] {pY : Y ⟶ Spec (CommRingCat.of k)}
@@ -775,20 +725,8 @@ private theorem isStrictNormalCrossingsDivisor_reducedInverseImage_discardedUnio
         (isStrictNormalCrossingsDivisor_reducedInverseImage_detachedToBase S hClopen hNotInBoundary hSing hCentersSNC hBoundarySNC hLevels
           hsncClopen j hj')
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+The full induced sequence projects to the base by the blowup transitions, and its projection on the accumulated discarded summand is the coproduct of the maps of the pieces detached so far. At the final stage the strict-transform ideal is the unit ideal, so the remaining strict-transform summand is empty. Induction on discarded pieces therefore gives smoothness over the field, density of the inverse image of the smooth locus, and strict normal crossings for the reduced inverse image of the singular locus on the entire final scheme. The projection is proper as a composite of proper blowups over Noetherian stages. Deleting unit-center steps preserves the final object and map and keeps all retained centers over the singular locus. The shortened sequence is consequently an isomorphism over the smooth locus. These facts give the six strong resolution conditions.
 -/
 private theorem isStrongResolution_blowupSequenceWithoutIsos {k : Type u} [Field k] [CharZero k]
     {Y : Scheme.{u}} [AlgebraicGeometry.IsAffine Y] {pY : Y ⟶ Spec (CommRingCat.of k)}
@@ -879,8 +817,8 @@ private theorem isStrongResolution_blowupSequenceWithoutIsos {k : Type u} [Field
     exact isStrictNormalCrossingsDivisor_reducedInverseImage_of_isEmpty_left (A := S.strictTransform S.ambientLength)
       (P := S.discardedUnion S.ambientLength) _ _ hStrictEmpty hSNCDiscarded
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+For the given affine scheme construct the principalization data using the specified embedding into smooth affine space with empty boundary. The affine hypotheses supply the blowup transitions, the properties of the discarded pieces and centers, and the ambient boundary conditions at each stage of these data. Apply the strong resolution criterion for the shortened induced sequence, using the stated restriction and properness results.
 -/
 theorem isStrongResolution_blowupSequenceWithoutIsos_ofAffine (A : PrincipalizationAlgorithm.{u})
     (hemb : AffineEmbedsIntoAffineSpace.{u}) (hsnc : NilIsStrictNormalCrossingsOnAffineSpace.{u})

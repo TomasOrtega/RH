@@ -29,56 +29,56 @@ def monomialBlowupStep (s : MarkedBlowupSequenceData p I m E) (h : IsAdmissibleC
     (centerAtLast s) h.2.1 h.2.2.1 h.2.2.2.1 h.2.2.2.2
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The monomial step is constructed as the single blowup at the admissible last center. The single-blowup sequence has one step.
 -/
 theorem monomialBlowupStep_length (s : MarkedBlowupSequenceData p I m E) (h : IsAdmissibleCenter s) :
     (monomialBlowupStep s h).length = 1 :=
   ofSingleBlowup_length h.2.1 h.2.2.1 h.2.2.2.1 h.2.2.2.2
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The single-step sequence starts on the last scheme of the input sequence. Its zero stage is therefore that scheme.
 -/
 theorem monomialBlowupStep_schemeAt_zero (s : MarkedBlowupSequenceData p I m E) (h : IsAdmissibleCenter s) :
     (monomialBlowupStep s h).obj 0 = s.obj s.length :=
   ofSingleBlowup_schemeAt_zero h.2.1 h.2.2.1 h.2.2.2.1 h.2.2.2.2
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+In the single-step data each positive index uses the scheme of the blowup. This blowup is along the last center of the input sequence.
 -/
 theorem monomialBlowupStep_schemeAt_succ (s : MarkedBlowupSequenceData p I m E) (h : IsAdmissibleCenter s) (i : ℕ) :
     (monomialBlowupStep s h).obj (i + 1) = Blowup.blowup (centerAtLast s) :=
   ofSingleBlowup_schemeAt_succ h.2.1 h.2.2.1 h.2.2.2.1 h.2.2.2.2 i
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The center used to form the single blowup is the given last center. It is the center at index zero of the single-step sequence.
 -/
 theorem monomialBlowupStep_center_zero (s : MarkedBlowupSequenceData p I m E) (h : IsAdmissibleCenter s) :
     (monomialBlowupStep s h).center 0 = centerAtLast s :=
   ofSingleBlowup_center_zero h.2.1 h.2.2.1 h.2.2.2.1 h.2.2.2.2
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The first step is the blowup along the last center. Its morphism is the projection from this blowup to the scheme carrying the center.
 -/
 theorem monomialBlowupStep_blowupMorphism_zero (s : MarkedBlowupSequenceData p I m E) (h : IsAdmissibleCenter s) :
     (monomialBlowupStep s h).map 0 = Blowup.blowup.proj (centerAtLast s) :=
   ofSingleBlowup_blowupMorphism_zero h.2.1 h.2.2.1 h.2.2.2.1 h.2.2.2.2
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The projection from stage one to the base of the single step is the blowup projection followed by the initial identification. That identification is the identity on the last scheme of the old sequence, leaving the blowup projection.
 -/
 theorem monomialBlowupStep_projectionToBase_one (s : MarkedBlowupSequenceData p I m E) (h : IsAdmissibleCenter s) :
     (monomialBlowupStep s h).proj 1 = Blowup.blowup.proj (centerAtLast s) :=
   ofSingleBlowup_projectionToBase_one h.2.1 h.2.2.1 h.2.2.2.1 h.2.2.2.2
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The marked ideal at stage one is the controlled transform under the single blowup. Pull back the last ideal and remove the mark-th power of the exceptional ideal, which is the pullback of the center. The residual ideal is the stated stage-one ideal.
 -/
 theorem monomialBlowupStep_ideal_one (s : MarkedBlowupSequenceData p I m E) (h : IsAdmissibleCenter s) :
     (monomialBlowupStep s h).ideal 1 =
@@ -87,8 +87,8 @@ theorem monomialBlowupStep_ideal_one (s : MarkedBlowupSequenceData p I m E) (h :
   ofSingleBlowup_ideal_one h.2.1 h.2.2.1 h.2.2.2.1 h.2.2.2.2
 
 @[simp]
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The boundary rule for a single blowup replaces each old divisor by its strict transform in the same order and adds the exceptional ideal at the end. The old boundary here is the last boundary of the input sequence.
 -/
 theorem monomialBlowupStep_boundary_one (s : MarkedBlowupSequenceData p I m E) (h : IsAdmissibleCenter s) :
     (monomialBlowupStep s h).boundary 1 =
@@ -97,15 +97,15 @@ theorem monomialBlowupStep_boundary_one (s : MarkedBlowupSequenceData p I m E) (
         [Blowup.exceptionalIdeal (Blowup.blowup.proj (centerAtLast s)) (centerAtLast s)] :=
   ofSingleBlowup_boundary_one h.2.1 h.2.2.1 h.2.2.2.1 h.2.2.2.2
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The single step's initial scheme is the old last scheme by construction. Its inverse initial isomorphism is exactly the morphism given by this identification in the indicated direction.
 -/
 theorem monomialBlowupStep_isoObjZero_inv (s : MarkedBlowupSequenceData p I m E) (h : IsAdmissibleCenter s) :
     (monomialBlowupStep s h).isoZero.inv = eqToHom (monomialBlowupStep_schemeAt_zero s h).symm :=
   rfl
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The last center is admissible, so the operation chooses the branch appending a single blowup at that center. The appended sequence is the given monomial step.
 -/
 theorem blowupAtCenter_eq_append (hinv : ComapIsoInvariance.{u}) (s : MarkedBlowupSequenceData p I m E)
     (h : IsAdmissibleCenter s) :
@@ -113,18 +113,16 @@ theorem blowupAtCenter_eq_append (hinv : ComapIsoInvariance.{u}) (s : MarkedBlow
   unfold blowupAtCenter monomialBlowupStep
   rw [dif_pos h]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The operation appends the single-step sequence when the center is admissible. The length of an append is the sum of the lengths, so the new length is the old length plus one.
 -/
 theorem blowupAtCenter_length (hinv : ComapIsoInvariance.{u}) (s : MarkedBlowupSequenceData p I m E)
     (h : IsAdmissibleCenter s) :
     (blowupAtCenter hinv s).length = s.length + 1 := by
   rw [blowupAtCenter_eq_append hinv s h, append_length, monomialBlowupStep_length]
 
-/- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
-
-Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+If the current center were admissible, the successor would have one more blowup and the two lengths could not agree. Conversely, an inadmissible center makes the step return the current sequence, so the lengths agree. This is precisely stationarity at the given index.
 -/
 theorem isStationaryAt_iff_not_isAdmissibleCenter (hinv : ComapIsoInvariance.{u}) (s : MarkedBlowupSequenceData p I m E) (n : ℕ) :
     IsStationaryAt hinv s n ↔ ¬ IsAdmissibleCenter (monomialBlowupIterate hinv s n) := by
@@ -141,8 +139,8 @@ theorem isStationaryAt_iff_not_isAdmissibleCenter (hinv : ComapIsoInvariance.{u}
     unfold blowupAtCenter
     rw [dif_neg h]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The index one greater than the original length belongs to the appended part with offset one. At that offset the single-step scheme is the blowup of the original last scheme along its last center.
 -/
 theorem blowupAtCenter_schemeAt_succ (hinv : ComapIsoInvariance.{u}) (s : MarkedBlowupSequenceData p I m E)
     (h : IsAdmissibleCenter s) :
@@ -152,8 +150,8 @@ theorem blowupAtCenter_schemeAt_succ (hinv : ComapIsoInvariance.{u}) (s : Marked
   have he : s.length + 1 - s.length = 0 + 1 := by omega
   rw [he, monomialBlowupStep_schemeAt_succ s h 0]
 
-/- English proof (translation)
-Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. A detailed English derivation is pending.
+/- English proof (authored)
+At the new last stage, the ideal of the append is the ideal at offset one of the single step, pulled back along the equality of the stage schemes. The single-step calculation identifies that ideal as the controlled transform by the exceptional power.
 -/
 theorem blowupAtCenter_ideal_succ (hinv : ComapIsoInvariance.{u}) (s : MarkedBlowupSequenceData p I m E)
     (h : IsAdmissibleCenter s) :
@@ -172,8 +170,8 @@ theorem blowupAtCenter_ideal_succ (hinv : ComapIsoInvariance.{u}) (s : MarkedBlo
   exact key (blowupAtCenter hinv s) (blowupAtCenter_eq_append hinv s h)
     (blowupAtCenter_schemeAt_succ hinv s h)
 
-/- English proof (translation)
-Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+Replace the given sequence by its description as the append. The boundary one stage beyond the old length is obtained by transporting the boundary at offset one of the single step along the specified stage identification. At offset one that boundary consists of the strict transforms followed by the exceptional ideal.
 -/
 private theorem boundary_succ_of_eq_append (hinv : ComapIsoInvariance.{u})
     (s : MarkedBlowupSequenceData p I m E) (h : IsAdmissibleCenter s) (d : MarkedBlowupSequenceData p I m E)
@@ -191,8 +189,8 @@ private theorem boundary_succ_of_eq_append (hinv : ComapIsoInvariance.{u})
     (List.map (fun D : (Blowup.blowup (centerAtLast s)).IdealSheafData => D.comap (eqToHom e)))
     (monomialBlowupStep_boundary_one s h)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+For an admissible center the new sequence is the append of the monomial step. Its new last boundary is the strict transforms of the old last boundary with the exceptional ideal added, transported along the new scheme identification by the boundary formula for an append.
 -/
 theorem blowupAtCenter_boundary_succ (hinv : ComapIsoInvariance.{u}) (s : MarkedBlowupSequenceData p I m E)
     (h : IsAdmissibleCenter s) :
@@ -204,8 +202,8 @@ theorem blowupAtCenter_boundary_succ (hinv : ComapIsoInvariance.{u}) (s : Marked
   boundary_succ_of_eq_append hinv s h (blowupAtCenter hinv s)
     (blowupAtCenter_eq_append hinv s h) (blowupAtCenter_schemeAt_succ hinv s h)
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Beyond the first length, the projection first identifies the stage with the second sequence's stage at the difference of the indices. It then goes to the base of that sequence and through the last projection of the first. The difference is the given second index, giving the claimed composite.
 -/
 private theorem appendProjectionToBase_of_lt (s : MarkedBlowupSequenceData p I m E)
     (t : MarkedBlowupSequenceData (s.proj s.length ≫ p) (s.ideal s.length) m (s.boundary s.length))
@@ -215,8 +213,8 @@ private theorem appendProjectionToBase_of_lt (s : MarkedBlowupSequenceData p I m
   subst hj
   exact appendProjectionToBase_of_length_lt s t hi
 
-/- English proof (translation)
-Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. A detailed English derivation is pending.
+/- English proof (authored)
+Use the appended projection formula with offset one in the single step. Its projection to the joining scheme is the blowup projection. The projection to the original base is therefore the stage identification followed by the blowup projection and the original last projection.
 -/
 theorem blowupAtCenter_projectionToBase_succ (hinv : ComapIsoInvariance.{u}) (s : MarkedBlowupSequenceData p I m E)
     (h : IsAdmissibleCenter s) :
@@ -245,8 +243,8 @@ def monomialStallIndex (hinv : ComapIsoInvariance.{u}) (p : X ⟶ Spec (CommRing
     (I : X.IdealSheafData) (m : ℕ) (E : List X.IdealSheafData) : ℕ :=
   sInf {n : ℕ | MarkedBlowupSequenceData.IsStationaryAt hinv (emptyMarkedBlowupSequenceData p I m E) n}
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The stationary indices form a nonempty set of natural numbers by hypothesis. Its infimum is its least member, so the defined stationary index is stationary.
 -/
 theorem isStationaryAt_monomialStallIndex (hinv : ComapIsoInvariance.{u}) (p : X ⟶ Spec (CommRingCat.of k))
     (I : X.IdealSheafData) (m : ℕ) (E : List X.IdealSheafData)
@@ -254,10 +252,8 @@ theorem isStationaryAt_monomialStallIndex (hinv : ComapIsoInvariance.{u}) (p : X
     MarkedBlowupSequenceData.IsStationaryAt hinv (emptyMarkedBlowupSequenceData p I m E) (monomialStallIndex hinv p I m E) := by
   exact Nat.sInf_mem hex
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+If this center were inadmissible, its index would be stationary. The infimum of the stationary indices would then be at most that index, contradicting the strict inequality with the defined stationary index.
 -/
 theorem isAdmissibleCenter_of_lt_monomialStallIndex (hinv : ComapIsoInvariance.{u})
     (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData) (m : ℕ)
@@ -274,10 +270,8 @@ theorem isAdmissibleCenter_of_lt_monomialStallIndex (hinv : ComapIsoInvariance.{
   exact hstall
     ((MarkedBlowupSequenceData.isStationaryAt_iff_not_isAdmissibleCenter hinv (emptyMarkedBlowupSequenceData p I m E) n).mpr hstep)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
-
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The given index is stationary, so the least stationary index is at most it. The least stationary index is itself stationary, because the set is nonempty. If it were smaller, the assumption on earlier centers would make its center admissible, contradicting stationarity. The indices are equal.
 -/
 theorem monomialStallIndex_eq_of_isStationaryAt (hinv : ComapIsoInvariance.{u})
     (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData) (m : ℕ)
@@ -295,8 +289,8 @@ theorem monomialStallIndex_eq_of_isStationaryAt (hinv : ComapIsoInvariance.{u})
       (monomialStallIndex hinv p I m E) := Nat.sInf_mem hne
   exact ((MarkedBlowupSequenceData.isStationaryAt_iff_not_isAdmissibleCenter hinv _ _).mp hmem) (hstep _ hlt')
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The monomial sequence is defined by iterating from the empty sequence for the infimum of its stationary indices. That number is the stated stationary index.
 -/
 theorem monomialBlowupSeq_eq_monomialBlowupIterate (hinv : ComapIsoInvariance.{u}) (p : X ⟶ Spec (CommRingCat.of k))
     (I : X.IdealSheafData) (m : ℕ) (E : List X.IdealSheafData) :
@@ -305,12 +299,8 @@ theorem monomialBlowupSeq_eq_monomialBlowupIterate (hinv : ComapIsoInvariance.{u
         (monomialStallIndex hinv p I m E) :=
   rfl
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Use linear arithmetic over natural numbers and integers.
+/- English proof (authored)
+Induct on the number of iterations. At zero the sequence is the initial one. At a successor all earlier centers satisfy the induction hypothesis, and the current admissible center appends exactly one blowup. This increases both the actual length and the formula by one.
 -/
 private theorem monomialBlowupIterate_length {p : X ⟶ Spec (CommRingCat.of k)}
     {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData} (hinv : ComapIsoInvariance.{u})
@@ -332,8 +322,8 @@ private theorem monomialBlowupIterate_length {p : X ⟶ Spec (CommRingCat.of k)}
           MarkedBlowupSequenceData.blowupAtCenter_length hinv _ h2]
       omega
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Before the first stationary index every center is admissible. Apply the iteration length formula from the empty sequence through that index. The initial length is zero, so the resulting length equals the stationary index.
 -/
 theorem monomialBlowupSeq_length (hinv : ComapIsoInvariance.{u}) (p : X ⟶ Spec (CommRingCat.of k))
     (I : X.IdealSheafData) (m : ℕ) (E : List X.IdealSheafData) :
@@ -343,10 +333,8 @@ theorem monomialBlowupSeq_length (hinv : ComapIsoInvariance.{u}) (p : X ⟶ Spec
     (fun j hj => isAdmissibleCenter_of_lt_monomialStallIndex hinv p I m E j hj)
   rw [monomialBlowupSeq_eq_monomialBlowupIterate, h, emptyMarkedBlowupSequenceData_length, Nat.zero_add]
 
-/- English proof (translation)
-Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+If the center is admissible, the operation appends a single step and the stages up to the old length continue to use the original schemes. If the center is inadmissible, the operation returns the sequence itself. Both cases give the stated equality.
 -/
 private theorem blowupAtCenter_schemeAt_of_le {p : X ⟶ Spec (CommRingCat.of k)}
     {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData} (hinv : ComapIsoInvariance.{u})
@@ -360,10 +348,8 @@ private theorem blowupAtCenter_schemeAt_of_le {p : X ⟶ Spec (CommRingCat.of k)
       rw [dif_neg h]
     rw [hs]
 
-/- English proof (translation)
-Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Replace the relevant objects with their definitions.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The operation appends one blowup if the center is admissible and otherwise returns the original sequence. The length either increases by one or stays equal, giving the inequality.
 -/
 private theorem length_le_blowupAtCenter_length {p : X ⟶ Spec (CommRingCat.of k)}
     {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData} (hinv : ComapIsoInvariance.{u})
@@ -377,12 +363,8 @@ private theorem length_le_blowupAtCenter_length {p : X ⟶ Spec (CommRingCat.of 
       rw [dif_neg h]
     exact le_of_eq (by rw [hs])
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Treat this case separately. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At zero both claims are immediate from the initial sequence. Induct on the number of steps. The next step does not reduce the length, so it preserves the lower bound. Each original index still lies within the preceding sequence by that bound. Its scheme survives the new step and agrees with the original scheme by induction.
 -/
 private theorem monomialBlowupIterate_length_le_and_schemeAt_eq {p : X ⟶ Spec (CommRingCat.of k)}
     {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData} (hinv : ComapIsoInvariance.{u})
@@ -406,8 +388,8 @@ private theorem monomialBlowupIterate_length_le_and_schemeAt_eq {p : X ⟶ Spec 
             (le_trans hi ih.1)]
         exact ih.2 i hi
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Induct on the second iteration count. A zero second count returns the first iterate. For a successor, both expressions apply the same center step to the preceding expression, and those preceding expressions are equal by induction and associativity of addition.
 -/
 private theorem monomialBlowupIterate_add {p : X ⟶ Spec (CommRingCat.of k)}
     {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData} (hinv : ComapIsoInvariance.{u})
@@ -420,10 +402,8 @@ private theorem monomialBlowupIterate_add {p : X ⟶ Spec (CommRingCat.of k)}
       rw [← Nat.add_assoc, MarkedBlowupSequenceData.monomialBlowupIterate_succ,
         MarkedBlowupSequenceData.monomialBlowupIterate_succ, ih]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Up to the given index, every step before it has an admissible center, so its iterate from the empty sequence has length equal to the index. Split the iteration to the stationary index into this iterate and the remaining iterations. Later iterations preserve all its stages. Thus the given stage in the full sequence is the last scheme of that earlier iterate.
 -/
 theorem monomialBlowupSeq_schemeAt (hinv : ComapIsoInvariance.{u}) (p : X ⟶ Spec (CommRingCat.of k))
     (I : X.IdealSheafData) (m : ℕ) (E : List X.IdealSheafData) (n : ℕ)
@@ -445,8 +425,8 @@ theorem monomialBlowupSeq_schemeAt (hinv : ComapIsoInvariance.{u}) (p : X ⟶ Sp
     (MarkedBlowupSequenceData.monomialBlowupIterate hinv (emptyMarkedBlowupSequenceData p I m E) n)
     (monomialStallIndex hinv p I m E - n)).2 n (le_of_eq hlen.symm)
 
-/- English proof (translation)
-Substitute using the available equality. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The two identification morphisms come from opposite equalities of schemes and are inverse. The successive pullbacks therefore compose to pullback along the identity, giving the original ideal.
 -/
 private theorem comap_eqToHom_comap_eqToHom_symm {V W : Scheme.{u}} (h : V = W)
     (J : W.IdealSheafData) :
@@ -454,10 +434,8 @@ private theorem comap_eqToHom_comap_eqToHom_symm {V W : Scheme.{u}} (h : V = W)
   subst h
   simp
 
-/- English proof (translation)
-Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+If the current center is admissible, the next iterate is formed by appending its single blowup, so the current sequence is its prefix. Otherwise the next iterate equals the current one, which is a prefix of itself.
 -/
 private theorem isPrefix_monomialBlowupIterate_succ {p : X ⟶ Spec (CommRingCat.of k)}
     {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
@@ -475,10 +453,8 @@ private theorem isPrefix_monomialBlowupIterate_succ {p : X ⟶ Spec (CommRingCat
     rw [MarkedBlowupSequenceData.monomialBlowupIterate_succ, hs]
     exact MarkedBlowupSequenceData.IsPrefix.refl _
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Separate the alternatives or extract the components of the hypothesis.
-
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the later index. At equality the iterate is its own prefix. If the earlier index is strictly below a successor, apply induction to the predecessor, then use the consecutive prefix relation and transitivity.
 -/
 private theorem isPrefix_monomialBlowupIterate_of_le {p : X ⟶ Spec (CommRingCat.of k)}
     {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
@@ -495,8 +471,8 @@ private theorem isPrefix_monomialBlowupIterate_of_le {p : X ⟶ Spec (CommRingCa
         exact MarkedBlowupSequenceData.IsPrefix.refl _
       · exact (ih (Nat.lt_succ_iff.mp h)).trans (isPrefix_monomialBlowupIterate_succ hinv s n)
 
-/- English proof (translation)
-Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Identify the index with the length of the prefix. The prefix relation expresses its ideal at that stage as the pullback of the longer sequence's ideal under the prefix identification. Pull back along the inverse identification. The two transports cancel, yielding the given ideal on the longer sequence.
 -/
 private theorem ideal_eq_comap_of_isPrefix {p : X ⟶ Spec (CommRingCat.of k)}
     {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
@@ -507,10 +483,8 @@ private theorem ideal_eq_comap_of_isPrefix {p : X ⟶ Spec (CommRingCat.of k)}
   rw [hpre.ideal_eq A.length le_rfl]
   exact (comap_eqToHom_comap_eqToHom_symm (hpre.obj_eq A.length le_rfl) (B.ideal A.length)).symm
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The iterate at the chosen index has that index as its length because every earlier center is admissible. It is a prefix of the full iteration to the stationary index. The ideal formula for a prefix therefore identifies the full sequence's ideal at that index with the transported last ideal of the chosen iterate.
 -/
 theorem monomialBlowupSeq_ideal (hinv : ComapIsoInvariance.{u}) (p : X ⟶ Spec (CommRingCat.of k))
     (I : X.IdealSheafData) (m : ℕ) (E : List X.IdealSheafData) (n : ℕ)
@@ -533,15 +507,15 @@ theorem monomialBlowupSeq_ideal (hinv : ComapIsoInvariance.{u}) (p : X ⟶ Spec 
     (MarkedBlowupSequenceData.monomialBlowupIterate hinv (emptyMarkedBlowupSequenceData p I m E) n)
     (monomialBlowupSeq hinv p I m E) n hlen hpre (monomialBlowupSeq_schemeAt hinv p I m E n hn)
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+An equality of the scheme with itself induces the identity morphism. Pullback of the ideal along that morphism leaves it unchanged.
 -/
 private theorem comap_eqToHom_self {Y : Scheme.{u}} (q : Y = Y) (Z : Y.IdealSheafData) :
     Z.comap (eqToHom q) = Z := by
   simp
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately.
+/- English proof (authored)
+Every boundary entry pulls back to itself along the identity induced by the equality. Therefore the mapped list equals the original list.
 -/
 private theorem map_comap_eqToHom_self {Y : Scheme.{u}} (q : Y = Y) (L : List Y.IdealSheafData) :
     List.map (fun D => D.comap (eqToHom q)) L = L := by
@@ -549,8 +523,8 @@ private theorem map_comap_eqToHom_self {Y : Scheme.{u}} (q : Y = Y) (L : List Y.
   | nil => rfl
   | cons a l ih => rw [List.map_cons, ih, comap_eqToHom_self]
 
-/- English proof (translation)
-Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The changes of scheme identification along the two equalities compose to the change along their combined equality. By functoriality the two successive pullbacks equal the single pullback along that composite.
 -/
 private theorem comap_eqToHom_comp {A B C : Scheme.{u}} (hAB : A = B) (hBC : B = C) (hAC : A = C)
     (D : C.IdealSheafData) :
@@ -559,8 +533,8 @@ private theorem comap_eqToHom_comp {A B C : Scheme.{u}} (hAB : A = B) (hBC : B =
   cases hBC
   simp only [comap_eqToHom_self]
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately.
+/- English proof (authored)
+For each list entry, the two successive ideal pullbacks along the scheme identifications equal pullback along the combined identification. Applying this equality at every position gives equality of the lists.
 -/
 private theorem map_comap_eqToHom_comp {A B C : Scheme.{u}} (hAB : A = B) (hBC : B = C)
     (hAC : A = C) (L : List C.IdealSheafData) :
@@ -571,8 +545,8 @@ private theorem map_comap_eqToHom_comp {A B C : Scheme.{u}} (hAB : A = B) (hBC :
   | nil => rfl
   | cons a l ih => simp only [List.map_cons, ih, comap_eqToHom_comp hAB hBC hAC]
 
-/- English proof (translation)
-Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
+/- English proof (authored)
+The admissible step is an append. At a stage up to the old length, the boundary formula for appends takes the original boundary and pulls each ideal back along the stage identification. This gives the stated list.
 -/
 private theorem blowupAtCenter_boundary_of_le (hinv : ComapIsoInvariance.{u})
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
@@ -591,12 +565,8 @@ private theorem blowupAtCenter_boundary_of_le (hinv : ComapIsoInvariance.{u})
   exact key (MarkedBlowupSequenceData.blowupAtCenter hinv s)
     (MarkedBlowupSequenceData.blowupAtCenter_eq_append hinv s h) ho
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the number of further steps. With zero steps the identification is the identity. In a successor, the earlier stage is still within the preceding sequence because its length has grown. The latest admissible step transports the preceding boundary, and induction identifies that preceding boundary with the transported original boundary. Combining the two identification morphisms gives the stated direct pullback of each original entry.
 -/
 private theorem monomialBlowupIterate_boundary_of_le (hinv : ComapIsoInvariance.{u})
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
@@ -629,8 +599,8 @@ private theorem monomialBlowupIterate_boundary_of_le (hinv : ComapIsoInvariance.
         (Eq.trans (congrArg (List.map (fun D => D.comap (eqToHom hobj1))) hprev)
           (map_comap_eqToHom_comp hobj1 hobj2 ho (s.boundary i)))
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Use the equality of indices to replace the index on the second sequence with the specified index on the first. The boundary formula at that common index then applies with the given scheme identification.
 -/
 private theorem boundary_eq_map_comap_of_index_eq
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
@@ -642,12 +612,8 @@ private theorem boundary_eq_map_comap_of_index_eq
   subst hL
   exact hb H
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
+/- English proof (authored)
+The iterate at the given index has length equal to that index. Express the full sequence as this iterate followed by the remaining iterations to the first stationary index. Each remaining step before that index has an admissible center, so iteration preserves the earlier boundary under the stage identification. At the given index that boundary is the earlier iterate's last boundary, giving the formula.
 -/
 theorem monomialBlowupSeq_boundary (hinv : ComapIsoInvariance.{u}) (p : X ⟶ Spec (CommRingCat.of k))
     (I : X.IdealSheafData) (m : ℕ) (E : List X.IdealSheafData) (n : ℕ)
@@ -701,8 +667,8 @@ theorem monomialBlowupSeq_boundary (hinv : ComapIsoInvariance.{u}) (p : X ⟶ Sp
     (MarkedBlowupSequenceData.monomialBlowupIterate hinv (emptyMarkedBlowupSequenceData p I m E) n).length hlen
     (key (monomialBlowupSeq hinv p I m E) hseq) (monomialBlowupSeq_schemeAt hinv p I m E n hn)
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The marked append uses the center ideals of its appended underlying blowup data. Thus at any index its center agrees with the underlying center.
 -/
 private theorem append_center_eq_appendToBlowupSequenceData_center {p : X ⟶ Spec (CommRingCat.of k)}
     {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData} (s : MarkedBlowupSequenceData p I m E)
@@ -711,10 +677,8 @@ private theorem append_center_eq_appendToBlowupSequenceData_center {p : X ⟶ Sp
     (s.append t hinv).center i = (s.appendToBlowupSequenceData t).center i :=
   rfl
 
-/- English proof (translation)
-Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
-
-Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
+/- English proof (authored)
+If a new blowup is appended, every center strictly before the old length belongs to the first part of the append. Its ideal is the former center pulled back along the identification of the stages. If the center is inadmissible, the sequence is unchanged and the identification pullback is the identity. The formula holds in either case.
 -/
 private theorem blowupAtCenter_center_of_lt {p : X ⟶ Spec (CommRingCat.of k)}
     {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData} (hinv : ComapIsoInvariance.{u})
@@ -740,12 +704,8 @@ private theorem blowupAtCenter_center_of_lt {p : X ⟶ Spec (CommRingCat.of k)}
       exact (comap_eqToHom_self eD _).symm
     exact key (MarkedBlowupSequenceData.blowupAtCenter hinv d) hs e
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the number of further iterations. At zero the center is the original one under an identity pullback. At a successor, the earlier index stays strictly within the preceding length by its lower bound. The one-step center formula identifies it with the transported preceding center, and induction identifies that center with the transported original one. Compose the two pullbacks along the identifications.
 -/
 private theorem monomialBlowupIterate_center_of_lt {p : X ⟶ Spec (CommRingCat.of k)}
     {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData} (hinv : ComapIsoInvariance.{u})
@@ -771,12 +731,8 @@ private theorem monomialBlowupIterate_center_of_lt {p : X ⟶ Spec (CommRingCat.
       rw [ih e2]
       exact comap_eqToHom_comp e1 e2 e (d.center i)
 
-/- English proof (translation)
-Substitute using the available equality. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
+/- English proof (authored)
+At the old last index, the append takes the initial center of the single step. This center is formed by pulling back through the inverse initial isomorphism of that step and through the identification of the joining scheme. The inverse initial isomorphism itself is the identification with the zero stage. Combining the two identifications gives the supplied equality of schemes. The initial center of the single step is the old last center, yielding the formula.
 -/
 private theorem blowupAtCenter_center_of_eq_length {p : X ⟶ Spec (CommRingCat.of k)}
     {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData} (hinv : ComapIsoInvariance.{u})
@@ -818,10 +774,8 @@ private theorem blowupAtCenter_center_of_eq_length {p : X ⟶ Spec (CommRingCat.
   exact key (MarkedBlowupSequenceData.blowupAtCenter hinv d)
     (MarkedBlowupSequenceData.blowupAtCenter_eq_append hinv d h) e
 
-/- English proof (translation)
-Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The first added blowup increases the length to the given index plus one. At the given index its center is the former last center under the joining identification. Further iterations preserve all centers strictly within this new length, transporting them by their stage identifications. Composing with the join identification gives the stated pullback.
 -/
 private theorem center_monomialBlowupIterate_blowupAtCenter_eq {p : X ⟶ Spec (CommRingCat.of k)}
     {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData} (hinv : ComapIsoInvariance.{u})
@@ -845,12 +799,8 @@ private theorem center_monomialBlowupIterate_blowupAtCenter_eq {p : X ⟶ Spec (
     blowupAtCenter_center_of_eq_length hinv d h n hlen.symm ejunc]
   exact comap_eqToHom_comp e1 ejunc eD (MarkedBlowupSequenceData.centerAtLast d)
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Before the first stationary index the iterate at the chosen index has length equal to that index and an admissible last center. Split the full iteration into that iterate, its next blowup and the remaining steps. The next blowup uses the last center of the iterate, and the remaining steps preserve it by the earlier-center formula. Transporting it to the stage of the complete sequence gives the claim.
 -/
 theorem monomialBlowupSeq_center (hinv : ComapIsoInvariance.{u}) (p : X ⟶ Spec (CommRingCat.of k))
     (I : X.IdealSheafData) (m : ℕ) (E : List X.IdealSheafData) (n : ℕ)
@@ -901,8 +851,8 @@ variable {k : Type u} [Field k] {X : Scheme.{u}} {p : X ⟶ Spec (CommRingCat.of
 def monomialStallIndex (hinv : ComapIsoInvariance.{u}) (s : MarkedBlowupSequenceData p I m E) : ℕ :=
   sInf {n : ℕ | IsStationaryAt hinv s n}
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The stationary index of a sequence is defined as the infimum of the indices where the next step leaves its length unchanged.
 -/
 theorem monomialStallIndex_eq_sInf (hinv : ComapIsoInvariance.{u}) (s : MarkedBlowupSequenceData p I m E) :
     monomialStallIndex hinv s = sInf {n : ℕ | IsStationaryAt hinv s n} :=
@@ -912,15 +862,15 @@ def monomialIterateUntilStall (hinv : ComapIsoInvariance.{u}) (s : MarkedBlowupS
     MarkedBlowupSequenceData p I m E :=
   monomialBlowupIterate hinv s (monomialStallIndex hinv s)
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+Iteration until stationarity is defined as iteration for the stationary index of the supplied sequence. This is the expression on the right.
 -/
 theorem monomialIterateUntilStall_eq_monomialBlowupIterate (hinv : ComapIsoInvariance.{u}) (s : MarkedBlowupSequenceData p I m E) :
     monomialIterateUntilStall hinv s = monomialBlowupIterate hinv s (monomialStallIndex hinv s) :=
   rfl
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+With an inadmissible initial center, the sequence is stationary at iteration zero. Its stationary index is the infimum of a set of natural numbers containing zero, so that infimum is zero.
 -/
 theorem monomialStallIndex_eq_zero_of_not_isAdmissibleCenter (hinv : ComapIsoInvariance.{u})
     (s : MarkedBlowupSequenceData p I m E) (h : ¬ IsAdmissibleCenter s) : monomialStallIndex hinv s = 0 := by
@@ -936,8 +886,8 @@ section
 
 variable {k : Type u} [Field k] {X : Scheme.{u}}
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+Both expressions take the infimum of stationary indices for the iteration whose initial sequence is empty. They therefore agree.
 -/
 theorem monomialStallIndex_eq_monomialStallIndex_empty (hinv : ComapIsoInvariance.{u})
     (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData) (m : ℕ)
@@ -946,8 +896,8 @@ theorem monomialStallIndex_eq_monomialStallIndex_empty (hinv : ComapIsoInvarianc
       MarkedBlowupSequenceData.monomialStallIndex hinv (emptyMarkedBlowupSequenceData p I m E) :=
   rfl
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+Start with the empty marked sequence. The monomial sequence and the construction that iterates until stationarity both run it for the infimum of the same set of stationary indices.
 -/
 theorem monomialBlowupSeq_eq_monomialIterateUntilStall (hinv : ComapIsoInvariance.{u})
     (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData) (m : ℕ)

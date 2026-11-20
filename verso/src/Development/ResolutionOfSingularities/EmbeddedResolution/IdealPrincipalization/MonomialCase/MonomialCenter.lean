@@ -35,8 +35,8 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+The closure of the component is irreducible and lies in the closed support of the intersection ideal. It contains the component, so maximality makes it equal to the component. The component is therefore closed.
 -/
 theorem isClosed_intersectionComponents_of_mem {Y : Scheme.{u}} {L : List Y.IdealSheafData}
     {J : Finset (Fin L.length)} {C : Set ↥Y} (hC : C ∈ intersectionComponents L J) : IsClosed C := by
@@ -48,15 +48,15 @@ theorem isClosed_intersectionComponents_of_mem {Y : Scheme.{u}} {L : List Y.Idea
     h.2.2 (closure C) h.1.closure subset_closure (closure_minimal h.2.1 hclosed)
   exact isClosed_of_closure_subset hcl.subset
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+An intersection component is a maximal irreducible subset of the intersection support. Irreducibility is part of this condition.
 -/
 theorem isIrreducible_of_mem_intersectionComponents {Y : Scheme.{u}} {L : List Y.IdealSheafData}
     {J : Finset (Fin L.length)} {C : Set ↥Y} (hC : C ∈ intersectionComponents L J) : IsIrreducible C :=
   ((mem_intersectionComponents_iff L J C).1 hC).1
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+The chosen point for the irreducible set has singleton closure equal to the closure of the set. The intersection component is already closed, so this singleton closure is the component itself.
 -/
 theorem isGenericPoint_genericPoint_of_mem_intersectionComponents {Y : Scheme.{u}}
     {L : List Y.IdealSheafData} {J : Finset (Fin L.length)} {C : Set ↥Y}
@@ -67,8 +67,8 @@ theorem isGenericPoint_genericPoint_of_mem_intersectionComponents {Y : Scheme.{u
     simp
   exact h.trans hcl
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. A detailed English derivation is pending.
+/- English proof (authored)
+The component is irreducible. The definition of order along an irreducible set gives the order at its generic point.
 -/
 theorem orderAlong_eq_orderAt_of_mem_intersectionComponents {Y : Scheme.{u}} (I : Y.IdealSheafData)
     {L : List Y.IdealSheafData} {J : Finset (Fin L.length)} {C : Set ↥Y}
@@ -77,18 +77,16 @@ theorem orderAlong_eq_orderAt_of_mem_intersectionComponents {Y : Scheme.{u}} (I 
   unfold orderAlong
   exact dif_pos (isIrreducible_of_mem_intersectionComponents hC)
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. A detailed English derivation is pending.
+/- English proof (authored)
+With irreducibility supplied, the order-along definition selects the branch evaluating the ideal's order at the generic point.
 -/
 theorem orderAlong_eq_orderAt_genericPoint {Y : Scheme.{u}} (I : Y.IdealSheafData)
     {C : Set ↥Y} (h : IsIrreducible C) : orderAlong I C = orderAt I h.genericPoint := by
   unfold orderAlong
   exact dif_pos h
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The singleton closures of the two generic points are the two given closures and hence are equal. Scheme spaces distinguish points by their closures, so the two points coincide. The order along each set is the order at the common point.
 -/
 theorem orderAlong_eq_of_closure_eq {Y : Scheme.{u}} (I : Y.IdealSheafData) {S : Set ↥Y}
     (hS : IsIrreducible S) {C : Set ↥Y} (hC : IsIrreducible C)
@@ -100,16 +98,16 @@ theorem orderAlong_eq_of_closure_eq {Y : Scheme.{u}} (I : Y.IdealSheafData) {S :
     rw [e1, e2, hcl]
   rw [(inseparable_iff_closure_eq.mpr h1).eq]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The zero ideal sheaf has zero stalk at every point. That stalk is contained in the maximal ideal, so the point belongs to the support.
 -/
 private theorem mem_support_bot {Y : Scheme.{u}} (x : ↥Y) :
     x ∈ (⊥ : Y.IdealSheafData).support := by
   rw [mem_support_iff_stalkIdeal_le_maximalIdeal, stalkIdeal_bot]
   exact bot_le
 
-/- English proof (translation)
-Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Both stalk ideals lie inside the maximal ideal. The stalk of their sum is the sum of the stalk ideals, which is contained in the maximal ideal as well. This gives membership in the support of the sum.
 -/
 private theorem mem_support_sup_of_mem {Y : Scheme.{u}} {I J : Y.IdealSheafData} {x : ↥Y}
     (hI : x ∈ I.support) (hJ : x ∈ J.support) : x ∈ (I ⊔ J).support := by
@@ -117,10 +115,8 @@ private theorem mem_support_sup_of_mem {Y : Scheme.{u}} {I J : Y.IdealSheafData}
   rw [stalkIdeal_sup]
   exact sup_le hI hJ
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Induct on the finite selection. The zero ideal from the empty sum has full support. When one ideal is added, the point belongs to its support by hypothesis and to the support of the smaller sum by induction. It then belongs to the support of their sum.
 -/
 private theorem mem_support_finsetSup_of_forall_mem {Y : Scheme.{u}} (L : List Y.IdealSheafData)
     (x : ↥Y) (S : Finset (Fin L.length)) (hx : ∀ j ∈ S, x ∈ (L.get j).support) :
@@ -135,8 +131,8 @@ private theorem mem_support_finsetSup_of_forall_mem {Y : Scheme.{u}} (L : List Y
     exact mem_support_sup_of_mem (hS a (Finset.mem_insert_self a s))
       (ih fun j hj => hS j (Finset.mem_insert_of_mem hj))
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The intersection ideal is the finite sum of the selected boundary ideals. At the specified point each summand has stalk contained in the maximal ideal, so the sum does as well. This is membership in the intersection support.
 -/
 theorem mem_support_intersectionIdeal {Y : Scheme.{u}} (L : List Y.IdealSheafData)
     (J : Finset (Fin L.length)) (x : ↥Y) (hx : ∀ j ∈ J, x ∈ (L.get j).support) :
@@ -146,8 +142,8 @@ theorem mem_support_intersectionIdeal {Y : Scheme.{u}} (L : List Y.IdealSheafDat
   rw [he]
   exact mem_support_finsetSup_of_forall_mem L x J hx
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Use the boundary-component property from the geometry hypotheses for the admissible triple. It says that the component lies in the support of exactly the boundary divisors indexed by the selected set.
 -/
 theorem subset_support_iff_mem_of_mem_intersectionComponents (hGeom : MonomialGeometryHypotheses.{u})
     {T : MarkedIdealWithBoundary.{u}} (hT : MonomialCenter.IsLocallyMonomialTriple T)
@@ -156,12 +152,8 @@ theorem subset_support_iff_mem_of_mem_intersectionComponents (hGeom : MonomialGe
     C ⊆ (↑(T.boundary.get i).support : Set ↥T.scheme) ↔ i ∈ J :=
   hGeom.components_subset_divisor_iff T hT.valid J C hC i
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+A closed boundary support contains the generic point exactly when it contains the generic point's entire closure, which is the given component. The component containment criterion identifies this with membership of the divisor index in the chosen set.
 -/
 theorem genericPoint_mem_support_iff_mem (hGeom : MonomialGeometryHypotheses.{u})
     {T : MarkedIdealWithBoundary.{u}} (hT : MonomialCenter.IsLocallyMonomialTriple T)
@@ -187,10 +179,8 @@ theorem genericPoint_mem_support_iff_mem (hGeom : MonomialGeometryHypotheses.{u}
     rw [hgen] at hmem
     exact hsub.2 hi hmem
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The hypothesis places the generic point of the component in the locus of order at least the threshold. Over the characteristic-zero base with smooth structural map this locus is closed. It therefore contains the closure of the generic point, which is the component.
 -/
 theorem subset_orderAtLeastLocus_of_le_orderAlong {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
     {J : Finset (Fin T.boundary.length)} {C : Set ↥T.scheme}
@@ -216,15 +206,15 @@ def supportIndices {Y : Scheme.{u}} (L : List Y.IdealSheafData) (x : ↥Y) :
     Finset (Fin L.length) :=
   @Finset.filter _ (fun j => x ∈ (L.get j).support) (Classical.decPred _) Finset.univ
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The index set is obtained by filtering the boundary positions for membership of the given point in the corresponding support. This is exactly the stated condition.
 -/
 theorem mem_supportIndices {Y : Scheme.{u}} (L : List Y.IdealSheafData) (x : ↥Y)
     (j : Fin L.length) : j ∈ supportIndices L x ↔ x ∈ (L.get j).support := by
   simp [supportIndices]
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately.
+/- English proof (authored)
+Induct on the list. The empty product is the unit ideal of order zero, equal to the empty sum. For a nonempty list, the order of the product of its first factor and the remaining product is the sum of their orders. Use the induction formula for the remaining product.
 -/
 theorem orderAt_foldr_mul (k : Type u) [Field k] [CharZero k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -234,14 +224,8 @@ theorem orderAt_foldr_mul (k : Type u) [Field k] [CharZero k] {X : Scheme.{u}}
   | nil => simp [orderAt_top]
   | cons I L ih => simp [orderAt_mul k p, ih]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
+/- English proof (authored)
+Restriction to an open preserves order at its points. On the given neighborhood, apply additivity of order to the product expression for the ideal, and use that raising a factor to its exponent multiplies its order by that exponent. A boundary divisor has order one on its support and zero off it. Thus each contribution equals the exponent times the indicator of the divisor support, giving the sum.
 -/
 theorem orderAt_eq_sum_indicator_support (hGeom : MonomialGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : MonomialCenter.IsLocallyMonomialTriple T) (U : T.scheme.Opens)
@@ -292,28 +276,22 @@ theorem orderAt_eq_sum_indicator_support (hGeom : MonomialGeometryHypotheses.{u}
             (↑(T.boundary.get j).support : Set ↥T.scheme).indicator (fun _ => (1 : ℕ∞)) x :=
         Finset.sum_congr rfl fun i _ => h3 i
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+The indicator of the constant function 1 takes value zero outside the set. The point is outside by hypothesis.
 -/
 private theorem indicator_one_eq_zero_of_notMem {α : Type u} (s : Set α) (x : α) (h : x ∉ s) :
     s.indicator (fun _ => (1 : ℕ∞)) x = 0 := by
   simp [Set.indicator, h]
 
-/- English proof (translation)
-Simplify using the standard rewrite rules.
+/- English proof (authored)
+On the set the indicator retains the value of the underlying constant function, which is 1.
 -/
 private theorem indicator_one_eq_one_of_mem {α : Type u} (s : Set α) (x : α) (h : x ∈ s) :
     s.indicator (fun _ => (1 : ℕ∞)) x = 1 := by
   simp [Set.indicator, h]
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The open neighborhood meets the given component, so it contains the component's generic point. The order along the component is the order at this point. In the local monomial order formula only boundary supports through that point contribute. By the generic-point criterion their indices are exactly the chosen set, and each contributes its exponent. Summing them gives the finite natural-number sum in the statement.
 -/
 theorem orderAlong_eq_sum_of_monomial (hGeom : MonomialGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : MonomialCenter.IsLocallyMonomialTriple T) {J : Finset (Fin T.boundary.length)}
@@ -355,12 +333,8 @@ theorem orderAlong_eq_sum_of_monomial (hGeom : MonomialGeometryHypotheses.{u}) {
   rw [← Finset.sum_subset (Finset.subset_univ J) hzero, Finset.sum_congr rfl hone]
   exact (Nat.cast_sum J a).symm
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Apply the local formula expressing the order as a sum weighted by the support indicators. Terms outside the support index set are zero and each term inside it is its exponent. Removing the zero terms gives the claimed sum.
 -/
 theorem orderAt_eq_sum_supportIndices (hGeom : MonomialGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : MonomialCenter.IsLocallyMonomialTriple T) (x : ↥T.scheme) (U : T.scheme.Opens)
@@ -392,8 +366,8 @@ theorem orderAt_eq_sum_supportIndices (hGeom : MonomialGeometryHypotheses.{u}) {
     ← Finset.sum_subset (Finset.subset_univ (supportIndices T.boundary x)) h2]
   exact Finset.sum_congr rfl h1
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. The claim follows by propositional logic.
+/- English proof (authored)
+A candidate meets three requirements, including that its component belongs to the intersection-component family for the selected boundary indices. Apply this condition.
 -/
 private theorem mem_intersectionComponents_of_isCandidateComponent {Y : Scheme.{u}} (I : Y.IdealSheafData)
     (m : ℕ) (L : List Y.IdealSheafData) (r : ℕ) (J : Finset (Fin L.length)) (C : Set ↥Y)
@@ -402,8 +376,8 @@ private theorem mem_intersectionComponents_of_isCandidateComponent {Y : Scheme.{
   simp only [mem_intersectionComponents_iff] at h ⊢
   tauto
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+There are finitely many subsets of the finite boundary index set. For each subset its intersection has finitely many components by admissibility and the geometry hypotheses. All candidate pairs lie in the finite union of these pairs of a subset with one of its components. The candidate set is therefore finite.
 -/
 theorem finite_setOf_isCandidateComponent (hGeom : MonomialGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : MonomialCenter.IsLocallyMonomialTriple T) :
@@ -423,16 +397,14 @@ theorem finite_setOf_isCandidateComponent (hGeom : MonomialGeometryHypotheses.{u
     mem_intersectionComponents_of_isCandidateComponent T.ideal T.mult T.boundary r J C hcand
   exact Set.mem_iUnion.2 ⟨J, Set.mem_image_of_mem _ hmem⟩
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The bound is a natural number and hence is strictly below infinity in the extended natural numbers. Anything at most that bound is also strictly below infinity.
 -/
 private theorem lt_top_of_le_natCast {a : ℕ∞} {B : ℕ} (h : a ≤ (B : ℕ∞)) : a < ⊤ :=
   h.trans_lt (ENat.natCast_lt_top B)
 
-/- English proof (translation)
-Establish an intermediate fact. Replace the relevant objects with their definitions. The claim follows by propositional logic. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The candidate belongs to the intersection-component family, so its order is the order at its generic point. The geometry hypotheses give a finite global order bound for the ideal, which is nonzero on components by admissibility. The order at this point is therefore finite.
 -/
 theorem orderAlong_lt_top_of_isCandidateComponent (hGeom : MonomialGeometryHypotheses.{u})
     {T : MarkedIdealWithBoundary.{u}} (hT : MonomialCenter.IsLocallyMonomialTriple T) {r : ℕ}
@@ -447,8 +419,8 @@ theorem orderAlong_lt_top_of_isCandidateComponent (hGeom : MonomialGeometryHypot
   rw [orderAlong_eq_orderAt_of_mem_intersectionComponents T.ideal hC]
   exact lt_top_of_le_natCast (hB _)
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The minimum selection size is defined as the infimum of the positive natural numbers for which a set of that cardinality and a candidate component exist. This is the stated infimum.
 -/
 private theorem minIndexCard_eq_sInf {Y : Scheme.{u}} (I : Y.IdealSheafData) (m : ℕ)
     (L : List Y.IdealSheafData) :
@@ -456,10 +428,8 @@ private theorem minIndexCard_eq_sInf {Y : Scheme.{u}} (I : Y.IdealSheafData) (m 
       sInf {r : ℕ | 1 ≤ r ∧ ∃ (J : Finset (Fin L.length)) (C : Set ↥Y),
         IsCandidateComponent I m L r J C} := rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The set of positive sizes realized by candidates is nonempty by hypothesis. Its infimum in the natural numbers is one of its elements, so it is positive and realized by a candidate. As the infimum, it is at most every other positive size realized by a candidate.
 -/
 theorem minIndexCard_spec {Y : Scheme.{u}} (I : Y.IdealSheafData) (m : ℕ)
     (L : List Y.IdealSheafData)
@@ -483,12 +453,8 @@ theorem minIndexCard_spec {Y : Scheme.{u}} (I : Y.IdealSheafData) (m : ℕ)
   rw [minIndexCard_eq_sInf I m L]
   exact Nat.sInf_le ⟨hr, J, C, hcand⟩
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers.
-
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
-
-By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Every size in the defining set is positive. If the set is nonempty, the infimum is an element and is positive. If the set is empty, its natural-number infimum is zero. Thus zero occurs precisely when there is no candidate of positive size.
 -/
 theorem minIndexCard_eq_zero_iff {Y : Scheme.{u}} (I : Y.IdealSheafData) (m : ℕ)
     (L : List Y.IdealSheafData) :
@@ -514,8 +480,8 @@ theorem minIndexCard_eq_zero_iff {Y : Scheme.{u}} (I : Y.IdealSheafData) (m : �
     · intro hr
       exact ((Set.mem_empty_iff_false r).mp hr).elim
 
-/- English proof (translation)
-Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
+/- English proof (authored)
+A nonzero minimum means that the set of positive candidate sizes is nonempty. The minimum-size specification gives a selection and component that attain it.
 -/
 theorem exists_isCandidateComponent_minIndexCard {Y : Scheme.{u}} (I : Y.IdealSheafData) (m : ℕ)
     (L : List Y.IdealSheafData) (h : minIndexCard I m L ≠ 0) :
@@ -526,8 +492,8 @@ theorem exists_isCandidateComponent_minIndexCard {Y : Scheme.{u}} (I : Y.IdealSh
     exact h ((minIndexCard_eq_zero_iff I m L).2 hc)
   exact (minIndexCard_spec I m L hex).2.1
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The maximum-order expression is defined as the supremum of the orders of components whose selected indices make them candidates at the minimum size. Indexing the supremum by the selection, component and candidate condition gives the stated formula.
 -/
 private theorem maxCandidateOrder_eq_iSup_orderAlong {Y : Scheme.{u}} (I : Y.IdealSheafData) (m : ℕ)
     (L : List Y.IdealSheafData) :
@@ -536,18 +502,8 @@ private theorem maxCandidateOrder_eq_iSup_orderAlong {Y : Scheme.{u}} (I : Y.Ide
         ⨆ _ : IsCandidateComponent I m L (minIndexCard I m L) J C, orderAlong I C :=
   rfl
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components.
-
-Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
-
-Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+Positive minimum size gives at least one candidate at that size. There are finitely many candidate pairs, so the orders of the pairs at the minimum size attain a maximum. This maximum is the defined supremum since it occurs among the terms and bounds all terms. The attaining component has order at least the mark by candidacy and has finite order by the order bound. These facts give the existence, upper bound and two bounds on the maximum.
 -/
 theorem maxCandidateOrder_spec (hGeom : MonomialGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : MonomialCenter.IsLocallyMonomialTriple T)
@@ -603,8 +559,8 @@ theorem maxCandidateOrder_spec (hGeom : MonomialGeometryHypotheses.{u}) {T : Mar
   · rw [hkey]
     exact orderAlong_lt_top_of_isCandidateComponent hGeom hT hcand₀
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Supply the required witnesses or components.
+/- English proof (authored)
+Take a candidate at the minimum size whose component attains the maximum order. Its chosen index set has the required witness for maximum order.
 -/
 theorem exists_isMaxOrderIndexSet (hGeom : MonomialGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : MonomialCenter.IsLocallyMonomialTriple T)
@@ -615,16 +571,16 @@ theorem exists_isMaxOrderIndexSet (hGeom : MonomialGeometryHypotheses.{u}) {T : 
   unfold IsMaxOrderIndexSet
   exact ⟨C, hcand, hord⟩
 
-/- English proof (translation)
-Both sides reduce to the same expression.
+/- English proof (authored)
+The maximum code is defined as the supremum of the binary codes of selections admitting a component of maximum candidate order. This is the stated set of codes.
 -/
 private theorem maxBinaryCode_eq_sSup {Y : Scheme.{u}} (I : Y.IdealSheafData) (m : ℕ)
     (L : List Y.IdealSheafData) :
     maxBinaryCode I m L =
       sSup {c : ℕ | ∃ J : Finset (Fin L.length), IsMaxOrderIndexSet I m L J ∧ binaryEncode J = c} := rfl
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. A detailed English derivation is pending.
+/- English proof (authored)
+A maximizing selection has a candidate witness at the minimum size. The candidate size condition says that the selection has exactly that cardinality.
 -/
 private theorem card_eq_minIndexCard_of_isMaxOrderIndexSet {Y : Scheme.{u}} {I : Y.IdealSheafData}
     {m : ℕ} {L : List Y.IdealSheafData} {J : Finset (Fin L.length)} (hJ : IsMaxOrderIndexSet I m L J) :
@@ -634,14 +590,8 @@ private theorem card_eq_minIndexCard_of_isMaxOrderIndexSet {Y : Scheme.{u}} {I :
   unfold IsCandidateComponent at hcand
   exact hcand.1
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
-
-Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The family of maximum-order selections is nonempty. Their codes form a finite set of natural numbers, so its supremum is attained. The chosen selection attains that code and thus is of maximum order. All maximum-order selections have the same cardinality. If another one had a lexicographically smaller increasing index list, the reversed binary encoding would give it a larger code than the chosen one. This contradicts maximality of the chosen code, proving the stated lexicographic property.
 -/
 theorem lexMaxIndices_spec (hGeom : MonomialGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : MonomialCenter.IsLocallyMonomialTriple T)
@@ -688,8 +638,8 @@ theorem lexMaxIndices_spec (hGeom : MonomialGeometryHypotheses.{u}) {T : MarkedI
     exact le_csSup hbdd ⟨J, hJ, rfl⟩
   exact absurd hlt (not_lt.2 hle)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+At positive minimum size, the index-selection result says that the chosen selection has maximum order. Every maximum-order selection has minimum candidate size, so the chosen one has that cardinality.
 -/
 theorem card_lexMaxIndices (hGeom : MonomialGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : MonomialCenter.IsLocallyMonomialTriple T)
@@ -697,8 +647,8 @@ theorem card_lexMaxIndices (hGeom : MonomialGeometryHypotheses.{u}) {T : MarkedI
     (lexMaxIndices T.ideal T.mult T.boundary).card = minIndexCard T.ideal T.mult T.boundary :=
   card_eq_minIndexCard_of_isMaxOrderIndexSet (lexMaxIndices_spec hGeom hT h).1
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The center definition uses an open part of the intersection only if the minimum size is positive and the requisite preimage is open. When the size is zero its other branch gives the unit ideal.
 -/
 theorem monomialCenter_eq_top_of_minIndexCard_eq_zero {Y : Scheme.{u}} (I : Y.IdealSheafData) (m : ℕ)
     (L : List Y.IdealSheafData) (h : minIndexCard I m L = 0) : monomialCenter I m L = ⊤ := by
@@ -711,8 +661,8 @@ def centerComponents {Y : Scheme.{u}} (I : Y.IdealSheafData) (m : ℕ)
     IsCandidateComponent I m L (minIndexCard I m L) (lexMaxIndices I m L) C ∧
       orderAlong I C = maxCandidateOrder I m L}
 
-/- English proof (translation)
-Unfold both sides to obtain the same proposition, which implies itself.
+/- English proof (authored)
+The center family consists of those components that are candidates at the minimum size for the chosen index set and whose orders attain the maximum. Membership is exactly these two conditions.
 -/
 theorem mem_centerComponents_iff {Y : Scheme.{u}} (I : Y.IdealSheafData) (m : ℕ)
     (L : List Y.IdealSheafData) (C : Set ↥Y) :
@@ -721,8 +671,8 @@ theorem mem_centerComponents_iff {Y : Scheme.{u}} (I : Y.IdealSheafData) (m : �
         orderAlong I C = maxCandidateOrder I m L :=
   Iff.rfl
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+A member of the center family is a candidate for the chosen index set. The candidate condition places it among the components of the intersection for that set.
 -/
 theorem centerComponents_subset_intersectionComponents {Y : Scheme.{u}} (I : Y.IdealSheafData) (m : ℕ)
     (L : List Y.IdealSheafData) :
@@ -731,8 +681,8 @@ theorem centerComponents_subset_intersectionComponents {Y : Scheme.{u}} (I : Y.I
   exact mem_intersectionComponents_of_isCandidateComponent I m L (minIndexCard I m L) (lexMaxIndices I m L) C
     ((mem_centerComponents_iff I m L C).1 hC).1
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The center family consists of components of the chosen intersection. The geometry hypotheses make the preimage of the union of any such family open in that intersection subscheme. Apply this to the center family.
 -/
 theorem isOpen_preimage_sUnion_centerComponents (hGeom : MonomialGeometryHypotheses.{u})
     {T : MarkedIdealWithBoundary.{u}} (hT : MonomialCenter.IsLocallyMonomialTriple T) :
@@ -741,8 +691,8 @@ theorem isOpen_preimage_sUnion_centerComponents (hGeom : MonomialGeometryHypothe
   hGeom.sUnion_isOpen T hT.valid _ _
     (centerComponents_subset_intersectionComponents T.ideal T.mult T.boundary)
 
-/- English proof (translation)
-By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Both sets are the union over components that are candidates of the minimum size for the chosen indices and have maximum order. A point's membership in either union is witnessed by the same component.
 -/
 theorem monomialCenterSet_eq_sUnion_centerComponents {Y : Scheme.{u}} (I : Y.IdealSheafData) (m : ℕ)
     (L : List Y.IdealSheafData) :
@@ -750,8 +700,8 @@ theorem monomialCenterSet_eq_sUnion_centerComponents {Y : Scheme.{u}} (I : Y.Ide
   ext x
   simp [monomialCenterSet, centerComponents, Set.mem_sUnion]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Replace the center set by the union of its selected components. The inverse image of this union is open in the chosen intersection subscheme by the component-union result.
 -/
 theorem isOpen_preimage_monomialCenterSet (hGeom : MonomialGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : MonomialCenter.IsLocallyMonomialTriple T) :
@@ -760,8 +710,8 @@ theorem isOpen_preimage_monomialCenterSet (hGeom : MonomialGeometryHypotheses.{u
   rw [monomialCenterSet_eq_sUnion_centerComponents]
   exact isOpen_preimage_sUnion_centerComponents hGeom hT
 
-/- English proof (translation)
-Substitute using the available equality. Both sides reduce to the same expression.
+/- English proof (authored)
+Replace the open subset by the equal preimage of the component union. Both ideal constructions are then the kernel of the inclusion of this same open into the intersection subscheme followed by its inclusion into the ambient scheme.
 -/
 private theorem openSublocusIdeal_eq_componentUnionIdeal {Y : Scheme.{u}} (L : List Y.IdealSheafData)
     (J : Finset (Fin L.length)) (𝒞 : Set (Set ↥Y))
@@ -772,8 +722,8 @@ private theorem openSublocusIdeal_eq_componentUnionIdeal {Y : Scheme.{u}} (L : L
   subst hEq
   rfl
 
-/- English proof (translation)
-Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The minimum size is positive and the preimage of the center set is open. The center therefore uses the branch taking the kernel for this open in the intersection subscheme. The center set is the union of the selected components, so the resulting ideal is the component-union ideal.
 -/
 theorem monomialCenter_eq_componentUnionIdeal (hGeom : MonomialGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : MonomialCenter.IsLocallyMonomialTriple T)
@@ -792,8 +742,8 @@ theorem monomialCenter_eq_componentUnionIdeal (hGeom : MonomialGeometryHypothese
     (centerComponents T.ideal T.mult T.boundary) _
     (by rw [monomialCenterSet_eq_sUnion_centerComponents]) _ _
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Express the center as the ideal of its selected component union. The support property in the geometry hypotheses identifies the support of that ideal with the union. This union is exactly the center set.
 -/
 theorem support_monomialCenter (hGeom : MonomialGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : MonomialCenter.IsLocallyMonomialTriple T)
@@ -805,10 +755,8 @@ theorem support_monomialCenter (hGeom : MonomialGeometryHypotheses.{u}) {T : Mar
   exact hGeom.center_support T hT.valid _ _
     (centerComponents_subset_intersectionComponents T.ideal T.mult T.boundary) _
 
-/- English proof (translation)
-Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The chosen index set has a candidate component of maximum order. This component belongs to the center family and is irreducible, hence contains a point. That point belongs to the union defining the center set.
 -/
 theorem monomialCenterSet_nonempty (hGeom : MonomialGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : MonomialCenter.IsLocallyMonomialTriple T)
@@ -827,10 +775,8 @@ theorem monomialCenterSet_nonempty (hGeom : MonomialGeometryHypotheses.{u}) {T :
   rw [monomialCenterSet_eq_sUnion_centerComponents T.ideal T.mult T.boundary]
   exact Set.mem_sUnion.2 ⟨C, hmem, hx⟩
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The center support is the selected center set, and this set contains a point. The unit ideal has empty support, so the center ideal is proper.
 -/
 theorem monomialCenter_ne_top (hGeom : MonomialGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : MonomialCenter.IsLocallyMonomialTriple T)
@@ -846,8 +792,8 @@ theorem monomialCenter_ne_top (hGeom : MonomialGeometryHypotheses.{u}) {T : Mark
   rw [mem_support_iff_stalkIdeal_ne_top, htop, stalkIdeal_top] at hx2
   exact hx2 rfl
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The monomial center ideal is the ideal of a union of components of one boundary intersection. By the smoothness property of such component unions in the geometry hypotheses, its closed subscheme is smooth over the base.
 -/
 theorem smooth_monomialCenter (hGeom : MonomialGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : MonomialCenter.IsLocallyMonomialTriple T)
@@ -858,8 +804,8 @@ theorem smooth_monomialCenter (hGeom : MonomialGeometryHypotheses.{u}) {T : Mark
   exact hGeom.center_smooth T hT.valid _ _
     (centerComponents_subset_intersectionComponents T.ideal T.mult T.boundary) _
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Identify the center ideal with the ideal of the selected component union. The normal-crossings property for these component-union ideals gives strict normal crossings with the given boundary.
 -/
 theorem hasStrictNormalCrossingsWith_monomialCenter (hGeom : MonomialGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : MonomialCenter.IsLocallyMonomialTriple T)
@@ -869,10 +815,8 @@ theorem hasStrictNormalCrossingsWith_monomialCenter (hGeom : MonomialGeometryHyp
   exact hGeom.center_snc T hT.valid _ _
     (centerComponents_subset_intersectionComponents T.ideal T.mult T.boundary) _
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
+/- English proof (authored)
+Take a point of the center support and a selected component containing it. Its order at its generic point is at least the mark by the candidate condition. The locus of points with order at least the mark is closed and contains the generic point, so contains the whole component and the given point.
 -/
 theorem support_monomialCenter_subset_orderAtLeastLocus (hGeom : MonomialGeometryHypotheses.{u})
     {T : MarkedIdealWithBoundary.{u}} (hT : MonomialCenter.IsLocallyMonomialTriple T)
@@ -894,12 +838,8 @@ theorem support_monomialCenter_subset_orderAtLeastLocus (hGeom : MonomialGeometr
     exact hcomp.2.2
   exact subset_orderAtLeastLocus_of_le_orderAlong hT.valid hmem T.mult hord hxC
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+The chosen index set has positive cardinality, so select one of its indices. Each selected component belongs to the corresponding boundary intersection and is contained in the support of this chosen divisor. Every point of the center support lies in such a component and therefore in the union of the boundary supports.
 -/
 theorem support_monomialCenter_subset_boundary (hGeom : MonomialGeometryHypotheses.{u})
     {T : MarkedIdealWithBoundary.{u}} (hT : MonomialCenter.IsLocallyMonomialTriple T)
@@ -923,10 +863,8 @@ theorem support_monomialCenter_subset_boundary (hGeom : MonomialGeometryHypothes
   have hmemlist : T.boundary.get j ∈ T.boundary := by simp
   exact Set.mem_iUnion₂.2 ⟨T.boundary.get j, hmemlist, hsub hxC⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+The center has strict normal crossings with the boundary, and its support lies where the original ideal has order at least the mark. The power containment theorem puts the original ideal inside the center ideal raised to that mark. After blowing up the center, the pulled-back center ideal is the exceptional ideal. The controlled transform exists by the blowup factorization theorem for this containment, giving the required product with the exceptional power.
 -/
 theorem exists_controlledTransform_monomialCenter (hGeom : MonomialGeometryHypotheses.{u})
     {T : MarkedIdealWithBoundary.{u}} (hT : MonomialCenter.IsLocallyMonomialTriple T)
@@ -951,8 +889,8 @@ theorem exists_controlledTransform_monomialCenter (hGeom : MonomialGeometryHypot
       (Blowup.blowup.isBlowupAlongIdealSheaf_proj (monomialCenter T.ideal T.mult T.boundary)) hle
   exact ⟨J, hJ⟩
 
-/- English proof (translation)
-Supply the required witnesses or components.
+/- English proof (authored)
+The preceding center results give a proper ideal, smoothness of its subscheme, strict normal crossings with the boundary and containment of its support in the marked order locus. The controlled-transform theorem supplies an ideal upstairs whose product with the required exceptional power is the total transform. These establish all the specified conditions.
 -/
 theorem monomialCenter_spec (hGeom : MonomialGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : MonomialCenter.IsLocallyMonomialTriple T)
@@ -971,26 +909,8 @@ theorem monomialCenter_spec (hGeom : MonomialGeometryHypotheses.{u}) {T : Marked
     support_monomialCenter_subset_orderAtLeastLocus hGeom hT h,
     exists_controlledTransform_monomialCenter hGeom hT h⟩
 
-/- English proof (translation)
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
-
-Substitute using the available equality. Substitute using the available equality. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality. Substitute using the available equality. Extract witnesses or component facts from the available result.
-
-Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
-
-Supply the required witnesses or components. A detailed English derivation is pending.
+/- English proof (authored)
+Work in the subspace of the specified set. The singleton of the given point is preirreducible, so it is contained in a maximal preirreducible subset of the subspace. That subset is nonempty and hence irreducible. Its image under the subspace inclusion is irreducible in the ambient scheme and contains the given point. Any larger irreducible subset inside the specified set would give a larger preirreducible subset in the subspace, contradicting maximality. Thus the image is an irreducible component.
 -/
 theorem exists_isIrreducibleComponentOf_mem {Y : Scheme.{u}} (S : Set ↥Y) (x : ↥Y) (hx : x ∈ S) :
     ∃ C : Set ↥Y, x ∈ C ∧ IsIrreducibleComponentOf C S := by
@@ -1053,8 +973,8 @@ theorem exists_isIrreducibleComponentOf_mem {Y : Scheme.{u}} (S : Set ↥Y) (x :
     ∀ C' : Set ↥Y, IsIrreducible C' → Subtype.val '' t ⊆ C' → C' ⊆ S → C' = Subtype.val '' t
   exact ⟨hirr, hsubS, hmaxi⟩
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Supply the required witnesses or components.
+/- English proof (authored)
+Apply the existence of a component through a point to the support of the intersection ideal. Being an irreducible component of this support is the membership condition for the intersection-component family.
 -/
 theorem exists_mem_intersectionComponents_of_mem_support {Y : Scheme.{u}}
     (L : List Y.IdealSheafData) (J : Finset (Fin L.length)) (x : ↥Y)
@@ -1064,18 +984,8 @@ theorem exists_mem_intersectionComponents_of_mem_support {Y : Scheme.{u}}
     exists_isIrreducibleComponentOf_mem (↑(intersectionIdeal L J).support : Set ↥Y) x hx
   exact ⟨C, hxC, (mem_intersectionComponents_iff L J C).2 hcomp⟩
 
-/- English proof (translation)
-Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Use the matching hypothesis. Use the matching hypothesis.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
+/- English proof (authored)
+Suppose a point belongs to the marked order locus. Take a local monomial expression there. The order is the sum of the exponents for the boundary divisors through the point. The mark is positive, so this set of indices is nonempty. The point belongs to the support of their intersection, and a component of that support contains it. The generic order along this component is the sum of the same exponents by the component order formula. It is at least the mark, so the index set and component give a candidate of positive size. This contradicts the zero minimum size.
 -/
 theorem orderAtLeastLocus_eq_empty_of_minIndexCard_eq_zero (hGeom : MonomialGeometryHypotheses.{u})
     {T : MarkedIdealWithBoundary.{u}} (hT : MonomialCenter.IsLocallyMonomialTriple T)
@@ -1128,10 +1038,8 @@ theorem orderAtLeastLocus_eq_empty_of_minIndexCard_eq_zero (hGeom : MonomialGeom
   exact hcontr ⟨(supportIndices T.boundary x).card, hcard,
     supportIndices T.boundary x, C, hcand⟩
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
-
-Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+If a positive-size candidate existed, its component would have order at least the mark at its generic point. The whole component would then lie in the closed marked order locus. An irreducible component is nonempty, contrary to emptiness of this locus. Thus no positive-size candidate exists and the minimum is zero.
 -/
 theorem minIndexCard_eq_zero_of_orderAtLeastLocus_eq_empty {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
     (h : orderAtLeastLocus T.ideal T.mult = (∅ : Set ↥T.scheme)) :
@@ -1154,8 +1062,8 @@ def maxOrderCandidatePairs {Y : Scheme.{u}} (I : Y.IdealSheafData) (m : ℕ)
   {p : Finset (Fin L.length) × Set ↥Y |
     IsCandidateComponent I m L (minIndexCard I m L) p.1 p.2 ∧ orderAlong I p.2 = maxCandidateOrder I m L}
 
-/- English proof (translation)
-Unfold both sides to obtain the same proposition, which implies itself.
+/- English proof (authored)
+The family is defined by the condition that the pair is a candidate at the minimum size and that its component order equals the maximum. This is exactly the right-hand condition.
 -/
 theorem mem_maxOrderCandidatePairs_iff {Y : Scheme.{u}} (I : Y.IdealSheafData) (m : ℕ)
     (L : List Y.IdealSheafData) (p : Finset (Fin L.length) × Set ↥Y) :
@@ -1163,8 +1071,8 @@ theorem mem_maxOrderCandidatePairs_iff {Y : Scheme.{u}} (I : Y.IdealSheafData) (
       IsCandidateComponent I m L (minIndexCard I m L) p.1 p.2 ∧ orderAlong I p.2 = maxCandidateOrder I m L :=
   Iff.rfl
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
+/- English proof (authored)
+A maximum-order pair is still one of the candidate pairs, witnessed by the minimum size. All candidate pairs form a finite set, so the subset of maximum-order pairs is finite.
 -/
 theorem finite_maxOrderCandidatePairs (hGeom : MonomialGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : MonomialCenter.IsLocallyMonomialTriple T) :

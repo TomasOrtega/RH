@@ -32,10 +32,8 @@ def IsPullbackUpToEmptyCenters {X X' : Scheme.{u}} (φ : X' ⟶ X) (s' : Sequenc
         (s.center (r i)).comap
           ((e i (Nat.le_of_lt hi)).hom ≫ pullback.snd φ (s.projectionToBase (r i))))
 
-/- English proof (translation)
-Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
-
-Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The support is empty exactly when the ideal is unit. Therefore a nonunit ideal has a point in its support, and the existence of such a point rules out the unit ideal.
 -/
 private theorem ne_top_iff_exists_mem_support {X : Scheme.{u}} (I : X.IdealSheafData) :
     I ≠ ⊤ ↔ ∃ x, x ∈ I.support := by
@@ -49,8 +47,8 @@ private theorem ne_top_iff_exists_mem_support {X : Scheme.{u}} (I : X.IdealSheaf
     rw [hiff.mpr hI] at hx
     exact hx
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+If pullback along the isomorphism gave the unit ideal, further pullback along the inverse would still give the unit ideal. The two pullbacks compose to the identity on the original ideal, contrary to its being nonunit.
 -/
 private theorem comap_iso_hom_ne_top {X Y : Scheme.{u}} (E : X ≅ Y) (J : Y.IdealSheafData)
     (h : J ≠ ⊤) : J.comap E.hom ≠ ⊤ := by
@@ -60,30 +58,30 @@ private theorem comap_iso_hom_ne_top {X Y : Scheme.{u}} (E : X ≅ Y) (J : Y.Ide
     rw [← Scheme.IdealSheafData.comap_comp, E.inv_hom_id, Scheme.IdealSheafData.comap_id]
   rw [hJ, hc, Scheme.IdealSheafData.comap_top]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Replace the first of the two equal maps by the second. The given equation for its composite is then the desired one.
 -/
 private theorem comp_eq_of_eq_of_comp_eq {A B C : Scheme.{u}} (u : A ⟶ B) {f g : B ⟶ C} (hfg : f = g)
     {k : A ⟶ C} (hk : u ≫ g = k) : u ≫ f = k := by
   rw [hfg]
   exact hk
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Postcompose the given equality with the last morphism and reassociate the composite.
 -/
 private theorem comp_comp_eq_of_comp_eq {A B C D : Scheme.{u}} {u : A ⟶ B} {v : B ⟶ C} {w : A ⟶ C}
     (h : u ≫ v = w) (k : C ⟶ D) : u ≫ v ≫ k = w ≫ k := by
   rw [← Category.assoc, h]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The two pullback maps are equal. Substituting one for the other yields equality of the pulled-back ideals.
 -/
 private theorem comap_congr_morphism {A B : Scheme.{u}} {u v : A ⟶ B} (h : u = v) (I : B.IdealSheafData) :
     I.comap u = I.comap v := by
   rw [h]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Equal ideal sheaves have equal pullbacks along the same morphism.
 -/
 private theorem comap_congr_idealSheaf {A B : Scheme.{u}} (u : A ⟶ B) {I J : B.IdealSheafData}
     (h : I = J) : I.comap u = J.comap u := by
@@ -94,16 +92,16 @@ private noncomputable def pullbackCongrRightHom {X X' Z Z' : Scheme.{u}} (φ : X
   pullback.lift (pullback.fst φ f) (pullback.snd φ f ≫ θ.hom)
     (by rw [Category.assoc, hθ]; exact pullback.condition)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The map between pullbacks is defined using the first projection as its first component. The universal property therefore gives the stated equation with the first projection.
 -/
 private theorem pullbackCongrRightHom_fst {X X' Z Z' : Scheme.{u}} (φ : X' ⟶ X) (f : Z ⟶ X) (g : Z' ⟶ X)
     (θ : Z ≅ Z') (hθ : θ.hom ≫ g = f) :
     pullbackCongrRightHom φ f g θ hθ ≫ pullback.fst φ g = pullback.fst φ f :=
   pullback.lift_fst _ _ _
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The second component used for the pullback lift is the original second projection followed by the isomorphism of factors. The defining projection equation is precisely the claim.
 -/
 private theorem pullbackCongrRightHom_snd {X X' Z Z' : Scheme.{u}} (φ : X' ⟶ X) (f : Z ⟶ X) (g : Z' ⟶ X)
     (θ : Z ≅ Z') (hθ : θ.hom ≫ g = f) :
@@ -125,24 +123,24 @@ private noncomputable def pullbackCongrRightIso {X X' Z Z' : Scheme.{u}} (φ : X
     · rw [Category.assoc, pullbackCongrRightHom_snd, ← Category.assoc, pullbackCongrRightHom_snd, Category.assoc, Iso.symm_hom,
         θ.inv_hom_id, Category.comp_id, Category.id_comp]
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The forward isomorphism is the previously constructed map of pullbacks. Its first projection is the original first projection by the defining equation for that map.
 -/
 private theorem pullbackCongrRightIso_hom_fst {X X' Z Z' : Scheme.{u}} (φ : X' ⟶ X) (f : Z ⟶ X) (g : Z' ⟶ X)
     (θ : Z ≅ Z') (hθ : θ.hom ≫ g = f) :
     (pullbackCongrRightIso φ f g θ hθ).hom ≫ pullback.fst φ g = pullback.fst φ f :=
   pullbackCongrRightHom_fst φ f g θ hθ
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The forward isomorphism has second component equal to the original second projection followed by the isomorphism on that factor. This gives the stated formula.
 -/
 private theorem pullbackCongrRightIso_hom_snd {X X' Z Z' : Scheme.{u}} (φ : X' ⟶ X) (f : Z ⟶ X) (g : Z' ⟶ X)
     (θ : Z ≅ Z') (hθ : θ.hom ≫ g = f) :
     (pullbackCongrRightIso φ f g θ hθ).hom ≫ pullback.snd φ g = pullback.snd φ f ≫ θ.hom :=
   pullbackCongrRightHom_snd φ f g θ hθ
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Compose the original comparison with the pullback isomorphism induced by replacing the second factor by an isomorphic one. The first projection of the composite is unchanged. The second projection becomes the old one followed by the given factor isomorphism, giving both equations.
 -/
 private theorem exists_pullbackIso_of_iso {X X' A Z Z' : Scheme.{u}} (φ : X' ⟶ X) (f : Z ⟶ X) (g : Z' ⟶ X)
     (u : A ≅ pullback φ f) (θ : Z ≅ Z') (hθ : θ.hom ≫ g = f) :
@@ -153,10 +151,8 @@ private theorem exists_pullbackIso_of_iso {X X' A Z Z' : Scheme.{u}} (φ : X' �
   · rw [Iso.trans_hom, Category.assoc, pullbackCongrRightIso_hom_fst]
   · rw [Iso.trans_hom, Category.assoc, pullbackCongrRightIso_hom_snd]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The isomorphism of second factors gives an isomorphism of their pullbacks over the new base. Its second projection equation and the ideal compatibility show that the two pulled-back ideals correspond under this isomorphism. Pullback along an isomorphism preserves and reflects the unit ideal, giving the equivalence.
 -/
 private theorem comap_pullback_snd_ne_top_iff_of_iso {X X' Z Z' : Scheme.{u}} (φ : X' ⟶ X) (f : Z ⟶ X)
     (g : Z' ⟶ X) (θ : Z ≅ Z') (hθ : θ.hom ≫ g = f) (I : Z.IdealSheafData)
@@ -173,8 +169,8 @@ private theorem comap_pullback_snd_ne_top_iff_of_iso {X X' Z Z' : Scheme.{u}} (�
     rw [← hkey]
     exact comap_iso_hom_ne_top (pullbackCongrRightIso φ f g θ hθ) _ h
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+At a retained index the shortened sequence has the original scheme and center at that index. Its projection to the base is also the same. The pullback comparison for isomorphic second factors, using the identity at this stage, therefore gives equivalence of the two center conditions.
 -/
 private theorem nontrivialIndex_comap_ne_top_iff_withoutIsoBlowups {X X' : Scheme.{u}} (φ : X' ⟶ X) (s : SequenceOfBlowups X)
     (i : ℕ) :
@@ -184,24 +180,24 @@ private theorem nontrivialIndex_comap_ne_top_iff_withoutIsoBlowups {X X' : Schem
     ((Category.id_comp (s.withoutIsoBlowups.projectionToBase i)).trans (s.withoutIsoBlowups_projectionToBase_eq_nontrivialIndex i))
     (s.center (s.nontrivialIndex i)) (s.withoutIsoBlowups.center i) (Scheme.IdealSheafData.comap_id _)
 
-/- English proof (translation)
-Substitute using the available equality. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Identify the equal indices. The transport is then the identity, and composing it with the structural projection leaves that projection unchanged.
 -/
 private theorem eqToIso_hom_comp_projectionToBase {X : Scheme.{u}} (s : SequenceOfBlowups X) {a b : ℕ} (hab : a = b) :
     (eqToIso (congrArg s.schemeAt hab)).hom ≫ s.projectionToBase b = s.projectionToBase a := by
   subst hab
   simp
 
-/- English proof (translation)
-Substitute using the available equality. Simplify using the standard rewrite rules.
+/- English proof (authored)
+After identifying the equal indices the centers coincide, and pulling back along the identity transport leaves that ideal unchanged.
 -/
 private theorem center_comap_eqToIso_hom {X : Scheme.{u}} (s : SequenceOfBlowups X) {a b : ℕ} (hab : a = b) :
     (s.center b).comap (eqToIso (congrArg s.schemeAt hab)).hom = s.center a := by
   subst hab
   simp
 
-/- English proof (translation)
-Substitute using the available equality. Substitute using the available equality. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Identify the two equal source indices and the two equal target indices. The transport isomorphisms become identities and the transitions coincide, giving equality of the composites.
 -/
 private theorem transitionMap_comp_eqToIso {X : Scheme.{u}} (s : SequenceOfBlowups X) {p q p' q' : ℕ}
     (hp : p = p') (hq : q = q') (hpq : p ≤ q) (hpq' : p' ≤ q') :
@@ -211,8 +207,8 @@ private theorem transitionMap_comp_eqToIso {X : Scheme.{u}} (s : SequenceOfBlowu
   subst hq
   simp
 
-/- English proof (translation)
-Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Replace the two equal stage indices by a single index. Both center pullbacks then agree, so the nonunit hypothesis gives the conclusion.
 -/
 private theorem center_comap_pullback_snd_ne_top_congr {X X' : Scheme.{u}} (φ : X' ⟶ X) (s : SequenceOfBlowups X)
     {a b : ℕ} (hab : a = b)
@@ -221,8 +217,8 @@ private theorem center_comap_pullback_snd_ne_top_congr {X X' : Scheme.{u}} (φ :
   subst hab
   exact h
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The transition from a stage to itself preserves the first pullback projection. It also preserves the second because the original stage transition is the identity. Thus it is the identity by uniqueness of maps into the pullback.
 -/
 private theorem pullbackTransitionMap_self {X X' : Scheme.{u}} (s : SequenceOfBlowups X) (φ : X' ⟶ X) {i : ℕ}
     (h : i ≤ i) : s.pullbackTransitionMap φ h = 𝟙 (pullback φ (s.projectionToBase i)) := by
@@ -230,8 +226,8 @@ private theorem pullbackTransitionMap_self {X X' : Scheme.{u}} (s : SequenceOfBl
   · rw [s.pullbackTransitionMap_fst, Category.id_comp]
   · rw [s.pullbackTransitionMap_snd, s.transitionMap_self, Category.comp_id, Category.id_comp]
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+On the first projection, both composites preserve the projection to the new base. On the second, the successive original transitions compose to the original direct transition. Equality on both projections yields the equation.
 -/
 private theorem pullbackTransitionMap_comp {X X' : Scheme.{u}} (s : SequenceOfBlowups X) (φ : X' ⟶ X)
     {a b c : ℕ} (hab : a ≤ b) (hbc : b ≤ c) :
@@ -241,8 +237,8 @@ private theorem pullbackTransitionMap_comp {X X' : Scheme.{u}} (s : SequenceOfBl
   · rw [Category.assoc, s.pullbackTransitionMap_snd, ← Category.assoc, s.pullbackTransitionMap_snd, Category.assoc,
       s.transitionMap_trans, s.pullbackTransitionMap_snd]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The two consecutive pullback transitions compose to the direct transition. Postcompose that equality with the given map and reassociate.
 -/
 private theorem pullbackTransitionMap_comp_assoc {X X' : Scheme.{u}} (s : SequenceOfBlowups X) (φ : X' ⟶ X)
     {a b c : ℕ} (hab : a ≤ b) (hbc : b ≤ c) {W : Scheme.{u}}
@@ -251,8 +247,8 @@ private theorem pullbackTransitionMap_comp_assoc {X X' : Scheme.{u}} (s : Sequen
       = s.pullbackTransitionMap φ (hab.trans hbc) ≫ k := by
   rw [← Category.assoc, pullbackTransitionMap_comp]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The second projection following a pullback transition is the original later projection followed by the original transition. Compose that equation with the final morphism and reassociate.
 -/
 private theorem pullbackTransitionMap_snd_assoc {X X' : Scheme.{u}} (s : SequenceOfBlowups X) (φ : X' ⟶ X)
     {i i' : ℕ} (h : i ≤ i') {W : Scheme.{u}} (k : s.schemeAt i ⟶ W) :
@@ -262,48 +258,8 @@ private theorem pullbackTransitionMap_snd_assoc {X X' : Scheme.{u}} (s : Sequenc
 
 namespace IsPullbackUpToEmptyCenters
 
-/- English proof (translation)
-Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
-
-Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
-
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
-
-Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
-
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
-
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
-
-A detailed English derivation is pending.
+/- English proof (authored)
+A retained center upstairs is nonunit, so the original center at its comparison index is nonunit as well, because the former is pulled back from the latter. Each retained index upstairs therefore corresponds to a retained index downstairs. The final index corresponds to the final one by the original terminal equation. Strict increase of all index maps makes the resulting shortened reindexing strictly increasing. For each retained stage, transport the original comparison isomorphism to the matching stage of the shortened base sequence. Its first projection is the shortened structural projection. To check exactly which centers remain after pullback, a nonempty pulled-back center downstairs must have an original comparison step upstairs, by the hypothesis on omitted centers. The ideal of that upstairs step is nonunit because its stage is isomorphic to the canonical pullback. Hence the step is retained. Conversely a retained upstairs step has nonunit pulled-back center downstairs by the center equation. The two transition comparisons agree after the first projection by compatibility of projections to the base. After the second projection they agree because the original transition equations compose across the intervening steps and transport along equal indices commutes with them. Finally the original ideal pullback equations transport to the retained indices. These give a pullback of the shortened sequences.
 -/
 theorem isPullbackSequenceOfBlowups_withoutIsoBlowups {X X' : Scheme.{u}} {φ : X' ⟶ X} {s' : SequenceOfBlowups X'}
     {s : SequenceOfBlowups X} (h : IsPullbackUpToEmptyCenters φ s' s) :

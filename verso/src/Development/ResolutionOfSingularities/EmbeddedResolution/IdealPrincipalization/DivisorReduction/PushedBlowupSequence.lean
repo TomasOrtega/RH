@@ -220,8 +220,8 @@ private def HasSmoothDivisorTransforms (T : MarkedIdealWithBoundary.{u}) (j : �
           (⇑(D t).subschemeι ⁻¹' S.otherBoundaryLocus j t)
           ((S.center t).comap (D t).subschemeι))
 
-/- English proof (translation)
-Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Use the given family of divisors and choose the option with no preparatory pullback. The smoothness, initial equality, center containment, strict-transform rule, and certificates are the supplied hypotheses after identifying the sequence length. The terminal ideal is the ideal at that length, so the final disjointness hypothesis gives the terminal condition.
 -/
 private theorem divisorReductionShape_of_strictTransforms {T : MarkedIdealWithBoundary.{u}} (j : ℕ) (hj : j < T.boundary.length)
     (S : T.SequenceOfBlowups) (len : ℕ) (D : (t : ℕ) → (S.schemeAt t).IdealSheafData) (hlen : S.length = len)
@@ -246,12 +246,8 @@ private theorem divisorReductionShape_of_strictTransforms {T : MarkedIdealWithBo
   rw [MarkedSequenceOfBlowups.lastIdeal_eq]
   exact h6
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
-
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
-
-Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Define the family by using D₀ at stage zero and the supplied divisor with index t at stage t+1. Choose the option with a preparatory pullback. Smoothness and center containment follow from the stage-zero hypotheses at zero and the shifted hypotheses at positive stages. The sequence has length one more than the lower sequence, so it has a first step, where the openness and pullback conditions are given. Strict transforms and certificates apply at each later step using the shifted index. At the last stage the ambient ideal and divisor are those in the final disjointness hypothesis.
 -/
 private theorem divisorReductionShape_of_pullback_then_strictTransforms {T : MarkedIdealWithBoundary.{u}} (j : ℕ) (hj : j < T.boundary.length)
     (S : T.SequenceOfBlowups) (len : ℕ) (hlen : S.length = len + 1)
@@ -303,32 +299,26 @@ private theorem divisorReductionShape_of_pullback_then_strictTransforms {T : Mar
     · rw [hlen] at ht
       exact h7 t (by omega)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+A closed immersion identifies the source with the closed subscheme cut out by its kernel. Taking the scheme-theoretic image of a further closed subscheme and pulling it back to the source recovers its defining ideal, as given by the image and pullback formula for closed immersions.
 -/
 private theorem comap_imageIdealSheaf_eq_self_of_isClosedImmersion {X Y : Scheme.{u}} (f : X ⟶ Y)
     [AlgebraicGeometry.IsClosedImmersion f] (I : X.IdealSheafData) :
     (imageIdealSheaf f I).comap f = I :=
   Blowup.comap_map_of_isClosedImmersion f I
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Under an isomorphism the order locus of the pulled back ideal is the inverse image of the original order locus. An inverse image of the empty set is empty.
 -/
 private theorem orderAtLeastLocus_comap_iso_eq_empty {X Y : Scheme.{u}} (e : X ≅ Y)
     (I : Y.IdealSheafData) (m : ℕ) (h : orderAtLeastLocus I m = (∅ : Set ↥Y)) :
     orderAtLeastLocus (I.comap e.hom) m = (∅ : Set ↥X) := by
   rw [orderAtLeastLocus_comap_iso_hom_eq_preimage, h, Set.preimage_empty]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
+/- English proof (authored)
+The closed immersion identifies X with the subscheme cut out by its kernel. Transport I to that subscheme by the isomorphism and call the resulting ideal J. This preserves nonvanishing on components. Commutativity with the inclusion into Y identifies J with the restriction of the ambient ideal on the whole subscheme, which gives the required local agreement.
 
-Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
-
-Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
-
-Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
-
-A detailed English derivation is pending.
+Transport the given certificate by the same isomorphism. The structure maps agree by the assumed factorization through Y. The restricted ambient center pulls back from the original center because the ambient center is its scheme-theoretic image under the closed immersion. The transported memory set lies in the inverse image of the ambient memory set by the given inclusion. Enlarge it to that inverse image using monotonicity of the certificate.
 -/
 private theorem exists_principalizationCertificate_ker_of_isClosedImmersion {k : Type u} [Field k]
     {X Y : Scheme.{u}}
@@ -385,10 +375,8 @@ private theorem exists_principalizationCertificate_ker_of_isClosedImmersion {k :
     rw [hZe]
     exact principalizationCertificate_mono_of_subset hsub hcert1
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
+/- English proof (authored)
+Use the original divisor transported to stage zero and choose the strict-transform option. At length zero only the initial stage is in range, where smoothness is given. All conditions involving an actual blowup step hold vacuously. The stage-zero ideal comes from the original ideal by an isomorphism, so its marked order locus remains empty and is disjoint from the stage-zero divisor.
 -/
 private theorem divisorReductionShape_of_orderAtLeastLocus_empty {T : MarkedIdealWithBoundary.{u}} (j : ℕ)
     (hj : j < T.boundary.length) (S : T.SequenceOfBlowups) (hlen : S.length = 0)
@@ -412,8 +400,8 @@ private theorem divisorReductionShape_of_orderAtLeastLocus_empty {T : MarkedIdea
   · intro t ht
     exact absurd ht (Nat.not_lt_zero t)
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Apply the kernel recursion for the ambient lift of a closed subscheme, taking the subscheme to be the selected divisor. Passing to the underlying blowup data preserves the sequence length, so the given bound allows the strict-transform recursion at this stage.
 -/
 private theorem ker_embeddingIntoAmbient_succ_eq_strictTransform (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (T : MarkedIdealWithBoundary.{u}) [AlgebraicGeometry.IsNoetherian T.scheme] (j : ℕ)
@@ -451,8 +439,8 @@ private def divisorIdealWithoutBlowup (hres : FunctorialResolution.Blowup.Strict
     (DivisorReduction.embeddingIntoAmbient hres blowupPreservesNoetherian T j hj
       (DivisorReduction.lowerIdealWithoutBlowup T) (DivisorReduction.lowerBoundaryWithoutBlowup T) s hpr t)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The ambient lift has the same number of steps as the divisor sequence. Adding the marked data leaves the underlying sequence and its length unchanged.
 -/
 private theorem length_ambientMarkedSeq (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (T : MarkedIdealWithBoundary.{u})
@@ -467,8 +455,8 @@ private theorem length_ambientMarkedSeq (hres : FunctorialResolution.Blowup.Stri
   DivisorReduction.ambientBlowupSeq_length hres blowupPreservesNoetherian T j hj
     (DivisorReduction.lowerIdealWithoutBlowup T) (DivisorReduction.lowerBoundaryWithoutBlowup T) s hpr
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The divisors are defined by the kernels of the stage embeddings. Apply the assumed smoothness property of those kernels for the admissible ambient and lower objects in the unit-center case.
 -/
 private theorem isSmoothDivisor_ambientMarkedSeq (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hshape : PushedBlowupSequenceProperties hres blowupPreservesNoetherian)
@@ -488,8 +476,8 @@ private theorem isSmoothDivisor_ambientMarkedSeq (hres : FunctorialResolution.Bl
         (divisorIdealWithoutBlowup hres T j hj s hpr hmk t) :=
   hshape.isSmoothDivisor_ker_top T hV hO hD j hj htop hvl s hpr hmk
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The divisor ideal is the kernel of the embedding. The assumed stage-zero kernel formula for the unit-center construction identifies it with the initial pullback of boundary entry j.
 -/
 private theorem divisorTransform_zero_eq_comap_isoObjZero (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hshape : PushedBlowupSequenceProperties hres blowupPreservesNoetherian)
@@ -506,8 +494,8 @@ private theorem divisorTransform_zero_eq_comap_isoObjZero (hres : FunctorialReso
           hmk).isoZero.hom :=
   hshape.ker_pushedEmb_zero_top T j hj s hpr hmk
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The center of the ambient lift is the scheme-theoretic image of the divisor center under the stage embedding. The marked sequence retains this center, giving the claimed equality.
 -/
 private theorem center_ambientMarkedSeq_eq_imageIdealSheaf (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (T : MarkedIdealWithBoundary.{u})
@@ -524,8 +512,8 @@ private theorem center_ambientMarkedSeq_eq_imageIdealSheaf (hres : FunctorialRes
   DivisorReduction.ambientBlowupSeq_center_eq_imageIdealSheaf hres blowupPreservesNoetherian
     T j hj (DivisorReduction.lowerIdealWithoutBlowup T) (DivisorReduction.lowerBoundaryWithoutBlowup T) s hpr t
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The ambient center is the image of the lower center under the stage closed immersion. Its support is therefore contained in the support of the embedding kernel, by the assumed support property for closed-immersion images. This kernel is the specified divisor ideal.
 -/
 private theorem support_center_ambientBlowupSeq_subset (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hshape : PushedBlowupSequenceProperties hres blowupPreservesNoetherian)
@@ -551,8 +539,8 @@ private theorem support_center_ambientBlowupSeq_subset (hres : FunctorialResolut
     (DivisorReduction.embeddingIntoAmbient hres blowupPreservesNoetherian T j hj
       (DivisorReduction.lowerIdealWithoutBlowup T) (DivisorReduction.lowerBoundaryWithoutBlowup T) s hpr t) (s.center t)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The marked sequence inherits its blowup maps and centers from the ambient blowup data. With those identifications, the desired formula is the strict-transform recursion for the stage embedding kernels.
 -/
 private theorem divisorTransform_succ_eq_strictTransform (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (T : MarkedIdealWithBoundary.{u})
@@ -579,8 +567,8 @@ private theorem divisorTransform_succ_eq_strictTransform (hres : FunctorialResol
   exact ker_embeddingIntoAmbient_succ_eq_strictTransform hres T j hj (DivisorReduction.lowerIdealWithoutBlowup T)
     (DivisorReduction.lowerBoundaryWithoutBlowup T) s hpr t ht
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The final divisor is the kernel of the final embedding. The assumed termination comparison for a unit contained-components ideal states that the ambient marked order locus is disjoint from this kernel support when the final lower order locus is empty. Apply it with the given lower termination.
 -/
 private theorem orderAtLeastLocus_inter_divisorTransform_eq_empty
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
@@ -604,8 +592,8 @@ private theorem orderAtLeastLocus_inter_divisorTransform_eq_empty
           hmk).schemeAt s.length)) = ∅ :=
   hfacts.coSupport_inter_ker_eq_empty_top T hV hO hD j hj htop hvl s hpr hfin
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+At the given stage the divisor embedding is a closed immersion and its kernel defines the ambient divisor. The projection comparison identifies the structure maps, the divisor boundary locus lies in the inverse image of the other ambient boundary locus, and the ambient ideal restricts to the lower ideal. The ambient center is the scheme-theoretic image of the lower center. The lower stage ideal is nonzero on components by admissibility of the lower marked sequence. Apply the certificate transfer along the closed immersion to the supplied lower certificate. It produces the ideal on the kernel subscheme, its local agreement with the restricted ambient ideal, and the certificate for the restricted center.
 -/
 private theorem exists_nonzeroOnComponents_certificate_ambientMarkedSeq (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hfacts : DivisorReductionTerminationProperties hres blowupPreservesNoetherian)
@@ -664,8 +652,8 @@ private theorem exists_nonzeroOnComponents_certificate_ambientMarkedSeq (hres : 
     (MarkedSequenceOfBlowups.nonzeroOnComponents_ideal_of_isAdmissible effectiveCartierSupportContainsNoComponent hvl s t (le_of_lt ht))
     (hcert t ht)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Use the stage embedding kernels as the family of divisor ideals. The ambient sequence has the lower length, the kernels are smooth divisors, and the initial one is the pullback of boundary entry j. The center images lie in these divisors and successive kernels are strict transforms. Lower termination gives final disjointness, and the lower certificates transfer to the divisor subschemes at each step. Together these are the hypotheses of the construction with strict transforms at every step.
 -/
 private theorem divisorReductionShape_ambientBlowupSeq (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hfacts : DivisorReductionTerminationProperties hres blowupPreservesNoetherian)
@@ -709,8 +697,8 @@ private def divisorIdealAfterBlowup (hres : FunctorialResolution.Blowup.StrictTr
     (DivisorReduction.embeddingIntoAmbient hres blowupPreservesNoetherian T j hj
       (DivisorReduction.lowerIdealAfterBlowup T j hj) (DivisorReduction.lowerBoundaryAfterBlowup T j hj) s hpr t)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The ambient lift of the lower sequence has the lower sequence's length. Inserting the preparatory blowup adds one, and forming the marked sequence preserves the resulting length.
 -/
 private theorem length_prependedAmbientSeq (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (T : MarkedIdealWithBoundary.{u})
@@ -728,8 +716,8 @@ private theorem length_prependedAmbientSeq (hres : FunctorialResolution.Blowup.S
     (DivisorReduction.ambientBlowupSeq_length hres blowupPreservesNoetherian T j hj
       (DivisorReduction.lowerIdealAfterBlowup T j hj) (DivisorReduction.lowerBoundaryAfterBlowup T j hj) s hpr)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Inserting the preparatory blowup makes the new starting object the original ambient scheme with its identity isomorphism. The marked sequence retains that starting identification.
 -/
 private theorem isoObjZero_prependedAmbientSeq_eq_refl (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (T : MarkedIdealWithBoundary.{u})
@@ -747,8 +735,8 @@ private theorem isoObjZero_prependedAmbientSeq_eq_refl (hres : FunctorialResolut
     (DivisorReduction.ambientBlowupSeq hres blowupPreservesNoetherian T j hj
       (DivisorReduction.lowerIdealAfterBlowup T j hj) (DivisorReduction.lowerBoundaryAfterBlowup T j hj) s hpr)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+By construction the first center of the prepended blowup data is the contained-components ideal. Adding the marked data preserves that center.
 -/
 private theorem center_prependedAmbientSeq_zero (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (T : MarkedIdealWithBoundary.{u}) [AlgebraicGeometry.IsNoetherian T.scheme] (j : ℕ)
@@ -766,8 +754,8 @@ private theorem center_prependedAmbientSeq_zero (hres : FunctorialResolution.Blo
     (DivisorReduction.ambientBlowupSeq hres blowupPreservesNoetherian T j hj
       (DivisorReduction.lowerIdealAfterBlowup T j hj) (DivisorReduction.lowerBoundaryAfterBlowup T j hj) s hpr)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The initial isomorphism is the identity, so its forward morphism pulls the selected boundary ideal back to itself.
 -/
 private theorem comap_boundary_isoObjZero_prependedAmbientSeq (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (T : MarkedIdealWithBoundary.{u})
@@ -786,8 +774,8 @@ private theorem comap_boundary_isoObjZero_prependedAmbientSeq (hres : Functorial
       (isoObjZero_prependedAmbientSeq_eq_refl hres T j hj hb s hpr hmk)).trans
     (Scheme.IdealSheafData.comap_id _)
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+At stage zero the prepended center is the contained-components ideal and the starting boundary transport is the identity. Its support lies in the selected divisor's support by the given property of the contained-components ideal.
 -/
 private theorem support_center_zero_prependedAmbientBlowupSeq_subset (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hshape : PushedBlowupSequenceProperties hres blowupPreservesNoetherian)
@@ -813,8 +801,8 @@ private theorem support_center_zero_prependedAmbientBlowupSeq_subset (hres : Fun
     comap_boundary_isoObjZero_prependedAmbientSeq hres T j hj hb s hpr hmk]
   exact hshape.support_preIdeal_subset_boundary T hV j hj
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Replace the first center by the contained-components ideal and the transported boundary entry by the original selected divisor. The asserted inverse image is then open by the supplied openness property on that divisor.
 -/
 private theorem isOpen_preimage_support_center_zero_prependedAmbientSeq
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
@@ -839,8 +827,8 @@ private theorem isOpen_preimage_support_center_zero_prependedAmbientSeq
     comap_boundary_isoObjZero_prependedAmbientSeq hres T j hj hb s hpr hmk]
   exact hshape.isOpen_preimage_preIdeal T hV j hj
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+After the initial step, center t+1 of the prepended sequence is center t of the ambient lift. That center is the scheme-theoretic image of the lower center under the stage-t embedding.
 -/
 private theorem center_prependedAmbientSeq_succ_eq_imageIdealSheaf (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (T : MarkedIdealWithBoundary.{u})
@@ -860,8 +848,8 @@ private theorem center_prependedAmbientSeq_succ_eq_imageIdealSheaf (hres : Funct
   DivisorReduction.ambientBlowupSeq_center_eq_imageIdealSheaf hres blowupPreservesNoetherian
     T j hj (DivisorReduction.lowerIdealAfterBlowup T j hj) (DivisorReduction.lowerBoundaryAfterBlowup T j hj) s hpr t
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The successor center is the image of the lower center under the stage closed immersion. The support of that image is contained in the support of the immersion kernel, which is exactly the chosen divisor at the corresponding prepended stage.
 -/
 private theorem support_center_succ_prependedAmbientBlowupSeq_subset (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hshape : PushedBlowupSequenceProperties hres blowupPreservesNoetherian)
@@ -890,8 +878,8 @@ private theorem support_center_succ_prependedAmbientBlowupSeq_subset (hres : Fun
       (DivisorReduction.lowerIdealAfterBlowup T j hj) (DivisorReduction.lowerBoundaryAfterBlowup T j hj) s hpr t)
     (s.center t)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The morphism and center at step t+1 of the prepended data are the morphism and center at step t of the ambient lift. Substitute these identifications and apply the strict-transform recursion for the stage embedding kernel.
 -/
 private theorem ker_embeddingIntoAmbient_succ_eq_strictTransform_prepend (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (T : MarkedIdealWithBoundary.{u}) [AlgebraicGeometry.IsNoetherian T.scheme] (j : ℕ)
@@ -922,8 +910,8 @@ private theorem ker_embeddingIntoAmbient_succ_eq_strictTransform_prepend (hres :
   exact ker_embeddingIntoAmbient_succ_eq_strictTransform hres T j hj (DivisorReduction.lowerIdealAfterBlowup T j hj)
     (DivisorReduction.lowerBoundaryAfterBlowup T j hj) s hpr t ht
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The successor divisor ideals are the consecutive kernels of the lower-stage embeddings. The marked sequence keeps the morphisms and centers of the prepended blowup data, so the shifted kernel recursion gives the asserted strict transform.
 -/
 private theorem prependedDivisorTransform_succ_eq_strictTransform (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (T : MarkedIdealWithBoundary.{u})
@@ -953,8 +941,8 @@ private theorem prependedDivisorTransform_succ_eq_strictTransform (hres : Functo
   rw [MarkedBlowupSequenceData.toMarkedSequence_blowupMorphism, MarkedBlowupSequenceData.toMarkedSequence_center]
   exact ker_embeddingIntoAmbient_succ_eq_strictTransform_prepend hres T j hj hb s hpr t ht
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+At prepended stage t+1 the divisor is the kernel of the stage-t lower embedding. The supplied smoothness property for the nonunit-center construction says that this kernel defines a smooth divisor over the structure map of that prepended stage.
 -/
 private theorem isSmoothDivisor_prependedAmbientSeq (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hshape : PushedBlowupSequenceProperties hres blowupPreservesNoetherian)
@@ -977,8 +965,8 @@ private theorem isSmoothDivisor_prependedAmbientSeq (hres : FunctorialResolution
         (divisorIdealAfterBlowup hres T j hj hb s hpr hmk t) :=
   hshape.isSmoothDivisor_ker_pre T hV hO hD j hj hne hb hvl s hpr hmk
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The first divisor after the prepended step is the kernel of the initial lower embedding. The corresponding initial kernel formula identifies it with the starting boundary ideal after pullback by the initial ambient identification and then by the first blowup morphism.
 -/
 private theorem prependedDivisorTransform_zero_eq_comap_blowupMorphism (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hshape : PushedBlowupSequenceProperties hres blowupPreservesNoetherian)
@@ -999,8 +987,8 @@ private theorem prependedDivisorTransform_zero_eq_comap_blowupMorphism (hres : F
           hmk).transitionMapSucc 0) :=
   hshape.ker_pushedEmb_zero_pre T j hj hb s hpr hmk
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The final ambient stage is one step later than the final lower stage. Apply the assumed termination comparison for the prepended construction to the empty final lower order locus. It makes the final ambient marked order locus disjoint from the support of the corresponding embedding kernel.
 -/
 private theorem orderAtLeastLocus_inter_prependedDivisorTransform_eq_empty
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
@@ -1026,8 +1014,8 @@ private theorem orderAtLeastLocus_inter_prependedDivisorTransform_eq_empty
           hmk).schemeAt (s.length + 1))) = ∅ :=
   hfacts.coSupport_inter_ker_eq_empty_pre T hV hO hD j hj hne hb hvl s hpr hfin
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Compare lower stage t with prepended stage t+1 by the closed immersion. The structure map factors along this immersion, the lower boundary locus lies in the inverse image of the other ambient boundary locus, and the ambient ideal restricts to the lower ideal. The ambient center is the image of the lower one. The lower ideal is nonzero on components by admissibility, and it has the given lower certificate. The certificate transfer to the kernel subscheme yields the desired ideal with local agreement, nonvanishing, and the certificate for the restricted ambient center.
 -/
 private theorem exists_nonzeroOnComponents_certificate_prependedAmbientSeq (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hfacts : DivisorReductionTerminationProperties hres blowupPreservesNoetherian)
@@ -1092,8 +1080,8 @@ private theorem exists_nonzeroOnComponents_certificate_prependedAmbientSeq (hres
     (MarkedSequenceOfBlowups.nonzeroOnComponents_ideal_of_isAdmissible effectiveCartierSupportContainsNoComponent hvl s t (le_of_lt ht))
     (hcert t ht)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Use the transported starting boundary entry at stage zero and the embedding kernels at subsequent stages. The starting entry and the kernels are smooth divisors. The first center lies in the starting divisor, and the inverse image of its support is open there. The first divisor update is pullback. Each successor center lies in the corresponding kernel divisor and the later updates are strict transforms. Lower termination gives final disjointness, and the lower certificates yield certificates at the subsequent steps. With the shifted length, these data give the claimed family with a preparatory pullback.
 -/
 private theorem divisorReductionShape_prependedAmbientBlowupSeq (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hfacts : DivisorReductionTerminationProperties hres blowupPreservesNoetherian)
@@ -1131,14 +1119,10 @@ private theorem divisorReductionShape_prependedAmbientBlowupSeq (hres : Functori
     (orderAtLeastLocus_inter_prependedDivisorTransform_eq_empty hres hfacts T hV hO hD j hj hne hb hvl s hpr hmk hfin)
     (exists_nonzeroOnComponents_certificate_prependedAmbientSeq hres hfacts hshape T hV hO hD j hj hne hb hvl s hpr hmk hcert)
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The canonical rule gives the divisor reduction sequence. If the marked order locus is empty, that sequence has length zero. The transported initial boundary entry is a smooth divisor and the empty-sequence argument supplies the required family.
 
-Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+Otherwise the construction gives either an ambient lift of the ordinary divisor restriction, when the contained-components ideal is the unit ideal, or a preparatory blowup followed by the ambient lift of the twisted restriction. In each case the relevant lower object is admissible and has dimension strictly below the ambient bound. The lower-dimensional assignment therefore supplies certificates at all its steps and an empty marked order locus at its last stage. Apply the strict-transform construction in the first case and the preparatory-pullback construction in the second. The description of the canonical sequence identifies the resulting family with the one asserted.
 -/
 theorem exists_smoothDivisorSeq_divisorFamily_canonicalAlgorithmRules
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})

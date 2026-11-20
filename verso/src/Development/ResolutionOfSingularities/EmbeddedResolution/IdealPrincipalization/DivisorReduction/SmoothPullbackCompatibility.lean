@@ -24,22 +24,16 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The first j+1 entries of a nonempty list consist of its head followed by the first j entries of its tail. Equality of the two prefixes therefore gives equality of both heads and both shortened tails.
 -/
 private theorem cons_take_succ_inj {α : Type*} (j : ℕ) (a b : α) (t₁ t₂ : List α)
     (h : List.take (j + 1) (a :: t₁) = List.take (j + 1) (b :: t₂)) :
     a = b ∧ List.take j t₁ = List.take j t₂ :=
   Eq.mp (List.cons.injEq a (List.take j t₁) b (List.take j t₂)) h
 
-/- English proof (translation)
-Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
-
-Treat this case separately. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
-
-Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
+/- English proof (authored)
+The bounds make both lists nonempty. At index zero, equality of the one-entry prefixes gives equality of the heads. At successor index j+1, equality of the prefixes gives equality of the first j+1 entries of the tails. The index j is valid in both tails, so induction gives equality of those entries, which are the desired entries of the original lists.
 -/
 private theorem get_eq_get_of_take_add_one_eq {α : Type*} :
     ∀ (j : ℕ) (l₁ l₂ : List α), List.take (j + 1) l₁ = List.take (j + 1) l₂ →
@@ -65,8 +59,8 @@ private theorem get_eq_get_of_take_add_one_eq {α : Type*} :
         exact ih t₁ t₂ (cons_take_succ_inj (j + 1) a b t₁ t₂ htake).2
           (Nat.lt_of_succ_lt_succ h₁) (Nat.lt_of_succ_lt_succ h₂)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Apply the prefix comparison at index j. The equal prefixes include entry j, and the two bounds ensure that this entry exists in each list.
 -/
 theorem get_eq_get_of_take_succ_eq {α : Type*} (l₁ l₂ : List α) (j : ℕ)
     (htake : List.take (j + 1) l₁ = List.take (j + 1) l₂)
@@ -74,10 +68,8 @@ theorem get_eq_get_of_take_succ_eq {α : Type*} (l₁ l₂ : List α) (j : ℕ)
     l₁.get ⟨j, h₁⟩ = l₂.get ⟨j, h₂⟩ :=
   get_eq_get_of_take_add_one_eq j l₁ l₂ htake h₁ h₂
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Consider separately whether the proposition holds or fails.
-
-Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+/- English proof (authored)
+Proceed down the list. A unit ideal can be dropped before pullback because it pulls back to the unit ideal and would be dropped afterwards. For an entry other than the unit ideal, both procedures pull back the same entry and keep it exactly when its pullback is different from the unit ideal. The tails agree by induction.
 -/
 private theorem nontrivialPart_map_comap {X Y : Scheme.{u}} (f : Y ⟶ X)
     (l : List X.IdealSheafData) :
@@ -92,8 +84,8 @@ private theorem nontrivialPart_map_comap {X Y : Scheme.{u}} (f : Y ⟶ X)
       simp [AlgebraicGeometry.Scheme.IdealSheafData.comap_top, ih]
     · simp [List.filter_cons, hD, ih]
 
-/- English proof (translation)
-Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The two boundary lists have equal ordered lists after removing unit ideals. The filtered pullback depends only on those filtered lists, because an original unit ideal pulls back to a unit ideal. Equal filtered lists therefore have equal filtered pullbacks.
 -/
 theorem MarkedIdealWithBoundary.SameNontrivialBoundary.comap {X Y : Scheme.{u}} (f : Y ⟶ X)
     {E E' : List X.IdealSheafData} (h : MarkedIdealWithBoundary.SameNontrivialBoundary E E') :
@@ -101,8 +93,8 @@ theorem MarkedIdealWithBoundary.SameNontrivialBoundary.comap {X Y : Scheme.{u}} 
   rw [MarkedIdealWithBoundary.sameNontrivialBoundary_iff] at h ⊢
   rw [nontrivialPart_map_comap f E, nontrivialPart_map_comap f E', h]
 
-/- English proof (translation)
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Filtering the common head either prepends that head to each filtered tail or leaves each filtered tail as it stands. Since the filtered tails are equal, the resulting lists agree in either case.
 -/
 private theorem nontrivialPart_cons_congr {X : Scheme.{u}} {a : X.IdealSheafData}
     {s t : List X.IdealSheafData}
@@ -112,8 +104,8 @@ private theorem nontrivialPart_cons_congr {X : Scheme.{u}} {a : X.IdealSheafData
   simp only [MarkedIdealWithBoundary.nontrivialPart]
   rw [List.filter_cons, List.filter_cons, h]
 
-/- English proof (translation)
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
+/- English proof (authored)
+If the common head is kept, cancel it from the two equal filtered lists. If it is removed, the equality is already the equality of the filtered tails.
 -/
 private theorem nontrivialPart_eq_of_cons_eq {X : Scheme.{u}} {a : X.IdealSheafData}
     {s t : List X.IdealSheafData}
@@ -126,18 +118,8 @@ private theorem nontrivialPart_eq_of_cons_eq {X : Scheme.{u}} {a : X.IdealSheafD
   · simpa using h
   · exact h
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
-
-Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Treat this case separately. Split into cases according to the possible forms of the given data.
-
-Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Substitute using the available equality.
-
-Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Split into cases according to the possible forms of the given data.
-
-Treat this case separately. Treat this case separately. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately.
-
-Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Substitute using the available equality. A detailed English derivation is pending.
+/- English proof (authored)
+Use induction on the erased position. Equal prefixes of positive length force both lists to be empty or both to have the same head. In the empty case the two erased lists agree. In the nonempty case the filtered tails agree by cancellation of the common head. If the erased index is zero, this gives the result. At a successor index, the prefixes of the tails agree through the smaller index. Apply induction to the tails and then restore the common head before filtering.
 -/
 private theorem nontrivialPart_eraseIdx_eq_of_take_succ_eq {X : Scheme.{u}} (j : ℕ) :
     ∀ E E' : List X.IdealSheafData,
@@ -176,8 +158,8 @@ private theorem nontrivialPart_eraseIdx_eq_of_take_succ_eq {X : Scheme.{u}} (j :
         subst hab
         exact nontrivialPart_cons_congr (ih s t (nontrivialPart_eq_of_cons_eq h) htl)
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Interpret the boundary equivalence as equality of the lists after removing unit ideals. The common prefix through j lets us delete that index from both lists while preserving this filtered equality. Interpreting the resulting filtered equality gives the claimed boundary equivalence.
 -/
 theorem MarkedIdealWithBoundary.SameNontrivialBoundary.eraseIdx {X : Scheme.{u}} {E E' : List X.IdealSheafData}
     (h : MarkedIdealWithBoundary.SameNontrivialBoundary E E') (j : ℕ)
@@ -186,8 +168,8 @@ theorem MarkedIdealWithBoundary.SameNontrivialBoundary.eraseIdx {X : Scheme.{u}}
   (MarkedIdealWithBoundary.sameNontrivialBoundary_iff _ _).2
     (nontrivialPart_eraseIdx_eq_of_take_succ_eq j E E' ((MarkedIdealWithBoundary.sameNontrivialBoundary_iff _ _).1 h) htake)
 
-/- English proof (translation)
-Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+In the given pullback square, the morphism to S is the base change of the surjection from Y to X. Surjectivity of scheme morphisms is stable under base change.
 -/
 theorem surjective_snd_of_isPullback_of_surjective {X Y S S' : Scheme.{u}} (σ : S ⟶ X) (σ' : S' ⟶ Y) (φ : Y ⟶ X)
     (ψ : S' ⟶ S) [AlgebraicGeometry.Surjective φ] (hpb : IsPullback σ' ψ φ σ) :
@@ -197,8 +179,8 @@ theorem surjective_snd_of_isPullback_of_surjective {X Y S S' : Scheme.{u}} (σ :
 
 namespace DivisorReduction
 
-/- English proof (translation)
-Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The kernel of the original closed immersion is D. The kernel of the composite from the pulled back subscheme is the image ideal under h of the pullback of D. The adjunction for pullback and image of ideals gives inclusion of D in this image ideal.
 -/
 private theorem ker_subschemeι_le_ker_comp {X Y : Scheme.{u}} (h : Y ⟶ X) (D : X.IdealSheafData)
     (D' : Y.IdealSheafData) (hD : D' = D.comap h) :
@@ -208,8 +190,8 @@ private theorem ker_subschemeι_le_ker_comp {X Y : Scheme.{u}} (h : Y ⟶ X) (D 
     AlgebraicGeometry.Scheme.IdealSheafData.ker_subschemeι]
   exact AlgebraicGeometry.Scheme.IdealSheafData.le_map_comap D h
 
-/- English proof (translation)
-Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The map from the pulled back subscheme to the original ambient scheme has kernel containing D. The universal property of the closed subscheme defined by D therefore gives a factorization through its inclusion. Pulling any ambient ideal back along the two equal composites gives equal ideals, and the composition rule expresses them as the asserted two successive pullbacks.
 -/
 private theorem exists_subscheme_hom_comp_subschemeι_eq {X Y : Scheme.{u}} (h : Y ⟶ X) (D : X.IdealSheafData)
     (D' : Y.IdealSheafData) (hD : D' = D.comap h) :
@@ -229,24 +211,24 @@ def subschemeMapOfComap {X Y : Scheme.{u}} (h : Y ⟶ X) (D : X.IdealSheafData) 
     (hD : D' = D.comap h) : D'.subscheme ⟶ D.subscheme :=
   (exists_subscheme_hom_comp_subschemeι_eq h D D' hD).choose
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The induced map is chosen from the factorization of the composite through the original closed subscheme. The equality is the commutativity of that factorization square.
 -/
 theorem subschemeMapOfComap_comp {X Y : Scheme.{u}} (h : Y ⟶ X) (D : X.IdealSheafData)
     (D' : Y.IdealSheafData) (hD : D' = D.comap h) :
     subschemeMapOfComap h D D' hD ≫ D.subschemeι = D'.subschemeι ≫ h :=
   (exists_subscheme_hom_comp_subschemeι_eq h D D' hD).choose_spec.1
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Pull back the ambient ideal along the commuting square of closed subschemes. The two paths from the pulled back subscheme to the original ambient scheme are equal, so pulling back in two stages along these paths gives the same ideal.
 -/
 theorem comap_subschemeMapOfComap {X Y : Scheme.{u}} (h : Y ⟶ X) (D : X.IdealSheafData)
     (D' : Y.IdealSheafData) (hD : D' = D.comap h) (I₀ : X.IdealSheafData) :
     (I₀.comap D.subschemeι).comap (subschemeMapOfComap h D D' hD) = (I₀.comap h).comap D'.subschemeι :=
   (exists_subscheme_hom_comp_subschemeι_eq h D D' hD).choose_spec.2 I₀
 
-/- English proof (translation)
-Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+The square of subscheme inclusions gives the same two-step pullback for each ideal. Applying this entrywise preserves order, so the two resulting lists agree. Equivalently, compare the heads using the pullback equality and the tails by induction.
 -/
 private theorem map_comap_comap_subschemeι {X Y : Scheme.{u}} (h : Y ⟶ X)
     (D : X.IdealSheafData) (D' : Y.IdealSheafData) (hD : D' = D.comap h)
@@ -259,8 +241,8 @@ private theorem map_comap_comap_subschemeι {X Y : Scheme.{u}} (h : Y ⟶ X)
     simp only [List.map_cons]
     rw [comap_subschemeMapOfComap h D D' hD I, ih]
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+Pull back the given boundary equivalence to the pulled back divisor. Equivalence is preserved by pullback. On the side obtained from the original ambient boundary, the commuting square lets each entry be pulled back first to the original divisor and then along the induced divisor map. This gives the stated lists.
 -/
 theorem sameNontrivialBoundary_comap_subschemeι {X Y : Scheme.{u}} (h : Y ⟶ X) (D : X.IdealSheafData)
     (D' : Y.IdealSheafData) (hD : D' = D.comap h) (M : List X.IdealSheafData)
@@ -285,8 +267,8 @@ def componentsInOrderLocusIdeal {X : Scheme.{u}} (I : X.IdealSheafData) (m : ℕ
           D.subschemeι))
     (fun _ => ⊤)
 
-/- English proof (translation)
-Replace the relevant objects with their definitions. A detailed English derivation is pending.
+/- English proof (authored)
+Consider the union of components of the selected divisor contained in the marked order locus. When this union is open on the divisor, both ideals are the kernel of its inclusion into the ambient scheme. Otherwise both are the unit ideal by their defining convention.
 -/
 theorem containedComponentsIdeal_eq_componentsInOrderLocusIdeal (T : MarkedIdealWithBoundary.{u}) (j : ℕ)
     (hj : j < T.boundary.length) :
@@ -351,8 +333,8 @@ def divisorPullbackMap (T : MarkedIdealWithBoundary.{u}) (j : ℕ) (hj : j < T.b
     D'.subscheme ⟶ (restrictToBoundaryDivisor T j hj I₀ E₀).scheme :=
   subschemeMapOfComap h (T.boundary.get ⟨j, hj⟩) D' hD
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The divisor map is the induced map from the closed subscheme defined by the pulled back ideal. The assumed pullback compatibility for induced maps of these closed subschemes gives the stated square.
 -/
 theorem isPullback_divisorPullbackMap (hbc : SmoothPullbackCompatibility.{u}) (T : MarkedIdealWithBoundary.{u}) (j : ℕ)
     (hj : j < T.boundary.length) (I₀ : T.scheme.IdealSheafData)
@@ -362,10 +344,8 @@ theorem isPullback_divisorPullbackMap (hbc : SmoothPullbackCompatibility.{u}) (T
       (T.boundary.get ⟨j, hj⟩).subschemeι h :=
   hbc.isPullback_inducedHom _ _ h _ D' hD
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
-
-Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
+/- English proof (authored)
+The boundary of the pulled back marked object is obtained by pulling back every original boundary entry and keeps the original length. The given equality of prefixes through j identifies its entry j with entry j of the replacement boundary. The former is the pullback of the original entry at that index.
 -/
 theorem get_eq_comap_get_boundary (T : MarkedIdealWithBoundary.{u}) (j : ℕ) (hj : j < T.boundary.length) (Y : Scheme.{u})
     (q : Y ⟶ Spec (CommRingCat.of T.base)) (h : Y ⟶ T.scheme) (E' : List Y.IdealSheafData)
@@ -384,16 +364,16 @@ theorem get_eq_comap_get_boundary (T : MarkedIdealWithBoundary.{u}) (j : ℕ) (h
     (List.map (fun D : T.scheme.IdealSheafData => D.comap h) T.boundary) j htake' hjE hlen]
   simp
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities.
+/- English proof (authored)
+Substitute the equality of the divisor ideals. With the ambient ideal and marking fixed, the selected component construction is then applied to the same divisor.
 -/
 private theorem componentsInOrderLocusIdeal_congr {X : Scheme.{u}} (I : X.IdealSheafData) (m : ℕ)
     {D D' : X.IdealSheafData} (hD : D = D') :
     componentsInOrderLocusIdeal I m D = componentsInOrderLocusIdeal I m D' := by
   rw [hD]
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The original pulled back boundary and its replacement agree in the prefix through j. Thus their selected divisor ideals are equal. Replacing the list leaves the ambient ideal and marking unchanged, and the contained-components construction depends only on these data and the selected divisor. The two center ideals are therefore equal.
 -/
 theorem containedComponentsIdeal_withBoundary (T : MarkedIdealWithBoundary.{u}) (j : ℕ) (Y : Scheme.{u})
     (q : Y ⟶ Spec (CommRingCat.of T.base)) (h : Y ⟶ T.scheme) (E' : List Y.IdealSheafData)
@@ -407,15 +387,15 @@ theorem containedComponentsIdeal_withBoundary (T : MarkedIdealWithBoundary.{u}) 
     containedComponentsIdeal_eq_componentsInOrderLocusIdeal (T.pullbackAlong Y q h) j hj']
   exact componentsInOrderLocusIdeal_congr _ _ hget
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+The assumed pullback compatibility for surjections applies to the given ideal, which differs from the unit ideal. It gives that the pulled back ideal also differs from the unit ideal.
 -/
 theorem comap_ne_top_of_surjective (hbc : SmoothPullbackCompatibility.{u}) {X Y : Scheme.{u}} (h : Y ⟶ X)
     [AlgebraicGeometry.Surjective h] (Z : X.IdealSheafData) (hZ : Z ≠ ⊤) : Z.comap h ≠ ⊤ :=
   hbc.comap_ne_top _ _ h Z hZ
 
-/- English proof (translation)
-A detailed English derivation is pending.
+/- English proof (authored)
+Changing the boundary leaves the ideal of the pulled back marked object unchanged. The assumed smooth pullback rule for order loci therefore identifies the locus at any given threshold with the inverse image of the original locus.
 -/
 theorem orderAtLeastLocus_withBoundary_pullbackAlong (hbc : SmoothPullbackCompatibility.{u}) (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible)
     (Y : Scheme.{u}) (q : Y ⟶ Spec (CommRingCat.of T.base)) (h : Y ⟶ T.scheme)
@@ -424,8 +404,8 @@ theorem orderAtLeastLocus_withBoundary_pullbackAlong (hbc : SmoothPullbackCompat
     orderAtLeastLocus ((T.pullbackAlong Y q h).withBoundary E').ideal m = ⇑h ⁻¹' orderAtLeastLocus T.ideal m :=
   hbc.coSupport_comap T hV Y q h hq m
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
+/- English proof (authored)
+Without a preparatory blowup the lower ideal is the starting ideal, since its identity pullback fixes it. The replacement boundary leaves that ideal unchanged, and the starting ideal of the pulled back object is the pullback of the original ideal.
 -/
 theorem lowerIdealWithoutBlowup_withBoundary (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u})
     (q : Y ⟶ Spec (CommRingCat.of T.base)) (h : Y ⟶ T.scheme) (E' : List Y.IdealSheafData) :
@@ -437,8 +417,8 @@ theorem lowerIdealWithoutBlowup_withBoundary (T : MarkedIdealWithBoundary.{u}) (
   simp [lowerIdealWithoutBlowup, h1, h2]
   exact AlgebraicGeometry.Scheme.IdealSheafData.comap_id ..
 
-/- English proof (translation)
-Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
+/- English proof (authored)
+Deleting a valid index reduces the list length by one. Taking exactly that many entries of the shortened list returns the full shortened list.
 -/
 private theorem take_length_sub_one_eraseIdx {α : Type*} (l : List α) (j : ℕ) (hj : j < l.length) :
     List.take (l.length - 1) (l.eraseIdx j) = l.eraseIdx j := by
@@ -446,10 +426,8 @@ private theorem take_length_sub_one_eraseIdx {α : Type*} (l : List α) (j : ℕ
   have h2 := List.length_eraseIdx_add_one hj
   omega
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
-
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
+/- English proof (authored)
+Both lower boundaries before restriction are their respective starting boundaries. The selected index is valid on each side, so the prefixes of length one less than the corresponding original lengths retain the full erased lists. The equivalence of the pulled back and replacement boundaries persists after deletion of j because their prefixes through j agree. Deleting an index commutes with entrywise pullback, which identifies the first erased list with the pullback of the erased original boundary. This proves the required equivalence.
 -/
 theorem sameNontrivialBoundary_lowerBoundaryWithoutBlowup (T : MarkedIdealWithBoundary.{u}) (j : ℕ) (hj : j < T.boundary.length)
     (Y : Scheme.{u}) (q : Y ⟶ Spec (CommRingCat.of T.base)) (h : Y ⟶ T.scheme)
@@ -504,8 +482,8 @@ theorem sameNontrivialBoundary_lowerBoundaryWithoutBlowup (T : MarkedIdealWithBo
           MarkedIdealWithBoundary.nontrivialPart
             (List.map (fun D : T.scheme.IdealSheafData => D.comap h) l)) hCeq.symm))
 
-/- English proof (translation)
-Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+By the given center equality, the pulled back contained-components ideal is the contained-components ideal for the admissible replaced object. The supplied preparatory blowup property says that the identity is a blowup along that center.
 -/
 theorem isBlowupAlongIdealSheaf_id_comap_containedComponentsIdeal (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hfacts : DivisorReductionTerminationProperties hres blowupPreservesNoetherian) (j : ℕ)
@@ -518,16 +496,16 @@ theorem isBlowupAlongIdealSheaf_id_comap_containedComponentsIdeal (hres : Functo
   rw [← heq]
   exact hfacts.isBlowup_id_preIdeal _ hV' j hjE
 
-/- English proof (translation)
-Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
+/- English proof (authored)
+Substitute the equality of the two marked objects. Both assigned sequences now come from the same object with the same ambient type, so their underlying sequences are equal by reflexivity.
 -/
 private theorem heq_toSequenceOfBlowups_of_eq (L : PrincipalizationAssignment.{u}) {S₁ S₂ : MarkedIdealWithBoundary.{u}}
     (hS : S₁ = S₂) : HEq (L S₁).toSequenceOfBlowups (L S₂).toSequenceOfBlowups := by
   cases hS
   exact HEq.refl _
 
-/- English proof (translation)
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
+/- English proof (authored)
+The two sequences over the same ambient scheme have the same type, so the given heterogeneous equality yields an ordinary equality. Substituting it transfers the strict pullback property.
 -/
 private theorem isStrictPullbackSequenceOfBlowups_of_heq {X' X : Scheme.{u}} (φ : X' ⟶ X) (B : SequenceOfBlowups X)
     {B₁ B₂ : SequenceOfBlowups X'} (hB : HEq B₁ B₂) (h : IsStrictPullbackBlowupSeq φ B₁ B) :
@@ -536,14 +514,10 @@ private theorem isStrictPullbackSequenceOfBlowups_of_heq {X' X : Scheme.{u}} (φ
   rw [← hB']
   exact h
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
+/- English proof (authored)
+The common prefix identifies the chosen divisor on the new ambient scheme with the pullback of the original divisor. Its induced map is smooth and surjective by the pullback square, and the square also shows that it respects the structure maps to the ground field. With unit contained-components ideals on both sides, use the lower ideal without a preparatory step. Its pullback formula and the commuting square identify the two lower ideals. After deletion of the selected boundary entry, the lower boundaries agree up to unit entries, and this equivalence survives restriction to the pulled back divisor.
 
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
+Thus the pulled back lower object with the replacement boundary is precisely the lower object constructed on the new ambient scheme. Both lower objects are admissible by the unit-center case and have dimension below the induction bound by the dimension-drop result. The strict smooth pullback property of the lower-dimensional assignment applies. Substituting the identified marked object gives the claimed strict pullback of sequences.
 -/
 theorem isStrictPullbackBlowupSeq_restrictToDivisor_of_eq_top (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hfacts : DivisorReductionTerminationProperties hres blowupPreservesNoetherian) (n : ℕ)
@@ -648,14 +622,10 @@ theorem isStrictPullbackBlowupSeq_restrictToDivisor_of_eq_top (hres : Functorial
     hq₀ ((restrictToDivisor ((T.pullbackAlong Y q h).withBoundary E') j hjE).boundary) hBE₀ hValid₀ hdim₀
   exact isStrictPullbackSequenceOfBlowups_of_heq _ _ (heq_toSequenceOfBlowups_of_eq L hTriple) hmain
 
-/- English proof (translation)
-Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
+/- English proof (authored)
+The chosen divisor is pulled back from the original one because the boundary prefixes agree through its index. The induced divisor map is smooth and surjective by base change and respects the structure maps. The new contained-components ideal is the pullback of the original one and differs from the unit ideal by surjectivity. The assumed compatibility for the preparatory transform identifies the two lower ideals after pulling back and restricting along the commuting square. The corresponding compatibility for the truncated boundaries, followed by pullback to the divisor, gives equivalence after removing unit entries.
 
-Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
-
-Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
+It follows that the pulled back twisted lower object, equipped with the new lower boundary, equals the twisted lower object on the new ambient scheme. The nonunit-center admissibility result and dimension drop put both objects within the lower-dimensional assignment. Applying its strict smooth pullback property and substituting the equality of lower objects proves the claimed comparison.
 -/
 theorem isStrictPullbackBlowupSeq_restrictTwistedToDivisor (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hfacts : DivisorReductionTerminationProperties hres blowupPreservesNoetherian) (n : ℕ)
